@@ -13,11 +13,12 @@ extension CAGradientLayer {
     
     @objc func blueColor() -> CAGradientLayer {
         
-        let topColor = UIColor(red: 88/255, green: 130/255, blue: 220/255, alpha: 1)
-        let bottomColor = UIColor(red: 230/255, green: 118/255, blue: 108/255, alpha: 1)
+        let topColor = UIColor(red: 87/255, green: 159/255, blue: 179/255, alpha: 1)
+        let middleColor = UIColor(red: 77/255, green: 77/255, blue: 77/255, alpha: 1)
+        let bottomColor = UIColor(red: 247/255, green: 89/255, blue: 89/255, alpha: 1)
         
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        let gradientLocations: [Float] = [0.0, 1.0]
+        let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]
+        let gradientLocations: [Float] = [0.0, 0.6, 1.0]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
@@ -28,8 +29,8 @@ extension CAGradientLayer {
     
     @objc func redColor() -> CAGradientLayer {
         
-        let topColor = UIColor(red: 230/255, green: 118/255, blue: 108/255, alpha: 1)
-        let bottomColor = UIColor(red: 88/255, green: 130/255, blue: 220/255, alpha: 1)
+        let topColor = UIColor(red: 222/255, green: 143/255, blue: 128/255, alpha: 1)
+        let bottomColor = UIColor(red: 152/255, green: 142/255, blue: 166/255, alpha: 1)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         let gradientLocations: [Float] = [0.0, 1.0]

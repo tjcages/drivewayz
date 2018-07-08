@@ -102,7 +102,7 @@ class AirbnbMainController: UITabBarController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return selectedViewController?.preferredStatusBarStyle ?? .default
+        return selectedViewController?.preferredStatusBarStyle ?? .lightContent
     }
     
     override var prefersStatusBarHidden: Bool {

@@ -30,10 +30,13 @@ class AirbnbDatePickerFooter: UIView {
     lazy var saveButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = Theme.SECONDARY_COLOR
+        btn.backgroundColor = Theme.PRIMARY_COLOR
         btn.setTitleColor(UIColor.white, for: .normal)
         btn.setTitle("Save", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.layer.borderColor = Theme.WHITE.cgColor
+        btn.layer.borderWidth = 2
+        btn.layer.cornerRadius = 15
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 24)
         btn.addTarget(self, action: #selector(AirbnbDatePickerFooter.handleSave), for: .touchUpInside)
         return btn
     }()

@@ -54,6 +54,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         textField.placeholder = "Enter message..."
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+//        let fixedWidth = textField.frame.size.width
+//        let newSize = textField.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+//        textField.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         return textField
     }()
     
@@ -61,7 +64,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UIApplication.shared.statusBarStyle = .lightContent
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView?.backgroundColor = UIColor.white
@@ -73,7 +76,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     lazy var inputContainerView: UIView = {
         let containerView = UIView()
-        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
+        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
         containerView.alpha = 1
         containerView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         
@@ -83,7 +86,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         uploadImage.isUserInteractionEnabled = true
         uploadImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleUploadTap)))
         containerView.addSubview(uploadImage)
-        //x,y,w,h
+
         uploadImage.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
         uploadImage.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         uploadImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
@@ -94,24 +97,24 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         containerView.addSubview(sendButton)
-        //x,y,w,h
+
         sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
         sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
         
         containerView.addSubview(self.inputTextField)
-        //x,y,w,h
-        self.inputTextField.leftAnchor.constraint(equalTo: uploadImage.rightAnchor, constant: 8).isActive = true
+
+        self.inputTextField.leftAnchor.constraint(equalTo: uploadImage.rightAnchor, constant: 16).isActive = true
         self.inputTextField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-        self.inputTextField.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
+        self.inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: 16).isActive = true
+        self.inputTextField.heightAnchor.constraint(equalTo: uploadImage.heightAnchor, constant: 8).isActive = true
         
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = UIColor.init(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
         separatorLineView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(separatorLineView)
-        //x,y,w,h
+
         separatorLineView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
         separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
@@ -192,9 +195,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     fileprivate func setupCell(cell: ChatMessageCell, message: Message) {
-        if let profileImageURL = self.user?.picture {
-           cell.profileImageView.loadImageUsingCacheWithUrlString(profileImageURL)
-        }
         
         if message.fromID == Auth.auth().currentUser?.uid {
             cell.bubbleView.backgroundColor = ChatMessageCell.blueColor

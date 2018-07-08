@@ -82,17 +82,20 @@ class AirbnbOccupantFilterController: UIViewController {
     var footerSeparator: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.SECONDARY_COLOR
+        view.backgroundColor = Theme.WHITE
         return view
     }()
     
     lazy var saveButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = Theme.SECONDARY_COLOR
+        btn.backgroundColor = Theme.PRIMARY_COLOR
+        btn.layer.borderColor = Theme.WHITE.cgColor
+        btn.layer.borderWidth = 2
+        btn.layer.cornerRadius = 15
         btn.setTitleColor(UIColor.white, for: .normal)
         btn.setTitle("Save", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 24)
         btn.addTarget(self, action: #selector(AirbnbOccupantFilterController.handleSave), for: .touchUpInside)
         return btn
     }()

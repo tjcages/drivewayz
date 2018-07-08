@@ -12,6 +12,17 @@ import MapKit
 class AirbnbMapController: UIViewController {
     
     let cellID = "cellID"
+    var headerViewHeightConstraint: NSLayoutConstraint?
+    
+    var minHeaderHeight: CGFloat {
+        return headerView.minHeaderHeight
+    }
+    var midHeaderHeight: CGFloat {
+        return headerView.midHeaderHeight
+    }
+    var maxHeaderHeight: CGFloat {
+        return headerView.maxHeaderHeight
+    }
     
     let locations = ["Oslo", "Stockholm", "Barcelona", "Madrid", "Copenhagen", "London", "Milan", "Rome", "Hamburg"]
     
@@ -25,10 +36,24 @@ class AirbnbMapController: UIViewController {
         return arr
     }()
     
-    var mapView: MKMapView = {
-        let view = MKMapView()
+    lazy var headerView: AirbnbMapExploreHeaderView = {
+        let view = AirbnbMapExploreHeaderView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = AirbnbExploreController()
+        view.pageTabDelegate = self as? AirbnbExploreHeaderViewDelegate
         return view
+    }()
+    
+    var mapView: MKMapView = {
+        let mapView = MKMapView()
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.backgroundColor = UIColor.white
+        mapView.layer.masksToBounds = false
+        mapView.layer.shadowColor = UIColor.darkGray.cgColor
+        mapView.layer.shadowOpacity = 4
+        mapView.layer.shadowOffset = CGSize.zero
+        mapView.layer.shadowRadius = 5
+        return mapView
     }()
     
     lazy var thumbnailCollectionView: UICollectionView = {
@@ -49,7 +74,7 @@ class AirbnbMapController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UIApplication.shared.statusBarStyle = .lightContent
         view.addSubview(thumbnailCollectionView)
         
         thumbnailCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -57,12 +82,40 @@ class AirbnbMapController: UIViewController {
         thumbnailCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         thumbnailCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         
+        view.addSubview(headerView)
+        
+        headerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        headerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        headerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        
         view.addSubview(mapView)
         
-        mapView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: thumbnailCollectionView.topAnchor).isActive = true
+        mapView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: thumbnailCollectionView.topAnchor, constant: -10).isActive = true
         mapView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        mapView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        mapView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20).isActive = true
+    
+    }
+    
+    func didCollapseHeader(completion: (() -> Void)?) {
+        view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.2, animations: {
+            let oldHeight = self.headerView.frame.size.height
+            self.headerViewHeightConstraint?.constant = self.midHeaderHeight
+            self.headerView.updateHeader(newHeight: self.midHeaderHeight, offset: self.midHeaderHeight - oldHeight)
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func didExpandHeader(completion: (() -> Void)?) {
+        view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.2, animations: {
+            let oldHeight = self.headerView.frame.size.height
+            self.headerViewHeightConstraint?.constant = self.maxHeaderHeight
+            self.headerView.updateHeader(newHeight: self.maxHeaderHeight, offset: self.maxHeaderHeight - oldHeight)
+            self.view.layoutIfNeeded()
+        })
     }
     
 }

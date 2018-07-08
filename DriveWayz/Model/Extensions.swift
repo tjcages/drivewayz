@@ -50,16 +50,16 @@ extension UIImageView {
         }
     }
     
-//    func fetchUserAndSetup() {
-//        guard let uid = Auth.auth().currentUser?.uid else {
-//            return
-//        }
-//        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//            if let dictionary = snapshot.value as? [String:AnyObject] {
-//                let userName = dictionary["name"] as? String
-//                let userEmail = dictionary["email"] as? String
-//                let userPicture = dictionary["picture"] as? String
-//            }
-//        }, withCancel: nil)
-//    }
+    //    func fetchUserAndSetup() {
+    //        guard let uid = Auth.auth().currentUser?.uid else {
+    //            return
+    //        }
+    //        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+    //            if let dictionary = snapshot.value as? [String:AnyObject] {
+    //                let userName = dictionary["name"] as? String
+    //                let userEmail = dictionary["email"] as? String
+    //                let userPicture = dictionary["picture"] as? String
+    //            }
+    //        }, withCancel: nil)
+    //    }
 }

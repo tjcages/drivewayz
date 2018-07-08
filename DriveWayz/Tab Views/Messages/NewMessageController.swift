@@ -1,5 +1,5 @@
 //
-//  NewMessageTableViewController.swift
+//  NewMessageController.swift
 //  CollegeFeed
 //
 //  Created by Tyler Jordan Cagle on 7/21/17.
@@ -17,7 +17,7 @@ class NewMessageController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.backgroundColor = Theme.OFF_WHITE
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
@@ -29,11 +29,15 @@ class NewMessageController: UITableViewController {
     func fetchUser() {
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
-            if let dictionary = snapshot.value as? [String: AnyObject] {
+            if (snapshot.value as? [String: AnyObject]) != nil {
                 let user = Users()
                 user.id = snapshot.key
                 
-                user.setValuesForKeys(dictionary)
+                user.name = snapshot.childSnapshot(forPath: "name").value as? String
+                user.picture = snapshot.childSnapshot(forPath: "picture").value as? String
+                user.email = snapshot.childSnapshot(forPath: "email").value as? String
+                user.bio = snapshot.childSnapshot(forPath: "bio").value as? String
+//                user.setValuesForKeys(dictionary)
                 self.users.append(user)
                 
                 DispatchQueue.main.async(execute: {

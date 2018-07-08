@@ -54,7 +54,7 @@ class AirbnbDatePickerCell: BaseCell {
             dateLabel.layer.borderWidth = 1
             dateLabel.layer.backgroundColor = UIColor.white.cgColor
             dateLabel.layer.mask = nil
-            dateLabel.textColor = Theme.SECONDARY_COLOR
+            dateLabel.textColor = Theme.PRIMARY_COLOR
             
             if type.contains(.SelectedStartDate) {
                 let side = frame.size.width / 2
@@ -81,12 +81,12 @@ class AirbnbDatePickerCell: BaseCell {
             dateLabel.layer.borderWidth = 0
             dateLabel.layer.backgroundColor = UIColor.clear.cgColor
             dateLabel.layer.mask = nil
-            dateLabel.textColor = Theme.SECONDARY_COLOR
+            dateLabel.textColor = Theme.WHITE
 
         } else if type.contains(.Today) {
             
             dateLabel.layer.cornerRadius = self.frame.size.width / 2
-            dateLabel.layer.borderColor = Theme.SECONDARY_COLOR.cgColor
+            dateLabel.layer.borderColor = Theme.WHITE.cgColor
             dateLabel.layer.borderWidth = 1
             dateLabel.layer.backgroundColor = UIColor.clear.cgColor
             dateLabel.layer.mask = nil

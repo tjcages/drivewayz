@@ -30,7 +30,7 @@ class HighlightingButton: UIButton {
 
 class BuyButton: HighlightingButton {
     var disabledColor = UIColor.lightGray
-    var enabledColor = UIColor(red:0.22, green:0.65, blue:0.91, alpha:1.00)
+    var enabledColor = Theme.PRIMARY_COLOR
 
     override var isEnabled: Bool {
         didSet {
@@ -47,7 +47,7 @@ class BuyButton: HighlightingButton {
         self.layer.cornerRadius = 10
         self.setTitle("Buy", for: UIControlState())
         self.disabledColor = theme.secondaryForegroundColor
-        self.enabledColor = theme.accentColor
+        self.enabledColor = Theme.PRIMARY_COLOR
         self.isEnabled = enabled
     }
 }

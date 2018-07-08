@@ -28,6 +28,23 @@ class UserCell: UITableViewCell {
         }
     }
     
+    var parking: ParkingSpots? {
+        didSet {
+            
+            setUpParkingSpot()
+            
+            detailTextLabel?.text = parking?.parkingCost
+            
+            if let seconds = parking?.timestamp?.doubleValue {
+                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm a"
+                timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+            }
+        }
+    }
+    
     private func setUpNameAndProfileImage() {
         
         if let ID = message?.chatPartnerID() {
@@ -44,8 +61,15 @@ class UserCell: UITableViewCell {
         }
     }
     
+    private func setUpParkingSpot() {
+        
+            textLabel?.text = parking?.parkingCost
+        
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.backgroundColor = Theme.OFF_WHITE
         
         textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
         

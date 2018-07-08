@@ -8,7 +8,7 @@
 
 import UIKit
 import AirbnbDatePicker
-import AirbnbOccupantFilter
+//import AirbnbOccupantFilter
 
 protocol AirbnbExploreHeaderViewDelegate {
     func didSelect(viewController: UIViewController, completion: (() -> Void)?)
@@ -28,7 +28,7 @@ class AirbnbExploreHeaderView: UIView {
         didSet {
             //destinationFilter.delegate = delegate
             datePicker.delegate = delegate
-            guestFilter.delegate = delegate
+//            guestFilter.delegate = delegate
         }
     }
     
@@ -58,7 +58,7 @@ class AirbnbExploreHeaderView: UIView {
     }
     let pageTabHeight: CGFloat = 50
     
-    let headerInputHeight: CGFloat = 50
+    let headerInputHeight: CGFloat = 0
     
     var minHeaderHeight: CGFloat {
         return 20 // status bar
@@ -74,7 +74,7 @@ class AirbnbExploreHeaderView: UIView {
             + 50 // collapse button
             + 50 + 10 // input 1 + spacing
             + 50 + 10 // input 2 + spacing
-            + 50 // input 3
+//            + 50 // input 3
             + 50 // page tabs
     }
     
@@ -94,6 +94,15 @@ class AirbnbExploreHeaderView: UIView {
         return button
     }()
     
+    lazy var driveWayz: UIImageView = {
+        let image = UIImage(named: "DriveWayz")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
     var destinationFilterTopConstraint: NSLayoutConstraint?
     
     lazy var summaryFilter: UIButton = {
@@ -109,7 +118,7 @@ class AirbnbExploreHeaderView: UIView {
         btn.setImage(img, for: .normal)
         btn.imageView?.contentMode = .scaleAspectFit
         
-        btn.setTitle("Anywhere • Anytime • 1 guest", for: .normal)
+        btn.setTitle("Anywhere • Anytime • 1 car", for: .normal)
         btn.setTitleColor(UIColor.white, for: .normal)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         btn.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
@@ -140,18 +149,18 @@ class AirbnbExploreHeaderView: UIView {
     lazy var datePicker: AirbnbDatePicker = {
         let input = AirbnbDatePicker()
         input.translatesAutoresizingMaskIntoConstraints = false
-        input.dateInputButton.backgroundColor = Theme.INPUT_COLOR
+        input.dateInputButton.backgroundColor = Theme.PRIMARY_COLOR
         input.delegate = self.delegate
         return input
     }()
     
-    lazy var guestFilter: AirbnbOccupantFilter = {
-        let input = AirbnbOccupantFilter()
-        input.translatesAutoresizingMaskIntoConstraints = false
-        input.occupantInputButton.backgroundColor = Theme.INPUT_COLOR
-        input.delegate = self.delegate
-        return input
-    }()
+//    lazy var guestFilter: AirbnbOccupantFilter = {
+//        let input = AirbnbOccupantFilter()
+//        input.translatesAutoresizingMaskIntoConstraints = false
+//        input.occupantInputButton.backgroundColor = Theme.PRIMARY_COLOR
+//        input.delegate = self.delegate
+//        return input
+//    }()
     
     var pagerView: AirbnbPageTabNavigationView = {
         let view = AirbnbPageTabNavigationView()
@@ -181,6 +190,13 @@ class AirbnbExploreHeaderView: UIView {
         collapseButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         collapseButton.widthAnchor.constraint(equalToConstant: collapseButtonHeight).isActive = true
         
+        addSubview(driveWayz)
+        
+        driveWayz.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        driveWayz.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        driveWayz.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        driveWayz.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
         addSubview(destinationFilter)
         
         destinationFilter.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -204,12 +220,12 @@ class AirbnbExploreHeaderView: UIView {
         datePicker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         datePicker.widthAnchor.constraint(equalTo: widthAnchor, constant: -20).isActive = true
         
-        addSubview(guestFilter)
-        
-        guestFilter.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        guestFilter.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 10).isActive = true
-        guestFilter.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        guestFilter.widthAnchor.constraint(equalTo: widthAnchor, constant: -20).isActive = true
+//        addSubview(guestFilter)
+//
+//        guestFilter.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        guestFilter.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 10).isActive = true
+//        guestFilter.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+//        guestFilter.widthAnchor.constraint(equalTo: widthAnchor, constant: -20).isActive = true
         
         addSubview(whiteOverlayView)
         
@@ -248,19 +264,21 @@ class AirbnbExploreHeaderView: UIView {
         let midMaxPercentage = (newHeight - midHeaderHeight) / (maxHeaderHeight - midHeaderHeight)
         datePicker.alpha = midMaxPercentage
         
-        var datePickerPercentage3 = (headerBottom - guestFilter.frame.origin.y) / guestFilter.frame.height
+//        var datePickerPercentage3 = (headerBottom - guestFilter.frame.origin.y) / guestFilter.frame.height
+        var datePickerPercentage3 = (headerBottom - 50) / 50
         datePickerPercentage3 = max(0, min(1, datePickerPercentage3)) // capped between 0 and 1
-        guestFilter.alpha = datePickerPercentage3
-        
+//        guestFilter.alpha = datePickerPercentage3
+        destinationFilter.alpha = datePickerPercentage3
         collapseButton.alpha = datePickerPercentage3
     
-        var collapseButtonTopSpacingPercentage = (headerBottom - destinationFilter.frame.origin.y) / (guestFilter.frame.origin.y + guestFilter.frame.height - destinationFilter.frame.origin.y)
+//        var collapseButtonTopSpacingPercentage = (headerBottom - destinationFilter.frame.origin.y) / (guestFilter.frame.origin.y + guestFilter.frame.height - destinationFilter.frame.origin.y)
+        var collapseButtonTopSpacingPercentage = (headerBottom - destinationFilter.frame.origin.y) / 50
         collapseButtonTopSpacingPercentage = max(0, min(1, collapseButtonTopSpacingPercentage))
         collapseButtonTopConstraint?.constant = collapseButtonTopSpacingPercentage * collapseButtonMaxTopSpacing
         
-        summaryFilter.setTitle("\(destinationFilter.titleLabel!.text!) • \(datePicker.dateInputButton.titleLabel!.text!) • \(guestFilter.occupantInputButton.titleLabel!.text!)", for: .normal)
-        
-        if newHeight > midHeaderHeight {
+//        summaryFilter.setTitle("\(destinationFilter.titleLabel!.text!) • \(datePicker.dateInputButton.titleLabel!.text!) • \(guestFilter.occupantInputButton.titleLabel!.text!)", for: .normal)
+        summaryFilter.setTitle("\(destinationFilter.titleLabel!.text!) • \(datePicker.dateInputButton.titleLabel!.text!) • 1 car", for: .normal)
+        if newHeight > midHeaderHeight + 10{
             destinationFilter.alpha = collapseButtonTopSpacingPercentage
             destinationFilterTopConstraint?.constant = max(UIApplication.shared.statusBarFrame.height + 10,collapseButtonTopSpacingPercentage * (collapseButtonHeight + collapseButtonMaxTopSpacing + 10))
             summaryFilter.alpha = 1 - collapseButtonTopSpacingPercentage
@@ -270,16 +288,16 @@ class AirbnbExploreHeaderView: UIView {
             pagerView.titleColor = UIColor.white
             pagerView.selectedTitleColor = UIColor.white
             
-        } else if newHeight == midHeaderHeight {
-            destinationFilterTopConstraint?.constant = UIApplication.shared.statusBarFrame.height + 10
-            destinationFilter.alpha = 0
-            summaryFilter.alpha = 1
-            whiteOverlayView.alpha = 0
-            
-            pagerView.backgroundColor = Theme.PRIMARY_DARK_COLOR
-            pagerView.titleColor = UIColor.white
-            pagerView.selectedTitleColor = UIColor.white
-            
+//        } else if newHeight == midHeaderHeight {
+//            destinationFilterTopConstraint?.constant = UIApplication.shared.statusBarFrame.height + 10
+//            destinationFilter.alpha = 0
+//            summaryFilter.alpha = 1
+//            whiteOverlayView.alpha = 0
+//
+//            pagerView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+//            pagerView.titleColor = UIColor.white
+//            pagerView.selectedTitleColor = UIColor.white
+//
         } else {
             destinationFilterTopConstraint?.constant = destinationFilterTopConstraint!.constant - offset
             let minMidPercentage = (newHeight - minHeaderHeight) / (midHeaderHeight - minHeaderHeight)
@@ -293,11 +311,11 @@ class AirbnbExploreHeaderView: UIView {
         }
     }
     
-    func handleCollapse() {
+    @objc func handleCollapse() {
         pageTabDelegate?.didCollapseHeader(completion: nil)
     }
     
-    func handleExpand() {
+    @objc func handleExpand() {
         pageTabDelegate?.didExpandHeader(completion: nil)
     }
 }

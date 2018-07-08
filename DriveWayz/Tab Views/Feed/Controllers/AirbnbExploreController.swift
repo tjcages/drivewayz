@@ -100,7 +100,7 @@ class AirbnbExploreController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPageController?.preferredStatusBarStyle ?? .default
+        return currentPageController?.preferredStatusBarStyle ?? .lightContent
     }
     
     override var prefersStatusBarHidden: Bool {

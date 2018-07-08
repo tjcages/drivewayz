@@ -86,11 +86,10 @@ class BrowseProductsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let product = Array(self.productsAndPrices.keys)[(indexPath as NSIndexPath).row]
+        let product = "Parking"
         let price = self.productsAndPrices[product]!
         let checkoutViewController = CheckoutViewController(product: product,
-                                                            price: price,
-                                                            settings: self.settingsVC.settings)
+                                                            price: price, hours: 0)
         self.navigationController?.pushViewController(checkoutViewController, animated: true)
     }
 }
