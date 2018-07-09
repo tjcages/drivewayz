@@ -96,10 +96,16 @@
 		4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492820F018D300F00B3B /* CheckoutViewController.swift */; };
 		4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492920F018D300F00B3B /* MyAPIClient.swift */; };
 		4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492A20F018D400F00B3B /* SettingsViewController.swift */; };
-		4DCA493120F018D500F00B3B /* BrowseProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492B20F018D500F00B3B /* BrowseProductsViewController.swift */; };
 		4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */; };
 		4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */; };
+		4DD370AB20F18EBE005154C2 /* FiveStarRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370AA20F18EBE005154C2 /* FiveStarRating.swift */; };
+		4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */; };
+		4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */; };
+		4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */; };
+		4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */; };
 		4DE3B67A20CF54EA00D408E3 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE3B67920CF54EA00D408E3 /* CircularTransition.swift */; };
+		4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */; };
+		4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -192,11 +198,18 @@
 		4DCA492820F018D300F00B3B /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		4DCA492920F018D300F00B3B /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		4DCA492A20F018D400F00B3B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		4DCA492B20F018D500F00B3B /* BrowseProductsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseProductsViewController.swift; sourceTree = "<group>"; };
 		4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicles.swift; sourceTree = "<group>"; };
+		4DD370AA20F18EBE005154C2 /* FiveStarRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveStarRating.swift; sourceTree = "<group>"; };
+		4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingInfoViewController.swift; sourceTree = "<group>"; };
+		4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingAvailabilityViewController.swift; sourceTree = "<group>"; };
+		4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReviewsViewController.swift; sourceTree = "<group>"; };
+		4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "drivewayz-Bridging-Header.h"; sourceTree = "<group>"; };
+		4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataChartsViewController.swift; sourceTree = "<group>"; };
 		4DE2D6AE20CCAB2000A07A37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Info.plist; sourceTree = "<absolute>"; };
 		4DE3B67920CF54EA00D408E3 /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
+		4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVehicleViewController.swift; sourceTree = "<group>"; };
+		4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserParkingViewController.swift; sourceTree = "<group>"; };
 		A0713549ABE0DF68B5391F60 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DC18D2CA7016707159A910 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
 		CF7ED98441A81D70E5145026 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
@@ -247,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */,
+				4DCA492520F0186700F00B3B /* Stripe */,
 				4D21D33420CCA0B3002D7005 /* Model */,
 				4D21D33520CCA0D7002D7005 /* View */,
 				4D21D33620CCA111002D7005 /* Enter Views */,
@@ -262,7 +276,6 @@
 		4D21D33420CCA0B3002D7005 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4DCA492520F0186700F00B3B /* Stripe */,
 				4D21D2EC20CC9FF9002D7005 /* Users.swift */,
 				4D21D2F020CC9FF9002D7005 /* Message.swift */,
 				4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */,
@@ -279,6 +292,7 @@
 			children = (
 				4D21D2F320CC9FF9002D7005 /* UserCell.swift */,
 				4D21D30A20CC9FF9002D7005 /* ChatMessageCell.swift */,
+				4DD370AA20F18EBE005154C2 /* FiveStarRating.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -322,6 +336,9 @@
 			isa = PBXGroup;
 			children = (
 				4D21D30B20CC9FF9002D7005 /* AccountViewController.swift */,
+				4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */,
+				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
+				4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */,
 				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
 			);
 			path = Account;
@@ -371,6 +388,9 @@
 				4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */,
 				4D53F9A920D97EEE00A1C1FA /* ParkingPreviewView.swift */,
 				4D53F9AB20D9837400A1C1FA /* ParkingDetailsViewController.swift */,
+				4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */,
+				4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */,
+				4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -466,7 +486,6 @@
 		4DCA492520F0186700F00B3B /* Stripe */ = {
 			isa = PBXGroup;
 			children = (
-				4DCA492B20F018D500F00B3B /* BrowseProductsViewController.swift */,
 				4DCA492720F018D200F00B3B /* Buttons.swift */,
 				4DCA492620F018D200F00B3B /* CheckoutRowView.swift */,
 				4DCA492820F018D300F00B3B /* CheckoutViewController.swift */,
@@ -480,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				4D21D2F120CC9FF9002D7005 /* Assets.xcassets */,
+				4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */,
 				4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */,
 			);
 			path = Assets;
@@ -618,6 +638,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AirbnbDatePicker/AirbnbDatePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -630,6 +651,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AirbnbDatePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -656,7 +678,9 @@
 				4D21D31320CC9FF9002D7005 /* Users.swift in Sources */,
 				4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */,
 				4D6A5AA120CD97DF00F404A7 /* AirbnbMapItemCell.swift in Sources */,
+				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
+				4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */,
 				4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */,
 				4D6A5A7620CD976C00F404A7 /* AirbnbContentCategory.swift in Sources */,
 				4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */,
@@ -666,6 +690,7 @@
 				4DC4B9FA20CDA5AD004FFBCE /* AirbnbDatePicker.swift in Sources */,
 				4D6A5AA520CD97DF00F404A7 /* AirbnbStar.swift in Sources */,
 				4DC4BA0420CE08E3004FFBCE /* AirbnbMapExploreHeaderView.swift in Sources */,
+				4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */,
 				4DC4B9F620CDA5AD004FFBCE /* AirbnbDatePickerFlowLayout.swift in Sources */,
 				4D6A5AAE20CD97DF00F404A7 /* BaseTableCell.swift in Sources */,
 				4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */,
@@ -681,6 +706,7 @@
 				4DC4B9FE20CDA5AD004FFBCE /* AirbnbDatePickerMonthHeader.swift in Sources */,
 				4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */,
 				4D6A5A7E20CD978300F404A7 /* UIColor.swift in Sources */,
+				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
 				4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */,
 				4D21D31420CC9FF9002D7005 /* bro in Sources */,
 				4D6A5A7D20CD978300F404A7 /* UIImage.swift in Sources */,
@@ -699,7 +725,6 @@
 				4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */,
 				4D6A5A9020CD97C900F404A7 /* ImageShrinkAnimationController.swift in Sources */,
 				4D21D32D20CC9FF9002D7005 /* ChatMessageCell.swift in Sources */,
-				4DCA493120F018D500F00B3B /* BrowseProductsViewController.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
 				4DC4B9F820CDA5AD004FFBCE /* AirbnbDatePickerCell.swift in Sources */,
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
@@ -718,8 +743,10 @@
 				4D6A5A7420CD976C00F404A7 /* AirbnbContentThumbnail.swift in Sources */,
 				4D21D31720CC9FF9002D7005 /* Message.swift in Sources */,
 				4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */,
+				4DD370AB20F18EBE005154C2 /* FiveStarRating.swift in Sources */,
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
 				4D21D32E20CC9FF9002D7005 /* AccountViewController.swift in Sources */,
+				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
 				4D6A5AAA20CD97DF00F404A7 /* AirbnbHomeItemTableCell.swift in Sources */,
 				4D41B21920CCA8F3002802A9 /* NewMessageController.swift in Sources */,
 				4D6A5AAD20CD97DF00F404A7 /* AirbnbExploreHeaderView.swift in Sources */,
@@ -732,6 +759,7 @@
 				4D21D33220CC9FF9002D7005 /* RegisterViewController.swift in Sources */,
 				4D6A5A8A20CD97C900F404A7 /* AirbnbExploreHomeController.swift in Sources */,
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
+				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -887,6 +915,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.coappdesign.drivewayz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -907,6 +936,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.coappdesign.drivewayz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

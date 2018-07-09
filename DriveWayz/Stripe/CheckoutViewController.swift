@@ -8,8 +8,11 @@
 
 import UIKit
 import Stripe
+import Firebase
 
 class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
+    
+    var count: Int = 0
     
     let exitButton: UIImage = {
         let exitButton = UIImageView()
@@ -52,8 +55,11 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     let costImage = UILabel()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     let numberFormatter: NumberFormatter
-    var product = ""
-    var hours = 0
+    var product: String = ""
+    var hours: Int = 0
+    var id: String = ""
+    var cost: Int = 0
+    var parkingId: String = ""
     var paymentInProgress: Bool = false {
         didSet {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
@@ -71,7 +77,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         }
     }
 
-    init(product: String, price: Int, hours: Int) {
+    init(product: String, price: Int, hours: Int, ID: String, parkingID: String) {
 
         let stripePublishableKey = self.stripePublishableKey
         let backendBaseURL = self.backendBaseURL
@@ -82,11 +88,14 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.product = product
         self.hours = hours
         self.productImage.text = product
+        self.id = ID
+        self.parkingId = parkingID
         
         let stringPrice = String(price / hours)
         var reversed = String(stringPrice.reversed())
         reversed.insert(".", at: stringPrice.index(reversed.startIndex, offsetBy: 2))
         let singleCost = String(reversed.reversed())
+        cost = Int(Double(singleCost)! * Double(hours))
         
         self.costImage.text = "$\(singleCost)/hour for \(hours) hour(s)"
         
@@ -176,7 +185,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             insets = view.safeAreaInsets
         }
         let width = self.view.bounds.width - (insets.left + insets.right)
-        self.productImage.sizeToFit()
+        self.productImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: 50)
         self.productImage.center = CGPoint(x: width/2.0,
                                            y: self.productImage.bounds.height/2.0 + rowHeight + 20)
         self.costImage.sizeToFit()
@@ -213,6 +222,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             message = error?.localizedDescription ?? ""
             completed = false
         case .success:
+            self.updateUserProfile()
             title = "Success"
             message = "You bought parking in\(self.product) for \(self.hours) hours!"
             completed = true
@@ -236,6 +246,40 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func updateUserProfile() {
+        
+        let currentUser = Auth.auth().currentUser?.uid
+        let timestamp = NSDate().timeIntervalSince1970
+        let userRef = Database.database().reference().child("users").child(currentUser!).child("recentParking").child(parkingId)
+        userRef.updateChildValues(["timestamp": timestamp, "cost": self.cost, "hours": self.hours])
+    
+        let paymentRef = Database.database().reference().child("users").child(id).child("payments")
+        let currentRef = Database.database().reference().child("users").child(id)
+        currentRef.observeSingleEvent(of: .value) { (current) in
+            let dictionary = current.value as? [String:AnyObject]
+            var currentFunds = dictionary!["userFunds"] as? Int
+            if currentFunds != nil {} else {currentFunds = 0}
+            paymentRef.observeSingleEvent(of: .value) { (snapshot) in
+                self.count =  Int(snapshot.childrenCount)
+                let payRef = paymentRef.child("\(self.count)")
+                let newFunds = currentFunds! + self.cost
+                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": self.hours, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
+            }
+        }
+        let fundRef = Database.database().reference().child("users").child(id)
+        fundRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if var dictionary = snapshot.value as? [String:AnyObject] {
+                
+                if let previousFunds = dictionary["userFunds"] {
+                    let funds = Int(truncating: previousFunds as! NSNumber) + self.cost
+                    fundRef.updateChildValues(["userFunds": funds])
+                } else {
+                    fundRef.updateChildValues(["userFunds": self.cost])
+                }
+            }
+        }, withCancel: nil)
     }
 
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {

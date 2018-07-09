@@ -9,62 +9,96 @@
 import UIKit
 import Firebase
 
-class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
+var parkingAddress: String?
+var parkingDistances: String?
+var imageURL: String?
+var parkingCost: String?
+var formattedLocation: String?
+var hours: Int?
+var timestamps: NSNumber?
+var ids: String?
+var parkingIDs: String?
+
+var Monday: Int?
+var Tuesday: Int?
+var Wednesday: Int?
+var Thursday: Int?
+var Friday: Int?
+var Saturday: Int?
+var Sunday: Int?
+
+var MondayFrom: String?
+var MondayTo: String?
+var TuesdayFrom: String?
+var TuesdayTo: String?
+var WednesdayFrom: String?
+var WednesdayTo: String?
+var ThursdayFrom: String?
+var ThursdayTo: String?
+var FridayFrom: String?
+var FridayTo: String?
+var SaturdayFrom: String?
+var SaturdayTo: String?
+var SundayFrom: String?
+var SundayTo: String?
+
+class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    var cityAddress: String?
-    var parkingDistance: String?
-    var imageURL: String?
-    var parkingCost: String?
-    var formattedAddress: String?
-    var hours: Int?
-    var timestamp: NSNumber?
-    var id: String?
-    var parkingID: String?
+    var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.white
+        return view
+    }()
     
-    var Monday: Int?
-    var Tuesday: Int?
-    var Wednesday: Int?
-    var Thursday: Int?
-    var Friday: Int?
-    var Saturday: Int?
-    var Sunday: Int?
+    lazy var infoController: ParkingInfoViewController = {
+        let controller = ParkingInfoViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Info"
+        return controller
+    }()
     
-    var MondayFrom: String?
-    var MondayTo: String?
-    var TuesdayFrom: String?
-    var TuesdayTo: String?
-    var WednesdayFrom: String?
-    var WednesdayTo: String?
-    var ThursdayFrom: String?
-    var ThursdayTo: String?
-    var FridayFrom: String?
-    var FridayTo: String?
-    var SaturdayFrom: String?
-    var SaturdayTo: String?
-    var SundayFrom: String?
-    var SundayTo: String?
+    lazy var availabilityController: ParkingAvailabilityViewController = {
+        let controller = ParkingAvailabilityViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Availability"
+        return controller
+    }()
     
+    lazy var reviewsController: ParkingReviewsViewController = {
+        let controller = ParkingReviewsViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Reviews"
+        return controller
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.isHidden = true
+
+        hoursView.delegate = self
+        hoursView.dataSource = self
         
-        collectAvailiability()
         setupViews()
+        setupViewControllers()
+        setupSegments()
     }
     
     func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
-        labelTitle.text = cityAddress
-        self.cityAddress = cityAddress
-        self.parkingDistance = parkingDistance
+        labelTitle.text = "Parking in \(cityAddress)"
+        parkingAddress = cityAddress
+        parkingDistances = parkingDistance
         labelDistance.text = "\(parkingDistance) miles"
         imageView.loadImageUsingCacheWithUrlString(imageURL)
         labelCost.text = parkingCost
-        self.formattedAddress = formattedAddress
-        self.timestamp = timestamp
-        self.id = id
-        self.parkingID = parkingID
+        formattedLocation = formattedAddress
+        timestamps = timestamp
+        ids = id
+        parkingIDs = parkingID
     }
     
     var parkingViewTopAnchor: NSLayoutConstraint!
@@ -73,317 +107,221 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
     func setupViews() {
         let statusHeight = UIApplication.shared.statusBarFrame.height
         myScrollView.delegate = self
-        
+
         self.view.addSubview(myScrollView)
         myScrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -statusHeight).isActive = true
         myScrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         myScrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         myScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        myScrollView.contentSize.height = 1200
+        myScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
         
-        myScrollView.addSubview(containerView)
-        containerView.centerXAnchor.constraint(equalTo: myScrollView.centerXAnchor).isActive = true
-        containerView.topAnchor.constraint(equalTo: myScrollView.topAnchor).isActive = true
-        containerView.widthAnchor.constraint(equalTo: myScrollView.widthAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        containerView.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        imageView.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
+        myScrollView.addSubview(imageView)
+        imageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: myScrollView.topAnchor).isActive = true
+        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 240).isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.leftAnchor.constraint(equalTo: imageView.leftAnchor, constant: 4).isActive = true
-        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16).isActive = true
+        exitButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 16).isActive = true
         exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        containerView.addSubview(parkingView)
-        parkingView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        parkingView.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        parkingViewTopAnchor = parkingView.topAnchor.constraint(equalTo: imageView.bottomAnchor)
-        parkingViewTopAnchor.isActive = true
-        parkingView.heightAnchor.constraint(equalToConstant: 145).isActive = true
-        
-        parkingView.addSubview(labelTitle)
-        titleLeftAnchor = labelTitle.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 15)
-        titleLeftAnchor.isActive = true
-        labelTitle.topAnchor.constraint(equalTo: parkingView.topAnchor, constant: 20).isActive = true
-        labelTitle.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -15).isActive = true
-        labelTitle.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        parkingView.addSubview(labelDistance)
-        labelDistance.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelDistance.topAnchor.constraint(equalTo: labelTitle.bottomAnchor).isActive = true
-        labelDistance.leftAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelDistance.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        parkingView.addSubview(labelCost)
-        labelCost.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelCost.topAnchor.constraint(equalTo: labelDistance.bottomAnchor).isActive = true
-        labelCost.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelCost.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(labelDescription)
-        labelDescription.leftAnchor.constraint(equalTo: parkingView.leftAnchor, constant: 20).isActive = true
-        labelDescription.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 380).isActive = true
-        labelDescription.rightAnchor.constraint(equalTo: parkingView.rightAnchor, constant: -20).isActive = true
-        labelDescription.text = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\""
-        labelDescription.sizeToFit()
-        
-        containerView.addSubview(labelAvailability)
-        labelAvailability.leftAnchor.constraint(equalTo: parkingView.leftAnchor, constant: 8).isActive = true
-        labelAvailability.topAnchor.constraint(equalTo: labelDescription.bottomAnchor, constant: 8).isActive = true
-        labelAvailability.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelAvailability.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(mondayButton)
-        mondayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        mondayButton.topAnchor.constraint(equalTo: labelAvailability.bottomAnchor, constant: 4).isActive = true
-        mondayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        mondayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(mondayLabel)
-        mondayLabel.leftAnchor.constraint(equalTo: mondayButton.rightAnchor, constant: 8).isActive = true
-        mondayLabel.centerYAnchor.constraint(equalTo: mondayButton.centerYAnchor).isActive = true
-        mondayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        mondayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(tuesdayButton)
-        tuesdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        tuesdayButton.topAnchor.constraint(equalTo: mondayButton.bottomAnchor, constant: 2).isActive = true
-        tuesdayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        tuesdayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(tuesdayLabel)
-        tuesdayLabel.leftAnchor.constraint(equalTo: tuesdayButton.rightAnchor, constant: 8).isActive = true
-        tuesdayLabel.centerYAnchor.constraint(equalTo: tuesdayButton.centerYAnchor).isActive = true
-        tuesdayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        tuesdayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(wednesdayButton)
-        wednesdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        wednesdayButton.topAnchor.constraint(equalTo: tuesdayButton.bottomAnchor, constant: 2).isActive = true
-        wednesdayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        wednesdayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(wednesdayLabel)
-        wednesdayLabel.leftAnchor.constraint(equalTo: wednesdayButton.rightAnchor, constant: 8).isActive = true
-        wednesdayLabel.centerYAnchor.constraint(equalTo: wednesdayButton.centerYAnchor).isActive = true
-        wednesdayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        wednesdayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(thursdayButton)
-        thursdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        thursdayButton.topAnchor.constraint(equalTo: wednesdayButton.bottomAnchor, constant: 2).isActive = true
-        thursdayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        thursdayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(thursdayLabel)
-        thursdayLabel.leftAnchor.constraint(equalTo: thursdayButton.rightAnchor, constant: 8).isActive = true
-        thursdayLabel.centerYAnchor.constraint(equalTo: thursdayButton.centerYAnchor).isActive = true
-        thursdayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        thursdayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(fridayButton)
-        fridayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        fridayButton.topAnchor.constraint(equalTo: thursdayButton.bottomAnchor, constant: 2).isActive = true
-        fridayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        fridayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(fridayLabel)
-        fridayLabel.leftAnchor.constraint(equalTo: fridayButton.rightAnchor, constant: 8).isActive = true
-        fridayLabel.centerYAnchor.constraint(equalTo: fridayButton.centerYAnchor).isActive = true
-        fridayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        fridayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(saturdayButton)
-        saturdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        saturdayButton.topAnchor.constraint(equalTo: fridayButton.bottomAnchor, constant: 2).isActive = true
-        saturdayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        saturdayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(saturdayLabel)
-        saturdayLabel.leftAnchor.constraint(equalTo: saturdayButton.rightAnchor, constant: 8).isActive = true
-        saturdayLabel.centerYAnchor.constraint(equalTo: saturdayButton.centerYAnchor).isActive = true
-        saturdayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        saturdayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(sundayButton)
-        sundayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        sundayButton.topAnchor.constraint(equalTo: saturdayButton.bottomAnchor, constant: 2).isActive = true
-        sundayButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        sundayButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(sundayLabel)
-        sundayLabel.leftAnchor.constraint(equalTo: sundayButton.rightAnchor, constant: 8).isActive = true
-        sundayLabel.centerYAnchor.constraint(equalTo: sundayButton.centerYAnchor).isActive = true
-        sundayLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        sundayLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(labelReserve)
-        labelReserve.leftAnchor.constraint(equalTo: parkingView.leftAnchor, constant: 8).isActive = true
-        labelReserve.topAnchor.constraint(equalTo: sundayLabel.bottomAnchor, constant: 20).isActive = true
-        labelReserve.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelReserve.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        containerView.addSubview(hourLabel)
-        hourLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        hourLabel.topAnchor.constraint(equalTo: labelReserve.bottomAnchor, constant: 4).isActive = true
-        hourLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        hourLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        containerView.addSubview(hourSlider)
-        hourSlider.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        hourSlider.topAnchor.constraint(equalTo: hourLabel.bottomAnchor, constant: 2).isActive = true
-        hourSlider.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        hourSlider.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        containerView.addSubview(saveReservationButton)
-        saveReservationButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        saveReservationButton.topAnchor.constraint(equalTo: hourSlider.bottomAnchor, constant: 50).isActive = true
-        saveReservationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        saveReservationButton.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2).isActive = true
-        
-        containerView.bringSubview(toFront: parkingView)
-        
-    }
-    
-    func collectAvailiability() {
-        
-        let ref = Database.database().reference().child("parking").child(parkingID!).child("Availability")
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let availability = snapshot.value as? [String: AnyObject] {
-                
-                if let mondayValues = availability["Monday"] as? [String:AnyObject] {
-                    self.Monday = 1
-                    self.MondayTo = mondayValues["To"] as? String
-                    self.MondayFrom = mondayValues["From"] as? String
-                    self.mondayLabel.text = "From  \(String(describing: self.MondayFrom!))  to  \(String(describing: self.MondayTo!))"
+        self.view.addSubview(reserveContainer)
+        reserveContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30).isActive = true
+        reserveContainer.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        reserveContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        reserveContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
-                    self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Monday = 0
-                    
-                    self.mondayButton.backgroundColor = UIColor.clear
-                    self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.mondayLabel.text = "N/A"
-                }
-                if let tuesdayValues = availability["Tuesday"] as? [String:AnyObject] {
-                    self.Tuesday = 1
-                    self.TuesdayTo = tuesdayValues["To"] as? String
-                    self.TuesdayFrom = tuesdayValues["From"] as? String
-                    self.tuesdayLabel.text = "From  \(String(describing: self.TuesdayFrom!))  to  \(String(describing: self.TuesdayTo!))"
-                    
-                    self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Tuesday = 0
-                    
-                    self.tuesdayButton.backgroundColor = UIColor.clear
-                    self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.tuesdayLabel.text = "N/A"
-                }
-                if let wednedayValues = availability["Wednesday"] as? [String:AnyObject] {
-                    self.Wednesday = 1
-                    self.WednesdayTo = wednedayValues["To"] as? String
-                    self.WednesdayFrom = wednedayValues["From"] as? String
-                    self.wednesdayLabel.text = "From  \(String(describing: self.WednesdayFrom!))  to  \(String(describing: self.WednesdayTo!))"
-                    
-                    self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Wednesday = 0
-                    
-                    self.wednesdayButton.backgroundColor = UIColor.clear
-                    self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.wednesdayLabel.text = "N/A"
-                }
-                if let thursdayValues = availability["Thursday"] as? [String:AnyObject] {
-                    self.Thursday = 1
-                    self.ThursdayTo = thursdayValues["To"] as? String
-                    self.ThursdayFrom = thursdayValues["From"] as? String
-                    self.thursdayLabel.text = "From  \(String(describing: self.ThursdayFrom!))  to  \(String(describing: self.ThursdayTo!))"
-                    
-                    self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Thursday = 0
-                    
-                    self.thursdayButton.backgroundColor = UIColor.clear
-                    self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.thursdayLabel.text = "N/A"
-                }
-                if let fridayValues = availability["Friday"] as? [String:AnyObject] {
-                    self.Friday = 1
-                    self.FridayTo = fridayValues["To"] as? String
-                    self.FridayFrom = fridayValues["From"] as? String
-                    self.fridayLabel.text = "From  \(String(describing: self.FridayFrom!))  to  \(String(describing: self.FridayTo!))"
-                    
-                    self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Friday = 0
-                    
-                    self.fridayButton.backgroundColor = UIColor.clear
-                    self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.fridayLabel.text = "N/A"
-                }
-                if let saturdayValues = availability["Saturday"] as? [String:AnyObject] {
-                    self.Saturday = 1
-                    self.SaturdayTo = saturdayValues["To"] as? String
-                    self.SaturdayFrom = saturdayValues["From"] as? String
-                    self.saturdayLabel.text = "From  \(String(describing: self.SaturdayFrom!))  to  \(String(describing: self.SaturdayTo!))"
-                    
-                    self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Saturday = 0
-                    
-                    self.saturdayButton.backgroundColor = UIColor.clear
-                    self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.saturdayLabel.text = "N/A"
-                }
-                if let sundayValues = availability["Sunday"] as? [String:AnyObject] {
-                    self.Sunday = 1
-                    self.SundayTo = sundayValues["To"] as? String
-                    self.SundayFrom = sundayValues["From"] as? String
-                    self.sundayLabel.text = "From  \(String(describing: self.SundayFrom!))  to  \(String(describing: self.SundayTo!))"
-                    
-                    self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
-                    self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
-                    
-                } else {
-                    self.Sunday = 0
-                    
-                    self.sundayButton.backgroundColor = UIColor.clear
-                    self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                    self.sundayLabel.text = "N/A"
-                }
-            }
-        })
+        self.view.addSubview(labelTitle)
+        labelTitle.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+        labelTitle.topAnchor.constraint(equalTo: reserveContainer.topAnchor).isActive = true
+        labelTitle.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        labelTitle.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.WHITE
+        reserveContainer.addSubview(line)
+        line.topAnchor.constraint(equalTo: labelTitle.bottomAnchor).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
+        line.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+
+        self.view.addSubview(hoursButton)
+        hoursButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        hoursButton.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 1).isActive = true
+        hoursButton.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
+        hoursButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        
+        self.view.addSubview(hoursView)
+        hoursView.bottomAnchor.constraint(equalTo: hoursButton.topAnchor).isActive = true
+        hoursView.centerXAnchor.constraint(equalTo: hoursButton.centerXAnchor).isActive = true
+        hoursView.widthAnchor.constraint(equalTo: hoursButton.widthAnchor).isActive = true
+        height = hoursView.heightAnchor.constraint(equalToConstant: 0)
+
+        self.view.addSubview(labelDistance)
+        labelDistance.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+        labelDistance.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 1).isActive = true
+        labelDistance.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
+        labelDistance.heightAnchor.constraint(equalTo: hoursButton.heightAnchor).isActive = true
+
+        self.view.addSubview(labelCost)
+        labelCost.rightAnchor.constraint(equalTo: hoursButton.leftAnchor).isActive = true
+        labelCost.leftAnchor.constraint(equalTo: labelDistance.rightAnchor).isActive = true
+        labelCost.heightAnchor.constraint(equalTo: hoursButton.heightAnchor).isActive = true
+        labelCost.centerYAnchor.constraint(equalTo: hoursButton.centerYAnchor).isActive = true
+
+        self.view.addSubview(saveReservationButton)
+        saveReservationButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        saveReservationButton.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
+        saveReservationButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+        saveReservationButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+        let line1 = UIView()
+        line1.translatesAutoresizingMaskIntoConstraints = false
+        line1.backgroundColor = Theme.WHITE
+        self.view.addSubview(line1)
+        line1.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
+        line1.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line1.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
+        line1.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+
+        let line2 = UIView()
+        line2.translatesAutoresizingMaskIntoConstraints = false
+        line2.backgroundColor = Theme.WHITE
+        self.view.addSubview(line2)
+        line2.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
+        line2.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        line2.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        line2.rightAnchor.constraint(equalTo: hoursButton.leftAnchor).isActive = true
+
+        let line3 = UIView()
+        line3.translatesAutoresizingMaskIntoConstraints = false
+        line3.backgroundColor = Theme.WHITE
+        self.view.addSubview(line3)
+        line3.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
+        line3.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        line3.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        line3.leftAnchor.constraint(equalTo: labelDistance.rightAnchor).isActive = true
+        
     }
     
-    @objc func sliderValueDidChange(sender: UISlider) {
+    var controlTopAnchor1: NSLayoutConstraint!
+    var controlTopAnchor2: NSLayoutConstraint!
+    var segmentLineLeftAnchor1: NSLayoutConstraint!
+    var segmentLineLeftAnchor2: NSLayoutConstraint!
+    var segmentLineLeftAnchor3: NSLayoutConstraint!
+    
+    func setupSegments() {
         
-        saveReservationButton.isUserInteractionEnabled = true
-        saveReservationButton.alpha = 1
+        self.view.addSubview(segmentControlView)
+        controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+        controlTopAnchor1.isActive = true
+        controlTopAnchor2 = segmentControlView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40)
+        controlTopAnchor2.isActive = false
+        segmentControlView.widthAnchor.constraint(equalToConstant: self.view.frame.width * 5/6).isActive = true
+        segmentControlView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        segmentControlView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        let roundedStepValue = sender.value.rounded()
-        sender.value = roundedStepValue
-        let formatted = String(format: "%.0f", sender.value)
-        let integer = Int(formatted)
-        self.hourLabel.text = "Hours: \(formatted)"
-        self.hours = integer
+        self.view.addSubview(infoSegment)
+        infoSegment.leftAnchor.constraint(equalTo: segmentControlView.leftAnchor).isActive = true
+        infoSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
+        infoSegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
+        infoSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        
+        self.view.addSubview(reviewsSegment)
+        reviewsSegment.rightAnchor.constraint(equalTo: segmentControlView.rightAnchor).isActive = true
+        reviewsSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
+        reviewsSegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
+        reviewsSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        
+        self.view.addSubview(availabilitySegment)
+        availabilitySegment.leftAnchor.constraint(equalTo: infoSegment.rightAnchor).isActive = true
+        availabilitySegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
+        availabilitySegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
+        availabilitySegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        
+        self.view.addSubview(selectionLine)
+        selectionLine.topAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
+        selectionLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        selectionLine.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        segmentLineLeftAnchor1 = selectionLine.leftAnchor.constraint(equalTo: infoSegment.leftAnchor)
+        segmentLineLeftAnchor1.isActive = true
+        segmentLineLeftAnchor2 = selectionLine.leftAnchor.constraint(equalTo: availabilitySegment.leftAnchor)
+        segmentLineLeftAnchor2.isActive = false
+        segmentLineLeftAnchor3 = selectionLine.leftAnchor.constraint(equalTo: reviewsSegment.leftAnchor)
+        segmentLineLeftAnchor3.isActive = false
+        
+    }
+    
+    var infoViewAnchor: NSLayoutConstraint!
+    var availabilityViewAnchor: NSLayoutConstraint!
+    var reviewsViewAnchor: NSLayoutConstraint!
+    
+    func setupViewControllers() {
+        
+        myScrollView.addSubview(infoController.view)
+        infoController.didMove(toParentViewController: self)
+        infoViewAnchor = infoController.view.leftAnchor.constraint(equalTo: myScrollView.leftAnchor)
+        infoViewAnchor.isActive = true
+        infoController.view.widthAnchor.constraint(equalTo: myScrollView.widthAnchor).isActive = true
+        infoController.view.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        infoController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        
+        myScrollView.addSubview(availabilityController.view)
+        availabilityController.didMove(toParentViewController: self)
+        availabilityViewAnchor = availabilityController.view.leftAnchor.constraint(equalTo: myScrollView.leftAnchor, constant: self.view.frame.width)
+        availabilityViewAnchor.isActive = true
+        availabilityController.view.widthAnchor.constraint(equalTo: myScrollView.widthAnchor).isActive = true
+        availabilityController.view.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        availabilityController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        
+        myScrollView.addSubview(reviewsController.view)
+        reviewsController.didMove(toParentViewController: self)
+        reviewsViewAnchor = reviewsController.view.leftAnchor.constraint(equalTo: myScrollView.leftAnchor, constant: (self.view.frame.width) * 2)
+        reviewsViewAnchor.isActive = true
+        reviewsController.view.widthAnchor.constraint(equalTo: myScrollView.widthAnchor).isActive = true
+        reviewsController.view.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        reviewsController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        
+    }
+    
+    @objc func infoPressed(sender: UIButton) {
+        myScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
+        segmentLineLeftAnchor1.isActive = true
+        segmentLineLeftAnchor2.isActive = false
+        segmentLineLeftAnchor3.isActive = false
+        infoViewAnchor.constant = 0
+        availabilityViewAnchor.constant = self.view.frame.width
+        reviewsViewAnchor.constant = (self.view.frame.width) * 2
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    @objc func availabilityPressed(sender: UIButton) {
+        myScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
+        segmentLineLeftAnchor1.isActive = false
+        segmentLineLeftAnchor2.isActive = true
+        segmentLineLeftAnchor3.isActive = false
+        infoViewAnchor.constant = -self.view.frame.width
+        availabilityViewAnchor.constant = 0
+        reviewsViewAnchor.constant = self.view.frame.width
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    @objc func reviewPressed(sender: UIButton) {
+        myScrollView.contentSize = CGSize(width: self.view.frame.width, height: (self.view.frame.height) * 2)
+        segmentLineLeftAnchor1.isActive = false
+        segmentLineLeftAnchor2.isActive = false
+        segmentLineLeftAnchor3.isActive = true
+        infoViewAnchor.constant = -(self.view.frame.width) * 2
+        availabilityViewAnchor.constant = -self.view.frame.width
+        reviewsViewAnchor.constant = 0
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc func saveReservationButtonPressed(sender: UIButton) {
@@ -396,11 +334,13 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
         let editedHour = editedPrice?.replacingOccurrences(of: "/hour", with: "")
         let cost: Int = Int(editedHour!)!
         
-        let hours = self.hours
         let totalCost = cost * hours!
         
         let checkoutViewController = CheckoutViewController(product: product!,
-                                                            price: totalCost, hours: hours!)
+                                                            price: totalCost,
+                                                            hours: hours!,
+                                                            ID: ids!,
+                                                            parkingID: parkingIDs!)
         UIApplication.shared.statusBarStyle = .default
         self.navigationController?.pushViewController(checkoutViewController, animated: true)
     }
@@ -410,60 +350,127 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
         if scrollView.contentOffset.y >= 220 {
-            let statusHeight = UIApplication.shared.statusBarFrame.height
-            self.parkingViewTopAnchor.constant = scrollView.contentOffset.y - 240 + statusHeight
+            self.controlTopAnchor1.isActive = false
+            self.controlTopAnchor2.isActive = true
             UIApplication.shared.statusBarStyle = .default
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         } else {
-            self.parkingViewTopAnchor.constant = 0
             UIApplication.shared.statusBarStyle = .lightContent
+            self.controlTopAnchor1.isActive = true
+            self.controlTopAnchor2.isActive = false
         }
-        if scrollView.contentOffset.y >= 220 && scrollView.contentOffset.y <= 260 {
-            let alpha = (scrollView.contentOffset.y - 220) / 20
-            let image = UIImage(named: "Expand")
-            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-            exitButton.setImage(tintedImage, for: .normal)
-            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
-            exitButton.tintColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(alpha)
-        } else if scrollView.contentOffset.y < 220 {
-            let image = UIImage(named: "Expand")
-            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-            exitButton.setImage(tintedImage, for: .normal)
-            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
-            exitButton.tintColor = Theme.WHITE
-        }
-        if scrollView.contentOffset.y >= 220 && scrollView.contentOffset.y <= 260 {
-            let alpha = (scrollView.contentOffset.y - 220)
-            self.titleLeftAnchor.constant = 4 + alpha
-        } else if scrollView.contentOffset.y > 260 {
-            self.titleLeftAnchor.constant = 44
-            let image = UIImage(named: "Expand")
-            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-            exitButton.setImage(tintedImage, for: .normal)
-            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
-            exitButton.tintColor = Theme.PRIMARY_DARK_COLOR
-        } else {
-            self.titleLeftAnchor.constant = 4
-            let image = UIImage(named: "Expand")
-            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-            exitButton.setImage(tintedImage, for: .normal)
-            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
-            exitButton.tintColor = Theme.WHITE
-        }
+        
+//        if scrollView.contentOffset.y >= 220 {
+//            let statusHeight = UIApplication.shared.statusBarFrame.height
+//            self.parkingViewTopAnchor.constant = scrollView.contentOffset.y - 240 + statusHeight
+//            UIApplication.shared.statusBarStyle = .default
+//        } else {
+//            self.parkingViewTopAnchor.constant = 0
+//            UIApplication.shared.statusBarStyle = .lightContent
+//        }
+//        if scrollView.contentOffset.y >= 220 && scrollView.contentOffset.y <= 260 {
+//            let alpha = (scrollView.contentOffset.y - 220) / 20
+//            let image = UIImage(named: "Expand")
+//            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//            exitButton.setImage(tintedImage, for: .normal)
+//            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
+//            exitButton.tintColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(alpha)
+//        } else if scrollView.contentOffset.y < 220 {
+//            let image = UIImage(named: "Expand")
+//            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//            exitButton.setImage(tintedImage, for: .normal)
+//            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
+//            exitButton.tintColor = Theme.WHITE
+//        }
+//        if scrollView.contentOffset.y >= 220 && scrollView.contentOffset.y <= 260 {
+//            let alpha = (scrollView.contentOffset.y - 220)
+//            self.titleLeftAnchor.constant = 4 + alpha
+//        } else if scrollView.contentOffset.y > 260 {
+//            let image = UIImage(named: "Expand")
+//            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//            exitButton.setImage(tintedImage, for: .normal)
+//            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
+//            exitButton.tintColor = Theme.PRIMARY_DARK_COLOR
+//        } else {
+//            let image = UIImage(named: "Expand")
+//            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//            exitButton.setImage(tintedImage, for: .normal)
+//            exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
+//            exitButton.tintColor = Theme.WHITE
+//        }
     }
-    
     
     @objc func dismissDetails(sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+        saveReservationButton.alpha = 0.5
+        saveReservationButton.isUserInteractionEnabled = false
         UIApplication.shared.statusBarStyle = .lightContent
     }
-    
 
     let myScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = true
         scrollView.showsHorizontalScrollIndicator = false
         return scrollView
+    }()
+    
+    var segmentControlView: UIView = {
+        let segmentControlView = UIView()
+        segmentControlView.translatesAutoresizingMaskIntoConstraints = false
+        segmentControlView.backgroundColor = Theme.WHITE
+        segmentControlView.layer.cornerRadius = 5
+        
+        return segmentControlView
+    }()
+    
+    var infoSegment: UIButton = {
+        let info = UIButton()
+        info.translatesAutoresizingMaskIntoConstraints = false
+        info.backgroundColor = UIColor.clear
+        info.setTitle("Info", for: .normal)
+        info.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        info.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        info.titleLabel?.textAlignment = .center
+        info.addTarget(self, action: #selector(infoPressed(sender:)), for: .touchUpInside)
+        
+        return info
+    }()
+    
+    var availabilitySegment: UIButton = {
+        let availability = UIButton()
+        availability.translatesAutoresizingMaskIntoConstraints = false
+        availability.backgroundColor = UIColor.clear
+        availability.setTitle("Availability", for: .normal)
+        availability.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        availability.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        availability.titleLabel?.textAlignment = .center
+        availability.addTarget(self, action: #selector(availabilityPressed(sender:)), for: .touchUpInside)
+        
+        return availability
+    }()
+    
+    var reviewsSegment: UIButton = {
+        let reviews = UIButton()
+        reviews.translatesAutoresizingMaskIntoConstraints = false
+        reviews.backgroundColor = UIColor.clear
+        reviews.setTitle("Reviews", for: .normal)
+        reviews.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        reviews.titleLabel?.textAlignment = .center
+        reviews.addTarget(self, action: #selector(reviewPressed(sender:)), for: .touchUpInside)
+        
+        return reviews
+    }()
+    
+    var selectionLine: UIView = {
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.PRIMARY_COLOR
+        
+        return line
     }()
     
     let containerView: UIView = {
@@ -502,212 +509,37 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
     let labelTitle: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.font = UIFont.systemFont(ofSize: 28)
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = Theme.PRIMARY_DARK_COLOR
+        let border = CALayer()
+        let width = CGFloat(2.0)
+        border.borderColor = Theme.PRIMARY_COLOR.cgColor
+        border.frame = CGRect(x: 0, y: label.frame.size.height - width, width: label.frame.size.width, height: label.frame.size.height)
+        border.borderWidth = width
+        label.layer.addSublayer(border)
+        label.layer.masksToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        
         return label
     }()
     
     let labelDistance: UILabel = {
         let label = UILabel()
         label.text = "Distance"
-        label.font = UIFont.systemFont(ofSize: 24)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        
         return label
     }()
     
     let labelCost: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = Theme.PRIMARY_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let labelDescription: UILabel = {
-        let label = UILabel()
-        label.text = "Description"
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let labelAvailability: UILabel = {
-        let label = UILabel()
-        label.text = "Availability:"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = Theme.PRIMARY_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
-    var mondayButton: UIButton = {
-        let monday = UIButton()
-        monday.setTitle("M", for: .normal)
-        monday.setTitleColor(Theme.WHITE, for: .normal)
-        monday.backgroundColor = Theme.PRIMARY_COLOR
-        monday.clipsToBounds = true
-        monday.layer.cornerRadius = 20
-        monday.translatesAutoresizingMaskIntoConstraints = false
-        monday.isUserInteractionEnabled = false
-
-        return monday
-    }()
-    
-    var mondayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var tuesdayButton: UIButton = {
-        let tuesday = UIButton()
-        tuesday.setTitle("T", for: .normal)
-        tuesday.setTitleColor(Theme.WHITE, for: .normal)
-        tuesday.backgroundColor = Theme.PRIMARY_COLOR
-        tuesday.clipsToBounds = true
-        tuesday.layer.cornerRadius = 20
-        tuesday.translatesAutoresizingMaskIntoConstraints = false
-        tuesday.isUserInteractionEnabled = false
-
-        return tuesday
-    }()
-    
-    var tuesdayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var wednesdayButton: UIButton = {
-        let wednesday = UIButton()
-        wednesday.setTitle("W", for: .normal)
-        wednesday.setTitleColor(Theme.WHITE, for: .normal)
-        wednesday.backgroundColor = Theme.PRIMARY_COLOR
-        wednesday.clipsToBounds = true
-        wednesday.layer.cornerRadius = 20
-        wednesday.translatesAutoresizingMaskIntoConstraints = false
-        wednesday.isUserInteractionEnabled = false
-
-        return wednesday
-    }()
-    
-    var wednesdayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var thursdayButton: UIButton = {
-        let thursday = UIButton()
-        thursday.setTitle("T.", for: .normal)
-        thursday.setTitleColor(Theme.WHITE, for: .normal)
-        thursday.backgroundColor = Theme.PRIMARY_COLOR
-        thursday.clipsToBounds = true
-        thursday.layer.cornerRadius = 20
-        thursday.translatesAutoresizingMaskIntoConstraints = false
-        thursday.isUserInteractionEnabled = false
-
-        return thursday
-    }()
-    
-    var thursdayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var fridayButton: UIButton = {
-        let friday = UIButton()
-        friday.setTitle("F", for: .normal)
-        friday.setTitleColor(Theme.WHITE, for: .normal)
-        friday.backgroundColor = Theme.PRIMARY_COLOR
-        friday.clipsToBounds = true
-        friday.layer.cornerRadius = 20
-        friday.translatesAutoresizingMaskIntoConstraints = false
-        friday.isUserInteractionEnabled = false
-
-        return friday
-    }()
-    
-    var fridayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var saturdayButton: UIButton = {
-        let saturday = UIButton()
-        saturday.setTitle("S", for: .normal)
-        saturday.setTitleColor(Theme.WHITE, for: .normal)
-        saturday.backgroundColor = Theme.PRIMARY_COLOR
-        saturday.clipsToBounds = true
-        saturday.layer.cornerRadius = 20
-        saturday.translatesAutoresizingMaskIntoConstraints = false
-        saturday.isUserInteractionEnabled = false
-
-        return saturday
-    }()
-    
-    var saturdayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        
-        return label
-    }()
-
-    var sundayButton: UIButton = {
-        let sunday = UIButton()
-        sunday.setTitle("S.", for: .normal)
-        sunday.setTitleColor(Theme.WHITE, for: .normal)
-        sunday.backgroundColor = Theme.PRIMARY_COLOR
-        sunday.clipsToBounds = true
-        sunday.layer.cornerRadius = 20
-        sunday.translatesAutoresizingMaskIntoConstraints = false
-        sunday.isUserInteractionEnabled = false
-
-        return sunday
-    }()
-    
-    var sundayLabel: UILabel = {
-        
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         
@@ -724,51 +556,193 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate {
         return label
     }()
     
-    var hourLabel: UILabel = {
+    var reserveContainer: UIView = {
+        let reserve = UIView()
+        reserve.translatesAutoresizingMaskIntoConstraints = false
+        reserve.backgroundColor = Theme.LIGHT_GRAY
+        reserve.layer.cornerRadius = 5
+        reserve.clipsToBounds = false
         
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = Theme.PRIMARY_COLOR
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "Hours"
-        
-        return label
+        return reserve
     }()
     
-    var hourSlider: UISlider = {
-        let slider = UISlider(frame:CGRect(x: 10, y: 100, width: 300, height: 20))
-        slider.minimumValue = 0
-        slider.maximumValue = 24
-        slider.isContinuous = true
-        slider.tintColor = Theme.PRIMARY_COLOR
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        slider.addTarget(self, action: #selector(sliderValueDidChange(sender:)), for: .valueChanged)
+    let fiveStarControl: FiveStarRating = {
+        let five = FiveStarRating(frame: CGRect(x: 0, y: 0, width: Int((5 * kStarSize)) + (4 * kSpacing), height: Int(kStarSize)))
+        five.translatesAutoresizingMaskIntoConstraints = false
         
-        return slider
+        return five
+    }()
+    
+    var hoursButton: dropDownButton = {
+       let hours = dropDownButton()
+        hours.translatesAutoresizingMaskIntoConstraints = false
+        hours.backgroundColor = Theme.LIGHT_GRAY
+        hours.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        hours.setTitle("^ hours", for: .normal)
+        hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
+        hours.addTarget(self, action: #selector(hourButtonTouched(sender:)), for: .touchUpInside)
+        
+        return hours
+    }()
+    
+    var hoursView: UITableView = {
+        let hours = UITableView()
+        hours.translatesAutoresizingMaskIntoConstraints = false
+        return hours
     }()
     
     var saveReservationButton: UIButton = {
         let saveParkingButton = UIButton()
         saveParkingButton.setTitle("Reserve Spot", for: .normal)
         saveParkingButton.setTitle("", for: .selected)
-        saveParkingButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        saveParkingButton.backgroundColor = Theme.PRIMARY_COLOR
+        saveParkingButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        saveParkingButton.backgroundColor = UIColor.clear
+        let border = CALayer()
+        let width = CGFloat(2.0)
+        border.borderColor = Theme.PRIMARY_COLOR.cgColor
+        border.frame = CGRect(x: 0, y: saveParkingButton.frame.size.height - width, width: saveParkingButton.frame.size.width, height: saveParkingButton.frame.size.height)
+        border.borderWidth = width
+        saveParkingButton.layer.addSublayer(border)
         saveParkingButton.alpha = 0.5
         saveParkingButton.translatesAutoresizingMaskIntoConstraints = false
-        saveParkingButton.titleLabel?.textColor = Theme.WHITE
-        saveParkingButton.layer.cornerRadius = 15
-        saveParkingButton.isUserInteractionEnabled = false
         saveParkingButton.addTarget(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
+        saveParkingButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        saveParkingButton.isUserInteractionEnabled = false
         
         return saveParkingButton
     }()
+    
+    var isOpen: Bool = false
+    
+   @objc func hourButtonTouched(sender: dropDownButton) {
+        if isOpen == false {
+            isOpen = true
+            NSLayoutConstraint.deactivate([height])
+            
+            if hoursView.contentSize.height > 150 {
+                height.constant = 150
+            } else {
+                height.constant = hoursView.contentSize.height
+            }
+            
+            NSLayoutConstraint.activate([height])
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
+                self.hoursView.layoutIfNeeded()
+                self.hoursView.center.y -= self.hoursView.frame.height / 2
+            }, completion: nil)
+            
+        } else {
+            isOpen = false
+            NSLayoutConstraint.deactivate([height])
+            height.constant = 0
+            NSLayoutConstraint.activate([height])
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+                self.hoursView.center.y += self.hoursView.frame.height / 2
+                self.hoursView.layoutIfNeeded()
+            }, completion: nil)
+            
+        }
+    }
+    
+    func dropDownPressed(string: String) {
+        hoursButton.setTitle(string, for: .normal)
+        self.dismissDropDown()
+    }
+    
+    func dismissDropDown() {
+        isOpen = false
+        NSLayoutConstraint.deactivate([height])
+        height.constant = 0
+        NSLayoutConstraint.activate([height])
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+            self.hoursView.center.y += self.hoursView.frame.height / 2
+            self.hoursView.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dropDownOptions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = dropDownOptions[indexPath.row]
+        cell.backgroundColor = Theme.OFF_WHITE
+        cell.textLabel?.textColor = Theme.DARK_GRAY
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dropDownPressed(string: dropDownOptions[indexPath.row])
+        hoursView.deselectRow(at: indexPath, animated: true)
+        saveReservationButton.isUserInteractionEnabled = true
+        saveReservationButton.alpha = 1
+        
+        let value = dropDownOptions[indexPath.row]
+        let integer = value.replacingOccurrences(of: " hours", with: "")
+        let integer2 = integer.replacingOccurrences(of: " hour", with: "")
+        hours = Int(integer2)
+    }
+    
+    
 }
 
 
+var height = NSLayoutConstraint()
+var dropDownOptions = [String]()
 
+class dropDownButton: UIButton {
+    
+    var dropView = dropDownView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = Theme.OFF_WHITE
+        
+        dropView = dropDownView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        dropView.translatesAutoresizingMaskIntoConstraints = false
+    
+    }
+    
+    var isOpen: Bool = false
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
-
+class dropDownView: UIView {
+    var tableView = UITableView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        tableView.backgroundColor = Theme.OFF_WHITE
+        self.backgroundColor = Theme.OFF_WHITE
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(tableView)
+        tableView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 
 

@@ -234,7 +234,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     lazy var profileSettings: UIView = {
         let profileSettings = Floaty()
         profileSettings.addItem("Profile", icon: #imageLiteral(resourceName: "account"))
-        profileSettings.addItem("Settings", icon: #imageLiteral(resourceName: "settings"))
+        profileSettings.addItem("Settings", icon: #imageLiteral(resourceName: "settings"), handler: { (item) in
+            let dataChartsView = DataChartsViewController()
+            self.navigationController?.pushViewController(dataChartsView, animated: true)
+        })
         profileSettings.addItem("Logout", icon: #imageLiteral(resourceName: "logout"), handler: { (item) in
             self.handleLogout()
             return
@@ -1611,10 +1614,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var screenShotView: UIImageView!
     
-    
-    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     var effect: UIVisualEffect!
     var scrollView: UIScrollView!
     
@@ -1678,6 +1679,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupParkingDisplay()
         setupBottomTab()
         setupPageControl()
+
     }
     
     private func estimatedFrameForText(text: String) -> CGRect {
