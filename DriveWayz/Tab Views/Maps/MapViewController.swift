@@ -11,6 +11,8 @@ import GoogleMaps
 import GooglePlaces
 import Firebase
 import GeoFire
+import Alamofire
+import SwiftyJSON
 
 struct Parking {
     var name: String
@@ -25,15 +27,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var tabPull: UIView!
     let pageControl = UIPageControl()
     let cellId = "cellId"
+    var currentActive: Bool = false
     
     let currentLocationMarker = GMSMarker()
     var locationManager = CLLocationManager()
     var places: Parking?
+    var currentPolyline = [GMSPolyline]()
     
     var parkingSpots = [ParkingSpots]()
     var parkingSpotsDictionary = [String: ParkingSpots]()
     var parkingAvailability = [ParkingSpots]()
     var parkingAvailabilityDictionary = [String: String]()
+    var destination: CLLocation?
     
     let customMarkerWidth: Int = 50
     let customMarkerHeight: Int = 70
@@ -89,21 +94,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
         blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
         blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-//        leftArrow = UIButton(type: .custom)
-//        let arrowLeftImage = UIImage(named: "Expand")
-//        let tintedLeftImage = arrowLeftImage?.withRenderingMode(.alwaysTemplate)
-//        leftArrow.setImage(tintedLeftImage, for: .normal)
-//        leftArrow.translatesAutoresizingMaskIntoConstraints = false
-//        leftArrow.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2))
-//        leftArrow.tintColor = Theme.PRIMARY_COLOR
-//        leftArrow.addTarget(self, action: #selector(tabBarLeft), for: .touchUpInside)
-//        containerBar.addSubview(leftArrow)
-//        
-//        leftArrow.leftAnchor.constraint(equalTo: blurView.leftAnchor, constant: 32).isActive = true
-//        leftArrow.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
-//        leftArrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        leftArrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         rightArrow = UIButton(type: .custom)
         let arrowRightImage = UIImage(named: "Expand")
@@ -168,6 +158,45 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return parking
     }()
     
+    var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.OFF_WHITE
+        return view
+    }()
+    
+    lazy var currentParkingController: CurrentParkingViewController = {
+        let controller = CurrentParkingViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Current Parking"
+        return controller
+    }()
+    
+    var expand: UIView = {
+        let expand = UIView()
+        expand.translatesAutoresizingMaskIntoConstraints = false
+        expand.backgroundColor = Theme.WHITE
+        expand.layer.cornerRadius = 10
+        expand.alpha = 0
+        expand.isUserInteractionEnabled = true
+        
+        let label = UILabel()
+        label.text = "Current parking"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = Theme.PRIMARY_COLOR
+        label.textAlignment = .center
+        
+        expand.addSubview(label)
+        label.centerXAnchor.constraint(equalTo: expand.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: expand.centerYAnchor).isActive = true
+        label.heightAnchor.constraint(equalTo: expand.heightAnchor).isActive = true
+        label.widthAnchor.constraint(equalTo: expand.widthAnchor).isActive = true
+        
+        return expand
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,13 +214,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         locationManager.delegate = self
         parkingTableView.delegate = self
         parkingTableView.dataSource = self
+        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingHeading()
 
         fetchUserEmail()
         locationAuthStatus()
         setupViews()
+        setupViewController()
         setupBottomTab()
         setupPageControl()
+        checkCurrentParking()
         searchBar.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.checkCurrentParking()
     }
     
     func locationAuthStatus() {
@@ -204,6 +243,49 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
+    }
+    
+    func checkCurrentParking() {
+        if let userID = Auth.auth().currentUser?.uid {
+            let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
+                currentRef.observe(.childAdded, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        let parkingID = dictionary["parkingID"] as? String
+                        let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+                        parkingRef.observeSingleEvent(of: .value, with: { (pull) in
+                            if let pullRef = pull.value as? [String:AnyObject] {
+                                let parkingAddress = pullRef["parkingAddress"] as? String
+                                let geoCoder = CLGeocoder()
+                                geoCoder.geocodeAddressString(parkingAddress!) { (placemarks, error) in
+                                    guard
+                                        let placemarks = placemarks,
+                                        let location = placemarks.first?.location
+                                        else {
+                                            print("Couldn't find location.")
+                                            return
+                                    }
+                                    self.destination = location
+                                    self.drawPath(endLocation: location)
+                                    UIView.animate(withDuration: 0.3, animations: {
+                                        self.expand.alpha = 1
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }, withCancel: nil)
+                currentRef.observe(.childRemoved, with: { (snapshot) in
+                    for poly in (0..<self.currentPolyline.count) {
+                        self.currentPolyline[poly].map = nil
+                    }
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.expand.alpha = 0
+                    })
+                    self.navigationController?.popViewController(animated: true)
+                }, withCancel: nil)
+            } else {
+                return
+            }
     }
     
     func observeUserParkingSpots() {
@@ -369,6 +451,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         
         self.view.addSubview(mapView)
         
+        mapView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         mapView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         mapView.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor).isActive = true
         mapViewConstraint = mapView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0)
@@ -464,6 +547,27 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         view.bringSubview(toFront: searchBar)
         view.bringSubview(toFront: driveWayzLogo)
 
+    }
+    
+    var currentParkingControllerAnchor: NSLayoutConstraint!
+    var expandTopAnchor: NSLayoutConstraint!
+    
+    func setupViewController() {
+        
+        self.view.addSubview(expand)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(updateCurrentView))
+        expand.addGestureRecognizer(gesture)
+        expandTopAnchor = expand.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -95)
+        expandTopAnchor.isActive = true
+        expand.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        expand.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2).isActive = true
+        expand.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+    }
+    
+    @objc func updateCurrentView() {
+        let currentView = CurrentParkingViewController()
+        self.navigationController?.pushViewController(currentView, animated: true)
     }
     
     @objc func optionsTabGestureTapped(_ sender: UITapGestureRecognizer) {
@@ -612,6 +716,40 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         marker.iconView = customMarker
     }
     
+    private func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = manager.location {
+            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 17.0)
+            mapView.animate(to: camera)
+            
+            if let currentDestination = self.destination {
+                let direction = getBearingBetweenTwoPoints1(point1 : mapView.myLocation!, point2 : currentDestination)
+                let heading = GMSOrientation.init(heading: direction, pitch: 0.0)
+//                    .maps.geometry.spherical.computeHeading(mapView.myLocation,currentDestination)
+                mapView.animate(toBearing: heading.heading)
+            }
+        }
+    }
+    
+    func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+    func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+    
+    func getBearingBetweenTwoPoints1(point1 : CLLocation, point2 : CLLocation) -> Double {
+        
+        let lat1 = degreesToRadians(degrees: point1.coordinate.latitude)
+        let lon1 = degreesToRadians(degrees: point1.coordinate.longitude)
+        
+        let lat2 = degreesToRadians(degrees: point2.coordinate.latitude)
+        let lon2 = degreesToRadians(degrees: point2.coordinate.longitude)
+        
+        let dLon = lon2 - lon1
+        
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+        
+        return radiansToDegrees(radians: radiansBearing)
+    }
+    
     func showPartyMarkers() {
         mapView.clear()
         for number in 0...(parkingSpots.count - 1) {
@@ -637,6 +775,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let location: CLLocation? = mapView.myLocation
         if location != nil {
             mapView.animate(toLocation: (location?.coordinate)!)
+            mapView.animate(toZoom: 17.0)
         }
     }
     
@@ -646,6 +785,37 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let parking = parkingSpots[customMarkerView.tag]
         detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
         self.navigationController?.pushViewController(detailedView, animated: true)
+    }
+    
+    func drawPath(endLocation: CLLocation) {
+        let myLocation = mapView.myLocation
+        let origin = "\(myLocation!.coordinate.latitude),\(myLocation!.coordinate.longitude)"
+        let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
+        
+        let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&mode=driving"
+        
+        Alamofire.request(url).responseJSON { response in
+            if let json = try? JSON(data: response.data!) {
+                let routes = json["routes"].arrayValue
+                for route in routes {
+                    let routeOverviewPolyline = route["overview_polyline"].dictionary
+                    let points = routeOverviewPolyline?["points"]?.stringValue
+                    let path = GMSPath.init(fromEncodedPath: points!)
+                    let polyline = GMSPolyline.init(path: path)
+                    polyline.strokeWidth = 4
+                    polyline.strokeColor = Theme.PRIMARY_COLOR
+                    polyline.map = self.mapView
+                    self.currentPolyline.append(polyline)
+                    
+                    let bounds = GMSCoordinateBounds(coordinate: (myLocation?.coordinate)!, coordinate: endLocation.coordinate)
+                    if self.currentActive == false {
+                        let update = GMSCameraUpdate.fit(bounds, with: UIEdgeInsetsMake(160, 120, 160, 120))
+                        self.mapView.animate(with: update)
+                    }
+                    self.currentActive = true
+                }
+            }
+        }
     }
     
     func setupTextField(textField: UITextField, img: UIImage){
@@ -693,7 +863,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         }
     }
     
-    
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -723,6 +892,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let parking = parkingSpots[indexPath.row]
         detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
         self.navigationController?.pushViewController(detailedView, animated: true)
+        self.optionsTabViewConstraint.constant = -215
+        self.arrow.isUserInteractionEnabled = true
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+            self.optionsTabAnimations()
+        }
     }
     
     

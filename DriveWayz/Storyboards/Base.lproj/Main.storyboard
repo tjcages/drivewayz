@@ -369,12 +369,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addANewParkingView" destination="PPg-Dc-cnb" id="Bet-ec-8pY"/>
-                        <outlet property="addANewVehicleView" destination="eKX-M4-Iks" id="uSZ-JN-osY"/>
-                        <outlet property="addAWhiteVehicleView" destination="ZJk-tu-C5L" id="Ui4-vy-q7Q"/>
                         <outlet property="profileImageView" destination="GtT-Xe-k3j" id="ybK-lf-Cqb"/>
                         <outlet property="profileName" destination="ZLO-qm-FeD" id="sEo-w6-Jov"/>
-                        <outlet property="registerANewVehicleLabel" destination="DFC-FP-Tu2" id="fBB-Ei-wEb"/>
                         <outlet property="visualBlurEffect" destination="AAu-Dm-zGI" id="UzR-uf-BnB"/>
                     </connections>
                 </viewController>

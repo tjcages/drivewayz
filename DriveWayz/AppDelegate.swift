@@ -11,6 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 import Stripe
+import FacebookCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -50,6 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         
         return true
+    }
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+        AppEventsLogger.activate(application)
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {

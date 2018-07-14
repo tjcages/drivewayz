@@ -14,7 +14,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     
     var count: Int = 0
     
-    let exitButton: UIImage = {
+    var exitButton: UIImage = {
         let exitButton = UIImageView()
         let exitImage = UIImage(named: "Expand")
         let tintedImage = exitImage?.withRenderingMode(.alwaysTemplate)
@@ -22,6 +22,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         exitButton.tintColor = Theme.DARK_GRAY
         exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
         let image = exitButton.image
+        exitButton.isUserInteractionEnabled = true
         
         return image!
     }()
@@ -58,7 +59,8 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     var product: String = ""
     var hours: Int = 0
     var id: String = ""
-    var cost: Int = 0
+    var account: String = ""
+    var cost: Double = 0.00
     var parkingId: String = ""
     var paymentInProgress: Bool = false {
         didSet {
@@ -77,7 +79,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         }
     }
 
-    init(product: String, price: Int, hours: Int, ID: String, parkingID: String) {
+    init(product: String, price: Int, hours: Int, ID: String, account: String, parkingID: String) {
 
         let stripePublishableKey = self.stripePublishableKey
         let backendBaseURL = self.backendBaseURL
@@ -90,12 +92,13 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.productImage.text = product
         self.id = ID
         self.parkingId = parkingID
+        self.account = account
         
         let stringPrice = String(price / hours)
         var reversed = String(stringPrice.reversed())
         reversed.insert(".", at: stringPrice.index(reversed.startIndex, offsetBy: 2))
         let singleCost = String(reversed.reversed())
-        cost = Int(Double(singleCost)! * Double(hours))
+        cost = Double(singleCost)! * Double(hours)
         
         self.costImage.text = "$\(singleCost)/hour for \(hours) hour(s)"
         
@@ -200,6 +203,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     @objc func didTapBuy() {
+        self.navigationItem.leftBarButtonItem?.isEnabled = false
         self.paymentInProgress = true
         self.paymentContext.requestPayment()
     }
@@ -207,7 +211,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
         MyAPIClient.sharedClient.completeCharge(paymentResult,
                                                 amount: self.paymentContext.paymentAmount,
-                                                email: userEmail!,
+                                                email: userEmail!, account: self.account,
                                                 completion: completion)
     }
 
@@ -223,9 +227,12 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             completed = false
         case .success:
             self.updateUserProfile()
+            self.navigationItem.leftBarButtonItem?.isEnabled = true
             title = "Success"
             message = "You bought parking in\(self.product) for \(self.hours) hours!"
             completed = true
+            CurrentParkingViewController().startCountdown(hours: self.hours)
+            beginRoute()
         case .userCancellation:
             completed = false
             return
@@ -248,6 +255,15 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    private func beginRoute() {
+        
+        let currentUser = Auth.auth().currentUser?.uid
+        let timestamp = NSDate().timeIntervalSince1970
+        let userRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(parkingId)
+        userRef.updateChildValues(["timestamp": timestamp, "hours": self.hours, "parkingID": parkingId])
+        
+    }
+    
     private func updateUserProfile() {
         
         let currentUser = Auth.auth().currentUser?.uid
@@ -259,12 +275,12 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         let currentRef = Database.database().reference().child("users").child(id)
         currentRef.observeSingleEvent(of: .value) { (current) in
             let dictionary = current.value as? [String:AnyObject]
-            var currentFunds = dictionary!["userFunds"] as? Int
+            var currentFunds = dictionary!["userFunds"] as? Double
             if currentFunds != nil {} else {currentFunds = 0}
             paymentRef.observeSingleEvent(of: .value) { (snapshot) in
                 self.count =  Int(snapshot.childrenCount)
                 let payRef = paymentRef.child("\(self.count)")
-                let newFunds = currentFunds! + self.cost
+                let newFunds = Double(currentFunds!) + (Double(self.cost) * 0.8)
                 payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": self.hours, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
@@ -273,14 +289,15 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             if var dictionary = snapshot.value as? [String:AnyObject] {
                 
                 if let previousFunds = dictionary["userFunds"] {
-                    let funds = Int(truncating: previousFunds as! NSNumber) + self.cost
+                    let funds = Double(truncating: previousFunds as! NSNumber) + (self.cost) * 0.8
                     fundRef.updateChildValues(["userFunds": funds])
                 } else {
-                    fundRef.updateChildValues(["userFunds": self.cost])
+                    fundRef.updateChildValues(["userFunds": (self.cost * 0.8)])
                 }
             }
         }, withCancel: nil)
     }
+    
 
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         self.paymentRow.loading = paymentContext.loading

@@ -13,7 +13,7 @@ class ParkingInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = Theme.OFF_WHITE
         self.navigationController?.navigationBar.isHidden = true
         
         setupViews()
@@ -29,7 +29,7 @@ class ParkingInfoViewController: UIViewController {
         parkingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         parkingViewTopAnchor = parkingView.topAnchor.constraint(equalTo: view.topAnchor)
         parkingViewTopAnchor.isActive = true
-        parkingView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        parkingView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
         parkingView.addSubview(labelTitle)
         titleLeftAnchor = labelTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15)
@@ -61,7 +61,7 @@ class ParkingInfoViewController: UIViewController {
     
     let parkingView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = Theme.OFF_WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

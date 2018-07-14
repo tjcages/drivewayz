@@ -24,12 +24,10 @@
 		4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2FD20CC9FF9002D7005 /* SettingNavViewController.swift */; };
 		4D21D32320CC9FF9002D7005 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30020CC9FF9002D7005 /* ChatLogController.swift */; };
 		4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30120CC9FF9002D7005 /* FeedNavViewController.swift */; };
-		4D21D32620CC9FF9002D7005 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30320CC9FF9002D7005 /* LoginViewController.swift */; };
 		4D21D32B20CC9FF9002D7005 /* NotificationsNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30820CC9FF9002D7005 /* NotificationsNavViewController.swift */; };
 		4D21D32D20CC9FF9002D7005 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30A20CC9FF9002D7005 /* ChatMessageCell.swift */; };
 		4D21D32E20CC9FF9002D7005 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30B20CC9FF9002D7005 /* AccountViewController.swift */; };
 		4D21D32F20CC9FF9002D7005 /* AccountNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30C20CC9FF9002D7005 /* AccountNavViewController.swift */; };
-		4D21D33220CC9FF9002D7005 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D30F20CC9FF9002D7005 /* RegisterViewController.swift */; };
 		4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */; };
 		4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */; };
 		4D26EE6120E5C5DB00E369EF /* ParkingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */; };
@@ -91,6 +89,7 @@
 		4DC4B9FD20CDA5AD004FFBCE /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC4B9F220CDA5AD004FFBCE /* BaseCell.swift */; };
 		4DC4B9FE20CDA5AD004FFBCE /* AirbnbDatePickerMonthHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC4B9F320CDA5AD004FFBCE /* AirbnbDatePickerMonthHeader.swift */; };
 		4DC4BA0420CE08E3004FFBCE /* AirbnbMapExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC4BA0320CE08E3004FFBCE /* AirbnbMapExploreHeaderView.swift */; };
+		4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */; };
 		4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492620F018D200F00B3B /* CheckoutRowView.swift */; };
 		4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492720F018D200F00B3B /* Buttons.swift */; };
 		4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492820F018D300F00B3B /* CheckoutViewController.swift */; };
@@ -103,9 +102,12 @@
 		4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */; };
 		4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */; };
 		4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */; };
-		4DE3B67A20CF54EA00D408E3 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE3B67920CF54EA00D408E3 /* CircularTransition.swift */; };
 		4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */; };
 		4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */; };
+		4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */; };
+		4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */; };
+		4DFB44A020F41BC4007A54B1 /* JustInCase!.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449F20F41BC4007A54B1 /* JustInCase!.swift */; };
+		4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,12 +128,10 @@
 		4D21D2FD20CC9FF9002D7005 /* SettingNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingNavViewController.swift; sourceTree = "<group>"; };
 		4D21D30020CC9FF9002D7005 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		4D21D30120CC9FF9002D7005 /* FeedNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavViewController.swift; sourceTree = "<group>"; };
-		4D21D30320CC9FF9002D7005 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4D21D30820CC9FF9002D7005 /* NotificationsNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsNavViewController.swift; sourceTree = "<group>"; };
 		4D21D30A20CC9FF9002D7005 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		4D21D30B20CC9FF9002D7005 /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		4D21D30C20CC9FF9002D7005 /* AccountNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountNavViewController.swift; sourceTree = "<group>"; };
-		4D21D30F20CC9FF9002D7005 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingSpots.swift; sourceTree = "<group>"; };
 		4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTableViewCell.swift; sourceTree = "<group>"; };
 		4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParkingTableViewCell.xib; sourceTree = "<group>"; };
@@ -193,6 +193,7 @@
 		4DC4B9F220CDA5AD004FFBCE /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		4DC4B9F320CDA5AD004FFBCE /* AirbnbDatePickerMonthHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirbnbDatePickerMonthHeader.swift; sourceTree = "<group>"; };
 		4DC4BA0320CE08E3004FFBCE /* AirbnbMapExploreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirbnbMapExploreHeaderView.swift; sourceTree = "<group>"; };
+		4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentParkingViewController.swift; sourceTree = "<group>"; };
 		4DCA492620F018D200F00B3B /* CheckoutRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutRowView.swift; sourceTree = "<group>"; };
 		4DCA492720F018D200F00B3B /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		4DCA492820F018D300F00B3B /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
@@ -207,9 +208,12 @@
 		4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "drivewayz-Bridging-Header.h"; sourceTree = "<group>"; };
 		4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataChartsViewController.swift; sourceTree = "<group>"; };
 		4DE2D6AE20CCAB2000A07A37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Info.plist; sourceTree = "<absolute>"; };
-		4DE3B67920CF54EA00D408E3 /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
 		4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVehicleViewController.swift; sourceTree = "<group>"; };
 		4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserParkingViewController.swift; sourceTree = "<group>"; };
+		4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddANewVehicleViewController.swift; sourceTree = "<group>"; };
+		4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddANewParkingSpotViewController.swift; sourceTree = "<group>"; };
+		4DFB449F20F41BC4007A54B1 /* JustInCase!.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JustInCase!.swift"; sourceTree = "<group>"; };
+		4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccountViewController.swift; sourceTree = "<group>"; };
 		A0713549ABE0DF68B5391F60 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DC18D2CA7016707159A910 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
 		CF7ED98441A81D70E5145026 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
@@ -300,11 +304,8 @@
 		4D21D33620CCA111002D7005 /* Enter Views */ = {
 			isa = PBXGroup;
 			children = (
-				4D21D30320CC9FF9002D7005 /* LoginViewController.swift */,
 				4D37436120DC989900923BC4 /* TabViewController.swift */,
 				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
-				4D21D30F20CC9FF9002D7005 /* RegisterViewController.swift */,
-				4DE3B67920CF54EA00D408E3 /* CircularTransition.swift */,
 			);
 			path = "Enter Views";
 			sourceTree = "<group>";
@@ -335,10 +336,14 @@
 		4D21D33A20CCA18E002D7005 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				4DFB449F20F41BC4007A54B1 /* JustInCase!.swift */,
 				4D21D30B20CC9FF9002D7005 /* AccountViewController.swift */,
 				4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */,
 				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
+				4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */,
+				4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */,
 				4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */,
+				4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */,
 				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
 			);
 			path = Account;
@@ -385,6 +390,7 @@
 			isa = PBXGroup;
 			children = (
 				4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */,
+				4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */,
 				4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */,
 				4D53F9A920D97EEE00A1C1FA /* ParkingPreviewView.swift */,
 				4D53F9AB20D9837400A1C1FA /* ParkingDetailsViewController.swift */,
@@ -638,11 +644,17 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AirbnbDatePicker/AirbnbDatePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -651,11 +663,17 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AirbnbDatePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -679,6 +697,7 @@
 				4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */,
 				4D6A5AA120CD97DF00F404A7 /* AirbnbMapItemCell.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
+				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
 				4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */,
 				4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */,
@@ -695,7 +714,6 @@
 				4D6A5AAE20CD97DF00F404A7 /* BaseTableCell.swift in Sources */,
 				4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */,
 				4D6A5A7F20CD978300F404A7 /* UITabBar.swift in Sources */,
-				4DE3B67A20CF54EA00D408E3 /* CircularTransition.swift in Sources */,
 				4DC4B9E620CDA574004FFBCE /* AirbnbOccupantFilterController.swift in Sources */,
 				4DC4B9FB20CDA5AD004FFBCE /* AirbnbDatePickerFooter.swift in Sources */,
 				4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */,
@@ -726,9 +744,11 @@
 				4D6A5A9020CD97C900F404A7 /* ImageShrinkAnimationController.swift in Sources */,
 				4D21D32D20CC9FF9002D7005 /* ChatMessageCell.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
+				4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */,
 				4DC4B9F820CDA5AD004FFBCE /* AirbnbDatePickerCell.swift in Sources */,
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
 				4DC4B9FD20CDA5AD004FFBCE /* BaseCell.swift in Sources */,
+				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
 				4D6A5AA720CD97DF00F404A7 /* AirbnbPageTabItem.swift in Sources */,
 				4D6A5A8D20CD97C900F404A7 /* AirbnbExploreController.swift in Sources */,
 				4D6A5AAC20CD97DF00F404A7 /* BasePageTabItemView.swift in Sources */,
@@ -738,6 +758,7 @@
 				4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */,
 				4D6A5AA620CD97DF00F404A7 /* AirbnbButton.swift in Sources */,
 				4D6A5AA320CD97DF00F404A7 /* AirbnbCategoryTableCell.swift in Sources */,
+				4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */,
 				4D6A5A9120CD97C900F404A7 /* AirbnbMapController.swift in Sources */,
 				4D21D31F20CC9FF9002D7005 /* Extensions.swift in Sources */,
 				4D6A5A7420CD976C00F404A7 /* AirbnbContentThumbnail.swift in Sources */,
@@ -753,13 +774,12 @@
 				4D53F9AA20D97EEE00A1C1FA /* ParkingPreviewView.swift in Sources */,
 				4D6A5AA420CD97DF00F404A7 /* BaseCollectionCell.swift in Sources */,
 				4D21D32320CC9FF9002D7005 /* ChatLogController.swift in Sources */,
-				4D21D32620CC9FF9002D7005 /* LoginViewController.swift in Sources */,
 				4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */,
 				4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */,
-				4D21D33220CC9FF9002D7005 /* RegisterViewController.swift in Sources */,
 				4D6A5A8A20CD97C900F404A7 /* AirbnbExploreHomeController.swift in Sources */,
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
+				4DFB44A020F41BC4007A54B1 /* JustInCase!.swift in Sources */,
 				4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -282,6 +282,8 @@ class UserVehicleViewController: UIViewController {
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(1)), execute: {
                 self.setupVehicleView()
+                self.startActivityIndicatorView.stopAnimating()
+                self.blurSquare.alpha = 0
             })
         }, withCancel: nil)
         return

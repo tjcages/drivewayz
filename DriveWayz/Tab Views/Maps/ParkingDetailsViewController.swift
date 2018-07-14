@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleMaps
 
 var parkingAddress: String?
 var parkingDistances: String?
@@ -44,10 +45,12 @@ var SundayTo: String?
 
 class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    var account: String? = "No account."
+    
     var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = Theme.OFF_WHITE
         return view
     }()
     
@@ -77,12 +80,13 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = Theme.OFF_WHITE
         self.navigationController?.navigationBar.isHidden = true
 
         hoursView.delegate = self
         hoursView.dataSource = self
         
+        checkAccount()
         setupViews()
         setupViewControllers()
         setupSegments()
@@ -141,7 +145,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
 
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.WHITE
+        line.backgroundColor = Theme.OFF_WHITE
         reserveContainer.addSubview(line)
         line.topAnchor.constraint(equalTo: labelTitle.bottomAnchor).isActive = true
         line.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -180,7 +184,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
 
         let line1 = UIView()
         line1.translatesAutoresizingMaskIntoConstraints = false
-        line1.backgroundColor = Theme.WHITE
+        line1.backgroundColor = Theme.OFF_WHITE
         self.view.addSubview(line1)
         line1.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
         line1.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -189,7 +193,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
 
         let line2 = UIView()
         line2.translatesAutoresizingMaskIntoConstraints = false
-        line2.backgroundColor = Theme.WHITE
+        line2.backgroundColor = Theme.OFF_WHITE
         self.view.addSubview(line2)
         line2.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
         line2.widthAnchor.constraint(equalToConstant: 1).isActive = true
@@ -198,12 +202,19 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
 
         let line3 = UIView()
         line3.translatesAutoresizingMaskIntoConstraints = false
-        line3.backgroundColor = Theme.WHITE
+        line3.backgroundColor = Theme.OFF_WHITE
         self.view.addSubview(line3)
         line3.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
         line3.widthAnchor.constraint(equalToConstant: 1).isActive = true
         line3.heightAnchor.constraint(equalToConstant: 40).isActive = true
         line3.leftAnchor.constraint(equalTo: labelDistance.rightAnchor).isActive = true
+        
+        unavailable.addTarget(self, action: #selector(availabilityPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(unavailable)
+        unavailable.centerXAnchor.constraint(equalTo: reserveContainer.centerXAnchor).isActive = true
+        unavailable.topAnchor.constraint(equalTo: line.bottomAnchor).isActive = true
+        unavailable.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
+        unavailable.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor, constant: -1).isActive = true
         
     }
     
@@ -287,6 +298,14 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
         
     }
     
+    func spotIsAvailable() {
+        unavailable.alpha = 0
+    }
+    
+    func spotIsNotAvailable() {
+        unavailable.alpha = 1
+    }
+    
     @objc func infoPressed(sender: UIButton) {
         myScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
         segmentLineLeftAnchor1.isActive = true
@@ -335,31 +354,58 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
         let cost: Int = Int(editedHour!)!
         
         let totalCost = cost * hours!
-        
         let checkoutViewController = CheckoutViewController(product: product!,
                                                             price: totalCost,
                                                             hours: hours!,
                                                             ID: ids!,
+                                                            account: account!,
                                                             parkingID: parkingIDs!)
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(formattedLocation!) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let _ = placemarks.first?.location
+                else {
+                    print("No associated location")
+                    return
+            }
+        }
         UIApplication.shared.statusBarStyle = .default
         self.navigationController?.pushViewController(checkoutViewController, animated: true)
+    }
+    
+    func checkAccount() {
+        if let currentUser = Auth.auth().currentUser?.uid {
+            let checkRef = Database.database().reference().child("users").child(currentUser)
+            checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    if let account = dictionary["accountID"] as? String {
+                        self.account = account
+                    } else {
+                        return
+                    }
+                }
+            }, withCancel: nil)
+        }
     }
     
     private var lastContentOffset: CGFloat = 0
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
-        if scrollView.contentOffset.y >= 220 {
-            self.controlTopAnchor1.isActive = false
-            self.controlTopAnchor2.isActive = true
-            UIApplication.shared.statusBarStyle = .default
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
+        if scrollView == myScrollView {
+            if scrollView.contentOffset.y >= 220 {
+                self.controlTopAnchor1.isActive = false
+                self.controlTopAnchor2.isActive = true
+                UIApplication.shared.statusBarStyle = .default
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
+            } else {
+                UIApplication.shared.statusBarStyle = .lightContent
+                self.controlTopAnchor1.isActive = true
+                self.controlTopAnchor2.isActive = false
             }
-        } else {
-            UIApplication.shared.statusBarStyle = .lightContent
-            self.controlTopAnchor1.isActive = true
-            self.controlTopAnchor2.isActive = false
         }
         
 //        if scrollView.contentOffset.y >= 220 {
@@ -420,7 +466,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
     var segmentControlView: UIView = {
         let segmentControlView = UIView()
         segmentControlView.translatesAutoresizingMaskIntoConstraints = false
-        segmentControlView.backgroundColor = Theme.WHITE
+        segmentControlView.backgroundColor = Theme.OFF_WHITE
         segmentControlView.layer.cornerRadius = 5
         
         return segmentControlView
@@ -559,7 +605,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
     var reserveContainer: UIView = {
         let reserve = UIView()
         reserve.translatesAutoresizingMaskIntoConstraints = false
-        reserve.backgroundColor = Theme.LIGHT_GRAY
+        reserve.backgroundColor = Theme.WHITE
         reserve.layer.cornerRadius = 5
         reserve.clipsToBounds = false
         
@@ -576,7 +622,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
     var hoursButton: dropDownButton = {
        let hours = dropDownButton()
         hours.translatesAutoresizingMaskIntoConstraints = false
-        hours.backgroundColor = Theme.LIGHT_GRAY
+        hours.backgroundColor = Theme.WHITE
         hours.setTitleColor(Theme.DARK_GRAY, for: .normal)
         hours.setTitle("^ hours", for: .normal)
         hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -693,9 +739,7 @@ class ParkingDetailsViewController: UIViewController, UIScrollViewDelegate, UITa
         hours = Int(integer2)
     }
     
-    
 }
-
 
 var height = NSLayoutConstraint()
 var dropDownOptions = [String]()
@@ -744,8 +788,16 @@ class dropDownView: UIView {
     }
 }
 
-
-
+var unavailable: UIButton = {
+    let button = UIButton()
+    button.backgroundColor = Theme.PRIMARY_COLOR
+    button.setTitle("Unavailable currently", for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.alpha = 1
+    button.clipsToBounds = true
+    
+    return button
+}()
 
 
 

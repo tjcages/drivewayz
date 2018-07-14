@@ -12,7 +12,7 @@ class ParkingReviewsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = Theme.OFF_WHITE
         self.navigationController?.navigationBar.isHidden = true
         
         setupViews()
