@@ -175,6 +175,7 @@
 		4D6A5A9E20CD97DE00F404A7 /* AirbnbExploreHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirbnbExploreHeaderView.swift; sourceTree = "<group>"; };
 		4D6A5A9F20CD97DE00F404A7 /* BaseTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableCell.swift; sourceTree = "<group>"; };
 		4D6A5AA020CD97DF00F404A7 /* VerticalAlignLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalAlignLabel.swift; sourceTree = "<group>"; };
+		4D745B1620FB9CAD00F82BDF /* DriveWayz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveWayz.entitlements; sourceTree = "<group>"; };
 		4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoViewController.swift; sourceTree = "<group>"; };
 		4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirbnbDatePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,6 +264,7 @@
 		4D21D2D620CC9FC3002D7005 /* DriveWayz */ = {
 			isa = PBXGroup;
 			children = (
+				4D745B1620FB9CAD00F82BDF /* DriveWayz.entitlements */,
 				4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */,
 				4DCA492520F0186700F00B3B /* Stripe */,
 				4D21D33420CCA0B3002D7005 /* Model */,
@@ -556,6 +558,11 @@
 				TargetAttributes = {
 					4D21D2D320CC9FC3002D7005 = {
 						CreatedOnToolsVersion = 9.4;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -925,6 +932,7 @@
 			baseConfigurationReference = CF7ED98441A81D70E5145026 /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 435YL82FQ2;
 				INFOPLIST_FILE = DriveWayz/Info.plist;
@@ -946,6 +954,7 @@
 			baseConfigurationReference = C3DC18D2CA7016707159A910 /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 435YL82FQ2;
 				INFOPLIST_FILE = DriveWayz/Info.plist;

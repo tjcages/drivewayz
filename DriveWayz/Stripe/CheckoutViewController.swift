@@ -9,6 +9,7 @@
 import UIKit
 import Stripe
 import Firebase
+import UserNotifications
 
 class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     
@@ -231,7 +232,6 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             title = "Success"
             message = "You bought parking in\(self.product) for \(self.hours) hours!"
             completed = true
-            CurrentParkingViewController().startCountdown(hours: self.hours)
             beginRoute()
         case .userCancellation:
             completed = false
@@ -245,6 +245,9 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
                 self.navigationController?.popViewController(animated: true)
                 self.navigationController?.navigationBar.isHidden = true
                 UIApplication.shared.statusBarStyle = .lightContent
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
+                    //
+                }
             } else {
                 //payment error
                 self.navigationController?.popViewController(animated: true)

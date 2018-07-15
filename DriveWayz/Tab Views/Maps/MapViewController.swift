@@ -249,6 +249,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
                 currentRef.observe(.childAdded, with: { (snapshot) in
+                    CurrentParkingViewController().checkCurrentParking()
                     if let dictionary = snapshot.value as? [String:AnyObject] {
                         let parkingID = dictionary["parkingID"] as? String
                         let parkingRef = Database.database().reference().child("parking").child(parkingID!)
@@ -266,7 +267,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                     }
                                     self.destination = location
                                     self.drawPath(endLocation: location)
-                                    UIView.animate(withDuration: 0.3, animations: {
+                                    UIView.animate(withDuration: 0.5, animations: {
                                         self.expand.alpha = 1
                                     })
                                 }
@@ -278,7 +279,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     for poly in (0..<self.currentPolyline.count) {
                         self.currentPolyline[poly].map = nil
                     }
-                    UIView.animate(withDuration: 0.3, animations: {
+                    let location: CLLocation? = self.mapView.myLocation
+                    if location != nil {
+                        self.mapView.animate(toLocation: (location?.coordinate)!)
+                        self.mapView.animate(toZoom: 17.0)
+                    }
+                    UIView.animate(withDuration: 0.5, animations: {
                         self.expand.alpha = 0
                     })
                     self.navigationController?.popViewController(animated: true)

@@ -12,6 +12,7 @@ import GoogleMaps
 import GooglePlaces
 import Stripe
 import FacebookCore
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.statusBarStyle = .lightContent
+        UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
         
         GMSServices.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
@@ -53,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         AppEventsLogger.activate(application)
     }
     
@@ -81,8 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     return true
                 }
                 else {
-                    // This was not a stripe url, do whatever url handling your app
-                    // normally does, if any.
                 }
             }
             
@@ -90,6 +90,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
     
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        CurrentParkingViewController().stopTimerTest()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        timerStarted = false
+        CurrentParkingViewController().restartDatabaseTimer()
+    }
+    
 }
 
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    // called when user interacts with notification (app not running in foreground)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse, withCompletionHandler
+        completionHandler: @escaping () -> Void) {
+        
+        // do something with the notification
+        print(response.notification.request.content.userInfo)
+        
+        // the docs say you should execute this asap
+        return completionHandler()
+    }
+    
+    // called if app is running in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent
+        notification: UNNotification, withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        // show alert while app is running in foreground
+        return completionHandler(UNNotificationPresentationOptions.alert)
+    }
+}
 

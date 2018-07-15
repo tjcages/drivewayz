@@ -8,8 +8,17 @@
 
 import UIKit
 import Firebase
+import UserNotifications
+
+var timerStarted: Bool = false
+var currentParking: Bool = false
+var notificationSent: Bool = false
 
 class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
+    
+    var timestamp: Double?
+    var hours: Int?
+    var timerTest : Timer?
     
     var container: UIView = {
         let view = UIView()
@@ -69,6 +78,7 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.view.backgroundColor = Theme.DARK_GRAY
         self.scrollView.delegate = self
+        UNUserNotificationCenter.current().delegate = self
 
         setupViews()
         checkCurrentParking()
@@ -114,7 +124,20 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
             currentRef.observe(.childAdded, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
+                    currentParking = true
                     let parkingID = dictionary["parkingID"] as? String
+                    self.timestamp = dictionary["timestamp"] as? Double
+                    self.hours = dictionary["hours"] as? Int
+                    
+                    if timerStarted == false {
+                        timerStarted = true
+                        self.startTiming()
+                    }
+                    if notificationSent == false {
+                        notificationSent = true
+                        self.startTimerNotification()
+                    }
+                    
                     let parkingRef = Database.database().reference().child("parking").child(parkingID!)
                     parkingRef.observeSingleEvent(of: .value, with: { (pull) in
                         if let pullRef = pull.value as? [String:AnyObject] {
@@ -142,18 +165,102 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func startCountdown(hours: Int) {
-        let seconds: Double = Double(hours * 3600)
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: {
-            self.endParkingFunc()
-        })
+    func restartDatabaseTimer() {
+        if let userID = Auth.auth().currentUser?.uid {
+            let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
+            currentRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let key = dictionary.keys
+                    let stampRef = Database.database().reference().child("users").child(userID).child("currentParking").child(key.first!)
+                    stampRef.observeSingleEvent(of: .value, with: { (check) in
+                        if let stamp = check.value as? [String:AnyObject] {
+                            currentParking = true
+                            print(stamp)
+                            let refreshTimestamp = stamp["timestamp"] as? Double
+                            let refreshHours = stamp["hours"] as? Int
+                            if timerStarted == false {
+                                timerStarted = true
+                                if currentParking == true {
+                                    let currentTimestamp = NSDate().timeIntervalSince1970
+                                    let seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                                    
+                                    if seconds >= 0 {
+                                        if self.timerTest == nil {
+                                            self.timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(self.endParkingFunc), userInfo: nil, repeats: false)
+                                            RunLoop.main.add(self.timerTest!, forMode: RunLoopMode.commonModes)
+                                        }
+                                    } else {
+                                        self.endParkingFunc()
+                                    }
+                                }
+                            }
+                        }
+                    }, withCancel: nil)
+                }
+            }
+        }
     }
     
     @objc func endParking(sender: UIButton) {
         endParkingFunc()
     }
     
-    func endParkingFunc() {
+    func startTiming() {
+        if currentParking == true {
+            let currentTimestamp = NSDate().timeIntervalSince1970
+            let seconds = (Int((timestamp?.rounded())!) + (hours! * 3600)) - Int(currentTimestamp.rounded())
+            
+            print(seconds)
+            
+            if seconds >= 0 {
+                if timerTest == nil {
+                    timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(endParkingFunc), userInfo: nil, repeats: false)
+                    RunLoop.main.add(timerTest!, forMode: RunLoopMode.commonModes)
+                }
+            } else {
+                endParkingFunc()
+            }
+        }
+    }
+    
+    func stopTimerTest() {
+        if timerTest != nil {
+            timerTest?.invalidate()
+            timerTest = nil
+            timerStarted = false
+        }
+    }
+    
+    func startTimerNotification() {
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Your time is up!"
+        content.subtitle = "Your current parking spot is done"
+        content.body = "Seriously tho"
+        content.badge = 1
+        
+        let currentTimestamp = NSDate().timeIntervalSince1970
+        let seconds = (Int((timestamp?.rounded())!) + (hours! * 3600)) - Int(currentTimestamp.rounded())
+        
+        if seconds >= 0 {
+            if notificationSent == false {
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+                let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request) { (error) in
+                    if error != nil {
+                        print("Error sending notification: ", error!)
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func endParkingFunc() {
+        print("PLEASE WORK OH GOD")
+        timerStarted = false
+        notificationSent = false
+        currentParking = false
+        
         let currentUser = Auth.auth().currentUser?.uid
         let ref = Database.database().reference().child("users").child(currentUser!).child("currentParking")
         ref.removeValue()
@@ -165,4 +272,31 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
     }
     
 
+}
+
+extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
+    
+    //for displaying notification when app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        //If you don't want to show notification when app is open, do something here else and make a return here.
+        //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
+        
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    // For handling tap and user actions
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        switch response.actionIdentifier {
+        case "action1":
+            print("Action First Tapped")
+        case "action2":
+            print("Action Second Tapped")
+        default:
+            break
+        }
+        completionHandler()
+    }
+    
 }
