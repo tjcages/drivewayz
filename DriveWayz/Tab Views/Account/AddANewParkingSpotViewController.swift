@@ -26,8 +26,16 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     var parkingMake: MadokaTextField!
     var parkingImageView: UIImageView!
     var parkingImageURL: String?
-    @IBOutlet var addANewParkingView: UIView!
-    @IBOutlet weak var visualBlurEffect: UIVisualEffectView!
+    
+    var visualBlurEffect: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurparkingInfoView = UIVisualEffectView(effect: blurEffect)
+        blurparkingInfoView.alpha = 1
+        blurparkingInfoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurparkingInfoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return blurparkingInfoView
+    }()
     
     var costParking: String = "$1.00"
     var parkingSpotImage: UIImage?
@@ -56,6 +64,16 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     var sundayFrom: String = "All Day"
     var sundayTo: String = "All Day"
 
+    var addANewParkingView: UIView = {
+        let addANewParkingView = UIView()
+        addANewParkingView.layer.cornerRadius = 20
+        addANewParkingView.clipsToBounds = true
+        addANewParkingView.isUserInteractionEnabled = true
+        addANewParkingView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return addANewParkingView
+    }()
+    
     let activityIndicatorParkingView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
@@ -1080,7 +1098,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = Theme.OFF_WHITE
+        self.view.backgroundColor = UIColor.clear
         self.tabBarController?.tabBar.isHidden = true
 
         mapView.delegate = self
@@ -1207,24 +1225,17 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     
     func setupAddAParkingView() {
         
-        self.view.addSubview(addANewParkingView)
-        self.view.sendSubview(toBack: addANewParkingView)
-        addANewParkingView.layer.cornerRadius = 20
-        addANewParkingView.clipsToBounds = true
-        addANewParkingView.isUserInteractionEnabled = true
-        addANewParkingView.translatesAutoresizingMaskIntoConstraints = false
-        addANewParkingView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-        addANewParkingView.alpha = 0
-        
-        addANewParkingView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        addANewParkingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        addANewParkingView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 50).isActive = true
-        addANewParkingView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 170).isActive = true
-        
+        self.view.addSubview(visualBlurEffect)
         visualBlurEffect.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         visualBlurEffect.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         visualBlurEffect.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         visualBlurEffect.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        
+        self.view.addSubview(addANewParkingView)
+        addANewParkingView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        addANewParkingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        addANewParkingView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 50).isActive = true
+        addANewParkingView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 170).isActive = true
         
         addANewParkingView.addSubview(mapView)
         mapView.centerXAnchor.constraint(equalTo: addANewParkingView.centerXAnchor).isActive = true
@@ -1233,7 +1244,6 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         mapView.widthAnchor.constraint(equalTo: addANewParkingView.widthAnchor).isActive = true
         
         addANewParkingView.addSubview(searchBar)
-        
         searchBar.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
         searchBar.centerXAnchor.constraint(equalTo: addANewParkingView.centerXAnchor).isActive = true
         searchBar.widthAnchor.constraint(equalToConstant: 200).isActive = true
@@ -2240,6 +2250,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     func finishAddingParking() {
+        bringFirstOptions()
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             UIView.animate(withDuration: 1, animations: {
             }, completion: nil)
@@ -2252,17 +2263,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         if parking > 0 {
             self.finishAddingParking()
         } else {}
-        self.dismiss(animated: true, completion: nil)
-        UIView.animate(withDuration: 0.3, animations: {
-            self.addANewParkingView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-            self.addANewParkingView.alpha = 0
-            self.visualBlurEffect.effect = nil
-        }) { (success: Bool) in
-            self.view.sendSubview(toBack: self.visualBlurEffect)
-        }
-        bringFirstOptions()
-        self.addANewParkingView.removeFromSuperview()
-        self.weekContainer.removeFromSuperview()
+        self.view.alpha = 0
     }
     
     @objc func handleLogout() {

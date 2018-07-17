@@ -9,24 +9,28 @@
 import UIKit
 import Firebase
 
-class TabViewController: UITabBarController, UITabBarControllerDelegate {
+var rightArrow: UIButton!
+var leftArrow: UIButton!
+
+class TabViewController: UITabBarController {
     
-    var pages = [UIViewController]()
-    let pageControl = UIPageControl()
+    var swipe: Int = 1
     
-    var rightArrow: UIButton!
-    var leftArrow: UIButton!
-    
-    lazy var bottomTabBarController: UIView = {
-        
-        let containerBar = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 50, width: self.view.frame.width, height: 50))
+    lazy var container: UIView = {
+        let containerBar = UIView()
+        containerBar.translatesAutoresizingMaskIntoConstraints = false
         containerBar.backgroundColor = UIColor.clear
-        
         let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
-        blurView.alpha = 0.9
+        blurView.alpha = 1
+        let gestureProfile = UISwipeGestureRecognizer(target: self, action: #selector(moveToProfileSwipe(sender:)))
+        gestureProfile.direction = .left
+        containerBar.addGestureRecognizer(gestureProfile)
+        let gestureMap = UISwipeGestureRecognizer(target: self, action: #selector(moveToMapSwipe(sender:)))
+        gestureMap.direction = .right
+        containerBar.addGestureRecognizer(gestureMap)
         containerBar.addSubview(blurView)
         
         blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
@@ -34,94 +38,199 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate {
         blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
         blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
         
-        leftArrow = UIButton(type: .custom)
-        let arrowLeftImage = UIImage(named: "Expand")
-        let tintedLeftImage = arrowLeftImage?.withRenderingMode(.alwaysTemplate)
-        leftArrow.setImage(tintedLeftImage, for: .normal)
-        leftArrow.translatesAutoresizingMaskIntoConstraints = false
-        leftArrow.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2))
-        leftArrow.tintColor = Theme.PRIMARY_COLOR
-        leftArrow.addTarget(self, action: #selector(tabBarRight), for: .touchUpInside)
-        containerBar.addSubview(leftArrow)
+        let whiteView = UIButton(type: .custom)
+        whiteView.backgroundColor = UIColor.white
+        whiteView.alpha = 0.5
+        whiteView.translatesAutoresizingMaskIntoConstraints = false
+        whiteView.isUserInteractionEnabled = false
+        containerBar.insertSubview(whiteView, belowSubview: blurView)
         
-        leftArrow.leftAnchor.constraint(equalTo: blurView.leftAnchor, constant: 32).isActive = true
-        leftArrow.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
-        leftArrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        leftArrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        rightArrow = UIButton(type: .custom)
-        let arrowRightImage = UIImage(named: "Expand")
-        let tintedRightImage = arrowRightImage?.withRenderingMode(.alwaysTemplate)
-        rightArrow.setImage(tintedRightImage, for: .normal)
-        rightArrow.translatesAutoresizingMaskIntoConstraints = false
-        rightArrow.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
-        rightArrow.tintColor = Theme.PRIMARY_COLOR
-        rightArrow.addTarget(self, action: #selector(tabBarRight), for: .touchUpInside)
-        containerBar.addSubview(rightArrow)
-        
-        rightArrow.rightAnchor.constraint(equalTo: blurView.rightAnchor, constant: -32).isActive = true
-        rightArrow.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
-        rightArrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        rightArrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
+        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
+        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
+        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
+        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
+
         return containerBar
     }()
+    
+    var profile: UIButton = {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "account")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.PRIMARY_COLOR
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(moveToProfileTap(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var map: UIButton = {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "notification")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.PRIMARY_COLOR
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(moveToMapTap(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var mapController: MapViewController = {
+        let controller = MapViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Map"
+        return controller
+    }()
+    
+    lazy var accountController: AccountViewController = {
+        let controller = AccountViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Profile"
+        return controller
+    }()
+    
+    var mapControllerAnchor: NSLayoutConstraint!
+    var accountControllerAnchor: NSLayoutConstraint!
+    var mapCenterAnchor: NSLayoutConstraint!
+    var profileCenterAnchor: NSLayoutConstraint!
+    
+    var containerLeftAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         }
         
         self.tabBarController?.tabBar.isHidden = true
         
-        self.view.addSubview(bottomTabBarController)
+        self.view.addSubview(mapController.view)
+        mapControllerAnchor = mapController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        mapControllerAnchor.isActive = true
+        mapController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        mapController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        mapController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        bottomTabBarController.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bottomTabBarController.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        bottomTabBarController.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        bottomTabBarController.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(accountController.view)
+        accountControllerAnchor = accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width)
+        accountControllerAnchor.isActive = true
+        accountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        accountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        accountController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        setupPageControl()
+        self.view.addSubview(container)
+        containerLeftAnchor = container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3)
+            containerLeftAnchor.isActive = true
+        container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        container.addSubview(map)
+        map.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        map.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        mapCenterAnchor = map.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/2)
+            mapCenterAnchor.isActive = true
+        map.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        
+        container.addSubview(profile)
+        profile.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        profile.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        profileCenterAnchor = profile.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*3/4)
+            profileCenterAnchor.isActive = true
+        profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
 
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        if let viewControllerIndex = self.pages.index(of: viewController) {
-            if viewControllerIndex == 0 {
-                // wrap to last page in array
-                return self.pages.last
-            } else {
-                // go to previous page in array
-                return self.pages[viewControllerIndex - 1]
-            }
-        }
-        return nil
+    @objc func moveToProfileTap(sender: UIButton) {
+        moveTopProfile()
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
-        if let viewControllerIndex = self.pages.index(of: viewController) {
-            if viewControllerIndex < self.pages.count - 1 {
-                // go to next page in array
-                return self.pages[viewControllerIndex + 1]
-            } else {
-                // wrap to first page in array
-                return self.pages.first
-            }
-        }
-        return nil
+    @objc func moveToProfileSwipe(sender: UITapGestureRecognizer) {
+        moveTopProfile()
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
-        if let viewControllers = pageViewController.viewControllers {
-            if let viewControllerIndex = self.pages.index(of: viewControllers[0]) {
-                self.pageControl.currentPage = viewControllerIndex
+    func moveTopProfile() {
+        if mapControllerAnchor.constant == 0 {
+//            sendprofile()
+            self.containerLeftAnchor.constant = 0
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3, animations: {
+                UIApplication.shared.statusBarStyle = .lightContent
+                self.accountControllerAnchor.constant = 0
+                self.mapControllerAnchor.constant = -self.view.frame.width
+                self.mapCenterAnchor.constant = self.view.frame.width/4
+                self.profileCenterAnchor.constant = self.view.frame.width/2
+                self.view.layoutIfNeeded()
+            }) { (success) in
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    self.mapController.willMove(toParentViewController: nil)
+//                    self.mapController.view.removeFromSuperview()
+//                    self.mapController.removeFromParentViewController()
+//                }
             }
         }
+    }
+    
+    func sendprofile() {
+        
+        self.addChildViewController(accountController)
+        accountController.didMove(toParentViewController: self)
+        
+        self.view.addSubview(accountController.view)
+        accountControllerAnchor = accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width)
+        accountControllerAnchor.isActive = true
+        accountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        accountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        accountController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.view.bringSubview(toFront: container)
+    }
+    
+    @objc func moveToMapTap(sender: UIButton) {
+        moveToMap()
+    }
+    
+    @objc func moveToMapSwipe(sender: UITapGestureRecognizer) {
+        moveToMap()
+    }
+    
+    func moveToMap() {
+        if accountControllerAnchor.constant == 0 {
+//            sendmap()
+            self.containerLeftAnchor.constant = self.view.frame.width/3
+            UIView.animate(withDuration: 0.3, animations: {
+                UIApplication.shared.statusBarStyle = .default
+                self.mapControllerAnchor.constant = 0
+                self.accountControllerAnchor.constant = self.view.frame.width
+                self.mapCenterAnchor.constant = self.view.frame.width/2
+                self.profileCenterAnchor.constant = self.view.frame.width*3/4
+                self.view.layoutIfNeeded()
+            }) { (success) in
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    self.accountController.willMove(toParentViewController: nil)
+//                    self.accountController.view.removeFromSuperview()
+//                    self.accountController.removeFromParentViewController()
+//                }
+            }
+        }
+    }
+    
+    func sendmap() {
+        self.addChildViewController(mapController)
+        mapController.didMove(toParentViewController: self)
+        
+        self.view.addSubview(mapController.view)
+        mapControllerAnchor = mapController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        mapControllerAnchor.isActive = true
+        mapController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        mapController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        mapController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.view.bringSubview(toFront: container)
     }
 
     override func didReceiveMemoryWarning() {
@@ -133,48 +242,11 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate {
         return .lightContent
     }
     
-    func setupPageControl() {
-        
-        self.delegate = self
-        let initialPage = 0
-        let page1 = MapViewController()
-        let page2 = AirbnbExploreController()
-        let page3 = MessageTableViewController()
-        
-        // add the individual viewControllers to the pageViewController
-        self.pages.append(page1)
-        self.pages.append(page2)
-        self.pages.append(page3)
-//        setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
-        
-        // pageControl
-        self.pageControl.frame = CGRect()
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_DARK_COLOR
-        self.pageControl.pageIndicatorTintColor = Theme.PRIMARY_COLOR
-        self.pageControl.numberOfPages = self.pages.count
-        self.pageControl.currentPage = initialPage
-        self.bottomTabBarController.addSubview(self.pageControl)
-        
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.centerYAnchor.constraint(equalTo: self.bottomTabBarController.centerYAnchor).isActive = true
-        self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -200).isActive = true
-        self.pageControl.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        
-        self.view.bringSubview(toFront: bottomTabBarController)
-    }
-    
-    @objc func tabBarRight() {
-        print("hello")
-    }
-    
     @objc func handleLogout() {
         self.performSegue(withIdentifier: "loginView", sender: self)
     }
 
 }
-
-
 
 
 

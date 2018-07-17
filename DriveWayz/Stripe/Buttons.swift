@@ -28,6 +28,48 @@ class HighlightingButton: UIButton {
     }
 }
 
+class ReservationButton: UIButton {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.setTitle("Reserve Spot", for: .normal)
+        self.setTitle("", for: .selected)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        self.backgroundColor = UIColor.clear
+        self.alpha = 0.5
+        self.translatesAutoresizingMaskIntoConstraints = false
+        //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
+        self.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.isUserInteractionEnabled = false
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class PaymentButton: UIButton  {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.setTitle("Payment", for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        self.backgroundColor = UIColor.clear
+        self.alpha = 0.5
+        self.translatesAutoresizingMaskIntoConstraints = false
+        //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
+        self.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.isUserInteractionEnabled = false
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
 class BuyButton: HighlightingButton {
     var disabledColor = UIColor.lightGray
     var enabledColor = Theme.PRIMARY_COLOR

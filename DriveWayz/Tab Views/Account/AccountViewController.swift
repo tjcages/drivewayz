@@ -20,14 +20,19 @@ var cityAddress: String = ""
 var parkingSpotImage: UIImage?
 var parking: Int = 0
 
+var newParkingController: AddANewParkingSpotViewController = {
+    let controller = AddANewParkingSpotViewController()
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    controller.title = "New Parking"
+    controller.view.alpha = 0
+    return controller
+}()
+
 class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
 
-    @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var profileName: UILabel!
-    @IBOutlet weak var visualBlurEffect: UIVisualEffectView!
+    var visualBlurEffect = UIVisualEffectView()
     
     var picker = UIImagePickerController()
-    let pageControl = UIPageControl()
     
     var contentView: UIView = {
         let view = UIView()
@@ -48,7 +53,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let controller = DataChartsViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Info"
+        controller.title = "Charts"
         return controller
     }()
     
@@ -56,7 +61,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let controller = UserParkingViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Availability"
+        controller.title = "Parking"
         return controller
     }()
     
@@ -64,66 +69,26 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let controller = UserVehicleViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Reviews"
+        controller.title = "Vehicle"
         return controller
     }()
     
-    lazy var profileWrap: UIView = {
-        let grayView = UIView()
-        grayView.backgroundColor = Theme.PRIMARY_DARK_COLOR
-        grayView.frame = CGRect(x: 0, y: 0, width: grayView.frame.width, height: grayView.frame.height / 4)
-        grayView.translatesAutoresizingMaskIntoConstraints = false
-        grayView.isUserInteractionEnabled = true
-        grayView.alpha = 1
-        
-        let outerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width + 40, height: 220))
-        outerView.clipsToBounds = false
-        outerView.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        outerView.layer.shadowOpacity = 0.8
-        outerView.layer.shadowOffset = CGSize.zero
-        outerView.layer.shadowRadius = 10
-        outerView.layer.shadowPath = UIBezierPath(roundedRect: outerView.bounds, cornerRadius: 0).cgPath
-        outerView.translatesAutoresizingMaskIntoConstraints = false
-
-        profileImageView.image = UIImage(named: "background4")
+    var profileImageView: UIImageView = {
+        let profileImageView = UIImageView()
+        let image = UIImage(named: "background4")
+        profileImageView.image = image
         profileImageView.isUserInteractionEnabled = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.backgroundColor = UIColor.white
-        profileImageView.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        profileImageView.layer.shadowRadius = 3
-        profileImageView.layer.shadowOpacity = 0.8
-        profileImageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        profileImageView.layer.cornerRadius = 50
         profileImageView.clipsToBounds = true
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = profileImageView.frame
-        blurEffectView.alpha = 0.4
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        let holdGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
-        blurEffectView.addGestureRecognizer(holdGesture)
-        grayView.addSubview(profileImageView)
-        grayView.bringSubview(toFront: profileImageView)
-        grayView.addSubview(blurEffectView)
-        grayView.addSubview(outerView)
-        grayView.sendSubview(toBack: outerView)
-
-        outerView.centerXAnchor.constraint(equalTo: grayView.centerXAnchor).isActive = true
-        outerView.centerYAnchor.constraint(equalTo: grayView.centerYAnchor).isActive = true
-        outerView.widthAnchor.constraint(equalTo: grayView.widthAnchor, constant: 40).isActive = true
-        outerView.heightAnchor.constraint(equalTo: grayView.heightAnchor).isActive = true
         
-        blurEffectView.centerXAnchor.constraint(equalTo: grayView.centerXAnchor).isActive = true
-        blurEffectView.centerYAnchor.constraint(equalTo: grayView.centerYAnchor).isActive = true
-        blurEffectView.widthAnchor.constraint(equalTo: grayView.widthAnchor).isActive = true
-        blurEffectView.heightAnchor.constraint(equalTo: grayView.heightAnchor).isActive = true
-
-        profileImageView.centerXAnchor.constraint(equalTo: grayView.centerXAnchor).isActive = true
-        profileImageView.centerYAnchor.constraint(equalTo: grayView.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalTo: grayView.widthAnchor).isActive = true
-        profileImageView.heightAnchor.constraint(equalTo: grayView.heightAnchor).isActive = true
-        
+        return profileImageView
+    }()
+    
+    var profileName: UILabel = {
+        let profileName = UILabel()
         profileName.translatesAutoresizingMaskIntoConstraints = false
         profileName.textColor = UIColor.white
         profileName.layer.shadowColor = UIColor.darkGray.cgColor
@@ -133,62 +98,19 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileName.layer.masksToBounds = false
         profileName.clipsToBounds = false
         profileName.contentMode = .topLeft
-        profileName.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        grayView.addSubview(profileName)
+        profileName.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         
-        profileName.leftAnchor.constraint(equalTo: grayView.leftAnchor, constant: 18).isActive = true
-        profileName.bottomAnchor.constraint(equalTo: grayView.bottomAnchor, constant: -32).isActive = true
-        profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
-        profileName.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        return grayView
+        return profileName
     }()
     
-    lazy var bottomTabBarController: UIView = {
+    lazy var profileWrap: UIView = {
+        let grayView = UIView()
+        grayView.backgroundColor = Theme.PRIMARY_COLOR
+        grayView.translatesAutoresizingMaskIntoConstraints = false
+        grayView.isUserInteractionEnabled = true
+        grayView.alpha = 0.9
         
-        let containerBar = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 50, width: self.view.frame.width, height: 50))
-        containerBar.backgroundColor = UIColor.clear
-        
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.isUserInteractionEnabled = false
-        blurView.alpha = 1
-        containerBar.addSubview(blurView)
-        
-        blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        let whiteView = UIButton(type: .custom)
-        whiteView.backgroundColor = UIColor.white
-        whiteView.alpha = 0.5
-        whiteView.translatesAutoresizingMaskIntoConstraints = false
-        whiteView.isUserInteractionEnabled = false
-        containerBar.insertSubview(whiteView, belowSubview: blurView)
-        
-        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        leftArrow = UIButton(type: .custom)
-        let arrowLeftImage = UIImage(named: "Expand")
-        let tintedLeftImage = arrowLeftImage?.withRenderingMode(.alwaysTemplate)
-        leftArrow.setImage(tintedLeftImage, for: .normal)
-        leftArrow.translatesAutoresizingMaskIntoConstraints = false
-        leftArrow.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2))
-        leftArrow.tintColor = Theme.PRIMARY_COLOR
-        leftArrow.addTarget(self, action: #selector(tabBarLeft), for: .touchUpInside)
-        containerBar.addSubview(leftArrow)
-        
-        leftArrow.leftAnchor.constraint(equalTo: blurView.leftAnchor, constant: 32).isActive = true
-        leftArrow.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
-        leftArrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        leftArrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
-
-        return containerBar
+        return grayView
     }()
     
     lazy var profileSettings: UIView = {
@@ -308,8 +230,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         fetchUser()
         setupTopView()
         setupViews()
-        setupBottomTab()
-        setupPageControl()
         setupViewControllers()
         startUpActivity()
 
@@ -344,51 +264,31 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func setupTopView() {
-        scrollView.addSubview(profileWrap)
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
+        scrollView.addSubview(profileWrap)
         profileWrap.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         profileWrap.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        profileWrap.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: -statusBarHeight).isActive = true
-        profileWrap.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        profileWrap.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        profileWrap.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        
+        profileWrap.addSubview(profileImageView)
+        profileImageView.leftAnchor.constraint(equalTo: profileWrap.leftAnchor, constant: 10).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: profileWrap.centerYAnchor, constant: 20).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        profileWrap.addSubview(profileName)
+        profileName.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 15).isActive = true
+        profileName.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 25).isActive = true
+        profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
+        profileName.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         scrollView.addSubview(profileSettings)
-        scrollView.bringSubview(toFront: profileSettings)
-        
         profileSettings.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        profileSettings.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32 - statusBarHeight/2).isActive = true
+        profileSettings.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 50).isActive = true
         profileSettings.widthAnchor.constraint(equalToConstant: 40).isActive = true
         profileSettings.heightAnchor.constraint(equalToConstant: 40).isActive = true
     
-    }
-    
-    func setupBottomTab() {
-        
-        self.view.addSubview(bottomTabBarController)
-        
-        bottomTabBarController.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bottomTabBarController.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        bottomTabBarController.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        bottomTabBarController.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-    }
-    
-    func setupPageControl() {
-        
-        self.pageControl.frame = CGRect()
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_DARK_COLOR
-        self.pageControl.pageIndicatorTintColor = Theme.PRIMARY_COLOR
-        self.pageControl.numberOfPages = 3
-        self.pageControl.currentPage = 2
-        self.pageControl.isUserInteractionEnabled = false
-        self.view.addSubview(self.pageControl)
-        
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -25).isActive = true
-        self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -200).isActive = true
-        self.pageControl.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        
     }
     
     var controlTopAnchor1: NSLayoutConstraint!
@@ -446,6 +346,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         segmentLineLeftAnchor3 = selectionLine.leftAnchor.constraint(equalTo: vehicleSegment.leftAnchor)
         segmentLineLeftAnchor3.isActive = false
         
+        self.view.bringSubview(toFront: self.profileSettings)
+        
     }
     
     var earningsViewAnchor: NSLayoutConstraint!
@@ -478,7 +380,13 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         vehicleController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
         vehicleController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
         
-        self.view.bringSubview(toFront: self.profileSettings)
+        self.addChildViewController(newParkingController)
+        newParkingController.didMove(toParentViewController: self)
+        self.view.addSubview(newParkingController.view)
+        newParkingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        newParkingController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
     }
     
@@ -582,10 +490,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let userName = dictionary["name"] as? String
+                let email = dictionary["email"] as? String
                 let userPicture = dictionary["picture"] as? String
                 let userVehicleID = dictionary["vehicleID"] as? String
                 let userParkingID = dictionary["parkingID"] as? String
                 self.profileName.text = userName
+                userEmail = email
                 if userPicture == "" {
                     self.profileImageView.image = UIImage(named: "background4")
                 } else {
@@ -619,15 +529,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("canceled picker")
         dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func tabBarRight() {
-        print("Rightmost VC")
-    }
-    @objc func tabBarLeft() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tabBarController?.selectedIndex = 1
-        }, completion: nil)
     }
     
     @objc func handleLogout() {
@@ -939,7 +840,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                 })
             }
         }
-        
     }
 
 }

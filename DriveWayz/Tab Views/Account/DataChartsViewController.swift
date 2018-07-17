@@ -21,8 +21,11 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
        let chart = UIView()
         chart.translatesAutoresizingMaskIntoConstraints = false
         chart.backgroundColor = Theme.WHITE
+        chart.layer.shadowColor = UIColor.darkGray.cgColor
+        chart.layer.shadowOffset = CGSize(width: 1, height: 1)
+        chart.layer.shadowOpacity = 0.8
         chart.layer.cornerRadius = 10
-        chart.clipsToBounds = true
+        chart.layer.shadowRadius = 1
         
         return chart
     }()

@@ -22,10 +22,8 @@ struct Parking {
 
 var userEmail: String?
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
-    
-    var tabPull: UIView!
-    let pageControl = UIPageControl()
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+
     let cellId = "cellId"
     var currentActive: Bool = false
     
@@ -43,101 +41,79 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let customMarkerWidth: Int = 50
     let customMarkerHeight: Int = 70
     
-    var driveWayzLogo: UIImageView!
-    var arrow: UIButton!
-    var containerView: UIView!
-    
-    lazy var topWrap: UIView = {
-        containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160))
-        containerView.backgroundColor = Theme.SEETHROUGH_PRIMARY
-        containerView.alpha = 0.9
-        containerView.layer.shadowRadius = 3
-        containerView.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
-        containerView.layer.shadowOpacity = 0.8
-        
-        let blurEffect = UIBlurEffect(style: .dark)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.isUserInteractionEnabled = false
-        blurView.alpha = 0.7
-        containerView.addSubview(blurView)
-        
-        blurView.leftAnchor.constraint(equalTo: containerView.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: containerView.rightAnchor).isActive = true
-        blurView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        
-        arrow = UIButton(type: .custom)
-        let arrowImage = UIImage(named: "Expand")
-        arrow.setImage(arrowImage, for: .normal)
-        arrow.translatesAutoresizingMaskIntoConstraints = false
-        arrow.tintColor = Theme.PRIMARY_COLOR
-        arrow.addTarget(self, action: #selector(minimizeTopView), for: .touchUpInside)
-        containerView.addSubview(arrow)
+    var topSearch: UIButton = {
+        let search = UIButton(type: .custom)
+        let image = UIImage(named: "Search")
+        search.setImage(image, for: .normal)
+        search.translatesAutoresizingMaskIntoConstraints = false
+        search.addTarget(self, action: #selector(animateSearchBar(sender:)), for: .touchUpInside)
 
-        return containerView
+        return search
     }()
     
-    lazy var bottomTabBarController: UIView = {
+    lazy var tabPull: UIView = {
+        let tabPull = UIView()
+        tabPull.layer.cornerRadius = 20
+        tabPull.translatesAutoresizingMaskIntoConstraints = false
+        tabPull.backgroundColor = Theme.PRIMARY_COLOR
+        tabPull.alpha = 0.9
         
-        let containerBar = UIView(frame: CGRect(x: 0, y: self.view.frame.height - 50, width: self.view.frame.width, height: 50))
-        containerBar.backgroundColor = UIColor.clear
+        return tabPull
+    }()
+    
+    var tabFeed: UIButton = {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "feed")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
+        button.addTarget(self, action: #selector(optionsTabGestureTapped(sender:)), for: .touchUpInside)
+        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
+        gestureOpen.direction = .right
+        button.addGestureRecognizer(gestureOpen)
         
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.isUserInteractionEnabled = false
-        blurView.alpha = 0.9
-        containerBar.addSubview(blurView)
-        
-        blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        rightArrow = UIButton(type: .custom)
-        let arrowRightImage = UIImage(named: "Expand")
-        let tintedRightImage = arrowRightImage?.withRenderingMode(.alwaysTemplate)
-        rightArrow.setImage(tintedRightImage, for: .normal)
-        rightArrow.translatesAutoresizingMaskIntoConstraints = false
-        rightArrow.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
-        rightArrow.tintColor = Theme.PRIMARY_COLOR
-        rightArrow.addTarget(self, action: #selector(tabBarRight), for: .touchUpInside)
-        containerBar.addSubview(rightArrow)
-        
-        rightArrow.rightAnchor.constraint(equalTo: blurView.rightAnchor, constant: -32).isActive = true
-        rightArrow.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
-        rightArrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        rightArrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        return containerBar
+        return button
     }()
     
     let mapView: GMSMapView = {
         let view = GMSMapView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.center = CGPoint(x: view.frame.width / 2, y: view.frame.height / 2 - 100)
+        
         return view
     }()
     
     let searchBar: UITextField = {
         let search = UITextField()
-        search.borderStyle = .roundedRect
-        search.backgroundColor = .white
-        search.layer.borderColor = UIColor.darkGray.cgColor
-        search.placeholder = "Search.."
+        search.layer.cornerRadius = 20
+        search.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        search.textColor = Theme.WHITE
+        search.alpha = 0.9
+        search.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        search.layer.shadowOffset = CGSize(width: 1, height: 1)
+        search.layer.shadowRadius = 1
+        search.layer.shadowOpacity = 0.8
+        search.attributedPlaceholder = NSAttributedString(string: "",
+                                                               attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         search.translatesAutoresizingMaskIntoConstraints = false
         return search
     }()
     
     let locatorButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.white
-        button.setImage(#imageLiteral(resourceName: "my_location"), for: .normal)
-        button.layer.cornerRadius = 25
-        button.clipsToBounds = true
-        button.tintColor = UIColor.gray
-        button.imageView?.tintColor = UIColor.gray
+        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        let image = UIImage(named: "my_location")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.layer.cornerRadius = 20
+        button.alpha = 0.9
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 1
+        button.layer.shadowOpacity = 0.8
         button.addTarget(self, action: #selector(locatorButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -165,51 +141,74 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return view
     }()
     
-    lazy var currentParkingController: CurrentParkingViewController = {
-        let controller = CurrentParkingViewController()
+    lazy var purchaseViewController: ParkingDetailsViewController = {
+        let controller = ParkingDetailsViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Current Parking"
+        controller.title = "Purchase Controller"
+        controller.view.layer.cornerRadius = 10
+        
         return controller
     }()
     
-    var expand: UIView = {
-        let expand = UIView()
-        expand.translatesAutoresizingMaskIntoConstraints = false
-        expand.backgroundColor = Theme.WHITE
-        expand.layer.cornerRadius = 10
-        expand.alpha = 0
-        expand.isUserInteractionEnabled = true
-        
-        let label = UILabel()
-        label.text = "Current parking"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = Theme.PRIMARY_COLOR
-        label.textAlignment = .center
-        
-        expand.addSubview(label)
-        label.centerXAnchor.constraint(equalTo: expand.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: expand.centerYAnchor).isActive = true
-        label.heightAnchor.constraint(equalTo: expand.heightAnchor).isActive = true
-        label.widthAnchor.constraint(equalTo: expand.widthAnchor).isActive = true
-        
-        return expand
+    var hoursButton: dropDownButton = {
+        let hours = dropDownButton()
+        hours.translatesAutoresizingMaskIntoConstraints = false
+        hours.backgroundColor = Theme.WHITE
+        hours.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        hours.setTitle("^ hours", for: .normal)
+        hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        hours.dropView.dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
+        hours.layer.cornerRadius = 10
+
+        return hours
     }()
     
+    lazy var container: UIView = {
+        let containerBar = UIView()
+        containerBar.translatesAutoresizingMaskIntoConstraints = false
+        containerBar.backgroundColor = UIColor.clear
+        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
+        gestureOpen.direction = .right
+        containerBar.addGestureRecognizer(gestureOpen)
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
+        gesture.direction = .left
+        containerBar.addGestureRecognizer(gesture)
+        
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        blurView.isUserInteractionEnabled = false
+        blurView.alpha = 1
+        containerBar.addSubview(blurView)
+        
+        blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
+        blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
+        blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
+        blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
+        
+        let whiteView = UIButton(type: .custom)
+        whiteView.backgroundColor = UIColor.white
+        whiteView.alpha = 0.5
+        whiteView.translatesAutoresizingMaskIntoConstraints = false
+        whiteView.isUserInteractionEnabled = false
+        containerBar.insertSubview(whiteView, belowSubview: blurView)
+        
+        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
+        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
+        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
+        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
+        
+        return containerBar
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarStyle = .default
         self.navigationController?.navigationBar.isHidden = true
         mapView.delegate = self
         
         self.tabBarController?.tabBar.isHidden = true
-        
-        let logoImage = UIImage(named: "DriveWayz")
-        driveWayzLogo = UIImageView(image: logoImage)
-        driveWayzLogo.translatesAutoresizingMaskIntoConstraints = false
-        driveWayzLogo.contentMode = .scaleAspectFit
         
         locationManager.delegate = self
         parkingTableView.delegate = self
@@ -219,12 +218,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
 
-        fetchUserEmail()
-        locationAuthStatus()
         setupViews()
         setupViewController()
-        setupBottomTab()
-        setupPageControl()
+        fetchUserEmail()
+        locationAuthStatus()
         checkCurrentParking()
         searchBar.delegate = self
     }
@@ -268,7 +265,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                     self.destination = location
                                     self.drawPath(endLocation: location)
                                     UIView.animate(withDuration: 0.5, animations: {
-                                        self.expand.alpha = 1
+
                                     })
                                 }
                             }
@@ -282,11 +279,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     let location: CLLocation? = self.mapView.myLocation
                     if location != nil {
                         self.mapView.animate(toLocation: (location?.coordinate)!)
-                        self.mapView.animate(toZoom: 17.0)
+                        self.mapView.animate(toZoom: 15.0)
                     }
                     UIView.animate(withDuration: 0.5, animations: {
-                        self.expand.alpha = 0
+                        
                     })
+                    CurrentParkingViewController().stopTimerTest()
                     self.navigationController?.popViewController(animated: true)
                 }, withCancel: nil)
             } else {
@@ -340,16 +338,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                 // handle no location found
                                 return
                         }
-                        let myLocation: CLLocation? = self.mapView.myLocation
-                        let distanceToParking = (location.distance(from: myLocation!)) / 1609.34 // miles
-                        let roundedStepValue = Double(round(10 * distanceToParking) / 10)
-                        let formattedDistance = String(format: "%.1f", roundedStepValue)
-                        dictionary.updateValue(formattedDistance as AnyObject, forKey: "parkingDistance")
-                        
-                        let parking = ParkingSpots(dictionary: dictionary)
-                        let parkingID = dictionary["parkingID"] as! String
-                        self.parkingSpotsDictionary[parkingID] = parking
-                        self.reloadOfTable()
+                        DispatchQueue.main.async(execute: {
+                            let myLocation: CLLocation? = self.mapView.myLocation
+                            let distanceToParking = (location.distance(from: myLocation!)) / 1609.34 // miles
+                            let roundedStepValue = Double(round(10 * distanceToParking) / 10)
+                            let formattedDistance = String(format: "%.1f", roundedStepValue)
+                            dictionary.updateValue(formattedDistance as AnyObject, forKey: "parkingDistance")
+                            
+                            let parking = ParkingSpots(dictionary: dictionary)
+                            let parkingID = dictionary["parkingID"] as! String
+                            self.parkingSpotsDictionary[parkingID] = parking
+                            self.reloadOfTable()
+                        })
                     }
                 }
             }, withCancel: nil)
@@ -377,20 +377,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     var optionsTabView: UIView!
-    var optionsBlurEffectView: UIVisualEffectView!
     var optionsTabViewConstraint: NSLayoutConstraint!
-    var buttonHeightConstraint: NSLayoutConstraint!
-    var textSearchBarRightAnchor: NSLayoutConstraint!
-    var tabPullConstraint: NSLayoutConstraint!
-    var driveWayzContraint: NSLayoutConstraint!
-    var arrowConstraint: NSLayoutConstraint!
+    var textSearchBarFarRightAnchor: NSLayoutConstraint!
+    var textSearchBarCloseRightAnchor: NSLayoutConstraint!
     var mapViewConstraint: NSLayoutConstraint!
-    var buttonLocatorConstraint: NSLayoutConstraint!
-    var topWapConstraint: NSLayoutConstraint!
+    var tabPullWidthShort: NSLayoutConstraint!
+    var tabPullWidthLong: NSLayoutConstraint!
     
     func setupViews() {
-        
-//        parkingPreviewView = ParkingPreviewView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width / 2, height: 120))
         
         optionsTabView = UIView()
         optionsTabView.translatesAutoresizingMaskIntoConstraints = false
@@ -456,102 +450,59 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         mapView.isUserInteractionEnabled = true
         
         self.view.addSubview(mapView)
-        
         mapView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         mapView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         mapView.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor).isActive = true
         mapViewConstraint = mapView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0)
         mapViewConstraint.isActive = true
-        mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 60).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        view.addSubview(topWrap)
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        self.view.addSubview(container)
+        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        container.widthAnchor.constraint(equalToConstant: self.view.frame.width/3).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        topWrap.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        topWrap.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        topWrap.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusBarHeight).isActive = true
-        topWrap.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        tabPull = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 90))
-        let maskPath = UIBezierPath(roundedRect: tabPull.bounds,
-                                    byRoundingCorners: [.topRight, .bottomRight],
-                                    cornerRadii: CGSize(width: 15, height: 15))
-        let shape = CAShapeLayer()
-        shape.path = maskPath.cgPath
-        let borderLayer = CAShapeLayer()
-        borderLayer.path = maskPath.cgPath
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
-        borderLayer.lineWidth = 4
-        borderLayer.frame = tabPull.bounds
-        tabPull.layer.addSublayer(borderLayer)
-        tabPull.layer.mask = shape
-        tabPull.translatesAutoresizingMaskIntoConstraints = false
-        tabPull.backgroundColor = UIColor.groupTableViewBackground
-        tabPull.alpha = 0.8
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
-        tabPull.addGestureRecognizer(tapGesture)
         self.view.insertSubview(tabPull, belowSubview: optionsTabView)
+        tabPull.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -20).isActive = true
+        tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        tabPullWidthShort = tabPull.widthAnchor.constraint(equalToConstant: 60)
+            tabPullWidthShort.isActive = true
+        tabPullWidthLong = tabPull.widthAnchor.constraint(equalToConstant: 80)
+        tabPullWidthLong.isActive = false
+        tabPull.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        tabPullConstraint = tabPull.leftAnchor.constraint(equalTo: optionsTabView.leftAnchor, constant: 213)
-        tabPullConstraint.isActive = true
-        tabPull.topAnchor.constraint(equalTo: topWrap.bottomAnchor, constant: 10).isActive = true
-        tabPull.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        tabPull.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        tabPull.addSubview(tabFeed)
+        tabFeed.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        tabFeed.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        tabFeed.centerYAnchor.constraint(equalTo: tabPull.centerYAnchor).isActive = true
+        tabFeed.rightAnchor.constraint(equalTo: tabPull.rightAnchor, constant: -10).isActive = true
         
-        let tabLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        tabLabel.text = "Spots"
-        tabLabel.translatesAutoresizingMaskIntoConstraints = false
-        tabLabel.textColor = Theme.PRIMARY_DARK_COLOR
-        tabLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        tabLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-        tabPull.addSubview(tabLabel)
-        optionsTabView.sendSubview(toBack: tabPull)
-        
-        tabLabel.leftAnchor.constraint(equalTo: tabPull.leftAnchor, constant: -8).isActive = true
-        tabLabel.topAnchor.constraint(equalTo: tabPull.topAnchor, constant: 35).isActive = true
-
-        self.view.addSubview(driveWayzLogo)
-        self.view.bringSubview(toFront: driveWayzLogo)
-        
-        driveWayzLogo.topAnchor.constraint(equalTo: view.topAnchor, constant: 16).isActive = true
-        driveWayzContraint = driveWayzLogo.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor, constant: 90)
-        driveWayzContraint.isActive = true
-        driveWayzLogo.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        driveWayzLogo.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        view.addSubview(topSearch)
+        topSearch.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
+        topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+        topSearch.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        topSearch.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(searchBar)
-        
-        searchBar.topAnchor.constraint(equalTo: driveWayzLogo.bottomAnchor, constant: 10).isActive = true
-        searchBar.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor, constant: 10).isActive = true
-        textSearchBarRightAnchor = searchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10)
-        textSearchBarRightAnchor.isActive = true
-        searchBar.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        let searchImage = UIImage(named: "map_Pin")
-        setupTextField(textField: searchBar, img: searchImage!)
-        
-        arrow.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 32).isActive = true
-        arrowConstraint = arrow.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor, constant: 8)
-        arrowConstraint.isActive = true
-        arrow.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        arrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        searchBar.centerYAnchor.constraint(equalTo: topSearch.centerYAnchor).isActive = true
+        searchBar.leftAnchor.constraint(equalTo: topSearch.leftAnchor).isActive = true
+        textSearchBarFarRightAnchor = searchBar.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -10)
+        textSearchBarFarRightAnchor.isActive = false
+        textSearchBarCloseRightAnchor = searchBar.rightAnchor.constraint(equalTo: topSearch.rightAnchor)
+        textSearchBarCloseRightAnchor.isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        setupTextField(textField: searchBar)
+        self.view.bringSubview(toFront: topSearch)
         
         self.view.addSubview(locatorButton)
-        
-        buttonHeightConstraint = locatorButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60)
-        buttonHeightConstraint.isActive = true
-        buttonLocatorConstraint = locatorButton.leftAnchor.constraint(equalTo: optionsTabView.rightAnchor, constant: 20)
-        buttonLocatorConstraint.isActive = true
-        locatorButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        locatorButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90).isActive = true
+        locatorButton.centerXAnchor.constraint(equalTo: topSearch.centerXAnchor).isActive = true
+        locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         locatorButton.heightAnchor.constraint(equalTo: locatorButton.widthAnchor).isActive = true
         
-        view.bringSubview(toFront: mapView)
-        view.bringSubview(toFront: topWrap)
         view.bringSubview(toFront: tabPull)
-        view.bringSubview(toFront: arrow)
         view.bringSubview(toFront: locatorButton)
-        view.bringSubview(toFront: searchBar)
-        view.bringSubview(toFront: driveWayzLogo)
 
     }
     
@@ -560,34 +511,49 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     func setupViewController() {
         
-        self.view.addSubview(expand)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(updateCurrentView))
-        expand.addGestureRecognizer(gesture)
-        expandTopAnchor = expand.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -95)
-        expandTopAnchor.isActive = true
-        expand.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        expand.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2).isActive = true
-        expand.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(purchaseViewController.view)
+        purchaseViewController.didMove(toParentViewController: self)
+        purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -65).isActive = true
+        purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        self.view.addSubview(hoursButton)
+        hoursButton.rightAnchor.constraint(equalTo: purchaseViewController.view.rightAnchor).isActive = true
+        hoursButton.topAnchor.constraint(equalTo: purchaseViewController.view.topAnchor).isActive = true
+        hoursButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        hoursButton.heightAnchor.constraint(equalToConstant: 39).isActive = true
         
     }
     
     @objc func updateCurrentView() {
-        let currentView = CurrentParkingViewController()
-        self.navigationController?.pushViewController(currentView, animated: true)
+        //
     }
     
-    @objc func optionsTabGestureTapped(_ sender: UITapGestureRecognizer) {
+    @objc func optionsTabGestureTapped(sender: UIButton) {
+        optionsTabGesture()
+    }
+    
+    @objc func optionsTabGestureSwiped(sender: UITapGestureRecognizer) {
+        optionsTabGesture()
+    }
+    
+    @objc func optionsTabGesture() {
         if optionsTabViewConstraint.constant == -215 {
             self.optionsTabViewConstraint.constant = 0
-            self.arrow.isUserInteractionEnabled = false
-            UIView.animate(withDuration: 0.2) {
+            self.topSearch.isUserInteractionEnabled = false
+            self.tabPullWidthShort.isActive = false
+            self.tabPullWidthLong.isActive = true
+            UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
                 self.optionsTabAnimations()
             }
         } else {
             self.optionsTabViewConstraint.constant = -215
-            self.arrow.isUserInteractionEnabled = true
-            UIView.animate(withDuration: 0.2) {
+            self.topSearch.isUserInteractionEnabled = true
+            self.tabPullWidthShort.isActive = true
+            self.tabPullWidthLong.isActive = false
+            UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
                 self.optionsTabAnimations()
             }
@@ -596,42 +562,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     func optionsTabAnimations() {
         if self.optionsTabViewConstraint.constant == 0 {
-            self.textSearchBarRightAnchor.constant = 225
-            self.topWrap.frame = CGRect(x: 215, y: 0, width: self.view.frame.width - 215, height: 160)
+            self.textSearchBarFarRightAnchor.constant = 225
         } else {
-            self.textSearchBarRightAnchor.constant = -10
-            self.topWrap.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
+            self.textSearchBarFarRightAnchor.constant = -10
         }
         UIView.animate(withDuration: 0.3, animations: {
         self.view.layoutIfNeeded()
         }, completion: nil)
-        
-    }
-    
-    func setupBottomTab() {
-        self.view.addSubview(bottomTabBarController)
-        
-        bottomTabBarController.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        bottomTabBarController.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        bottomTabBarController.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        bottomTabBarController.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-    
-    func setupPageControl() {
-        
-        self.pageControl.frame = CGRect()
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_DARK_COLOR
-        self.pageControl.pageIndicatorTintColor = Theme.PRIMARY_COLOR
-        self.pageControl.numberOfPages = 3
-        self.pageControl.currentPage = 0
-        self.pageControl.isUserInteractionEnabled = false
-        self.view.addSubview(self.pageControl)
-        
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -25).isActive = true
-        self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -200).isActive = true
-        self.pageControl.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
     }
     
@@ -651,9 +588,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let lat = place.coordinate.latitude
         let long = place.coordinate.longitude
         
-        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 17.0)
+        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 15.0)
         mapView.camera = camera
         searchBar.text = place.formattedAddress
+        
+        UIView.animate(withDuration: 0.3) {
+            self.textSearchBarFarRightAnchor.constant = self.view.frame.width * 1/4
+            self.view.layoutIfNeeded()
+        }
+        
         places = Parking(name: place.formattedAddress!, lattitude: lat, longitude: long)
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: lat, longitude: long)
@@ -683,7 +626,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let location = locations.last
         let lat = (location?.coordinate.latitude)!
         let long = (location?.coordinate.longitude)!
-        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 17.0)
+        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 15.0)
         
         self.mapView.animate(to: camera)
         self.locationManager.stopUpdatingLocation()
@@ -724,7 +667,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     private func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = manager.location {
-            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 17.0)
+            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 15.0)
             mapView.animate(to: camera)
             
             if let currentDestination = self.destination {
@@ -781,7 +724,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let location: CLLocation? = mapView.myLocation
         if location != nil {
             mapView.animate(toLocation: (location?.coordinate)!)
-            mapView.animate(toZoom: 17.0)
+            mapView.animate(toZoom: 15.0)
         }
     }
     
@@ -789,7 +732,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let detailedView = ParkingDetailsViewController()
         guard let customMarkerView = marker.iconView as? CustomMarkerView else { return }
         let parking = parkingSpots[customMarkerView.tag]
-        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
+//        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
         self.navigationController?.pushViewController(detailedView, animated: true)
     }
     
@@ -824,69 +767,49 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         }
     }
     
-    func setupTextField(textField: UITextField, img: UIImage){
+    @objc func animateSearchBar(sender: UIButton) {
+        if self.textSearchBarCloseRightAnchor.isActive == true {
+            searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
+                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            UIView.animate(withDuration: 0.3, animations: {
+                self.textSearchBarFarRightAnchor.isActive = true
+                self.textSearchBarCloseRightAnchor.isActive = false
+                self.view.layoutIfNeeded()
+            })
+        } else {
+            searchBar.attributedPlaceholder = NSAttributedString(string: "",
+                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            UIView.animate(withDuration: 0.3, animations: {
+                self.textSearchBarFarRightAnchor.isActive = false
+                self.textSearchBarCloseRightAnchor.isActive = true
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func setupTextField(textField: UITextField){
         textField.leftViewMode = UITextFieldViewMode.always
-        let imageView = UIImageView(frame: CGRect(x: 5, y: 5, width: 20, height: 20))
-        imageView.image = img
-        let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 30, height: 30))
-        paddingView.addSubview(imageView)
+        let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 60, height: 30))
         textField.leftView = paddingView
-    }
-    
-    @objc func minimizeTopView() {
-        self.topWrap.frame.size.height = 80
-        self.buttonHeightConstraint.constant = -60
-        self.optionsTabViewConstraint.constant = -240
-        self.driveWayzContraint.constant = 115
-        self.arrowConstraint.constant = 33
-        self.mapViewConstraint.constant = 0
-        self.buttonLocatorConstraint.constant = 45
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutIfNeeded()
-            self.searchBar.alpha = 0
-            self.arrow.transform = CGAffineTransform(scaleX: 1, y: -1)
-        }) { (success: Bool) in
-            self.arrow.removeTarget(self, action: #selector(self.minimizeTopView), for: .touchUpInside)
-            self.arrow.addTarget(self, action: #selector(self.maximizeTopView), for: .touchUpInside)
-        }
-    }
-    
-    @objc func maximizeTopView() {
-        self.topWrap.frame.size.height = 160
-        self.buttonHeightConstraint.constant = -60
-        self.optionsTabViewConstraint.constant = -215
-        self.driveWayzContraint.constant = 90
-        self.arrowConstraint.constant = 8
-        self.mapViewConstraint.constant = 0
-        self.buttonLocatorConstraint.constant = 20
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutIfNeeded()
-            self.searchBar.alpha = 1
-            self.arrow.transform = CGAffineTransform(scaleX: 1, y: 1)
-        }) { (success: Bool) in
-            self.arrow.removeTarget(self, action: #selector(self.maximizeTopView), for: .touchUpInside)
-            self.arrow.addTarget(self, action: #selector(self.minimizeTopView), for: .touchUpInside)
-        }
     }
     
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cell = Bundle.main.loadNibNamed("ParkingTableViewCell", owner: self, options: nil)?.first as! ParkingTableViewCell
-        cell.selectedBackgroundView?.backgroundColor = UIColor.groupTableViewBackground
-        cell.cellView.backgroundColor = UIColor.white
-        let parking = parkingSpots[indexPath.row]
-        cell.parkingSpotImage.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
-        cell.parkingSpotCity.text = parking.parkingCity
-        cell.parkingSpotCost.text = parking.parkingCost
-        cell.parkingDistance.text = "\(String(describing: parking.parkingDistance!)) miles"
-
-        return cell
+            let cell = Bundle.main.loadNibNamed("ParkingTableViewCell", owner: self, options: nil)?.first as! ParkingTableViewCell
+            cell.selectedBackgroundView?.backgroundColor = UIColor.groupTableViewBackground
+            cell.cellView.backgroundColor = UIColor.white
+            let parking = parkingSpots[indexPath.row]
+            cell.parkingSpotImage.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
+            cell.parkingSpotCity.text = parking.parkingCity
+            cell.parkingSpotCost.text = parking.parkingCost
+            cell.parkingDistance.text = "\(String(describing: parking.parkingDistance!)) miles"
+            
+            return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return parkingSpots.count
+            return parkingSpots.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -894,28 +817,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailedView = ParkingDetailsViewController()
-        let parking = parkingSpots[indexPath.row]
-        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
-        self.navigationController?.pushViewController(detailedView, animated: true)
-        self.optionsTabViewConstraint.constant = -215
-        self.arrow.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-            self.optionsTabAnimations()
-        }
+            let detailedView = ParkingDetailsViewController()
+            let parking = parkingSpots[indexPath.row]
+            //        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
+            self.navigationController?.pushViewController(detailedView, animated: true)
+            self.optionsTabViewConstraint.constant = -215
+            self.topSearch.isUserInteractionEnabled = true
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+                self.optionsTabAnimations()
+            }
     }
     
     
-    @objc func tabBarRight() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tabBarController?.selectedIndex = 1
-        }, completion: nil)
-    }
-    @objc func tabBarLeft() {
-        print("Leftmost VC")
-    }
-
+    
 }
 
 

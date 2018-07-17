@@ -11,7 +11,7 @@ import UIKit
 class Theme {
     
     static let PRIMARY_COLOR = UIColor(r: 87, g: 159, b: 179)
-    static let PRIMARY_DARK_COLOR = UIColor(r: 77, g: 77, b: 77)
+    static let PRIMARY_DARK_COLOR = UIColor(r: 47, g: 117, b: 139)
     static let SECONDARY_COLOR = UIColor(r: 247, g: 89, b: 89)
     static let TERTIARY_COLOR = UIColor(r: 255, g: 90, b: 95)
     static let SEETHROUGH_PRIMARY = UIColor(r: 136, g: 209, b: 255)

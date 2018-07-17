@@ -20,9 +20,9 @@ class ParkingTableViewCell: UITableViewCell {
         super.awakeFromNib()
         setupShadow()
         
-        parkingSpotCity.textColor = Theme.PRIMARY_DARK_COLOR
+        parkingSpotCity.textColor = Theme.DARK_GRAY
         parkingSpotCost.textColor = Theme.PRIMARY_DARK_COLOR
-        parkingDistance.textColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7)
+        parkingDistance.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         parkingDistance.textAlignment = .center
     }
     
