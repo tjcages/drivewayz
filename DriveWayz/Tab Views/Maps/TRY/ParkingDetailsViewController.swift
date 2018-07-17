@@ -99,15 +99,6 @@ class ParkingDetailsViewController: UIViewController {
         paymentButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 40)
 
-        let line1 = UIView()
-        line1.translatesAutoresizingMaskIntoConstraints = false
-        line1.backgroundColor = Theme.OFF_WHITE
-        self.view.addSubview(line1)
-        line1.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
-        line1.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        line1.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
-        line1.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
-
         let line2 = UIView()
         line2.translatesAutoresizingMaskIntoConstraints = false
         line2.backgroundColor = Theme.OFF_WHITE
@@ -273,8 +264,8 @@ class dropDownButton: UIButton, dropDownProtocol {
             
             NSLayoutConstraint.deactivate([self.height])
             
-            if self.dropView.tableView.contentSize.height > 150 {
-                self.height.constant = 150
+            if self.dropView.tableView.contentSize.height > 120 {
+                self.height.constant = 120
             } else {
                 self.height.constant = self.dropView.tableView.contentSize.height
             }
@@ -368,8 +359,9 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row])
         self.tableView.deselectRow(at: indexPath, animated: true)
-
         
+        reserveButton.alpha = 1
+        reserveButton.isUserInteractionEnabled = true
     }
     
 }

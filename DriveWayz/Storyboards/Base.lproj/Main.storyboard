@@ -63,7 +63,7 @@
         <!--Map-->
         <scene sceneID="w81-Uo-fuO">
             <objects>
-                <viewController title="Map" id="fs2-4z-Hy2" customClass="MapViewController" customModule="DriveWayz" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" title="Map" id="fs2-4z-Hy2" customClass="MapViewController" customModule="DriveWayz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kSS-07-yBK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -556,7 +556,7 @@
     </scenes>
     <resources>
         <image name="account" width="30" height="30"/>
-        <image name="feed" width="25" height="24"/>
+        <image name="feed" width="156" height="138"/>
         <image name="message" width="30" height="30"/>
         <image name="newmessage" width="25" height="25"/>
         <image name="notification" width="30" height="30"/>

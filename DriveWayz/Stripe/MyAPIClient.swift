@@ -12,6 +12,9 @@ import Alamofire
 import Firebase
 
 class MyAPIClient: NSObject, STPEphemeralKeyProvider {
+    
+    var account: String?
+    var email: String?
 
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
     static let sharedClient = MyAPIClient()
@@ -29,6 +32,11 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         } else {
             fatalError()
         }
+    }
+    
+    enum RequestRideError: Error {
+        case missingBaseURL
+        case invalidResponse
     }
 
     func completeCharge(_ result: STPPaymentResult,
@@ -57,22 +65,36 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
                 }
         }
     }
+    
+    enum CustomerKeyError: Error {
+        case missingBaseURL
+        case invalidResponse
+    }
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
-        let url = self.baseURL.appendingPathComponent("ephemeral_keys")
-        Alamofire.request(url, method: .post, parameters: [
-            "api_version": apiVersion,
-//            "email": userEmail!,
-            "email": "tyler.cagle@colorado.edu",
-            ])
-            .validate(statusCode: 200..<300)
-            .responseJSON { responseJSON in
-                switch responseJSON.result {
-                case .success(let json):
-                    completion(json as? [String: AnyObject], nil)
-                case .failure(let error):
-                    completion(nil, error)
+        if let currentUser = Auth.auth().currentUser?.uid {
+            let checkRef = Database.database().reference().child("users").child(currentUser)
+            checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let email = dictionary["email"] as? String
+                    self.account = dictionary["accountID"] as? String
+            
+                    let url = self.baseURL.appendingPathComponent("ephemeral_keys")
+                    Alamofire.request(url, method: .post, parameters: [
+                        "api_version": "2018-05-21",
+                        "email": email!,
+                        ])
+                        .validate(statusCode: 200..<300)
+                        .responseJSON { responseJSON in
+                            switch responseJSON.result {
+                            case .success(let json):
+                                completion(json as? [String: AnyObject], nil)
+                            case .failure(let error):
+                                completion(nil, error)
+                            }
+                        }
                 }
+            }, withCancel: nil)
         }
     }
     

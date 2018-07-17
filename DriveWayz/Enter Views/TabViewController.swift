@@ -12,9 +12,21 @@ import Firebase
 var rightArrow: UIButton!
 var leftArrow: UIButton!
 
-class TabViewController: UITabBarController {
+class TabViewController: UIViewController {
     
     var swipe: Int = 1
+    
+    var pin: UILabel = {
+        let label = UILabel()
+        label.text = "▾"
+        label.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        label.font = UIFont.systemFont(ofSize: 24)
+        label.textColor = Theme.DARK_GRAY
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
     
     lazy var container: UIView = {
         let containerBar = UIView()
@@ -102,6 +114,7 @@ class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         UIApplication.shared.applicationIconBadgeNumber = 0
         
         if Auth.auth().currentUser?.uid == nil {
@@ -144,6 +157,12 @@ class TabViewController: UITabBarController {
         profileCenterAnchor = profile.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*3/4)
             profileCenterAnchor.isActive = true
         profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        
+        self.view.addSubview(pin)
+        pin.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        pin.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 6).isActive = true
+        pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
 
     }
     

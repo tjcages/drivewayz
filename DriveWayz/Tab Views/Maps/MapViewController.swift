@@ -119,15 +119,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return button
     }()
     
-    var parkingPreviewView: ParkingPreviewView = {
-        let preview = ParkingPreviewView()
-        preview.layer.cornerRadius = 15
-        preview.clipsToBounds = true
-        preview.backgroundColor = UIColor.clear
-        preview.layer.backgroundColor = UIColor.clear.cgColor
-        return preview
-    }()
-    
     var parkingTableView: UITableView = {
        let parking = UITableView()
         parking.translatesAutoresizingMaskIntoConstraints = false
@@ -141,27 +132,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return view
     }()
     
-    lazy var purchaseViewController: ParkingDetailsViewController = {
-        let controller = ParkingDetailsViewController()
-        self.addChildViewController(controller)
+    lazy var purchaseViewController: PurchaseViewController = {
+//        let controller = PurchaseViewController(price: 100, hours: 1, ID: "-Ryhw8Ix3poYKtWYyygWPi4eqOCv1", account: "", parkingID: "-LGqjGnBEQ_AEp91s7o8")
+        let controller = PurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Purchase Controller"
         controller.view.layer.cornerRadius = 10
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(paymentSwiped(sender:)))
+        gesture.direction = .left
+        controller.view.addGestureRecognizer(gesture)
         
         return controller
-    }()
-    
-    var hoursButton: dropDownButton = {
-        let hours = dropDownButton()
-        hours.translatesAutoresizingMaskIntoConstraints = false
-        hours.backgroundColor = Theme.WHITE
-        hours.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        hours.setTitle("^ hours", for: .normal)
-        hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        hours.dropView.dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
-        hours.layer.cornerRadius = 10
-
-        return hours
     }()
     
     lazy var container: UIView = {
@@ -506,30 +488,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
     }
     
-    var currentParkingControllerAnchor: NSLayoutConstraint!
-    var expandTopAnchor: NSLayoutConstraint!
+    var purchaseViewAnchor: NSLayoutConstraint!
     
     func setupViewController() {
         
         self.view.addSubview(purchaseViewController.view)
+        self.addChildViewController(purchaseViewController)
         purchaseViewController.didMove(toParentViewController: self)
-        purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        purchaseViewAnchor = purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.width * 2))
+            purchaseViewAnchor.isActive = true
         purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -65).isActive = true
         purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        self.view.addSubview(hoursButton)
-        hoursButton.rightAnchor.constraint(equalTo: purchaseViewController.view.rightAnchor).isActive = true
-        hoursButton.topAnchor.constraint(equalTo: purchaseViewController.view.topAnchor).isActive = true
-        hoursButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        hoursButton.heightAnchor.constraint(equalToConstant: 39).isActive = true
+        purchaseViewController.view.heightAnchor.constraint(equalToConstant: 180).isActive = true
         
     }
-    
-    @objc func updateCurrentView() {
-        //
-    }
-    
+
     @objc func optionsTabGestureTapped(sender: UIButton) {
         optionsTabGesture()
     }
@@ -632,30 +605,47 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         self.locationManager.stopUpdatingLocation()
     }
     
-    // MARK: GOOGLE MAP DELEGATE
+    @objc func paymentSwiped(sender: UIGestureRecognizer) {
+        UIView.animate(withDuration: 0.6, animations: {
+            self.purchaseViewAnchor.constant = -(self.view.frame.width * 2)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
+        }
+        if currentMarker != nil {
+            let oldMarker = currentMarker
+            guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return }
+            let imageURL = customMarkerView.parkingImageURL
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), parkingImageURL: imageURL!, borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
+            oldMarker?.iconView = customMarker
+        }
+    }
+    
+    var onMarker: Bool = false
+    var currentMarker: GMSMarker? = nil
+    
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        onMarker = true
+        UIView.animate(withDuration: 0.6, animations: {
+            self.purchaseViewAnchor.constant = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
+        }
+        if currentMarker != nil {
+            let oldMarker = currentMarker
+            guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return false }
+            let imageURL = customMarkerView.parkingImageURL
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), parkingImageURL: imageURL!, borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
+            oldMarker?.iconView = customMarker
+        }
         guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
         let imageURL = customMarkerView.parkingImageURL!
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), parkingImageURL: imageURL, borderColor: UIColor.white, tag: customMarkerView.tag)
-        
         marker.iconView = customMarker
+        currentMarker = marker
         
         return false
-    }
-    
-    func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
-        guard let customMarkerView = marker.iconView as? CustomMarkerView else { return nil }
-        let parking = parkingSpots[customMarkerView.tag]
-        let infoWindow = MapMarkerWindowView.instanceFromNib() as! MapMarkerWindowView
-        infoWindow.setData(city: parking.parkingCity!, distance: parking.parkingDistance!, price: parking.parkingCost!)
-        
-        return infoWindow
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        guard let customMarkerView = marker.iconView as? CustomMarkerView else { return }
-        let tag = customMarkerView.tag
-        markerTapped(tag: tag, marker: marker)
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
@@ -817,16 +807,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let detailedView = ParkingDetailsViewController()
-            let parking = parkingSpots[indexPath.row]
-            //        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
-            self.navigationController?.pushViewController(detailedView, animated: true)
-            self.optionsTabViewConstraint.constant = -215
-            self.topSearch.isUserInteractionEnabled = true
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-                self.optionsTabAnimations()
-            }
+        let detailedView = ParkingDetailsViewController()
+        let parking = parkingSpots[indexPath.row]
+        //        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
+        self.navigationController?.pushViewController(detailedView, animated: true)
+        self.optionsTabViewConstraint.constant = -215
+        self.topSearch.isUserInteractionEnabled = true
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+            self.optionsTabAnimations()
+        }
     }
     
     

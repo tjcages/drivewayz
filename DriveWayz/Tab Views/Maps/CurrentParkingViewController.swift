@@ -344,7 +344,7 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
             let thirdSeconds = (self.hours! * 3600) + (30 * 60)
             
             if seconds >= 0 {
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(10), repeats: false)
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
                 let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
                 let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)
                 let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
