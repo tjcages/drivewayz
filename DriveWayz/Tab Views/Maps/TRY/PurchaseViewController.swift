@@ -450,6 +450,13 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
                 } else {
                     fundRef.updateChildValues(["userFunds": (self.cost * 0.8)])
                 }
+                if let previousHours = dictionary["hostHours"] as? Int{
+                    let hours = previousHours + self.hours
+                    fundRef.updateChildValues(["hostHours": hours])
+                } else {
+                    fundRef.updateChildValues(["hostHours": self.hours])
+                }
+                
             }
         }, withCancel: nil)
     }

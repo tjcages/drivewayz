@@ -441,7 +441,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         
         self.view.addSubview(container)
         container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width/3).isActive = true
+        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.heightAnchor.constraint(equalToConstant: 50).isActive = true
         

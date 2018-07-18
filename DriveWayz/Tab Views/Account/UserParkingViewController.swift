@@ -56,61 +56,52 @@ class UserParkingViewController: UIViewController {
         currentParkingImageView.contentMode = .scaleAspectFill
         currentParkingImageView.backgroundColor = UIColor.white
         currentParkingImageView.clipsToBounds = true
-        currentParkingImageView.layer.cornerRadius = 20
         
         return currentParkingImageView
     }()
     
-    var parkingInfo: UILabel = {
-        let parkingInfo = UILabel()
-        parkingInfo.text = "Vehicle Info"
-        parkingInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        parkingInfo.textColor = Theme.WHITE
-        parkingInfo.translatesAutoresizingMaskIntoConstraints = false
-        parkingInfo.contentMode = .left
-        parkingInfo.numberOfLines = 3
+    var parkingInfo: UITextView = {
+        let label = UITextView()
+        label.text = "Parking Info"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .left
+        label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.isUserInteractionEnabled = false
         
-        return parkingInfo
+        return label
     }()
     
-    var parkingLicenseInfo: UILabel = {
-        let parkingLicenseInfo = UILabel()
-        parkingLicenseInfo.text = "License Plate"
-        parkingLicenseInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        parkingLicenseInfo.textColor = Theme.WHITE
-        parkingLicenseInfo.translatesAutoresizingMaskIntoConstraints = false
-        parkingLicenseInfo.contentMode = .left
+    var parkingCost: UITextField = {
+        let label = UITextField()
+        label.text = "Cost"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .left
+        label.isUserInteractionEnabled = false
         
-        return parkingLicenseInfo
+        return label
     }()
     
-    var blurparkingInfoView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurparkingInfoView = UIVisualEffectView(effect: blurEffect)
-        blurparkingInfoView.alpha = 0.8
-        blurparkingInfoView.layer.cornerRadius = 10
-        blurparkingInfoView.clipsToBounds = true
-        blurparkingInfoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurparkingInfoView.translatesAutoresizingMaskIntoConstraints = false
+    var parkingDate: UITextField = {
+        let label = UITextField()
+        label.text = "Date"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .left
+        label.isUserInteractionEnabled = false
         
-        return blurparkingInfoView
-    }()
-    
-    var blurparkingWidthConstraint: NSLayoutConstraint!
-    
-    let startActivityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        aiv.translatesAutoresizingMaskIntoConstraints = false
-        aiv.hidesWhenStopped = true
-        return aiv
+        return label
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = Theme.OFF_WHITE
-        
-        startUpActivity()
+
         fetchUserAndSetupParking()
         setupParkingDisplay()
         
@@ -121,34 +112,6 @@ class UserParkingViewController: UIViewController {
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], context: nil)
-    }
-    
-    var blurSquare: UIVisualEffectView!
-    
-    func startUpActivity() {
-        
-        let blurEffect = UIBlurEffect(style: .dark)
-        blurSquare = UIVisualEffectView(effect: blurEffect)
-        blurSquare.layer.cornerRadius = 15
-        blurSquare.alpha = 1
-        blurSquare.clipsToBounds = true
-        blurSquare.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.view.addSubview(blurSquare)
-        blurSquare.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        blurSquare.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        blurSquare.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        blurSquare.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        
-        self.view.addSubview(startActivityIndicatorView)
-        
-        startActivityIndicatorView.centerXAnchor.constraint(equalTo: blurSquare.centerXAnchor).isActive = true
-        startActivityIndicatorView.centerYAnchor.constraint(equalTo: blurSquare.centerYAnchor).isActive = true
-        startActivityIndicatorView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        startActivityIndicatorView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        self.startActivityIndicatorView.startAnimating()
-        
     }
     
     func setupParkingDisplay() {
@@ -165,30 +128,47 @@ class UserParkingViewController: UIViewController {
         addParkingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         addParkingLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
         
+        newParkingPage.addSubview(parkingInfo)
+        parkingInfo.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 15).isActive = true
+        parkingInfo.topAnchor.constraint(equalTo: newParkingPage.topAnchor, constant: 0).isActive = true
+        parkingInfo.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor, constant: -40).isActive = true
+        parkingInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        newParkingPage.addSubview(parkingCost)
+        parkingCost.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 25).isActive = true
+        parkingCost.topAnchor.constraint(equalTo: parkingInfo.bottomAnchor, constant: 5).isActive = true
+        parkingCost.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        parkingCost.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        newParkingPage.addSubview(parkingDate)
+        parkingDate.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 25).isActive = true
+        parkingDate.topAnchor.constraint(equalTo: parkingCost.bottomAnchor, constant: 5).isActive = true
+        parkingDate.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor, constant: -20).isActive = true
+        parkingDate.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        newParkingPage.addSubview(line)
+        line.topAnchor.constraint(equalTo: parkingDate.bottomAnchor, constant: 5).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor).isActive = true
+        line.centerXAnchor.constraint(equalTo: newParkingPage.centerXAnchor).isActive = true
+        
         newParkingPage.addSubview(currentParkingImageView)
-        currentParkingImageView.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 8).isActive = true
-        currentParkingImageView.topAnchor.constraint(equalTo: newParkingPage.topAnchor, constant: 48).isActive = true
-        currentParkingImageView.rightAnchor.constraint(equalTo: newParkingPage.rightAnchor, constant: -8).isActive = true
-        currentParkingImageView.bottomAnchor.constraint(equalTo: newParkingPage.bottomAnchor, constant: -8).isActive = true
+        currentParkingImageView.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor).isActive = true
+        currentParkingImageView.topAnchor.constraint(equalTo: parkingDate.bottomAnchor, constant: 300).isActive = true
+        currentParkingImageView.rightAnchor.constraint(equalTo: newParkingPage.rightAnchor).isActive = true
+        currentParkingImageView.heightAnchor.constraint(equalToConstant: 280).isActive = true
         
-        currentParkingImageView.addSubview(blurparkingInfoView)
-        blurparkingInfoView.topAnchor.constraint(equalTo: currentParkingImageView.topAnchor).isActive = true
-        blurparkingInfoView.leftAnchor.constraint(equalTo: currentParkingImageView.leftAnchor).isActive = true
-        blurparkingWidthConstraint = blurparkingInfoView.widthAnchor.constraint(equalToConstant: 300)
-        blurparkingWidthConstraint.isActive = true
-        blurparkingInfoView.heightAnchor.constraint(equalToConstant: 65).isActive = true
-        
-        currentParkingImageView.addSubview(parkingInfo)
-        parkingInfo.leftAnchor.constraint(equalTo: currentParkingImageView.leftAnchor, constant: 8).isActive = true
-        parkingInfo.topAnchor.constraint(equalTo: currentParkingImageView.topAnchor, constant: -8).isActive = true
-        parkingInfo.widthAnchor.constraint(equalTo: currentParkingImageView.widthAnchor, constant: -80).isActive = true
-        parkingInfo.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        currentParkingImageView.addSubview(parkingLicenseInfo)
-        parkingLicenseInfo.leftAnchor.constraint(equalTo: currentParkingImageView.leftAnchor, constant: 8).isActive = true
-        parkingLicenseInfo.topAnchor.constraint(equalTo: currentParkingImageView.topAnchor, constant: 8).isActive = true
-        parkingLicenseInfo.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        parkingLicenseInfo.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        let line1 = UIView()
+        line1.translatesAutoresizingMaskIntoConstraints = false
+        line1.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        newParkingPage.addSubview(line1)
+        line1.topAnchor.constraint(equalTo: currentParkingImageView.topAnchor, constant: -10).isActive = true
+        line1.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line1.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor).isActive = true
+        line1.centerXAnchor.constraint(equalTo: newParkingPage.centerXAnchor).isActive = true
         
     }
 
@@ -200,11 +180,11 @@ class UserParkingViewController: UIViewController {
         self.view.addSubview(newParkingPage)
         self.view.sendSubview(toBack: newParkingPage)
         
-        newParkingPage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        newParkingPage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        newParkingPage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        newParkingPage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        newParkingPage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        newParkingPage.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         parkingPageHeightAnchorSmall = newParkingPage.heightAnchor.constraint(equalToConstant: 50)
-        parkingPageHeightAnchorTall = newParkingPage.heightAnchor.constraint(equalToConstant: 280)
+        parkingPageHeightAnchorTall = newParkingPage.heightAnchor.constraint(equalToConstant: 700)
         
         if parking > 0 {
             parkingPageHeightAnchorTall.isActive = true
@@ -215,9 +195,8 @@ class UserParkingViewController: UIViewController {
             parkingPageHeightAnchorSmall.isActive = true
             parkingPageHeightAnchorTall.isActive = false
             self.currentParkingImageView.isHidden = true
-            self.blurparkingInfoView.isHidden = true
             self.parkingInfo.isHidden = true
-            self.parkingLicenseInfo.isHidden = true
+            self.parkingCost.isHidden = true
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -242,6 +221,8 @@ class UserParkingViewController: UIViewController {
                         if let dictionary = snap.value as? [String:AnyObject] {
                             let parkingAddress = dictionary["parkingAddress"] as? String
                             let parkingImageURL = dictionary["parkingImageURL"] as? String
+                            let parkingCost = dictionary["parkingCost"] as? String
+                            let timestamp = dictionary["timestamp"] as? TimeInterval
                             
                             if parkingImageURL == nil {
                                 self.currentParkingImageView.image = UIImage(named: "profileprofile")
@@ -249,19 +230,22 @@ class UserParkingViewController: UIViewController {
                                 self.currentParkingImageView.loadImageUsingCacheWithUrlString(parkingImageURL!)
                             }
                             
-                            let text = parkingAddress!
-                            self.parkingInfo.text = text
-                            self.parkingLicenseInfo.text = ""
-                            let width = self.estimatedFrameForText(text: text).width + 4
-                            self.blurparkingInfoView.frame.size.width = width
+                            self.parkingInfo.text = parkingAddress!
+                            self.parkingCost.text = parkingCost!
+                            
+                            let date = Date(timeIntervalSince1970: timestamp!)
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.locale = NSLocale.current
+                            dateFormatter.dateFormat = "MM/dd/yyyy"
+                            let stringDate = dateFormatter.string(from: date)
+                            
+                            self.parkingDate.text = "Hosting since:  \(stringDate)"
                         }
                     }, withCancel: nil)
                 }
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(1)), execute: {
                 self.setupParkingView()
-                self.startActivityIndicatorView.stopAnimating()
-                self.blurSquare.alpha = 0
             })
         }, withCancel: nil)
         return

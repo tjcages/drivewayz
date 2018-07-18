@@ -49,20 +49,20 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     var saturday: Int = 1
     var sunday: Int = 1
     
-    var mondayFrom: String = "All Day"
-    var mondayTo: String = "All Day"
-    var tuesdayFrom: String = "All Day"
-    var tuesdayTo: String = "All Day"
-    var wednesdayFrom: String = "All Day"
-    var wednesdayTo: String = "All Day"
-    var thursdayFrom: String = "All Day"
-    var thursdayTo: String = "All Day"
-    var fridayFrom: String = "All Day"
-    var fridayTo: String = "All Day"
-    var saturdayFrom: String = "All Day"
-    var saturdayTo: String = "All Day"
-    var sundayFrom: String = "All Day"
-    var sundayTo: String = "All Day"
+    var mondayFrom: String = "All day"
+    var mondayTo: String = "All day"
+    var tuesdayFrom: String = "All day"
+    var tuesdayTo: String = "All day"
+    var wednesdayFrom: String = "All day"
+    var wednesdayTo: String = "All day"
+    var thursdayFrom: String = "All day"
+    var thursdayTo: String = "All day"
+    var fridayFrom: String = "All day"
+    var fridayTo: String = "All day"
+    var saturdayFrom: String = "All day"
+    var saturdayTo: String = "All day"
+    var sundayFrom: String = "All day"
+    var sundayTo: String = "All day"
 
     var addANewParkingView: UIView = {
         let addANewParkingView = UIView()

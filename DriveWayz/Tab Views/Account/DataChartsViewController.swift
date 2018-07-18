@@ -99,6 +99,32 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         return refresh
     }()
     
+    var hostHours: UITextView = {
+        let label = UITextView()
+        label.text = "Hours"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .left
+        label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.isUserInteractionEnabled = false
+        
+        return label
+    }()
+    
+    var hostTimes: UITextView = {
+        let label = UITextView()
+        label.text = "Times"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .left
+        label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.isUserInteractionEnabled = false
+        
+        return label
+    }()
+    
     var months: [String]!
 
     override func viewDidLoad() {
@@ -127,6 +153,11 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         let timeRef = Database.database().reference().child("users").child(currentUser!)
         timeRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let hostHours = dictionary["hostHours"] as? Int {
+                    self.hostHours.text = "Your spot has been occupied for \(hostHours)"
+                } else {
+                    self.hostHours.text = "No one has parked here yet"
+                }
                 if let parking = dictionary["parkingID"] as? String {
                     let parkingRef = Database.database().reference().child("parking").child(parking)
                     parkingRef.observeSingleEvent(of: .value, with: { (dictionary) in
@@ -142,6 +173,8 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     
         let userRef = Database.database().reference().child("users").child(currentUser!).child("payments")
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            let count = snapshot.childrenCount
+            self.hostTimes.text = "People have parked here \(count) times!"
             for point in 0..<(snapshot.childrenCount+1) {
                 let pointRef = userRef.child("\(point)")
                 pointRef.observeSingleEvent(of: .value, with: { (data) in
@@ -166,7 +199,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         chartContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
         chartContainer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         chartContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        chartContainer.heightAnchor.constraint(equalToConstant: 240).isActive = true
+        chartContainer.heightAnchor.constraint(equalToConstant: 305).isActive = true
         
         self.view.addSubview(chartView)
         chartView.topAnchor.constraint(equalTo: chartContainer.topAnchor, constant: 40).isActive = true
@@ -186,7 +219,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         
         self.view.addSubview(transfer)
         transfer.rightAnchor.constraint(equalTo: chartContainer.rightAnchor, constant: -20).isActive = true
-        transfer.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: -25).isActive = true
+        transfer.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: -35).isActive = true
         transfer.sizeToFit()
         
         self.view.addSubview(refresh)
@@ -194,6 +227,27 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         refresh.rightAnchor.constraint(equalTo: chartView.rightAnchor, constant: -15).isActive = true
         refresh.widthAnchor.constraint(equalToConstant: 20).isActive = true
         refresh.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        self.view.addSubview(line)
+        line.topAnchor.constraint(equalTo: transfer.bottomAnchor, constant: 5).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line.widthAnchor.constraint(equalTo: chartContainer.widthAnchor).isActive = true
+        line.centerXAnchor.constraint(equalTo: chartContainer.centerXAnchor).isActive = true
+        
+        self.view.addSubview(hostHours)
+        hostHours.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
+        hostHours.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 5).isActive = true
+        hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -40).isActive = true
+        hostHours.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.view.addSubview(hostTimes)
+        hostTimes.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
+        hostTimes.topAnchor.constraint(equalTo: hostHours.bottomAnchor, constant: 5).isActive = true
+        hostTimes.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -40).isActive = true
+        hostTimes.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     

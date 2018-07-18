@@ -36,7 +36,7 @@ class TabViewController: UIViewController {
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
-        blurView.alpha = 1
+        blurView.alpha = 0
         let gestureProfile = UISwipeGestureRecognizer(target: self, action: #selector(moveToProfileSwipe(sender:)))
         gestureProfile.direction = .left
         containerBar.addGestureRecognizer(gestureProfile)
@@ -49,18 +49,6 @@ class TabViewController: UIViewController {
         blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
         blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
         blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        let whiteView = UIButton(type: .custom)
-        whiteView.backgroundColor = UIColor.white
-        whiteView.alpha = 0.5
-        whiteView.translatesAutoresizingMaskIntoConstraints = false
-        whiteView.isUserInteractionEnabled = false
-        containerBar.insertSubview(whiteView, belowSubview: blurView)
-        
-        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
 
         return containerBar
     }()
@@ -111,11 +99,13 @@ class TabViewController: UIViewController {
     var profileCenterAnchor: NSLayoutConstraint!
     
     var containerLeftAnchor: NSLayoutConstraint!
+    var containerRightAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
     
         UIApplication.shared.applicationIconBadgeNumber = 0
+        UIApplication.shared.statusBarStyle = .lightContent
         
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
@@ -140,7 +130,8 @@ class TabViewController: UIViewController {
         self.view.addSubview(container)
         containerLeftAnchor = container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3)
             containerLeftAnchor.isActive = true
-        container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        containerRightAnchor = container.rightAnchor.constraint(equalTo: self.view.rightAnchor)
+            containerRightAnchor.isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -178,7 +169,8 @@ class TabViewController: UIViewController {
         if mapControllerAnchor.constant == 0 {
 //            sendprofile()
             self.containerLeftAnchor.constant = 0
-            self.view.layoutIfNeeded()
+            self.containerRightAnchor.constant = -self.view.frame.width/3
+//            self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.3, animations: {
                 UIApplication.shared.statusBarStyle = .lightContent
                 self.accountControllerAnchor.constant = 0
@@ -187,11 +179,6 @@ class TabViewController: UIViewController {
                 self.profileCenterAnchor.constant = self.view.frame.width/2
                 self.view.layoutIfNeeded()
             }) { (success) in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                    self.mapController.willMove(toParentViewController: nil)
-//                    self.mapController.view.removeFromSuperview()
-//                    self.mapController.removeFromParentViewController()
-//                }
             }
         }
     }
@@ -222,6 +209,7 @@ class TabViewController: UIViewController {
         if accountControllerAnchor.constant == 0 {
 //            sendmap()
             self.containerLeftAnchor.constant = self.view.frame.width/3
+            self.containerRightAnchor.constant = 0
             UIView.animate(withDuration: 0.3, animations: {
                 UIApplication.shared.statusBarStyle = .default
                 self.mapControllerAnchor.constant = 0
@@ -230,11 +218,6 @@ class TabViewController: UIViewController {
                 self.profileCenterAnchor.constant = self.view.frame.width*3/4
                 self.view.layoutIfNeeded()
             }) { (success) in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                    self.accountController.willMove(toParentViewController: nil)
-//                    self.accountController.view.removeFromSuperview()
-//                    self.accountController.removeFromParentViewController()
-//                }
             }
         }
     }
