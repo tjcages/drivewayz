@@ -125,7 +125,7 @@ class ParkingAvailabilityViewController: UIViewController {
         
         if day == "Monday" {
             if Monday == 1 {
-                if MondayTo == "All Day" && MondayFrom == "All Day" {
+                if MondayTo == "All day" && MondayFrom == "All day" {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = MondayTo
@@ -172,7 +172,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Tuesday" {
             if Tuesday == 1 {
-                if TuesdayTo == "All Day" && TuesdayFrom == "All Day" {
+                if TuesdayTo == "All day" && TuesdayFrom == "All day" {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = TuesdayTo
@@ -219,7 +219,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Wednesday" {
             if Wednesday == 1 {
-                if WednesdayTo == "All Day" && WednesdayFrom == "All Day" {
+                if WednesdayTo == "All day" && WednesdayFrom == "All day" {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = WednesdayTo
@@ -266,7 +266,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Thursday" {
             if Thursday == 1 {
-                if ThursdayTo == "All Day" && ThursdayFrom == "All Day" {
+                if ThursdayTo == "All day" && ThursdayFrom == "All day" {
                      ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = ThursdayTo
@@ -313,7 +313,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Friday" {
             if Friday == 1 {
-                if FridayTo == "All Day" && FridayFrom == "All Day" {
+                if FridayTo == "All day" && FridayFrom == "All day" {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = FridayTo
@@ -407,7 +407,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Sunday" {
             if Sunday == 1 {
-                if SundayTo == "All Day" && SundayFrom == "All Day" {
+                if SundayTo == "All day" && SundayFrom == "All day" {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = SundayTo
@@ -462,168 +462,169 @@ class ParkingAvailabilityViewController: UIViewController {
         }
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                let userParkingID = dictionary["parkingID"] as? String
-                let ref = Database.database().reference().child("parking").child(userParkingID!).child("Availability")
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let availability = snapshot.value as? [String: AnyObject] {
-                        
-                        if let mondayValues = availability["Monday"] as? [String:AnyObject] {
-                            Monday = 1
-                            MondayTo = mondayValues["To"] as? String
-                            MondayFrom = mondayValues["From"] as? String
+                if let userParkingID = dictionary["parkingID"] as? String {
+                    let ref = Database.database().reference().child("parking").child(userParkingID).child("Availability")
+                    ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let availability = snapshot.value as? [String: AnyObject] {
                             
-                            if MondayTo == "All day" || MondayFrom == "All day" {
-                                self.mondayLabel.text = "All day"
+                            if let mondayValues = availability["Monday"] as? [String:AnyObject] {
+                                Monday = 1
+                                MondayTo = mondayValues["To"] as? String
+                                MondayFrom = mondayValues["From"] as? String
+                                
+                                if MondayTo == "All day" || MondayFrom == "All day" {
+                                    self.mondayLabel.text = "All day"
+                                    self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.mondayLabel.text = "From  \(String(describing: MondayFrom!))  to  \(String(describing: MondayTo!))"
                                 self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Monday = 0
+                                
+                                self.mondayButton.backgroundColor = UIColor.clear
+                                self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.mondayLabel.text = "N/A"
                             }
-                            
-                            self.mondayLabel.text = "From  \(String(describing: MondayFrom!))  to  \(String(describing: MondayTo!))"
-                            self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Monday = 0
-                            
-                            self.mondayButton.backgroundColor = UIColor.clear
-                            self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.mondayLabel.text = "N/A"
-                        }
-                        if let tuesdayValues = availability["Tuesday"] as? [String:AnyObject] {
-                            Tuesday = 1
-                            TuesdayTo = tuesdayValues["To"] as? String
-                            TuesdayFrom = tuesdayValues["From"] as? String
-                            
-                            if TuesdayTo == "All day" || TuesdayFrom == "All day" {
-                                self.tuesdayLabel.text = "All day"
+                            if let tuesdayValues = availability["Tuesday"] as? [String:AnyObject] {
+                                Tuesday = 1
+                                TuesdayTo = tuesdayValues["To"] as? String
+                                TuesdayFrom = tuesdayValues["From"] as? String
+                                
+                                if TuesdayTo == "All day" || TuesdayFrom == "All day" {
+                                    self.tuesdayLabel.text = "All day"
+                                    self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.tuesdayLabel.text = "From  \(String(describing: TuesdayFrom!))  to  \(String(describing: TuesdayTo!))"
                                 self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Tuesday = 0
+                                
+                                self.tuesdayButton.backgroundColor = UIColor.clear
+                                self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.tuesdayLabel.text = "N/A"
                             }
-                            
-                            self.tuesdayLabel.text = "From  \(String(describing: TuesdayFrom!))  to  \(String(describing: TuesdayTo!))"
-                            self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Tuesday = 0
-                            
-                            self.tuesdayButton.backgroundColor = UIColor.clear
-                            self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.tuesdayLabel.text = "N/A"
-                        }
-                        if let wednedayValues = availability["Wednesday"] as? [String:AnyObject] {
-                            Wednesday = 1
-                            WednesdayTo = wednedayValues["To"] as? String
-                            WednesdayFrom = wednedayValues["From"] as? String
-                            
-                            if WednesdayTo == "All day" || WednesdayFrom == "All day" {
-                                self.wednesdayLabel.text = "All day"
+                            if let wednedayValues = availability["Wednesday"] as? [String:AnyObject] {
+                                Wednesday = 1
+                                WednesdayTo = wednedayValues["To"] as? String
+                                WednesdayFrom = wednedayValues["From"] as? String
+                                
+                                if WednesdayTo == "All day" || WednesdayFrom == "All day" {
+                                    self.wednesdayLabel.text = "All day"
+                                    self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.wednesdayLabel.text = "From  \(String(describing: WednesdayFrom!))  to  \(String(describing: WednesdayTo!))"
                                 self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Wednesday = 0
+                                
+                                self.wednesdayButton.backgroundColor = UIColor.clear
+                                self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.wednesdayLabel.text = "N/A"
                             }
-                            
-                            self.wednesdayLabel.text = "From  \(String(describing: WednesdayFrom!))  to  \(String(describing: WednesdayTo!))"
-                            self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Wednesday = 0
-                            
-                            self.wednesdayButton.backgroundColor = UIColor.clear
-                            self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.wednesdayLabel.text = "N/A"
-                        }
-                        if let thursdayValues = availability["Thursday"] as? [String:AnyObject] {
-                            Thursday = 1
-                            ThursdayTo = thursdayValues["To"] as? String
-                            ThursdayFrom = thursdayValues["From"] as? String
-                            
-                            if ThursdayTo == "All day" || ThursdayFrom == "All day" {
-                                self.thursdayLabel.text = "All day"
+                            if let thursdayValues = availability["Thursday"] as? [String:AnyObject] {
+                                Thursday = 1
+                                ThursdayTo = thursdayValues["To"] as? String
+                                ThursdayFrom = thursdayValues["From"] as? String
+                                
+                                if ThursdayTo == "All day" || ThursdayFrom == "All day" {
+                                    self.thursdayLabel.text = "All day"
+                                    self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.thursdayLabel.text = "From  \(String(describing: ThursdayFrom!))  to  \(String(describing: ThursdayTo!))"
                                 self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Thursday = 0
+                                
+                                self.thursdayButton.backgroundColor = UIColor.clear
+                                self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.thursdayLabel.text = "N/A"
                             }
-                            
-                            self.thursdayLabel.text = "From  \(String(describing: ThursdayFrom!))  to  \(String(describing: ThursdayTo!))"
-                            self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Thursday = 0
-                            
-                            self.thursdayButton.backgroundColor = UIColor.clear
-                            self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.thursdayLabel.text = "N/A"
-                        }
-                        if let fridayValues = availability["Friday"] as? [String:AnyObject] {
-                            Friday = 1
-                            FridayTo = fridayValues["To"] as? String
-                            FridayFrom = fridayValues["From"] as? String
-                            
-                            if FridayTo == "All day" || FridayFrom == "All day" {
-                                self.fridayLabel.text = "All day"
+                            if let fridayValues = availability["Friday"] as? [String:AnyObject] {
+                                Friday = 1
+                                FridayTo = fridayValues["To"] as? String
+                                FridayFrom = fridayValues["From"] as? String
+                                
+                                if FridayTo == "All day" || FridayFrom == "All day" {
+                                    self.fridayLabel.text = "All day"
+                                    self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.fridayLabel.text = "From  \(String(describing: FridayFrom!))  to  \(String(describing: FridayTo!))"
                                 self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Friday = 0
+                                
+                                self.fridayButton.backgroundColor = UIColor.clear
+                                self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.fridayLabel.text = "N/A"
                             }
-                            
-                            self.fridayLabel.text = "From  \(String(describing: FridayFrom!))  to  \(String(describing: FridayTo!))"
-                            self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Friday = 0
-                            
-                            self.fridayButton.backgroundColor = UIColor.clear
-                            self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.fridayLabel.text = "N/A"
-                        }
-                        if let saturdayValues = availability["Saturday"] as? [String:AnyObject] {
-                            Saturday = 1
-                            SaturdayTo = saturdayValues["To"] as? String
-                            SaturdayFrom = saturdayValues["From"] as? String
-                            
-                            if SaturdayTo == "All day" || SaturdayFrom == "All day" {
-                                self.saturdayLabel.text = "All day"
+                            if let saturdayValues = availability["Saturday"] as? [String:AnyObject] {
+                                Saturday = 1
+                                SaturdayTo = saturdayValues["To"] as? String
+                                SaturdayFrom = saturdayValues["From"] as? String
+                                
+                                if SaturdayTo == "All day" || SaturdayFrom == "All day" {
+                                    self.saturdayLabel.text = "All day"
+                                    self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.saturdayLabel.text = "From  \(String(describing: SaturdayFrom!))  to  \(String(describing: SaturdayTo!))"
                                 self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Saturday = 0
+                                
+                                self.saturdayButton.backgroundColor = UIColor.clear
+                                self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.saturdayLabel.text = "N/A"
                             }
-                            
-                            self.saturdayLabel.text = "From  \(String(describing: SaturdayFrom!))  to  \(String(describing: SaturdayTo!))"
-                            self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Saturday = 0
-                            
-                            self.saturdayButton.backgroundColor = UIColor.clear
-                            self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.saturdayLabel.text = "N/A"
-                        }
-                        if let sundayValues = availability["Sunday"] as? [String:AnyObject] {
-                            Sunday = 1
-                            SundayTo = sundayValues["To"] as? String
-                            SundayFrom = sundayValues["From"] as? String
-                            
-                            if SundayTo == "All day" || SundayFrom == "All day" {
-                                self.sundayLabel.text = "All day"
+                            if let sundayValues = availability["Sunday"] as? [String:AnyObject] {
+                                Sunday = 1
+                                SundayTo = sundayValues["To"] as? String
+                                SundayFrom = sundayValues["From"] as? String
+                                
+                                if SundayTo == "All day" || SundayFrom == "All day" {
+                                    self.sundayLabel.text = "All day"
+                                    self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                }
+                                
+                                self.sundayLabel.text = "From  \(String(describing: SundayFrom!))  to  \(String(describing: SundayTo!))"
                                 self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
                                 self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
+                                
+                            } else {
+                                Sunday = 0
+                                
+                                self.sundayButton.backgroundColor = UIColor.clear
+                                self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.sundayLabel.text = "N/A"
                             }
-                            
-                            self.sundayLabel.text = "From  \(String(describing: SundayFrom!))  to  \(String(describing: SundayTo!))"
-                            self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
-                            self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
-                            
-                        } else {
-                            Sunday = 0
-                            
-                            self.sundayButton.backgroundColor = UIColor.clear
-                            self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-                            self.sundayLabel.text = "N/A"
+                            self.checkAvailablility()
                         }
-                        self.checkAvailablility()
-                    }
-                })
+                    })
+                }
             }
         }, withCancel: nil)
     }

@@ -133,7 +133,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }()
     
     lazy var purchaseViewController: PurchaseViewController = {
-//        let controller = PurchaseViewController(price: 100, hours: 1, ID: "-Ryhw8Ix3poYKtWYyygWPi4eqOCv1", account: "", parkingID: "-LGqjGnBEQ_AEp91s7o8")
         let controller = PurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -144,6 +143,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         controller.view.addGestureRecognizer(gesture)
         
         return controller
+    }()
+    
+    lazy var informationViewController: InformationViewController = {
+        let controller = InformationViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        controller.title = "Information Controller"
+        
+        return controller
+    }()
+    
+    lazy var fullBlurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return blurEffectView
     }()
     
     lazy var container: UIView = {
@@ -489,8 +507,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     var purchaseViewAnchor: NSLayoutConstraint!
+    var informationViewAnchor: NSLayoutConstraint!
     
     func setupViewController() {
+        
+        self.view.addSubview(fullBlurView)
+        fullBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        fullBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        fullBlurView.bottomAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        
+        self.view.addSubview(informationViewController.view)
+        self.addChildViewController(informationViewController)
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        informationViewController.view.addGestureRecognizer(gestureRecognizer)
+        informationViewController.didMove(toParentViewController: self)
+        informationViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        informationViewController.view.bottomAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
+        informationViewAnchor = informationViewController.view.widthAnchor.constraint(equalToConstant: 250)
+            informationViewAnchor.isActive = true
+        informationViewController.view.heightAnchor.constraint(equalToConstant: 600).isActive = true
         
         self.view.addSubview(purchaseViewController.view)
         self.addChildViewController(purchaseViewController)
@@ -500,7 +536,59 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -65).isActive = true
         purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
         purchaseViewController.view.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        purchaseViewController.view?.center.y = -205
         
+    }
+    
+    var previousYPosition: CGFloat = -200
+    var check: Bool = true
+    
+    @objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if (gestureRecognizer.state == .changed || gestureRecognizer.state == .ended) && check == true {
+            
+            let translation = gestureRecognizer.translation(in: self.view)
+            gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x, y: gestureRecognizer.view!.center.y + translation.y)
+            gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
+            
+            let alpha = 0.9 - (previousYPosition / -180)
+            if alpha >= 0 && alpha <= 0.7 {
+                self.fullBlurView.alpha = alpha
+            }
+
+            if (translation.y > 0 && previousYPosition >= CGFloat(0)) || translation.y >= 10.0 {
+                self.check = false
+                gestureRecognizer.view?.isUserInteractionEnabled = false
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.informationViewAnchor.constant = 300
+                    self.view.layoutIfNeeded()
+                    gestureRecognizer.view?.center.y = 200
+                    self.fullBlurView.alpha = 0.7
+                }) { (success) in
+                    self.check = true
+                    gestureRecognizer.view?.isUserInteractionEnabled = true
+                    informationScrollView.isScrollEnabled = true
+                }
+            } else if translation.y < 0 && translation.y >= -40.0 {
+                self.check = false
+                gestureRecognizer.view?.isUserInteractionEnabled = false
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.fullBlurView.alpha = 0
+                    self.informationViewAnchor.constant = 250
+                    self.view.layoutIfNeeded()
+                    gestureRecognizer.view?.center.y = -180
+                }) { (success) in
+                    self.check = true
+                    gestureRecognizer.view?.isUserInteractionEnabled = true
+                    informationScrollView.isScrollEnabled = false
+                }
+            } else if translation.y < -40.0 {
+                self.check = false
+                gestureRecognizer.view?.isUserInteractionEnabled = false
+                paymentSwipedSender()
+            }
+            
+            previousYPosition = (gestureRecognizer.view?.center.y)!
+        }
     }
 
     @objc func optionsTabGestureTapped(sender: UIButton) {
@@ -606,11 +694,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     @objc func paymentSwiped(sender: UIGestureRecognizer) {
+        paymentSwipedSender()
+    }
+    
+    func paymentSwipedSender() {
         UIView.animate(withDuration: 0.6, animations: {
+            self.fullBlurView.alpha = 0
             self.purchaseViewAnchor.constant = -(self.view.frame.width * 2)
+            self.informationViewAnchor.constant = 250
+            self.informationViewController.view.center.y = -300
             self.view.layoutIfNeeded()
         }) { (success) in
-            //
+            self.check = true
+            self.informationViewController.view?.isUserInteractionEnabled = true
+            informationScrollView.isScrollEnabled = false
         }
         if currentMarker != nil {
             let oldMarker = currentMarker
@@ -628,9 +725,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         onMarker = true
         UIView.animate(withDuration: 0.6, animations: {
             self.purchaseViewAnchor.constant = 0
+            self.informationViewController.view.center.y = -180
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = -180
             self.view.layoutIfNeeded()
         }) { (success) in
-            //
+            UIView.animate(withDuration: 0.6, animations: {
+                //
+            })
         }
         if currentMarker != nil {
             let oldMarker = currentMarker

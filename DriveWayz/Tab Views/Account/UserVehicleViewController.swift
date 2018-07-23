@@ -9,62 +9,32 @@
 import UIKit
 import Firebase
 
-class UserVehicleViewController: UIViewController {
+class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    enum VehicleSize {
+        case small
+        case tall
+    }
+    
+    var vehicleSize: VehicleSize = VehicleSize.small
+    var delegate: controlsNewParking?
     var vehicles: Int = 0
     
-    lazy var addAVehicle: UIButton = {
-        let button = UIButton(type: .custom)
-        button.backgroundColor = Theme.PRIMARY_COLOR
-        button.setTitle("Vehicle", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        button.titleLabel?.textColor = UIColor.white
-        button.layer.cornerRadius = 20
-        button.tintColor = Theme.DARK_GRAY
-        button.isUserInteractionEnabled = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        let addButton = UIButton(type: .custom)
-        let image = UIImage(named: "Plus")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        addButton.setImage(tintedImage, for: .normal)
-        addButton.tintColor = Theme.WHITE
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.layer.borderColor = Theme.WHITE.cgColor
-        addButton.layer.borderWidth = 1
-        addButton.layer.cornerRadius = 15
-        addButton.addTarget(self, action:#selector(addAVehicleButtonPressed(sender:)), for: .touchUpInside)
-        //        addButton.addTarget(self, action: #selector(popUpColor(sender:)), for: .touchUpInside)
-        button.addSubview(addButton)
-        
-        addButton.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -8).isActive = true
-        addButton.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -6).isActive = true
-        addButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        addButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        return button
-    }()
-    
-    var newVehiclePage: UIView!
-    var addButton: UIButton!
-    var addLabel: UILabel!
-    var currentVehicleImageView: UIImageView!
-    var vehicleInfo: UILabel!
-    var vehicleLicenseInfo: UILabel!
-    var blurInfoView: UIVisualEffectView!
-    var blurWidthConstraint: NSLayoutConstraint!
-    
-    func setupVehicleDisplay() {
-        newVehiclePage = UIView()
+    var newVehiclePage: UIView = {
+        let newVehiclePage = UIView()
         newVehiclePage.backgroundColor = UIColor.white
         newVehiclePage.translatesAutoresizingMaskIntoConstraints = false
         newVehiclePage.layer.shadowColor = UIColor.darkGray.cgColor
-        newVehiclePage.layer.shadowOffset = CGSize(width: 0, height: 0)
+        newVehiclePage.layer.shadowOffset = CGSize(width: 1, height: 1)
         newVehiclePage.layer.shadowOpacity = 0.8
-        newVehiclePage.layer.cornerRadius = 20
-        newVehiclePage.layer.shadowRadius = 3
+        newVehiclePage.layer.cornerRadius = 10
+        newVehiclePage.layer.shadowRadius = 1
         
-        addButton = UIButton(type: .custom)
+        return newVehiclePage
+    }()
+    
+    var addButton: UIButton = {
+        let addButton = UIButton(type: .custom)
         let image = UIImage(named: "Plus")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         addButton.setImage(tintedImage, for: .normal)
@@ -74,83 +44,137 @@ class UserVehicleViewController: UIViewController {
         addButton.layer.borderWidth = 1
         addButton.layer.cornerRadius = 20
         addButton.addTarget(self, action:#selector(addAVehicleButtonPressed(sender:)), for: .touchUpInside)
-        newVehiclePage.addSubview(addButton)
         
-        addButton.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 8).isActive = true
-        addButton.bottomAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: -4).isActive = true
-        addButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        addButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        addLabel = UILabel()
+        return addButton
+    }()
+    
+    var addLabel: UILabel = {
+        let addLabel = UILabel()
         addLabel.text = "Add a new Vehicle"
-        addLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        addLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         addLabel.textColor = Theme.DARK_GRAY
         addLabel.translatesAutoresizingMaskIntoConstraints = false
-        addLabel.contentMode = .center
-        newVehiclePage.addSubview(addLabel)
-        newVehiclePage.bringSubview(toFront: addLabel)
+        addLabel.textAlignment = .center
         
-        addLabel.leftAnchor.constraint(equalTo: addButton.rightAnchor, constant: 8).isActive = true
-        addLabel.centerYAnchor.constraint(equalTo: addButton.centerYAnchor).isActive = true
-        addLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        addLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        currentVehicleImageView = UIImageView()
+        return addLabel
+    }()
+    
+    var currentVehicleImageView: UIImageView = {
+        let currentVehicleImageView = UIImageView()
         currentVehicleImageView.translatesAutoresizingMaskIntoConstraints = false
         currentVehicleImageView.contentMode = .scaleAspectFill
         currentVehicleImageView.backgroundColor = UIColor.white
         currentVehicleImageView.clipsToBounds = true
-        currentVehicleImageView.layer.cornerRadius = 20
-        newVehiclePage.addSubview(currentVehicleImageView)
-        newVehiclePage.bringSubview(toFront: currentVehicleImageView)
         
-        currentVehicleImageView.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 8).isActive = true
-        currentVehicleImageView.topAnchor.constraint(equalTo: newVehiclePage.topAnchor, constant: 48).isActive = true
-        currentVehicleImageView.rightAnchor.constraint(equalTo: newVehiclePage.rightAnchor, constant: -8).isActive = true
-        currentVehicleImageView.bottomAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: -8).isActive = true
-        
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        blurInfoView = UIVisualEffectView(effect: blurEffect)
-        blurInfoView.alpha = 0.8
-        blurInfoView.layer.cornerRadius = 10
-        blurInfoView.clipsToBounds = true
-        blurInfoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurInfoView.translatesAutoresizingMaskIntoConstraints = false
-        currentVehicleImageView.addSubview(blurInfoView)
-        
-        blurInfoView.topAnchor.constraint(equalTo: currentVehicleImageView.topAnchor).isActive = true
-        blurInfoView.leftAnchor.constraint(equalTo: currentVehicleImageView.leftAnchor).isActive = true
-        blurWidthConstraint = blurInfoView.widthAnchor.constraint(equalToConstant: 300)
-        blurWidthConstraint.isActive = true
-        blurInfoView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        vehicleInfo = UILabel()
+        return currentVehicleImageView
+    }()
+    
+    var vehicleInfo: UILabel = {
+        let vehicleInfo = UILabel()
         vehicleInfo.text = "Vehicle Info"
         vehicleInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        vehicleInfo.textColor = Theme.WHITE
+        vehicleInfo.textColor = Theme.DARK_GRAY
         vehicleInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleInfo.contentMode = .left
-        currentVehicleImageView.addSubview(vehicleInfo)
-        currentVehicleImageView.bringSubview(toFront: vehicleInfo)
         
-        vehicleInfo.leftAnchor.constraint(equalTo: currentVehicleImageView.leftAnchor, constant: 8).isActive = true
-        vehicleInfo.topAnchor.constraint(equalTo: currentVehicleImageView.topAnchor, constant: -8).isActive = true
-        vehicleInfo.widthAnchor.constraint(equalTo: currentVehicleImageView.widthAnchor, constant: -8).isActive = true
-        vehicleInfo.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        vehicleLicenseInfo = UILabel()
+        return vehicleInfo
+    }()
+    
+    var vehicleLicenseInfo: UILabel = {
+        let vehicleLicenseInfo = UILabel()
         vehicleLicenseInfo.text = "License Plate"
         vehicleLicenseInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        vehicleLicenseInfo.textColor = Theme.WHITE
+        vehicleLicenseInfo.textColor = Theme.PRIMARY_DARK_COLOR
         vehicleLicenseInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleLicenseInfo.contentMode = .left
-        currentVehicleImageView.addSubview(vehicleLicenseInfo)
-        currentVehicleImageView.bringSubview(toFront: vehicleLicenseInfo)
         
-        vehicleLicenseInfo.leftAnchor.constraint(equalTo: currentVehicleImageView.leftAnchor, constant: 8).isActive = true
-        vehicleLicenseInfo.topAnchor.constraint(equalTo: currentVehicleImageView.topAnchor, constant: 8).isActive = true
-        vehicleLicenseInfo.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        vehicleLicenseInfo.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        return vehicleLicenseInfo
+    }()
+    
+    var editingContainer: UIView = {
+        let container = UIView()
+        container.backgroundColor = UIColor.white
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.layer.shadowColor = UIColor.darkGray.cgColor
+        container.layer.shadowOffset = CGSize(width: 1, height: 1)
+        container.layer.shadowOpacity = 0.8
+        container.layer.cornerRadius = 10
+        container.layer.shadowRadius = 1
+        
+        return container
+    }()
+    
+    var editingTableView: UITableView = {
+        let editing = UITableView()
+        editing.translatesAutoresizingMaskIntoConstraints = false
+        editing.backgroundColor = UIColor.clear
+        editing.isScrollEnabled = false
+        
+        return editing
+    }()
+    
+    var Edits = ["Delete vehicle"]
+    
+    func setupVehicleDisplay(vehicleSize: VehicleSize) {
+        
+        switch vehicleSize {
+        case .small:
+            
+            vehicleInfo.removeFromSuperview()
+            vehicleLicenseInfo.removeFromSuperview()
+            currentVehicleImageView.removeFromSuperview()
+            
+            newVehiclePage.addSubview(addButton)
+            addButton.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 8).isActive = true
+            addButton.bottomAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: -4).isActive = true
+            addButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+            addButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            
+            newVehiclePage.addSubview(addLabel)
+            addLabel.centerXAnchor.constraint(equalTo: newVehiclePage.centerXAnchor).isActive = true
+            addLabel.centerYAnchor.constraint(equalTo: addButton.centerYAnchor).isActive = true
+            addLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            addLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+            
+        case .tall:
+            
+            addButton.removeFromSuperview()
+            addLabel.removeFromSuperview()
+            
+            newVehiclePage.addSubview(vehicleInfo)
+            vehicleInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 20).isActive = true
+            vehicleInfo.topAnchor.constraint(equalTo: newVehiclePage.topAnchor, constant: 10).isActive = true
+            vehicleInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
+            vehicleInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            
+            newVehiclePage.addSubview(vehicleLicenseInfo)
+            vehicleLicenseInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 25).isActive = true
+            vehicleLicenseInfo.topAnchor.constraint(equalTo: vehicleInfo.bottomAnchor, constant: 0).isActive = true
+            vehicleLicenseInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
+            vehicleLicenseInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            
+            newVehiclePage.addSubview(currentVehicleImageView)
+            currentVehicleImageView.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor).isActive = true
+            currentVehicleImageView.topAnchor.constraint(equalTo: vehicleLicenseInfo.bottomAnchor, constant: 20).isActive = true
+            currentVehicleImageView.rightAnchor.constraint(equalTo: newVehiclePage.rightAnchor).isActive = true
+            currentVehicleImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+            
+        }
+    }
+    
+    func setupEditing() {
+        
+        self.view.addSubview(editingContainer)
+        editingContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        editingContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        editingContainer.topAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: 10).isActive = true
+        editingContainer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        editingContainer.addSubview(editingTableView)
+        editingTableView.leftAnchor.constraint(equalTo: editingContainer.leftAnchor, constant: 5).isActive = true
+        editingTableView.rightAnchor.constraint(equalTo: editingContainer.rightAnchor, constant: -5).isActive = true
+        editingTableView.topAnchor.constraint(equalTo: editingContainer.topAnchor, constant: 5).isActive = true
+        editingTableView.bottomAnchor.constraint(equalTo: editingContainer.bottomAnchor, constant: -5).isActive = true
         
     }
     
@@ -164,11 +188,12 @@ class UserVehicleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.editingTableView.delegate = self
+        self.editingTableView.dataSource = self
         self.view.backgroundColor = Theme.OFF_WHITE
         
         startUpActivity()
         fetchUserAndSetupVehicles()
-        setupVehicleDisplay()
         
     }
     
@@ -212,36 +237,23 @@ class UserVehicleViewController: UIViewController {
     
     func setupVehicleView() {
         
+        newVehiclePage.removeFromSuperview()
+        
         self.view.addSubview(newVehiclePage)
-        self.view.sendSubview(toBack: newVehiclePage)
-        
-        newVehiclePage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        newVehiclePage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
-        vehiclePageHeightAnchorSmall = newVehiclePage.heightAnchor.constraint(equalToConstant: 90)
-        vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 260)
-        
-        newVehiclePage.addSubview(addAVehicle)
-        
+        newVehiclePage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        newVehiclePage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+        vehiclePageHeightAnchorSmall = newVehiclePage.heightAnchor.constraint(equalToConstant: 50)
+        vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 360)
+    
         if vehicles > 0 {
             vehiclePageHeightAnchorTall.isActive = true
-            self.addLabel.removeFromSuperview()
-            self.addButton.removeFromSuperview()
+            setupVehicleDisplay(vehicleSize: VehicleSize.tall)
+            setupEditing()
         } else {
             vehiclePageHeightAnchorSmall.isActive = true
-            self.currentVehicleImageView.isHidden = true
-            self.blurInfoView.isHidden = true
-            self.vehicleInfo.isHidden = true
-            self.vehicleLicenseInfo.isHidden = true
+            setupVehicleDisplay(vehicleSize: VehicleSize.small)
         }
-        
-        newVehiclePage.bringSubview(toFront: addAVehicle)
-        
-        addAVehicle.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        addAVehicle.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        addAVehicle.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
-        addAVehicle.heightAnchor.constraint(equalToConstant: 40).isActive = false
-        
     }
     
     func fetchUserAndSetupVehicles() {
@@ -274,8 +286,6 @@ class UserVehicleViewController: UIViewController {
                             let text = vehicleYear! + " " + vehicleMake! + " " + vehicleModel!
                             self.vehicleInfo.text = text
                             self.vehicleLicenseInfo.text = vehicleLicensePlate!
-                            let width = self.estimatedFrameForText(text: text).width + 4
-                            self.blurInfoView.frame.size.width = width
                         }
                     }, withCancel: nil)
                 }
@@ -301,22 +311,60 @@ class UserVehicleViewController: UIViewController {
         })
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Edits.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = Edits[indexPath.row]
+        cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = .none
+        cell.textLabel?.textAlignment = .center
+        
+        if indexPath.row == (Edits.count-1) {
+            cell.textLabel?.textColor = UIColor.red
+        } else {
+            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == (Edits.count-1) {
+            sendAlert(message: "Are you sure you want to permanently delete this vehicle? You need one to purchase parking.", tag: 1)
+        }
+    }
+    
+    func sendAlert(message: String, tag: Int) {
+        let alert = UIAlertController(title: "Confirm", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (true) in
+            let userId = Auth.auth().currentUser?.uid
+            let userRef = Database.database().reference().child("users").child(userId!)
+            userRef.observeSingleEvent(of: .value) { (snapshot) in
+                userRef.child("vehicleID").removeValue()
+                userRef.child("vehicleImageURL").removeValue()
+                let userVehicleRef = Database.database().reference().child("user-vehicles")
+                userVehicleRef.child(userId!).removeValue()
+                
+                self.newVehiclePage.removeFromSuperview()
+                self.editingContainer.removeFromSuperview()
+                
+                self.fetchUserAndSetupVehicles()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     @objc func addAVehicleButtonPressed(sender: UIButton) {
-//        self.view.bringSubview(toFront: visualBlurEffect)
-//        self.view.addSubview(addANewVehicleView)
-//        addANewVehicleView.center = self.view.center
-//        addANewVehicleView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-//        addANewVehicleView.alpha = 0
-//        UIView.animate(withDuration: 0.4) {
-//            self.visualBlurEffect.effect = self.effect
-//            self.addANewVehicleView.alpha = 1
-//            self.addANewVehicleView.transform = CGAffineTransform.identity
-//        }
+        delegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
     }
     
     

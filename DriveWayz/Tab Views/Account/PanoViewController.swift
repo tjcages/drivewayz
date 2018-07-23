@@ -19,6 +19,8 @@ var shapeLayer = CAShapeLayer()
 
 class PanoViewController: UIViewController, GMSMapViewDelegate {
     
+    var delegate: controlPano?
+    
     var lastPoint = CGPoint(x: 50, y: -50)
     var screenShotView: UIImageView!
     var accountViewController: AccountViewController?
@@ -343,6 +345,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         dotShotButton.widthAnchor.constraint(equalToConstant: 215).isActive = true
         dotShotButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60).isActive = true
         
+        self.screenShotButton.removeFromSuperview()
         addOverlay()
     }
     
@@ -357,6 +360,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             self.dismissPano()
             self.activityIndicatorView.stopAnimating()
+            self.delegate?.endPano()
         })
     }
     

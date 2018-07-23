@@ -9,7 +9,10 @@
 import UIKit
 import Firebase
 
-class UserParkingViewController: UIViewController {
+class UserParkingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var parkingDelegate: controlsNewParking?
+    var viewDelegate: controlsAccountViews?
     
     var newParkingPage: UIView = {
         let newParkingPage = UIView()
@@ -96,15 +99,44 @@ class UserParkingViewController: UIViewController {
         
         return label
     }()
+    
+    var editingContainer: UIView = {
+        let container = UIView()
+        container.backgroundColor = UIColor.white
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.layer.shadowColor = UIColor.darkGray.cgColor
+        container.layer.shadowOffset = CGSize(width: 1, height: 1)
+        container.layer.shadowOpacity = 0.8
+        container.layer.cornerRadius = 10
+        container.layer.shadowRadius = 1
+        
+        return container
+    }()
+    
+    var editingTableView: UITableView = {
+        let editing = UITableView()
+        editing.translatesAutoresizingMaskIntoConstraints = false
+        editing.backgroundColor = UIColor.clear
+        editing.isScrollEnabled = false
+        
+        return editing
+    }()
+    
+    var Edits = ["Make unavailable", "Edit hourly cost", "Edit availability", "Retake picture", "Delete host spot"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = Theme.OFF_WHITE
+        editingTableView.delegate = self
+        editingTableView.dataSource = self
 
         fetchUserAndSetupParking()
-        setupParkingDisplay()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //
     }
     
     private func estimatedFrameForText(text: String) -> CGRect {
@@ -114,7 +146,7 @@ class UserParkingViewController: UIViewController {
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], context: nil)
     }
     
-    func setupParkingDisplay() {
+    func setupNoParkingDisplay() {
         
         newParkingPage.addSubview(addParkingButton)
         addParkingButton.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 8).isActive = true
@@ -127,6 +159,10 @@ class UserParkingViewController: UIViewController {
         addParkingLabel.centerYAnchor.constraint(equalTo: addParkingButton.centerYAnchor).isActive = true
         addParkingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         addParkingLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        
+    }
+    
+    func setupParkingDisplay() {
         
         newParkingPage.addSubview(parkingInfo)
         parkingInfo.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 15).isActive = true
@@ -157,18 +193,25 @@ class UserParkingViewController: UIViewController {
         
         newParkingPage.addSubview(currentParkingImageView)
         currentParkingImageView.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor).isActive = true
-        currentParkingImageView.topAnchor.constraint(equalTo: parkingDate.bottomAnchor, constant: 300).isActive = true
+        currentParkingImageView.topAnchor.constraint(equalTo: parkingDate.bottomAnchor, constant: 290).isActive = true
         currentParkingImageView.rightAnchor.constraint(equalTo: newParkingPage.rightAnchor).isActive = true
         currentParkingImageView.heightAnchor.constraint(equalToConstant: 280).isActive = true
         
-        let line1 = UIView()
-        line1.translatesAutoresizingMaskIntoConstraints = false
-        line1.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        newParkingPage.addSubview(line1)
-        line1.topAnchor.constraint(equalTo: currentParkingImageView.topAnchor, constant: -10).isActive = true
-        line1.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        line1.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor).isActive = true
-        line1.centerXAnchor.constraint(equalTo: newParkingPage.centerXAnchor).isActive = true
+    }
+    
+    func setupEditing() {
+        
+        self.view.addSubview(editingContainer)
+        editingContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        editingContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        editingContainer.topAnchor.constraint(equalTo: newParkingPage.bottomAnchor, constant: 10).isActive = true
+        editingContainer.heightAnchor.constraint(equalToConstant: 230).isActive = true
+        
+        editingContainer.addSubview(editingTableView)
+        editingTableView.leftAnchor.constraint(equalTo: editingContainer.leftAnchor, constant: 5).isActive = true
+        editingTableView.rightAnchor.constraint(equalTo: editingContainer.rightAnchor, constant: -5).isActive = true
+        editingTableView.topAnchor.constraint(equalTo: editingContainer.topAnchor, constant: 5).isActive = true
+        editingTableView.bottomAnchor.constraint(equalTo: editingContainer.bottomAnchor, constant: -5).isActive = true
         
     }
 
@@ -184,19 +227,19 @@ class UserParkingViewController: UIViewController {
         newParkingPage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
         newParkingPage.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         parkingPageHeightAnchorSmall = newParkingPage.heightAnchor.constraint(equalToConstant: 50)
-        parkingPageHeightAnchorTall = newParkingPage.heightAnchor.constraint(equalToConstant: 700)
+        parkingPageHeightAnchorTall = newParkingPage.heightAnchor.constraint(equalToConstant: 680)
         
         if parking > 0 {
             parkingPageHeightAnchorTall.isActive = true
             parkingPageHeightAnchorSmall.isActive = false
-            self.addParkingLabel.removeFromSuperview()
-            self.addParkingButton.removeFromSuperview()
+            setupParkingDisplay()
+            setupEditing()
+            self.viewDelegate?.setupParkingViewControllers(parkingStatus: ParkingStatus.yesParking)
         } else {
             parkingPageHeightAnchorSmall.isActive = true
             parkingPageHeightAnchorTall.isActive = false
-            self.currentParkingImageView.isHidden = true
-            self.parkingInfo.isHidden = true
-            self.parkingCost.isHidden = true
+            setupNoParkingDisplay()
+            self.viewDelegate?.setupParkingViewControllers(parkingStatus: ParkingStatus.noParking)
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -264,10 +307,87 @@ class UserParkingViewController: UIViewController {
     }
     
     @objc func addAParkingButtonPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3) {
-            newParkingController.view.alpha = 1
+        parkingDelegate?.setupNewParking(parkingImage: ParkingImage.noImage)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Edits.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = Edits[indexPath.row]
+        cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = .none
+        cell.textLabel?.textAlignment = .center
+        
+        if indexPath.row == (Edits.count-1) {
+            cell.textLabel?.textColor = UIColor.red
+        } else {
+            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == (Edits.count-1) {
+            sendAlert(message: "Are you sure you want to permanently delete your spot? You will lose all untransfered funds.", tag: 1)
+        } else if indexPath.row == (Edits.count-2) {
+            sendAlert(message: "Are you sure you want to retake your spot's picture? This picture will be available to all users.", tag: 2)
+        } else if indexPath.row == (Edits.count-3) {
+            sendAlert(message: "Are you sure you want to change your spot's availibility? This will take place immediately.", tag: 3)
+        } else if indexPath.row == (Edits.count-4) {
+            sendAlert(message: "Are you sure you want to change the cost per hour of your spot? This will only take place if the spot is vacated.", tag: 4)
+        } else if indexPath.row == (Edits.count-5) {
+            sendAlert(message: "Are you sure you'd like to make your spot unavailable for a while? You will need to manually set it back to available.", tag: 5)
         }
     }
+    
+    func sendAlert(message: String, tag: Int) {
+        let alert = UIAlertController(title: "Confirm", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (true) in
+            let userId = Auth.auth().currentUser?.uid
+            let userRef = Database.database().reference().child("users").child(userId!)
+            userRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let parkingID = dictionary["parkingID"] as? String
+                    let userParkingRef = Database.database().reference().child("user-parking").child(parkingID!)
+                    let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+                    
+                    if tag == 1 {
+                        userRef.child("parkingID").removeValue()
+                        userRef.child("parkingImageURL").removeValue()
+                        userRef.child("payments").removeValue()
+                        userRef.child("userFunds").removeValue()
+                        userParkingRef.removeValue()
+                        parkingRef.removeValue()
+                        parking = 0
+                        self.newParkingPage.removeFromSuperview()
+                        self.editingContainer.removeFromSuperview()
+                        self.parkingInfo.removeFromSuperview()
+                        self.parkingCost.removeFromSuperview()
+                        self.parkingDate.removeFromSuperview()
+                        self.currentParkingImageView.removeFromSuperview()
+                        self.setupParkingView()
+                        self.view.layoutIfNeeded()
+                        
+                    } else if tag == 2 {
+                        
+                    } else if tag == 3 {
+                        
+                    } else if tag == 4 {
+                        
+                    } else if tag == 5 {
+                        
+                    }
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

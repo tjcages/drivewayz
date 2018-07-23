@@ -23,21 +23,45 @@
     }
     
     func setupViews() {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        view.layer.borderColor = borderColor?.cgColor
+        view.layer.borderWidth = 4
+        view.layer.cornerRadius = 20
+        view.clipsToBounds = true
+        
+        if borderColor == Theme.PRIMARY_COLOR {
+            view.backgroundColor = Theme.OFF_WHITE
+        } else {
+            view.backgroundColor = Theme.PRIMARY_COLOR
+        }
+        
+        self.addSubview(view)
+        
         parkingImageView = UIImageView()
-        parkingImageView.loadImageUsingCacheWithUrlString(parkingImageURL)
-        parkingImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        parkingImageView.layer.cornerRadius = 25
-        parkingImageView.layer.borderColor = borderColor?.cgColor
-        parkingImageView.layer.borderWidth = 4
-        parkingImageView.clipsToBounds = true
-        let arrow = UILabel(frame: CGRect(x: 0, y: 45, width: 50, height: 10))
+        let myImage = UIImage(named: "Home")
+        let tintableImage = myImage?.withRenderingMode(.alwaysTemplate)
+        parkingImageView.image = tintableImage
+        parkingImageView.tintColor = borderColor
+        parkingImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(parkingImageView)
+        parkingImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        parkingImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        parkingImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        parkingImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        let arrow = UILabel()
         arrow.text = "▾"
         arrow.font = UIFont.systemFont(ofSize: 24)
         arrow.textColor = borderColor
         arrow.textAlignment = .center
-        
-        self.addSubview(parkingImageView)
+        arrow.translatesAutoresizingMaskIntoConstraints = false
+
         self.addSubview(arrow)
+        arrow.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        arrow.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        arrow.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        arrow.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

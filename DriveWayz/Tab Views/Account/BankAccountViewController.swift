@@ -11,6 +11,8 @@ import TextFieldEffects
 
 class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate {
     
+    var delegate: controlsBankAccount?
+    
     var scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -409,7 +411,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         self.view.addSubview(bankLabelDuplicate)
         bankLabelDuplicate.alpha = 1
         bankLabelDuplicate.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        bankLabelNormalAnchor = bankLabelDuplicate.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 40)
+        bankLabelNormalAnchor = bankLabelDuplicate.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20)
         bankLabelNormalAnchor.isActive = true
         bankLabelDuplicate.heightAnchor.constraint(equalToConstant: 40).isActive = true
         bankLabelDuplicate.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
@@ -908,7 +910,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     }
     
     @objc func dismissDetails(sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        self.delegate?.removeBankAccountView()
         UIApplication.shared.statusBarStyle = .lightContent
     }
     

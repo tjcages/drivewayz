@@ -54,7 +54,6 @@ class ParkingDetailsViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         
         checkAccount()
-        setupViews()
     }
     
 //    func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
@@ -69,52 +68,6 @@ class ParkingDetailsViewController: UIViewController {
 //        ids = id
 //        parkingIDs = parkingID
 //    }
-    
-    func setupViews() {
-        
-        self.view.addSubview(reserveContainer)
-        reserveContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        reserveContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        reserveContainer.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        reserveContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.OFF_WHITE
-        reserveContainer.addSubview(line)
-        line.centerYAnchor.constraint(equalTo: reserveContainer.centerYAnchor).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        line.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
-        line.centerXAnchor.constraint(equalTo: reserveContainer.centerXAnchor).isActive = true
-
-        self.view.addSubview(saveReservationButton)
-        saveReservationButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
-        saveReservationButton.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
-        saveReservationButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
-        saveReservationButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        self.view.addSubview(paymentButton)
-        paymentButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
-        paymentButton.topAnchor.constraint(equalTo: reserveContainer.topAnchor).isActive = true
-        paymentButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        paymentButton.heightAnchor.constraint(equalToConstant: 40)
-
-        let line2 = UIView()
-        line2.translatesAutoresizingMaskIntoConstraints = false
-        line2.backgroundColor = Theme.OFF_WHITE
-        self.view.addSubview(line2)
-        line2.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor).isActive = true
-        line2.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        line2.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        line2.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor, constant: -100).isActive = true
-        
-        self.view.addSubview(unavailable)
-        unavailable.centerXAnchor.constraint(equalTo: reserveContainer.centerXAnchor).isActive = true
-        unavailable.topAnchor.constraint(equalTo: line.bottomAnchor).isActive = true
-        unavailable.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
-        unavailable.bottomAnchor.constraint(equalTo: saveReservationButton.topAnchor, constant: -1).isActive = true
-        
-    }
 
     func spotIsAvailable() {
         unavailable.alpha = 0
@@ -169,58 +122,6 @@ class ParkingDetailsViewController: UIViewController {
             }, withCancel: nil)
         }
     }
-    
-    @objc func dismissDetails(sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-        saveReservationButton.alpha = 0.5
-        saveReservationButton.isUserInteractionEnabled = false
-        UIApplication.shared.statusBarStyle = .lightContent
-    }
-    
-    var reserveContainer: UIView = {
-        let reserve = UIView()
-        reserve.translatesAutoresizingMaskIntoConstraints = false
-        reserve.backgroundColor = Theme.WHITE
-        reserve.layer.cornerRadius = 5
-        reserve.clipsToBounds = false
-        reserve.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        reserve.layer.shadowOffset = CGSize(width: 1, height: 1)
-        reserve.layer.shadowRadius = 1
-        reserve.layer.shadowOpacity = 0.8
-        reserve.alpha = 0.9
-        
-        return reserve
-    }()
-    
-    var saveReservationButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Reserve Spot", for: .normal)
-        button.setTitle("", for: .selected)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        button.backgroundColor = UIColor.clear
-        button.alpha = 0.5
-        button.translatesAutoresizingMaskIntoConstraints = false
-//        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
-    
-    var paymentButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Payment", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        button.backgroundColor = UIColor.clear
-        button.alpha = 0.5
-        button.translatesAutoresizingMaskIntoConstraints = false
-        //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
-    
 }
 
 protocol dropDownProtocol {
@@ -241,8 +142,10 @@ class dropDownButton: UIButton, dropDownProtocol {
         super.init(frame: frame)
         
         self.backgroundColor = Theme.WHITE
+        self.alpha = 0.9
         
         dropView = dropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+        dropView.alpha = 0.9
         dropView.delegate = self
         dropView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -325,6 +228,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.layer.cornerRadius = 5
+        tableView.alpha = 0.9
         
         self.addSubview(tableView)
         
@@ -353,6 +257,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         cell.textLabel?.text = dropDownOptions[indexPath.row]
         cell.textLabel?.textColor = Theme.DARK_GRAY
         cell.backgroundColor = Theme.WHITE
+        cell.alpha = 0.9
         return cell
     }
     

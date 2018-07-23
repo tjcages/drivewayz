@@ -16,6 +16,14 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     var timeArray: [Double] = []
     var costArray: [Double] = [0]
     var count: Int = 0
+    
+    lazy var bankController: BankAccountViewController = {
+        let controller = BankAccountViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Bank"
+        
+        return controller
+    }()
 
     var chartContainer: UIView = {
        let chart = UIView()
@@ -138,6 +146,9 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.didMove(toParentViewController: self)
+        
         self.timeArray = []
         self.costArray = [0]
     }
@@ -285,6 +296,8 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
 //        print("\(entry.value) in \(months[entry.index])")
     }
     
+    var delegate: controlsBankAccount?
+    
     @objc func checkAccount(sender: UIButton) {
         if let currentUser = Auth.auth().currentUser?.uid {
             let checkRef = Database.database().reference().child("users").child(currentUser)
@@ -293,8 +306,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                     if let account = dictionary["accountID"] as? String {
                         self.removeFunds(account: account)
                     } else {
-                        let bankAccount = BankAccountViewController()
-                        self.navigationController?.pushViewController(bankAccount, animated: true)
+                        self.delegate?.setupBankAccount()
                     }
                 }
             }, withCancel: nil)

@@ -20,7 +20,7 @@ var reserveButton: UIButton = {
     button.setTitleColor(Theme.WHITE, for: .normal)
     let path = UIBezierPath(roundedRect:button.bounds,
                             byRoundingCorners:[.bottomRight, .bottomLeft],
-                            cornerRadii: CGSize(width: 5, height: 5))
+                            cornerRadii: CGSize(width: 10, height: 10))
     let maskLayer = CAShapeLayer()
     maskLayer.path = path.cgPath
     button.layer.mask = maskLayer
@@ -53,8 +53,9 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     private enum RideRequestState {
         case none
         case requesting
-        case active(Ride)
+        case active
     }
+    
     private var rideRequestState: RideRequestState = .none {
         didSet {
             reloadRequestRideButton()
@@ -89,7 +90,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         let reserve = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
         reserve.translatesAutoresizingMaskIntoConstraints = false
         reserve.backgroundColor = UIColor.white
-        reserve.layer.cornerRadius = 5
+        reserve.layer.cornerRadius = 10
         reserve.clipsToBounds = false
         reserve.layer.shadowColor = UIColor.darkGray.cgColor
         reserve.layer.shadowOffset = CGSize(width: 1, height: 1)

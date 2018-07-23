@@ -12,7 +12,12 @@ import Firebase
 var rightArrow: UIButton!
 var leftArrow: UIButton!
 
-class TabViewController: UIViewController {
+protocol moveControllers {
+    func moveTopProfile()
+    func moveToMap()
+}
+
+class TabViewController: UIViewController, moveControllers {
     
     var swipe: Int = 1
     
@@ -93,6 +98,16 @@ class TabViewController: UIViewController {
         return controller
     }()
     
+    lazy var walkthroughController: WalkthroughViewController = {
+        let controller = WalkthroughViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Walkthrough"
+        controller.view.alpha = 0
+        controller.delegate = self
+        return controller
+    }()
+    
     var mapControllerAnchor: NSLayoutConstraint!
     var accountControllerAnchor: NSLayoutConstraint!
     var mapCenterAnchor: NSLayoutConstraint!
@@ -113,6 +128,13 @@ class TabViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = true
         
+        setupViews()
+        fetchUser()
+
+    }
+    
+    func setupViews() {
+        
         self.view.addSubview(mapController.view)
         mapControllerAnchor = mapController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor)
         mapControllerAnchor.isActive = true
@@ -129,9 +151,9 @@ class TabViewController: UIViewController {
         
         self.view.addSubview(container)
         containerLeftAnchor = container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3)
-            containerLeftAnchor.isActive = true
+        containerLeftAnchor.isActive = true
         containerRightAnchor = container.rightAnchor.constraint(equalTo: self.view.rightAnchor)
-            containerRightAnchor.isActive = true
+        containerRightAnchor.isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -139,14 +161,14 @@ class TabViewController: UIViewController {
         map.widthAnchor.constraint(equalToConstant: 50).isActive = true
         map.heightAnchor.constraint(equalToConstant: 50).isActive = true
         mapCenterAnchor = map.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/2)
-            mapCenterAnchor.isActive = true
+        mapCenterAnchor.isActive = true
         map.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         
         container.addSubview(profile)
         profile.widthAnchor.constraint(equalToConstant: 50).isActive = true
         profile.heightAnchor.constraint(equalToConstant: 50).isActive = true
         profileCenterAnchor = profile.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*3/4)
-            profileCenterAnchor.isActive = true
+        profileCenterAnchor.isActive = true
         profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         
         self.view.addSubview(pin)
@@ -154,7 +176,7 @@ class TabViewController: UIViewController {
         pin.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 6).isActive = true
         pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
         pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
-
+        
     }
     
     @objc func moveToProfileTap(sender: UIButton) {
@@ -167,10 +189,8 @@ class TabViewController: UIViewController {
     
     func moveTopProfile() {
         if mapControllerAnchor.constant == 0 {
-//            sendprofile()
             self.containerLeftAnchor.constant = 0
             self.containerRightAnchor.constant = -self.view.frame.width/3
-//            self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.3, animations: {
                 UIApplication.shared.statusBarStyle = .lightContent
                 self.accountControllerAnchor.constant = 0
@@ -183,20 +203,6 @@ class TabViewController: UIViewController {
         }
     }
     
-    func sendprofile() {
-        
-        self.addChildViewController(accountController)
-        accountController.didMove(toParentViewController: self)
-        
-        self.view.addSubview(accountController.view)
-        accountControllerAnchor = accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width)
-        accountControllerAnchor.isActive = true
-        accountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        accountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        accountController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.view.bringSubview(toFront: container)
-    }
-    
     @objc func moveToMapTap(sender: UIButton) {
         moveToMap()
     }
@@ -207,7 +213,6 @@ class TabViewController: UIViewController {
     
     func moveToMap() {
         if accountControllerAnchor.constant == 0 {
-//            sendmap()
             self.containerLeftAnchor.constant = self.view.frame.width/3
             self.containerRightAnchor.constant = 0
             UIView.animate(withDuration: 0.3, animations: {
@@ -221,19 +226,6 @@ class TabViewController: UIViewController {
             }
         }
     }
-    
-    func sendmap() {
-        self.addChildViewController(mapController)
-        mapController.didMove(toParentViewController: self)
-        
-        self.view.addSubview(mapController.view)
-        mapControllerAnchor = mapController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-        mapControllerAnchor.isActive = true
-        mapController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        mapController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        mapController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.view.bringSubview(toFront: container)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -246,6 +238,33 @@ class TabViewController: UIViewController {
     
     @objc func handleLogout() {
         self.performSegue(withIdentifier: "loginView", sender: self)
+    }
+    
+    func fetchUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let userVehicleID = dictionary["vehicleID"] as? String
+                let userParkingID = dictionary["parkingID"] as? String
+                
+                if userVehicleID == nil && userParkingID == nil {
+                    
+                    self.view.addSubview(self.walkthroughController.view)
+                    self.walkthroughController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                    self.walkthroughController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+                    self.walkthroughController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                    self.walkthroughController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+                    
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.walkthroughController.view.alpha = 1
+                    })
+                    
+                }
+            }
+        }, withCancel: nil)
+        return
     }
 
 }
