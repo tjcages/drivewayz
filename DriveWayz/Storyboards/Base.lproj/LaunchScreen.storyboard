@@ -18,30 +18,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2017 COAppDesign. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="zzb-hL-Ofc">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2017 DriveWayz, LLC. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="zzb-hL-Ofc">
                                 <rect key="frame" x="20" y="626" width="335" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="335" id="Ga7-jx-awZ"/>
                                     <constraint firstAttribute="height" constant="21" id="PxG-sz-09Z"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="COAD" translatesAutoresizingMaskIntoConstraints="NO" id="O9n-ig-ZtI">
-                                <rect key="frame" x="98" y="563" width="162" height="55"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LOGO" translatesAutoresizingMaskIntoConstraints="NO" id="O9n-ig-ZtI">
+                                <rect key="frame" x="119.5" y="528" width="135" height="90"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="162" id="Oby-SU-Tyz"/>
-                                    <constraint firstAttribute="height" constant="55" id="frX-dh-iZB"/>
+                                    <constraint firstAttribute="width" constant="135" id="Dj6-iV-B29"/>
+                                    <constraint firstAttribute="height" constant="90" id="bdb-6m-NsL"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zzb-hL-Ofc" secondAttribute="trailing" constant="20" id="6tK-Nj-iAt"/>
-                            <constraint firstItem="O9n-ig-ZtI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="98" id="Afy-ZA-bI1"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="zzb-hL-Ofc" secondAttribute="bottom" constant="20" id="sM9-hc-oIf"/>
+                            <constraint firstItem="zzb-hL-Ofc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="fGp-bh-7bv"/>
+                            <constraint firstAttribute="bottom" secondItem="zzb-hL-Ofc" secondAttribute="bottom" constant="20" symbolic="YES" id="k8D-VJ-FXJ"/>
                             <constraint firstItem="zzb-hL-Ofc" firstAttribute="top" secondItem="O9n-ig-ZtI" secondAttribute="bottom" constant="8" id="wdt-AH-JHx"/>
+                            <constraint firstItem="O9n-ig-ZtI" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="x8A-Mm-z8a"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -52,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="COAD" width="400" height="132"/>
+        <image name="LOGO" width="400" height="300"/>
     </resources>
 </document>
