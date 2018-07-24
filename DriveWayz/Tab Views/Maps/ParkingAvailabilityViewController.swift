@@ -172,7 +172,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Tuesday" {
             if Tuesday == 1 {
-                if TuesdayTo == "All day" && TuesdayFrom == "All day" {
+                if (TuesdayTo == "All day" && TuesdayFrom == "All day") || (TuesdayTo == "All Day" && TuesdayFrom == "All Day") {
                     ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = TuesdayTo

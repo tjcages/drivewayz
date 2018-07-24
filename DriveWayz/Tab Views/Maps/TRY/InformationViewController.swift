@@ -26,7 +26,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
     
     lazy var infoController: ParkingInfoViewController = {
         let controller = ParkingInfoViewController()
-        self.addChildViewController(controller)
+//        self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Info"
         return controller
@@ -48,7 +48,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
     
     lazy var pictureController: ParkingImageViewController = {
         let controller = ParkingImageViewController()
-        self.addChildViewController(controller)
+//        self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Image"
         controller.view.layer.cornerRadius = 10

@@ -264,8 +264,9 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     @objc private func handleRequestRideButtonTapped() {
-        self.paymentInProgress = true
-        self.paymentContext.requestPayment()
+        sendHelp(title: "Coming Soon!", message: "We are currently in the Beta stage of production and the actual purchasing of parking spots is not available yet!")
+//        self.paymentInProgress = true
+//        self.paymentContext.requestPayment()
     }
 
       private func reloadPaymentButtonContent() {
@@ -406,9 +407,13 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     
     func sendAlert(message: String) {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        
+        self.present(alert, animated: true)
+    }
+    
+    func sendHelp(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
     

@@ -228,6 +228,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     override func viewDidAppear(_ animated: Bool) {
         self.checkCurrentParking()
+        UIApplication.shared.statusBarStyle = .default
     }
     
     func locationAuthStatus() {
@@ -911,14 +912,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailedView = ParkingDetailsViewController()
         let parking = parkingSpots[indexPath.row]
-        //        detailedView.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
-        self.navigationController?.pushViewController(detailedView, animated: true)
-        self.optionsTabViewConstraint.constant = -215
-        self.topSearch.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-            self.optionsTabAnimations()
+        
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(parking.parkingAddress!) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let location = placemarks.first?.location
+                else {
+                    print("No location selected")
+                    return
+            }
+            let locationCamera: CLLocation? = location
+            if locationCamera != nil {
+                self.optionsTabGesture()
+                self.mapView.animate(toLocation: (locationCamera?.coordinate)!)
+                self.mapView.animate(toZoom: 15.0)
+            }
         }
+        self.navigationController?.pushViewController(detailedView, animated: true)
     }
     
     

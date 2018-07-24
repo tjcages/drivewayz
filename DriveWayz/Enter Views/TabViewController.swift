@@ -188,6 +188,7 @@ class TabViewController: UIViewController, moveControllers {
     }
     
     func moveTopProfile() {
+        UIApplication.shared.statusBarStyle = .lightContent
         if mapControllerAnchor.constant == 0 {
             self.containerLeftAnchor.constant = 0
             self.containerRightAnchor.constant = -self.view.frame.width/3
@@ -212,6 +213,7 @@ class TabViewController: UIViewController, moveControllers {
     }
     
     func moveToMap() {
+        UIApplication.shared.statusBarStyle = .default
         if accountControllerAnchor.constant == 0 {
             self.containerLeftAnchor.constant = self.view.frame.width/3
             self.containerRightAnchor.constant = 0
@@ -233,7 +235,7 @@ class TabViewController: UIViewController, moveControllers {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     @objc func handleLogout() {

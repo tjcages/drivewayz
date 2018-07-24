@@ -34,6 +34,7 @@ protocol controlsNewParking {
 
 protocol controlsAccountViews {
     func setupParkingViewControllers(parkingStatus: ParkingStatus)
+    func removeOptionsFromView()
 }
 
 class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsNewParking, controlsAccountViews {
@@ -161,7 +162,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var profileWrap: UIView = {
         let grayView = UIView()
-        grayView.backgroundColor = Theme.PRIMARY_COLOR
+        
+        let background = CAGradientLayer().blueColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 120)
+        background.zPosition = -10
+        grayView.layer.insertSublayer(background, at: 0)
+        
         grayView.translatesAutoresizingMaskIntoConstraints = false
         grayView.isUserInteractionEnabled = true
         grayView.alpha = 0.9
@@ -351,6 +357,13 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         effect = visualBlurEffect.effect
         visualBlurEffect.effect = nil
         UIApplication.shared.statusBarStyle = .lightContent
+        
+        let gestureRight = UISwipeGestureRecognizer(target: self, action: #selector(segmentRight(sender:)))
+        gestureRight.direction = .right
+        self.view.addGestureRecognizer(gestureRight)
+        let gestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(segmentLeft(sender:)))
+        gestureLeft.direction = .left
+        self.view.addGestureRecognizer(gestureLeft)
 
         fetchUser()
         setupTopView()
@@ -358,6 +371,26 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupOptions()
         startUpActivity()
 
+    }
+    
+    @objc func segmentRight(sender: UISwipeGestureRecognizer) {
+        if segmentLineLeftAnchor3.isActive == true && self.optionsTabViewConstraint.constant == 0 {
+            self.optionsTabGesture()
+        } else if segmentLineLeftAnchor3.isActive == true {
+            self.parkingPressedFunc()
+        } else if segmentLineLeftAnchor2.isActive == true {
+            self.recentPressedFunc()
+        }
+    }
+    
+    @objc func segmentLeft(sender: UISwipeGestureRecognizer) {
+        if segmentLineLeftAnchor1.isActive == true {
+            self.parkingPressedFunc()
+        } else if segmentLineLeftAnchor2.isActive == true {
+            self.vehiclePressedFunc()
+        } else {
+            self.optionsTabGesture()
+        }
     }
     
     var blurSquare: UIVisualEffectView!
@@ -397,6 +430,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileWrap.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
         profileWrap.addSubview(profileImageView)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
+        profileImageView.addGestureRecognizer(gesture)
         profileImageView.leftAnchor.constraint(equalTo: profileWrap.leftAnchor, constant: 10).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: profileWrap.centerYAnchor, constant: 10).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -540,6 +575,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @objc func recentPressed(sender: UIButton) {
+        recentPressedFunc()
+    }
+    
+    func recentPressedFunc() {
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
         segmentLineLeftAnchor1.isActive = true
         segmentLineLeftAnchor2.isActive = false
@@ -550,7 +589,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.view.layoutIfNeeded()
         }
     }
+    
     @objc func parkingPressed(sender: UIButton) {
+        parkingPressedFunc()
+    }
+    
+    func parkingPressedFunc() {
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2.5)
         segmentLineLeftAnchor1.isActive = false
         segmentLineLeftAnchor2.isActive = true
@@ -561,6 +605,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.view.layoutIfNeeded()
         }
     }
+    
     @objc func vehiclePressed(sender: UIButton) {
         vehiclePressedFunc()
     }
@@ -909,10 +954,86 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        optionsTabGesture()
         if indexPath.row == (Options.count-1) {
             handleLogout()
+        } else if indexPath.row == (Options.count-2) {
+            
+            self.view.addSubview(self.contactController.view)
+            self.addChildViewController(contactController)
+            self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.contactController.view.alpha = 1
+            })
+        } else if indexPath.row == (Options.count-3) {
+            
+            self.view.addSubview(self.termsController.view)
+            self.addChildViewController(termsController)
+            self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.termsController.view.alpha = 1
+            })
+        } else if indexPath.row == (Options.count-5) {
+            
+            self.view.addSubview(self.couponController.view)
+            self.addChildViewController(couponController)
+            self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.couponController.view.alpha = 1
+            })
         }
     }
+    
+    func removeOptionsFromView() {
+        contactController.willMove(toParentViewController: nil)
+        contactController.view.removeFromSuperview()
+        contactController.removeFromParentViewController()
+        termsController.willMove(toParentViewController: nil)
+        termsController.view.removeFromSuperview()
+        termsController.removeFromParentViewController()
+        couponController.willMove(toParentViewController: nil)
+        couponController.view.removeFromSuperview()
+        couponController.removeFromParentViewController()
+    }
+    
+    lazy var contactController: ContactUsViewController = {
+        let controller = ContactUsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Contact Us!"
+        controller.view.alpha = 0
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var termsController: TermsViewController = {
+        let controller = TermsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Terms"
+        controller.view.alpha = 0
+        controller.delegateOptions = self
+        return controller
+    }()
+    
+    lazy var couponController: CouponsViewController = {
+        let controller = CouponsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Coupons"
+        controller.view.alpha = 0
+        controller.delegate = self
+        return controller
+    }()
 
 }
 
