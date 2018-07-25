@@ -11,38 +11,15 @@ import Firebase
 import GoogleMaps
 import Stripe
 
-var parkingAddress: String?
-var parkingDistances: String?
-var imageURL: String?
-var parkingCost: String?
-var formattedLocation: String?
-var hours: Int?
-var timestamps: NSNumber?
-var ids: String?
-var parkingIDs: String?
-
-var Monday: Int?
-var Tuesday: Int?
-var Wednesday: Int?
-var Thursday: Int?
-var Friday: Int?
-var Saturday: Int?
-var Sunday: Int?
-
-var MondayFrom: String?
-var MondayTo: String?
-var TuesdayFrom: String?
-var TuesdayTo: String?
-var WednesdayFrom: String?
-var WednesdayTo: String?
-var ThursdayFrom: String?
-var ThursdayTo: String?
-var FridayFrom: String?
-var FridayTo: String?
-var SaturdayFrom: String?
-var SaturdayTo: String?
-var SundayFrom: String?
-var SundayTo: String?
+//var parkingAddress: String?
+//var parkingDistances: String?
+//var imageURL: String?
+//var parkingCost: String?
+//var formattedLocation: String?
+//var hours: Int?
+//var timestamps: NSNumber?
+//var ids: String?
+//var parkingIDs: String?
 
 class ParkingDetailsViewController: UIViewController {
     

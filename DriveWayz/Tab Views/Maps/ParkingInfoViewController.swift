@@ -17,6 +17,12 @@ class ParkingInfoViewController: UIViewController {
         setupViews()
     }
     
+    func setData(cityAddress: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, parkingDistance: String) {
+        labelTitle.text = cityAddress
+        labelCost.text = parkingCost
+        labelDistance.text = "\(parkingDistance) miles"
+    }
+    
     func setupViews() {
         
         view.addSubview(parkingView)

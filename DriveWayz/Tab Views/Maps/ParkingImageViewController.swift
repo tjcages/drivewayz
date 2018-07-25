@@ -26,6 +26,10 @@ class ParkingImageViewController: UIViewController {
         setupViews()
     }
     
+    func setData(imageURL: String) {
+        currentParkingImageView.loadImageUsingCacheWithUrlString(imageURL)
+    }
+    
     func setupViews() {
         
         self.view.addSubview(currentParkingImageView)

@@ -104,8 +104,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return controller
     }()
     
-    lazy var availabilityController: ParkingAvailabilityViewController = {
-        let controller = ParkingAvailabilityViewController()
+    lazy var availabilityController: PersonalAvailabilityViewController = {
+        let controller = PersonalAvailabilityViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Availability"
@@ -695,9 +695,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                     userEmail = email
                 }
                 let userPicture = dictionary["picture"] as? String
-                if let userParkingID = dictionary["parkingID"] as? String {
-                    parkingIDs = userParkingID
-                }
+//                if let userParkingID = dictionary["parkingID"] as? String {
+//                    parkingIDs = userParkingID
+//                }
                 if userPicture == "" {
                     self.profileImageView.image = UIImage(named: "background4")
                 } else {

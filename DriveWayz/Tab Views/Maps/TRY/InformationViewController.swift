@@ -15,8 +15,6 @@ var informationScrollView: UIScrollView = {
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.showsVerticalScrollIndicator = false
     scrollView.isScrollEnabled = false
-    scrollView.contentSize = CGSize(width: 300, height: 900)
-    scrollView.contentOffset = CGPoint(x: 0, y: 900)
     
     return scrollView
 }()
@@ -26,7 +24,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
     
     lazy var infoController: ParkingInfoViewController = {
         let controller = ParkingInfoViewController()
-//        self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Info"
         return controller
@@ -106,7 +103,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
     
     var reviewsContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = UIColor.clear
         view.alpha = 0.9
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
@@ -124,10 +121,19 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
 
         setupViewControllers()
     }
+    
+    func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
+        infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance)
+        pictureController.setData(imageURL: imageURL)
+        availabilityController.setData(id: id)
+        reviewsController.setData(parkingID: parkingID)
+    }
 
     func setupViewControllers() {
         
         self.view.addSubview(informationScrollView)
+        informationScrollView.contentSize = CGSize(width: 500, height: 1000)
+        informationScrollView.contentOffset = CGPoint(x: 0, y: 1000)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -136,7 +142,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
         informationScrollView.addSubview(infoContainer)
         infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 895).isActive = true
+        infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 995).isActive = true
         infoContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         infoContainer.addSubview(infoController.view)
@@ -171,13 +177,25 @@ class InformationViewController: UIViewController, UIScrollViewDelegate {
         availabilityController.view.topAnchor.constraint(equalTo: availabilityContainer.topAnchor).isActive = true
         availabilityController.view.widthAnchor.constraint(equalTo: availabilityContainer.widthAnchor).isActive = true
         
+        informationScrollView.addSubview(reviewsContainer)
+        reviewsContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        reviewsContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        reviewsContainer.bottomAnchor.constraint(equalTo: availabilityContainer.topAnchor, constant: -5).isActive = true
+        reviewsContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        
+        reviewsContainer.addSubview(reviewsController.view)
+        reviewsController.view.centerXAnchor.constraint(equalTo: reviewsContainer.centerXAnchor).isActive = true
+        reviewsController.view.bottomAnchor.constraint(equalTo: reviewsContainer.bottomAnchor).isActive = true
+        reviewsController.view.topAnchor.constraint(equalTo: reviewsContainer.topAnchor).isActive = true
+        reviewsController.view.widthAnchor.constraint(equalTo: reviewsContainer.widthAnchor).isActive = true
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == informationScrollView {
-            if scrollView.contentOffset.y >= 315.0 {
+            if scrollView.contentOffset.y >= 415.0 {
                 informationScrollView.isScrollEnabled = false
-            } else if scrollView.contentOffset.y <= 285.0 {
+            } else if scrollView.contentOffset.y <= 385.0 {
                 informationScrollView.isScrollEnabled = true
             }
         }

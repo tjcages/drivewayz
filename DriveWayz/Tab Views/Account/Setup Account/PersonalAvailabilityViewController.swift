@@ -1,49 +1,23 @@
 //
-//  ParkingAvailabilityViewController.swift
+//  PersonalAvailabilityViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler Jordan Cagle on 7/7/18.
+//  Created by Tyler Jordan Cagle on 7/24/18.
 //  Copyright © 2018 COAD. All rights reserved.
 //
 
 import UIKit
 import Firebase
 
-var Monday: Int?
-var Tuesday: Int?
-var Wednesday: Int?
-var Thursday: Int?
-var Friday: Int?
-var Saturday: Int?
-var Sunday: Int?
-
-var MondayFrom: String?
-var MondayTo: String?
-var TuesdayFrom: String?
-var TuesdayTo: String?
-var WednesdayFrom: String?
-var WednesdayTo: String?
-var ThursdayFrom: String?
-var ThursdayTo: String?
-var FridayFrom: String?
-var FridayTo: String?
-var SaturdayFrom: String?
-var SaturdayTo: String?
-var SundayFrom: String?
-var SundayTo: String?
-
-class ParkingAvailabilityViewController: UIViewController {
+class PersonalAvailabilityViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Theme.WHITE
         self.navigationController?.navigationBar.isHidden = true
         
+        collectAvailiability()
         setupViews()
-    }
-    
-    func setData(id: String) {
-        collectAvailiability(id: id)
     }
     
     func setupViews() {
@@ -155,12 +129,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = MondayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = MondayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -202,12 +178,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = TuesdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = TuesdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -249,12 +227,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = WednesdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = WednesdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -291,17 +271,19 @@ class ParkingAvailabilityViewController: UIViewController {
         } else if day == "Thursday" {
             if Thursday == 1 {
                 if ThursdayTo == "All day" && ThursdayFrom == "All day" {
-                     ParkingDetailsViewController().spotIsAvailable()
+                    ParkingDetailsViewController().spotIsAvailable()
                 } else {
                     let to = ThursdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = ThursdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -343,12 +325,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = FridayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = FridayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -390,12 +374,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = SaturdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = SaturdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -437,12 +423,14 @@ class ParkingAvailabilityViewController: UIViewController {
                     let to = SundayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = SundayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -480,9 +468,10 @@ class ParkingAvailabilityViewController: UIViewController {
         
     }
     
-    func collectAvailiability(id: String) {
+    func collectAvailiability() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
         
-        Database.database().reference().child("users").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let userParkingID = dictionary["parkingID"] as? String {
                     let ref = Database.database().reference().child("parking").child(userParkingID).child("Availability")
@@ -829,16 +818,5 @@ class ParkingAvailabilityViewController: UIViewController {
         return label
     }()
 
+
 }
-
-extension Date {
-    func dayOfWeek() -> String? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        return dateFormatter.string(from: self).capitalized
-        // or use capitalized(with: locale) if you want
-    }
-}
-
-
-

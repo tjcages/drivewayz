@@ -516,7 +516,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         fullBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         fullBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        fullBlurView.bottomAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(informationViewController.view)
         self.addChildViewController(informationViewController)
@@ -582,7 +582,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     gestureRecognizer.view?.isUserInteractionEnabled = true
                     informationScrollView.isScrollEnabled = false
                 }
-            } else if translation.y < -40.0 {
+            } else if translation.y < -40.0 && informationScrollView.contentOffset.y >= 500 {
                 self.check = false
                 gestureRecognizer.view?.isUserInteractionEnabled = false
                 paymentSwipedSender()
@@ -602,6 +602,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     @objc func optionsTabGesture() {
         if optionsTabViewConstraint.constant == -215 {
+            paymentSwipedSender()
             self.optionsTabViewConstraint.constant = 0
             self.topSearch.isUserInteractionEnabled = false
             self.tabPullWidthShort.isActive = false
@@ -724,6 +725,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         onMarker = true
+        
+        guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
+        let parking = parkingSpots[customMarkerView.tag]
+        informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
+        
         UIView.animate(withDuration: 0.6, animations: {
             self.purchaseViewAnchor.constant = 0
             self.informationViewController.view.center.y = -180
@@ -735,6 +741,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                 //
             })
         }
+        
         if currentMarker != nil {
             let oldMarker = currentMarker
             guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return false }
@@ -742,7 +749,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), parkingImageURL: imageURL!, borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
             oldMarker?.iconView = customMarker
         }
-        guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
+        
         let imageURL = customMarkerView.parkingImageURL!
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), parkingImageURL: imageURL, borderColor: UIColor.white, tag: customMarkerView.tag)
         marker.iconView = customMarker
