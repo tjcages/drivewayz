@@ -12,11 +12,9 @@
  class CustomMarkerView: UIView {
     var parkingImageView: UIImageView!
     var borderColor: UIColor!
-    var parkingImageURL: String!
     
-    init(frame: CGRect, parkingImageURL: String, borderColor: UIColor, tag: Int) {
+    init(frame: CGRect, borderColor: UIColor, tag: Int) {
         super.init(frame: frame)
-        self.parkingImageURL = parkingImageURL
         self.borderColor = borderColor
         self.tag = tag
         setupViews()

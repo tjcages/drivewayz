@@ -19,7 +19,7 @@ class ReviewsCell: UICollectionViewCell {
         view.layer.shadowOffset = CGSize(width: 1, height: 1)
         view.layer.shadowRadius = 1
         view.layer.shadowOpacity = 0.8
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 5
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view

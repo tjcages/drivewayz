@@ -61,6 +61,22 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return scrollView
     }()
     
+    lazy var currentController: CurrentViewController = {
+        let controller = CurrentViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Current"
+        return controller
+    }()
+    
+    lazy var recentController: UserRecentViewController = {
+        let controller = UserRecentViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Recent"
+        return controller
+    }()
+    
     lazy var earningsController: DataChartsViewController = {
         let controller = DataChartsViewController()
         self.addChildViewController(controller)
@@ -214,7 +230,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let info = UIButton()
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
-        info.setTitle("Recent", for: .normal)
+        info.setTitle("Current", for: .normal)
         info.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
@@ -506,6 +522,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var earningsViewAnchor: NSLayoutConstraint?
     var vehicleViewAnchor: NSLayoutConstraint?
+    var currentViewAnchor: NSLayoutConstraint?
     
     func setupParkingViewControllers(parkingStatus: ParkingStatus) {
         switch parkingStatus {
@@ -572,6 +589,21 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         vehicleController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
         vehicleController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
         
+        scrollView.addSubview(currentController.view)
+        currentController.didMove(toParentViewController: self)
+        currentViewAnchor = currentController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 0)
+        currentViewAnchor?.isActive = true
+        currentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
+        currentController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        scrollView.addSubview(recentController.view)
+        recentController.didMove(toParentViewController: self)
+        recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
+        recentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 5).isActive = true
+        recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
+        
     }
     
     @objc func recentPressed(sender: UIButton) {
@@ -583,6 +615,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         segmentLineLeftAnchor1.isActive = true
         segmentLineLeftAnchor2.isActive = false
         segmentLineLeftAnchor3.isActive = false
+        currentViewAnchor?.constant = 0
         earningsViewAnchor?.constant = self.view.frame.width
         vehicleViewAnchor?.constant = (self.view.frame.width) * 2
         UIView.animate(withDuration: 0.2) {
@@ -599,6 +632,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         segmentLineLeftAnchor1.isActive = false
         segmentLineLeftAnchor2.isActive = true
         segmentLineLeftAnchor3.isActive = false
+        currentViewAnchor?.constant = -self.view.frame.width
         earningsViewAnchor?.constant = 0
         vehicleViewAnchor?.constant = self.view.frame.width
         UIView.animate(withDuration: 0.2) {
@@ -615,6 +649,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         segmentLineLeftAnchor1.isActive = false
         segmentLineLeftAnchor2.isActive = false
         segmentLineLeftAnchor3.isActive = true
+        currentViewAnchor?.constant = -(self.view.frame.width*2)
         earningsViewAnchor?.constant = -self.view.frame.width
         vehicleViewAnchor?.constant = 0
         UIView.animate(withDuration: 0.2) {

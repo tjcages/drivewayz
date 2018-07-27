@@ -20,7 +20,7 @@ var reserveButton: UIButton = {
     button.setTitleColor(Theme.WHITE, for: .normal)
     let path = UIBezierPath(roundedRect:button.bounds,
                             byRoundingCorners:[.bottomRight, .bottomLeft],
-                            cornerRadii: CGSize(width: 10, height: 10))
+                            cornerRadii: CGSize(width: 5, height: 5))
     let maskLayer = CAShapeLayer()
     maskLayer.path = path.cgPath
     button.layer.mask = maskLayer
@@ -33,16 +33,16 @@ var reserveButton: UIButton = {
 class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
 
     // Controllers
+    var delegate: removePurchaseView?
 
     let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
     
     let paymentCurrency = "usd"
     var count: Int = 0
-
-    var hours: Int = 0
+    var recentCount: Int = 0
+    
     var id: String = ""
-    var account: String = ""
     var cost: Double = 0.00
     var parkingId: String = ""
     
@@ -76,11 +76,13 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
                     reserveButton.alpha = 0.6
+                    reserveButton.setTitle("", for: .normal)
                 }
                 else {
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
                     reserveButton.alpha = 1
+                    reserveButton.setTitle("Reserve Spot", for: .normal)
                 }
             }, completion: nil)
         }
@@ -90,7 +92,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         let reserve = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
         reserve.translatesAutoresizingMaskIntoConstraints = false
         reserve.backgroundColor = UIColor.white
-        reserve.layer.cornerRadius = 10
+        reserve.layer.cornerRadius = 5
         reserve.clipsToBounds = false
         reserve.layer.shadowColor = UIColor.darkGray.cgColor
         reserve.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -124,9 +126,26 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         hours.alpha = 0.9
         hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         hours.dropView.dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
-        hours.layer.cornerRadius = 10
+        hours.layer.cornerRadius = 5
         
         return hours
+    }()
+    
+    var unavailable: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 300, height: 40))
+        button.backgroundColor = Theme.DARK_GRAY
+        button.setTitle("Unavailable currently", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 1
+        button.clipsToBounds = true
+        let path = UIBezierPath(roundedRect:button.bounds,
+                                byRoundingCorners:[.bottomRight, .bottomLeft],
+                                cornerRadii: CGSize(width: 5, height: 5))
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path.cgPath
+        button.layer.mask = maskLayer
+        
+        return button
     }()
 
     // MARK: Init
@@ -142,17 +161,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         
         assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
         assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
-        
-//        self.hours = hours
-//        self.id = ID
-//        self.parkingId = parkingID
-//        self.account = account
-        
-//        let stringPrice = String(price / hours)
-//        var reversed = String(stringPrice.reversed())
-//        reversed.insert(".", at: stringPrice.index(reversed.startIndex, offsetBy: 2))
-//        let singleCost = String(reversed.reversed())
-//        cost = Double(singleCost)! * Double(hours)
 
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
@@ -192,13 +200,22 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         self.paymentContext.delegate = self
         paymentContext.hostViewController = self
     }
+    
+    func setData(parkingCost: String, parkingID: String, id: String) {
+        let noHour = parkingCost.replacingOccurrences(of: "/hour", with: "", options: .regularExpression, range: nil)
+        let noDollar = noHour.replacingOccurrences(of: "[$]", with: "", options: .regularExpression, range: nil)
+        self.price = Int(noDollar.replacingOccurrences(of: "[.]", with: "", options: .regularExpression, range: nil))!
+        
+        self.id = id
+        self.parkingId = parkingID
+        self.cost = Double(noDollar)!
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let red: CGFloat = 0
         self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
-        self.view.addSubview(self.activityIndicator)
         self.activityIndicator.alpha = 0
 
         setupViews()
@@ -208,6 +225,14 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.didMove(toParentViewController: self)
+    }
+    
+    func setAvailability(available: Bool) {
+        if available == true {
+            self.unavailable.alpha = 0
+        } else {
+            self.unavailable.alpha = 1
+        }
     }
     
     func setupViews() {
@@ -234,6 +259,12 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         reserveButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
         reserveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+        self.view.addSubview(unavailable)
+        unavailable.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        unavailable.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
+        unavailable.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
+        unavailable.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         self.view.addSubview(paymentButton)
         paymentButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
         paymentButton.topAnchor.constraint(equalTo: reserveContainer.topAnchor).isActive = true
@@ -255,7 +286,13 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         hoursButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         hoursButton.heightAnchor.constraint(equalToConstant: 39).isActive = true
         
-        self.activityIndicator.center = reserveButton.center
+        self.view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerXAnchor.constraint(equalTo: reserveButton.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: reserveButton.centerYAnchor).isActive = true
+        activityIndicator.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        activityIndicator.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
     }
 
     @objc private func handlePaymentButtonTapped() {
@@ -264,9 +301,9 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     @objc private func handleRequestRideButtonTapped() {
-        sendHelp(title: "Coming Soon!", message: "We are currently in the Beta stage of production and the actual purchasing of parking spots is not available yet!")
-//        self.paymentInProgress = true
-//        self.paymentContext.requestPayment()
+//        sendHelp(title: "Coming Soon!", message: "We are currently in the Beta stage of production and the actual purchasing of parking spots is not available yet!")
+        self.paymentInProgress = true
+        self.paymentContext.requestPayment()
     }
 
       private func reloadPaymentButtonContent() {
@@ -357,10 +394,8 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
-        paymentContext.paymentAmount = 100
         MyAPIClient.sharedClient.completeCharge(paymentResult,
-                                                amount: self.paymentContext.paymentAmount,
-                                                email: userEmail!, account: self.account,
+                                                amount: (self.price * hours!),
                                                 completion: completion)
     }
     
@@ -380,6 +415,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
             completed = true
             self.updateUserProfile()
             self.beginRoute()
+            self.addCurrentParking()
         case .userCancellation:
             completed = false
             return
@@ -388,17 +424,12 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
             if completed == true {
                 //completed payment
-                self.navigationController?.popViewController(animated: true)
-                self.navigationController?.popViewController(animated: true)
-                self.navigationController?.navigationBar.isHidden = true
-                UIApplication.shared.statusBarStyle = .lightContent
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
                     //
                 }
             } else {
                 //payment error
-                self.navigationController?.popViewController(animated: true)
-                UIApplication.shared.statusBarStyle = .lightContent
+                print("payment error :(")
             }
         }
         alertController.addAction(action)
@@ -417,24 +448,50 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         self.present(alert, animated: true)
     }
     
+    func addCurrentParking() {
+        self.delegate?.paymentSwipedSender()
+        self.delegate?.removeTabView()
+        reserveButton.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3, animations: {
+            reserveButton.alpha = 0.5
+            currentButton.alpha = 1
+        }) { (success) in
+            //
+        }
+    }
+    
     private func beginRoute() {
-        
         let currentUser = Auth.auth().currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
         let userRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(parkingId)
-        userRef.updateChildValues(["timestamp": timestamp, "hours": self.hours, "parkingID": parkingId])
-        
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let oldHours = dictionary["hours"] as? Int {
+                    let newHours = oldHours + hours!
+                    userRef.updateChildValues(["timestamp": timestamp, "hours": newHours, "parkingID": self.parkingId])
+                    seconds! = seconds! + (3600 * hours!)
+                }
+            } else {
+                userRef.updateChildValues(["timestamp": timestamp, "hours": hours!, "parkingID": self.parkingId])
+            }
+        }
     }
     
     private func updateUserProfile() {
+        self.cost = self.cost * Double(hours!)
         
         let currentUser = Auth.auth().currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970
-        let userRef = Database.database().reference().child("users").child(currentUser!).child("recentParking").child(parkingId)
-        userRef.updateChildValues(["timestamp": timestamp, "cost": self.cost, "hours": self.hours])
+        let userRef = Database.database().reference().child("users").child(currentUser!).child("recentParking")
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            self.recentCount =  Int(snapshot.childrenCount)
+            let recentRef = userRef.child("\(self.recentCount)")
+            recentRef.updateChildValues(["parkingID": self.parkingId, "timestamp": timestamp, "cost": self.cost, "hours": hours!])
+        }
         
-        let paymentRef = Database.database().reference().child("users").child(id).child("payments")
-        let currentRef = Database.database().reference().child("users").child(id)
+        let paymentRef = Database.database().reference().child("users").child(self.id).child("payments")
+        let currentRef = Database.database().reference().child("users").child(self.id)
+        currentRef.updateChildValues(["available": 0])
         currentRef.observeSingleEvent(of: .value) { (current) in
             let dictionary = current.value as? [String:AnyObject]
             var currentFunds = dictionary!["userFunds"] as? Double
@@ -442,29 +499,31 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
             paymentRef.observeSingleEvent(of: .value) { (snapshot) in
                 self.count =  Int(snapshot.childrenCount)
                 let payRef = paymentRef.child("\(self.count)")
-                let newFunds = Double(currentFunds!) + (Double(self.cost) * 0.8)
-                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": self.hours, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
+                let newFunds = Double(currentFunds!) + (Double(self.cost) * 0.75)
+                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
-        let fundRef = Database.database().reference().child("users").child(id)
+        let fundRef = Database.database().reference().child("users").child(currentUser!)
         fundRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if var dictionary = snapshot.value as? [String:AnyObject] {
                 
                 if let previousFunds = dictionary["userFunds"] {
-                    let funds = Double(truncating: previousFunds as! NSNumber) + (self.cost) * 0.8
+                    let funds = Double(truncating: previousFunds as! NSNumber) + (self.cost) * 0.75
                     fundRef.updateChildValues(["userFunds": funds])
                 } else {
-                    fundRef.updateChildValues(["userFunds": (self.cost * 0.8)])
+                    fundRef.updateChildValues(["userFunds": (self.cost * 0.75)])
                 }
                 if let previousHours = dictionary["hostHours"] as? Int{
-                    let hours = previousHours + self.hours
-                    fundRef.updateChildValues(["hostHours": hours])
+                    let hour = previousHours + hours!
+                    fundRef.updateChildValues(["hostHours": hour])
                 } else {
-                    fundRef.updateChildValues(["hostHours": self.hours])
+                    fundRef.updateChildValues(["hostHours": hours!])
                 }
                 
             }
         }, withCancel: nil)
     }
+    
+    
 
 }

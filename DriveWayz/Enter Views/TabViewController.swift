@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 var rightArrow: UIButton!
 var leftArrow: UIButton!
@@ -15,9 +16,11 @@ var leftArrow: UIButton!
 protocol moveControllers {
     func moveTopProfile()
     func moveToMap()
+    func removeTabView()
+    func bringTabView()
 }
 
-class TabViewController: UIViewController, moveControllers {
+class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers {
     
     var swipe: Int = 1
     
@@ -87,6 +90,7 @@ class TabViewController: UIViewController, moveControllers {
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Map"
+        controller.delegate = self
         return controller
     }()
     
@@ -133,6 +137,12 @@ class TabViewController: UIViewController, moveControllers {
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UNUserNotificationCenter.current().delegate = self
+    }
+    
+    var containerHeightAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         self.view.addSubview(mapController.view)
@@ -154,7 +164,8 @@ class TabViewController: UIViewController, moveControllers {
         containerLeftAnchor.isActive = true
         containerRightAnchor = container.rightAnchor.constraint(equalTo: self.view.rightAnchor)
         containerRightAnchor.isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        containerHeightAnchor = container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            containerHeightAnchor.isActive = true
         container.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         container.addSubview(map)
@@ -177,6 +188,24 @@ class TabViewController: UIViewController, moveControllers {
         pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
         pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
+    }
+    
+    func removeTabView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.containerHeightAnchor.constant = 80
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
+        }
+    }
+    
+    func bringTabView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.containerHeightAnchor.constant = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
+        }
     }
     
     @objc func moveToProfileTap(sender: UIButton) {

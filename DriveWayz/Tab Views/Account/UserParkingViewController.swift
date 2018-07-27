@@ -360,6 +360,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
                         userRef.child("parkingImageURL").removeValue()
                         userRef.child("payments").removeValue()
                         userRef.child("userFunds").removeValue()
+                        userRef.child("hostHours").removeValue()
                         userParkingRef.removeValue()
                         parkingRef.removeValue()
                         parking = 0

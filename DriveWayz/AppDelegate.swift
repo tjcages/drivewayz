@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarStyle = .default
         UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
         
@@ -101,6 +101,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         timerStarted = false
         CurrentParkingViewController().restartDatabaseTimer()
+        startTimer()
+    }
+    
+    func startTimer() {
+        if let userID = Auth.auth().currentUser?.uid {
+            let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
+            currentRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let key = dictionary.keys
+                    let stampRef = Database.database().reference().child("users").child(userID).child("currentParking").child(key.first!)
+                    stampRef.observeSingleEvent(of: .value, with: { (check) in
+                        if let stamp = check.value as? [String:AnyObject] {
+                            currentParking = true
+                            let refreshTimestamp = stamp["timestamp"] as? Double
+                            let refreshHours = stamp["hours"] as? Int
+                            let currentTimestamp = NSDate().timeIntervalSince1970
+                            seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                        }
+                    }, withCancel: nil)
+                }
+            }
+        }
     }
     
 }

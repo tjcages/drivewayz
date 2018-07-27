@@ -30,13 +30,6 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         
         return reviews
     }()
-    
-    let fiveStarControl: FiveStarRating = {
-        let five = FiveStarRating(frame: CGRect(x: 0, y: 0, width: Int((5 * kStarSize)) + (4 * kSpacing), height: Int(kStarSize)))
-        five.translatesAutoresizingMaskIntoConstraints = false
-        
-        return five
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,12 +52,6 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         reviewsPicker.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         reviewsPicker.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         reviewsPicker.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        
-//        self.view.addSubview(fiveStarControl)
-//        fiveStarControl.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -5).isActive = true
-//        fiveStarControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        fiveStarControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
-//        fiveStarControl.widthAnchor.constraint(equalToConstant: 220).isActive = true
         
     }
     

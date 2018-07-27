@@ -33,6 +33,8 @@ var SundayFrom: String?
 var SundayTo: String?
 
 class ParkingAvailabilityViewController: UIViewController {
+    
+    var delegate: controlCurrentParkingOptions?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,15 +50,9 @@ class ParkingAvailabilityViewController: UIViewController {
     
     func setupViews() {
         
-        view.addSubview(labelAvailability)
-        labelAvailability.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        labelAvailability.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        labelAvailability.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        labelAvailability.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         view.addSubview(mondayButton)
-        mondayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
-        mondayButton.topAnchor.constraint(equalTo: labelAvailability.bottomAnchor, constant: 4).isActive = true
+        mondayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        mondayButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5).isActive = true
         mondayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         mondayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
@@ -67,7 +63,7 @@ class ParkingAvailabilityViewController: UIViewController {
         mondayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(tuesdayButton)
-        tuesdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        tuesdayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         tuesdayButton.topAnchor.constraint(equalTo: mondayButton.bottomAnchor, constant: 2).isActive = true
         tuesdayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         tuesdayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -79,7 +75,7 @@ class ParkingAvailabilityViewController: UIViewController {
         tuesdayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(wednesdayButton)
-        wednesdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        wednesdayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         wednesdayButton.topAnchor.constraint(equalTo: tuesdayButton.bottomAnchor, constant: 2).isActive = true
         wednesdayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         wednesdayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -91,7 +87,7 @@ class ParkingAvailabilityViewController: UIViewController {
         wednesdayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(thursdayButton)
-        thursdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        thursdayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         thursdayButton.topAnchor.constraint(equalTo: wednesdayButton.bottomAnchor, constant: 2).isActive = true
         thursdayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         thursdayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -103,7 +99,7 @@ class ParkingAvailabilityViewController: UIViewController {
         thursdayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(fridayButton)
-        fridayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        fridayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         fridayButton.topAnchor.constraint(equalTo: thursdayButton.bottomAnchor, constant: 2).isActive = true
         fridayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         fridayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -115,7 +111,7 @@ class ParkingAvailabilityViewController: UIViewController {
         fridayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(saturdayButton)
-        saturdayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        saturdayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         saturdayButton.topAnchor.constraint(equalTo: fridayButton.bottomAnchor, constant: 2).isActive = true
         saturdayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         saturdayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -127,7 +123,7 @@ class ParkingAvailabilityViewController: UIViewController {
         saturdayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         view.addSubview(sundayButton)
-        sundayButton.leftAnchor.constraint(equalTo: labelAvailability.leftAnchor, constant: 30).isActive = true
+        sundayButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         sundayButton.topAnchor.constraint(equalTo: saturdayButton.bottomAnchor, constant: 2).isActive = true
         sundayButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         sundayButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -150,17 +146,19 @@ class ParkingAvailabilityViewController: UIViewController {
         if day == "Monday" {
             if Monday == 1 {
                 if MondayTo == "All day" && MondayFrom == "All day" {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = MondayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = MondayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -169,45 +167,47 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Tuesday" {
             if Tuesday == 1 {
                 if (TuesdayTo == "All day" && TuesdayFrom == "All day") || (TuesdayTo == "All Day" && TuesdayFrom == "All Day") {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = TuesdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = TuesdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -216,10 +216,10 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
@@ -227,34 +227,36 @@ class ParkingAvailabilityViewController: UIViewController {
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Wednesday" {
             if Wednesday == 1 {
                 if WednesdayTo == "All day" && WednesdayFrom == "All day" {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = WednesdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = WednesdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -263,45 +265,47 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Thursday" {
             if Thursday == 1 {
                 if ThursdayTo == "All day" && ThursdayFrom == "All day" {
-                     ParkingDetailsViewController().spotIsAvailable()
+                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = ThursdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = ThursdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -310,45 +314,47 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Friday" {
             if Friday == 1 {
                 if FridayTo == "All day" && FridayFrom == "All day" {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = FridayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = FridayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -357,45 +363,47 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Saturday" {
             if Saturday == 1 {
                 if SaturdayTo == "All Day" && SaturdayFrom == "All Day" {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = SaturdayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = SaturdayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -404,45 +412,47 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         } else if day == "Sunday" {
             if Sunday == 1 {
                 if SundayTo == "All day" && SundayFrom == "All day" {
-                    ParkingDetailsViewController().spotIsAvailable()
+                    self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = SundayTo
                     var timeTo = to?.components(separatedBy: ":")
                     let hourTo: Int? = Int((timeTo?[0])!)! + 12
-                    let minuteTo: Int? = Int((timeTo?[1])!)
+                    let minute: String? = (timeTo?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteTo: Int? = Int((minute?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let from = SundayFrom
                     let timeFrom = from?.components(separatedBy: ":")
                     let hourFrom: Int? = Int((timeFrom?[0])!)
-                    let minuteFrom: Int? = Int((timeFrom?[1])!)
+                    let minutef: String? = (timeFrom?[1])!.replacingOccurrences(of: " pm", with: "", options: .regularExpression, range: nil)
+                    let minuteFrom: Int? = Int((minutef?.replacingOccurrences(of: " am", with: "", options: .regularExpression, range: nil))!)
                     
                     let timeNow = time.components(separatedBy: ":")
                     let hourNow: Int? = Int(timeNow[0])
@@ -451,30 +461,30 @@ class ParkingAvailabilityViewController: UIViewController {
                     if hourFrom == hourNow {
                         if minuteFrom! <= minuteNow! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good
-                            ParkingDetailsViewController().spotIsAvailable()
+                            self.delegate?.sendAvailability(availability: true)
                         } else {
                             //bad
-                            ParkingDetailsViewController().spotIsNotAvailable()
+                            self.delegate?.sendAvailability(availability: false)
                         }
                     } else {
                         //bad
-                        ParkingDetailsViewController().spotIsNotAvailable()
+                        self.delegate?.sendAvailability(availability: false)
                     }
                 }
             } else {
                 //bad
-                ParkingDetailsViewController().spotIsNotAvailable()
+                self.delegate?.sendAvailability(availability: false)
             }
         }
         
@@ -650,16 +660,6 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         }, withCancel: nil)
     }
-    
-    let labelAvailability: UILabel = {
-        let label = UILabel()
-        label.text = "Availability:"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = Theme.DARK_GRAY
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
     
     var mondayButton: UIButton = {
         let monday = UIButton()

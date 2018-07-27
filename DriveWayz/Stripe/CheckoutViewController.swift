@@ -210,10 +210,10 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
-        MyAPIClient.sharedClient.completeCharge(paymentResult,
-                                                amount: self.paymentContext.paymentAmount,
-                                                email: userEmail!, account: self.account,
-                                                completion: completion)
+//        MyAPIClient.sharedClient.completeCharge(paymentResult,
+//                                                amount: self.paymentContext.paymentAmount,
+//                                                email: userEmail!, account: self.account,
+//                                                completion: completion)
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {

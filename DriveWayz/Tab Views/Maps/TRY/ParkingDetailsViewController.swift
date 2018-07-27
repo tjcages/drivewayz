@@ -11,15 +11,7 @@ import Firebase
 import GoogleMaps
 import Stripe
 
-//var parkingAddress: String?
-//var parkingDistances: String?
-//var imageURL: String?
-//var parkingCost: String?
-//var formattedLocation: String?
-//var hours: Int?
-//var timestamps: NSNumber?
-//var ids: String?
-//var parkingIDs: String?
+var hours: Int?
 
 class ParkingDetailsViewController: UIViewController {
     
@@ -244,6 +236,9 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         
         reserveButton.alpha = 1
         reserveButton.isUserInteractionEnabled = true
+        let hoursString = dropDownOptions[indexPath.row]
+        let noHoursString = hoursString.replacingOccurrences(of: " hours", with: "", options: .regularExpression, range: nil)
+        hours = Int(noHoursString.replacingOccurrences(of: " hour", with: "", options: .regularExpression, range: nil))
     }
     
 }

@@ -16,83 +16,36 @@ var timerStarted: Bool = false
 var currentParking: Bool = false
 var notificationSent: Bool = false
 
-class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
+ var seconds: Int?
+
+class CurrentParkingViewController: UIViewController {
     
     var timestamp: Double?
     var hours: Int?
-    var seconds: Int?
     var timerTest : Timer?
+    var delegate: notificationOptions?
     
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 10
+        view.backgroundColor = UIColor.clear
         
         return view
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.clipsToBounds = true
-        view.showsHorizontalScrollIndicator = false
-        
-        return view
-    }()
-    
-    var parkingImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.clear
-        imageView.contentMode = .scaleAspectFill
-        
-        return imageView
-    }()
-    
-    var parkingAddress: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = ""
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.textAlignment = .center
-        
-        return label
     }()
     
     var timeRemaining: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
-        label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = Theme.PRIMARY_DARK_COLOR
-        label.textAlignment = .center
+        label.textAlignment = .left
         
         return label
-    }()
-    
-    var complete: UIButton = {
-        let complete = UIButton()
-        complete.translatesAutoresizingMaskIntoConstraints = false
-        complete.setTitle("Leave parking spot", for: .normal)
-        complete.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
-        complete.backgroundColor = UIColor.clear
-        complete.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
-        complete.layer.borderWidth = 1
-        complete.layer.cornerRadius = 10
-        complete.addTarget(self, action: #selector(endParking(sender:)), for: .touchUpInside)
-        
-        return complete
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.scrollView.delegate = self
         UNUserNotificationCenter.current().delegate = self
 
         setupViews()
@@ -114,7 +67,7 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                             let refreshTimestamp = stamp["timestamp"] as? Double
                             let refreshHours = stamp["hours"] as? Int
                             let currentTimestamp = NSDate().timeIntervalSince1970
-                            self.seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                            seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
                             
                             self.runTimer()
                         }
@@ -132,41 +85,11 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
         container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
-        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        
-        scrollView.addSubview(parkingImage)
-        parkingImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = false
-        parkingImage.centerXAnchor.constraint(lessThanOrEqualTo: scrollView.centerXAnchor).isActive = false
-        parkingImage.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = false
-        parkingImage.heightAnchor.constraint(equalToConstant: 250).isActive = false
-        
-        parkingImage.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        parkingImage.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        parkingImage.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        parkingImage.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        
-        scrollView.addSubview(parkingAddress)
-        parkingAddress.topAnchor.constraint(equalTo: parkingImage.bottomAnchor, constant: 5).isActive = true
-        parkingAddress.centerXAnchor.constraint(equalTo: parkingImage.centerXAnchor).isActive = true
-        parkingAddress.widthAnchor.constraint(equalTo: parkingImage.widthAnchor).isActive = true
-        parkingAddress.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        scrollView.addSubview(timeRemaining)
-        timeRemaining.topAnchor.constraint(equalTo: parkingAddress.bottomAnchor, constant: 5).isActive = true
-        timeRemaining.centerXAnchor.constraint(equalTo: parkingImage.centerXAnchor).isActive = true
-        timeRemaining.widthAnchor.constraint(equalTo: parkingImage.widthAnchor).isActive = true
-        timeRemaining.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        scrollView.addSubview(complete)
-        complete.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        complete.bottomAnchor.constraint(equalTo: timeRemaining.bottomAnchor, constant: 20).isActive = true
-        complete.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -80).isActive = true
-        complete.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        container.addSubview(timeRemaining)
+        timeRemaining.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        timeRemaining.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        timeRemaining.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
+        timeRemaining.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
     }
     
@@ -187,16 +110,7 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                     parkingRef.observeSingleEvent(of: .value, with: { (pull) in
                         if let pullRef = pull.value as? [String:AnyObject] {
                             let address = pullRef["parkingAddress"] as? String
-                            let parkingImageURL = pullRef["parkingImageURL"] as? String
-                            
-                            if address != "" {
-                                self.parkingAddress.text = address
-                            }
-                            if parkingImageURL == "" {
-                                self.parkingImage.image = UIImage(named: "profileprofile")
-                            } else {
-                                self.parkingImage.loadImageUsingCacheWithUrlString(parkingImageURL!)
-                            }
+                    
                             if notificationSent == false {
                                 notificationSent = true
                                 self.startTimerNotification(address: address!)
@@ -206,6 +120,8 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                 }
             }, withCancel: nil)
             currentRef.observe(.childRemoved, with: { (snapshot) in
+                currentParking = false
+                
                 //delete
             }, withCancel: nil)
         } else {
@@ -236,8 +152,6 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                                             self.timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(self.prepareEndParking), userInfo: nil, repeats: false)
                                             RunLoop.main.add(self.timerTest!, forMode: RunLoopMode.commonModes)
                                         }
-                                    } else {
-                                        self.endParkingFunc()
                                     }
                                 }
                             }
@@ -246,10 +160,6 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
-    }
-    
-    @objc func endParking(sender: UIButton) {
-        endParkingFunc()
     }
     
     func startTiming() {
@@ -262,8 +172,6 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
                     timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(prepareEndParking), userInfo: nil, repeats: false)
                     RunLoop.main.add(timerTest!, forMode: RunLoopMode.commonModes)
                 }
-            } else {
-                endParkingFunc()
             }
         }
     }
@@ -277,9 +185,8 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func configureNotifications() {
-        let extendTimeAction = UNNotificationAction(identifier: "extendTime", title: "Extend parking time", options: [])
         let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you've left", options: [])
-        let category = UNNotificationCategory(identifier: "actionCategory", actions: [extendTimeAction, endParkingAction], intentIdentifiers: [], options: [])
+        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
         UNUserNotificationCenter.current().setNotificationCategories([category])
     }
     
@@ -319,22 +226,20 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
             }
             
             content.title = "Your current parking spot has expired!"
-            content.subtitle = "Please move your vehicle or extend time"
-            content.body = "Swipe down for quick options!"
+            content.subtitle = "Please move your vehicle or extend time in app."
+            content.body = "Hold down for quick options!"
             content.badge = 1
             content.sound = UNNotificationSound.default()
             content.categoryIdentifier = "actionCategory"
             
             secondContent.title = "You have overstayed your allotted time!"
-            secondContent.subtitle = "Move your vehicle or you will be charged an extra hour"
-            secondContent.body = "Swipe down for quick options!"
+            secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
             secondContent.badge = 1
             secondContent.sound = UNNotificationSound.default()
             secondContent.categoryIdentifier = "actionCategory"
             
-            thirdContent.title = "You have been charged for an extra hour"
-            thirdContent.subtitle = "Please move your vehicle or extend time"
-            thirdContent.body = "Open in app for options"
+            thirdContent.title = "You have been charged for an extra hour."
+            thirdContent.body = "Please move your vehicle or extend time."
             thirdContent.badge = 1
             thirdContent.sound = UNNotificationSound.default()
             thirdContent.categoryIdentifier = "actionCategory"
@@ -373,18 +278,6 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    @objc func endParkingFunc() {
-        timerStarted = false
-        notificationSent = false
-        currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        
-        let currentUser = Auth.auth().currentUser?.uid
-        let ref = Database.database().reference().child("users").child(currentUser!).child("currentParking")
-        ref.removeValue()
-    }
-    
     @objc func prepareEndParking() {
     
         print("Will end parking time")
@@ -398,7 +291,13 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func updateTimer() {
-        timeRemaining.text = timeString(time: TimeInterval(self.seconds!))
+        if seconds! >= 0 {
+            seconds! = seconds! - 1
+            timeRemaining.text = timeString(time: TimeInterval(seconds!))
+        } else {
+            timeRemaining.text = "Times up"
+            timeRemaining.textColor = UIColor.red
+        }
     }
     
     func timeString(time: TimeInterval) -> String {
@@ -413,7 +312,6 @@ class CurrentParkingViewController: UIViewController, UIScrollViewDelegate {
         } else {
             return String(format: "%01i hours %02i minutes", arguments: [hours, minutes])
         }
-        
     }
     
 
@@ -440,10 +338,9 @@ extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         switch response.actionIdentifier {
-        case "extendTime":
-            print("Action First Tapped")
         case "endParking":
             print("Action Second Tapped")
+            self.delegate?.endCurrentParking()
         default:
             break
         }

@@ -165,7 +165,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         timeRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let hostHours = dictionary["hostHours"] as? Int {
-                    self.hostHours.text = "Your spot has been occupied for \(hostHours)"
+                    self.hostHours.text = "Your spot has been occupied for \(hostHours) hours"
                 } else {
                     self.hostHours.text = "No one has parked here yet"
                 }
@@ -251,7 +251,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         self.view.addSubview(hostHours)
         hostHours.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
         hostHours.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 5).isActive = true
-        hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -40).isActive = true
+        hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -30).isActive = true
         hostHours.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(hostTimes)

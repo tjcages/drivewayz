@@ -432,7 +432,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             } else {
                 return cheapCostValues.count
             }
-        } else if pickerView == mondayToPicker || pickerView == tuesdayToPicker || pickerView == wednesdayToPicker || pickerView == thursdayToPicker || pickerView == fridayToPicker || pickerView == saturdayToPicker || pickerView == sundayToPicker {
+        } else if pickerView == mondayToPicker || pickerView == tuesdayToPicker || pickerView == wednesdayToPicker || pickerView == thursdayToPicker || pickerView == fridayToPicker || pickerView == saturdayToPicker || pickerView == sundayToPicker || pickerView == timeToPicker {
             return pmTimeValues.count
         } else {
             return amTimeValues.count
@@ -446,7 +446,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             } else {
                 return cheapCostValues[row] as? String
             }
-        } else if pickerView == mondayToPicker || pickerView == tuesdayToPicker || pickerView == wednesdayToPicker || pickerView == thursdayToPicker || pickerView == fridayToPicker || pickerView == saturdayToPicker || pickerView == sundayToPicker {
+        } else if pickerView == mondayToPicker || pickerView == tuesdayToPicker || pickerView == wednesdayToPicker || pickerView == thursdayToPicker || pickerView == fridayToPicker || pickerView == saturdayToPicker || pickerView == sundayToPicker || pickerView == timeToPicker{
             return pmTimeValues[row] as? String
         } else {
             return amTimeValues[row] as? String
