@@ -13,95 +13,18 @@ import Stripe
 
 var hours: Int?
 
-class ParkingDetailsViewController: UIViewController {
-    
-    var account: String? = "No account."
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = Theme.OFF_WHITE
-        self.navigationController?.navigationBar.isHidden = true
-        
-        checkAccount()
-    }
-    
-//    func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
-//        labelTitle.text = "Parking in \(cityAddress)"
-//        parkingAddress = cityAddress
-//        parkingDistances = parkingDistance
-//        labelDistance.text = "\(parkingDistance) miles"
-//        imageView.loadImageUsingCacheWithUrlString(imageURL)
-//        labelCost.text = parkingCost
-//        formattedLocation = formattedAddress
-//        timestamps = timestamp
-//        ids = id
-//        parkingIDs = parkingID
-//    }
-
-    func spotIsAvailable() {
-        unavailable.alpha = 0
-    }
-    
-    func spotIsNotAvailable() {
-        unavailable.alpha = 1
-    }
-    
-//    @objc func saveReservationButtonPressed(sender: UIButton) {
-//
-//        let product = labelTitle.text
-//
-//        let price = labelCost.text
-//        let edited = price?.replacingOccurrences(of: "$", with: "")
-//        let editedPrice = edited?.replacingOccurrences(of: ".", with: "")
-//        let editedHour = editedPrice?.replacingOccurrences(of: "/hour", with: "")
-//        let cost: Int = Int(editedHour!)!
-//
-//        let totalCost = cost * hours!
-//        let checkoutViewController = CheckoutViewController(product: product!,
-//                                                            price: totalCost,
-//                                                            hours: hours!,
-//                                                            ID: ids!,
-//                                                            account: account!,
-//                                                            parkingID: parkingIDs!)
-//        let geoCoder = CLGeocoder()
-//        geoCoder.geocodeAddressString(formattedLocation!) { (placemarks, error) in
-//            guard
-//                let placemarks = placemarks,
-//                let _ = placemarks.first?.location
-//                else {
-//                    print("No associated location")
-//                    return
-//            }
-//        }
-//        UIApplication.shared.statusBarStyle = .default
-//        self.navigationController?.pushViewController(checkoutViewController, animated: true)
-//    }
-//
-    func checkAccount() {
-        if let currentUser = Auth.auth().currentUser?.uid {
-            let checkRef = Database.database().reference().child("users").child(currentUser)
-            checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    if let account = dictionary["accountID"] as? String {
-                        self.account = account
-                    } else {
-                        return
-                    }
-                }
-            }, withCancel: nil)
-        }
-    }
-}
-
 protocol dropDownProtocol {
     func dropDownPressed(string : String)
 }
 
 class dropDownButton: UIButton, dropDownProtocol {
     
+    var delegate: controlHourButton?
+    
     func dropDownPressed(string: String) {
         self.setTitle(string, for: .normal)
         self.dismissDropDown()
+        self.delegate?.closeHoursButton()
     }
     
     var dropView = dropDownView()
@@ -131,9 +54,8 @@ class dropDownButton: UIButton, dropDownProtocol {
     var isOpen = false
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if isOpen == false {
-            
             isOpen = true
-            
+            self.delegate?.openHoursButton()
             NSLayoutConstraint.deactivate([self.height])
             
             if self.dropView.tableView.contentSize.height > 120 {
@@ -152,7 +74,7 @@ class dropDownButton: UIButton, dropDownProtocol {
             
         } else {
             isOpen = false
-            
+            self.delegate?.closeHoursButton()
             NSLayoutConstraint.deactivate([self.height])
             self.height.constant = 0
             NSLayoutConstraint.activate([self.height])

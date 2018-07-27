@@ -541,7 +541,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
             scrollView.addSubview(parkingController.view)
             self.addChildViewController(parkingController)
             parkingController.didMove(toParentViewController: self)
-            earningsViewAnchor = parkingController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor)
+            earningsViewAnchor = parkingController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: self.view.frame.width)
             earningsViewAnchor?.isActive = true
             parkingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
             parkingController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 80).isActive = true

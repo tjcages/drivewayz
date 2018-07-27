@@ -62,6 +62,21 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         return reviews
     }()
     
+    var noRecentLabel: UITextView = {
+        let label = UITextView()
+        label.text = "You have no recent parking"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.backgroundColor = UIColor.clear
+        label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.isUserInteractionEnabled = false
+        label.alpha = 0
+        
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -97,6 +112,12 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         parkingPicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         parkingPicker.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        self.view.addSubview(noRecentLabel)
+        noRecentLabel.centerXAnchor.constraint(equalTo: parkingPicker.centerXAnchor).isActive = true
+        noRecentLabel.centerYAnchor.constraint(equalTo: parkingPicker.centerYAnchor).isActive = true
+        noRecentLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        noRecentLabel.widthAnchor.constraint(equalTo: parkingPicker.widthAnchor).isActive = true
+        
         observeUserParkingSpots()
     }
     
@@ -121,9 +142,9 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     private func fetchParking(parkingID: [String], payment: [Double], hours: [Int]) {
         var i = 0
-        for parking in parkingID {
-            for pay in payment {
-                for hour in hours {
+        for pay in payment {
+            for hour in hours {
+                for parking in parkingID {
                     let messageRef = Database.database().reference().child("parking").child(parking)
                     messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
                         if var dictionary = snapshot.value as? [String:AnyObject] {
@@ -161,6 +182,11 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if parkingSpots.count == 0 {
+            self.noRecentLabel.alpha = 1
+        } else {
+            self.noRecentLabel.alpha = 0
+        }
         return parkingSpots.count
     }
     

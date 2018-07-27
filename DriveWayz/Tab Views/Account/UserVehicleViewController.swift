@@ -242,7 +242,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         self.view.addSubview(newVehiclePage)
         newVehiclePage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         newVehiclePage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35).isActive = true
         vehiclePageHeightAnchorSmall = newVehiclePage.heightAnchor.constraint(equalToConstant: 50)
         vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 360)
     

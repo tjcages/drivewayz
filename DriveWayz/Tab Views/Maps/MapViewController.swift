@@ -47,7 +47,12 @@ protocol removePurchaseView {
     func sendAvailability(availability: Bool)
 }
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, removePurchaseView {
+protocol controlHoursButton {
+    func openHoursButton()
+    func closeHoursButton()
+}
+
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, removePurchaseView, controlHoursButton {
 
     let cellId = "cellId"
     var currentActive: Bool = false
@@ -170,6 +175,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Purchase Controller"
         controller.delegate = self
+        controller.hoursDelegate = self
         controller.view.layer.cornerRadius = 10
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(paymentSwiped(sender:)))
         gesture.direction = .left
@@ -575,6 +581,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     var purchaseViewAnchor: NSLayoutConstraint!
     var informationViewAnchor: NSLayoutConstraint!
+    var hoursButtonAnchor: NSLayoutConstraint!
     
     func setupViewController() {
         
@@ -603,9 +610,42 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             purchaseViewAnchor.isActive = true
         purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
         purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        purchaseViewController.view.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80)
+            hoursButtonAnchor.isActive = true
         purchaseViewController.view?.center.y = -205
         
+    }
+    
+    func openHoursButton() {
+        if self.informationViewController.view.center.y == -210 {
+            self.hoursButtonAnchor.constant = 200
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = -210
+        } else if self.informationViewController.view.center.y == 250 {
+            self.hoursButtonAnchor.constant = 200
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = 250
+        } else if self.informationViewController.view.center.y == 350 {
+            self.hoursButtonAnchor.constant = 200
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = 350
+        }
+    }
+    
+    func closeHoursButton() {
+        if self.informationViewController.view.center.y == -210 {
+            self.hoursButtonAnchor.constant = 80
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = -210
+        } else if self.informationViewController.view.center.y == 250 {
+            self.hoursButtonAnchor.constant = 80
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = 250
+        } else if self.informationViewController.view.center.y == 350 {
+            self.hoursButtonAnchor.constant = 80
+            self.view.layoutIfNeeded()
+            self.informationViewController.view.center.y = 350
+        }
     }
     
     func sendAvailability(availability: Bool) {
@@ -1015,7 +1055,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailedView = ParkingDetailsViewController()
         let parking = parkingSpots[indexPath.row]
         
         let geoCoder = CLGeocoder()
@@ -1034,7 +1073,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                 self.mapView.animate(toZoom: 15.0)
             }
         }
-        self.navigationController?.pushViewController(detailedView, animated: true)
     }
     
     func removeTabView() {

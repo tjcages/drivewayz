@@ -223,7 +223,7 @@ class ParkingAvailabilityViewController: UIViewController {
                         }
                     } else if hourFrom! < hourNow! && hourNow! < hourTo! {
                         //good
-                        ParkingDetailsViewController().spotIsAvailable()
+                        self.delegate?.sendAvailability(availability: true)
                     } else if hourTo == hourNow {
                         if minuteNow! <= minuteTo! {
                             //good

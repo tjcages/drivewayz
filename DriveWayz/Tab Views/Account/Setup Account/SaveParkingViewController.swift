@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import TextFieldEffects
 
 class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -46,6 +47,18 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         agreement.translatesAutoresizingMaskIntoConstraints = false
         
         return agreement
+    }()
+    
+    var message: MadokaTextField = {
+        let field = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
+        field.placeholderColor = Theme.DARK_GRAY
+        field.borderColor = Theme.PRIMARY_COLOR
+        field.placeholder = "Enter a helpful message"
+        field.textColor = Theme.DARK_GRAY
+        field.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        field.translatesAutoresizingMaskIntoConstraints = false
+        
+        return field
     }()
     
     private let cheapCostValues: NSArray = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00","$5.50","$6.00","$6.50","$7.00","$7.50","$8.00"]
@@ -958,6 +971,12 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         hourLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         hourLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
+        scrollViewParking.addSubview(message)
+        message.topAnchor.constraint(equalTo: hourLabel.bottomAnchor, constant: 10).isActive = true
+        message.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        message.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
+        message.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         saveParkingButton = UIButton()
         saveParkingButton.setTitle("Save", for: .normal)
         saveParkingButton.setTitle("", for: .selected)
@@ -971,7 +990,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         scrollViewParking.addSubview(saveParkingButton)
         
         saveParkingButton.centerXAnchor.constraint(equalTo: pickerView.centerXAnchor).isActive = true
-        saveParkingButton.topAnchor.constraint(equalTo: costPicker.bottomAnchor, constant: -30).isActive = true
+        saveParkingButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
         saveParkingButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         saveParkingButton.widthAnchor.constraint(equalToConstant: self.view.frame.width * 3/4).isActive = true
         

@@ -30,10 +30,16 @@ var reserveButton: UIButton = {
     return button
 }()
 
-class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
+protocol controlHourButton {
+    func openHoursButton()
+    func closeHoursButton()
+}
+
+class PurchaseViewController: UIViewController, STPPaymentContextDelegate, controlHourButton {
 
     // Controllers
     var delegate: removePurchaseView?
+    var hoursDelegate: controlHoursButton?
 
     let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
@@ -58,7 +64,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     
     private var rideRequestState: RideRequestState = .none {
         didSet {
-            reloadRequestRideButton()
+//            reloadRequestRideButton()
         }
     }
 
@@ -103,6 +109,40 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         return reserve
     }()
     
+    var confirmContainer: UIView = {
+        let reserve = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
+        reserve.translatesAutoresizingMaskIntoConstraints = false
+        reserve.backgroundColor = UIColor.white
+        reserve.clipsToBounds = false
+        reserve.layer.shadowColor = UIColor.darkGray.cgColor
+        reserve.layer.shadowOffset = CGSize(width: 1, height: 1)
+        reserve.layer.shadowRadius = 1
+        reserve.layer.shadowOpacity = 0.8
+        let path = UIBezierPath(roundedRect:reserve.bounds,
+                                byRoundingCorners:[.topRight, .topLeft],
+                                cornerRadii: CGSize(width: 5, height: 5))
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path.cgPath
+        reserve.layer.mask = maskLayer
+        reserve.alpha = 0
+        
+        return reserve
+    }()
+    
+    var totalCostLabel: UITextView = {
+        let label = UITextView()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.backgroundColor = UIColor.clear
+        label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.isUserInteractionEnabled = false
+        label.alpha = 0
+        
+        return label
+    }()
+    
     var paymentButton: UIButton = {
         let button = UIButton()
         button.setTitle("Payment", for: .normal)
@@ -127,6 +167,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         hours.dropView.dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
         hours.layer.cornerRadius = 5
+        hours.delegate = self
         
         return hours
     }()
@@ -235,13 +276,19 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         }
     }
     
+    var hourButtonHeight: NSLayoutConstraint!
+    var reserveCenterAnchor: NSLayoutConstraint!
+    var confirmCenterAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         self.view.addSubview(reserveContainer)
         reserveContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        reserveContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
+        hourButtonHeight = reserveContainer.topAnchor.constraint(equalTo: self.view.topAnchor)
+            hourButtonHeight.isActive = true
         reserveContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        reserveContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        reserveCenterAnchor = reserveContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            reserveCenterAnchor.isActive = true
         
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
@@ -293,6 +340,33 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         activityIndicator.widthAnchor.constraint(equalToConstant: 30).isActive = true
         activityIndicator.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
+        
+        self.view.addSubview(confirmContainer)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(bringBackReserve(sender:)))
+        confirmContainer.addGestureRecognizer(gesture)
+        confirmContainer.bottomAnchor.constraint(equalTo: reserveContainer.centerYAnchor).isActive = true
+        confirmContainer.topAnchor.constraint(equalTo: reserveContainer.topAnchor).isActive = true
+        confirmContainer.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
+        confirmContainer.centerXAnchor.constraint(equalTo: reserveContainer.centerXAnchor).isActive = true
+        
+        confirmContainer.addSubview(totalCostLabel)
+        totalCostLabel.centerYAnchor.constraint(equalTo: confirmContainer.centerYAnchor).isActive = true
+        totalCostLabel.centerXAnchor.constraint(equalTo: confirmContainer.centerXAnchor).isActive = true
+        totalCostLabel.heightAnchor.constraint(equalTo: confirmContainer.heightAnchor).isActive = true
+        totalCostLabel.widthAnchor.constraint(equalTo: confirmContainer.widthAnchor).isActive = true
+        
+    }
+    
+    @objc func bringBackReserve(sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.confirmContainer.alpha = 0
+            self.totalCostLabel.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            reserveButton.setTitle("Reserve Spot", for: .normal)
+            reserveButton.removeTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
+            reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
+        }
     }
 
     @objc private func handlePaymentButtonTapped() {
@@ -301,10 +375,24 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     }
 
     @objc private func handleRequestRideButtonTapped() {
-//        sendHelp(title: "Coming Soon!", message: "We are currently in the Beta stage of production and the actual purchasing of parking spots is not available yet!")
+        totalCostLabel.text = "$\(self.cost * Double(hours!))"
+        UIView.animate(withDuration: 0.3, animations: {
+            self.confirmContainer.alpha = 1
+            self.totalCostLabel.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            reserveButton.setTitle("Confirm Reservation", for: .normal)
+            reserveButton.removeTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
+            reserveButton.addTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
+        }
+    }
+    
+    @objc private func handleConfirmRideButtonTapped() {
         self.paymentInProgress = true
         self.paymentContext.requestPayment()
     }
+    
+    
 
       private func reloadPaymentButtonContent() {
         
@@ -322,38 +410,38 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
         paymentButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
     }
 
-    func reloadRequestRideButton() {
-        // Show disabled state
-        reserveButton.backgroundColor = Theme.DARK_GRAY
-        reserveButton.setTitle("Reserve Spot", for: .normal)
-        reserveButton.setTitleColor(.white, for: .normal)
-//        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-        reserveButton.isEnabled = false
-
-        switch rideRequestState {
-        case .none:
-            // Show enabled state
-            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
-            reserveButton.setTitle("Reserve Spot", for: .normal)
-            reserveButton.setTitleColor(.white, for: .normal)
-//            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-            reserveButton.isEnabled = true
-        case .requesting:
-            // Show loading state
-            reserveButton.backgroundColor = Theme.DARK_GRAY
-            reserveButton.setTitle("···", for: .normal)
-            reserveButton.setTitleColor(.white, for: .normal)
-            reserveButton.setImage(nil, for: .normal)
-            reserveButton.isEnabled = false
-        case .active:
-            // Show completion state
-            reserveButton.backgroundColor = .white
-            reserveButton.setTitle("Complete Ride", for: .normal)
-            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-            reserveButton.setImage(nil, for: .normal)
-            reserveButton.isEnabled = true
-        }
-    }
+//    func reloadRequestRideButton() {
+//        // Show disabled state
+//        reserveButton.backgroundColor = Theme.DARK_GRAY
+//        reserveButton.setTitle("Reserve Spot", for: .normal)
+//        reserveButton.setTitleColor(.white, for: .normal)
+////        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
+//        reserveButton.isEnabled = false
+//
+//        switch rideRequestState {
+//        case .none:
+//            // Show enabled state
+//            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+//            reserveButton.setTitle("Reserve Spot", for: .normal)
+//            reserveButton.setTitleColor(.white, for: .normal)
+////            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
+//            reserveButton.isEnabled = true
+//        case .requesting:
+//            // Show loading state
+//            reserveButton.backgroundColor = Theme.DARK_GRAY
+//            reserveButton.setTitle("···", for: .normal)
+//            reserveButton.setTitleColor(.white, for: .normal)
+//            reserveButton.setImage(nil, for: .normal)
+//            reserveButton.isEnabled = false
+//        case .active:
+//            // Show completion state
+//            reserveButton.backgroundColor = .white
+//            reserveButton.setTitle("Complete Ride", for: .normal)
+//            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+//            reserveButton.setImage(nil, for: .normal)
+//            reserveButton.isEnabled = true
+//        }
+//    }
 
     private func completeActiveRide() {
         guard case .active = rideRequestState else {
@@ -390,7 +478,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         // Reload related components
         reloadPaymentButtonContent()
-        reloadRequestRideButton()
+//        reloadRequestRideButton()
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
@@ -401,39 +489,31 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
         self.paymentInProgress = false
-        let title: String
-        let message: String
-        let completed: Bool
         switch status {
         case .error:
-            title = "Error"
-            message = error?.localizedDescription ?? ""
-            completed = false
+            print(error!)
         case .success:
-            title = "Success"
-            message = "Success fo real!"
-            completed = true
+            self.changeReserveButton()
             self.updateUserProfile()
             self.beginRoute()
             self.addCurrentParking()
         case .userCancellation:
-            completed = false
             return
         }
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
-            if completed == true {
-                //completed payment
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
-                    //
-                }
-            } else {
-                //payment error
-                print("payment error :(")
+    }
+    
+    func changeReserveButton() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.confirmContainer.alpha = 0
+            self.totalCostLabel.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                reserveButton.setTitle("Reserve Spot", for: .normal)
+                reserveButton.removeTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
+                reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
             }
         }
-        alertController.addAction(action)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     func sendAlert(message: String) {
@@ -522,6 +602,16 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate {
                 
             }
         }, withCancel: nil)
+    }
+    
+    func openHoursButton() {
+        self.hourButtonHeight.constant = 120
+        self.hoursDelegate?.openHoursButton()
+    }
+    
+    func closeHoursButton() {
+        self.hourButtonHeight.constant = 0
+        self.hoursDelegate?.closeHoursButton()
     }
     
     

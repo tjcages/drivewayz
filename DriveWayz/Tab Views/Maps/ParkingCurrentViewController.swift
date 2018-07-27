@@ -70,6 +70,8 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }()
     
     var Current = ["Extend time", "Open in maps", "Leave parking spot"]
+    var Details = ["Message host"]
+    var Payment = ["Total cost", "Additional cost", "Payment method"]
     
     var detailsSegment: UIButton = {
         let availability = UIButton()
@@ -326,8 +328,10 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == currentTableView {
             return Current.count
+        } else if tableView == detailsTableView {
+            return Details.count
         } else {
-            return 1
+            return Payment.count
         }
     }
     
@@ -353,8 +357,15 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             cell.selectionStyle = .none
             
             return cell
+        } else if tableView == detailsTableView {
+            cell.textLabel?.text = Details[indexPath.row]
+            cell.textLabel?.textColor = Theme.DARK_GRAY
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = .none
+            
+            return cell
         } else {
-            cell.textLabel?.text = Current[indexPath.row]
+            cell.textLabel?.text = Payment[indexPath.row]
             cell.textLabel?.textColor = Theme.DARK_GRAY
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
