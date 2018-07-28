@@ -1,17 +1,19 @@
 //
-//  ContactUsViewController.swift
+//  LeaveReviewViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler Jordan Cagle on 7/23/18.
+//  Created by Tyler Jordan Cagle on 7/28/18.
 //  Copyright © 2018 COAD. All rights reserved.
 //
 
 import UIKit
 import Firebase
+import UserNotifications
 
-class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollViewDelegate {
-
-    var delegate: controlsAccountViews?
+class LeaveReviewViewController: UIViewController, UITextViewDelegate {
+    
+    var delegate: removePurchaseView?
+    var parkingID: String?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -105,7 +107,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.isScrollEnabled = true
+        view.isScrollEnabled = false
         view.keyboardDismissMode = .interactive
         
         return view
@@ -126,6 +128,10 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         // Dispose of any resources that can be recreated.
     }
     
+    func setData(parkingID: String) {
+        self.parkingID = parkingID
+    }
+    
     func setupTerms() {
         
         self.view.addSubview(blurBackgroundStartup)
@@ -143,7 +149,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         termsContainer.addSubview(scrollView)
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scrollView.addGestureRecognizer(tap)
-        scrollView.contentSize = CGSize(width: self.view.frame.width - 60, height: 300)
+        scrollView.contentSize = CGSize(width: self.view.frame.width - 60, height: 500)
         scrollView.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 60).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -60).isActive = true
         scrollView.leftAnchor.constraint(equalTo: termsContainer.leftAnchor).isActive = true
@@ -186,8 +192,6 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
     }
     
     @objc func nextPressed(sender: UIButton) {
-        self.accept.alpha = 0.6
-        self.accept.isUserInteractionEnabled = false
         sendMessage()
     }
     
@@ -201,9 +205,18 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         users.id = "2UEtVV7hpFUKDyB1Nr9xgXZq7512"
         self.user = users
         sendMessageWithProperties()
-
-        self.accept.alpha = 1
-        self.accept.isUserInteractionEnabled = true
+    }
+    
+    func endCurrentParking() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
+        ref.removeValue()
+        
+        timerStarted = false
+        notificationSent = false
+        currentParking = false
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     var user: Users?
@@ -211,7 +224,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
     private func sendMessageWithProperties() {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-
+        
         let toID = user!.id!
         let fromID = Auth.auth().currentUser!.uid
         
@@ -245,7 +258,8 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                         UIView.animate(withDuration: 0.3, animations: {
                             self.view.alpha = 0
                         }) { (success) in
-                            self.delegate?.removeOptionsFromView()
+                            self.endCurrentParking()
+                            self.delegate?.removeLeaveAReview()
                         }
                     }
                 }
@@ -259,14 +273,9 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
             textView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         }
     }
-
+    
     @objc func backPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.alpha = 0
-        }) { (success) in
-            self.delegate?.removeOptionsFromView()
-        }
+        self.delegate?.removeLeaveAReview()
     }
 
-    
 }

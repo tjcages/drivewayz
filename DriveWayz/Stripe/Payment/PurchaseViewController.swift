@@ -64,7 +64,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     
     private var rideRequestState: RideRequestState = .none {
         didSet {
-//            reloadRequestRideButton()
+            reloadRequestRideButton()
         }
     }
 
@@ -375,7 +375,8 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
 
     @objc private func handleRequestRideButtonTapped() {
-        totalCostLabel.text = "$\(self.cost * Double(hours!))"
+        let stringCost = String(format: "%.2f", (self.cost * Double(hours!)))
+        totalCostLabel.text = "$\(stringCost)"
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 1
             self.totalCostLabel.alpha = 1
@@ -410,38 +411,38 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         paymentButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
     }
 
-//    func reloadRequestRideButton() {
-//        // Show disabled state
-//        reserveButton.backgroundColor = Theme.DARK_GRAY
-//        reserveButton.setTitle("Reserve Spot", for: .normal)
-//        reserveButton.setTitleColor(.white, for: .normal)
-////        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-//        reserveButton.isEnabled = false
-//
-//        switch rideRequestState {
-//        case .none:
-//            // Show enabled state
-//            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
-//            reserveButton.setTitle("Reserve Spot", for: .normal)
-//            reserveButton.setTitleColor(.white, for: .normal)
-////            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-//            reserveButton.isEnabled = true
-//        case .requesting:
-//            // Show loading state
-//            reserveButton.backgroundColor = Theme.DARK_GRAY
-//            reserveButton.setTitle("···", for: .normal)
-//            reserveButton.setTitleColor(.white, for: .normal)
-//            reserveButton.setImage(nil, for: .normal)
-//            reserveButton.isEnabled = false
-//        case .active:
-//            // Show completion state
-//            reserveButton.backgroundColor = .white
-//            reserveButton.setTitle("Complete Ride", for: .normal)
-//            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-//            reserveButton.setImage(nil, for: .normal)
-//            reserveButton.isEnabled = true
-//        }
-//    }
+    func reloadRequestRideButton() {
+        // Show disabled state
+        reserveButton.backgroundColor = Theme.DARK_GRAY
+        reserveButton.setTitle("Reserve Spot", for: .normal)
+        reserveButton.setTitleColor(.white, for: .normal)
+//        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
+        reserveButton.isEnabled = false
+
+        switch rideRequestState {
+        case .none:
+            // Show enabled state
+            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            reserveButton.setTitle("Reserve Spot", for: .normal)
+            reserveButton.setTitleColor(.white, for: .normal)
+//            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
+            reserveButton.isEnabled = true
+        case .requesting:
+            // Show loading state
+            reserveButton.backgroundColor = Theme.DARK_GRAY
+            reserveButton.setTitle("···", for: .normal)
+            reserveButton.setTitleColor(.white, for: .normal)
+            reserveButton.setImage(nil, for: .normal)
+            reserveButton.isEnabled = false
+        case .active:
+            // Show completion state
+            reserveButton.backgroundColor = .white
+            reserveButton.setTitle("Complete Ride", for: .normal)
+            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            reserveButton.setImage(nil, for: .normal)
+            reserveButton.isEnabled = true
+        }
+    }
 
     private func completeActiveRide() {
         guard case .active = rideRequestState else {
@@ -478,7 +479,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         // Reload related components
         reloadPaymentButtonContent()
-//        reloadRequestRideButton()
+        reloadRequestRideButton()
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {

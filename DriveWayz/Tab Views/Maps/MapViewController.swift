@@ -45,6 +45,8 @@ protocol removePurchaseView {
     func extendTimeView()
     func currentParkingSender()
     func sendAvailability(availability: Bool)
+    func setupLeaveAReview(parkingID: String)
+    func removeLeaveAReview()
 }
 
 protocol controlHoursButton {
@@ -194,6 +196,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return controller
     }()
     
+    lazy var reviewsViewController: LeaveReviewViewController = {
+        let controller = LeaveReviewViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        controller.title = "Reviews Controller"
+        controller.view.alpha = 0
+        controller.delegate = self
+        
+        return controller
+    }()
+    
     lazy var fullBlurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -311,21 +324,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                             return
                                     }
                                     DispatchQueue.main.async(execute: {
-                                        let myLocation: CLLocation? = self.mapView.myLocation
-                                        let distanceToParking = (location.distance(from: myLocation!)) / 1609.34 // miles
-                                        let roundedStepValue = Double(round(10 * distanceToParking) / 10)
-                                        let formattedDistance = String(format: "%.1f", roundedStepValue)
-                                        
-                                        self.destination = location
-                                        self.currentData = .yesReserved
-                                        self.drawPath(endLocation: location)
-                                        
-                                        self.informationViewController.addCurrentOptions()
-                                        self.removeTabView()
-                                        self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance)
-                                        UIView.animate(withDuration: 0.5, animations: {
-                                            currentButton.alpha = 1
-                                        })
+                                        if let myLocation: CLLocation = self.mapView.myLocation {
+                                            let distanceToParking = (location.distance(from: myLocation)) / 1609.34 // miles
+                                            let roundedStepValue = Double(round(10 * distanceToParking) / 10)
+                                            let formattedDistance = String(format: "%.1f", roundedStepValue)
+                                            
+                                            self.destination = location
+                                            self.currentData = .yesReserved
+                                            self.drawPath(endLocation: location)
+                                            
+                                            self.informationViewController.addCurrentOptions()
+                                            self.removeTabView()
+                                            self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance)
+                                            UIView.animate(withDuration: 0.5, animations: {
+                                                currentButton.alpha = 1
+                                            })
+                                        }
                                     })
                                 }
                             }
@@ -485,9 +499,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         parkingView.addSubview(parkingLabel)
         
         parkingLabel.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
-        parkingLabel.centerYAnchor.constraint(equalTo: parkingView.centerYAnchor, constant: 10).isActive = true
         parkingLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
         parkingLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        switch device {
+        case .iphone8:
+            parkingLabel.centerYAnchor.constraint(equalTo: parkingView.centerYAnchor, constant: 10).isActive = true
+        case .iphoneX:
+            parkingLabel.centerYAnchor.constraint(equalTo: parkingView.centerYAnchor, constant: 25).isActive = true
+        }
         
         self.view.addSubview(parkingTableView)
         parkingTableView.leftAnchor.constraint(equalTo: optionsTabView.leftAnchor).isActive = true
@@ -527,16 +546,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         containerHeightAnchor = container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             containerHeightAnchor.isActive = true
-        container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        switch device {
+        case .iphone8:
+            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        case .iphoneX:
+            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        }
         
         self.view.insertSubview(tabPull, belowSubview: optionsTabView)
         tabPull.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -20).isActive = true
-        tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         tabPullWidthShort = tabPull.widthAnchor.constraint(equalToConstant: 60)
             tabPullWidthShort.isActive = true
         tabPullWidthLong = tabPull.widthAnchor.constraint(equalToConstant: 80)
         tabPullWidthLong.isActive = false
         tabPull.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        case .iphoneX:
+            tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
+        }
         
         tabPull.addSubview(tabFeed)
         tabFeed.widthAnchor.constraint(equalToConstant: 25).isActive = true
@@ -546,9 +575,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         
         view.addSubview(topSearch)
         topSearch.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
-        topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
         topSearch.widthAnchor.constraint(equalToConstant: 40).isActive = true
         topSearch.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+        case .iphoneX:
+            topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 45).isActive = true
+        }
         
         self.view.addSubview(searchBar)
         searchBar.centerYAnchor.constraint(equalTo: topSearch.centerYAnchor).isActive = true
@@ -562,7 +596,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         self.view.bringSubview(toFront: topSearch)
         
         self.view.addSubview(locatorButton)
-        locatorButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90).isActive = true
+        locatorButton.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 15).isActive = true
         locatorButton.centerXAnchor.constraint(equalTo: topSearch.centerXAnchor).isActive = true
         locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         locatorButton.heightAnchor.constraint(equalTo: locatorButton.widthAnchor).isActive = true
@@ -577,6 +611,33 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         view.bringSubview(toFront: tabPull)
         view.bringSubview(toFront: locatorButton)
 
+    }
+    
+    func setupLeaveAReview(parkingID: String) {
+        
+        self.view.addSubview(reviewsViewController.view)
+        self.addChildViewController(reviewsViewController)
+        reviewsViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        reviewsViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        reviewsViewController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        reviewsViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        reviewsViewController.setData(parkingID: parkingID)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.reviewsViewController.view.alpha = 1
+        }) { (success) in
+            //
+        }
+    }
+    
+    func removeLeaveAReview() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.reviewsViewController.view.alpha = 0
+        }) { (success) in
+            self.willMove(toParentViewController: nil)
+            self.reviewsViewController.view.removeFromSuperview()
+            self.reviewsViewController.removeFromParentViewController()
+        }
     }
     
     var purchaseViewAnchor: NSLayoutConstraint!

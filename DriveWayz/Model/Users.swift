@@ -15,3 +15,9 @@ class Users: NSObject {
     var email: String?
     var picture: String?
 }
+
+
+enum Device {
+    case iphone8
+    case iphoneX
+}

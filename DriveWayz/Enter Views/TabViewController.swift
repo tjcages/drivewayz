@@ -166,21 +166,36 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         containerRightAnchor.isActive = true
         containerHeightAnchor = container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             containerHeightAnchor.isActive = true
-        container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        switch device {
+        case .iphone8:
+            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        case .iphoneX:
+            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        }
         
         container.addSubview(map)
         map.widthAnchor.constraint(equalToConstant: 50).isActive = true
         map.heightAnchor.constraint(equalToConstant: 50).isActive = true
         mapCenterAnchor = map.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/2)
         mapCenterAnchor.isActive = true
-        map.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            map.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        case .iphoneX:
+            map.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
+        }
         
         container.addSubview(profile)
         profile.widthAnchor.constraint(equalToConstant: 50).isActive = true
         profile.heightAnchor.constraint(equalToConstant: 50).isActive = true
         profileCenterAnchor = profile.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*3/4)
         profileCenterAnchor.isActive = true
-        profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        case .iphoneX:
+            profile.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
+        }
         
         self.view.addSubview(pin)
         pin.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true

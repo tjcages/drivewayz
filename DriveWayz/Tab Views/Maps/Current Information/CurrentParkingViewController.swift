@@ -340,7 +340,7 @@ extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
         switch response.actionIdentifier {
         case "endParking":
             print("Action Second Tapped")
-            self.delegate?.endCurrentParking()
+            self.delegate?.leaveAReview()
         default:
             break
         }

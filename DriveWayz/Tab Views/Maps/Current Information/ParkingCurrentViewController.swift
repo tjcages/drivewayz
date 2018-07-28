@@ -12,7 +12,7 @@ import MapKit
 import UserNotifications
 
 protocol notificationOptions {
-    func endCurrentParking()
+    func leaveAReview()
     func extendTime()
 }
 
@@ -93,6 +93,19 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         table.isScrollEnabled = false
         
         return table
+    }()
+    
+    var userMessage: UITextView = {
+        let label = UITextView()
+        label.textAlignment = .left
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "User messages!"
+        label.isEditable = false
+        label.isUserInteractionEnabled = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     var paymentSegment: UIButton = {
@@ -363,6 +376,10 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
             
+            if indexPath.row >= 1 {
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 100, bottom: 0, right: 100)
+            }
+            
             return cell
         } else {
             cell.textLabel?.text = Payment[indexPath.row]
@@ -377,7 +394,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == currentTableView {
             if indexPath.row == (Current.count-1) {
-                self.endCurrentParking()
+                self.leaveAReview()
             } else if indexPath.row == (Current.count-2) {
                 self.openMapForPlace()
             } else if indexPath.row == (Current.count-3) {
@@ -411,16 +428,8 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    func endCurrentParking() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-        ref.removeValue()
-        
-        timerStarted = false
-        notificationSent = false
-        currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    func leaveAReview() {
+        self.delegate?.setupLeaveAReview()
     }
     
     func extendTime() {

@@ -180,7 +180,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let grayView = UIView()
         
         let background = CAGradientLayer().blueColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 120)
+        switch device {
+        case .iphone8:
+            background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 120)
+        case .iphoneX:
+             background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
+        }
         background.zPosition = -10
         grayView.layer.insertSublayer(background, at: 0)
         
@@ -443,7 +448,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileWrap.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         profileWrap.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         profileWrap.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        profileWrap.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        switch device {
+        case .iphone8:
+            profileWrap.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        case .iphoneX:
+            profileWrap.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        }
         
         profileWrap.addSubview(profileImageView)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
@@ -802,7 +812,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        switch device {
+        case .iphone8:
+            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        case .iphoneX:
+            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        }
         
         self.view.insertSubview(tabPull, belowSubview: optionsTabView)
         tabPull.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 20).isActive = true

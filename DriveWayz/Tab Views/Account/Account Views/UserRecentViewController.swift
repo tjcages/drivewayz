@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import GoogleMaps
 
+var check: Bool = false
+
 class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var Reviews: [String] = ["Hello", "World"]
@@ -82,6 +84,7 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         parkingPicker.delegate = self
         parkingPicker.dataSource = self
+        check = false
         
         setupViews()
         observeUserParkingSpots()
@@ -141,26 +144,24 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
     
     private func fetchParking(parkingID: [String], payment: [Double], hours: [Int]) {
-        var i = 0
-        for pay in payment {
-            for hour in hours {
-                for parking in parkingID {
-                    let messageRef = Database.database().reference().child("parking").child(parking)
-                    messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                        if var dictionary = snapshot.value as? [String:AnyObject] {
-                            DispatchQueue.main.async(execute: {
-                                dictionary.updateValue(pay as AnyObject, forKey: "payment")
-                                dictionary.updateValue(hour as AnyObject, forKey: "hours")
-                                let parking = ParkingSpots(dictionary: dictionary)
-                                self.parkingSpotsDictionary[i] = parking
-                                self.reloadOfTable()
-                            })
-                        }
-                    }, withCancel: nil)
-                    i = i + 1
-                }
+            check = true
+            var i = -1
+            for parking in parkingID {
+                let messageRef = Database.database().reference().child("parking").child(parking)
+                messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if var dictionary = snapshot.value as? [String:AnyObject] {
+                        DispatchQueue.main.async(execute: {
+                            dictionary.updateValue(payment[i] as AnyObject, forKey: "payment")
+                            dictionary.updateValue(hours[i] as AnyObject, forKey: "hours")
+                            let parking = ParkingSpots(dictionary: dictionary)
+                            self.parkingSpotsDictionary[i] = parking
+                            self.reloadOfTable()
+                        })
+                    }
+                }, withCancel: nil)
+                i = i + 1
             }
-        }
+    
     }
     
     private func reloadOfTable() {

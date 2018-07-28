@@ -24,11 +24,13 @@ protocol controlCurrentParkingOptions {
     func removeCurrentOptions()
     func extendTimeView()
     func sendAvailability(availability: Bool)
+    func setupLeaveAReview()
 }
 
 class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions {
     
     var delegate: removePurchaseView?
+    var parkingID: String?
     
     lazy var infoController: ParkingInfoViewController = {
         let controller = ParkingInfoViewController()
@@ -157,6 +159,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     }
     
     func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
+        self.parkingID = parkingID
         infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance)
         pictureController.setData(imageURL: imageURL)
         availabilityController.setData(id: id)
@@ -264,7 +267,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     }
     
     func removeCurrentOptions() {
-        
         UIView.animate(withDuration: 0.3, animations: {
             self.pictureHeightAnchor.constant = -5
             self.view.layoutIfNeeded()
@@ -281,6 +283,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func extendTimeView() {
         self.delegate?.extendTimeView()
+    }
+    
+    func setupLeaveAReview() {
+        self.delegate?.setupLeaveAReview(parkingID: self.parkingID!)
     }
 
     override func didReceiveMemoryWarning() {

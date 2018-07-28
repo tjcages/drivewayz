@@ -51,10 +51,10 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     var message: MadokaTextField = {
         let field = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
-        field.placeholderColor = Theme.DARK_GRAY
-        field.borderColor = Theme.PRIMARY_COLOR
+        field.placeholderColor = Theme.WHITE
+        field.borderColor = Theme.WHITE
         field.placeholder = "Enter a helpful message"
-        field.textColor = Theme.DARK_GRAY
+        field.textColor = Theme.WHITE
         field.font = UIFont.systemFont(ofSize: 18, weight: .light)
         field.translatesAutoresizingMaskIntoConstraints = false
         
@@ -595,7 +595,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                         let parkingImageURL = url?.absoluteString
                         let values = ["parkingImageURL": parkingImageURL]
                         self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
-                        let properties = ["parkingAddress" : formattedAddress, "parkingImageURL" : parkingImageURL, "parkingCost": cost, "parkingCity": cityAddress, "parkingDistance": "0"] as [String : AnyObject]
+                        let properties = ["parkingAddress" : formattedAddress, "parkingImageURL" : parkingImageURL!, "parkingCost": cost, "parkingCity": cityAddress, "parkingDistance": "0", "message": self.message.text] as [String : AnyObject]
                         self.addParkingWithProperties(properties: properties)
                     } else {
                         print("Error finding image url:", error!)
@@ -972,10 +972,10 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         hourLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         scrollViewParking.addSubview(message)
-        message.topAnchor.constraint(equalTo: hourLabel.bottomAnchor, constant: 10).isActive = true
+        message.topAnchor.constraint(equalTo: hourLabel.bottomAnchor, constant: 20).isActive = true
         message.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         message.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
-        message.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        message.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         saveParkingButton = UIButton()
         saveParkingButton.setTitle("Save", for: .normal)
@@ -990,7 +990,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         scrollViewParking.addSubview(saveParkingButton)
         
         saveParkingButton.centerXAnchor.constraint(equalTo: pickerView.centerXAnchor).isActive = true
-        saveParkingButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
+        saveParkingButton.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 30).isActive = true
         saveParkingButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         saveParkingButton.widthAnchor.constraint(equalToConstant: self.view.frame.width * 3/4).isActive = true
         

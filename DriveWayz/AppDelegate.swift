@@ -14,6 +14,8 @@ import Stripe
 import FacebookCore
 import UserNotifications
 
+var device: Device = .iphone8
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -24,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.statusBarStyle = .default
         UNUserNotificationCenter.current().delegate = self
+        detectDevice()
         FirebaseApp.configure()
         
         GMSServices.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
@@ -54,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
-        
         return true
     }
     
@@ -121,6 +123,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }, withCancel: nil)
                 }
+            }
+        }
+    }
+    
+    func detectDevice() {
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+            case 1136:
+                print("iPhone 5 or 5S or 5C")
+                device = .iphone8
+            case 1334:
+                print("iPhone 6/6S/7/8")
+                device = .iphone8
+            case 1920, 2208:
+                print("iPhone 6+/6S+/7+/8+")
+                device = .iphone8
+            case 2436:
+                print("iPhone X")
+                device = .iphoneX
+            default:
+                print("unknown")
+                device = .iphone8
             }
         }
     }
