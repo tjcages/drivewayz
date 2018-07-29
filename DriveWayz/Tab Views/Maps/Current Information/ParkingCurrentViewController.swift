@@ -429,7 +429,25 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func leaveAReview() {
-        self.delegate?.setupLeaveAReview()
+        let alert = UIAlertController(title: "Confirm you have left spot", message: "Please confirm that you have left the parking space. If you confirm and have not actually left within a certain time you risk being towed.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (pressed) in
+            self.endCurrentParking()
+            self.delegate?.setupLeaveAReview()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func endCurrentParking() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
+        ref.removeValue()
+        
+        timerStarted = false
+        notificationSent = false
+        currentParking = false
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     func extendTime() {

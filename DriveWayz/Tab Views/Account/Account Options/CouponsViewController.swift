@@ -143,7 +143,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.view.addSubview(termsContainer)
         termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20).isActive = true
-        termsHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 350)
+        termsHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 300)
             termsHeightAnchor.isActive = true
         termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true

@@ -187,7 +187,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 995).isActive = true
-        infoContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        infoContainer.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
         infoContainer.addSubview(infoController.view)
         infoController.view.centerXAnchor.constraint(equalTo: infoContainer.centerXAnchor).isActive = true

@@ -593,9 +593,10 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 storageRef.downloadURL(completion: { (url, error) in
                     if url?.absoluteString != nil {
                         let parkingImageURL = url?.absoluteString
+                        let text = self.message.text
                         let values = ["parkingImageURL": parkingImageURL]
                         self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
-                        let properties = ["parkingAddress" : formattedAddress, "parkingImageURL" : parkingImageURL!, "parkingCost": cost, "parkingCity": cityAddress, "parkingDistance": "0", "message": self.message.text] as [String : AnyObject]
+                        let properties = ["parkingAddress" : formattedAddress, "parkingImageURL" : parkingImageURL!, "parkingCost": cost, "parkingCity": cityAddress, "parkingDistance": "0", "message": text] as [String : AnyObject]
                         self.addParkingWithProperties(properties: properties)
                     } else {
                         print("Error finding image url:", error!)
@@ -795,6 +796,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         scrollViewParking.showsVerticalScrollIndicator = true
         scrollViewParking.showsHorizontalScrollIndicator = false
         scrollViewParking.translatesAutoresizingMaskIntoConstraints = false
+        scrollViewParking.keyboardDismissMode = .onDrag
         scrollViewParking.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 200)
         weekContainer.addSubview(scrollViewParking)
         

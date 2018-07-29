@@ -186,12 +186,16 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
     }
     
     @objc func nextPressed(sender: UIButton) {
-        self.accept.alpha = 0.6
-        self.accept.isUserInteractionEnabled = false
         sendMessage()
     }
     
     func sendMessage() {
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            self.accept.alpha = 0.6
+            self.accept.isUserInteractionEnabled = false
+        }, completion: nil)
+        
         let users = Users()
         
         users.name = "Drivewayz"
@@ -245,6 +249,10 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                         UIView.animate(withDuration: 0.3, animations: {
                             self.view.alpha = 0
                         }) { (success) in
+                            UIView.animate(withDuration: 0.1, animations: {
+                                self.accept.alpha = 1
+                                self.accept.isUserInteractionEnabled = true
+                            }, completion: nil)
                             self.delegate?.removeOptionsFromView()
                         }
                     }

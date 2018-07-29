@@ -29,7 +29,7 @@ class ParkingInfoViewController: UIViewController {
         parkingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         parkingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         parkingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        parkingView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        parkingView.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
         parkingView.addSubview(labelTitle)
         labelTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
@@ -39,13 +39,13 @@ class ParkingInfoViewController: UIViewController {
         
         parkingView.addSubview(labelCost)
         labelCost.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelCost.bottomAnchor.constraint(equalTo: labelTitle.topAnchor).isActive = true
+        labelCost.bottomAnchor.constraint(equalTo: labelTitle.topAnchor, constant: -5).isActive = true
         labelCost.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
         labelCost.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         parkingView.addSubview(labelDistance)
         labelDistance.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelDistance.bottomAnchor.constraint(equalTo: labelCost.topAnchor).isActive = true
+        labelDistance.bottomAnchor.constraint(equalTo: labelCost.topAnchor, constant: -5).isActive = true
         labelDistance.leftAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
         labelDistance.heightAnchor.constraint(equalToConstant: 20).isActive = true
         

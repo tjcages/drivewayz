@@ -9,11 +9,13 @@
 import UIKit
 import Firebase
 import UserNotifications
+import Cosmos
 
 class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     
     var delegate: removePurchaseView?
     var parkingID: String?
+    var rating: Int?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -43,7 +45,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.numberOfLines = 2
-        label.text = "Contact Drivewayz!"
+        label.text = "Leave a review"
         
         return label
     }()
@@ -54,10 +56,30 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.text = "We at Drivewayz strive to give users the best experience that we can. That being said, we aren't perfect and we look for your constant support and ideas to constantly improve."
+        label.text = """
+        Please leave a review for the host of the parking space and for future users.
+        
+        Swipe stars to rate.
+        """
         label.numberOfLines = 4
         
         return label
+    }()
+    
+    var stars: CosmosView = {
+        let view = CosmosView()
+        view.rating = 0
+        view.settings.updateOnTouch = true
+        view.settings.fillMode = .full
+        view.settings.starSize = 30
+        view.settings.starMargin = 2
+        view.settings.filledColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.settings.emptyBorderColor = Theme.DARK_GRAY
+        view.settings.filledBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.isUserInteractionEnabled = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     var accept: UIButton = {
@@ -107,7 +129,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.isScrollEnabled = false
+        view.isScrollEnabled = true
         view.keyboardDismissMode = .interactive
         
         return view
@@ -149,7 +171,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         termsContainer.addSubview(scrollView)
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scrollView.addGestureRecognizer(tap)
-        scrollView.contentSize = CGSize(width: self.view.frame.width - 60, height: 500)
+        scrollView.contentSize = CGSize(width: self.view.frame.width - 60, height: 300)
         scrollView.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 60).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -60).isActive = true
         scrollView.leftAnchor.constraint(equalTo: termsContainer.leftAnchor).isActive = true
@@ -161,10 +183,17 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         text.leftAnchor.constraint(equalTo: termsContainer.leftAnchor, constant: 10).isActive = true
         text.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -10).isActive = true
         
+        scrollView.addSubview(stars)
+        stars.didFinishTouchingCosmos = {rating in self.setRating()}
+        stars.widthAnchor.constraint(equalTo: termsContainer.widthAnchor).isActive = true
+        stars.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: (self.view.frame.width - 60) / 4).isActive = true
+        stars.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         scrollView.addSubview(inputTextField)
         inputTextField.leftAnchor.constraint(equalTo: termsContainer.leftAnchor, constant: 10).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -10).isActive = true
-        inputTextField.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10).isActive = true
+        inputTextField.topAnchor.constraint(equalTo: stars.bottomAnchor, constant: 10).isActive = true
         inputTextField.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         termsContainer.addSubview(terms)
@@ -187,81 +216,56 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         
     }
     
+    func setRating() {
+        self.rating = Int(stars.rating)
+    }
+    
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         self.inputTextField.endEditing(true)
     }
     
     @objc func nextPressed(sender: UIButton) {
-        sendMessage()
+        if inputTextField.text == "Enter text here" || inputTextField.text == "Sent!" || inputTextField.text == "" {
+            let alert = UIAlertController(title: "Please leave a review", message: "You are not required to leave a review but it can be very helpful for future users and for the host.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        } else {
+            sendMessage()
+        }
     }
     
     func sendMessage() {
-        let users = Users()
         
-        users.name = "Drivewayz"
-        users.picture = ""
-        users.email = "drivewayzparking@gmail.com"
-        users.bio = ""
-        users.id = "2UEtVV7hpFUKDyB1Nr9xgXZq7512"
-        self.user = users
+        UIView.animate(withDuration: 0.1, animations: {
+            self.accept.alpha = 0.6
+            self.accept.isUserInteractionEnabled = false
+        }, completion: nil)
+        
         sendMessageWithProperties()
     }
     
-    func endCurrentParking() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-        ref.removeValue()
-        
-        timerStarted = false
-        notificationSent = false
-        currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    }
-    
     var user: Users?
+    var count: Int?
     
     private func sendMessageWithProperties() {
-        let ref = Database.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        
-        let toID = user!.id!
-        let fromID = Auth.auth().currentUser!.uid
-        
+        let ref = Database.database().reference().child("parking").child(parkingID!).child("Reviews")
         let currentUser = Auth.auth().currentUser?.uid
-        let userRef = Database.database().reference().child("users").child(currentUser!)
-        userRef.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let name = dictionary["name"] as? String
-                
-                let fromName = Auth.auth().currentUser?.displayName
-                let timestamp = Int(Date().timeIntervalSince1970)
-                let values = ["name": name!, "text": self.inputTextField.text, "fromID": fromID, "timestamp": timestamp] as [String : Any]
-                
-                childRef.updateChildValues(values) { (error, ref) in
-                    if error != nil {
-                        print(error ?? "")
-                        return
-                    }
-                    
-                    self.inputTextField.text = "Sent!"
-                    
-                    let userMessagesRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
-                    
-                    let messageId = childRef.key
-                    userMessagesRef.updateChildValues([messageId: 1])
-                    
-                    let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child("\(String(describing: fromName))")
-                    recipientUserMessagesRef.updateChildValues([messageId: 1])
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        UIView.animate(withDuration: 0.3, animations: {
-                            self.view.alpha = 0
-                        }) { (success) in
-                            self.endCurrentParking()
-                            self.delegate?.removeLeaveAReview()
-                        }
-                    }
+        let timestamp = NSDate().timeIntervalSince1970
+        let review = inputTextField.text as String
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            self.count =  Int(snapshot.childrenCount)
+            let revRef = ref.child("\(String(describing: self.count!))")
+            revRef.updateChildValues(["timestamp": timestamp, "fromUser": currentUser!, "review": review, "rating": self.rating!])
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.alpha = 0
+                }) { (success) in
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.accept.alpha = 1
+                        self.accept.isUserInteractionEnabled = true
+                    }, completion: nil)
+                    self.delegate?.removeLeaveAReview()
                 }
             }
         }

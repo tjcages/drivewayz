@@ -205,7 +205,8 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         cell.imageView.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
         cell.reviewLabel.text = parking.parkingCity
         cell.priceLabel.text = " - \(String(describing: parking.parkingCost!))"
-        cell.costLabel.text = "Total: $\(String(describing: parking.payment!))"
+        let stringCost = String(format: "%.2f", parking.payment!)
+        cell.costLabel.text = "Total: $\(stringCost)"
         if parking.hours! > 1 {
             cell.hoursLabel.text = "For \(String(describing: parking.hours!)) hours"
         } else {

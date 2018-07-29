@@ -637,6 +637,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             self.willMove(toParentViewController: nil)
             self.reviewsViewController.view.removeFromSuperview()
             self.reviewsViewController.removeFromParentViewController()
+            self.paymentSwipedSender()
         }
     }
     
@@ -678,10 +679,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func openHoursButton() {
-        if self.informationViewController.view.center.y == -210 {
+        if self.informationViewController.view.center.y == -200 {
             self.hoursButtonAnchor.constant = 200
             self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = -210
+            self.informationViewController.view.center.y = -200
         } else if self.informationViewController.view.center.y == 250 {
             self.hoursButtonAnchor.constant = 200
             self.view.layoutIfNeeded()
@@ -694,10 +695,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func closeHoursButton() {
-        if self.informationViewController.view.center.y == -210 {
+        if self.informationViewController.view.center.y == -200 {
             self.hoursButtonAnchor.constant = 80
             self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = -210
+            self.informationViewController.view.center.y = -200
         } else if self.informationViewController.view.center.y == 250 {
             self.hoursButtonAnchor.constant = 80
             self.view.layoutIfNeeded()
@@ -723,7 +724,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x, y: gestureRecognizer.view!.center.y + translation.y)
             gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
             
-            let alpha = 0.9 - (previousYPosition / -210)
+            let alpha = 0.9 - (previousYPosition / -200)
             if alpha >= 0 && alpha <= 0.9 {
                 self.fullBlurView.alpha = alpha
             }
@@ -753,7 +754,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     self.fullBlurView.alpha = 0
                     self.informationViewAnchor.constant = 250
                     self.view.layoutIfNeeded()
-                    gestureRecognizer.view?.center.y = -210
+                    gestureRecognizer.view?.center.y = -200
                 }) { (success) in
                     self.check = true
                     gestureRecognizer.view?.isUserInteractionEnabled = true
@@ -771,6 +772,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     @objc func currentParkingPressed(sender: UIButton) {
         currentParkingSender()
+        checkCurrentParking()
     }
     
     func currentParkingSender() {
@@ -940,12 +942,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             
             UIView.animate(withDuration: 0.3, animations: {
                 self.purchaseViewAnchor.constant = 0
-                self.informationViewController.view.center.y = -210
+                self.informationViewController.view.center.y = -200
                 self.view.layoutIfNeeded()
             }) { (success) in
                 UIView.animate(withDuration: 0.1, animations: {
                     self.purchaseViewAnchor.constant = 0
-                    self.informationViewController.view.center.y = -210
+                    self.informationViewController.view.center.y = -200
                     self.view.layoutIfNeeded()
                 })
             }

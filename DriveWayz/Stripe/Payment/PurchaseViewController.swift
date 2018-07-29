@@ -88,7 +88,9 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
                     reserveButton.alpha = 1
-                    reserveButton.setTitle("Reserve Spot", for: .normal)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        reserveButton.setTitle("Reserve Spot", for: .normal)
+                    }
                 }
             }, completion: nil)
         }
@@ -196,12 +198,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
     
     init() {
-        
-        let stripePublishableKey = self.stripePublishableKey
-        let backendBaseURL = self.backendBaseURL
-        
-        assert(stripePublishableKey.hasPrefix("pk_"), "You must set your Stripe publishable key at the top of CheckoutViewController.swift to run this app.")
-        assert(backendBaseURL != nil, "You must set your backend base url at the top of CheckoutViewController.swift to run this app.")
 
         MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
         
@@ -374,8 +370,8 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         
     }
 
-    @objc private func handleRequestRideButtonTapped() {
-        let stringCost = String(format: "%.2f", (self.cost * Double(hours!)))
+    @objc func handleRequestRideButtonTapped() {
+        let stringCost = String(format: "%.2f", Double((self.price * hours!)/100))
         totalCostLabel.text = "$\(stringCost)"
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 1
@@ -570,7 +566,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
             recentRef.updateChildValues(["parkingID": self.parkingId, "timestamp": timestamp, "cost": self.cost, "hours": hours!])
         }
         
-        let paymentRef = Database.database().reference().child("users").child(self.id).child("payments")
+        let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")
         let currentRef = Database.database().reference().child("users").child(self.id)
         currentRef.updateChildValues(["available": 0])
         currentRef.observeSingleEvent(of: .value) { (current) in

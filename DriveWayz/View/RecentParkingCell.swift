@@ -43,8 +43,8 @@ class RecentParkingCell: UICollectionViewCell {
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.text = "Address address addressssss"
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.text = "Address"
         label.isEditable = false
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
