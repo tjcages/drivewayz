@@ -35,29 +35,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
         
-        _ = self.window!.rootViewController
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = StartUpViewController()
+        UIApplication.shared.statusBarStyle = .lightContent
         
-        let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
+        window!.rootViewController = loginViewController
+        window!.makeKeyAndVisible()
         
-        if(!isUserLoggedIn) {
-            
-            let startUpViewController = mainStoryboard.instantiateViewController(withIdentifier: "StartUpViewController") as! StartUpViewController
-            
-            window!.rootViewController = startUpViewController
-            window!.makeKeyAndVisible()
-            
-        } else {
-            
-            let protectedPage = mainStoryboard.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
-            
-            window!.rootViewController = protectedPage
-            window!.makeKeyAndVisible()
-            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if UserDefaults.standard.bool(forKey: "isUserLoggedIn") != true {
+                
+                let loginViewController = StartUpViewController()
+                UIApplication.shared.statusBarStyle = .lightContent
+                
+                self.window!.rootViewController = loginViewController
+                self.window!.makeKeyAndVisible()
+                
+            }
+            else {
+                
+                let containerViewController = TabViewController()
+                UIApplication.shared.statusBarStyle = .default
+                
+                self.window!.rootViewController = containerViewController
+                self.window!.makeKeyAndVisible()
+            }
         }
         
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         return true
+    
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

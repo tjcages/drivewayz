@@ -272,11 +272,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         locationManager.startUpdatingHeading()
 
         setupViews()
-        setupViewController()
         fetchUserEmail()
         locationAuthStatus()
         checkCurrentParking()
         observeUserParkingSpots()
+        setupViewController()
         searchBar.delegate = self
     }
     
@@ -690,7 +690,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var hoursButtonAnchor: NSLayoutConstraint!
     
     func setupViewController() {
-        
         self.view.addSubview(fullBlurView)
         fullBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -705,7 +704,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         informationViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationViewController.view.bottomAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
         informationViewAnchor = informationViewController.view.widthAnchor.constraint(equalToConstant: 250)
-            informationViewAnchor.isActive = true
+        informationViewAnchor.isActive = true
         informationViewController.view.heightAnchor.constraint(equalToConstant: 600).isActive = true
         informationViewController.view?.center.y = -210
         
@@ -713,13 +712,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         self.addChildViewController(purchaseViewController)
         purchaseViewController.didMove(toParentViewController: self)
         purchaseViewAnchor = purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.width * 2))
-            purchaseViewAnchor.isActive = true
+        purchaseViewAnchor.isActive = true
         purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
         purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
         hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80)
-            hoursButtonAnchor.isActive = true
+        hoursButtonAnchor.isActive = true
         purchaseViewController.view?.center.y = -205
-        
     }
     
     func openHoursButton() {
@@ -980,7 +978,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         if currentParking == false && marker != self.currentMarker {
             guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let parking = parkingSpots[customMarkerView.tag]
-            print(parkingSpots[customMarkerView.tag])
             informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
             purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
             
@@ -991,6 +988,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             }) { (success) in
                 UIView.animate(withDuration: 0.1, animations: {
                     self.purchaseViewAnchor.constant = 0
+                    self.informationViewController.view.center.y = -200
+                    self.view.layoutIfNeeded()
+                })
+                UIView.animate(withDuration: 0.1, animations: {
                     self.informationViewController.view.center.y = -200
                     self.view.layoutIfNeeded()
                 })

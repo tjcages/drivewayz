@@ -54,10 +54,10 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.isScrollEnabled = true
+        view.isScrollEnabled = false
         view.showsVerticalScrollIndicator = true
         view.showsHorizontalScrollIndicator = false
-        view.keyboardDismissMode = .onDrag
+        view.keyboardDismissMode = .interactive
         
         return view
     }()
@@ -213,12 +213,14 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         
         self.view.addSubview(newVehicleContainer)
         newVehicleContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80).isActive = true
-        newVehicleContainer.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        newVehicleContainer.heightAnchor.constraint(equalToConstant: 400).isActive = true
         newVehicleContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         newVehicleContainer.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6)).isActive = true
         
         newVehicleContainer.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: 150, height: 600)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissKeyboard))
+        scrollView.addGestureRecognizer(tapGesture)
         scrollView.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 60).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: newVehicleContainer.bottomAnchor, constant: -60).isActive = true
         scrollView.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor).isActive = true
@@ -243,13 +245,13 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         activityIndicatorVehicleView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(vehicleMake)
-        vehicleMake.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
+        vehicleMake.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
         vehicleMake.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 8).isActive = true
         vehicleMake.rightAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: -4).isActive = true
         vehicleMake.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
         scrollView.addSubview(vehicleModel)
-        vehicleModel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
+        vehicleModel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
         vehicleModel.leftAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: 4).isActive = true
         vehicleModel.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -8).isActive = true
         vehicleModel.heightAnchor.constraint(equalToConstant: 63).isActive = true
@@ -278,13 +280,13 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleLicensePlate.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -24).isActive = true
         vehicleLicensePlate.heightAnchor.constraint(equalToConstant: 63).isActive = true
 
-        scrollView.addSubview(vehicleImageView)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectVehicleImageView))
-        vehicleImageView.addGestureRecognizer(tapGesture)
-        vehicleImageView.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 40).isActive = true
-        vehicleImageView.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -40).isActive = true
-        vehicleImageView.topAnchor.constraint(equalTo: vehicleLicensePlate.bottomAnchor, constant: 30).isActive = true
-        vehicleImageView.heightAnchor.constraint(equalToConstant: 180).isActive = true
+//        scrollView.addSubview(vehicleImageView)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectVehicleImageView))
+//        vehicleImageView.addGestureRecognizer(tapGesture)
+//        vehicleImageView.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 40).isActive = true
+//        vehicleImageView.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -40).isActive = true
+//        vehicleImageView.topAnchor.constraint(equalTo: vehicleLicensePlate.bottomAnchor, constant: 30).isActive = true
+//        vehicleImageView.heightAnchor.constraint(equalToConstant: 180).isActive = true
 
         self.view.addSubview(exitButton)
         exitButton.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: 35).isActive = true
@@ -509,6 +511,10 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
             self.colorView.backgroundColor = UIColor.white
             self.color = "White"
         }
+    }
+    
+    @objc func handleDismissKeyboard() {
+        self.view.endEditing(true)
     }
     
 }

@@ -68,10 +68,10 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         }
     }
 
-    private var price = 0 {
+    private var price: Double = 0 {
         didSet {
             // Forward value to payment context
-            paymentContext.paymentAmount = price
+            paymentContext.paymentAmount = Int(price)
         }
     }
     
@@ -216,7 +216,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                                                theme: .default())
         let userInformation = STPUserInformation()
         paymentContext.prefilledInformation = userInformation
-        paymentContext.paymentAmount = price
+        paymentContext.paymentAmount = Int(price * 100)
         paymentContext.paymentCurrency = self.paymentCurrency
         
         self.paymentContext = paymentContext
@@ -241,7 +241,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     func setData(parkingCost: String, parkingID: String, id: String) {
         let noHour = parkingCost.replacingOccurrences(of: "/hour", with: "", options: .regularExpression, range: nil)
         let noDollar = noHour.replacingOccurrences(of: "[$]", with: "", options: .regularExpression, range: nil)
-        self.price = Int(noDollar.replacingOccurrences(of: "[.]", with: "", options: .regularExpression, range: nil))!
+        self.price = Double(noDollar.replacingOccurrences(of: "[.]", with: "", options: .regularExpression, range: nil))!
         
         self.id = id
         self.parkingId = parkingID
@@ -371,7 +371,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
 
     @objc func handleRequestRideButtonTapped() {
-        let stringCost = String(format: "%.2f", Double((self.price * hours!)/100))
+        let stringCost = String(format: "%.2f", Double((self.price * Double(hours!))/100))
         totalCostLabel.text = "$\(stringCost)"
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 1
@@ -480,7 +480,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
         MyAPIClient.sharedClient.completeCharge(paymentResult,
-                                                amount: (self.price * hours!),
+                                                amount: self.paymentContext.paymentAmount,
                                                 completion: completion)
     }
     
@@ -567,7 +567,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
-        let helpRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(parkingId)
+        let helpRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(self.parkingId)
         helpRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let oldHours = dictionary["hours"] as? Int {

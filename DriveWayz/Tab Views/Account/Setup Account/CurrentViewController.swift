@@ -19,6 +19,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         case none
     }
     var userState: UserState = UserState.current
+    var delegate: controlsAccountViews?
     
     var current: UIView = {
         let current = UIView()
@@ -236,6 +237,8 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                 if let parkingID = dictionary["parkingID"] as? String {
                     self.observeCurrent(parkingID: parkingID)
                 }
+            } else {
+                
             }
         }
     }
@@ -275,7 +278,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         let ref = Database.database().reference().child("users").child(currentUser!)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                let parkingID = dictionary["parkingID"] as? String
+                if let parkingID = dictionary["parkingID"] as? String {
                     let userRef = Database.database().reference().child("users").child(newUser)
                     userRef.observeSingleEvent(of: .value, with: { (last) in
                         if let info = last.value as? [String:AnyObject] {
@@ -283,7 +286,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                             var fullName = name?.split(separator: " ")
                             let firstName: String = String(fullName![0])
                             self.userName.text = firstName
-                            let currentRef = userRef.child("currentParking").child(parkingID!)
+                            let currentRef = userRef.child("currentParking").child(parkingID)
                             currentRef.observeSingleEvent(of: .value, with: { (current) in
                                 if let currentDict = current.value as? [String:AnyObject] {
                                     let cost = currentDict["cost"] as? Double
@@ -319,7 +322,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                                     let vehicleModel = vehicle["vehicleModel"] as! String
                                     let vehicleColor = vehicle["vehicleColor"] as! String
                                     let vehicleLicense = vehicle["vehicleLicensePlate"] as? String
-                                    let vehicleInformation = "\(vehicleYear) \(vehicleMake) \(vehicleModel) \(vehicleColor)"
+                                    let vehicleInformation = "\(vehicleColor) \(vehicleYear) \(vehicleMake) \(vehicleModel)"
                                     self.userVehicleLabel.text = vehicleInformation
                                     self.userLicenseLabel.text = vehicleLicense
                                 }
@@ -330,16 +333,20 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                     })
                 }
             }
+        }
     }
     
     func setupCurrentViews(state: UserState) {
         switch state {
         case .current:
             self.setupCurrent()
+            self.delegate?.changeCurrentView(height: 475)
         case .previous:
             self.setupPreviousViews()
+            self.delegate?.changeCurrentView(height: 275)
         case .none:
             self.setupNoView()
+            self.delegate?.changeCurrentView(height: 100)
         }
     }
     

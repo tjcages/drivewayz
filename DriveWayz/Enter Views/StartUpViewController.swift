@@ -351,6 +351,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     override func viewDidLoad() {
         super.viewDidLoad()
         self.facebookLogin.delegate = self
+        UIApplication.shared.statusBarStyle = .lightContent
 
         setupBackground()
         configurePageControl()
@@ -653,7 +654,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                     UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                     UserDefaults.standard.synchronize()
                     
-                    let myViewController: TabViewController = self.storyboard!.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                    let myViewController: TabViewController = TabViewController()
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.rootViewController = myViewController
                     appDelegate.window?.makeKeyAndVisible()
@@ -777,7 +778,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                 UserDefaults.standard.synchronize()
                 
-                let myViewController: TabViewController = self.storyboard!.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                let myViewController: TabViewController = TabViewController()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = myViewController
                 appDelegate.window?.makeKeyAndVisible()
@@ -878,7 +879,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                                 UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                                 UserDefaults.standard.synchronize()
                                 
-                                let myViewController: TabViewController = self.storyboard!.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                                let myViewController: TabViewController = TabViewController()
                                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                 appDelegate.window?.rootViewController = myViewController
                                 appDelegate.window?.makeKeyAndVisible()
@@ -942,7 +943,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                             UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                             UserDefaults.standard.synchronize()
                             
-                            let myViewController: TabViewController = self.storyboard!.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                            let myViewController: TabViewController = TabViewController()
                             let appDelegate = UIApplication.shared.delegate as! AppDelegate
                             appDelegate.window?.rootViewController = myViewController
                             appDelegate.window?.makeKeyAndVisible()

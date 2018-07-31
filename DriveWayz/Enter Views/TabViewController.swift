@@ -124,7 +124,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         super.viewDidLoad()
     
         UIApplication.shared.applicationIconBadgeNumber = 0
-        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarStyle = .default
         
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
@@ -283,7 +283,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     }
     
     @objc func handleLogout() {
-        self.performSegue(withIdentifier: "loginView", sender: self)
+        
+        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+        UserDefaults.standard.synchronize()
+        
+        let myViewController: StartUpViewController = StartUpViewController()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = myViewController
+        appDelegate.window?.makeKeyAndVisible()
+        
     }
     
     func fetchUser() {

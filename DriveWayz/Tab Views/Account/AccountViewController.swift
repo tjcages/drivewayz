@@ -35,6 +35,7 @@ protocol controlsNewParking {
 protocol controlsAccountViews {
     func setupParkingViewControllers(parkingStatus: ParkingStatus)
     func removeOptionsFromView()
+    func changeCurrentView(height: CGFloat)
 }
 
 class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsNewParking, controlsAccountViews {
@@ -66,6 +67,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
+        controller.delegate = self
         return controller
     }()
     
@@ -533,6 +535,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     var earningsViewAnchor: NSLayoutConstraint?
     var vehicleViewAnchor: NSLayoutConstraint?
     var currentViewAnchor: NSLayoutConstraint?
+    var currentHeightAnchor: NSLayoutConstraint?
     
     func setupParkingViewControllers(parkingStatus: ParkingStatus) {
         switch parkingStatus {
@@ -605,7 +608,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         currentViewAnchor?.isActive = true
         currentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
-        currentController.view.heightAnchor.constraint(equalToConstant: 475).isActive = true
+        currentHeightAnchor = currentController.view.heightAnchor.constraint(equalToConstant: 0)
+        currentController.view.alpha = 0
+        currentHeightAnchor?.isActive = true
         
         scrollView.addSubview(recentController.view)
         recentController.didMove(toParentViewController: self)
@@ -614,6 +619,14 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 30).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
+    }
+    
+    func changeCurrentView(height: CGFloat) {
+        self.currentController.view.alpha = 1
+        self.currentHeightAnchor?.constant = height
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     @objc func recentPressed(sender: UIButton) {

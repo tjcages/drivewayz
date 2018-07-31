@@ -504,7 +504,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="i3o-Sv-vdH" kind="show" identifier="loginView" id="LLf-3G-keg"/>
                         <segue destination="TV7-o9-e0r" kind="relationship" relationship="viewControllers" id="JL8-sY-jcQ"/>
                         <segue destination="hPt-EX-MeK" kind="relationship" relationship="viewControllers" id="AEb-Wr-JA4"/>
                         <segue destination="MJ4-AG-ZdZ" kind="relationship" relationship="viewControllers" id="kXR-gs-uGe"/>
