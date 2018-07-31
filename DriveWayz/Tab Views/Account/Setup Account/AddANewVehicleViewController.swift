@@ -16,6 +16,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     
     var vehicleImageURL: String?
     var vehicles: Int = 0
+    var color: String = "Black"
     
     let visualBlurEffect: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
@@ -372,7 +373,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
                             let values = ["vehicleImageURL": self.vehicleImageURL]
                             self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
                             
-                            let properties = ["vehicleMake" : make, "vehicleModel" : model, "vehicleYear" : year, "vehicleLicensePlate" : license, "vehicleImageURL" : self.vehicleImageURL] as [String : AnyObject]
+                            let properties = ["vehicleMake" : make, "vehicleModel" : model, "vehicleYear" : year, "vehicleLicensePlate" : license, "vehicleImageURL" : self.vehicleImageURL, "vehicleColor": self.color] as [String : AnyObject]
                             self.addVehicleWithProperties(properties: properties)
                             
                         } else {
@@ -464,34 +465,49 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if colorValues[row] as! String == "Black" {
             self.colorView.backgroundColor = UIColor.black
+            self.color = "Black"
         } else if colorValues[row] as! String == "Grey" {
             self.colorView.backgroundColor = UIColor.gray
+            self.color = "Grey"
         } else if colorValues[row] as! String == "Silver" {
             self.colorView.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)
+            self.color = "Silver"
         } else if colorValues[row] as! String == "Blue" {
             self.colorView.backgroundColor = UIColor.blue
+            self.color = "Blue"
         } else if colorValues[row] as! String == "Brown" {
             self.colorView.backgroundColor = UIColor.brown
+            self.color = "Brown"
         } else if colorValues[row] as! String == "Gold" {
             self.colorView.backgroundColor = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1)
+            self.color = "Gold"
         } else if colorValues[row] as! String == "Cyan" {
             self.colorView.backgroundColor = UIColor.cyan
+            self.color = "Cyan"
         } else if colorValues[row] as! String == "Green" {
             self.colorView.backgroundColor = UIColor.green
+            self.color = "Green"
         } else if colorValues[row] as! String == "Magenta" {
             self.colorView.backgroundColor = UIColor.magenta
+            self.color = "Magenta"
         } else if colorValues[row] as! String == "Orange" {
             self.colorView.backgroundColor = UIColor.orange
+            self.color = "Orange"
         } else if colorValues[row] as! String == "Purple" {
             self.colorView.backgroundColor = UIColor.purple
+            self.color = "Purple"
         } else if colorValues[row] as! String == "Red" {
             self.colorView.backgroundColor = UIColor.red
+            self.color = "Red"
         } else if colorValues[row] as! String == "Yellow" {
             self.colorView.backgroundColor = UIColor.yellow
+            self.color = "Yellow"
         } else if colorValues[row] as! String == "Red" {
             self.colorView.backgroundColor = UIColor.red
+            self.color = "Red"
         } else if colorValues[row] as! String == "White" {
             self.colorView.backgroundColor = UIColor.white
+            self.color = "White"
         }
     }
     

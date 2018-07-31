@@ -19,7 +19,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         newParkingPage.backgroundColor = UIColor.white
         newParkingPage.translatesAutoresizingMaskIntoConstraints = false
         newParkingPage.layer.shadowColor = UIColor.darkGray.cgColor
-        newParkingPage.layer.shadowOffset = CGSize(width: 1, height: 1)
+        newParkingPage.layer.shadowOffset = CGSize(width: 0, height: 1)
         newParkingPage.layer.shadowOpacity = 0.8
         newParkingPage.layer.cornerRadius = 10
         newParkingPage.layer.shadowRadius = 1

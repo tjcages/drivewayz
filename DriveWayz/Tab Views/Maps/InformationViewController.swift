@@ -150,6 +150,32 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         
         return view
     }()
+    
+    var signUpContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.WHITE
+        view.alpha = 0.9
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 1
+        view.layer.shadowOpacity = 0.8
+        
+        return view
+    }()
+    
+    var signUpLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Sign up today to become a host and make up to an extra $200 per month renting out your driveway!"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,13 +184,13 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         setupViewControllers()
     }
     
-    func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String) {
+    func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String, rating: Double, message: String) {
         self.parkingID = parkingID
-        infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance)
+        infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance, rating: rating)
         pictureController.setData(imageURL: imageURL)
         availabilityController.setData(id: id)
         reviewsController.setData(parkingID: parkingID)
-        currentController.setData(formattedAddress: formattedAddress)
+        currentController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID)
     }
     
     func sendAvailability(availability: Bool) {
@@ -176,8 +202,8 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     func setupViewControllers() {
         
         self.view.addSubview(informationScrollView)
-        informationScrollView.contentSize = CGSize(width: 500, height: 1000)
-        informationScrollView.contentOffset = CGPoint(x: 0, y: 1000)
+        informationScrollView.contentSize = CGSize(width: 500, height: 1100)
+        informationScrollView.contentOffset = CGPoint(x: 0, y: 1100)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -186,7 +212,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         informationScrollView.addSubview(infoContainer)
         infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 995).isActive = true
+        infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 1095).isActive = true
         infoContainer.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
         infoContainer.addSubview(infoController.view)
@@ -234,13 +260,25 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         reviewsController.view.topAnchor.constraint(equalTo: reviewsContainer.topAnchor).isActive = true
         reviewsController.view.widthAnchor.constraint(equalTo: reviewsContainer.widthAnchor).isActive = true
         
+        informationScrollView.addSubview(signUpContainer)
+        signUpContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        signUpContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        signUpContainer.bottomAnchor.constraint(equalTo: reviewsContainer.topAnchor, constant: -25).isActive = true
+        signUpContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        signUpContainer.addSubview(signUpLabel)
+        signUpLabel.leftAnchor.constraint(equalTo: signUpContainer.leftAnchor, constant: 10).isActive = true
+        signUpLabel.rightAnchor.constraint(equalTo: signUpContainer.rightAnchor, constant: -10).isActive = true
+        signUpLabel.topAnchor.constraint(equalTo: signUpContainer.topAnchor, constant: 10).isActive = true
+        signUpLabel.bottomAnchor.constraint(equalTo: signUpContainer.bottomAnchor, constant: -10).isActive = true
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == informationScrollView {
-            if scrollView.contentOffset.y >= 365.0 {
+            if scrollView.contentOffset.y >= 465.0 {
                 informationScrollView.isScrollEnabled = false
-            } else if scrollView.contentOffset.y <= 335.0 {
+            } else if scrollView.contentOffset.y <= 435.0 {
                 informationScrollView.isScrollEnabled = true
             }
         }

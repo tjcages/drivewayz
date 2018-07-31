@@ -25,7 +25,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         newVehiclePage.backgroundColor = UIColor.white
         newVehiclePage.translatesAutoresizingMaskIntoConstraints = false
         newVehiclePage.layer.shadowColor = UIColor.darkGray.cgColor
-        newVehiclePage.layer.shadowOffset = CGSize(width: 1, height: 1)
+        newVehiclePage.layer.shadowOffset = CGSize(width: 0, height: 1)
         newVehiclePage.layer.shadowOpacity = 0.8
         newVehiclePage.layer.cornerRadius = 10
         newVehiclePage.layer.shadowRadius = 1
@@ -343,8 +343,13 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
             let userId = Auth.auth().currentUser?.uid
             let userRef = Database.database().reference().child("users").child(userId!)
             userRef.observeSingleEvent(of: .value) { (snapshot) in
-                userRef.child("vehicleID").removeValue()
-                userRef.child("vehicleImageURL").removeValue()
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let vehicleID = dictionary["vehicleID"] as? String
+                    let vehicleRef = Database.database().reference().child("vehicles").child(vehicleID!)
+                    vehicleRef.removeValue()
+                    userRef.child("vehicleID").removeValue()
+                    userRef.child("vehicleImageURL").removeValue()
+                }
                 let userVehicleRef = Database.database().reference().child("user-vehicles")
                 userVehicleRef.child(userId!).removeValue()
                 

@@ -185,7 +185,13 @@ class CurrentParkingViewController: UIViewController {
     }
     
     func configureNotifications() {
-        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you've left", options: [])
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound])
+        { (granted, error) in
+            //
+        }
+        
+        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
         let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
         UNUserNotificationCenter.current().setNotificationCategories([category])
     }
@@ -213,6 +219,7 @@ class CurrentParkingViewController: UIViewController {
             let content = UNMutableNotificationContent()
             let secondContent = UNMutableNotificationContent()
             let thirdContent = UNMutableNotificationContent()
+            let fourthContent = UNMutableNotificationContent()
             
             let mapboxAccessToken = "pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ"
             let snapshot = Snapshot(options: options, accessToken: mapboxAccessToken)
@@ -223,6 +230,9 @@ class CurrentParkingViewController: UIViewController {
             }
             if let secondAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
                 secondContent.attachments = [secondAttachment]
+            }
+            if let thirdAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
+                thirdContent.attachments = [thirdAttachment]
             }
             
             content.title = "Your current parking spot has expired!"
@@ -244,9 +254,15 @@ class CurrentParkingViewController: UIViewController {
             thirdContent.sound = UNNotificationSound.default()
             thirdContent.categoryIdentifier = "actionCategory"
             
+            fourthContent.title = "You have 20 minutes left for your parking spot"
+            fourthContent.body = "Check in with the app to extend time!"
+            fourthContent.badge = 1
+            fourthContent.sound = UNNotificationSound.default()
+            
             let seconds = self.hours! * 3600
             let secondSeconds = (self.hours! * 3600) + (15 * 60)
             let thirdSeconds = (self.hours! * 3600) + (30 * 60)
+            let fourthSeconds = (self.hours! * 3600) - (20 * 60)
             
             if seconds >= 0 {
                 let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
@@ -255,6 +271,8 @@ class CurrentParkingViewController: UIViewController {
                 let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
                 let thirdTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(thirdSeconds), repeats: false)
                 let thirdRequest = UNNotificationRequest(identifier: "timerDone3", content: thirdContent, trigger: thirdTrigger)
+                let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
+                let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
                 
                 UNUserNotificationCenter.current().removeAllDeliveredNotifications()
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -271,7 +289,12 @@ class CurrentParkingViewController: UIViewController {
                 }
                 UNUserNotificationCenter.current().add(thirdRequest) { (error) in
                     if error != nil {
-                        print("Error sending second notification: ", error!)
+                        print("Error sending third notification: ", error!)
+                    }
+                }
+                UNUserNotificationCenter.current().add(fourthRequest) { (error) in
+                    if error != nil {
+                        print("Error sending fourth notification: ", error!)
                     }
                 }
             }
@@ -296,7 +319,11 @@ class CurrentParkingViewController: UIViewController {
             timeRemaining.text = timeString(time: TimeInterval(seconds!))
         } else {
             timeRemaining.text = "Times up"
+        }
+        if timeRemaining.text == "Times up" {
             timeRemaining.textColor = UIColor.red
+        } else {
+            timeRemaining.textColor = Theme.PRIMARY_DARK_COLOR
         }
     }
     
@@ -340,11 +367,24 @@ extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
         switch response.actionIdentifier {
         case "endParking":
             print("Action Second Tapped")
-            self.delegate?.leaveAReview()
+            self.endCurrentParking()
+            self.delegate?.sendLeaveReview()
         default:
             break
         }
         completionHandler()
+    }
+    
+    func endCurrentParking() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
+        ref.removeValue()
+        
+        timerStarted = false
+        notificationSent = false
+        currentParking = false
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
 }

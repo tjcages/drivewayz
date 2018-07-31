@@ -276,6 +276,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         fetchUserEmail()
         locationAuthStatus()
         checkCurrentParking()
+        observeUserParkingSpots()
         searchBar.delegate = self
     }
     
@@ -297,6 +298,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func checkCurrentParking() {
+        var avgRating: Double = 5
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
                 currentRef.observe(.childAdded, with: { (snapshot) in
@@ -313,6 +315,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                 let id = pullRef["id"] as? String
                                 let parkingID = pullRef["parkingID"] as? String
                                 let parkingAddress = pullRef["parkingAddress"] as? String
+                                let message = pullRef["message"] as? String
                                 
                                 let geoCoder = CLGeocoder()
                                 geoCoder.geocodeAddressString(parkingAddress!) { (placemarks, error) in
@@ -333,12 +336,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                             self.currentData = .yesReserved
                                             self.drawPath(endLocation: location)
                                             
-                                            self.informationViewController.addCurrentOptions()
-                                            self.removeTabView()
-                                            self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance)
-                                            UIView.animate(withDuration: 0.5, animations: {
-                                                currentButton.alpha = 1
-                                            })
+                                            if let rating = pullRef["rating"] as? Double {
+                                                let reviewsRef = parkingRef.child("Reviews")
+                                                reviewsRef.observeSingleEvent(of: .value, with: { (count) in
+                                                    let counting = count.childrenCount
+                                                    if counting == 0 {
+                                                        avgRating = rating
+                                                    } else {
+                                                        avgRating = rating / Double(counting)
+                                                    }
+                                                    
+                                                    self.informationViewController.addCurrentOptions()
+                                                    self.removeTabView()
+                                                    self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
+                                                    UIView.animate(withDuration: 0.5, animations: {
+                                                        currentButton.alpha = 1
+                                                    })
+                                                })
+                                            } else {
+                                                self.informationViewController.addCurrentOptions()
+                                                self.removeTabView()
+                                                self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
+                                                UIView.animate(withDuration: 0.5, animations: {
+                                                    currentButton.alpha = 1
+                                                })
+                                            }
                                         }
                                     })
                                 }
@@ -400,6 +422,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     private func fetchParking(parkingID: [String]) {
         for parking in parkingID {
+            var avgRating: Double = 5
             let messageRef = Database.database().reference().child("parking").child(parking)
             messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -422,10 +445,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                 let formattedDistance = String(format: "%.1f", roundedStepValue)
                                 dictionary.updateValue(formattedDistance as AnyObject, forKey: "parkingDistance")
                                 
-                                let parking = ParkingSpots(dictionary: dictionary)
-                                let parkingID = dictionary["parkingID"] as! String
-                                self.parkingSpotsDictionary[parkingID] = parking
-                                self.reloadOfTable()
+                                if let rating = dictionary["rating"] as? Double {
+                                    let reviewsRef = messageRef.child("Reviews")
+                                    reviewsRef.observeSingleEvent(of: .value, with: { (count) in
+                                        let counting = count.childrenCount
+                                        if counting == 0 {
+                                            avgRating = rating
+                                        } else {
+                                            avgRating = rating / Double(counting)
+                                        }
+                                        
+                                        dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
+                                        
+                                        let parking = ParkingSpots(dictionary: dictionary)
+                                        let parkingID = dictionary["parkingID"] as! String
+                                        self.parkingSpotsDictionary[parkingID] = parking
+                                        self.reloadOfTable()
+                                    })
+                                } else {
+                                    dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
+                                    
+                                    let parking = ParkingSpots(dictionary: dictionary)
+                                    let parkingID = dictionary["parkingID"] as! String
+                                    self.parkingSpotsDictionary[parkingID] = parking
+                                    self.reloadOfTable()
+                                }
                             }
                         })
                     }
@@ -937,7 +981,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let parking = parkingSpots[customMarkerView.tag]
             print(parkingSpots[customMarkerView.tag])
-            informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!)
+            informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
             purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
             
             UIView.animate(withDuration: 0.3, animations: {

@@ -492,7 +492,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         case .success:
             self.changeReserveButton()
             self.updateUserProfile()
-            self.beginRoute()
             self.addCurrentParking()
         case .userCancellation:
             return
@@ -537,23 +536,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         }
     }
     
-    private func beginRoute() {
-        let currentUser = Auth.auth().currentUser?.uid
-        let timestamp = NSDate().timeIntervalSince1970
-        let userRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(parkingId)
-        userRef.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let oldHours = dictionary["hours"] as? Int {
-                    let newHours = oldHours + hours!
-                    userRef.updateChildValues(["timestamp": timestamp, "hours": newHours, "parkingID": self.parkingId])
-                    seconds! = seconds! + (3600 * hours!)
-                }
-            } else {
-                userRef.updateChildValues(["timestamp": timestamp, "hours": hours!, "parkingID": self.parkingId])
-            }
-        }
-    }
-    
     private func updateUserProfile() {
         self.cost = self.cost * Double(hours!)
         
@@ -565,6 +547,11 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
             let recentRef = userRef.child("\(self.recentCount)")
             recentRef.updateChildValues(["parkingID": self.parkingId, "timestamp": timestamp, "cost": self.cost, "hours": hours!])
         }
+        
+        let parkingRef = Database.database().reference().child("parking").child(self.parkingId)
+        let currentParkingRef = parkingRef.child("Current")
+        parkingRef.updateChildValues(["previousUser": currentUser!])
+        currentParkingRef.updateChildValues(["currentUser": currentUser!])
         
         let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")
         let currentRef = Database.database().reference().child("users").child(self.id)
@@ -580,7 +567,19 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
-        let fundRef = Database.database().reference().child("users").child(currentUser!)
+        let helpRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(parkingId)
+        helpRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let oldHours = dictionary["hours"] as? Int {
+                    let newHours = oldHours + hours!
+                    helpRef.updateChildValues(["timestamp": timestamp, "hours": newHours, "parkingID": self.parkingId, "cost": self.cost])
+                    seconds! = seconds! + (3600 * hours!)
+                }
+            } else {
+                helpRef.updateChildValues(["timestamp": timestamp, "hours": hours!, "parkingID": self.parkingId, "cost": self.cost])
+            }
+        }
+        let fundRef = Database.database().reference().child("users").child(self.id)
         fundRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if var dictionary = snapshot.value as? [String:AnyObject] {
                 

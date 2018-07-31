@@ -124,6 +124,8 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         observeUserParkingSpots()
     }
     
+    var count: Int = 1
+    
     func observeUserParkingSpots() {
         var parkingID: [String] = []
         var costSpots: [Double] = []
@@ -132,6 +134,9 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         let ref = Database.database().reference().child("users").child(currentUser).child("recentParking")
         ref.observe(.childAdded, with: { (snapshot) in
             if let keys = snapshot.value as? [String:AnyObject] {
+                if let reviews = keys["Reviews"] as? [String:AnyObject] {
+                    self.count = reviews.count
+                }
                 let parking = keys["parkingID"] as? String
                 let cost = keys["cost"] as? Double
                 let hours = keys["hours"] as? Int
@@ -205,6 +210,9 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         cell.imageView.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
         cell.reviewLabel.text = parking.parkingCity
         cell.priceLabel.text = " - \(String(describing: parking.parkingCost!))"
+        if parking.rating != nil {
+            cell.rating.rating = (parking.rating!)/Double(self.count)
+        }
         let stringCost = String(format: "%.2f", parking.payment!)
         cell.costLabel.text = "Total: $\(stringCost)"
         if parking.hours! > 1 {

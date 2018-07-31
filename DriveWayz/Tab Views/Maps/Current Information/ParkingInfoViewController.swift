@@ -8,48 +8,9 @@
 
 import UIKit
 import Firebase
+import Cosmos
 
 class ParkingInfoViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupViews()
-    }
-    
-    func setData(cityAddress: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, parkingDistance: String) {
-        labelTitle.text = cityAddress
-        labelCost.text = parkingCost
-        labelDistance.text = "\(parkingDistance) miles"
-    }
-    
-    func setupViews() {
-        
-        view.addSubview(parkingView)
-        parkingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        parkingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        parkingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        parkingView.heightAnchor.constraint(equalToConstant: 110).isActive = true
-        
-        parkingView.addSubview(labelTitle)
-        labelTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        labelTitle.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
-        labelTitle.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        labelTitle.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        parkingView.addSubview(labelCost)
-        labelCost.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelCost.bottomAnchor.constraint(equalTo: labelTitle.topAnchor, constant: -5).isActive = true
-        labelCost.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelCost.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        parkingView.addSubview(labelDistance)
-        labelDistance.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
-        labelDistance.bottomAnchor.constraint(equalTo: labelCost.topAnchor, constant: -5).isActive = true
-        labelDistance.leftAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelDistance.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-    }
     
     let parkingView: UIView = {
         let view = UIView()
@@ -85,14 +46,84 @@ class ParkingInfoViewController: UIViewController {
         return label
     }()
     
-//    let labelDescription: UILabel = {
-//        let label = UILabel()
-//        label.text = "Description"
-//        label.numberOfLines = 0
-//        label.font = UIFont.systemFont(ofSize: 20)
-//        label.textColor = Theme.PRIMARY_DARK_COLOR
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//    }()
+    var stars: CosmosView = {
+        let view = CosmosView()
+        view.settings.updateOnTouch = false
+        view.settings.fillMode = .precise
+        view.settings.starSize = 15
+        view.settings.starMargin = 2
+        view.settings.filledColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.settings.emptyBorderColor = Theme.DARK_GRAY
+        view.settings.filledBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupViews()
+    }
+    
+    func setData(cityAddress: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, parkingDistance: String, rating: Double) {
+        labelTitle.text = cityAddress
+        labelCost.text = parkingCost
+        labelDistance.text = "\(parkingDistance) miles"
+        stars.rating = rating
+    }
+    
+    func setupViews() {
+        
+        view.addSubview(parkingView)
+        parkingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        parkingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        parkingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        parkingView.heightAnchor.constraint(equalToConstant: 110).isActive = true
+        
+        parkingView.addSubview(labelTitle)
+        labelTitle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        labelTitle.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
+        labelTitle.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        labelTitle.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        parkingView.addSubview(line)
+        line.bottomAnchor.constraint(equalTo: labelTitle.topAnchor, constant: 0).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        line.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -40).isActive = true
+        line.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
+        
+        parkingView.addSubview(labelCost)
+        labelCost.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
+        labelCost.bottomAnchor.constraint(equalTo: labelTitle.topAnchor, constant: -5).isActive = true
+        labelCost.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
+        labelCost.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        parkingView.addSubview(labelDistance)
+        labelDistance.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 16).isActive = true
+        labelDistance.bottomAnchor.constraint(equalTo: labelCost.topAnchor, constant: -5).isActive = true
+        labelDistance.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
+        labelDistance.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        parkingView.addSubview(stars)
+        stars.leftAnchor.constraint(greaterThanOrEqualTo: parkingView.centerXAnchor, constant: 20).isActive = true
+        stars.centerYAnchor.constraint(equalTo: labelCost.centerYAnchor).isActive = true
+        stars.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        
+        let line3 = UIView()
+        line3.translatesAutoresizingMaskIntoConstraints = false
+        line3.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        parkingView.addSubview(line3)
+        line3.bottomAnchor.constraint(equalTo: labelDistance.topAnchor, constant: -5).isActive = true
+        line3.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        line3.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -40).isActive = true
+        line3.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
+        
+    }
     
 }

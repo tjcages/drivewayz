@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Cosmos
 
 class ReviewsCell: UICollectionViewCell {
     
@@ -39,16 +40,55 @@ class ReviewsCell: UICollectionViewCell {
         return imageView
     }()
     
+    let userName: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = Theme.DARK_GRAY
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
     let reviewLabel: UITextView = {
         let reviewLabel = UITextView()
         reviewLabel.textAlignment = .left
         reviewLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        reviewLabel.font = UIFont.systemFont(ofSize: 12)
-        reviewLabel.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        reviewLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        reviewLabel.text = "There have not been any reviews for this spot yet."
         reviewLabel.isEditable = false
         reviewLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return reviewLabel
+    }()
+    
+    var date: UITextField = {
+        let label = UITextField()
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = Theme.PRIMARY_COLOR
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
+        label.isUserInteractionEnabled = false
+        
+        return label
+    }()
+    
+    var stars: CosmosView = {
+        let view = CosmosView()
+        view.rating = 5
+        view.settings.updateOnTouch = false
+        view.settings.fillMode = .full
+        view.settings.starSize = 15
+        view.settings.starMargin = 2
+        view.settings.filledColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.settings.emptyBorderColor = Theme.DARK_GRAY
+        view.settings.filledBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -71,11 +111,29 @@ class ReviewsCell: UICollectionViewCell {
         imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
+        cellView.addSubview(userName)
+        userName.leftAnchor.constraint(equalTo: imageView.rightAnchor, constant: 10).isActive = true
+        userName.centerYAnchor.constraint(equalTo: imageView.centerYAnchor, constant: 5).isActive = true
+        userName.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        userName.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        cellView.addSubview(date)
+        date.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -10).isActive = true
+        date.centerYAnchor.constraint(equalTo: userName.centerYAnchor).isActive = true
+        date.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        date.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        cellView.addSubview(stars)
+        stars.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 20).isActive = true
+        stars.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10).isActive = true
+        stars.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -20).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        
         cellView.addSubview(reviewLabel)
-        reviewLabel.leftAnchor.constraint(equalTo: imageView.rightAnchor, constant: 5).isActive = true
-        reviewLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -5).isActive = true
-        reviewLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 5).isActive = true
-        reviewLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -5).isActive = true
+        reviewLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 10).isActive = true
+        reviewLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -10).isActive = true
+        reviewLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5).isActive = true
+        reviewLabel.bottomAnchor.constraint(equalTo: stars.topAnchor, constant: -5).isActive = true
         
     }
     

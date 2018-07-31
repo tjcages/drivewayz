@@ -182,7 +182,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             }
         }
     
-        let userRef = Database.database().reference().child("users").child(currentUser!).child("payments")
+        let userRef = Database.database().reference().child("users").child(currentUser!).child("Payments")
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             let count = snapshot.childrenCount
             self.hostTimes.text = "People have parked here \(count) times!"

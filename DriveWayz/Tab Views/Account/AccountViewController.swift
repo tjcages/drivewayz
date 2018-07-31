@@ -235,7 +235,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let info = UIButton()
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
-        info.setTitle("Current", for: .normal)
+        info.setTitle("Feed", for: .normal)
         info.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
@@ -486,7 +486,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
         
         self.view.addSubview(segmentControlView)
         controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 20)
@@ -605,13 +605,13 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         currentViewAnchor?.isActive = true
         currentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
-        currentController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        currentController.view.heightAnchor.constraint(equalToConstant: 475).isActive = true
         
         scrollView.addSubview(recentController.view)
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         recentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 5).isActive = true
+        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 30).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
     }
@@ -621,7 +621,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func recentPressedFunc() {
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 240)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
         segmentLineLeftAnchor1.isActive = true
         segmentLineLeftAnchor2.isActive = false
         segmentLineLeftAnchor3.isActive = false
@@ -740,9 +740,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                     userEmail = email
                 }
                 let userPicture = dictionary["picture"] as? String
-//                if let userParkingID = dictionary["parkingID"] as? String {
-//                    parkingIDs = userParkingID
-//                }
                 if userPicture == "" {
                     self.profileImageView.image = UIImage(named: "background4")
                 } else {

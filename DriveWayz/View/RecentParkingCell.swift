@@ -93,7 +93,7 @@ class RecentParkingCell: UICollectionViewCell {
     
     var rating: CosmosView = {
         let view = CosmosView()
-        view.rating = 3.4
+        view.rating = 5
         view.settings.updateOnTouch = false
         view.settings.fillMode = .precise
         view.settings.starSize = 15

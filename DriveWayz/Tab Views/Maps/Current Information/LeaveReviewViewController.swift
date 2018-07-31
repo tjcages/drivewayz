@@ -129,7 +129,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.isScrollEnabled = true
+        view.isScrollEnabled = false
         view.keyboardDismissMode = .interactive
         
         return view
@@ -163,7 +163,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         blurBackgroundStartup.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
         self.view.addSubview(termsContainer)
-        termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -50).isActive = true
         termsContainer.heightAnchor.constraint(equalToConstant: 400).isActive = true
         termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -248,6 +248,13 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     var count: Int?
     
     private func sendMessageWithProperties() {
+        let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+        parkingRef.observeSingleEvent(of: .value) { (current) in
+            let dictionary = current.value as? [String:AnyObject]
+            var currentRating = dictionary!["rating"] as? Int
+            if currentRating != nil {} else {currentRating = 0}
+            parkingRef.updateChildValues(["rating": currentRating! + self.rating!])
+        }
         let ref = Database.database().reference().child("parking").child(parkingID!).child("Reviews")
         let currentUser = Auth.auth().currentUser?.uid
         let timestamp = NSDate().timeIntervalSince1970

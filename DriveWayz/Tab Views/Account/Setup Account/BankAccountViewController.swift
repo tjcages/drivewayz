@@ -156,6 +156,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -169,6 +170,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -182,6 +184,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -195,6 +198,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -208,6 +212,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -221,6 +226,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -257,6 +263,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -270,6 +277,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.tintColor = Theme.PRIMARY_COLOR
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label

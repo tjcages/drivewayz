@@ -14,11 +14,14 @@ import UserNotifications
 protocol notificationOptions {
     func leaveAReview()
     func extendTime()
+    func sendLeaveReview()
 }
 
-class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, notificationOptions {
+class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, notificationOptions {
     
     var address: String?
+    var message: String?
+    var parkingID: String?
     var delegate: controlCurrentParkingOptions?
     var extendDelegate: removePurchaseView?
     
@@ -99,11 +102,13 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.text = "User messages!"
+        label.backgroundColor = UIColor.white
         label.isEditable = false
-        label.isUserInteractionEnabled = true
+        label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentInset = UIEdgeInsetsMake(5, 20, 5, 20)
         
         return label
     }()
@@ -164,8 +169,14 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         // Dispose of any resources that can be recreated.
     }
     
-    func setData(formattedAddress: String) {
+    func setData(formattedAddress: String, message: String, parkingID: String) {
         self.address = formattedAddress
+        self.parkingID = parkingID
+        if message != "" {
+            self.userMessage.text = "Host - \(message)"
+        } else {
+            self.userMessage.text = "No host message"
+        }
     }
     
     var currentTableAnchor: NSLayoutConstraint!
@@ -241,6 +252,13 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         timerController.view.topAnchor.constraint(equalTo: currentTableView.topAnchor, constant: 10).isActive = true
         timerController.view.widthAnchor.constraint(equalToConstant: 200).isActive = true
         timerController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        detailsTableView.addSubview(userMessage)
+        detailsTableView.bringSubview(toFront: userMessage)
+        userMessage.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
+        userMessage.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
+        userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 45).isActive = true
+        userMessage.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor, constant: -10).isActive = true
     
     }
     
@@ -372,11 +390,12 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             return cell
         } else if tableView == detailsTableView {
             cell.textLabel?.text = Details[indexPath.row]
-            cell.textLabel?.textColor = Theme.DARK_GRAY
+            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
+            self.detailsTableView.separatorStyle = .none
             
-            if indexPath.row >= 1 {
+            if indexPath.row == 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 100, bottom: 0, right: 100)
             }
             
@@ -438,10 +457,16 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         self.present(alert, animated: true)
     }
     
+    func sendLeaveReview() {
+        self.delegate?.setupLeaveAReview()
+    }
+    
     func endCurrentParking() {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
+        let parkingRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current")
         ref.removeValue()
+        parkingRef.removeValue()
         
         timerStarted = false
         notificationSent = false
