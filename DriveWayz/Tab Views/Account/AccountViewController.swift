@@ -148,6 +148,14 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return controller
     }()
     
+    lazy var walkthroughController: WalkthroughViewController = {
+        let controller = WalkthroughViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Walkthrough"
+        controller.newDelegate = self
+        return controller
+    }()
+    
     var profileImageView: UIImageView = {
         let profileImageView = UIImageView()
         let image = UIImage(named: "background4")
@@ -488,7 +496,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
         
         self.view.addSubview(segmentControlView)
         controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 20)
@@ -621,9 +629,18 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         
     }
     
+    lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+    
     func changeCurrentView(height: CGFloat) {
         self.currentController.view.alpha = 1
         self.currentHeightAnchor?.constant = height
+        if height >= 200 {
+            scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+            currentSize = scrollView.contentSize
+        } else {
+            scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
+            currentSize = scrollView.contentSize
+        }
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -634,7 +651,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func recentPressedFunc() {
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+        scrollView.contentSize = currentSize
         segmentLineLeftAnchor1.isActive = true
         segmentLineLeftAnchor2.isActive = false
         segmentLineLeftAnchor3.isActive = false
@@ -668,7 +685,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func vehiclePressedFunc() {
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 200)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
         segmentLineLeftAnchor1.isActive = false
         segmentLineLeftAnchor2.isActive = false
         segmentLineLeftAnchor3.isActive = true

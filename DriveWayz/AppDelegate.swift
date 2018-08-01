@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseInstanceID
+import FirebaseMessaging
 import GoogleMaps
 import GooglePlaces
 import Stripe
@@ -20,6 +22,9 @@ var device: Device = .iphone8
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
+    static var DEVICEID = String()
+    static let SERVERKEY = "AAAAKKQVLOw:APA91bED4Od7cmdQ4f_dNTxAqMGIs65CZnQoU0T36u9MIEjzbjCLTrv6NYuWE-3AoQDiZqt_hSXbgjqPFQDuNbt37KBbnWmCd6FsiVWSJrlIQaIhvcJNflotw9GF0JYpRj-EVtgz6riU"
     
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
@@ -28,43 +33,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         detectDevice()
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         
         GMSServices.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
         GMSPlacesClient.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
         STPPaymentConfiguration.shared().publishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
-        
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
         
-        let loginViewController = StartUpViewController()
-        UIApplication.shared.statusBarStyle = .lightContent
+        _ = self.window!.rootViewController
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        window!.rootViewController = loginViewController
+        let startUpViewController = mainStoryboard.instantiateViewController(withIdentifier: "StartUpViewController") as! StartUpViewController
+
+        window!.rootViewController = startUpViewController
         window!.makeKeyAndVisible()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if UserDefaults.standard.bool(forKey: "isUserLoggedIn") != true {
-                
-                let loginViewController = StartUpViewController()
-                UIApplication.shared.statusBarStyle = .lightContent
-                
-                self.window!.rootViewController = loginViewController
-                self.window!.makeKeyAndVisible()
+        STPTheme.default().accentColor = Theme.PRIMARY_COLOR
+
+        if #available(iOS 10.0, *)
+        {
+            UNUserNotificationCenter.current().delegate = self
+            let option: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: option) { (bool, error) in
                 
             }
-            else {
+        } else {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+                (granted, error) in
                 
-                let containerViewController = TabViewController()
-                UIApplication.shared.statusBarStyle = .default
-                
-                self.window!.rootViewController = containerViewController
-                self.window!.makeKeyAndVisible()
             }
         }
+        application.registerForRemoteNotifications()
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
-        STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         return true
-    
     }
+    
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         AppEventsLogger.activate(application)
@@ -165,10 +169,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse, withCompletionHandler
         completionHandler: @escaping () -> Void) {
         
-        // do something with the notification
-        print(response.notification.request.content.userInfo)
-        
-        // the docs say you should execute this asap
+        let userInfo = response.notification.request.content.body
+        print(userInfo)
+
         return completionHandler()
     }
     
@@ -177,8 +180,56 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         notification: UNNotification, withCompletionHandler completionHandler:
         @escaping (UNNotificationPresentationOptions) -> Void) {
         
+        
         // show alert while app is running in foreground
-        return completionHandler(UNNotificationPresentationOptions.alert)
+        return completionHandler([.badge, .sound, .alert])
     }
 }
+
+
+extension AppDelegate : MessagingDelegate {
+    
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        InstanceID.instanceID().instanceID(handler: { (result, error) in
+            if error == nil {
+                AppDelegate.DEVICEID = (result?.token)!
+                self.connectToFCM()
+            }
+        })
+    }
+
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        print("Received data message: \(remoteMessage.appData)")
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        InstanceID.instanceID().instanceID(handler: { (result, error) in
+            if error == nil {
+                AppDelegate.DEVICEID = (result?.token)!
+                print(result?.token)
+                self.connectToFCM()
+            }
+        })
+    }
+    
+    // [START refresh_token]
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        
+        let dataDict:[String: String] = ["token": fcmToken]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+        
+    }
+    
+    func connectToFCM() {
+        Messaging.messaging().shouldEstablishDirectChannel = true
+    }
+
+}
+
+
+
+
+
+
 

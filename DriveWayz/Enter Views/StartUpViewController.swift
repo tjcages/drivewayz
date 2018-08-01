@@ -352,6 +352,17 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         super.viewDidLoad()
         self.facebookLogin.delegate = self
         UIApplication.shared.statusBarStyle = .lightContent
+        
+        let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
+        print(isUserLoggedIn)
+        if isUserLoggedIn == true {
+            let myViewController: TabViewController = TabViewController()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = myViewController
+            appDelegate.window?.makeKeyAndVisible()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
 
         setupBackground()
         configurePageControl()
@@ -650,6 +661,11 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                         self.forgotPassword.alpha = 0
                     }
                     
+                    guard let uid = Auth.auth().currentUser?.uid else {return}
+                    let value = ["DeviceID": AppDelegate.DEVICEID] as [String:Any]
+                    let ref = Database.database().reference().child("users").child(uid)
+                    ref.updateChildValues(value)
+                    
                     print("Successfully logged in!")
                     UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                     UserDefaults.standard.synchronize()
@@ -768,7 +784,8 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
             let usersReference = ref.child("users").child(uid)
             let values = ["name": name,
                           "email": userEmail,
-                          "picture": userProfileUrl]
+                          "picture": userProfileUrl,
+                          "DeviceID": AppDelegate.DEVICEID]
             usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
                     print(err!)
@@ -875,6 +892,12 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                                     print(err!)
                                     return
                                 }
+                                
+                                guard let uid = Auth.auth().currentUser?.uid else {return}
+                                let value = ["DeviceID": AppDelegate.DEVICEID] as [String:Any]
+                                let ref = Database.database().reference().child("users").child(uid)
+                                ref.updateChildValues(value)
+                                
                                 print("Successfully logged in!")
                                 UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                                 UserDefaults.standard.synchronize()
@@ -933,7 +956,8 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                         let usersReference = ref.child("users").child(userID!)
                         let values = ["name": name,
                                       "email": email,
-                                      "picture": pictureUrl!]
+                                      "picture": pictureUrl!,
+                                      "DeviceID": AppDelegate.DEVICEID]
                         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                             if err != nil {
                                 print(err!)

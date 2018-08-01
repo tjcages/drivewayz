@@ -690,6 +690,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var hoursButtonAnchor: NSLayoutConstraint!
     
     func setupViewController() {
+        
         self.view.addSubview(fullBlurView)
         fullBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true

@@ -10,6 +10,7 @@ import UIKit
 import Stripe
 import Firebase
 import UserNotifications
+import Alamofire
 
 var reserveButton: UIButton = {
     let button = UIButton(frame: CGRect(x: 0, y: 0, width: 300, height: 40))
@@ -488,7 +489,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         self.paymentInProgress = false
         switch status {
         case .error:
-            print(error!)
+            self.sendAlert(message: error! as! String)
         case .success:
             self.changeReserveButton()
             self.updateUserProfile()
@@ -567,6 +568,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
+        
         let helpRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(self.parkingId)
         helpRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
@@ -579,6 +581,9 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 helpRef.updateChildValues(["timestamp": timestamp, "hours": hours!, "parkingID": self.parkingId, "cost": self.cost])
             }
         }
+        ///////
+        sendNewCurrent()
+        
         let fundRef = Database.database().reference().child("users").child(self.id)
         fundRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if var dictionary = snapshot.value as? [String:AnyObject] {
@@ -598,6 +603,45 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 
             }
         }, withCancel: nil)
+    }
+    
+    func sendNewCurrent() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let userName = dictionary["name"] as? String
+                var fullNameArr = userName?.split(separator: " ")
+                let firstName: String = String(fullNameArr![0])
+                
+                let sendRef = Database.database().reference().child("currentParking").child(currentUser)
+                sendRef.updateChildValues(["status": "In use", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
+                self.fetchNewCurrent(key: self.id, name: firstName)
+            }
+        }
+    }
+    
+    func fetchNewCurrent(key: String, name: String) {
+        Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let fromDevice = dictionary["DeviceID"] as? String
+                self.setupPushNotifications(fromDevice: fromDevice!, name: name)
+            }
+        }
+    }
+    
+    fileprivate func setupPushNotifications(fromDevice: String, name: String) {
+        let title = "\(name) is currently parked in your spot!"
+        let body = "Open to see more details."
+        let toDevice = fromDevice
+        var headers: HTTPHeaders = HTTPHeaders()
+        
+        headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+        let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
+        
+        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+            //
+        }
     }
     
     func openHoursButton() {

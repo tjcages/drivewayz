@@ -448,7 +448,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func leaveAReview() {
-        let alert = UIAlertController(title: "Confirm you have left spot", message: "Please confirm that you have left the parking space. If you confirm and have not actually left within a certain time you risk being towed.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Confirm", message: "Please confirm that you have left the parking space. If you confirm and have not actually left within a certain time you risk being towed.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (pressed) in
             self.endCurrentParking()
             self.delegate?.setupLeaveAReview()

@@ -153,12 +153,12 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
             vehicleLicenseInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
             vehicleLicenseInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
             
-            newVehiclePage.addSubview(currentVehicleImageView)
-            currentVehicleImageView.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor).isActive = true
-            currentVehicleImageView.topAnchor.constraint(equalTo: vehicleLicenseInfo.bottomAnchor, constant: 20).isActive = true
-            currentVehicleImageView.rightAnchor.constraint(equalTo: newVehiclePage.rightAnchor).isActive = true
-            currentVehicleImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-            
+//            newVehiclePage.addSubview(currentVehicleImageView)
+//            currentVehicleImageView.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor).isActive = true
+//            currentVehicleImageView.topAnchor.constraint(equalTo: vehicleLicenseInfo.bottomAnchor, constant: 20).isActive = true
+//            currentVehicleImageView.rightAnchor.constraint(equalTo: newVehiclePage.rightAnchor).isActive = true
+//            currentVehicleImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+//
         }
     }
     
@@ -244,7 +244,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         newVehiclePage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
         newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35).isActive = true
         vehiclePageHeightAnchorSmall = newVehiclePage.heightAnchor.constraint(equalToConstant: 50)
-        vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 360)
+        vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 80)
     
         if vehicles > 0 {
             vehiclePageHeightAnchorTall.isActive = true

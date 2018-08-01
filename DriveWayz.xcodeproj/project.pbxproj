@@ -57,6 +57,7 @@
 		4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492820F018D300F00B3B /* CheckoutViewController.swift */; };
 		4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492920F018D300F00B3B /* MyAPIClient.swift */; };
 		4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492A20F018D400F00B3B /* SettingsViewController.swift */; };
+		4DCC6BF92110D5FD00AEEF35 /* DelegateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */; };
 		4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */; };
 		4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */; };
 		4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */; };
@@ -140,6 +141,7 @@
 		4DCA492820F018D300F00B3B /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		4DCA492920F018D300F00B3B /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		4DCA492A20F018D400F00B3B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateViewController.swift; sourceTree = "<group>"; };
 		4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicles.swift; sourceTree = "<group>"; };
 		4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingInfoViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		4D21D33620CCA111002D7005 /* Enter Views */ = {
 			isa = PBXGroup;
 			children = (
+				4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */,
 				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
 				4D37436120DC989900923BC4 /* TabViewController.swift */,
 			);
@@ -463,6 +466,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
 						};
 					};
 				};
@@ -562,6 +568,8 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
@@ -583,6 +591,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
@@ -634,6 +644,7 @@
 				4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */,
 				4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */,
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
+				4DCC6BF92110D5FD00AEEF35 /* DelegateViewController.swift in Sources */,
 				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
 				4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */,
 				4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */,

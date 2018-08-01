@@ -11,6 +11,7 @@ import UIKit
 class WalkthroughViewController: UIViewController {
     
     var delegate: moveControllers?
+    var newDelegate: controlsNewParking?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -366,6 +367,7 @@ class WalkthroughViewController: UIViewController {
                 self.view.removeFromSuperview()
                 self.blurBackgroundStartup.removeFromSuperview()
                 self.termsContainer.removeFromSuperview()
+                self.newDelegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
             }
         }
         
@@ -379,6 +381,7 @@ class WalkthroughViewController: UIViewController {
             self.view.removeFromSuperview()
             self.blurBackgroundStartup.removeFromSuperview()
             self.termsContainer.removeFromSuperview()
+            self.newDelegate?.setupNewParking(parkingImage: ParkingImage.noImage)
         }
     }
 

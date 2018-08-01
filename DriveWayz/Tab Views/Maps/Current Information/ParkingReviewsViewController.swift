@@ -135,7 +135,7 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! ReviewsCell
-        if userName.count == 0 {
+        if userName.count != userMessage.count || userName.count != userImage.count || userName.count !=  timestamp.count || userName.count == 0 {
             return cell
         }
         cell.userName.text = userName[indexPath.row]
