@@ -20,7 +20,15 @@ protocol moveControllers {
     func bringTabView()
 }
 
-class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers {
+protocol controlsNewParking {
+    func setupNewParking(parkingImage: ParkingImage)
+    func removeNewParkingView()
+    func setupNewVehicle(vehicleStatus: VehicleStatus)
+    func removeNewVehicleView()
+    func moveTopProfile()
+}
+
+class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsNewParking {
     
     var swipe: Int = 1
     
@@ -66,9 +74,17 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         let image = UIImage(named: "account")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRIMARY_COLOR
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveToProfileTap(sender:)), for: .touchUpInside)
+        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.alpha = 0.9
+        button.layer.cornerRadius = 25
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 1
+        button.layer.shadowOpacity = 0.8
+        button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
         
         return button
     }()
@@ -78,9 +94,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         let image = UIImage(named: "notification")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRIMARY_COLOR
+        button.tintColor = Theme.PRIMARY_DARK_COLOR
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveToMapTap(sender:)), for: .touchUpInside)
+        button.backgroundColor = Theme.OFF_WHITE
+        button.alpha = 0.9
+        button.layer.cornerRadius = 25
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 1
+        button.layer.shadowOpacity = 0.8
         
         return button
     }()
@@ -99,6 +122,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Profile"
+        controller.delegate = self
         return controller
     }()
     
@@ -109,6 +133,33 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.title = "Walkthrough"
         controller.view.alpha = 0
         controller.delegate = self
+        return controller
+    }()
+    
+    lazy var newParkingController: AddANewParkingSpotViewController = {
+        let controller = AddANewParkingSpotViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "New Parking"
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var saveParkingController: SaveParkingViewController = {
+        let controller = SaveParkingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Save Parking"
+        controller.parkingDelegate = self
+//        controller.viewDelegate = self
+        return controller
+    }()
+    
+    lazy var newVehicleController: AddANewVehicleViewController = {
+        let controller = AddANewVehicleViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "New Vehicle"
+        controller.delegate = self
+        
         return controller
     }()
     
@@ -159,49 +210,33 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         accountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         accountController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        self.view.addSubview(container)
-        containerLeftAnchor = container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3)
-        containerLeftAnchor.isActive = true
-        containerRightAnchor = container.rightAnchor.constraint(equalTo: self.view.rightAnchor)
-        containerRightAnchor.isActive = true
-        containerHeightAnchor = container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            containerHeightAnchor.isActive = true
-        switch device {
-        case .iphone8:
-            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        case .iphoneX:
-            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        }
-        
-        container.addSubview(map)
+        accountController.view.addSubview(map)
+        map.rightAnchor.constraint(equalTo: accountController.view.rightAnchor, constant: -10).isActive = true
         map.widthAnchor.constraint(equalToConstant: 50).isActive = true
         map.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        mapCenterAnchor = map.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/2)
-        mapCenterAnchor.isActive = true
         switch device {
         case .iphone8:
-            map.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+            map.topAnchor.constraint(equalTo: accountController.view.topAnchor, constant: 30).isActive = true
         case .iphoneX:
-            map.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
+            map.topAnchor.constraint(equalTo: accountController.view.topAnchor, constant: 45).isActive = true
         }
         
-        container.addSubview(profile)
+        mapController.view.addSubview(profile)
+        profile.rightAnchor.constraint(equalTo: mapController.view.rightAnchor, constant: -10).isActive = true
         profile.widthAnchor.constraint(equalToConstant: 50).isActive = true
         profile.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        profileCenterAnchor = profile.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*3/4)
-        profileCenterAnchor.isActive = true
         switch device {
         case .iphone8:
-            profile.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+            profile.topAnchor.constraint(equalTo: mapController.view.topAnchor, constant: 30).isActive = true
         case .iphoneX:
-            profile.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
+            profile.topAnchor.constraint(equalTo: mapController.view.topAnchor, constant: 45).isActive = true
         }
         
-        self.view.addSubview(pin)
-        pin.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        pin.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 6).isActive = true
-        pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
+//        self.view.addSubview(pin)
+//        pin.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        pin.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 6).isActive = true
+//        pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
+//        pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
     }
     
@@ -234,14 +269,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func moveTopProfile() {
         UIApplication.shared.statusBarStyle = .lightContent
         if mapControllerAnchor.constant == 0 {
-            self.containerLeftAnchor.constant = 0
-            self.containerRightAnchor.constant = -self.view.frame.width/3
+//            self.containerLeftAnchor.constant = 0
+//            self.containerRightAnchor.constant = -self.view.frame.width/3
             UIView.animate(withDuration: 0.3, animations: {
                 UIApplication.shared.statusBarStyle = .lightContent
                 self.accountControllerAnchor.constant = 0
                 self.mapControllerAnchor.constant = -self.view.frame.width
-                self.mapCenterAnchor.constant = self.view.frame.width/4
-                self.profileCenterAnchor.constant = self.view.frame.width/2
+//                self.mapCenterAnchor.constant = self.view.frame.width/4
+//                self.profileCenterAnchor.constant = self.view.frame.width/2
                 self.view.layoutIfNeeded()
             }) { (success) in
             }
@@ -259,14 +294,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func moveToMap() {
         UIApplication.shared.statusBarStyle = .default
         if accountControllerAnchor.constant == 0 {
-            self.containerLeftAnchor.constant = self.view.frame.width/3
-            self.containerRightAnchor.constant = 0
+//            self.containerLeftAnchor.constant = self.view.frame.width/3
+//            self.containerRightAnchor.constant = 0
             UIView.animate(withDuration: 0.3, animations: {
                 UIApplication.shared.statusBarStyle = .default
                 self.mapControllerAnchor.constant = 0
                 self.accountControllerAnchor.constant = self.view.frame.width
-                self.mapCenterAnchor.constant = self.view.frame.width/2
-                self.profileCenterAnchor.constant = self.view.frame.width*3/4
+//                self.mapCenterAnchor.constant = self.view.frame.width/2
+//                self.profileCenterAnchor.constant = self.view.frame.width*3/4
                 self.view.layoutIfNeeded()
             }) { (success) in
             }
@@ -300,8 +335,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                let userVehicleID = dictionary["vehicleID"] as? String
-                let userParkingID = dictionary["parkingID"] as? String
+                let userVehicleID = dictionary["Vehicle"] as? [String:AnyObject]
+                let userParkingID = dictionary["Parking"] as? [String:AnyObject]
                 
                 if userVehicleID == nil && userParkingID == nil {
                     
@@ -321,6 +356,106 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return
     }
 
+    var parkingAnchor: NSLayoutConstraint!
+    
+    func setupNewParking(parkingImage: ParkingImage) {
+        switch parkingImage {
+        case .yesImage:
+            
+            self.newParkingController.view.removeFromSuperview()
+            self.view.layoutIfNeeded()
+
+            self.view.addSubview(saveParkingController.view)
+            self.addChildViewController(saveParkingController)
+            saveParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            parkingAnchor = saveParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            parkingAnchor.isActive = true
+            saveParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            saveParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.parkingAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+        default:
+            
+            self.view.addSubview(newParkingController.view)
+            self.addChildViewController(newParkingController)
+            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            parkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            parkingAnchor.isActive = true
+            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.parkingAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+            
+        }
+    }
+    
+    func removeNewParkingView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.parkingAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }, completion: { (success) in
+            self.saveParkingController.view.removeFromSuperview()
+            self.newParkingController.view.removeFromSuperview()
+            UIApplication.shared.statusBarStyle = .lightContent
+        })
+    }
+    
+    var vehicleAnchor: NSLayoutConstraint!
+    
+    func setupNewVehicle(vehicleStatus: VehicleStatus) {
+        switch vehicleStatus {
+        case .yesVehicle:
+            
+            self.newVehicleController.view.removeFromSuperview()
+            
+        case .noVehicle:
+            
+            self.view.addSubview(newVehicleController.view)
+            self.addChildViewController(newVehicleController)
+            newVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            vehicleAnchor = newVehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            vehicleAnchor.isActive = true
+            newVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            newVehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.vehicleAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+            
+        }
+    }
+    
+    func removeNewVehicleView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.vehicleAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }, completion: { (success) in
+            self.newVehicleController.view.removeFromSuperview()
+            UIApplication.shared.statusBarStyle = .lightContent
+        })
+    }
+    
+    
+    
 }
 
 

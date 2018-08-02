@@ -31,6 +31,24 @@ var reserveButton: UIButton = {
     return button
 }()
 
+var costButton: UIButton = {
+    let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+    button.setTitleColor(Theme.WHITE, for: .normal)
+    button.setTitle("", for: .normal)
+    button.alpha = 0.5
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+    let path = UIBezierPath(roundedRect:button.bounds,
+                            byRoundingCorners:[.bottomRight],
+                            cornerRadii: CGSize(width: 5, height: 5))
+    let maskLayer = CAShapeLayer()
+    maskLayer.path = path.cgPath
+    button.layer.mask = maskLayer
+    
+    return button
+}()
+
 protocol controlHourButton {
     func openHoursButton()
     func closeHoursButton()
@@ -82,13 +100,17 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 if self.paymentInProgress {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
-                    reserveButton.alpha = 0.6
+                    reserveButton.alpha = 1
+                    reserveButton.backgroundColor = Theme.DARK_GRAY
+                    costButton.alpha = 0.6
                     reserveButton.setTitle("", for: .normal)
                 }
                 else {
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
                     reserveButton.alpha = 1
+                    costButton.alpha = 1
+                    reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         reserveButton.setTitle("Reserve Spot", for: .normal)
                     }
@@ -247,6 +269,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         self.id = id
         self.parkingId = parkingID
         self.cost = Double(noDollar)!
+        costButton.setTitle(parkingCost, for: .normal)
     }
 
     override func viewDidLoad() {
@@ -276,6 +299,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     var hourButtonHeight: NSLayoutConstraint!
     var reserveCenterAnchor: NSLayoutConstraint!
     var confirmCenterAnchor: NSLayoutConstraint!
+    var reserveWidthAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -296,9 +320,25 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         line.widthAnchor.constraint(equalTo: reserveContainer.widthAnchor).isActive = true
         line.centerXAnchor.constraint(equalTo: reserveContainer.centerXAnchor).isActive = true
         
+        self.view.addSubview(costButton)
+        costButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        costButton.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
+        costButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        costButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        let line2 = UIView()
+        line2.translatesAutoresizingMaskIntoConstraints = false
+        line2.backgroundColor = Theme.OFF_WHITE
+        self.view.addSubview(line2)
+        line2.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
+        line2.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        line2.heightAnchor.constraint(equalTo: reserveContainer.heightAnchor).isActive = true
+        line2.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor, constant: -100).isActive = true
+        
         self.view.addSubview(reserveButton)
         reserveButton.addTarget(self, action: #selector(handleRequestRideButtonTapped), for: .touchUpInside)
-        reserveButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
+        reserveWidthAnchor = reserveButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor, constant: -101)
+            reserveWidthAnchor.isActive = true
         reserveButton.bottomAnchor.constraint(equalTo: reserveContainer.bottomAnchor).isActive = true
         reserveButton.leftAnchor.constraint(equalTo: reserveContainer.leftAnchor).isActive = true
         reserveButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -314,15 +354,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         paymentButton.topAnchor.constraint(equalTo: reserveContainer.topAnchor).isActive = true
         paymentButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 40)
-        
-        let line2 = UIView()
-        line2.translatesAutoresizingMaskIntoConstraints = false
-        line2.backgroundColor = Theme.OFF_WHITE
-        self.view.addSubview(line2)
-        line2.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        line2.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        line2.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        line2.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor, constant: -100).isActive = true
         
         self.view.addSubview(hoursButton)
         hoursButton.rightAnchor.constraint(equalTo: reserveContainer.rightAnchor).isActive = true
@@ -358,6 +389,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 0
             self.totalCostLabel.alpha = 0
+            self.reserveWidthAnchor.constant = -101
             self.view.layoutIfNeeded()
         }) { (success) in
             reserveButton.setTitle("Reserve Spot", for: .normal)
@@ -377,8 +409,10 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 1
             self.totalCostLabel.alpha = 1
+            self.reserveWidthAnchor.constant = 0
             self.view.layoutIfNeeded()
         }) { (success) in
+            /////
             reserveButton.setTitle("Confirm Reservation", for: .normal)
             reserveButton.removeTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
             reserveButton.addTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
@@ -503,6 +537,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         UIView.animate(withDuration: 0.3, animations: {
             self.confirmContainer.alpha = 0
             self.totalCostLabel.alpha = 0
+            self.reserveWidthAnchor.constant = -101
             self.view.layoutIfNeeded()
         }) { (success) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -526,14 +561,17 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
     
     func addCurrentParking() {
-        self.delegate?.paymentSwipedSender()
         self.delegate?.removeTabView()
         reserveButton.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3, animations: {
-            reserveButton.alpha = 0.5
-            currentButton.alpha = 1
+            reserveButton.alpha = 0.6
+            costButton.alpha = 0.6
         }) { (success) in
-            //
+            self.delegate?.purchaseButtonSwipedDown()
+            UIView.animate(withDuration: 0.3, animations: {
+                currentButton.alpha = 1
+                self.view.alpha = 0
+            })
         }
     }
     

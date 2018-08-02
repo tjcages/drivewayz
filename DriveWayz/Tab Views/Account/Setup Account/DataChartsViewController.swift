@@ -159,9 +159,8 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     }
     
     func pullData() {
-        let currentUser = Auth.auth().currentUser?.uid
-        
-        let timeRef = Database.database().reference().child("users").child(currentUser!)
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let timeRef = Database.database().reference().child("users").child(currentUser)
         timeRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let hostHours = dictionary["hostHours"] as? Int {
@@ -182,7 +181,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             }
         }
     
-        let userRef = Database.database().reference().child("users").child(currentUser!).child("Payments")
+        let userRef = Database.database().reference().child("users").child(currentUser).child("Payments")
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             let count = snapshot.childrenCount
             self.hostTimes.text = "People have parked here \(count) times!"
@@ -296,7 +295,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
 //        print("\(entry.value) in \(months[entry.index])")
     }
     
-    var delegate: controlsBankAccount?
+    var delegate: sendBankAccount?
     
     @objc func checkAccount(sender: UIButton) {
         if let currentUser = Auth.auth().currentUser?.uid {
@@ -306,7 +305,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                     if let account = dictionary["accountID"] as? String {
                         self.removeFunds(account: account)
                     } else {
-                        self.delegate?.setupBankAccount()
+                        self.delegate?.sendBankAccount()
                     }
                 }
             }, withCancel: nil)
@@ -323,6 +322,8 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                             self.updateCharts()
                         })
+                    } else {
+                        print("no money")
                     }
                 }
             }, withCancel: nil)

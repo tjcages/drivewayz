@@ -352,17 +352,6 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         super.viewDidLoad()
         self.facebookLogin.delegate = self
         UIApplication.shared.statusBarStyle = .lightContent
-        
-        let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
-        print(isUserLoggedIn)
-        if isUserLoggedIn == true {
-            let myViewController: TabViewController = TabViewController()
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = myViewController
-            appDelegate.window?.makeKeyAndVisible()
-            
-            self.dismiss(animated: true, completion: nil)
-        }
 
         setupBackground()
         configurePageControl()

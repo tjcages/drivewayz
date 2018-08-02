@@ -10,8 +10,7 @@ import UIKit
 
 class WalkthroughViewController: UIViewController {
     
-    var delegate: moveControllers?
-    var newDelegate: controlsNewParking?
+    var delegate: controlsNewParking?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -41,7 +40,7 @@ class WalkthroughViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.numberOfLines = 2
-        label.text = "Thanks for downloading Drivewayz!"
+        label.text = "Welcome to Drivewayz"
         
         return label
     }()
@@ -61,11 +60,11 @@ class WalkthroughViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.text = """
-        Welcome!
+        We're reinventing the way you think about parking by creating a network of private spots, now made public.
         
-        Our goal is to change the way that you think about parking forever by creating a network of brand new options that have been unavailable until now.
+        Park closer, quicker, safer and cheaper in any of our hosts' spots.
         
-        Park closer, quicker, safer and cheaper in any of our host's spots or become a host and make easy money by renting out your parking spot!
+        Become a host and make easy money by renting out yours!
         """
         label.numberOfLines = 15
         
@@ -78,7 +77,7 @@ class WalkthroughViewController: UIViewController {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.text = "This is your home page where you can easily search for available parking spots. Move the map around or just search where you want to go."
+        label.text = "This is your home page. Enter your destination and view nearby parking options."
         label.numberOfLines = 4
         
         return label
@@ -367,21 +366,16 @@ class WalkthroughViewController: UIViewController {
                 self.view.removeFromSuperview()
                 self.blurBackgroundStartup.removeFromSuperview()
                 self.termsContainer.removeFromSuperview()
-                self.newDelegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
+                self.delegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
             }
         }
         
     }
     
     @objc func backPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.termsContainer.alpha = 0
-            self.blurBackgroundStartup.alpha = 0
-        }) { (success) in
-            self.view.removeFromSuperview()
-            self.blurBackgroundStartup.removeFromSuperview()
-            self.termsContainer.removeFromSuperview()
-            self.newDelegate?.setupNewParking(parkingImage: ParkingImage.noImage)
+        self.delegate?.setupNewParking(parkingImage: ParkingImage.noImage)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.nextPressedFunc()
         }
     }
 

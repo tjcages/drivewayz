@@ -230,8 +230,8 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func getParkingInfo() {
-        let currentUser = Auth.auth().currentUser?.uid
-        let ref = Database.database().reference().child("users").child(currentUser!)
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let parkingID = dictionary["parkingID"] as? String {
@@ -274,8 +274,8 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setData(newUser: String) {
-        let currentUser = Auth.auth().currentUser?.uid
-        let ref = Database.database().reference().child("users").child(currentUser!)
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let parkingID = dictionary["parkingID"] as? String {

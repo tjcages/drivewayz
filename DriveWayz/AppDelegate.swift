@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = self.window!.rootViewController
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        let startUpViewController = mainStoryboard.instantiateViewController(withIdentifier: "StartUpViewController") as! StartUpViewController
+        let startUpViewController = mainStoryboard.instantiateViewController(withIdentifier: "LaunchAnimationsViewController") as! LaunchAnimationsViewController
 
         window!.rootViewController = startUpViewController
         window!.makeKeyAndVisible()

@@ -99,8 +99,8 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         self.view.addSubview(currentContainer)
         currentContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        currentContainer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        currentContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        currentContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        currentContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         currentContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         self.view.addSubview(recentLabel)

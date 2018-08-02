@@ -41,9 +41,9 @@ var currentButton: UIButton = {
 
 protocol removePurchaseView {
     func removeTabView()
-    func paymentSwipedSender()
-    func extendTimeView()
     func currentParkingSender()
+    func currentParkingDisappear()
+    func purchaseButtonSwipedDown()
     func sendAvailability(availability: Bool)
     func setupLeaveAReview(parkingID: String)
     func removeLeaveAReview()
@@ -90,16 +90,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return search
     }()
     
-    lazy var tabPull: UIView = {
-        let tabPull = UIView()
-        tabPull.layer.cornerRadius = 20
-        tabPull.translatesAutoresizingMaskIntoConstraints = false
-        tabPull.backgroundColor = Theme.PRIMARY_COLOR
-        tabPull.alpha = 0.9
-        
-        return tabPull
-    }()
-    
     var tabFeed: UIButton = {
         let button = UIButton(type: .custom)
         let image = UIImage(named: "feed")
@@ -109,9 +99,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         button.translatesAutoresizingMaskIntoConstraints = false
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
         button.addTarget(self, action: #selector(optionsTabGestureTapped(sender:)), for: .touchUpInside)
-        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gestureOpen.direction = .right
-        button.addGestureRecognizer(gestureOpen)
+        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.layer.cornerRadius = 20
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 1
+        button.layer.shadowOpacity = 0.8
+        button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
+        button.alpha = 0.9
         
         return button
     }()
@@ -179,9 +174,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         controller.delegate = self
         controller.hoursDelegate = self
         controller.view.layer.cornerRadius = 10
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(paymentSwiped(sender:)))
-        gesture.direction = .left
-        controller.view.addGestureRecognizer(gesture)
         
         return controller
     }()
@@ -359,6 +351,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                                 self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
                                                 UIView.animate(withDuration: 0.5, animations: {
                                                     currentButton.alpha = 1
+                                                    self.purchaseViewController.view.alpha = 0
+                                                    self.view.layoutIfNeeded()
                                                 })
                                             }
                                         }
@@ -379,12 +373,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     }
                     UIView.animate(withDuration: 0.5, animations: {
                         currentButton.alpha = 0
+                        self.purchaseViewController.view.alpha = 1
+                        self.view.layoutIfNeeded()
                     })
                     self.currentData = .notReserved
-                    self.paymentSwipedSender()
+                    self.currentParkingDisappear()
+                    self.bringTabView()
                     self.informationViewController.removeCurrentOptions()
                     CurrentParkingViewController().stopTimerTest()
-                    self.navigationController?.popViewController(animated: true)
                 }, withCancel: nil)
             } else {
                 return
@@ -585,38 +581,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         mapViewConstraint.isActive = true
         mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        self.view.addSubview(container)
-        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        containerHeightAnchor = container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            containerHeightAnchor.isActive = true
-        switch device {
-        case .iphone8:
-            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        case .iphoneX:
-            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        }
-        
-        self.view.insertSubview(tabPull, belowSubview: optionsTabView)
-        tabPull.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -20).isActive = true
-        tabPullWidthShort = tabPull.widthAnchor.constraint(equalToConstant: 60)
-            tabPullWidthShort.isActive = true
-        tabPullWidthLong = tabPull.widthAnchor.constraint(equalToConstant: 80)
-        tabPullWidthLong.isActive = false
-        tabPull.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
-        case .iphoneX:
-            tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -15).isActive = true
-        }
-        
-        tabPull.addSubview(tabFeed)
-        tabFeed.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        tabFeed.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        tabFeed.centerYAnchor.constraint(equalTo: tabPull.centerYAnchor).isActive = true
-        tabFeed.rightAnchor.constraint(equalTo: tabPull.rightAnchor, constant: -10).isActive = true
-        
         view.addSubview(topSearch)
         topSearch.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
         topSearch.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -639,21 +603,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         setupTextField(textField: searchBar)
         self.view.bringSubview(toFront: topSearch)
         
-        self.view.addSubview(locatorButton)
-        locatorButton.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 15).isActive = true
-        locatorButton.centerXAnchor.constraint(equalTo: topSearch.centerXAnchor).isActive = true
-        locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        locatorButton.heightAnchor.constraint(equalTo: locatorButton.widthAnchor).isActive = true
+        self.view.addSubview(tabFeed)
+        tabFeed.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        tabFeed.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        tabFeed.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 15).isActive = true
+        tabFeed.centerXAnchor.constraint(equalTo: topSearch.centerXAnchor).isActive = true
         
         self.view.addSubview(currentButton)
         currentButton.addTarget(self, action: #selector(currentParkingPressed(sender:)), for: .touchUpInside)
-        currentButton.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -5).isActive = true
+        currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
         currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
         currentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         currentButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
-        
-        view.bringSubview(toFront: tabPull)
-        view.bringSubview(toFront: locatorButton)
 
     }
     
@@ -681,7 +642,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             self.willMove(toParentViewController: nil)
             self.reviewsViewController.view.removeFromSuperview()
             self.reviewsViewController.removeFromParentViewController()
-            self.paymentSwipedSender()
         }
     }
     
@@ -697,174 +657,115 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         fullBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(informationViewController.view)
-        self.addChildViewController(informationViewController)
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        informationViewController.view.addGestureRecognizer(gestureRecognizer)
-        informationViewController.didMove(toParentViewController: self)
-        informationViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        informationViewController.view.bottomAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
-        informationViewAnchor = informationViewController.view.widthAnchor.constraint(equalToConstant: 250)
-        informationViewAnchor.isActive = true
-        informationViewController.view.heightAnchor.constraint(equalToConstant: 600).isActive = true
-        informationViewController.view?.center.y = -210
-        
         self.view.addSubview(purchaseViewController.view)
         self.addChildViewController(purchaseViewController)
         purchaseViewController.didMove(toParentViewController: self)
-        purchaseViewAnchor = purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -(self.view.frame.width * 2))
-        purchaseViewAnchor.isActive = true
-        purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
+        let gestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(purchaseButtonSwiped))
+        gestureRecognizer.direction = .up
+        purchaseViewController.view.addGestureRecognizer(gestureRecognizer)
+        let gestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: #selector(purchaseButtonSwipedDownSender))
+        gestureRecognizer2.direction = .down
+        purchaseViewController.view.addGestureRecognizer(gestureRecognizer2)
+        purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        purchaseViewAnchor = purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 80)
+            purchaseViewAnchor.isActive = true
         purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
         hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80)
-        hoursButtonAnchor.isActive = true
-        purchaseViewController.view?.center.y = -205
+            hoursButtonAnchor.isActive = true
+        
+        self.view.addSubview(informationViewController.view)
+        self.addChildViewController(informationViewController)
+        informationViewController.didMove(toParentViewController: self)
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(informationButtonSwiped))
+        gesture.direction = .down
+        informationViewController.view.addGestureRecognizer(gesture)
+        informationViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        informationViewController.view.topAnchor.constraint(equalTo: purchaseViewController.view.bottomAnchor, constant: 35).isActive = true
+        informationViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 10).isActive = true
+        informationViewController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height - 30).isActive = true
+        
+    }
+    
+    @objc func purchaseButtonSwiped() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.purchaseViewAnchor.constant = -self.view.frame.height
+            self.fullBlurView.alpha = 0.9
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            informationScrollView.isScrollEnabled = true
+            UIApplication.shared.statusBarStyle = .lightContent
+        }
+    }
+    
+    @objc func purchaseButtonSwipedDownSender() {
+        self.purchaseButtonSwipedDown()
+    }
+    
+    func purchaseButtonSwipedDown() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.purchaseViewAnchor.constant = 80
+            self.fullBlurView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            informationScrollView.isScrollEnabled = false
+            UIApplication.shared.statusBarStyle = .default
+            
+            let oldMarker = self.currentMarker
+            guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return }
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: self.customMarkerWidth, height: self.customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
+            oldMarker?.iconView = customMarker
+            self.currentMarker = nil
+        }
+    }
+    
+    @objc func informationButtonSwiped() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.purchaseViewAnchor.constant = -15
+            self.fullBlurView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            informationScrollView.isScrollEnabled = false
+            UIApplication.shared.statusBarStyle = .default
+        }
+    }
+    
+    func currentParkingSender() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.purchaseViewAnchor.constant = -self.view.frame.height
+            self.fullBlurView.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            informationScrollView.isScrollEnabled = true
+            self.purchaseViewController.view.alpha = 0
+            UIApplication.shared.statusBarStyle = .lightContent
+        }
+    }
+    
+    func currentParkingDisappear() {
+        self.purchaseViewController.view.alpha = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.purchaseViewAnchor.constant = 0
+            self.fullBlurView.alpha = 0
+        }) { (success) in
+            self.purchaseViewController.view.alpha = 0
+            UIApplication.shared.statusBarStyle = .default
+        }
     }
     
     func openHoursButton() {
-        if self.informationViewController.view.center.y == -200 {
-            self.hoursButtonAnchor.constant = 200
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = -200
-        } else if self.informationViewController.view.center.y == 250 {
-            self.hoursButtonAnchor.constant = 200
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = 250
-        } else if self.informationViewController.view.center.y == 350 {
-            self.hoursButtonAnchor.constant = 200
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = 350
-        }
+        self.hoursButtonAnchor.constant = 200
     }
     
     func closeHoursButton() {
-        if self.informationViewController.view.center.y == -200 {
-            self.hoursButtonAnchor.constant = 80
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = -200
-        } else if self.informationViewController.view.center.y == 250 {
-            self.hoursButtonAnchor.constant = 80
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = 250
-        } else if self.informationViewController.view.center.y == 350 {
-            self.hoursButtonAnchor.constant = 80
-            self.view.layoutIfNeeded()
-            self.informationViewController.view.center.y = 350
-        }
+        self.hoursButtonAnchor.constant = 80
     }
     
     func sendAvailability(availability: Bool) {
         purchaseViewController.setAvailability(available: availability)
     }
     
-    var previousYPosition: CGFloat = -200
-    var check: Bool = true
-    
-    @objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        if (gestureRecognizer.state == .changed || gestureRecognizer.state == .ended) && check == true {
-            
-            let translation = gestureRecognizer.translation(in: self.view)
-            gestureRecognizer.view!.center = CGPoint(x: gestureRecognizer.view!.center.x, y: gestureRecognizer.view!.center.y + translation.y)
-            gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
-            
-            let alpha = 0.9 - (previousYPosition / -200)
-            if alpha >= 0 && alpha <= 0.9 {
-                self.fullBlurView.alpha = alpha
-            }
-
-            if (translation.y > 0 && previousYPosition >= CGFloat(0)) || translation.y >= 10.0 {
-                self.check = false
-                gestureRecognizer.view?.isUserInteractionEnabled = false
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.informationViewAnchor.constant = self.view.frame.width - 10
-                    self.view.layoutIfNeeded()
-                    switch self.currentData {
-                    case .notReserved:
-                        gestureRecognizer.view?.center.y = 250
-                    case .yesReserved:
-                        gestureRecognizer.view?.center.y = 350
-                    }
-                    self.fullBlurView.alpha = 0.9
-                }) { (success) in
-                    self.check = true
-                    gestureRecognizer.view?.isUserInteractionEnabled = true
-                    informationScrollView.isScrollEnabled = true
-                }
-            } else if translation.y < 0 && translation.y >= -40.0 && currentData == .notReserved {
-                self.check = false
-                gestureRecognizer.view?.isUserInteractionEnabled = false
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.fullBlurView.alpha = 0
-                    self.informationViewAnchor.constant = 250
-                    self.view.layoutIfNeeded()
-                    gestureRecognizer.view?.center.y = -200
-                }) { (success) in
-                    self.check = true
-                    gestureRecognizer.view?.isUserInteractionEnabled = true
-                    informationScrollView.isScrollEnabled = false
-                }
-            } else {
-                self.check = false
-                gestureRecognizer.view?.isUserInteractionEnabled = false
-                paymentSwipedSender()
-            }
-            
-            previousYPosition = (gestureRecognizer.view?.center.y)!
-        }
-    }
-    
     @objc func currentParkingPressed(sender: UIButton) {
         currentParkingSender()
-        checkCurrentParking()
-    }
-    
-    func currentParkingSender() {
-        self.check = false
-        self.removeTabView()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.purchaseViewAnchor.constant = -(self.view.frame.width * 2)
-            self.informationViewAnchor.constant = self.view.frame.width - 10
-            self.view.layoutIfNeeded()
-            self.informationViewController.view?.center.y = 350
-            self.fullBlurView.alpha = 0.9
-        }) { (success) in
-            self.check = true
-            self.informationViewController.view?.isUserInteractionEnabled = true
-            informationScrollView.isScrollEnabled = true
-        }
-    }
-    
-    func paymentSwipedSender() {
-        UIView.animate(withDuration: 0.6, animations: {
-            self.fullBlurView.alpha = 0
-            self.purchaseViewAnchor.constant = -(self.view.frame.width * 2)
-            self.informationViewAnchor.constant = 250
-            self.informationViewController.view.center.y = -300
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.check = true
-            self.informationViewController.view?.isUserInteractionEnabled = true
-            informationScrollView.isScrollEnabled = false
-        }
-        if currentData == .notReserved {
-            self.delegate?.bringTabView()
-            self.bringTabView()
-        }
-        let oldMarker = currentMarker
-        guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return }
-        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
-        oldMarker?.iconView = customMarker
-        currentMarker = nil
-    }
-    
-    func extendTimeView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.purchaseViewAnchor.constant = 0
-            self.view.layoutIfNeeded()
-            self.informationViewController.view?.center.y = 250
-        }) { (success) in
-            //
-        }
     }
 
     @objc func optionsTabGestureTapped(sender: UIButton) {
@@ -876,11 +777,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     @objc func optionsTabGesture() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGesture))
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGesture))
+        swipeGesture.direction = .left
         if optionsTabViewConstraint.constant == -215 {
             self.optionsTabViewConstraint.constant = 0
             self.topSearch.isUserInteractionEnabled = false
-            self.tabPullWidthShort.isActive = false
-            self.tabPullWidthLong.isActive = true
+            self.mapView.addGestureRecognizer(gesture)
+            self.mapView.addGestureRecognizer(swipeGesture)
+            self.mapView.settings.tiltGestures = false
+            self.mapView.settings.rotateGestures = false
+            self.mapView.settings.zoomGestures = false
+            self.mapView.settings.scrollGestures = false
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
                 self.optionsTabAnimations()
@@ -888,8 +796,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         } else {
             self.optionsTabViewConstraint.constant = -215
             self.topSearch.isUserInteractionEnabled = true
-            self.tabPullWidthShort.isActive = true
-            self.tabPullWidthLong.isActive = false
+            self.mapView.removeGestureRecognizer(gesture)
+            self.mapView.removeGestureRecognizer(swipeGesture)
+            self.mapView.settings.tiltGestures = true
+            self.mapView.settings.rotateGestures = true
+            self.mapView.settings.zoomGestures = true
+            self.mapView.settings.scrollGestures = true
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
                 self.optionsTabAnimations()
@@ -969,10 +881,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         self.locationManager.stopUpdatingLocation()
     }
     
-    @objc func paymentSwiped(sender: UIGestureRecognizer) {
-        paymentSwipedSender()
-    }
-    
     var currentMarker: GMSMarker? = nil
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
@@ -982,22 +890,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
             purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
             
+            self.purchaseViewController.view.alpha = 1
             UIView.animate(withDuration: 0.3, animations: {
-                self.purchaseViewAnchor.constant = 0
-                self.informationViewController.view.center.y = -200
-                self.view.layoutIfNeeded()
+                self.removeTabView()
             }) { (success) in
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.purchaseViewAnchor.constant = 0
-                    self.informationViewController.view.center.y = -200
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.purchaseViewAnchor.constant = -15
                     self.view.layoutIfNeeded()
-                })
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.informationViewController.view.center.y = -200
-                    self.view.layoutIfNeeded()
-                })
+                }) { (success) in
+                    self.removeTabView()
+                }
             }
-            self.removeTabView()
             
             guard let newMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let newMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.WHITE, tag: newMarkerView.tag)
@@ -1185,22 +1088,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func removeTabView() {
-        self.delegate?.removeTabView()
-        UIView.animate(withDuration: 0.3, animations: {
-            self.containerHeightAnchor.constant = 50
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            //
-        }
+//        self.delegate?.removeTabView()
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.containerHeightAnchor.constant = 50
+//            self.view.layoutIfNeeded()
+//        }) { (success) in
+//            //
+//        }
     }
     
     func bringTabView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.containerHeightAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            //
-        }
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.containerHeightAnchor.constant = 0
+//            self.view.layoutIfNeeded()
+//        }) { (success) in
+//            //
+//        }
     }
     
 }

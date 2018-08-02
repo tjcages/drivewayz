@@ -157,6 +157,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         self.tableView.deselectRow(at: indexPath, animated: true)
         
         reserveButton.alpha = 1
+        costButton.alpha = 1
         reserveButton.isUserInteractionEnabled = true
         let hoursString = dropDownOptions[indexPath.row]
         let noHoursString = hoursString.replacingOccurrences(of: " hours", with: "", options: .regularExpression, range: nil)

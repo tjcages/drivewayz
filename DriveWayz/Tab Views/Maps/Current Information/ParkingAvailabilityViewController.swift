@@ -492,7 +492,7 @@ class ParkingAvailabilityViewController: UIViewController {
     
     func collectAvailiability(id: String) {
         
-        Database.database().reference().child("users").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(id).child("Parking").observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let userParkingID = dictionary["parkingID"] as? String {
                     let ref = Database.database().reference().child("parking").child(userParkingID).child("Availability")
@@ -735,7 +735,7 @@ class ParkingAvailabilityViewController: UIViewController {
     
     var thursdayButton: UIButton = {
         let thursday = UIButton()
-        thursday.setTitle("T.", for: .normal)
+        thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
         thursday.backgroundColor = Theme.PRIMARY_COLOR
         thursday.clipsToBounds = true
@@ -807,7 +807,7 @@ class ParkingAvailabilityViewController: UIViewController {
     
     var sundayButton: UIButton = {
         let sunday = UIButton()
-        sunday.setTitle("S.", for: .normal)
+        sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
         sunday.backgroundColor = Theme.PRIMARY_COLOR
         sunday.clipsToBounds = true

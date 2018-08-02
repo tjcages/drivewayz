@@ -20,6 +20,10 @@ class PersonalAvailabilityViewController: UIViewController {
         setupViews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        collectAvailiability()
+    }
+    
     func setupViews() {
         
         view.addSubview(labelAvailability)
@@ -117,7 +121,7 @@ class PersonalAvailabilityViewController: UIViewController {
     func collectAvailiability() {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(uid).child("Parking").observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let userParkingID = dictionary["parkingID"] as? String {
                     let ref = Database.database().reference().child("parking").child(userParkingID).child("Availability")
@@ -369,7 +373,7 @@ class PersonalAvailabilityViewController: UIViewController {
     
     var thursdayButton: UIButton = {
         let thursday = UIButton()
-        thursday.setTitle("T.", for: .normal)
+        thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
         thursday.backgroundColor = Theme.PRIMARY_COLOR
         thursday.clipsToBounds = true
@@ -441,7 +445,7 @@ class PersonalAvailabilityViewController: UIViewController {
     
     var sundayButton: UIButton = {
         let sunday = UIButton()
-        sunday.setTitle("S.", for: .normal)
+        sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
         sunday.backgroundColor = Theme.PRIMARY_COLOR
         sunday.clipsToBounds = true

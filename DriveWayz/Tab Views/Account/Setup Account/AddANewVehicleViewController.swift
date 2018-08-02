@@ -280,14 +280,6 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleLicensePlate.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -24).isActive = true
         vehicleLicensePlate.heightAnchor.constraint(equalToConstant: 63).isActive = true
 
-//        scrollView.addSubview(vehicleImageView)
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectVehicleImageView))
-//        vehicleImageView.addGestureRecognizer(tapGesture)
-//        vehicleImageView.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 40).isActive = true
-//        vehicleImageView.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -40).isActive = true
-//        vehicleImageView.topAnchor.constraint(equalTo: vehicleLicensePlate.bottomAnchor, constant: 30).isActive = true
-//        vehicleImageView.heightAnchor.constraint(equalToConstant: 180).isActive = true
-
         self.view.addSubview(exitButton)
         exitButton.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: 35).isActive = true
         exitButton.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: -40).isActive = true
@@ -402,7 +394,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         let id = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         let userVehicleRef = Database.database().reference().child("user-vehicles").child(id)
-        let userRef = Database.database().reference().child("users").child(id)
+        let userRef = Database.database().reference().child("users").child(id).child("Vehicle")
         
         let vehicleID = childRef.key
         userVehicleRef.updateChildValues([vehicleID: 1])

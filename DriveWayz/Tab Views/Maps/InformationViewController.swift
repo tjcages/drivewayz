@@ -202,17 +202,16 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     func setupViewControllers() {
         
         self.view.addSubview(informationScrollView)
-        informationScrollView.contentSize = CGSize(width: 500, height: 1100)
-        informationScrollView.contentOffset = CGPoint(x: 0, y: 1100)
+        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        informationScrollView.heightAnchor.constraint(equalToConstant: 650).isActive = true
+        informationScrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 30).isActive = true
         
         informationScrollView.addSubview(infoContainer)
         infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        infoContainer.bottomAnchor.constraint(equalTo: informationScrollView.bottomAnchor, constant: 1095).isActive = true
+        infoContainer.topAnchor.constraint(equalTo: informationScrollView.topAnchor).isActive = true
         infoContainer.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
         infoContainer.addSubview(infoController.view)
@@ -221,13 +220,24 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         infoController.view.topAnchor.constraint(equalTo: infoContainer.topAnchor).isActive = true
         infoController.view.widthAnchor.constraint(equalTo: infoContainer.widthAnchor).isActive = true
         
+        informationScrollView.addSubview(currentContainer)
+        currentContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        currentContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        currentContainer.topAnchor.constraint(equalTo: self.infoContainer.bottomAnchor, constant: 10).isActive = true
+        currentContainer.heightAnchor.constraint(equalToConstant: 165).isActive = true
+        
+        currentContainer.addSubview(currentController.view)
+        currentController.view.centerXAnchor.constraint(equalTo: self.currentContainer.centerXAnchor).isActive = true
+        currentController.view.bottomAnchor.constraint(equalTo: self.currentContainer.bottomAnchor).isActive = true
+        currentController.view.topAnchor.constraint(equalTo: self.currentContainer.topAnchor).isActive = true
+        currentController.view.widthAnchor.constraint(equalTo: self.currentContainer.widthAnchor).isActive = true
+        
         
         informationScrollView.addSubview(pictureContainer)
         pictureContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        pictureHeightAnchor = pictureContainer.bottomAnchor.constraint(equalTo: infoContainer.topAnchor, constant: -5)
-            pictureHeightAnchor.isActive = true
-        pictureContainer.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        pictureContainer.topAnchor.constraint(equalTo: currentContainer.bottomAnchor, constant: 10).isActive = true
+        pictureContainer.heightAnchor.constraint(equalToConstant: 320).isActive = true
         
         pictureContainer.addSubview(pictureController.view)
         pictureController.view.centerXAnchor.constraint(equalTo: pictureContainer.centerXAnchor).isActive = true
@@ -239,7 +249,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         informationScrollView.addSubview(availabilityContainer)
         availabilityContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         availabilityContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        availabilityContainer.bottomAnchor.constraint(equalTo: pictureContainer.topAnchor, constant: -5).isActive = true
+        availabilityContainer.topAnchor.constraint(equalTo: pictureContainer.bottomAnchor, constant: 10).isActive = true
         availabilityContainer.heightAnchor.constraint(equalToConstant: 230).isActive = true
         
         availabilityContainer.addSubview(availabilityController.view)
@@ -251,8 +261,8 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         informationScrollView.addSubview(reviewsContainer)
         reviewsContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reviewsContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        reviewsContainer.bottomAnchor.constraint(equalTo: availabilityContainer.topAnchor, constant: -5).isActive = true
-        reviewsContainer.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        reviewsContainer.topAnchor.constraint(equalTo: availabilityContainer.bottomAnchor, constant: 10).isActive = true
+        reviewsContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         
         reviewsContainer.addSubview(reviewsController.view)
         reviewsController.view.centerXAnchor.constraint(equalTo: reviewsContainer.centerXAnchor).isActive = true
@@ -263,7 +273,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         informationScrollView.addSubview(signUpContainer)
         signUpContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         signUpContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        signUpContainer.bottomAnchor.constraint(equalTo: reviewsContainer.topAnchor, constant: -25).isActive = true
+        signUpContainer.topAnchor.constraint(equalTo: reviewsContainer.bottomAnchor, constant: 10).isActive = true
         signUpContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         signUpContainer.addSubview(signUpLabel)
@@ -276,51 +286,24 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == informationScrollView {
-            if scrollView.contentOffset.y >= 465.0 {
+            if scrollView.contentOffset.y <= 5.0 {
                 informationScrollView.isScrollEnabled = false
-            } else if scrollView.contentOffset.y <= 435.0 {
+            } else if scrollView.contentOffset.y >= 5.0 {
                 informationScrollView.isScrollEnabled = true
             }
         }
     }
     
     func addCurrentOptions() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.pictureHeightAnchor.constant = -175
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            
-            informationScrollView.addSubview(self.currentContainer)
-            self.currentContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.currentContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            self.currentContainer.bottomAnchor.constraint(equalTo: self.infoContainer.topAnchor, constant: -5).isActive = true
-            self.currentContainer.heightAnchor.constraint(equalToConstant: 165).isActive = true
-            
-            self.currentContainer.addSubview(self.currentController.view)
-            self.currentController.view.centerXAnchor.constraint(equalTo: self.currentContainer.centerXAnchor).isActive = true
-            self.currentController.view.bottomAnchor.constraint(equalTo: self.currentContainer.bottomAnchor).isActive = true
-            self.currentController.view.topAnchor.constraint(equalTo: self.currentContainer.topAnchor).isActive = true
-            self.currentController.view.widthAnchor.constraint(equalTo: self.currentContainer.widthAnchor).isActive = true
-        }
+        
     }
     
     func removeCurrentOptions() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.pictureHeightAnchor.constant = -5
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            
-            self.currentContainer.removeFromSuperview()
-            
-            self.currentController.willMove(toParentViewController: nil)
-            self.currentController.view.removeFromSuperview()
-            self.currentController.removeFromParentViewController()
-            
-        }
+
     }
     
     func extendTimeView() {
-        self.delegate?.extendTimeView()
+//        self.delegate?.extendTimeView()
     }
     
     func setupLeaveAReview() {

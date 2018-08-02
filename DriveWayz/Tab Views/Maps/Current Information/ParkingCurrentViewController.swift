@@ -476,7 +476,6 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func extendTime() {
-        self.extendDelegate?.currentParkingSender()
         self.delegate?.extendTimeView()
     }
     

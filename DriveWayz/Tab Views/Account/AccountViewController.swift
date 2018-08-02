@@ -25,41 +25,57 @@ protocol controlsBankAccount {
     func removeBankAccountView()
 }
 
-protocol controlsNewParking {
-    func setupNewParking(parkingImage: ParkingImage)
-    func removeNewParkingView()
-    func setupNewVehicle(vehicleStatus: VehicleStatus)
-    func removeNewVehicleView()
+protocol sendNewParking {
+    func setupAddAVehicle()
+    func setupAddAParkingSpot()
 }
 
 protocol controlsAccountViews {
-    func setupParkingViewControllers(parkingStatus: ParkingStatus)
     func removeOptionsFromView()
     func changeCurrentView(height: CGFloat)
 }
 
-class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsNewParking, controlsAccountViews {
+class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsAccountViews, sendNewParking {
 
     var parkingImage: ParkingImage = ParkingImage.noImage
     var parkingStatus: ParkingStatus = ParkingStatus.noParking
     var vehicleStatus: VehicleStatus = VehicleStatus.noVehicle
+    
+    var delegate: controlsNewParking?
 
     var visualBlurEffect = UIVisualEffectView()
     var picker = UIImagePickerController()
     
-    var contentView: UIView = {
-        let view = UIView()
+    var contentScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
+    }()
+    
+    var profileView: UIView = {
+        let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.white
+        view.showsVerticalScrollIndicator = true
+        view.showsHorizontalScrollIndicator = false
         return view
     }()
     
-    var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.showsHorizontalScrollIndicator = false
-        return scrollView
+    var parkingView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = true
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
+    
+    var vehicleView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = true
+        view.showsHorizontalScrollIndicator = false
+        return view
     }()
     
     lazy var currentController: CurrentViewController = {
@@ -79,54 +95,21 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return controller
     }()
     
-    lazy var earningsController: DataChartsViewController = {
-        let controller = DataChartsViewController()
-        self.addChildViewController(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.title = "Charts"
-        return controller
-    }()
-    
     lazy var bankController: BankAccountViewController = {
         let controller = BankAccountViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         controller.title = "Charts"
+        controller.delegate = self
         return controller
     }()
     
     lazy var parkingController: UserParkingViewController = {
         let controller = UserParkingViewController()
-        controller.parkingDelegate = self
         controller.viewDelegate = self
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Parking"
-        return controller
-    }()
-    
-    lazy var newParkingController: AddANewParkingSpotViewController = {
-        let controller = AddANewParkingSpotViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "New Parking"
         controller.delegate = self
-        return controller
-    }()
-    
-    lazy var saveParkingController: SaveParkingViewController = {
-        let controller = SaveParkingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Save Parking"
-        controller.parkingDelegate = self
-        controller.viewDelegate = self
-        return controller
-    }()
-    
-    lazy var availabilityController: PersonalAvailabilityViewController = {
-        let controller = PersonalAvailabilityViewController()
-        self.addChildViewController(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Availability"
+        controller.bankDelegate = self
+        controller.title = "Parking"
         return controller
     }()
     
@@ -136,23 +119,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.title = "Vehicle"
-        return controller
-    }()
-    
-    lazy var newVehicleController: AddANewVehicleViewController = {
-        let controller = AddANewVehicleViewController()
-        self.addChildViewController(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "New Vehicle"
-        controller.delegate = self
-        return controller
-    }()
-    
-    lazy var walkthroughController: WalkthroughViewController = {
-        let controller = WalkthroughViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Walkthrough"
-        controller.newDelegate = self
         return controller
     }()
     
@@ -184,6 +150,20 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileName.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         
         return profileName
+    }()
+    
+    var addButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "Add")
+        button.setImage(image, for: .normal)
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOpacity = 0.8
+        button.layer.shadowRadius = 1
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
+        
+        return button
     }()
     
     lazy var profileWrap: UIView = {
@@ -236,16 +216,15 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let segmentControlView = UIView()
         segmentControlView.translatesAutoresizingMaskIntoConstraints = false
         segmentControlView.backgroundColor = Theme.OFF_WHITE
-        segmentControlView.layer.cornerRadius = 5
         
         return segmentControlView
     }()
     
-    var graphsSegment: UIButton = {
+    var profileSegment: UIButton = {
         let info = UIButton()
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
-        info.setTitle("Feed", for: .normal)
+        info.setTitle("Profile", for: .normal)
         info.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
@@ -288,6 +267,15 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return line
     }()
     
+    var statusBarColor: UIView = {
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.alpha = 0
+        
+        return line
+    }()
+    
     lazy var container: UIView = {
         let containerBar = UIView()
         containerBar.translatesAutoresizingMaskIntoConstraints = false
@@ -326,29 +314,16 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return containerBar
     }()
     
-    lazy var tabPull: UIView = {
-        let tabPull = UIView()
-        tabPull.layer.cornerRadius = 20
-        tabPull.translatesAutoresizingMaskIntoConstraints = false
-        tabPull.backgroundColor = Theme.PRIMARY_COLOR
-        tabPull.alpha = 0.9
-        
-        return tabPull
-    }()
-    
     var tabFeed: UIButton = {
         let button = UIButton(type: .custom)
         let image = UIImage(named: "feed")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         button.translatesAutoresizingMaskIntoConstraints = false
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
         button.addTarget(self, action: #selector(optionsTabGestureTapped(sender:)), for: .touchUpInside)
-        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gestureOpen.direction = .right
-        button.addGestureRecognizer(gestureOpen)
         
         return button
     }()
@@ -364,6 +339,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     var optionsTableView: UITableView = {
         let parking = UITableView()
         parking.translatesAutoresizingMaskIntoConstraints = false
+        parking.isScrollEnabled = false
         parking.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
         
         return parking
@@ -381,9 +357,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
-
-        view.addSubview(scrollView)
-        view.bringSubview(toFront: scrollView)
+        contentScrollView.delegate = self
         
         effect = visualBlurEffect.effect
         visualBlurEffect.effect = nil
@@ -396,28 +370,30 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         gestureLeft.direction = .left
         self.view.addGestureRecognizer(gestureLeft)
 
-        fetchUser()
         setupTopView()
-        setupViews()
+        setupProfileViews()
+        setupParkingViews()
+        setupVehicleViews()
+        setupLine()
+        fetchUser()
         setupOptions()
         startUpActivity()
-
     }
     
     @objc func segmentRight(sender: UISwipeGestureRecognizer) {
-        if segmentLineLeftAnchor3.isActive == true && self.optionsTabViewConstraint.constant == 0 {
+        if self.vehicleViewAnchor.constant == 0 && self.optionsTabViewConstraint.constant == 0 {
             self.optionsTabGesture()
-        } else if segmentLineLeftAnchor3.isActive == true {
+        } else if self.vehicleViewAnchor.constant == 0 {
             self.parkingPressedFunc()
-        } else if segmentLineLeftAnchor2.isActive == true {
+        } else if self.parkingViewAnchor.constant == 0 {
             self.recentPressedFunc()
         }
     }
     
     @objc func segmentLeft(sender: UISwipeGestureRecognizer) {
-        if segmentLineLeftAnchor1.isActive == true {
+        if self.profileViewAnchor.constant == 0 {
             self.parkingPressedFunc()
-        } else if segmentLineLeftAnchor2.isActive == true {
+        } else if self.parkingViewAnchor.constant == 0 {
             self.vehiclePressedFunc()
         } else {
             self.optionsTabGesture()
@@ -454,16 +430,35 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func setupTopView() {
         
-        scrollView.addSubview(profileWrap)
+        self.view.addSubview(contentScrollView)
+        contentScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        contentScrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        contentScrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        contentScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 200)
+
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        
+        contentScrollView.addSubview(profileWrap)
         profileWrap.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         profileWrap.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        profileWrap.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        profileWrap.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: -statusBarHeight).isActive = true
         switch device {
         case .iphone8:
             profileWrap.heightAnchor.constraint(equalToConstant: 120).isActive = true
         case .iphoneX:
             profileWrap.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
+        
+        self.view.addSubview(segmentControlView)
+        self.view.sendSubview(toBack: segmentControlView)
+        controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor)
+        controlTopAnchor1.isActive = true
+        controlTopAnchor2 = segmentControlView.topAnchor.constraint(equalTo: view.topAnchor)
+        controlTopAnchor2.isActive = false
+        segmentControlView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        segmentControlView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        segmentControlView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         profileWrap.addSubview(profileImageView)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
@@ -473,173 +468,142 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileImageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
+        profileWrap.addSubview(addButton)
+        addButton.addGestureRecognizer(gesture)
+        addButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 25).isActive = true
+        addButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor, constant: 25).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
         profileWrap.addSubview(profileName)
         profileName.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 15).isActive = true
         profileName.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 15).isActive = true
         profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
         profileName.heightAnchor.constraint(equalToConstant: 200).isActive = true
-    
+
     }
     
-    var controlTopAnchor1: NSLayoutConstraint!
-    var controlTopAnchor2: NSLayoutConstraint!
-    var segmentLineLeftAnchor1: NSLayoutConstraint!
-    var segmentLineLeftAnchor2: NSLayoutConstraint!
-    var segmentLineLeftAnchor3: NSLayoutConstraint!
+    var profileViewAnchor: NSLayoutConstraint!
     
-    func setupViews() {
-        let statusHeight = UIApplication.shared.statusBarFrame.height
-        scrollView.delegate = self
+    func setupProfileViews() {
+
+        contentScrollView.addSubview(profileView)
+        profileView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor).isActive = true
+        profileViewAnchor = profileView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            profileViewAnchor.isActive = true
+        profileView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        profileView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        self.view.addSubview(scrollView)
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -statusHeight).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+        segmentControlView.addSubview(profileSegment)
+        profileSegment.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+        profileSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor, constant: 10).isActive = true
+        profileSegment.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        profileSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
         
-        self.view.addSubview(segmentControlView)
-        controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 20)
-        controlTopAnchor1.isActive = true
-        controlTopAnchor2 = segmentControlView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40)
-        controlTopAnchor2.isActive = false
-        segmentControlView.widthAnchor.constraint(equalToConstant: self.view.frame.width * 5/6).isActive = true
-        segmentControlView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        segmentControlView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        self.view.addSubview(graphsSegment)
-        graphsSegment.leftAnchor.constraint(equalTo: segmentControlView.leftAnchor).isActive = true
-        graphsSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
-        graphsSegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
-        graphsSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
-        
-        self.view.addSubview(vehicleSegment)
-        vehicleSegment.rightAnchor.constraint(equalTo: segmentControlView.rightAnchor).isActive = true
-        vehicleSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
-        vehicleSegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
-        vehicleSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
-        
-        self.view.addSubview(parkingSegment)
-        parkingSegment.leftAnchor.constraint(equalTo: graphsSegment.rightAnchor).isActive = true
-        parkingSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor).isActive = true
-        parkingSegment.bottomAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
-        parkingSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
-        
-        self.view.addSubview(selectionLine)
-        selectionLine.topAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
-        selectionLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        selectionLine.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
-        segmentLineLeftAnchor1 = selectionLine.leftAnchor.constraint(equalTo: graphsSegment.leftAnchor)
-        segmentLineLeftAnchor1.isActive = true
-        segmentLineLeftAnchor2 = selectionLine.leftAnchor.constraint(equalTo: parkingSegment.leftAnchor)
-        segmentLineLeftAnchor2.isActive = false
-        segmentLineLeftAnchor3 = selectionLine.leftAnchor.constraint(equalTo: vehicleSegment.leftAnchor)
-        segmentLineLeftAnchor3.isActive = false
-        
-        self.addChildViewController(parkingController)
-        
-    }
-    
-    var earningsViewAnchor: NSLayoutConstraint?
-    var vehicleViewAnchor: NSLayoutConstraint?
-    var currentViewAnchor: NSLayoutConstraint?
-    var currentHeightAnchor: NSLayoutConstraint?
-    
-    func setupParkingViewControllers(parkingStatus: ParkingStatus) {
-        switch parkingStatus {
-        case .noParking:
-            
-            earningsController.willMove(toParentViewController: nil)
-            earningsController.view.removeFromSuperview()
-            earningsController.removeFromParentViewController()
-            parkingController.willMove(toParentViewController: nil)
-            parkingController.view.removeFromSuperview()
-            parkingController.removeFromParentViewController()
-            availabilityController.willMove(toParentViewController: nil)
-            availabilityController.view.removeFromSuperview()
-            availabilityController.removeFromParentViewController()
-            
-            scrollView.addSubview(parkingController.view)
-            self.addChildViewController(parkingController)
-            parkingController.didMove(toParentViewController: self)
-            earningsViewAnchor = parkingController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: self.view.frame.width)
-            earningsViewAnchor?.isActive = true
-            parkingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-            parkingController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 80).isActive = true
-            parkingController.view.heightAnchor.constraint(equalToConstant: 1000).isActive = true
-            
-        case .yesParking:
-            
-            parkingController.willMove(toParentViewController: nil)
-            parkingController.view.removeFromSuperview()
-            parkingController.removeFromParentViewController()
-            
-            scrollView.addSubview(earningsController.view)
-            earningsController.didMove(toParentViewController: self)
-            self.addChildViewController(earningsController)
-            earningsViewAnchor = earningsController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: self.view.frame.width)
-            earningsViewAnchor?.isActive = true
-            earningsController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-            earningsController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
-            earningsController.view.heightAnchor.constraint(equalToConstant: 360).isActive = true
-            
-            scrollView.addSubview(parkingController.view)
-            self.addChildViewController(parkingController)
-            parkingController.didMove(toParentViewController: self)
-            parkingController.view.centerXAnchor.constraint(equalTo: earningsController.view.centerXAnchor).isActive = true
-            parkingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-            parkingController.view.topAnchor.constraint(equalTo: earningsController.view.bottomAnchor, constant: 0).isActive = true
-            parkingController.view.heightAnchor.constraint(equalToConstant: 1000).isActive = true
-            
-            scrollView.addSubview(availabilityController.view)
-            availabilityController.didMove(toParentViewController: self)
-            availabilityController.view.centerXAnchor.constraint(equalTo: earningsController.view.centerXAnchor).isActive = true
-            availabilityController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40).isActive = true
-            availabilityController.view.topAnchor.constraint(equalTo: earningsController.view.bottomAnchor, constant: 110).isActive = true
-            availabilityController.view.heightAnchor.constraint(equalToConstant: 275).isActive = true
-            
-            self.view.layoutIfNeeded()
-            
-        }
-        
-        scrollView.addSubview(vehicleController.view)
-        vehicleController.didMove(toParentViewController: self)
-        vehicleViewAnchor = vehicleController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: (self.view.frame.width) * 2)
-        vehicleViewAnchor?.isActive = true
-        vehicleController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        vehicleController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
-        vehicleController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
-        
-        scrollView.addSubview(currentController.view)
+        profileView.addSubview(currentController.view)
         currentController.didMove(toParentViewController: self)
-        currentViewAnchor = currentController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 0)
-        currentViewAnchor?.isActive = true
-        currentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 50).isActive = true
+        currentController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+        currentController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
+        currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 30).isActive = true
         currentHeightAnchor = currentController.view.heightAnchor.constraint(equalToConstant: 0)
         currentController.view.alpha = 0
         currentHeightAnchor?.isActive = true
         
-        scrollView.addSubview(recentController.view)
+        profileView.addSubview(recentController.view)
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
-        recentController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        recentController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
         recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 30).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
+
+    }
+    
+    var parkingViewAnchor: NSLayoutConstraint!
+    
+    func setupParkingViews() {
+        
+        contentScrollView.addSubview(parkingView)
+        parkingView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor).isActive = true
+        parkingViewAnchor = parkingView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            parkingViewAnchor.isActive = true
+        parkingView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        parkingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        parkingView.addSubview(parkingController.view)
+        self.addChildViewController(parkingController)
+        parkingController.didMove(toParentViewController: self)
+        parkingController.view.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
+        parkingController.view.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
+        parkingController.view.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
+        parkingController.view.heightAnchor.constraint(equalToConstant: 1600).isActive = true
+        
+        self.view.addSubview(parkingSegment)
+        parkingSegment.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
+        parkingSegment.centerYAnchor.constraint(equalTo: profileSegment.centerYAnchor).isActive = true
+        parkingSegment.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkingSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
         
     }
     
+    var vehicleViewAnchor: NSLayoutConstraint!
+    
+    func setupVehicleViews() {
+
+        contentScrollView.addSubview(vehicleView)
+        vehicleView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor).isActive = true
+        vehicleViewAnchor = vehicleView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            vehicleViewAnchor.isActive = true
+        vehicleView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        vehicleView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        segmentControlView.addSubview(vehicleSegment)
+        vehicleSegment.centerXAnchor.constraint(equalTo: vehicleView.centerXAnchor).isActive = true
+        vehicleSegment.topAnchor.constraint(equalTo: segmentControlView.topAnchor, constant: 10).isActive = true
+        vehicleSegment.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        vehicleSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        
+        vehicleView.addSubview(vehicleController.view)
+        vehicleController.didMove(toParentViewController: self)
+        vehicleController.view.centerXAnchor.constraint(equalTo: vehicleView.centerXAnchor).isActive = true
+        vehicleController.view.widthAnchor.constraint(equalTo: vehicleView.widthAnchor).isActive = true
+        vehicleController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 70).isActive = true
+        vehicleController.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        
+    }
+    
+    var controlTopAnchor1: NSLayoutConstraint!
+    var controlTopAnchor2: NSLayoutConstraint!
+    
+    func setupLine() {
+    
+        contentScrollView.addSubview(selectionLine)
+        selectionLine.topAnchor.constraint(equalTo: vehicleSegment.bottomAnchor).isActive = true
+        selectionLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        selectionLine.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
+        selectionLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        
+        self.view.addSubview(statusBarColor)
+        let statusHeight = UIApplication.shared.statusBarFrame.height
+        statusBarColor.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        statusBarColor.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        statusBarColor.heightAnchor.constraint(equalToConstant: statusHeight).isActive = true
+        statusBarColor.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        
+        self.addChildViewController(parkingController)
+    }
+    
+    var currentHeightAnchor: NSLayoutConstraint?
     lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
     
     func changeCurrentView(height: CGFloat) {
         self.currentController.view.alpha = 1
         self.currentHeightAnchor?.constant = height
         if height >= 200 {
-            scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
-            currentSize = scrollView.contentSize
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+            currentSize = contentScrollView.contentSize
         } else {
-            scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
-            currentSize = scrollView.contentSize
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
+            currentSize = contentScrollView.contentSize
         }
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()
@@ -651,13 +615,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func recentPressedFunc() {
-        scrollView.contentSize = currentSize
-        segmentLineLeftAnchor1.isActive = true
-        segmentLineLeftAnchor2.isActive = false
-        segmentLineLeftAnchor3.isActive = false
-        currentViewAnchor?.constant = 0
-        earningsViewAnchor?.constant = self.view.frame.width
-        vehicleViewAnchor?.constant = (self.view.frame.width) * 2
+        contentScrollView.contentSize = currentSize
+        profileViewAnchor?.constant = 0
+        parkingViewAnchor?.constant = self.view.frame.width
+        vehicleViewAnchor?.constant = self.view.frame.width
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
         }
@@ -668,12 +629,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func parkingPressedFunc() {
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2.5)
-        segmentLineLeftAnchor1.isActive = false
-        segmentLineLeftAnchor2.isActive = true
-        segmentLineLeftAnchor3.isActive = false
-        currentViewAnchor?.constant = -self.view.frame.width
-        earningsViewAnchor?.constant = 0
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2.5)
+        profileViewAnchor?.constant = -(self.view.frame.width)*2
+        parkingViewAnchor?.constant = 0
         vehicleViewAnchor?.constant = self.view.frame.width
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
@@ -685,12 +643,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func vehiclePressedFunc() {
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
-        segmentLineLeftAnchor1.isActive = false
-        segmentLineLeftAnchor2.isActive = false
-        segmentLineLeftAnchor3.isActive = true
-        currentViewAnchor?.constant = -(self.view.frame.width*2)
-        earningsViewAnchor?.constant = -self.view.frame.width
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
+        profileViewAnchor?.constant = -(self.view.frame.width)*2
+        parkingViewAnchor?.constant = -(self.view.frame.width)*2
         vehicleViewAnchor?.constant = 0
         UIView.animate(withDuration: 0.2) {
             self.view.layoutIfNeeded()
@@ -699,9 +654,15 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= 90 {
-            UIApplication.shared.statusBarStyle = .default
+            UIApplication.shared.statusBarStyle = .lightContent
+            UIView.animate(withDuration: 0.3) {
+                self.statusBarColor.alpha = 0.9
+            }
         } else {
             UIApplication.shared.statusBarStyle = .lightContent
+            UIView.animate(withDuration: 0.3) {
+                self.statusBarColor.alpha = 0
+            }
         }
     }
     
@@ -764,7 +725,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let userName = dictionary["name"] as? String {
-                    self.profileName.text = userName
+                    var fullNameArr = userName.split(separator: " ")
+                    let firstName: String = String(fullNameArr[0])
+                    self.profileName.text = firstName
                 }
                 if let email = dictionary["email"] as? String {
                     userEmail = email
@@ -772,8 +735,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                 let userPicture = dictionary["picture"] as? String
                 if userPicture == "" {
                     self.profileImageView.image = UIImage(named: "background4")
+                    self.addButton.alpha = 1
                 } else {
                     self.profileImageView.loadImageUsingCacheWithUrlString(userPicture!)
+                    self.addButton.alpha = 0
                 }
             }
             self.startActivityIndicatorView.stopAnimating()
@@ -825,43 +790,22 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.view.addSubview(optionsTabView)
         optionsTabViewConstraint = optionsTabView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 120)
         optionsTabViewConstraint.isActive = true
-        optionsTabView.topAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        optionsTabView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        optionsTabView.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 80).isActive = true
+        optionsTabView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         optionsTabView.widthAnchor.constraint(equalToConstant: 120).isActive = true
         
         self.view.addSubview(optionsTableView)
         optionsTableView.leftAnchor.constraint(equalTo: optionsTabView.leftAnchor).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: optionsTabView.rightAnchor).isActive = true
-        optionsTableView.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        optionsTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        optionsTableView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 80).isActive = true
+        optionsTableView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor).isActive = true
         
-        self.view.addSubview(container)
-        container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        switch device {
-        case .iphone8:
-            container.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        case .iphoneX:
-            container.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        }
-        
-        self.view.insertSubview(tabPull, belowSubview: optionsTabView)
-        tabPull.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 20).isActive = true
-        tabPull.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
-        tabPullWidthShort = tabPull.widthAnchor.constraint(equalToConstant: 60)
-        tabPullWidthShort.isActive = true
-        tabPullWidthLong = tabPull.widthAnchor.constraint(equalToConstant: 80)
-        tabPullWidthLong.isActive = false
-        tabPull.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        tabPull.addSubview(tabFeed)
+        self.view.addSubview(tabFeed)
+        tabFeed.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
+        tabFeed.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 10).isActive = true
         tabFeed.widthAnchor.constraint(equalToConstant: 25).isActive = true
         tabFeed.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        tabFeed.centerYAnchor.constraint(equalTo: tabPull.centerYAnchor).isActive = true
-        tabFeed.leftAnchor.constraint(equalTo: tabPull.leftAnchor, constant: 10).isActive = true
-        
-        self.view.bringSubview(toFront: tabPull)
+
     }
     
     var bankAnchor: NSLayoutConstraint!
@@ -895,101 +839,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         })
     }
     
-    func setupNewParking(parkingImage: ParkingImage) {
-        switch parkingImage {
-        case .yesImage:
-            
-            self.newParkingController.view.removeFromSuperview()
-            self.view.layoutIfNeeded()
-            
-            var parkingAnchor: NSLayoutConstraint!
-            
-            self.view.addSubview(saveParkingController.view)
-            self.addChildViewController(saveParkingController)
-            saveParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            parkingAnchor = saveParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            parkingAnchor.isActive = true
-            saveParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            saveParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    parkingAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-        default:
-            
-            var parkingAnchor: NSLayoutConstraint!
-            
-            self.view.addSubview(newParkingController.view)
-            self.addChildViewController(newParkingController)
-            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            parkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            parkingAnchor.isActive = true
-            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    parkingAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-            
-        }
-    }
-    
-    func removeNewParkingView() {
-        self.saveParkingController.view.removeFromSuperview()
-        self.newParkingController.view.removeFromSuperview()
-        self.view.layoutIfNeeded()
-    }
-    
-    var vehicleAnchor: NSLayoutConstraint!
-    
-    func setupNewVehicle(vehicleStatus: VehicleStatus) {
-        switch vehicleStatus {
-        case .yesVehicle:
-
-            self.newVehicleController.view.removeFromSuperview()
-            
-        case .noVehicle:
-            
-            self.view.addSubview(newVehicleController.view)
-            self.addChildViewController(newVehicleController)
-            newVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            vehicleAnchor = newVehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            vehicleAnchor.isActive = true
-            newVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newVehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.vehicleAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-            
-        }
-    }
-    
-    func removeNewVehicleView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.vehicleAnchor.constant = self.view.frame.height
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.newVehicleController.view.removeFromSuperview()
-            UIApplication.shared.statusBarStyle = .lightContent
-        })
-    }
-    
     @objc func optionsTabGestureTapped(sender: UIButton) {
         optionsTabGesture()
     }
@@ -1001,16 +850,20 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     @objc func optionsTabGesture() {
         if optionsTabViewConstraint.constant == 120 {
             self.optionsTabViewConstraint.constant = 0
-            self.tabPullWidthShort.isActive = false
-            self.tabPullWidthLong.isActive = true
             UIView.animate(withDuration: 0.3) {
+                let image = UIImage(named: "feed")
+                let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                self.tabFeed.setImage(tintedImage, for: .normal)
+                self.tabFeed.tintColor = Theme.WHITE
                 self.view.layoutIfNeeded()
             }
         } else {
             self.optionsTabViewConstraint.constant = 120
-            self.tabPullWidthShort.isActive = true
-            self.tabPullWidthLong.isActive = false
             UIView.animate(withDuration: 0.3) {
+                let image = UIImage(named: "feed")
+                let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                self.tabFeed.setImage(tintedImage, for: .normal)
+                self.tabFeed.tintColor = Theme.DARK_GRAY
                 self.view.layoutIfNeeded()
             }
         }
@@ -1111,6 +964,14 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         controller.delegate = self
         return controller
     }()
+    
+    func setupAddAVehicle() {
+        self.delegate?.setupNewVehicle(vehicleStatus: .noVehicle)
+    }
+    
+    func setupAddAParkingSpot() {
+        self.delegate?.setupNewParking(parkingImage: .noImage)
+    }
 
 }
 

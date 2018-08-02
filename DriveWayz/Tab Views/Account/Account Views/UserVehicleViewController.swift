@@ -10,14 +10,14 @@ import UIKit
 import Firebase
 
 class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    enum VehicleSize {
-        case small
-        case tall
+
+    enum UserState {
+        case current
+        case none
     }
-    
-    var vehicleSize: VehicleSize = VehicleSize.small
-    var delegate: controlsNewParking?
+    var userState: UserState = UserState.current
+
+    var delegate: sendNewParking?
     var vehicles: Int = 0
     
     var newVehiclePage: UIView = {
@@ -44,6 +44,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         addButton.layer.borderWidth = 1
         addButton.layer.cornerRadius = 20
         addButton.addTarget(self, action:#selector(addAVehicleButtonPressed(sender:)), for: .touchUpInside)
+        addButton.alpha = 0
         
         return addButton
     }()
@@ -55,18 +56,9 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         addLabel.textColor = Theme.DARK_GRAY
         addLabel.translatesAutoresizingMaskIntoConstraints = false
         addLabel.textAlignment = .center
+        addLabel.alpha = 0
         
         return addLabel
-    }()
-    
-    var currentVehicleImageView: UIImageView = {
-        let currentVehicleImageView = UIImageView()
-        currentVehicleImageView.translatesAutoresizingMaskIntoConstraints = false
-        currentVehicleImageView.contentMode = .scaleAspectFill
-        currentVehicleImageView.backgroundColor = UIColor.white
-        currentVehicleImageView.clipsToBounds = true
-        
-        return currentVehicleImageView
     }()
     
     var vehicleInfo: UILabel = {
@@ -76,6 +68,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         vehicleInfo.textColor = Theme.DARK_GRAY
         vehicleInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleInfo.contentMode = .left
+        vehicleInfo.alpha = 0
         
         return vehicleInfo
     }()
@@ -87,6 +80,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         vehicleLicenseInfo.textColor = Theme.PRIMARY_DARK_COLOR
         vehicleLicenseInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleLicenseInfo.contentMode = .left
+        vehicleLicenseInfo.alpha = 0
         
         return vehicleLicenseInfo
     }()
@@ -100,6 +94,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         container.layer.shadowOpacity = 0.8
         container.layer.cornerRadius = 10
         container.layer.shadowRadius = 1
+        container.alpha = 0
         
         return container
     }()
@@ -109,74 +104,12 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         editing.translatesAutoresizingMaskIntoConstraints = false
         editing.backgroundColor = UIColor.clear
         editing.isScrollEnabled = false
+        editing.alpha = 0
         
         return editing
     }()
     
     var Edits = ["Delete vehicle"]
-    
-    func setupVehicleDisplay(vehicleSize: VehicleSize) {
-        
-        switch vehicleSize {
-        case .small:
-            
-            vehicleInfo.removeFromSuperview()
-            vehicleLicenseInfo.removeFromSuperview()
-            currentVehicleImageView.removeFromSuperview()
-            
-            newVehiclePage.addSubview(addButton)
-            addButton.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 8).isActive = true
-            addButton.bottomAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: -4).isActive = true
-            addButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-            addButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            
-            newVehiclePage.addSubview(addLabel)
-            addLabel.centerXAnchor.constraint(equalTo: newVehiclePage.centerXAnchor).isActive = true
-            addLabel.centerYAnchor.constraint(equalTo: addButton.centerYAnchor).isActive = true
-            addLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            addLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
-            
-        case .tall:
-            
-            addButton.removeFromSuperview()
-            addLabel.removeFromSuperview()
-            
-            newVehiclePage.addSubview(vehicleInfo)
-            vehicleInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 20).isActive = true
-            vehicleInfo.topAnchor.constraint(equalTo: newVehiclePage.topAnchor, constant: 10).isActive = true
-            vehicleInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
-            vehicleInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
-            
-            newVehiclePage.addSubview(vehicleLicenseInfo)
-            vehicleLicenseInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 25).isActive = true
-            vehicleLicenseInfo.topAnchor.constraint(equalTo: vehicleInfo.bottomAnchor, constant: 0).isActive = true
-            vehicleLicenseInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
-            vehicleLicenseInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
-            
-//            newVehiclePage.addSubview(currentVehicleImageView)
-//            currentVehicleImageView.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor).isActive = true
-//            currentVehicleImageView.topAnchor.constraint(equalTo: vehicleLicenseInfo.bottomAnchor, constant: 20).isActive = true
-//            currentVehicleImageView.rightAnchor.constraint(equalTo: newVehiclePage.rightAnchor).isActive = true
-//            currentVehicleImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-//
-        }
-    }
-    
-    func setupEditing() {
-        
-        self.view.addSubview(editingContainer)
-        editingContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        editingContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        editingContainer.topAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: 10).isActive = true
-        editingContainer.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        editingContainer.addSubview(editingTableView)
-        editingTableView.leftAnchor.constraint(equalTo: editingContainer.leftAnchor, constant: 5).isActive = true
-        editingTableView.rightAnchor.constraint(equalTo: editingContainer.rightAnchor, constant: -5).isActive = true
-        editingTableView.topAnchor.constraint(equalTo: editingContainer.topAnchor, constant: 5).isActive = true
-        editingTableView.bottomAnchor.constraint(equalTo: editingContainer.bottomAnchor, constant: -5).isActive = true
-        
-    }
     
     let startActivityIndicatorView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -193,15 +126,52 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         self.view.backgroundColor = Theme.OFF_WHITE
         
         startUpActivity()
+        setupVehicleView()
         fetchUserAndSetupVehicles()
         
     }
     
-    private func estimatedFrameForText(text: String) -> CGRect {
-        let size = CGSize(width: 200, height: 1000)
-        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], context: nil)
+    var checkVehicle: Bool = true
+    
+    func fetchUserAndSetupVehicles() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let ref = Database.database().reference().child("users").child(uid).child("Vehicle")
+        ref.observe(.childAdded) { (snapshot) in
+            self.checkVehicle = false
+            let userVehicleID = snapshot.value as? String
+            if userVehicleID != nil {
+                self.vehicles = self.vehicles + 1
+            } else { self.vehicles = 0 }
+            
+            if userVehicleID != nil {
+                Database.database().reference().child("vehicles").child(userVehicleID!).observeSingleEvent(of: .value, with: { (snap) in
+                    if let dictionary = snap.value as? [String:AnyObject] {
+                        let vehicleMake = dictionary["vehicleMake"] as? String
+                        let vehicleModel = dictionary["vehicleModel"] as? String
+                        let vehicleYear = dictionary["vehicleYear"] as? String
+                        let vehicleLicensePlate = dictionary["vehicleLicensePlate"] as? String
+                        
+                        let text = vehicleYear! + " " + vehicleMake! + " " + vehicleModel!
+                        self.vehicleInfo.text = text
+                        self.vehicleLicenseInfo.text = vehicleLicensePlate!
+                        
+                        self.setupCurrentViews(state: .current)
+                        self.startActivityIndicatorView.stopAnimating()
+                        self.blurSquare.alpha = 0
+                    }
+                }, withCancel: nil)
+            }
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.setupCurrentViews(state: .none)
+        }
+        if self.checkVehicle == true {
+            self.setupCurrentViews(state: .none)
+            self.startActivityIndicatorView.stopAnimating()
+            self.blurSquare.alpha = 0
+        }
     }
     
     var blurSquare: UIVisualEffectView!
@@ -237,66 +207,100 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func setupVehicleView() {
         
-        newVehiclePage.removeFromSuperview()
-        
         self.view.addSubview(newVehiclePage)
         newVehiclePage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         newVehiclePage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35).isActive = true
+        newVehiclePage.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         vehiclePageHeightAnchorSmall = newVehiclePage.heightAnchor.constraint(equalToConstant: 50)
+            vehiclePageHeightAnchorSmall.isActive = false
         vehiclePageHeightAnchorTall = newVehiclePage.heightAnchor.constraint(equalToConstant: 80)
-    
-        if vehicles > 0 {
             vehiclePageHeightAnchorTall.isActive = true
-            setupVehicleDisplay(vehicleSize: VehicleSize.tall)
-            setupEditing()
-        } else {
-            vehiclePageHeightAnchorSmall.isActive = true
-            setupVehicleDisplay(vehicleSize: VehicleSize.small)
+        
+        newVehiclePage.addSubview(addButton)
+        addButton.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 8).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: -4).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        newVehiclePage.addSubview(addLabel)
+        addLabel.centerXAnchor.constraint(equalTo: newVehiclePage.centerXAnchor).isActive = true
+        addLabel.centerYAnchor.constraint(equalTo: addButton.centerYAnchor).isActive = true
+        addLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        addLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        newVehiclePage.addSubview(vehicleInfo)
+        vehicleInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 20).isActive = true
+        vehicleInfo.topAnchor.constraint(equalTo: newVehiclePage.topAnchor, constant: 10).isActive = true
+        vehicleInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
+        vehicleInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        newVehiclePage.addSubview(vehicleLicenseInfo)
+        vehicleLicenseInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 25).isActive = true
+        vehicleLicenseInfo.topAnchor.constraint(equalTo: vehicleInfo.bottomAnchor, constant: 0).isActive = true
+        vehicleLicenseInfo.widthAnchor.constraint(equalTo: newVehiclePage.widthAnchor, constant: -20).isActive = true
+        vehicleLicenseInfo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.view.addSubview(editingContainer)
+        editingContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        editingContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        editingContainer.topAnchor.constraint(equalTo: newVehiclePage.bottomAnchor, constant: 10).isActive = true
+        editingContainer.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        editingContainer.addSubview(editingTableView)
+        editingTableView.leftAnchor.constraint(equalTo: editingContainer.leftAnchor, constant: 5).isActive = true
+        editingTableView.rightAnchor.constraint(equalTo: editingContainer.rightAnchor, constant: -5).isActive = true
+        editingTableView.topAnchor.constraint(equalTo: editingContainer.topAnchor, constant: 5).isActive = true
+        editingTableView.bottomAnchor.constraint(equalTo: editingContainer.bottomAnchor, constant: -5).isActive = true
+        
+    }
+    
+    func setupCurrentViews(state: UserState) {
+        switch state {
+        case .current:
+            self.setupCurrent()
+        case .none:
+            self.setupNoView()
         }
     }
     
-    func fetchUserAndSetupVehicles() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        var userVehicleID: String!
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                userVehicleID = dictionary["vehicleID"] as? String
-                if userVehicleID != nil {
-                    self.vehicles = self.vehicles + 1
-                } else { self.vehicles = 0 }
-                
-                if userVehicleID != nil {
-                    Database.database().reference().child("vehicles").child(userVehicleID).observeSingleEvent(of: .value, with: { (snap) in
-                        if let dictionary = snap.value as? [String:AnyObject] {
-                            let vehicleMake = dictionary["vehicleMake"] as? String
-                            let vehicleModel = dictionary["vehicleModel"] as? String
-                            let vehicleYear = dictionary["vehicleYear"] as? String
-                            let vehicleLicensePlate = dictionary["vehicleLicensePlate"] as? String
-                            let vehicleImageURL = dictionary["vehicleImageURL"] as? String
-                            
-                            if vehicleImageURL == nil {
-                                self.currentVehicleImageView.image = UIImage(named: "profileprofile")
-                            } else {
-                                self.currentVehicleImageView.loadImageUsingCacheWithUrlString(vehicleImageURL!)
-                            }
-                            
-                            let text = vehicleYear! + " " + vehicleMake! + " " + vehicleModel!
-                            self.vehicleInfo.text = text
-                            self.vehicleLicenseInfo.text = vehicleLicensePlate!
-                        }
-                    }, withCancel: nil)
-                }
+    func setupCurrent() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.vehiclePageHeightAnchorSmall.isActive = false
+            self.vehiclePageHeightAnchorTall.isActive = true
+            self.addLabel.alpha = 0
+            self.addButton.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.vehicleInfo.alpha = 1
+                self.vehicleLicenseInfo.alpha = 1
+                self.editingContainer.alpha = 1
+                self.editingTableView.alpha = 1
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                //
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(1)), execute: {
-                self.setupVehicleView()
-                self.startActivityIndicatorView.stopAnimating()
-                self.blurSquare.alpha = 0
-            })
-        }, withCancel: nil)
-        return
+        }
+    }
+    
+    func setupNoView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.vehiclePageHeightAnchorSmall.isActive = true
+            self.vehiclePageHeightAnchorTall.isActive = false
+            self.vehicleInfo.alpha = 0
+            self.vehicleLicenseInfo.alpha = 0
+            self.editingContainer.alpha = 0
+            self.editingTableView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.addLabel.alpha = 1
+                self.addButton.alpha = 1
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                
+            }
+        }
     }
     
     private func registerUserIntoDatabaseWithUID(uid: String, values: [String: AnyObject]) {
@@ -342,22 +346,11 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (true) in
             let userId = Auth.auth().currentUser?.uid
             let userRef = Database.database().reference().child("users").child(userId!)
-            userRef.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    let vehicleID = dictionary["vehicleID"] as? String
-                    let vehicleRef = Database.database().reference().child("vehicles").child(vehicleID!)
-                    vehicleRef.removeValue()
-                    userRef.child("vehicleID").removeValue()
-                    userRef.child("vehicleImageURL").removeValue()
-                }
-                let userVehicleRef = Database.database().reference().child("user-vehicles")
-                userVehicleRef.child(userId!).removeValue()
-                
-                self.newVehiclePage.removeFromSuperview()
-                self.editingContainer.removeFromSuperview()
-                
-                self.fetchUserAndSetupVehicles()
-            }
+            userRef.child("vehicleID").removeValue()
+            userRef.child("vehicleImageURL").removeValue()
+            userRef.child("Vehicle").removeValue()
+            let userVehicleRef = Database.database().reference().child("user-vehicles")
+            userVehicleRef.child(userId!).removeValue()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true)
@@ -369,7 +362,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func addAVehicleButtonPressed(sender: UIButton) {
-        delegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
+        self.delegate?.setupAddAVehicle()
     }
     
     

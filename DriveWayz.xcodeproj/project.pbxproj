@@ -58,6 +58,8 @@
 		4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492920F018D300F00B3B /* MyAPIClient.swift */; };
 		4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492A20F018D400F00B3B /* SettingsViewController.swift */; };
 		4DCC6BF92110D5FD00AEEF35 /* DelegateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */; };
+		4DCC6C0121134D3200AEEF35 /* LaunchAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */; };
+		4DCC6C03211354A300AEEF35 /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */; };
 		4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */; };
 		4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */; };
 		4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */; };
@@ -142,6 +144,8 @@
 		4DCA492920F018D300F00B3B /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		4DCA492A20F018D400F00B3B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateViewController.swift; sourceTree = "<group>"; };
+		4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAnimationsViewController.swift; sourceTree = "<group>"; };
+		4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
 		4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicles.swift; sourceTree = "<group>"; };
 		4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingInfoViewController.swift; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				4DCC6BF82110D5FD00AEEF35 /* DelegateViewController.swift */,
 				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
 				4D37436120DC989900923BC4 /* TabViewController.swift */,
+				4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */,
 			);
 			path = "Enter Views";
 			sourceTree = "<group>";
@@ -366,6 +371,7 @@
 			children = (
 				4D21D2F120CC9FF9002D7005 /* Assets.xcassets */,
 				4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */,
+				4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */,
 				4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */,
 			);
 			path = Assets;
@@ -496,6 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DCC6C03211354A300AEEF35 /* Oswald-ExtraLight.ttf in Resources */,
 				4D26EE6120E5C5DB00E369EF /* ParkingTableViewCell.xib in Resources */,
 				4D21D2E220CC9FC4002D7005 /* LaunchScreen.storyboard in Resources */,
 				4D21D2DD20CC9FC3002D7005 /* Main.storyboard in Resources */,
@@ -572,6 +579,7 @@
 				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -595,6 +603,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOMSMorphingLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -654,6 +663,7 @@
 				4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */,
 				4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */,
 				4D2EB5C621039486004AEA54 /* ParkingImageViewController.swift in Sources */,
+				4DCC6C0121134D3200AEEF35 /* LaunchAnimationsViewController.swift in Sources */,
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
 				4D2DDEAC21095F02005AB485 /* ParkingCurrentViewController.swift in Sources */,

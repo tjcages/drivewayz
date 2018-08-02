@@ -14,7 +14,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     var scrollViewParking: UIScrollView!
     var parkingDelegate: controlsNewParking?
-    var viewDelegate: controlsAccountViews?
+//    var viewDelegate: controlsAccountViews?
     
     let visualBlurEffect: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
@@ -625,7 +625,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let id = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         let userParkingRef = Database.database().reference().child("user-parking")
-        let userRef = Database.database().reference().child("users").child(id)
+        let userRef = Database.database().reference().child("users").child(id).child("Parking")
         
         let parkingID = childRef.key
         userParkingRef.updateChildValues([parkingID: 1])
@@ -754,7 +754,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             UIView.animate(withDuration: 1, animations: {
             }, completion: nil)
             self.parkingDelegate?.removeNewParkingView()
-            self.viewDelegate?.setupParkingViewControllers(parkingStatus: ParkingStatus.yesParking)
+//            self.viewDelegate?.setupParkingViewControllers(parkingStatus: ParkingStatus.yesParking)
             self.view.layoutIfNeeded()
             self.activityIndicatorParkingView.stopAnimating()
             self.saveParkingButton.setTitle("Save", for: .normal)
