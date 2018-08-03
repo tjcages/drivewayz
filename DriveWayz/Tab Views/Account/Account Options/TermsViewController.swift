@@ -69,6 +69,22 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         
         return button
     }()
+    
+    var scrollToBottom: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "logout")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        button.alpha = 0.9
+        button.layer.cornerRadius = 10
+        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.addTarget(self, action: #selector(scrollToBottom(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,6 +149,17 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         agreement2.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -10).isActive = true
         agreement2.sizeToFit()
         
+        termsContainer.addSubview(scrollToBottom)
+        scrollToBottom.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -65).isActive = true
+        scrollToBottom.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -5).isActive = true
+        scrollToBottom.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        scrollToBottom.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        
+    }
+    
+    @objc func scrollToBottom(sender: UIButton) {
+        let bottomOffset = CGPoint(x: 0, y: 10500 - (self.view.frame.height - 210))
+        self.textView.setContentOffset(bottomOffset, animated: true)
     }
     
     @objc func agreeToTerms(sender: UIButton) {

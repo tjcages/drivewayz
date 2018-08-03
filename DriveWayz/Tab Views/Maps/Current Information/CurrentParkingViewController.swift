@@ -380,6 +380,7 @@ extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
         let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
         ref.removeValue()
         
+        
         timerStarted = false
         notificationSent = false
         currentParking = false

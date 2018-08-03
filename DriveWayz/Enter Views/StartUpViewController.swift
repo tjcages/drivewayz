@@ -45,7 +45,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label1: UILabel = {
         let label = UILabel()
         label.text = "Find parking conveniently and easily. We provide cheaper options compared to conventional parking."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -69,7 +69,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label2: UILabel = {
         let label = UILabel()
         label.text = "Don't waste time anymore searching for parking. Just reserve an open spot and avoid the hassle."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -93,7 +93,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label3: UILabel = {
         let label = UILabel()
         label.text = "One goal, one passion - Smarter Parking."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -424,8 +424,8 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         driveWayz.centerXAnchor.constraint(lessThanOrEqualTo: view.centerXAnchor).isActive = true
         driveWayzTopAnchor = driveWayz.topAnchor.constraint(equalTo: view.topAnchor, constant: 50)
         driveWayzTopAnchor.isActive = true
-        driveWayz.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        driveWayz.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        driveWayz.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        driveWayz.widthAnchor.constraint(equalToConstant: 160).isActive = true
         
     }
     
@@ -524,11 +524,14 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         
     }
     
+    var registerTopAnchor: NSLayoutConstraint!
+    
     func setupRegister() {
         
         view.addSubview(NewUserFirstNameTextField)
         
-        NewUserFirstNameTextField.topAnchor.constraint(equalTo: driveWayz.bottomAnchor, constant: 25).isActive = true
+        registerTopAnchor = NewUserFirstNameTextField.topAnchor.constraint(equalTo: driveWayz.bottomAnchor, constant: 25)
+            registerTopAnchor.isActive = true
         NewUserFirstNameTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40).isActive = true
         NewUserFirstNameTextField.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -8).isActive = true
         NewUserFirstNameTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -676,12 +679,14 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         
         if self.NewUserPasswordTextField.alpha == 0 {
             self.driveWayzTopAnchor.constant = 50
-            self.registerButtonCenterAnchor.constant = 150
+            self.registerButtonCenterAnchor.constant = 50
             self.facebookLoginCenterAnchor.isActive = false
             self.facebookRegisterCenterAnchor.isActive = true
             self.loginButton.tag = 2
-            self.backIconTopAnchor.constant = 80
+            self.backIconTopAnchor.constant = 150
+            self.registerTopAnchor.constant = -60
             UIView.animate(withDuration: 0.3, animations: {
+                self.driveWayz.alpha = 0
                 self.backIcon.alpha = 1
                 self.loginButton.alpha = 0
                 self.orLabel.alpha = 0
@@ -818,7 +823,9 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         self.loginButtonCenterAnchor.constant = 150
         self.registerButtonCenterAnchor.constant = 250
         self.backIconTopAnchor.constant = 300
+        self.registerTopAnchor.constant = 25
         UIView.animate(withDuration: 0.3, animations: {
+            self.driveWayz.alpha = 1
             self.backIcon.alpha = 0
             self.userEmailTextField.alpha = 0
             self.userEmailIcon.alpha = 0

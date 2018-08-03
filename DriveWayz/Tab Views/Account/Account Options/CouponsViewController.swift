@@ -209,7 +209,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.currentCoupons.text = "Current Coupons"
-                    self.termsHeightAnchor.constant = 350
+                    self.termsHeightAnchor.constant = 300
                     self.back.alpha = 1
                     self.accept.alpha = 1
                     self.couponsTableView.alpha = 1

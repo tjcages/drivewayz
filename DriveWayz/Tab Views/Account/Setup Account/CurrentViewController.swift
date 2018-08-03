@@ -231,7 +231,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func getParkingInfo() {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser)
+        let ref = Database.database().reference().child("users").child(currentUser).child("Parking")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let parkingID = dictionary["parkingID"] as? String {
@@ -275,7 +275,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func setData(newUser: String) {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser)
+        let ref = Database.database().reference().child("users").child(currentUser).child("Parking")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let parkingID = dictionary["parkingID"] as? String {
@@ -313,20 +313,22 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                                     self.fromToLabel.text = "From \(dateString) to \(endDateString)"
                                 }
                             })
-                            let vehicleID = info["vehicleID"] as? String
-                            let vehicleRef = Database.database().reference().child("vehicles").child(vehicleID!)
-                            vehicleRef.observeSingleEvent(of: .value, with: { (vehicles) in
-                                if let vehicle = vehicles.value as? [String:AnyObject] {
-                                    let vehicleYear = vehicle["vehicleYear"] as! String
-                                    let vehicleMake = vehicle["vehicleMake"] as! String
-                                    let vehicleModel = vehicle["vehicleModel"] as! String
-                                    let vehicleColor = vehicle["vehicleColor"] as! String
-                                    let vehicleLicense = vehicle["vehicleLicensePlate"] as? String
-                                    let vehicleInformation = "\(vehicleColor) \(vehicleYear) \(vehicleMake) \(vehicleModel)"
-                                    self.userVehicleLabel.text = vehicleInformation
-                                    self.userLicenseLabel.text = vehicleLicense
-                                }
-                            })
+                            if let vehicleDictionary = info["Vehicle"] as? [String:AnyObject] {
+                                let vehicleID = vehicleDictionary["vehicleID"] as? String
+                                let vehicleRef = Database.database().reference().child("vehicles").child(vehicleID!)
+                                vehicleRef.observeSingleEvent(of: .value, with: { (vehicles) in
+                                    if let vehicle = vehicles.value as? [String:AnyObject] {
+                                        let vehicleYear = vehicle["vehicleYear"] as! String
+                                        let vehicleMake = vehicle["vehicleMake"] as! String
+                                        let vehicleModel = vehicle["vehicleModel"] as! String
+                                        let vehicleColor = vehicle["vehicleColor"] as! String
+                                        let vehicleLicense = vehicle["vehicleLicensePlate"] as? String
+                                        let vehicleInformation = "\(vehicleColor) \(vehicleYear) \(vehicleMake) \(vehicleModel)"
+                                        self.userVehicleLabel.text = vehicleInformation
+                                        self.userLicenseLabel.text = vehicleLicense
+                                    }
+                                })
+                            }
                             self.Edits = ["Vehicle left", "Not the correct vehicle", "Message \(firstName)", "Report \(firstName)"]
                             self.editingTableView.reloadData()
                         }

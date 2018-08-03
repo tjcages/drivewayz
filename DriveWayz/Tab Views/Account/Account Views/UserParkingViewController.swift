@@ -80,6 +80,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         addParkingLabel.translatesAutoresizingMaskIntoConstraints = false
         addParkingLabel.textAlignment = .center
         addParkingLabel.alpha = 0
+        addParkingLabel.isUserInteractionEnabled = true
         
         return addParkingLabel
     }()
@@ -277,6 +278,8 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         addParkingLabel.centerYAnchor.constraint(equalTo: addParkingButton.centerYAnchor).isActive = true
         addParkingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         addParkingLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addAParkingButtonTapped(sender:)))
+        addParkingLabel.addGestureRecognizer(gesture)
 
         newParkingPage.addSubview(parkingInfo)
         parkingInfo.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 15).isActive = true
@@ -409,6 +412,10 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         self.delegate?.setupAddAParkingSpot()
     }
     
+    @objc func addAParkingButtonTapped(sender: UITapGestureRecognizer) {
+        self.delegate?.setupAddAParkingSpot()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Edits.count
     }
@@ -451,9 +458,10 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
             userRef.observeSingleEvent(of: .value) { (snapshot) in
                 let checkRef = userRef.child("Parking")
                 checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let parkingID = snapshot.value as? String {
-                        let userParkingRef = Database.database().reference().child("user-parking").child(parkingID)
-                        let parkingRef = Database.database().reference().child("parking").child(parkingID)
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        let parkingID = dictionary["parkingID"] as? String
+                        let userParkingRef = Database.database().reference().child("user-parking").child(parkingID!)
+                        let parkingRef = Database.database().reference().child("parking").child(parkingID!)
                         if tag == 1 {
                             userRef.child("parkingID").removeValue()
                             userRef.child("Parking").removeValue()

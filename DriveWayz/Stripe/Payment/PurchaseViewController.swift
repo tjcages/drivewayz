@@ -620,7 +620,13 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
             }
         }
         ///////
-        sendNewCurrent()
+        let observeRef = Database.database().reference().child("parking").child(self.parkingId).child("Current")
+        observeRef.observe(.childAdded) { (snapshot) in
+            self.sendNewCurrent(status: "start")
+        }
+        observeRef.observe(.childRemoved) { (snapshot) in
+            self.sendNewCurrent(status: "end")
+        }
         
         let fundRef = Database.database().reference().child("users").child(self.id)
         fundRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -643,7 +649,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         }, withCancel: nil)
     }
     
-    func sendNewCurrent() {
+    func sendNewCurrent(status: String) {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let ref = Database.database().reference().child("users").child(currentUser)
         ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -653,32 +659,54 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 let firstName: String = String(fullNameArr![0])
                 
                 let sendRef = Database.database().reference().child("currentParking").child(currentUser)
-                sendRef.updateChildValues(["status": "In use", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
-                self.fetchNewCurrent(key: self.id, name: firstName)
+                if status == "start" {
+                    sendRef.updateChildValues(["status": "In use", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
+                } else if status == "end" {
+                    sendRef.updateChildValues(["status": "Finished", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
+                }
+                self.fetchNewCurrent(key: self.id, name: firstName, status: status)
             }
         }
     }
     
-    func fetchNewCurrent(key: String, name: String) {
+    func fetchNewCurrent(key: String, name: String, status: String) {
         Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let fromDevice = dictionary["DeviceID"] as? String
-                self.setupPushNotifications(fromDevice: fromDevice!, name: name)
+                self.setupPushNotifications(fromDevice: fromDevice!, name: name, status: status)
             }
         }
     }
     
-    fileprivate func setupPushNotifications(fromDevice: String, name: String) {
-        let title = "\(name) is currently parked in your spot!"
-        let body = "Open to see more details."
-        let toDevice = fromDevice
-        var headers: HTTPHeaders = HTTPHeaders()
-        
-        headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
-        let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
-        
-        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
-            //
+    fileprivate func setupPushNotifications(fromDevice: String, name: String, status: String) {
+        if status == "start" {
+            let title = "\(name) is currently parked in your spot!"
+            let body = "Open to see more details."
+            let toDevice = fromDevice
+            var headers: HTTPHeaders = HTTPHeaders()
+            
+            headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+            let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
+            
+            Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+                //
+            }
+        } else if status == "end" {
+            let title = "\(name)'s time has run out."
+            let body = "Let us know if they've left your parking space"
+            let toDevice = fromDevice
+            var headers: HTTPHeaders = HTTPHeaders()
+            
+            headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+            let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
+            
+            Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+                //
+            }
+            
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            let deleteRef = Database.database().reference().child("currentParking")
+            deleteRef.child(currentUser).removeValue()
         }
     }
     

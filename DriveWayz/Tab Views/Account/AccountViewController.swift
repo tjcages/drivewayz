@@ -276,44 +276,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return line
     }()
     
-    lazy var container: UIView = {
-        let containerBar = UIView()
-        containerBar.translatesAutoresizingMaskIntoConstraints = false
-        containerBar.backgroundColor = UIColor.clear
-        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gestureOpen.direction = .right
-        containerBar.addGestureRecognizer(gestureOpen)
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gesture.direction = .left
-        containerBar.addGestureRecognizer(gesture)
-        
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.isUserInteractionEnabled = false
-        blurView.alpha = 1
-        containerBar.addSubview(blurView)
-        
-        blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        let whiteView = UIButton(type: .custom)
-        whiteView.backgroundColor = UIColor.white
-        whiteView.alpha = 0.5
-        whiteView.translatesAutoresizingMaskIntoConstraints = false
-        whiteView.isUserInteractionEnabled = false
-        containerBar.insertSubview(whiteView, belowSubview: blurView)
-        
-        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        return containerBar
-    }()
-    
     var tabFeed: UIButton = {
         let button = UIButton(type: .custom)
         let image = UIImage(named: "feed")
@@ -324,6 +286,15 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         button.translatesAutoresizingMaskIntoConstraints = false
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
         button.addTarget(self, action: #selector(optionsTabGestureTapped(sender:)), for: .touchUpInside)
+        button.layer.backgroundColor = UIColor.clear.cgColor
+        button.alpha = 0.9
+        button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
+        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        let rectShape = CAShapeLayer()
+        rectShape.bounds = button.frame
+        rectShape.position = button.center
+        rectShape.path = UIBezierPath(roundedRect: button.bounds, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: 10, height: 10)).cgPath
+        button.layer.mask = rectShape
         
         return button
     }()
@@ -345,7 +316,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return parking
     }()
     
-    var Options = ["", "Profile", "Coupons", "Settings", "Terms", "Contact us!", "Logout"]
+    var Main = ["Profile", "Hosting", "Vehicle", "Options"]
+    var Options = ["", "Main", "Coupons", "Settings", "Terms", "Contact us!", "Logout"]
     
     var effect: UIVisualEffect!
     
@@ -357,6 +329,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
         contentScrollView.delegate = self
         
         effect = visualBlurEffect.effect
@@ -378,11 +352,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         fetchUser()
         setupOptions()
         startUpActivity()
+        setupMainTableView()
     }
     
     @objc func segmentRight(sender: UISwipeGestureRecognizer) {
         if self.vehicleViewAnchor.constant == 0 && self.optionsTabViewConstraint.constant == 0 {
-            self.optionsTabGesture()
+            self.openMainOptions()
         } else if self.vehicleViewAnchor.constant == 0 {
             self.parkingPressedFunc()
         } else if self.parkingViewAnchor.constant == 0 {
@@ -396,7 +371,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         } else if self.parkingViewAnchor.constant == 0 {
             self.vehiclePressedFunc()
         } else {
-            self.optionsTabGesture()
+            self.openMainOptions()
         }
     }
     
@@ -803,8 +778,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.view.addSubview(tabFeed)
         tabFeed.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
         tabFeed.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 10).isActive = true
-        tabFeed.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        tabFeed.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        tabFeed.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        tabFeed.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
     }
     
@@ -839,43 +814,24 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         })
     }
     
-    @objc func optionsTabGestureTapped(sender: UIButton) {
-        optionsTabGesture()
-    }
-    
-    @objc func optionsTabGestureSwiped(sender: UITapGestureRecognizer) {
-        optionsTabGesture()
-    }
-    
-    @objc func optionsTabGesture() {
-        if optionsTabViewConstraint.constant == 120 {
-            self.optionsTabViewConstraint.constant = 0
-            UIView.animate(withDuration: 0.3) {
-                let image = UIImage(named: "feed")
-                let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                self.tabFeed.setImage(tintedImage, for: .normal)
-                self.tabFeed.tintColor = Theme.WHITE
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            self.optionsTabViewConstraint.constant = 120
-            UIView.animate(withDuration: 0.3) {
-                let image = UIImage(named: "feed")
-                let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                self.tabFeed.setImage(tintedImage, for: .normal)
-                self.tabFeed.tintColor = Theme.DARK_GRAY
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Options.count
+        if tableView == optionsTableView {
+            return Options.count
+        } else {
+            return Main.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = Options[indexPath.row]
+        if tableView == optionsTableView {
+            cell.textLabel?.text = Options[indexPath.row]
+            if indexPath.row == 0 {
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 120, bottom: 0, right: 0)
+            }
+        } else {
+            cell.textLabel?.text = Main[indexPath.row]
+        }
         cell.textLabel?.textColor = Theme.WHITE
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
@@ -884,45 +840,118 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        optionsTabGesture()
-        if indexPath.row == (Options.count-1) {
-            handleLogout()
-        } else if indexPath.row == (Options.count-2) {
-            
-            self.view.addSubview(self.contactController.view)
-            self.addChildViewController(contactController)
-            self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.contactController.view.alpha = 1
-            })
-        } else if indexPath.row == (Options.count-3) {
-            
-            self.view.addSubview(self.termsController.view)
-            self.addChildViewController(termsController)
-            self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.termsController.view.alpha = 1
-            })
-        } else if indexPath.row == (Options.count-5) {
-            
-            self.view.addSubview(self.couponController.view)
-            self.addChildViewController(couponController)
-            self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.couponController.view.alpha = 1
-            })
+        if tableView == optionsTableView {
+            if indexPath.row == (Options.count-1) {
+                handleLogout()
+                self.openMainOptions()
+            } else if indexPath.row == (Options.count-2) {
+                
+                self.view.addSubview(self.contactController.view)
+                self.addChildViewController(contactController)
+                self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+                self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+                self.contactController.view.alpha = 0
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.contactController.view.alpha = 1
+                    })
+                }
+                self.openMainOptions()
+            } else if indexPath.row == (Options.count-3) {
+                
+                self.view.addSubview(self.termsController.view)
+                self.addChildViewController(termsController)
+                self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+                self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+                self.termsController.view.alpha = 0
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.termsController.view.alpha = 1
+                    })
+                }
+                self.openMainOptions()
+            } else if indexPath.row == (Options.count-5) {
+                
+                self.view.addSubview(self.couponController.view)
+                self.addChildViewController(couponController)
+                self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+                self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+                self.couponController.view.alpha = 0
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.couponController.view.alpha = 1
+                    })
+                }
+                self.openMainOptions()
+            } else if indexPath.row == (Options.count-6) {
+                self.optionsTabViewConstraint.constant = 120
+                UIView.animate(withDuration: 0.1, animations: {
+                    let image = UIImage(named: "feed")
+                    let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                    self.tabFeed.setImage(tintedImage, for: .normal)
+                    self.tabFeed.tintColor = Theme.DARK_GRAY
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.mainTableHeight.constant = 175
+                        self.mainView.alpha = 0.9
+                        let image = UIImage(named: "feed")
+                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                        self.tabFeed.setImage(tintedImage, for: .normal)
+                        self.tabFeed.tintColor = Theme.WHITE
+                        self.tabFeed.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
+                        self.view.layoutIfNeeded()
+                    }) { (success) in
+                        UIView.animate(withDuration: 0.2) {
+                            self.mainTableView.alpha = 1
+                        }
+                    }
+                }
+            }
+        } else {
+            if indexPath.row == (Main.count-1) {
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.mainTableView.alpha = 0
+                }) { (success) in
+                    UIView.animate(withDuration: 0.2, animations: {
+                        let image = UIImage(named: "feed")
+                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                        self.tabFeed.setImage(tintedImage, for: .normal)
+                        self.tabFeed.tintColor = Theme.DARK_GRAY
+                        self.tabFeed.layer.backgroundColor = UIColor.clear.cgColor
+                        self.mainTableHeight.constant = 0
+                        self.mainView.alpha = 0
+                        self.view.layoutIfNeeded()
+                }) { (success) in
+                        self.optionsTabViewConstraint.constant = 0
+                        UIView.animate(withDuration: 0.2) {
+                            let image = UIImage(named: "feed")
+                            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                            self.tabFeed.setImage(tintedImage, for: .normal)
+                            self.tabFeed.tintColor = Theme.WHITE
+                            self.view.layoutIfNeeded()
+                        }
+                    }
+                }
+            } else if indexPath.row == (Main.count-2) {
+                self.vehiclePressedFunc()
+                self.openMainOptions()
+            } else if indexPath.row == (Main.count-3) {
+                self.parkingPressedFunc()
+                self.openMainOptions()
+            } else if indexPath.row == (Main.count-4) {
+                self.recentPressedFunc()
+                self.openMainOptions()
+            }
         }
     }
     
@@ -964,6 +993,88 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         controller.delegate = self
         return controller
     }()
+    
+    var mainView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 175))
+        view.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
+        view.alpha = 0.9
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rectShape = CAShapeLayer()
+        rectShape.bounds = view.frame
+        rectShape.position = view.center
+        rectShape.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.bottomLeft , .bottomRight , .topLeft], cornerRadii: CGSize(width: 10, height: 10)).cgPath
+        view.layer.mask = rectShape
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var mainTableView: UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        view.isScrollEnabled = false
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var mainTableHeight: NSLayoutConstraint!
+    
+    func setupMainTableView() {
+        self.view.addSubview(mainView)
+        mainView.rightAnchor.constraint(equalTo: tabFeed.rightAnchor).isActive = true
+        mainView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        mainView.topAnchor.constraint(equalTo: tabFeed.bottomAnchor).isActive = true
+        mainTableHeight = mainView.heightAnchor.constraint(equalToConstant: 0)
+            mainTableHeight.isActive = true
+        
+        mainView.addSubview(mainTableView)
+        mainTableView.topAnchor.constraint(equalTo: mainView.topAnchor).isActive = true
+        mainTableView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor).isActive = true
+        mainTableView.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
+        mainTableView.rightAnchor.constraint(equalTo: mainView.rightAnchor).isActive = true
+    }
+    
+    func openMainOptions() {
+        if mainView.alpha == 0 && optionsTabViewConstraint.constant == 120 {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.mainTableHeight.constant = 175
+                self.mainView.alpha = 0.9
+                let image = UIImage(named: "feed")
+                let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                self.tabFeed.setImage(tintedImage, for: .normal)
+                self.tabFeed.tintColor = Theme.WHITE
+                self.tabFeed.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.mainTableView.alpha = 1
+                }, completion: nil)
+            }
+        } else {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.mainTableView.alpha = 0
+                self.optionsTabViewConstraint.constant = 120
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                UIView.animate(withDuration: 0.2, animations: {
+                    let image = UIImage(named: "feed")
+                    let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+                    self.tabFeed.setImage(tintedImage, for: .normal)
+                    self.tabFeed.tintColor = Theme.DARK_GRAY
+                    self.tabFeed.layer.backgroundColor = UIColor.clear.cgColor
+                    self.mainTableHeight.constant = 0
+                    self.mainView.alpha = 0
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    
+    @objc func optionsTabGestureTapped(sender: UIButton) {
+        openMainOptions()
+    }
     
     func setupAddAVehicle() {
         self.delegate?.setupNewVehicle(vehicleStatus: .noVehicle)

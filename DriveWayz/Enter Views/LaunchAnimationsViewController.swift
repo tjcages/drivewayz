@@ -85,6 +85,10 @@ class LaunchAnimationsViewController: UIViewController {
                         self.startupAnchor.constant = 0
                         self.drivewayzCar.alpha = 0
                         self.morphingLabel.alpha = 0
+                        self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                        self.morphingLabel.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                        self.tabController.view.alpha = 1
+                        self.startupController.view.alpha = 1
                         self.view.layoutIfNeeded()
                     }, completion: { (success) in
                         //
@@ -101,19 +105,21 @@ class LaunchAnimationsViewController: UIViewController {
             self.addChildViewController(self.tabController)
             self.tabController.willMove(toParentViewController: self)
             self.tabController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = self.tabController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height * 2)
+            self.startupAnchor = self.tabController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             self.startupAnchor.isActive = true
             self.tabController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.tabController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            self.tabController.view.alpha = 0
         } else {
             self.view.addSubview(self.startupController.view)
             self.addChildViewController(self.startupController)
             self.startupController.willMove(toParentViewController: self)
             self.startupController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = self.startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height * 2)
+            self.startupAnchor = self.startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             self.startupAnchor.isActive = true
             self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            self.startupController.view.alpha = 0
         }
     }
 

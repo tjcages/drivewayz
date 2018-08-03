@@ -204,7 +204,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         userRef.updateChildValues(["accountID": userAccount])
     }
     
-        var count: Int = 0
+    var count: Int = 0
     private func setFundsToZero() {
         if let currentUser = Auth.auth().currentUser?.uid {
             let checkRef = Database.database().reference().child("users").child(currentUser)

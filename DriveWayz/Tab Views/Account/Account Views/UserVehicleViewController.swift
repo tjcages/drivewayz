@@ -57,6 +57,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         addLabel.translatesAutoresizingMaskIntoConstraints = false
         addLabel.textAlignment = .center
         addLabel.alpha = 0
+        addLabel.isUserInteractionEnabled = true
         
         return addLabel
     }()
@@ -227,6 +228,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         addLabel.centerYAnchor.constraint(equalTo: addButton.centerYAnchor).isActive = true
         addLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         addLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addAVehicleButtonTapped(sender:)))
+        addLabel.addGestureRecognizer(gesture)
         
         newVehiclePage.addSubview(vehicleInfo)
         vehicleInfo.leftAnchor.constraint(equalTo: newVehiclePage.leftAnchor, constant: 20).isActive = true
@@ -345,6 +348,14 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         let alert = UIAlertController(title: "Confirm", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (true) in
             let userId = Auth.auth().currentUser?.uid
+            let vehicleRef = Database.database().reference().child("users").child(userId!).child("Vehicle")
+            vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let vehicleID = dictionary["vehicleID"] as? String
+                    let vehicle = Database.database().reference().child("vehicles")
+                    vehicle.child(vehicleID!).removeValue()
+                }
+            })
             let userRef = Database.database().reference().child("users").child(userId!)
             userRef.child("vehicleID").removeValue()
             userRef.child("vehicleImageURL").removeValue()
@@ -365,5 +376,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         self.delegate?.setupAddAVehicle()
     }
     
+    @objc func addAVehicleButtonTapped(sender: UITapGestureRecognizer) {
+        self.delegate?.setupAddAVehicle()
+    }
     
 }
