@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.statusBarStyle = .default
-        UNUserNotificationCenter.current().delegate = self
+        
         detectDevice()
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
@@ -49,24 +49,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.makeKeyAndVisible()
         
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
-
-        if #available(iOS 10.0, *)
-        {
-            UNUserNotificationCenter.current().delegate = self
-            let option: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(options: option) { (bool, error) in
-                
-            }
-        } else {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-                (granted, error) in
-                
-            }
-        }
-        application.registerForRemoteNotifications()
+        
         UIApplication.shared.applicationIconBadgeNumber = 0
+        self.configureNotifications()
+        application.registerForRemoteNotifications()
         
         return true
+    }
+    
+    func configureNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound])
+        { (granted, error) in
+            //
+        }
+        
+        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
+        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([category])
     }
     
     
@@ -162,29 +162,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    
-    // called when user interacts with notification (app not running in foreground)
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse, withCompletionHandler
-        completionHandler: @escaping () -> Void) {
-        
-        let userInfo = response.notification.request.content.body
-        print(userInfo)
-
-        return completionHandler()
-    }
-    
-    // called if app is running in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent
-        notification: UNNotification, withCompletionHandler completionHandler:
-        @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        
-        // show alert while app is running in foreground
-        return completionHandler([.badge, .sound, .alert])
-    }
-}
+//extension AppDelegate: UNUserNotificationCenterDelegate {
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        completionHandler([.alert, .sound])
+//    }
+//
+//    // For handling tap and user actions
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//
+//        switch response.actionIdentifier {
+//        case "action1":
+//            print("Action First Tapped")
+//        case "action2":
+//            print("Action Second Tapped")
+//        default:
+//            break
+//        }
+//        completionHandler()
+//    }
+//
+//}
 
 
 extension AppDelegate : MessagingDelegate {
@@ -199,14 +197,13 @@ extension AppDelegate : MessagingDelegate {
     }
 
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        print("Received data message: \(remoteMessage.appData)")
+//        print("Received data message: \(remoteMessage.appData)")
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         InstanceID.instanceID().instanceID(handler: { (result, error) in
             if error == nil {
                 AppDelegate.DEVICEID = (result?.token)!
-                print(result?.token)
                 self.connectToFCM()
             }
         })
@@ -214,8 +211,6 @@ extension AppDelegate : MessagingDelegate {
     
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
-        
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
         

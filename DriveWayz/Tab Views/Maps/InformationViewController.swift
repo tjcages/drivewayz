@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 var informationScrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -20,14 +21,17 @@ var informationScrollView: UIScrollView = {
 }()
 
 protocol controlCurrentParkingOptions {
-    func addCurrentOptions()
-    func removeCurrentOptions()
     func extendTimeView()
+    func closeExtendTimeView()
     func sendAvailability(availability: Bool)
     func setupLeaveAReview()
 }
 
-class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions {
+protocol extendTimeController {
+    func closeExtendTimeView()
+}
+
+class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController {
     
     var delegate: removePurchaseView?
     var parkingID: String?
@@ -43,7 +47,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let view = UIView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 0.9
+        view.alpha = 1
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -53,6 +57,18 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         return view
     }()
     
+    lazy var reserveController: ParkingReserveViewController = {
+        let controller = ParkingReserveViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Reserve"
+        controller.view.layer.cornerRadius = 5
+        controller.view.clipsToBounds = true
+        controller.delegate = self
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
     lazy var currentController: ParkingCurrentViewController = {
         let controller = ParkingCurrentViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -60,14 +76,15 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
+        controller.view.alpha = 0
         
         return controller
     }()
     
-    var currentContainer: UIView = {
+    var reserveContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
-        view.alpha = 0.9
+        view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -91,7 +108,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     var pictureContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
-        view.alpha = 0.9
+        view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -116,7 +133,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     var availabilityContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
-        view.alpha = 0.9
+        view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -140,7 +157,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     var reviewsContainer: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
-        view.alpha = 0.9
+        view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -154,7 +171,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     var signUpContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
-        view.alpha = 0.9
+        view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -176,43 +193,64 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         
         return label
     }()
+    
+    lazy var purchaseController: ExtendTimeViewController = {
+        let controller = ExtendTimeViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Purchase"
+        controller.view.layer.cornerRadius = 5
+        controller.view.alpha = 0
+        controller.hoursDelegate = self
+        controller.extendDelegate = self
+        
+        return controller
+    }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         informationScrollView.delegate = self
 
         setupViewControllers()
+        checkCurrentStatus()
     }
     
     func setData(cityAddress: String, imageURL: String, parkingCost: String, formattedAddress: String, timestamp: NSNumber, id: String, parkingID: String, parkingDistance: String, rating: Double, message: String) {
         self.parkingID = parkingID
         infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance, rating: rating)
         pictureController.setData(imageURL: imageURL)
+        reserveController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID, id: id)
         availabilityController.setData(id: id)
         reviewsController.setData(parkingID: parkingID)
         currentController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID)
+        purchaseController.setData(parkingCost: parkingCost, parkingID: parkingID, id: id)
     }
     
     func sendAvailability(availability: Bool) {
         self.delegate?.sendAvailability(availability: availability)
+        self.reserveController.setAvailability(available: availability)
     }
     
     var pictureHeightAnchor: NSLayoutConstraint!
+    var reserveContainerHeightAnchor: NSLayoutConstraint!
+    var hoursButtonAnchor: NSLayoutConstraint!
+    var hoursTopAnchor: NSLayoutConstraint!
 
     func setupViewControllers() {
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
         self.view.addSubview(informationScrollView)
-        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2)
+        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1100)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        informationScrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 30).isActive = true
+        informationScrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height - statusBarHeight).isActive = true
         
         informationScrollView.addSubview(infoContainer)
         infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        infoContainer.topAnchor.constraint(equalTo: informationScrollView.topAnchor).isActive = true
-        infoContainer.heightAnchor.constraint(equalToConstant: 110).isActive = true
+        infoContainer.topAnchor.constraint(equalTo: informationScrollView.topAnchor, constant: 5).isActive = true
+        infoContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         infoContainer.addSubview(infoController.view)
         infoController.view.centerXAnchor.constraint(equalTo: infoContainer.centerXAnchor).isActive = true
@@ -220,23 +258,44 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         infoController.view.topAnchor.constraint(equalTo: infoContainer.topAnchor).isActive = true
         infoController.view.widthAnchor.constraint(equalTo: infoContainer.widthAnchor).isActive = true
         
-        informationScrollView.addSubview(currentContainer)
-        currentContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        currentContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        currentContainer.topAnchor.constraint(equalTo: self.infoContainer.bottomAnchor, constant: 10).isActive = true
-        currentContainer.heightAnchor.constraint(equalToConstant: 165).isActive = true
         
-        currentContainer.addSubview(currentController.view)
-        currentController.view.centerXAnchor.constraint(equalTo: self.currentContainer.centerXAnchor).isActive = true
-        currentController.view.bottomAnchor.constraint(equalTo: self.currentContainer.bottomAnchor).isActive = true
-        currentController.view.topAnchor.constraint(equalTo: self.currentContainer.topAnchor).isActive = true
-        currentController.view.widthAnchor.constraint(equalTo: self.currentContainer.widthAnchor).isActive = true
+        informationScrollView.addSubview(reserveContainer)
+        reserveContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        reserveContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        reserveContainer.topAnchor.constraint(equalTo: self.infoContainer.bottomAnchor, constant: 10).isActive = true
+        reserveContainerHeightAnchor = reserveContainer.heightAnchor.constraint(equalToConstant: 120)
+            reserveContainerHeightAnchor.isActive = true
+        
+        reserveContainer.addSubview(reserveController.view)
+        reserveController.view.centerXAnchor.constraint(equalTo: self.reserveContainer.centerXAnchor).isActive = true
+        reserveController.view.bottomAnchor.constraint(equalTo: self.reserveContainer.bottomAnchor).isActive = true
+        reserveController.view.topAnchor.constraint(equalTo: self.reserveContainer.topAnchor).isActive = true
+        reserveController.view.widthAnchor.constraint(equalTo: self.reserveContainer.widthAnchor).isActive = true
+
+        
+        reserveContainer.addSubview(currentController.view)
+        currentController.view.centerXAnchor.constraint(equalTo: self.reserveContainer.centerXAnchor).isActive = true
+        currentController.view.bottomAnchor.constraint(equalTo: self.reserveContainer.bottomAnchor).isActive = true
+        currentController.view.topAnchor.constraint(equalTo: self.reserveContainer.topAnchor).isActive = true
+        currentController.view.widthAnchor.constraint(equalTo: self.reserveContainer.widthAnchor).isActive = true
+        
+        
+        informationScrollView.addSubview(purchaseController.view)
+//        self.addChildViewController(purchaseController)
+        purchaseController.didMove(toParentViewController: self)
+        purchaseController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        purchaseController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        hoursTopAnchor = purchaseController.view.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)
+            hoursTopAnchor.isActive = true
+        hoursButtonAnchor = purchaseController.view.heightAnchor.constraint(equalToConstant: 80)
+            hoursButtonAnchor.isActive = true
         
         
         informationScrollView.addSubview(pictureContainer)
         pictureContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        pictureContainer.topAnchor.constraint(equalTo: currentContainer.bottomAnchor, constant: 10).isActive = true
+        pictureHeightAnchor = pictureContainer.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)
+            pictureHeightAnchor.isActive = true
         pictureContainer.heightAnchor.constraint(equalToConstant: 320).isActive = true
         
         pictureContainer.addSubview(pictureController.view)
@@ -286,7 +345,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == informationScrollView {
-            if scrollView.contentOffset.y <= 5.0 {
+            if scrollView.contentOffset.y <= 5.0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0 {
                 informationScrollView.isScrollEnabled = false
             } else if scrollView.contentOffset.y >= 5.0 {
                 informationScrollView.isScrollEnabled = true
@@ -294,16 +353,75 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         }
     }
     
-    func addCurrentOptions() {
-        
-    }
+    var check: Bool = true
     
-    func removeCurrentOptions() {
-
+    func checkCurrentStatus() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
+        ref.observe(.childAdded) { (snapshot) in
+            self.check = false
+            UIView.animate(withDuration: 0.3, animations: {
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1145)
+                self.reserveContainerHeightAnchor.constant = 165
+                self.currentController.view.alpha = 1
+                self.reserveController.view.alpha = 0
+                self.view.layoutIfNeeded()
+            })
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.check = false
+            UIView.animate(withDuration: 0.3, animations: {
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1100)
+                self.reserveContainerHeightAnchor.constant = 120
+                self.currentController.view.alpha = 0
+                self.reserveController.view.alpha = 1
+                self.view.layoutIfNeeded()
+            })
+        }
+        if check == true {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.currentController.view.alpha = 0
+                self.reserveController.view.alpha = 1
+            })
+        }
     }
     
     func extendTimeView() {
-//        self.delegate?.extendTimeView()
+        if self.purchaseController.view.alpha >= 0.1 {
+            self.closeExtendTimeView()
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.pictureHeightAnchor.constant = 100
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.purchaseController.view.alpha = 1
+                })
+            }
+        }
+    }
+    
+    func closeExtendTimeView() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.purchaseController.view.alpha = 0
+        }) { (success) in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.pictureHeightAnchor.constant = 10
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func openHoursButton() {
+        self.hoursButtonAnchor.constant = 200
+        self.hoursTopAnchor.constant = -110
+        self.view.layoutIfNeeded()
+    }
+    
+    func closeHoursButton() {
+        self.hoursButtonAnchor.constant = 80
+        self.hoursTopAnchor.constant = 10
+        self.view.layoutIfNeeded()
     }
     
     func setupLeaveAReview() {

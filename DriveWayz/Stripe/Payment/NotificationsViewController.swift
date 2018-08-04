@@ -24,7 +24,7 @@ class dropDownButton: UIButton, dropDownProtocol {
     func dropDownPressed(string: String) {
         self.setTitle(string, for: .normal)
         self.dismissDropDown()
-        self.delegate?.closeHoursButton()
+        self.delegate?.closeHoursButton(status: true)
     }
     
     var dropView = dropDownView()
@@ -74,7 +74,7 @@ class dropDownButton: UIButton, dropDownProtocol {
             
         } else {
             isOpen = false
-            self.delegate?.closeHoursButton()
+            self.delegate?.closeHoursButton(status: false)
             NSLayoutConstraint.deactivate([self.height])
             self.height.constant = 0
             NSLayoutConstraint.activate([self.height])
@@ -156,9 +156,9 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row])
         self.tableView.deselectRow(at: indexPath, animated: true)
         
-        reserveButton.alpha = 1
-        costButton.alpha = 1
-        reserveButton.isUserInteractionEnabled = true
+//        reserveButton.alpha = 1
+//        costButton.alpha = 1
+//        reserveButton.isUserInteractionEnabled = true
         let hoursString = dropDownOptions[indexPath.row]
         let noHoursString = hoursString.replacingOccurrences(of: " hours", with: "", options: .regularExpression, range: nil)
         hours = Int(noHoursString.replacingOccurrences(of: " hour", with: "", options: .regularExpression, range: nil))

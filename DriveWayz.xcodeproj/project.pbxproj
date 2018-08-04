@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3860127CE3F0360C7DC17779 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0713549ABE0DF68B5391F60 /* Pods_DriveWayz.framework */; };
+		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
+		4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */; };
 		4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */; };
 		4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD4352106B8EF0024612A /* CouponsViewController.swift */; };
 		4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */; };
@@ -92,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
+		4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendTimeViewController.swift; sourceTree = "<group>"; };
 		4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D1AD4352106B8EF0024612A /* CouponsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponsViewController.swift; sourceTree = "<group>"; };
 		4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAvailabilityViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +407,8 @@
 			children = (
 				4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */,
 				4D2DDEAB21095F02005AB485 /* ParkingCurrentViewController.swift */,
+				4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */,
+				4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */,
 				4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */,
 				4D2EB5C521039486004AEA54 /* ParkingImageViewController.swift */,
 				4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */,
@@ -640,6 +646,7 @@
 				4D2EB5C221016EED004AEA54 /* ParkingStatus.swift in Sources */,
 				4D21D32F20CC9FF9002D7005 /* AccountNavViewController.swift in Sources */,
 				4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */,
+				4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */,
 				4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */,
 				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
 				4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */,
@@ -649,6 +656,7 @@
 				4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */,
 				4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */,
 				4D21D32D20CC9FF9002D7005 /* ChatMessageCell.swift in Sources */,
+				4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
 				4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */,
 				4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */,

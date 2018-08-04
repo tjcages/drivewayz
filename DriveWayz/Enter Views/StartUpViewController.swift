@@ -50,6 +50,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 3
+        label.adjustsFontForContentSizeCategory = false
         
         return label
     }()
@@ -74,6 +75,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 3
+        label.adjustsFontForContentSizeCategory = false
         
         return label
     }()
@@ -98,6 +100,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 4
+        label.adjustsFontForContentSizeCategory = false
         
         return label
     }()
@@ -197,6 +200,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         login.autocapitalizationType = .none
         login.clearButtonMode = .whileEditing
         login.spellCheckingType = .no
+        login.adjustsFontForContentSizeCategory = false
     
         return login
     }()
@@ -663,6 +667,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                     UserDefaults.standard.synchronize()
                     
                     let myViewController: TabViewController = TabViewController()
+                    myViewController.removeFromParentViewController()
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.rootViewController = myViewController
                     appDelegate.window?.makeKeyAndVisible()
@@ -790,6 +795,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 UserDefaults.standard.synchronize()
                 
                 let myViewController: TabViewController = TabViewController()
+                myViewController.removeFromParentViewController()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = myViewController
                 appDelegate.window?.makeKeyAndVisible()
@@ -899,6 +905,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                                 UserDefaults.standard.synchronize()
                                 
                                 let myViewController: TabViewController = TabViewController()
+                                myViewController.removeFromParentViewController()
                                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                 appDelegate.window?.rootViewController = myViewController
                                 appDelegate.window?.makeKeyAndVisible()
@@ -969,7 +976,6 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                             appDelegate.window?.makeKeyAndVisible()
                             
                             self.dismiss(animated: true, completion: nil)
-                            
                         })
                     }
                 }

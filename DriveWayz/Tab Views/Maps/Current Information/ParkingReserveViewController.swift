@@ -1,8 +1,8 @@
 //
-//  CurrentSpotViewController.swift
+//  ParkingReserveViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler Jordan Cagle on 7/25/18.
+//  Created by Tyler Jordan Cagle on 8/4/18.
 //  Copyright © 2018 COAD. All rights reserved.
 //
 
@@ -11,17 +11,13 @@ import Firebase
 import MapKit
 import UserNotifications
 
-protocol notificationOptions {
-    func leaveAReview()
-    func extendTime()
-    func sendLeaveReview()
-}
+class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, notificationOptions {
-    
     var address: String?
     var message: String?
     var parkingID: String?
+    var id: String?
+    
     var delegate: controlCurrentParkingOptions?
     var extendDelegate: removePurchaseView?
     
@@ -44,7 +40,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         let info = UIButton()
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
-        info.setTitle("Current", for: .normal)
+        info.setTitle("Info", for: .normal)
         info.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
@@ -62,19 +58,8 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         return table
     }()
     
-    lazy var timerController: CurrentParkingViewController = {
-        let controller = CurrentParkingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Timer"
-        self.addChildViewController(controller)
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    var Current = ["Extend time", "Open in maps", "Leave parking spot"]
-    var Details = ["Message host"]
-    var Payment = ["Total cost", "Additional cost", "Payment method"]
+    var Current = ["", ""]
+    var Payment = ["","Reservations coming soon!"]
     
     var detailsSegment: UIButton = {
         let availability = UIButton()
@@ -94,6 +79,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = UIColor.clear
         table.isScrollEnabled = false
+        table.separatorStyle = .none
         
         return table
     }()
@@ -104,7 +90,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "User messages!"
-        label.backgroundColor = Theme.WHITE
+        label.backgroundColor = UIColor.white
         label.isEditable = false
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +103,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         let reviews = UIButton()
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
-        reviews.setTitle("Payment", for: .normal)
+        reviews.setTitle("Reserve", for: .normal)
         reviews.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center
@@ -131,6 +117,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = UIColor.clear
         table.isScrollEnabled = false
+        table.separatorStyle = .none
         
         return table
     }()
@@ -142,7 +129,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         
         return line
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,22 +147,79 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         self.detailsTableView.dataSource = self
         self.paymentTableView.delegate = self
         self.paymentTableView.dataSource = self
-
+        
         setupViews()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func setData(formattedAddress: String, message: String, parkingID: String) {
+    func setData(formattedAddress: String, message: String, parkingID: String, id: String) {
         self.address = formattedAddress
         self.parkingID = parkingID
+        self.id = id
         if message != "" {
             self.userMessage.text = "Host - \(message)"
         } else {
             self.userMessage.text = "No host message"
+        }
+    }
+    
+    var parkingCheck: Bool = true
+    var currentCheck: Bool = true
+    
+    func setAvailability(available: Bool) {
+        if available == true {
+            self.setParkingInformation(status: true)
+        } else {
+            self.setParkingInformation(status: false)
+        }
+    }
+    
+    func setParkingInformation(status: Bool) {
+        self.currentCheck = true
+        let ref = Database.database().reference().child("users").child(self.id!).child("Payments")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            self.parkingCheck = false
+            let count = snapshot.childrenCount
+            if count == 1 {
+                self.Current.remove(at: 0)
+                self.Current.insert("People have parked here \(count) time", at: 0)
+                self.currentTableView.reloadData()
+            } else {
+                self.Current.remove(at: 0)
+                self.Current.insert("People have parked here \(count) times", at: 0)
+                self.currentTableView.reloadData()
+            }
+        }
+        if self.parkingCheck == true {
+            self.Current.remove(at: 0)
+            self.Current.insert("Nobody has parked here yet", at: 0)
+            self.currentTableView.reloadData()
+        }
+        let checkRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current")
+        checkRef.observe(.childAdded) { (snapshot) in
+            self.currentCheck = false
+            self.Current.remove(at: 1)
+            self.Current.insert("This spot is currently occupied", at: 1)
+            self.currentTableView.reloadData()
+        }
+        checkRef.observe(.childRemoved) { (snapshot) in
+            self.currentCheck = false
+            self.Current.remove(at: 1)
+            self.Current.insert("This spot is available", at: 1)
+            self.currentTableView.reloadData()
+        }
+        if self.currentCheck == true && status == true {
+            self.Current.remove(at: 1)
+            self.Current.insert("This spot is available", at: 1)
+            self.currentTableView.reloadData()
+        } else if self.currentCheck == true && status == false {
+            self.Current.remove(at: 1)
+            self.Current.insert("This spot is not available at this time", at: 1)
+            self.currentTableView.reloadData()
         }
     }
     
@@ -228,47 +272,32 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         
         parkingView.addSubview(currentTableView)
         currentTableAnchor = currentTableView.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor)
-            currentTableAnchor.isActive = true
+        currentTableAnchor.isActive = true
         currentTableView.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
         currentTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
         currentTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
         parkingView.addSubview(detailsTableView)
         detailsTableAnchor = detailsTableView.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
-            detailsTableAnchor.isActive = true
+        detailsTableAnchor.isActive = true
         detailsTableView.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
         detailsTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
         detailsTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        detailsTableView.addSubview(line)
-        line.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 45).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        line.widthAnchor.constraint(equalTo: detailsTableView.widthAnchor, constant: -20).isActive = true
-        line.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
-        
         parkingView.addSubview(paymentTableView)
         paymentTableAnchor = paymentTableView.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
-            paymentTableAnchor.isActive = true
+        paymentTableAnchor.isActive = true
         paymentTableView.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
         paymentTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
         paymentTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
-        
-        currentTableView.addSubview(timerController.view)
-        timerController.view.leftAnchor.constraint(equalTo: currentTableView.leftAnchor, constant: 10).isActive = true
-        timerController.view.topAnchor.constraint(equalTo: currentTableView.topAnchor, constant: 10).isActive = true
-        timerController.view.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        timerController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         detailsTableView.addSubview(userMessage)
         detailsTableView.bringSubview(toFront: userMessage)
         userMessage.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
         userMessage.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
-        userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 50).isActive = true
+        userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 0).isActive = true
         userMessage.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor, constant: -10).isActive = true
-    
+        
     }
     
     var controlTopAnchor1: NSLayoutConstraint!
@@ -276,13 +305,12 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     var segmentLineLeftAnchor1: NSLayoutConstraint!
     var segmentLineLeftAnchor2: NSLayoutConstraint!
     var segmentLineLeftAnchor3: NSLayoutConstraint!
-
+    
     @objc func recentPressed(sender: UIButton) {
         recentPressedFunc()
     }
     
     func recentPressedFunc() {
-        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = true
             self.segmentLineLeftAnchor2.isActive = false
@@ -306,7 +334,6 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func parkingPressedFunc() {
-        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = true
@@ -330,7 +357,6 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func vehiclePressedFunc() {
-        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = false
@@ -370,7 +396,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         if tableView == currentTableView {
             return Current.count
         } else if tableView == detailsTableView {
-            return Details.count
+            return 0
         } else {
             return Payment.count
         }
@@ -381,115 +407,35 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         cell.textLabel?.textAlignment = .right
+        cell.textLabel?.textColor = Theme.DARK_GRAY
+        cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = .none
         
         if tableView == currentTableView {
             cell.textLabel?.text = Current[indexPath.row]
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 160, bottom: 0, right: 10)
-            if indexPath.row == (Current.count-1) {
-                cell.textLabel?.textColor = UIColor.red
-            } else if indexPath.row == 0 {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-                cell.textLabel?.textColor = Theme.DARK_GRAY
-            }
-            else {
-                cell.textLabel?.textColor = Theme.DARK_GRAY
-            }
-            cell.backgroundColor = UIColor.clear
-            cell.selectionStyle = .none
-            
-            return cell
-        } else if tableView == detailsTableView {
-            cell.textLabel?.text = Details[indexPath.row]
-            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
-            cell.backgroundColor = UIColor.clear
-            cell.selectionStyle = .none
-            self.detailsTableView.separatorStyle = .none
-            
-            if indexPath.row == 0 {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 100, bottom: 0, right: 100)
-            }
-            
             return cell
         } else {
             cell.textLabel?.text = Payment[indexPath.row]
-            cell.textLabel?.textColor = Theme.DARK_GRAY
-            cell.backgroundColor = UIColor.clear
-            cell.selectionStyle = .none
-            
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == currentTableView {
-            if indexPath.row == (Current.count-1) {
-                self.leaveAReview()
-                self.delegate?.closeExtendTimeView()
-            } else if indexPath.row == (Current.count-2) {
-                self.openMapForPlace()
-                self.delegate?.closeExtendTimeView()
-            } else if indexPath.row == (Current.count-3) {
-                self.extendTime()
-            }
-        } else {
-            
-        }
-    }
-        
-    func openMapForPlace() {
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(self.address!) { (placemarks, error) in
-            guard
-                let placemarks = placemarks,
-                let location = placemarks.first?.location
-                else {
-                    print("no location found for directions")
-                    return
-            }
-            let regionDistance:CLLocationDistance = 1000;
-            let coordinates = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-            let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
-            
-            let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)]
-            
-            let placemark = MKPlacemark(coordinate: coordinates)
-            let mapItem = MKMapItem(placemark: placemark)
-            mapItem.name = "\(self.address!)"
-            mapItem.openInMaps(launchOptions: options)
-        }
-    }
-    
-    func leaveAReview() {
-        let alert = UIAlertController(title: "Confirm", message: "Please confirm that you have left the parking space. If you confirm and have not actually left within a certain time you risk being towed.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (pressed) in
-            self.endCurrentParking()
-            self.delegate?.setupLeaveAReview()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated: true)
-    }
-    
-    func sendLeaveReview() {
-        self.delegate?.setupLeaveAReview()
-    }
-    
-    func endCurrentParking() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-        let parkingRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current")
-        ref.removeValue()
-        parkingRef.removeValue()
-        
-        timerStarted = false
-        notificationSent = false
-        currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+//        if tableView == currentTableView {
+//            if indexPath.row == (Current.count-1) {
+//                self.leaveAReview()
+//            } else if indexPath.row == (Current.count-2) {
+//                self.openMapForPlace()
+//            } else if indexPath.row == (Current.count-3) {
+//                self.extendTime()
+//            }
+//        } else {
+//
+//        }
     }
     
     func extendTime() {
         self.delegate?.extendTimeView()
     }
-    
-    
+
 }

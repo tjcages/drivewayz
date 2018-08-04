@@ -46,7 +46,19 @@ class CurrentParkingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UNUserNotificationCenter.current().delegate = self
+        
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+            
+            if granted {
+                DispatchQueue.main.async { // Correct
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                
+            }
+            
+        }
 
         setupViews()
         configureNotifications()
@@ -57,21 +69,15 @@ class CurrentParkingViewController: UIViewController {
         timer.invalidate()
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
-            currentRef.observeSingleEvent(of: .value) { (snapshot) in
+            currentRef.observe(.childAdded) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
-                    let key = dictionary.keys
-                    let stampRef = Database.database().reference().child("users").child(userID).child("currentParking").child(key.first!)
-                    stampRef.observeSingleEvent(of: .value, with: { (check) in
-                        if let stamp = check.value as? [String:AnyObject] {
-                            currentParking = true
-                            let refreshTimestamp = stamp["timestamp"] as? Double
-                            let refreshHours = stamp["hours"] as? Int
-                            let currentTimestamp = NSDate().timeIntervalSince1970
-                            seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
-                            
-                            self.runTimer()
-                        }
-                    }, withCancel: nil)
+                    currentParking = true
+                    let refreshTimestamp = dictionary["timestamp"] as? Double
+                    let refreshHours = dictionary["hours"] as? Int
+                    let currentTimestamp = NSDate().timeIntervalSince1970
+                    seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                    
+                    self.runTimer()
                 }
             }
         }
@@ -259,10 +265,10 @@ class CurrentParkingViewController: UIViewController {
             fourthContent.badge = 1
             fourthContent.sound = UNNotificationSound.default()
             
-            let seconds = self.hours! * 3600
-            let secondSeconds = (self.hours! * 3600) + (15 * 60)
-            let thirdSeconds = (self.hours! * 3600) + (30 * 60)
-            let fourthSeconds = (self.hours! * 3600) - (20 * 60)
+            let seconds = (self.hours! * 3600) + (10 * 60)
+            let secondSeconds = seconds + (15 * 60)
+            let thirdSeconds = seconds + (30 * 60)
+            let fourthSeconds = seconds - (20 * 60)
             
             if seconds >= 0 {
                 let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)

@@ -16,8 +16,8 @@ var leftArrow: UIButton!
 protocol moveControllers {
     func moveTopProfile()
     func moveToMap()
-    func removeTabView()
-    func bringTabView()
+    func showTabController()
+    func hideTabController()
 }
 
 protocol controlsNewParking {
@@ -114,6 +114,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Map"
         controller.delegate = self
+        controller.vehicleDelegate = self
         return controller
     }()
     
@@ -454,7 +455,19 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         })
     }
     
+    func hideTabController() {
+        UIView.animate(withDuration: 0.2) {
+            self.map.alpha = 0
+            self.profile.alpha = 0
+        }
+    }
     
+    func showTabController() {
+        UIView.animate(withDuration: 0.2) {
+            self.map.alpha = 1
+            self.profile.alpha = 1
+        }
+    }
     
 }
 

@@ -40,13 +40,14 @@ var currentButton: UIButton = {
 }()
 
 protocol removePurchaseView {
-    func removeTabView()
     func currentParkingSender()
     func currentParkingDisappear()
     func purchaseButtonSwipedDown()
     func sendAvailability(availability: Bool)
     func setupLeaveAReview(parkingID: String)
     func removeLeaveAReview()
+    func showPurchaseStatus(status: Bool)
+    func addAVehicleReminder()
 }
 
 protocol controlHoursButton {
@@ -59,6 +60,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let cellId = "cellId"
     var currentActive: Bool = false
     var delegate: moveControllers?
+    var vehicleDelegate: controlsNewParking?
     
     let currentLocationMarker = GMSMarker()
     var locationManager = CLLocationManager()
@@ -209,42 +211,43 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         return blurEffectView
     }()
     
-    lazy var container: UIView = {
-        let containerBar = UIView()
-        containerBar.translatesAutoresizingMaskIntoConstraints = false
-        containerBar.backgroundColor = UIColor.clear
-        let gestureOpen = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gestureOpen.direction = .right
-        containerBar.addGestureRecognizer(gestureOpen)
-        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGestureSwiped(sender:)))
-        gesture.direction = .left
-        containerBar.addGestureRecognizer(gesture)
+    var purchaseStaus: UIButton = {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("", for: .normal)
+        view.titleLabel?.textColor = Theme.WHITE
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.textAlignment = .center
+        view.titleLabel?.numberOfLines = 2
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.alpha = 0
+        view.layer.cornerRadius = 10
         
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.isUserInteractionEnabled = false
-        blurView.alpha = 1
-        containerBar.addSubview(blurView)
+        return view
+    }()
+    
+    lazy var swipeTutorial: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().blurColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
+        view.layer.insertSublayer(background, at: 0)
+        view.alpha = 0
         
-        blurView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        blurView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
+        let label = UILabel()
+        label.text = "Swipe up for more info, down to dismiss"
+        label.textColor = Theme.WHITE
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
         
-        let whiteView = UIButton(type: .custom)
-        whiteView.backgroundColor = UIColor.white
-        whiteView.alpha = 0.5
-        whiteView.translatesAutoresizingMaskIntoConstraints = false
-        whiteView.isUserInteractionEnabled = false
-        containerBar.insertSubview(whiteView, belowSubview: blurView)
+        view.addSubview(label)
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        label.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        whiteView.leftAnchor.constraint(equalTo: containerBar.leftAnchor).isActive = true
-        whiteView.rightAnchor.constraint(equalTo: containerBar.rightAnchor).isActive = true
-        whiteView.topAnchor.constraint(equalTo: containerBar.topAnchor).isActive = true
-        whiteView.bottomAnchor.constraint(equalTo: containerBar.bottomAnchor).isActive = true
-        
-        return containerBar
+        return view
     }()
     
     override func viewDidLoad() {
@@ -337,17 +340,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                                                     } else {
                                                         avgRating = rating / Double(counting)
                                                     }
-                                                    
-                                                    self.informationViewController.addCurrentOptions()
-                                                    self.removeTabView()
                                                     self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
                                                     UIView.animate(withDuration: 0.5, animations: {
                                                         currentButton.alpha = 1
                                                     })
                                                 })
                                             } else {
-                                                self.informationViewController.addCurrentOptions()
-                                                self.removeTabView()
                                                 self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
                                                 UIView.animate(withDuration: 0.5, animations: {
                                                     currentButton.alpha = 1
@@ -378,8 +376,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                     })
                     self.currentData = .notReserved
                     self.currentParkingDisappear()
-                    self.bringTabView()
-                    self.informationViewController.removeCurrentOptions()
                     CurrentParkingViewController().stopTimerTest()
                 }, withCancel: nil)
             } else {
@@ -502,6 +498,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var tabPullWidthShort: NSLayoutConstraint!
     var tabPullWidthLong: NSLayoutConstraint!
     var containerHeightAnchor: NSLayoutConstraint!
+    var purchaseStatusWidthAnchor: NSLayoutConstraint!
+    var purchaseStatusHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -615,7 +613,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
         currentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         currentButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
+        
+        self.view.addSubview(purchaseStaus)
+        purchaseStaus.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        purchaseStaus.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 20).isActive = true
+        purchaseStatusWidthAnchor = purchaseStaus.widthAnchor.constraint(equalToConstant: 120)
+            purchaseStatusWidthAnchor.isActive = true
+        purchaseStatusHeightAnchor = purchaseStaus.heightAnchor.constraint(equalToConstant: 40)
+            purchaseStatusHeightAnchor.isActive = true
 
+        self.view.addSubview(swipeTutorial)
+        swipeTutorial.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        swipeTutorial.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        swipeTutorial.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        swipeTutorial.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        
     }
     
     func setupLeaveAReview(parkingID: String) {
@@ -687,14 +699,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     @objc func purchaseButtonSwiped() {
+        self.delegate?.hideTabController()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
             self.fullBlurView.alpha = 0.9
+            self.swipeTutorial.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
             UIApplication.shared.statusBarStyle = .lightContent
         }
+        UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
+        UserDefaults.standard.synchronize()
     }
     
     @objc func purchaseButtonSwipedDownSender() {
@@ -702,6 +718,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func purchaseButtonSwipedDown() {
+        UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
+        UserDefaults.standard.synchronize()
         UIView.animate(withDuration: 0.3, animations: {
             self.purchaseViewAnchor.constant = 80
             self.fullBlurView.alpha = 0
@@ -719,6 +737,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     @objc func informationButtonSwiped() {
+        self.delegate?.showTabController()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -15
             self.fullBlurView.alpha = 0
@@ -730,6 +749,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func currentParkingSender() {
+        self.delegate?.hideTabController()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
             self.fullBlurView.alpha = 1
@@ -742,6 +762,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     func currentParkingDisappear() {
+        self.delegate?.showTabController()
         self.purchaseViewController.view.alpha = 0
         UIView.animate(withDuration: 0.3, animations: {
             self.purchaseViewAnchor.constant = 0
@@ -777,6 +798,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
     
     @objc func optionsTabGesture() {
+        self.purchaseButtonSwipedDown()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGesture))
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(optionsTabGesture))
         swipeGesture.direction = .left
@@ -885,6 +907,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         if currentParking == false && marker != self.currentMarker {
+            self.swipeTutorialCheck()
             guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let parking = parkingSpots[customMarkerView.tag]
             informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
@@ -892,13 +915,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             
             self.purchaseViewController.view.alpha = 1
             UIView.animate(withDuration: 0.3, animations: {
-                self.removeTabView()
+                //
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.purchaseViewAnchor.constant = -15
                     self.view.layoutIfNeeded()
                 }) { (success) in
-                    self.removeTabView()
+                    //
                 }
             }
             
@@ -1087,23 +1110,48 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         }
     }
     
-    func removeTabView() {
-//        self.delegate?.removeTabView()
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.containerHeightAnchor.constant = 50
-//            self.view.layoutIfNeeded()
-//        }) { (success) in
-//            //
-//        }
+    func showPurchaseStatus(status: Bool) {
+        if status == true {
+            UIView.animate(withDuration: 0.2) {
+                self.purchaseStatusWidthAnchor.constant = 120
+                self.purchaseStatusHeightAnchor.constant = 40
+                self.purchaseStaus.setTitle("Success!", for: .normal)
+                self.purchaseStaus.alpha = 0.9
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                self.purchaseStatusWidthAnchor.constant = 220
+                self.purchaseStatusHeightAnchor.constant = 60
+                self.purchaseStaus.setTitle("The charge could not be made", for: .normal)
+                self.purchaseStaus.alpha = 0.9
+                self.view.layoutIfNeeded()
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            UIView.animate(withDuration: 0.2) {
+                self.purchaseStatusWidthAnchor.constant = 120
+                self.purchaseStatusHeightAnchor.constant = 40
+                self.purchaseStaus.setTitle("", for: .normal)
+                self.purchaseStaus.alpha = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+
+    func addAVehicleReminder() {
+        self.vehicleDelegate?.setupNewVehicle(vehicleStatus: .noVehicle)
     }
     
-    func bringTabView() {
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.containerHeightAnchor.constant = 0
-//            self.view.layoutIfNeeded()
-//        }) { (success) in
-//            //
-//        }
+    func swipeTutorialCheck() {
+        if UserDefaults.standard.bool(forKey: "swipeTutorialCompleted") == false {
+            UIView.animate(withDuration: 0.3) {
+                self.swipeTutorial.alpha = 1
+            }
+        }
+        else {
+            self.swipeTutorial.removeFromSuperview()
+        }
     }
     
 }

@@ -15,7 +15,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     
     var delegate: removePurchaseView?
     var parkingID: String?
-    var rating: Int?
+    var rating: Int = 0
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -56,12 +56,8 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.text = """
-        Please leave a review for the host of the parking space and for future users.
-        
-        Swipe stars to rate.
-        """
-        label.numberOfLines = 4
+        label.text = "Please leave a review for the host of the parking space and for future users."
+        label.numberOfLines = 2
         
         return label
     }()
@@ -164,7 +160,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         
         self.view.addSubview(termsContainer)
         termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -50).isActive = true
-        termsContainer.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        termsContainer.heightAnchor.constraint(equalToConstant: 360).isActive = true
         termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         
@@ -179,7 +175,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         
         scrollView.addSubview(text)
         text.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
-        text.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        text.heightAnchor.constraint(equalToConstant: 60).isActive = true
         text.leftAnchor.constraint(equalTo: termsContainer.leftAnchor, constant: 10).isActive = true
         text.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -10).isActive = true
         
@@ -225,54 +221,76 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func nextPressed(sender: UIButton) {
-        if inputTextField.text == "Enter text here" || inputTextField.text == "Sent!" || inputTextField.text == "" {
+        if self.rating == 0 {
             let alert = UIAlertController(title: "Please leave a review", message: "You are not required to leave a review but it can be very helpful for future users and for the host.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(alert, animated: true)
+        } else if self.rating != 0 && (inputTextField.text == "Enter text here" || inputTextField.text == "Sent!" || inputTextField.text == "") {
+            sendMessage(status: false)
         } else {
-            sendMessage()
+            sendMessage(status: true)
         }
     }
     
-    func sendMessage() {
-        
+    func sendMessage(status: Bool) {
         UIView.animate(withDuration: 0.1, animations: {
             self.accept.alpha = 0.6
             self.accept.isUserInteractionEnabled = false
         }, completion: nil)
-        
-        sendMessageWithProperties()
+        sendMessageWithProperties(status: status)
     }
     
     var user: Users?
     var count: Int?
     
-    private func sendMessageWithProperties() {
-        let parkingRef = Database.database().reference().child("parking").child(parkingID!)
-        parkingRef.observeSingleEvent(of: .value) { (current) in
-            let dictionary = current.value as? [String:AnyObject]
-            var currentRating = dictionary!["rating"] as? Int
-            if currentRating != nil {} else {currentRating = 0}
-            parkingRef.updateChildValues(["rating": currentRating! + self.rating!])
-        }
-        let ref = Database.database().reference().child("parking").child(parkingID!).child("Reviews")
-        let currentUser = Auth.auth().currentUser?.uid
-        let timestamp = NSDate().timeIntervalSince1970
-        let review = inputTextField.text as String
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            self.count =  Int(snapshot.childrenCount)
-            let revRef = ref.child("\(String(describing: self.count!))")
-            revRef.updateChildValues(["timestamp": timestamp, "fromUser": currentUser!, "review": review, "rating": self.rating!])
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.alpha = 0
-                }) { (success) in
-                    UIView.animate(withDuration: 0.1, animations: {
-                        self.accept.alpha = 1
-                        self.accept.isUserInteractionEnabled = true
-                    }, completion: nil)
-                    self.delegate?.removeLeaveAReview()
+    private func sendMessageWithProperties(status: Bool) {
+        if status == true {
+            let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+            parkingRef.observeSingleEvent(of: .value) { (current) in
+                let dictionary = current.value as? [String:AnyObject]
+                var currentRating = dictionary!["rating"] as? Int
+                if currentRating != nil {} else {currentRating = 0}
+                parkingRef.updateChildValues(["rating": currentRating! + self.rating])
+            }
+            let ref = Database.database().reference().child("parking").child(parkingID!).child("Reviews")
+            let currentUser = Auth.auth().currentUser?.uid
+            let timestamp = NSDate().timeIntervalSince1970
+            let review = inputTextField.text as String
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                self.count =  Int(snapshot.childrenCount)
+                let revRef = ref.child("\(String(describing: self.count!))")
+                revRef.updateChildValues(["timestamp": timestamp, "fromUser": currentUser!, "review": review, "rating": self.rating])
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.view.alpha = 0
+                    }) { (success) in
+                        UIView.animate(withDuration: 0.1, animations: {
+                            self.accept.alpha = 1
+                            self.accept.isUserInteractionEnabled = true
+                        }, completion: nil)
+                        self.delegate?.removeLeaveAReview()
+                    }
+                }
+            }
+        } else if status == false {
+            let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+            parkingRef.observeSingleEvent(of: .value) { (current) in
+                let dictionary = current.value as? [String:AnyObject]
+                var currentRating = dictionary!["rating"] as? Int
+                if currentRating != nil {} else {currentRating = 0}
+                parkingRef.updateChildValues(["rating": currentRating! + self.rating])
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.view.alpha = 0
+                    }) { (success) in
+                        UIView.animate(withDuration: 0.1, animations: {
+                            self.accept.alpha = 1
+                            self.accept.isUserInteractionEnabled = true
+                        }, completion: nil)
+                        self.delegate?.removeLeaveAReview()
+                    }
                 }
             }
         }

@@ -288,13 +288,13 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         parkingInfo.heightAnchor.constraint(equalToConstant: 60).isActive = true
 
         newParkingPage.addSubview(parkingCost)
-        parkingCost.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 25).isActive = true
+        parkingCost.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 20).isActive = true
         parkingCost.topAnchor.constraint(equalTo: parkingInfo.bottomAnchor, constant: -20).isActive = true
         parkingCost.widthAnchor.constraint(equalToConstant: 100).isActive = true
         parkingCost.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         newParkingPage.addSubview(parkingDate)
-        parkingDate.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 25).isActive = true
+        parkingDate.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor, constant: 20).isActive = true
         parkingDate.topAnchor.constraint(equalTo: parkingCost.bottomAnchor, constant: 0).isActive = true
         parkingDate.widthAnchor.constraint(equalTo: newParkingPage.widthAnchor, constant: -20).isActive = true
         parkingDate.heightAnchor.constraint(equalToConstant: 30).isActive = true

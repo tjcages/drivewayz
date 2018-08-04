@@ -66,6 +66,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.statusBarStyle = .lightContent
 
         costPicker.delegate = self
         costPicker.dataSource = self
@@ -1080,7 +1081,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     var thursdayButton: UIButton = {
         let thursday = UIButton()
-        thursday.setTitle("T.", for: .normal)
+        thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
         thursday.backgroundColor = Theme.PRIMARY_COLOR
         thursday.clipsToBounds = true
@@ -1119,7 +1120,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     var sundayButton: UIButton = {
         let sunday = UIButton()
-        sunday.setTitle("S.", for: .normal)
+        sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
         sunday.backgroundColor = Theme.PRIMARY_COLOR
         sunday.clipsToBounds = true

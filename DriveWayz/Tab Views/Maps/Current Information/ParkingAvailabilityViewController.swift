@@ -136,8 +136,15 @@ class ParkingAvailabilityViewController: UIViewController {
         
     }
     
-    func checkAvailablility() {
-        
+    func checkAvailablility(id: String) {
+        let ref = Database.database().reference().child("parking").child(id).child("Current")
+        ref.observe(.childAdded) { (snapshot) in
+            self.delegate?.sendAvailability(availability: false)
+            return
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.delegate?.sendAvailability(availability: true)
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         let time = dateFormatter.string(from: Date())
@@ -653,7 +660,7 @@ class ParkingAvailabilityViewController: UIViewController {
                                 self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
                                 self.sundayLabel.text = "N/A"
                             }
-                            self.checkAvailablility()
+                            self.checkAvailablility(id: userParkingID)
                         }
                     })
                 }

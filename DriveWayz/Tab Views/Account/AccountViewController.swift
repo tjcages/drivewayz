@@ -487,7 +487,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileView.addSubview(recentController.view)
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
-        recentController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
+        recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 30).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
 

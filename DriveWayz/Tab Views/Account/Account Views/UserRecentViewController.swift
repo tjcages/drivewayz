@@ -105,7 +105,7 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         self.view.addSubview(recentLabel)
         recentLabel.topAnchor.constraint(equalTo: currentContainer.topAnchor, constant: 5).isActive = true
-        recentLabel.leftAnchor.constraint(equalTo: currentContainer.leftAnchor, constant: 5).isActive = true
+        recentLabel.leftAnchor.constraint(equalTo: currentContainer.leftAnchor, constant: 15).isActive = true
         recentLabel.widthAnchor.constraint(equalTo: currentContainer.widthAnchor, constant: -10).isActive = true
         recentLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
@@ -117,7 +117,7 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         self.view.addSubview(noRecentLabel)
         noRecentLabel.centerXAnchor.constraint(equalTo: parkingPicker.centerXAnchor).isActive = true
-        noRecentLabel.centerYAnchor.constraint(equalTo: parkingPicker.centerYAnchor).isActive = true
+        noRecentLabel.centerYAnchor.constraint(equalTo: parkingPicker.centerYAnchor, constant: -20).isActive = true
         noRecentLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         noRecentLabel.widthAnchor.constraint(equalTo: parkingPicker.widthAnchor).isActive = true
         

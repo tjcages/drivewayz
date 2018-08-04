@@ -85,8 +85,8 @@ class LaunchAnimationsViewController: UIViewController {
                         self.startupAnchor.constant = 0
                         self.drivewayzCar.alpha = 0
                         self.morphingLabel.alpha = 0
-                        self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-                        self.morphingLabel.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+//                        self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+//                        self.morphingLabel.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                         self.tabController.view.alpha = 1
                         self.startupController.view.alpha = 1
                         self.view.layoutIfNeeded()

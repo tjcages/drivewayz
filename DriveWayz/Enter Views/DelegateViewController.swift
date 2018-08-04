@@ -28,16 +28,16 @@ class DelegateViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = Theme.OFF_WHITE
 
-        if UserDefaults.standard.bool(forKey: "isUserLoggedIn") == true {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.moveToTab()
-            }
-        }
-        else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.moveToLogin()
-            }
-        }
+//        if UserDefaults.standard.bool(forKey: "isUserLoggedIn") == true {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                self.moveToTab()
+//            }
+//        }
+//        else {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                self.moveToLogin()
+//            }
+//        }
         
     }
 
