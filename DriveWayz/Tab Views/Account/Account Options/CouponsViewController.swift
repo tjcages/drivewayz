@@ -85,6 +85,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
+        button.alpha = 1
         
         return button
     }()
@@ -114,6 +115,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     var Coupons: [String] = [""]
+    var Codes: [String] = [""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -226,8 +228,36 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @objc func nextPressed(sender: UIButton) {
-//        let coupon = self.oldSelectedCell?.textLabel
-        sendAlert(title: "Coming Soon!", message: "We are currently in the Beta stage of production and the actual purchasing of parking spots is not available yet!")
+        let coupon = self.oldSelectedCell?.textLabel?.text
+        guard let count = self.oldSelectedCell?.tag else {
+            sendAlert(title: "Please select an available coupon", message: "")
+            return
+        }
+        if (self.Codes.count - 1) >= count {
+            let code = self.Codes[count]
+            let stringArray = coupon!.components(separatedBy: CharacterSet.decimalDigits.inverted)
+            for item in stringArray {
+                if let number = Int(item) {
+                    guard let currentUser = Auth.auth().currentUser?.uid else {return}
+                    let ref = Database.database().reference().child("users").child(currentUser)
+                    ref.child("CurrentCoupon").updateChildValues(["coupon": number])
+                    ref.child("Coupons").updateChildValues([code: ""])
+                    self.Coupons.remove(at: (self.oldSelectedCell?.tag)!)
+                    self.Codes.remove(at: (self.oldSelectedCell?.tag)!)
+                    DispatchQueue.main.async(execute: {
+                        self.couponsTableView.reloadData()
+                    })
+                    sendAlert(title: "Success", message: "You have redeemed this coupon and it will be applied to your next purchase!")
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.view.alpha = 0
+                    }) { (success) in
+                        self.delegate?.removeOptionsFromView()
+                    }
+                }
+            }
+        } else {
+            sendAlert(title: "Please select an available coupon", message: "")
+        }
     }
 
     
@@ -247,22 +277,29 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let user = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(user).child("Coupons")
             ref.observe(.value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [AnyObject] {
-                    for dic in 0..<(dictionary.count) {
-                        let couponCheck = dictionary[dic] as! String
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    var checkArray: [String] = []
+                    for dic in dictionary {
+                        checkArray.append(dic.key)
+                    }
+                    if checkArray.contains(speller) {
+                        self.sendAlert(title: "Whoops!", message: "Looks like you've already redeemed this coupon code.")
+                    } else {
                         let checkRef = Database.database().reference().child("coupons").child(speller)
                         checkRef.observeSingleEvent(of: .value) { (snapshot) in
                             if (snapshot.value as? String) != nil {
                                 let couponValue = snapshot.value as! String
-                                if couponValue != couponCheck && self.check == true {
+                                if self.check == true {
                                     self.check = false
                                     let currentUser = Auth.auth().currentUser?.uid
                                     let couponRef = Database.database().reference().child("users").child(currentUser!).child("Coupons")
                                     couponRef.observeSingleEvent(of: .value) { (snapshot) in
                                         self.count =  Int(snapshot.childrenCount)
-                                        couponRef.updateChildValues(["\(self.count)": couponValue])
+                                        couponRef.updateChildValues([speller: couponValue])
                                         self.Coupons.removeAll()
+                                        self.Codes.removeAll()
                                         self.Coupons.append(couponValue)
+                                        self.Codes.append(speller)
                                     }
                                 } else if self.check == true {
                                     self.sendAlert(title: "Whoops!", message: "Looks like you've already redeemed this coupon code.")
@@ -281,9 +318,11 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                             let couponRef = Database.database().reference().child("users").child(currentUser!).child("Coupons")
                             couponRef.observeSingleEvent(of: .value) { (snapshot) in
                                 self.count =  Int(snapshot.childrenCount)
-                                couponRef.updateChildValues(["\(self.count)": couponValue])
+                                couponRef.updateChildValues([speller: couponValue])
                                 self.Coupons.removeAll()
+                                self.Codes.removeAll()
                                 self.Coupons.append(couponValue)
+                                self.Codes.append(speller)
                             }
                         } else {
                             self.sendAlert(title: "Hmmm", message: "This doesn't look like a correct coupon code.")
@@ -298,14 +337,16 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let user = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(user).child("Coupons")
             ref.observe(.value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [AnyObject] {
-                    for dic in 0..<(dictionary.count) {
-                        let coupon = dictionary[dic]
-                        self.Coupons.append(coupon as! String)
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    for key in dictionary.keys {
+                        let coupon = dictionary[key] as? String
+                        self.Coupons.append(coupon!)
+                        self.Codes.append(key)
                         DispatchQueue.main.async(execute: {
                             self.couponsTableView.reloadData()
                         })
                     }
+                    self.Codes.remove(at: 0)
                     self.Coupons.remove(at: 0)
                 }
             }, withCancel: nil)
@@ -338,11 +379,12 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         cell.textLabel?.text = Coupons[indexPath.row]
+        cell.tag = indexPath.row
         cell.textLabel?.textColor = Theme.DARK_GRAY
         cell.textLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         cell.backgroundColor = UIColor.white
         cell.selectionStyle = .gray
-        
+    
         return cell
     }
     
@@ -352,6 +394,9 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath as IndexPath)!
         selectedCell.contentView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         oldSelectedCell = selectedCell
+        
+        accept.alpha = 1
+        accept.isUserInteractionEnabled = true
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

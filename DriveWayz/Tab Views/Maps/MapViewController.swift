@@ -21,6 +21,7 @@ struct Parking {
 }
 
 var userEmail: String?
+var couponActive: Int?
 
 var currentButton: UIButton = {
     let button = UIButton()
@@ -222,6 +223,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         view.alpha = 0
         view.layer.cornerRadius = 10
+        view.isUserInteractionEnabled = false
+        
+        return view
+    }()
+    
+    var couponStaus: UIButton = {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("", for: .normal)
+        view.titleLabel?.textColor = Theme.WHITE
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.textAlignment = .center
+        view.titleLabel?.numberOfLines = 2
+        view.backgroundColor = Theme.PRIMARY_COLOR
+        view.alpha = 0
+        view.layer.cornerRadius = 10
+        view.isUserInteractionEnabled = false
         
         return view
     }()
@@ -261,6 +279,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         locationManager.delegate = self
         parkingTableView.delegate = self
         parkingTableView.dataSource = self
+        searchBar.delegate = self
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -272,7 +291,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         checkCurrentParking()
         observeUserParkingSpots()
         setupViewController()
-        searchBar.delegate = self
+        checkForCoupons()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -526,7 +545,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         parkingView.leftAnchor.constraint(equalTo: optionsTabView.leftAnchor).isActive = true
         parkingView.rightAnchor.constraint(equalTo: optionsTabView.rightAnchor).isActive = true
         parkingView.topAnchor.constraint(equalTo: optionsTabView.topAnchor).isActive = true
-        parkingView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        parkingView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         let parkingLabel = UILabel()
         parkingLabel.text = "Parking:"
@@ -538,7 +557,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         
         parkingLabel.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
         parkingLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        parkingLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        parkingLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
             parkingLabel.centerYAnchor.constraint(equalTo: parkingView.centerYAnchor, constant: 10).isActive = true
@@ -549,7 +568,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         self.view.addSubview(parkingTableView)
         parkingTableView.leftAnchor.constraint(equalTo: optionsTabView.leftAnchor).isActive = true
         parkingTableView.rightAnchor.constraint(equalTo: optionsTabView.rightAnchor).isActive = true
-        parkingTableView.bottomAnchor.constraint(equalTo: optionsTabView.bottomAnchor, constant: -50).isActive = true
+        parkingTableView.bottomAnchor.constraint(equalTo: optionsTabView.bottomAnchor).isActive = true
         parkingTableView.topAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
         let shadow = UIImageView()
@@ -696,6 +715,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         informationViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 10).isActive = true
         informationViewController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height - 30).isActive = true
         
+        self.view.addSubview(couponStaus)
+        couponStaus.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
+        couponStaus.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -110).isActive = true
+        couponStaus.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        couponStaus.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
     }
     
     @objc func purchaseButtonSwiped() {
@@ -840,7 +865,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         UIView.animate(withDuration: 0.3, animations: {
         self.view.layoutIfNeeded()
         }, completion: nil)
-        
+    }
+    
+    func checkForCoupons() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
+        ref.observe(.childAdded) { (snapshot) in
+            let percent = snapshot.value as? Int
+            self.couponStaus.setTitle("\(percent!)% off!", for: .normal)
+            self.couponStaus.alpha = 0.8
+            couponActive = percent!
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.couponStaus.setTitle("", for: .normal)
+            self.couponStaus.alpha = 0
+        }
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {

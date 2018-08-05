@@ -404,14 +404,21 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
 
     @objc func handleRequestRideButtonTapped() {
-        
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let ref = Database.database().reference().child("user-vehicles")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if (dictionary[currentUser] as? [String:AnyObject]) != nil {
-                    let stringCost = String(format: "%.2f", Double((self.price * Double(hours!))/100))
-                    self.totalCostLabel.text = "$\(stringCost)"
+                    let pricey: Double = (self.price * Double(hours!))/100
+                    if couponActive != nil && couponActive != 0 {
+                        let percent: Double = Double(couponActive!)/100
+                        let payment = pricey - (percent * pricey)
+                        let stringCost = String(format: "%.2f", payment)
+                        self.totalCostLabel.text = "$\(stringCost)"
+                    } else {
+                        let stringCost = String(format: "%.2f", pricey)
+                        self.totalCostLabel.text = "$\(stringCost)"
+                    }
                     UIView.animate(withDuration: 0.3, animations: {
                         self.confirmContainer.alpha = 1
                         self.totalCostLabel.alpha = 1
@@ -525,9 +532,27 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     }
 
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
-        MyAPIClient.sharedClient.completeCharge(paymentResult,
-                                                amount: self.paymentContext.paymentAmount,
-                                                completion: completion)
+        let costs = hours! * paymentContext.paymentAmount
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let value = dictionary["coupon"] as? Double
+                let percent: Double = Double(value! / 100)
+                let removal = Int(percent * Double(costs))
+                let payment = costs - removal
+                
+                MyAPIClient.sharedClient.completeCharge(paymentResult,
+                                                        amount: payment,
+                                                        completion: completion)
+                
+                ref.removeValue()
+            } else {
+                MyAPIClient.sharedClient.completeCharge(paymentResult,
+                                                        amount: costs,
+                                                        completion: completion)
+            }
+        }
     }
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
@@ -593,9 +618,14 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
     private func updateUserProfile() {
         self.cost = self.cost * Double(hours!)
         
-        let currentUser = Auth.auth().currentUser?.uid
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let timestamp = NSDate().timeIntervalSince1970
-        let userRef = Database.database().reference().child("users").child(currentUser!).child("recentParking")
+        
+        let couponRef = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
+        couponRef.removeValue()
+        couponActive = nil
+        
+        let userRef = Database.database().reference().child("users").child(currentUser).child("recentParking")
         userRef.observeSingleEvent(of: .value) { (snapshot) in
             self.recentCount =  Int(snapshot.childrenCount)
             let recentRef = userRef.child("\(self.recentCount)")
@@ -604,8 +634,8 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         
         let parkingRef = Database.database().reference().child("parking").child(self.parkingId)
         let currentParkingRef = parkingRef.child("Current")
-        parkingRef.updateChildValues(["previousUser": currentUser!])
-        currentParkingRef.updateChildValues(["currentUser": currentUser!])
+        parkingRef.updateChildValues(["previousUser": currentUser])
+        currentParkingRef.updateChildValues(["currentUser": currentUser])
         
         let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")
         let currentRef = Database.database().reference().child("users").child(self.id)
@@ -617,11 +647,11 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 self.count =  Int(snapshot.childrenCount)
                 let payRef = paymentRef.child("\(self.count)")
                 let newFunds = Double(currentFunds!) + (Double(self.cost) * 0.75)
-                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser!, "timestamp": timestamp, "parkingID": self.parkingId])
+                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": hours!, "user": currentUser, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
         
-        let helpRef = Database.database().reference().child("users").child(currentUser!).child("currentParking").child(self.parkingId)
+        let helpRef = Database.database().reference().child("users").child(currentUser).child("currentParking").child(self.parkingId)
         helpRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let oldHours = dictionary["hours"] as? Int {
@@ -706,7 +736,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 //
             }
         } else if status == "end" {
-            let title = "\(name)'s time has run out."
+            let title = "\(name)'s has ended her parking reservation."
             let body = "Let us know if they've left your parking space."
             let toDevice = fromDevice
             var headers: HTTPHeaders = HTTPHeaders()
@@ -738,7 +768,6 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         self.hourButtonHeight.constant = 0
         self.hoursDelegate?.closeHoursButton()
     }
-    
     
 
 }
