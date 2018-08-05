@@ -132,6 +132,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileImageView.backgroundColor = UIColor.white
         profileImageView.layer.cornerRadius = 40
         profileImageView.clipsToBounds = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
+        profileImageView.addGestureRecognizer(gesture)
         
         return profileImageView
     }()
@@ -488,7 +490,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 30).isActive = true
+        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 20).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
 
     }
@@ -663,6 +665,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         if let selectedImage = selectedImageFromPicker {
             if picker == pickerProfile {
                 profileImageView.image = selectedImage
+                self.addButton.alpha = 0
             }
         }
         guard let uid = Auth.auth().currentUser?.uid else {

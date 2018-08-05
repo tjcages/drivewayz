@@ -47,7 +47,6 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             "amount": amount,
             "currency": "USD"
         ]
-//        params["shipping"] = STPAddress.shippingInfoForCharge(with: shippingAddress, shippingMethod: shippingMethod)
         Alamofire.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in

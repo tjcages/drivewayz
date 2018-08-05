@@ -1,5 +1,5 @@
 //
-//  Parking.swift
+//  ParkingSpots.swift
 //  DriveWayz
 //
 //  Created by Tyler Jordan Cagle on 6/28/18.
@@ -9,33 +9,56 @@
 import UIKit
 import Firebase
 
-class Parking: NSObject {
+class ParkingSpots: NSObject {
     
-    var fromID: String?
-    var text: String?
     var timestamp: NSNumber?
-    var toID: String?
+    var parkingImageURL: String?
+    var parkingCost: String?
+    var parkingAddress: String?
+    var parkingCity: String?
+    var id: String?
+    var parkingID: String?
+    var parkingDistance: String?
+    var message: String?
+    var rating: Double?
+    var Availability: [String]?
     
-    var imageURL: String?
-    var imageHeight: NSNumber?
-    var imageWidth: NSNumber?
+    var payment: Double?
+    var hours: Int?
     
-    var videoURL: String?
+    var Monday: [String]?
+    var Tuesday: [String]?
+    var Wednesday: [String]?
+    var Thursday: [String]?
+    var Friday: [String]?
+    var Saturday: [String]?
+    var Sunday: [String]?
+    
+    var To: [String]?
+    var From: [String]?
     
     init(dictionary: [String: Any]) {
         super.init()
-        fromID = dictionary["fromID"] as? String
-        text = dictionary["text"] as? String
         timestamp = dictionary["timestamp"] as? NSNumber
-        toID = dictionary["toID"] as? String
-        imageURL = dictionary["imageURL"] as? String
-        imageHeight = dictionary["imageHeight"] as? NSNumber
-        imageWidth = dictionary["imageWidth"] as? NSNumber
-        videoURL = dictionary["videoURL"] as? String
-    }
-    
-    func chatPartnerID() -> String? {
-        return (fromID! == (Auth.auth().currentUser?.uid)! ? toID : fromID)!
+        parkingImageURL = dictionary["parkingImageURL"] as? String
+        parkingCost = dictionary["parkingCost"] as? String
+        parkingAddress = dictionary["parkingAddress"] as? String
+        parkingCity = dictionary["parkingCity"] as? String
+        id = dictionary["id"] as? String
+        parkingID = dictionary["parkingID"] as? String
+        parkingDistance = dictionary["parkingDistance"] as? String
+        message = dictionary["message"] as? String
+        rating = dictionary["rating"] as? Double
+        payment = dictionary["payment"] as? Double
+        hours = dictionary["hours"] as? Int
+        Availability = dictionary["Availability"] as? [String]
+        Monday = dictionary["Monday"] as? [String]
+        Tuesday = dictionary["Tuesday"] as? [String]
+        Wednesday = dictionary["Wednesday"] as? [String]
+        Thursday = dictionary["Thursday"] as? [String]
+        Friday = dictionary["Friday"] as? [String]
+        Saturday = dictionary["Saturday"] as? [String]
+        Sunday = dictionary["Sunday"] as? [String]
     }
     
 }

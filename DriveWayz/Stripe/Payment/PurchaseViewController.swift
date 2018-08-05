@@ -227,7 +227,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.full
+        config.requiredBillingAddressFields = STPBillingAddressFields.none
         config.additionalPaymentMethods = .all
         
         // Create card sources instead of card tokens
@@ -736,7 +736,7 @@ class PurchaseViewController: UIViewController, STPPaymentContextDelegate, contr
                 //
             }
         } else if status == "end" {
-            let title = "\(name)'s has ended her parking reservation."
+            let title = "\(name) has ended their parking reservation."
             let body = "Let us know if they've left your parking space."
             let toDevice = fromDevice
             var headers: HTTPHeaders = HTTPHeaders()
