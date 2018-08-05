@@ -1,0 +1,511 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    color: #FFF;
+    background-color: #FFF;
+    font-family: "Roboto-MediumItalic", Helvetica, Arial, sans-serif;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+    color: #FFF;
+    background-color: #555;
+    /*background-color: #777;
+    color: #FFF;*/
+    cursor: pointer;
+    padding: 18px;
+    width: 50%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px;
+}
+
+.active, .collapsible:hover {
+    color: #FFF;
+    background-color: #555;
+}
+
+.content {
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+    background-color: #333; 
+    color: #FFF;
+    font-size: 12px;
+    padding: 18px 18px;
+    display: none;
+    overflow: hidden;
+}
+</style>
+
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#navbar .navbar-right {
+    float: right;
+    text-align:right;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.falsenews {
+    position: fixed;
+    right: 300px;
+    top: 60px;
+    background-color: #FFF;
+    padding-right: 20px;
+    padding-left: 20px; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-color: #FF2D00;
+    border-radius: 5px;
+    border-style: solid;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.falsenews2 {
+    position: fixed;
+    right: 600px;
+    top: 60px;
+    background-color: #FFF;
+    padding-right: 20px;
+    padding-left: 20px; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-color: #FF2D00;
+    border-radius: 5px;
+    border-style: solid;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.container {
+    color: #333;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.jumbotron {
+    background-size: cover;
+    color: #FFF;
+    height: 300px;
+    text-shadow: 0.75px 0.75px 0.75px #000000;
+    align-content: left;
+    font-size: 36px;
+    font-weight: 700;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.partcontainer h1 {
+    color: #333;
+    height: 500px;
+    text-shadow: 0.75px 0.75px 0.75px #FFF;
+    text-align: center;
+    font-size: 72px;
+    font-weight: 700;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #FFF;
+    background-image: url('search.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
+
+.offscreen, .only-icon span {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.search-wrap {
+    background-color: #FFF;
+    background-color: rgba(255,255,255,.9);
+    border-radius: 3px;
+    height: 21px;
+    position: absolute;
+    padding: 4px 8px;
+    top: 0;
+    right: 0;
+    -moz-transition-property: width;
+    -webkit-transition-property: width;
+    transition-property: width;
+    transition-duration: .5s;
+}
+
+.search-trigger {
+    cursor: text;
+    position: absolute;
+    top: 3px;
+    right: 12px;
+    z-index: 1;
+}
+
+
+.scriptfont {
+    /*font-family:*/
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+footer {
+    margin-left: 15px;
+    color: #333;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.info {
+    font-size: 48px;
+}
+
+.vertical-center {
+    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    text-align:center;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.jumbotron p.error-message {
+    font-size: 28px;
+    font-weight: 500;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.accordian p{
+    background: #333;
+    /*background: content-box;*/
+    font-size: 16px;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.panel-body {
+    font-size:16px;
+    background: #FFF;
+    font-weight: 300;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.row .featurette {
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+    color: #959499;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #337ab7;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+    color:#333;
+}
+
+img.avatar {
+    width: 40%;
+
+}
+
+.container2 {
+    padding: 16px;
+    color:#333;
+    align-content: center;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.container2 input {
+    width: 100%;
+    clear: both;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+    color:#333;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
+
+.login {
+    color: #FFF;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    color:#333;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+.allparts {
+    color: #FFF;
+    font-family: 'Roboto-MediumItalic', Helvetica, Arial, sans-serif;
+}
+
+#myDIV {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top:20px;
+}
+
+.featurette-divider {
+    color: #959499;
+    background-color: #959499;
+}
+
+.site-inner {
+    background-color: #fff;
+    clear: both;
+    margin-top: 170px;
+    position: relative;
+    z-index: 9;
+    -word-wrap: break-word;
+}
+
+body .gform_wrapper .top_label div.ginput_container {
+    margin-top: 8px;
+}
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper *, .gform_wrapper :after, .gform_wrapper :before {
+    box-sizing: border-box!important;
+}
+style.css?ver=1.0.0:96
+*, input[type="search"] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+user agent stylesheet
+div {
+    display: block;
+}
+Inherited from li#field_1_6.gfield.field_sublabel_below.field_description_above.gfield_visibility_visible
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper form li, .gform_wrapper li {
+    margin-left: 0!important;
+    list-style: none!important;
+    overflow: visible;
+}
+style.css?ver=1.0.0:1447
+.entry-content ul > li {
+    list-style-type: square;
+    padding-bottom: .75rem;
+}
+style.css?ver=1.0.0:213
+li {
+    list-style-type: none;
+}
+user agent stylesheet
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+Inherited from ul#gform_fields_1.gform_fields.top_label.form_sublabel_below.description_above
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper ul.gform_fields {
+    margin: 0!important;
+    list-style-type: none;
+    display: block;
+}
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper ul, html>body .entry ul {
+    text-indent: 0;
+}
+user agent stylesheet
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+Inherited from form#gform_1
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper form {
+    text-align: left;
+    max-width: 100%;
+    margin: 0 auto;
+}
+Inherited from body.page-template-default.page.page-id-63.custom-header.header-image.header-full-width.full-width-content
+style.css?ver=1.0.0:144
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: 'proxima-nova', Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+Inherited from html.csstransforms.csstransforms3d.csstransitions.wf-proximanova-n6-active.wf-proximanova-n4-active.wf-proximanova-i4-active.wf-proximanova-i3-active.wf-proximanova-n5-active.wf-active
+style.css?ver=1.0.0:90
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+Pseudo ::before element
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper *, .gform_wrapper :after, .gform_wrapper :before {
+    box-sizing: border-box!important;
+}
+Pseudo ::after element
+formsmain.min.css?ver=2.2.3:1
+.gform_wrapper *, .gform_wrapper :after, .gform_wrapper :before {
+    box-sizing: border-box!important;
+}
+Pseudo ::selection element
+style.css?ver=1.0.0:188
+::selection {
+    background-color: #000;
+    color: #fff;
+}
+
+#gform_fields_1 li {
+    list-style-type: none;
+}
