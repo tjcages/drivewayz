@@ -46,19 +46,6 @@ class CurrentParkingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let center = UNUserNotificationCenter.current()
-        center.delegate = self
-        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
-            
-            if granted {
-                DispatchQueue.main.async { // Correct
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-                
-            }
-            
-        }
 
         setupViews()
         configureNotifications()
@@ -76,6 +63,7 @@ class CurrentParkingViewController: UIViewController {
                     let refreshHours = dictionary["hours"] as? Int
                     let currentTimestamp = NSDate().timeIntervalSince1970
                     seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                    seconds = seconds! + (10 * 60)
                     
                     self.runTimer()
                 }
@@ -265,13 +253,13 @@ class CurrentParkingViewController: UIViewController {
             fourthContent.badge = 1
             fourthContent.sound = UNNotificationSound.default()
             
-            let seconds = (self.hours! * 3600) + (10 * 60)
-            let secondSeconds = seconds + (15 * 60)
-            let thirdSeconds = seconds + (30 * 60)
-            let fourthSeconds = seconds - (20 * 60)
+            let firstSeconds = (self.hours! * 3600) + (10 * 60)
+            let secondSeconds = firstSeconds + (15 * 60)
+            let thirdSeconds = firstSeconds + (30 * 60)
+            let fourthSeconds = firstSeconds - (20 * 60)
             
-            if seconds >= 0 {
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+            if seconds! >= 0 {
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(firstSeconds), repeats: false)
                 let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
                 let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)
                 let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)

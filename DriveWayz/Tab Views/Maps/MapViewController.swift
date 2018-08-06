@@ -13,6 +13,7 @@ import Firebase
 import GeoFire
 import Alamofire
 import SwiftyJSON
+import UserNotifications
 
 struct Parking {
     var name: String
@@ -56,7 +57,11 @@ protocol controlHoursButton {
     func closeHoursButton()
 }
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, removePurchaseView, controlHoursButton {
+protocol controlNewHosts {
+    func sendNewHost()
+}
+
+class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, removePurchaseView, controlHoursButton, controlNewHosts {
 
     let cellId = "cellId"
     var currentActive: Bool = false
@@ -187,6 +192,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Information Controller"
         controller.delegate = self
+        controller.hostDelegate = self
         
         return controller
     }()
@@ -203,7 +209,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -732,7 +738,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
-            UIApplication.shared.statusBarStyle = .lightContent
+            UIApplication.shared.statusBarStyle = .default
         }
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
@@ -964,6 +970,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
                 }
             }
             
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+                
+                if granted {
+                    DispatchQueue.main.async { // Correct
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                    
+                }
+                
+            }
+            
             guard let newMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let newMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.WHITE, tag: newMarkerView.tag)
             marker.iconView = newMarker
@@ -1191,6 +1210,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         else {
             self.swipeTutorial.removeFromSuperview()
         }
+    }
+    
+    func sendNewHost() {
+        self.vehicleDelegate?.setupNewParking(parkingImage: .noImage)
     }
     
 }

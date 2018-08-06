@@ -234,27 +234,32 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
         if (self.Codes.count - 1) >= count {
-            let code = self.Codes[count]
-            let stringArray = coupon!.components(separatedBy: CharacterSet.decimalDigits.inverted)
-            for item in stringArray {
-                if let number = Int(item) {
-                    guard let currentUser = Auth.auth().currentUser?.uid else {return}
-                    let ref = Database.database().reference().child("users").child(currentUser)
-                    ref.child("CurrentCoupon").updateChildValues(["coupon": number])
-                    ref.child("Coupons").updateChildValues([code: ""])
-                    self.Coupons.remove(at: (self.oldSelectedCell?.tag)!)
-                    self.Codes.remove(at: (self.oldSelectedCell?.tag)!)
-                    DispatchQueue.main.async(execute: {
-                        self.couponsTableView.reloadData()
-                    })
-                    sendAlert(title: "Success", message: "You have redeemed this coupon and it will be applied to your next purchase!")
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.view.alpha = 0
-                    }) { (success) in
-                        self.delegate?.removeOptionsFromView()
+            let alert = UIAlertController(title: "Confirm", message: "Would you like to activate this coupon now? It will be applied to your next purchase.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (pressed) in
+                let code = self.Codes[count]
+                let stringArray = coupon!.components(separatedBy: CharacterSet.decimalDigits.inverted)
+                for item in stringArray {
+                    if let number = Int(item) {
+                        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+                        let ref = Database.database().reference().child("users").child(currentUser)
+                        ref.child("CurrentCoupon").updateChildValues(["coupon": number])
+                        ref.child("Coupons").updateChildValues([code: ""])
+                        self.Coupons.remove(at: (self.oldSelectedCell?.tag)!)
+                        self.Codes.remove(at: (self.oldSelectedCell?.tag)!)
+                        DispatchQueue.main.async(execute: {
+                            self.couponsTableView.reloadData()
+                        })
+                        self.sendAlert(title: "Success", message: "You have redeemed this coupon and it will be applied to your next purchase!")
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.view.alpha = 0
+                        }) { (success) in
+                            self.delegate?.removeOptionsFromView()
+                        }
                     }
                 }
-            }
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
         } else {
             sendAlert(title: "Please select an available coupon", message: "")
         }

@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
+import FirebaseInvites
+import GoogleSignIn
 import GoogleMaps
 import GooglePlaces
 import Stripe
@@ -34,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         detectDevice()
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
+//        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+//        GIDSignIn.sharedInstance().delegate = self
         
         GMSServices.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
         GMSPlacesClient.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
@@ -51,23 +55,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         
         UIApplication.shared.applicationIconBadgeNumber = 0
-        self.configureNotifications()
         application.registerForRemoteNotifications()
         
         return true
     }
     
-    func configureNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .badge, .sound])
-        { (granted, error) in
-            //
-        }
-        
-        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
-        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
-        UNUserNotificationCenter.current().setNotificationCategories([category])
-    }
+//    func configureNotifications() {
+//        let center = UNUserNotificationCenter.current()
+//        center.requestAuthorization(options: [.alert, .badge, .sound])
+//        { (granted, error) in
+//            //
+//        }
+//
+//        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
+//        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
+//        UNUserNotificationCenter.current().setNotificationCategories([category])
+//    }
     
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -76,16 +79,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         let stripeHandled = Stripe.handleURLCallback(with: url)
-        
         if (stripeHandled) {
             return true
         }
         else {
-            // This was not a stripe url, do whatever url handling your app
-            // normally does, if any.
+            return self.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: "")
+        }
+    }
+    
+    func application(_ application: UIApplication,
+                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        if GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation) {
+            return true
         }
         
-        return false
+        return Invites.handleUniversalLink(url) { invite, error in
+            // ...
+        }
     }
     
     // This method is where you handle URL opens if you are using univeral link URLs (eg "https://example.com/stripe_ios_callback")
@@ -158,6 +168,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+//        // ...
+//        if error != nil {
+//            // ...
+//            return
+//        }
+//
+//        guard let authentication = user.authentication else { return }
+//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+//                                                       accessToken: authentication.accessToken)
+//        Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+//            if error != nil {
+//                // ...
+//                return
+//            }
+//            // User is signed in
+//            // ...
+//        }
+//    }
+//
+//    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+//        // Perform any operations when the user disconnects from app here.
+//        // ...
+//    }
     
 }
 

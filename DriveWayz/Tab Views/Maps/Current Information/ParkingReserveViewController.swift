@@ -295,7 +295,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         detailsTableView.bringSubview(toFront: userMessage)
         userMessage.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
         userMessage.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
-        userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 0).isActive = true
+        userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 5).isActive = true
         userMessage.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor, constant: -10).isActive = true
         
     }

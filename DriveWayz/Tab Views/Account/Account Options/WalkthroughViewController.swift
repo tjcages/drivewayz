@@ -204,6 +204,9 @@ class WalkthroughViewController: UIViewController {
         let gestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(segmentLeft(sender:)))
         gestureLeft.direction = .left
         termsContainer.addGestureRecognizer(gestureLeft)
+        let gestureRight = UISwipeGestureRecognizer(target: self, action: #selector(pageBack(sender:)))
+        gestureRight.direction = .right
+        termsContainer.addGestureRecognizer(gestureRight)
         termsContainerCenterAnchor = termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             termsContainerCenterAnchor.isActive = true
         termsContainerHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 400)
@@ -301,7 +304,7 @@ class WalkthroughViewController: UIViewController {
                 self.text.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.terms.removeFromSuperview()
+                self.terms.alpha = 0
                 self.accept.isUserInteractionEnabled = true
                 UIView.animate(withDuration: 0.3, animations: {
                     UIView.animate(withDuration: 0.3, animations: {
@@ -311,7 +314,6 @@ class WalkthroughViewController: UIViewController {
                         self.termsContainerHeightAnchor.constant = 180
                         self.blurBackgroundStartup.alpha = 0.3
                         self.view.layoutIfNeeded()
-                        self.text.removeFromSuperview()
                     })
                 }, completion: { (success) in
                     UIView.animate(withDuration: 0.3, animations: {
@@ -352,6 +354,7 @@ class WalkthroughViewController: UIViewController {
                 self.accept.isUserInteractionEnabled = true
                 UIView.animate(withDuration: 0.3, animations: {
                     self.lastAnchor.constant = 0
+                    self.text3.alpha = 1
                     self.view.layoutIfNeeded()
                 })
                 self.accept.setTitle("Get started!", for: .normal)
@@ -369,7 +372,96 @@ class WalkthroughViewController: UIViewController {
                 self.delegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
             }
         }
-        
+    }
+    
+    @objc func pageBack(sender: UISwipeGestureRecognizer) {
+        if self.text.alpha == 1 {
+            //
+        } else if text1.alpha == 1 {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.termsContainer.alpha = 0.8
+                self.mapTextAnchor.constant = self.view.frame.width
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.accept.isUserInteractionEnabled = true
+                UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.startupPages.currentPage = 0
+                        self.termsContainerCenterAnchor.constant = 0
+                        self.segmentTopAnchor.constant = 60
+                        self.termsContainerHeightAnchor.constant = 400
+                        self.blurBackgroundStartup.alpha = 0.6
+                        self.view.layoutIfNeeded()
+                    })
+                }, completion: { (success) in
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.terms.alpha = 1
+                        self.text.alpha = 1
+                    })
+                })
+            }
+        } else if self.nextAnchor.constant == 0 && text2.alpha == 1 {
+            self.delegate?.moveToMap()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.nextAnchor.constant = self.view.frame.width
+                self.back.alpha = 0
+                self.confirmAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.accept.isUserInteractionEnabled = true
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.confirmWidthAnchor.constant = -80
+                    self.startupPages.currentPage = 1
+                    self.termsContainerCenterAnchor.constant = self.view.frame.height / 2 - 90 - 60
+                    self.segmentTopAnchor.constant = 0
+                    self.termsContainerHeightAnchor.constant = 180
+                    self.blurBackgroundStartup.alpha = 0.3
+                    self.mapTextAnchor.constant = 0
+                    self.text1.alpha = 1
+                    self.view.layoutIfNeeded()
+                })
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.lastAnchor.constant = self.view.frame.width
+                self.termsContainerHeightAnchor.constant = 500
+                self.termsContainerCenterAnchor.constant = 0
+                self.confirmAnchor.constant = 60
+                self.confirmWidthAnchor.constant = -200
+                self.text3.alpha = 0
+                self.startupPages.currentPage = 2
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.accept.isUserInteractionEnabled = true
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.nextAnchor.constant = 0
+                    self.text2.alpha = 1
+                    self.image2.alpha = 1
+                    self.back.alpha = 1
+                    self.view.layoutIfNeeded()
+                })
+            }
+//
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.termsContainerHeightAnchor.constant = 375
+//                self.confirmAnchor.constant = 0
+//                self.confirmWidthAnchor.constant = -80
+//                self.back.alpha = 0
+//                self.text2.alpha = 0
+//                self.image2.alpha = 0
+//                self.startupPages.currentPage = 3
+//                self.view.layoutIfNeeded()
+//            }) { (success) in
+//                self.accept.isUserInteractionEnabled = true
+//                UIView.animate(withDuration: 0.3, animations: {
+//                    self.lastAnchor.constant = 0
+//                    self.view.layoutIfNeeded()
+//                })
+//
+//            }
+            
+            
+        }
     }
     
     @objc func backPressed(sender: UIButton) {

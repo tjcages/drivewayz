@@ -11,6 +11,7 @@
 		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
 		4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */; };
 		4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */; };
+		4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */; };
 		4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD4352106B8EF0024612A /* CouponsViewController.swift */; };
 		4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */; };
 		4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */; };
@@ -48,6 +49,7 @@
 		4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */; };
 		4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */; };
 		4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */; };
+		4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */; };
 		4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */; };
 		4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A7320CD976C00F404A7 /* Theme.swift */; };
 		4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */; };
@@ -69,6 +71,7 @@
 		4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */; };
 		4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */; };
 		4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9768420FE5446002C71BF /* PurchaseViewController.swift */; };
+		4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */; };
 		4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */; };
 		4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */; };
 		4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */; };
@@ -97,6 +100,7 @@
 		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
 		4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendTimeViewController.swift; sourceTree = "<group>"; };
 		4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBannerAdsViewController.swift; sourceTree = "<group>"; };
 		4D1AD4352106B8EF0024612A /* CouponsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponsViewController.swift; sourceTree = "<group>"; };
 		4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAvailabilityViewController.swift; sourceTree = "<group>"; };
 		4D21D2D420CC9FC3002D7005 /* DriveWayz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveWayz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +139,7 @@
 		4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
 		4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdViewController.swift; sourceTree = "<group>"; };
 		4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAGradientLayer.swift; sourceTree = "<group>"; };
 		4D6A5A7320CD976C00F404A7 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		4D745B1620FB9CAD00F82BDF /* DriveWayz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveWayz.entitlements; sourceTree = "<group>"; };
@@ -159,6 +164,7 @@
 		4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataChartsViewController.swift; sourceTree = "<group>"; };
 		4DD9768420FE5446002C71BF /* PurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		4DE2D6AE20CCAB2000A07A37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Info.plist; sourceTree = "<absolute>"; };
+		4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHostingViewController.swift; sourceTree = "<group>"; };
 		4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVehicleViewController.swift; sourceTree = "<group>"; };
 		4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserParkingViewController.swift; sourceTree = "<group>"; };
 		4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddANewVehicleViewController.swift; sourceTree = "<group>"; };
@@ -411,6 +417,8 @@
 				4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */,
 				4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */,
 				4D2EB5C521039486004AEA54 /* ParkingImageViewController.swift */,
+				4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */,
+				4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */,
 				4DD370B020F198F7005154C2 /* ParkingAvailabilityViewController.swift */,
 				4DD370B220F19909005154C2 /* ParkingReviewsViewController.swift */,
 				4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */,
@@ -424,6 +432,7 @@
 				4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */,
 				4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */,
 				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
+				4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */,
 			);
 			path = "Account Views";
 			sourceTree = "<group>";
@@ -528,15 +537,21 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-resources.sh",
+				"${PODS_ROOT}/FirebaseInvites/Resources/GINInviteResources.bundle",
+				"${PODS_ROOT}/FirebaseInvites/Resources/GPPACLPickerResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GINInviteResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GPPACLPickerResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -578,7 +593,10 @@
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -602,7 +620,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -633,6 +654,7 @@
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
+				4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */,
 				4DFB449820F407CA007A54B1 /* UserVehicleViewController.swift in Sources */,
 				4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */,
 				4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */,
@@ -679,8 +701,10 @@
 				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
 				4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */,
+				4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */,
 				4D41B21920CCA8F3002802A9 /* NewMessageController.swift in Sources */,
 				4D21D32320CC9FF9002D7005 /* ChatLogController.swift in Sources */,
+				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
 				4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */,
 				4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */,
 				4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */,

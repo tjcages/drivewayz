@@ -31,9 +31,14 @@ protocol extendTimeController {
     func closeExtendTimeView()
 }
 
-class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController {
+protocol sendNewHostControl {
+    func sendNewHost()
+}
+
+class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController, sendNewHostControl {
     
     var delegate: removePurchaseView?
+    var hostDelegate: controlNewHosts?
     var parkingID: String?
     
     lazy var infoController: ParkingInfoViewController = {
@@ -206,6 +211,50 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         return controller
     }()
     
+    var bannerContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        view.alpha = 1
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 1
+        view.layer.shadowOpacity = 0.8
+        
+        return view
+    }()
+    
+    lazy var bannerController: BannerAdViewController = {
+        let controller = BannerAdViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Banner"
+        
+        return controller
+    }()
+    
+    var smallBannerContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        view.alpha = 1
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 1
+        view.layer.shadowOpacity = 0.8
+
+        return view
+    }()
+    
+    lazy var smallBannerController: BannerHostingViewController = {
+        let controller = BannerHostingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Small Banner"
+        controller.delegate = self
+        
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -240,7 +289,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
         self.view.addSubview(informationScrollView)
-        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1100)
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(scrollViewDidPan(sender:)))
+        gesture.direction = .up
+        informationScrollView.addGestureRecognizer(gesture)
+        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1400)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -329,17 +381,31 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         reviewsController.view.topAnchor.constraint(equalTo: reviewsContainer.topAnchor).isActive = true
         reviewsController.view.widthAnchor.constraint(equalTo: reviewsContainer.widthAnchor).isActive = true
         
-        informationScrollView.addSubview(signUpContainer)
-        signUpContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        signUpContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        signUpContainer.topAnchor.constraint(equalTo: reviewsContainer.bottomAnchor, constant: 10).isActive = true
-        signUpContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+    
+        informationScrollView.addSubview(bannerContainer)
+        bannerContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        bannerContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        bannerContainer.topAnchor.constraint(equalTo: reviewsContainer.bottomAnchor, constant: 10).isActive = true
+        bannerContainer.heightAnchor.constraint(equalToConstant: 260).isActive = true
         
-        signUpContainer.addSubview(signUpLabel)
-        signUpLabel.leftAnchor.constraint(equalTo: signUpContainer.leftAnchor, constant: 10).isActive = true
-        signUpLabel.rightAnchor.constraint(equalTo: signUpContainer.rightAnchor, constant: -10).isActive = true
-        signUpLabel.topAnchor.constraint(equalTo: signUpContainer.topAnchor, constant: 10).isActive = true
-        signUpLabel.bottomAnchor.constraint(equalTo: signUpContainer.bottomAnchor, constant: -10).isActive = true
+        bannerContainer.addSubview(bannerController.view)
+        bannerController.view.centerXAnchor.constraint(equalTo: bannerContainer.centerXAnchor).isActive = true
+        bannerController.view.widthAnchor.constraint(equalTo: bannerContainer.widthAnchor).isActive = true
+        bannerController.view.centerYAnchor.constraint(equalTo: bannerContainer.centerYAnchor).isActive = true
+        bannerController.view.heightAnchor.constraint(equalTo: bannerContainer.heightAnchor).isActive = true
+        
+        
+        informationScrollView.addSubview(smallBannerContainer)
+        smallBannerContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        smallBannerContainer.topAnchor.constraint(equalTo: bannerController.view.bottomAnchor, constant: 10).isActive = true
+        smallBannerContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        smallBannerContainer.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        smallBannerContainer.addSubview(smallBannerController.view)
+        smallBannerController.view.centerXAnchor.constraint(equalTo: smallBannerContainer.centerXAnchor).isActive = true
+        smallBannerController.view.centerYAnchor.constraint(equalTo: smallBannerContainer.centerYAnchor).isActive = true
+        smallBannerController.view.heightAnchor.constraint(equalTo: smallBannerContainer.heightAnchor).isActive = true
+        smallBannerController.view.widthAnchor.constraint(equalTo: smallBannerContainer.widthAnchor).isActive = true
         
     }
     
@@ -351,6 +417,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
                 informationScrollView.isScrollEnabled = true
             }
         }
+    }
+    
+    @objc func scrollViewDidPan(sender: UISwipeGestureRecognizer) {
+        informationScrollView.isScrollEnabled = true
     }
     
     var check: Bool = true
@@ -426,6 +496,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func setupLeaveAReview() {
         self.delegate?.setupLeaveAReview(parkingID: self.parkingID!)
+    }
+    
+    func sendNewHost() {
+        self.hostDelegate?.sendNewHost()
     }
 
     override func didReceiveMemoryWarning() {

@@ -36,6 +36,9 @@ PODS:
   - Firebase/Database (5.5.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.0.2)
+  - Firebase/Invites (5.5.0):
+    - Firebase/Core
+    - FirebaseInvites (= 3.0.0)
   - Firebase/Messaging (5.5.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (= 3.1.0)
@@ -62,9 +65,25 @@ PODS:
   - FirebaseDatabase (5.0.2):
     - FirebaseCore (~> 5.0)
     - leveldb-library (~> 1.18)
+  - FirebaseDynamicLinks (3.0.2):
+    - FirebaseAnalytics (~> 5.1)
   - FirebaseInstanceID (3.2.0):
     - FirebaseCore (~> 5.1)
     - GoogleUtilities/Environment (~> 5.2)
+  - FirebaseInvites (3.0.0):
+    - FirebaseAnalytics (~> 5.0)
+    - FirebaseDynamicLinks (~> 3.0)
+    - GoogleAPIClientForREST (~> 1.0)
+    - GoogleSignIn (~> 4.1)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GoogleToolboxForMac/StringEncoding (~> 2.1)
+    - GoogleToolboxForMac/URLBuilder (~> 2.1)
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - GTMSessionFetcher/Full (~> 1.1)
+    - Protobuf (~> 3.5)
   - FirebaseMessaging (3.1.0):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
@@ -76,6 +95,11 @@ PODS:
   - Floaty (4.0.1)
   - GeoFire (3.0.0):
     - Firebase/Database (~> 5.0)
+  - GoogleAPIClientForREST (1.3.5):
+    - GoogleAPIClientForREST/Core (= 1.3.5)
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Core (1.3.5):
+    - GTMSessionFetcher (>= 1.1.7)
   - GoogleAppMeasurement (5.1.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2.0)
     - GoogleUtilities/MethodSwizzler (~> 5.2.0)
@@ -92,6 +116,30 @@ PODS:
     - GooglePlaces (= 2.7.0)
   - GooglePlaces (2.7.0):
     - GoogleMaps/Base (= 2.7.0)
+  - GoogleSignIn (4.1.2):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/Core (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/DebugUtils (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
+    - GoogleToolboxForMac/DebugUtils (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
+  - GoogleToolboxForMac/StringEncoding (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/URLBuilder (2.1.4):
+    - GoogleToolboxForMac/Core (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (= 2.1.4)"
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - GoogleUtilities/AppDelegateSwizzler (5.2.1):
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
@@ -107,7 +155,13 @@ PODS:
   - "GoogleUtilities/NSData+zlib (5.2.1)"
   - GoogleUtilities/Reachability (5.2.1):
     - GoogleUtilities/Logger
+  - GTMOAuth2 (1.1.6):
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.2.0):
+    - GTMSessionFetcher/Full (= 1.2.0)
   - GTMSessionFetcher/Core (1.2.0)
+  - GTMSessionFetcher/Full (1.2.0):
+    - GTMSessionFetcher/Core (= 1.2.0)
   - leveldb-library (1.20)
   - MapboxStatic.swift (0.9.1)
   - nanopb (0.3.8):
@@ -132,6 +186,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Invites
   - Firebase/Messaging
   - Firebase/Storage
   - Floaty (~> 4.0.0)
@@ -139,6 +194,7 @@ DEPENDENCIES:
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
+  - GoogleSignIn
   - MapboxStatic.swift (~> 0.9)
   - PushNotifications
   - Stripe
@@ -163,15 +219,21 @@ SPEC REPOS:
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseDatabase
+    - FirebaseDynamicLinks
     - FirebaseInstanceID
+    - FirebaseInvites
     - FirebaseMessaging
     - FirebaseStorage
     - Floaty
+    - GoogleAPIClientForREST
     - GoogleAppMeasurement
     - GoogleMaps
     - GooglePlacePicker
     - GooglePlaces
+    - GoogleSignIn
+    - GoogleToolboxForMac
     - GoogleUtilities
+    - GTMOAuth2
     - GTMSessionFetcher
     - leveldb-library
     - MapboxStatic.swift
@@ -208,16 +270,22 @@ SPEC CHECKSUMS:
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: ee4b35cf8c8e781da296cc7c15125e4608bb954d
   FirebaseDatabase: 27be5ac5bc75e0b17537b2bbfada8258addcc8cd
+  FirebaseDynamicLinks: eb41fb20677b0a6e944b47f45cbe59f388e9e5cc
   FirebaseInstanceID: 8cd2c6cfe7b9ab65ce7e248f6da7f26f6775b9be
+  FirebaseInvites: d7534f94d0610b892bac8ee0cf4218a14be46c28
   FirebaseMessaging: f67b3719f520ee200da0e20ce577fe2bce0c01d0
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   Floaty: 82854e1a5ef4fa208281ebd4da2f3d1e51ba67a6
   GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
+  GoogleAPIClientForREST: b4c23f6ec9b8c29419d0377168007963d0e25551
   GoogleAppMeasurement: e785bdb86d3d280abc778156cec323a975f11d1d
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   GooglePlacePicker: 59ea44db173c58486ad6123993e81feefcbce9c3
   GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
+  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GoogleUtilities: 8d9fa00248c475b606fd20b562242060a20117a2
+  GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   MapboxStatic.swift: 247d98dd6e11b8934aa5d122efcb50384f8d66f6
@@ -229,6 +297,6 @@ SPEC CHECKSUMS:
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
   TOMSMorphingLabel: 3e88a2bf5257f8993ebc51fb3109187a0bfb2c4d
 
-PODFILE CHECKSUM: f6d8d711a346b2a2bfb88e65292dab7faf0bc164
+PODFILE CHECKSUM: 7074f064a78862effc7ec9510bdbf5587c43721d
 
 COCOAPODS: 1.5.3

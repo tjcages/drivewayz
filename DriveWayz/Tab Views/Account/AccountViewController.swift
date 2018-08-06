@@ -122,6 +122,17 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return controller
     }()
     
+    lazy var bannerController: ProfileBannerAdsViewController = {
+        let controller = ProfileBannerAdsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Banner"
+        controller.view.layer.cornerRadius = 5
+        controller.view.clipsToBounds = true
+        controller.view.layer.masksToBounds = true
+        
+        return controller
+    }()
+    
     var profileImageView: UIImageView = {
         let profileImageView = UIImageView()
         let image = UIImage(named: "background4")
@@ -406,13 +417,14 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func setupTopView() {
+        let statusHeight = UIApplication.shared.statusBarFrame.height
         
         self.view.addSubview(contentScrollView)
         contentScrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         contentScrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentScrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         contentScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 200)
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + statusHeight)
 
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
@@ -492,6 +504,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 20).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
+        
+        profileView.addSubview(bannerController.view)
+        bannerController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
+        bannerController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 15).isActive = true
+        bannerController.view.topAnchor.constraint(equalTo: recentController.view.bottomAnchor, constant: 40).isActive = true
+        bannerController.view.heightAnchor.constraint(equalToConstant: 270).isActive = true
 
     }
     
@@ -570,16 +588,19 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     var currentHeightAnchor: NSLayoutConstraint?
-    lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+    lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 20)
     
     func changeCurrentView(height: CGFloat) {
         self.currentController.view.alpha = 1
         self.currentHeightAnchor?.constant = height
-        if height >= 200 {
-            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 300)
+        if height >= 300 {
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 455)
+            currentSize = contentScrollView.contentSize
+        } else if height >= 200 {
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 255)
             currentSize = contentScrollView.contentSize
         } else {
-            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 50)
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 80)
             currentSize = contentScrollView.contentSize
         }
         UIView.animate(withDuration: 0.3, animations: {

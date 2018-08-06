@@ -111,8 +111,8 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         
         self.view.addSubview(parkingPicker)
         parkingPicker.topAnchor.constraint(equalTo: currentContainer.topAnchor, constant: 30).isActive = true
-        parkingPicker.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        parkingPicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        parkingPicker.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        parkingPicker.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         parkingPicker.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         self.view.addSubview(noRecentLabel)

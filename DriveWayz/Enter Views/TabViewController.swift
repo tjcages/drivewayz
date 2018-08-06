@@ -26,6 +26,7 @@ protocol controlsNewParking {
     func setupNewVehicle(vehicleStatus: VehicleStatus)
     func removeNewVehicleView()
     func moveTopProfile()
+    func moveToMap()
 }
 
 class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsNewParking {
