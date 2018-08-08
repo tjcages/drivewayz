@@ -256,7 +256,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         let background = CAGradientLayer().blurColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
         view.layer.insertSublayer(background, at: 0)
-        view.alpha = 0
+        view.alpha = 1
         
         let label = UILabel()
         label.text = "Swipe up for more info, down to dismiss"

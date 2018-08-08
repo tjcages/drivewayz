@@ -130,6 +130,16 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         return line
     }()
     
+    lazy var reservationController: ReserveViewController = {
+        let controller = ReserveViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Reservations"
+        controller.view.layer.cornerRadius = 5
+        controller.view.alpha = 1
+        
+        return controller
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,6 +167,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func setData(formattedAddress: String, message: String, parkingID: String, id: String) {
+        reservationController.setData(parkingID: parkingID)
         self.address = formattedAddress
         self.parkingID = parkingID
         self.id = id
@@ -225,7 +236,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     
     var currentTableAnchor: NSLayoutConstraint!
     var detailsTableAnchor: NSLayoutConstraint!
-    var paymentTableAnchor: NSLayoutConstraint!
+    var reservationsTableAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -284,12 +295,12 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         detailsTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
         detailsTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
-        parkingView.addSubview(paymentTableView)
-        paymentTableAnchor = paymentTableView.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
-        paymentTableAnchor.isActive = true
-        paymentTableView.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
-        paymentTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
-        paymentTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
+        parkingView.addSubview(reservationController.view)
+        reservationsTableAnchor = reservationController.view.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
+            reservationsTableAnchor.isActive = true
+        reservationController.view.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
+        reservationController.view.topAnchor.constraint(equalTo: parkingView.topAnchor, constant: 35).isActive = true
+        reservationController.view.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
         detailsTableView.addSubview(userMessage)
         detailsTableView.bringSubview(toFront: userMessage)
@@ -323,7 +334,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             UIView.animate(withDuration: 0.2, animations: {
                 self.currentTableAnchor.constant = 0
                 self.detailsTableAnchor.constant = self.view.frame.width
-                self.paymentTableAnchor.constant = self.view.frame.width
+                self.reservationsTableAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             })
         }
@@ -346,7 +357,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             UIView.animate(withDuration: 0.2, animations: {
                 self.currentTableAnchor.constant = self.view.frame.width
                 self.detailsTableAnchor.constant =  0
-                self.paymentTableAnchor.constant = self.view.frame.width
+                self.reservationsTableAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             })
         }
@@ -369,7 +380,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             UIView.animate(withDuration: 0.2, animations: {
                 self.currentTableAnchor.constant = self.view.frame.width
                 self.detailsTableAnchor.constant = self.view.frame.width
-                self.paymentTableAnchor.constant = 0
+                self.reservationsTableAnchor.constant = 0
                 self.view.layoutIfNeeded()
             })
         }

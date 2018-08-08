@@ -34,6 +34,8 @@
 		4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */; };
 		4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */; };
 		4D26EE6120E5C5DB00E369EF /* ParkingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */; };
+		4D2C5F8A211938D100364CB6 /* ReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C5F89211938D100364CB6 /* ReserveViewController.swift */; };
+		4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */; };
 		4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */; };
 		4D2DDEAC21095F02005AB485 /* ParkingCurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2DDEAB21095F02005AB485 /* ParkingCurrentViewController.swift */; };
 		4D2EB5BA2101527A004AEA54 /* SaveParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */; };
@@ -124,6 +126,8 @@
 		4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingSpots.swift; sourceTree = "<group>"; };
 		4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTableViewCell.swift; sourceTree = "<group>"; };
 		4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParkingTableViewCell.xib; sourceTree = "<group>"; };
+		4D2C5F89211938D100364CB6 /* ReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveViewController.swift; sourceTree = "<group>"; };
+		4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPurchaseViewController.swift; sourceTree = "<group>"; };
 		4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsCell.swift; sourceTree = "<group>"; };
 		4D2DDEAB21095F02005AB485 /* ParkingCurrentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingCurrentViewController.swift; sourceTree = "<group>"; };
 		4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveParkingViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +335,15 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		4D2C5F8B211A799000364CB6 /* New Purchase */ = {
+			isa = PBXGroup;
+			children = (
+				4D2C5F89211938D100364CB6 /* ReserveViewController.swift */,
+				4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */,
+			);
+			path = "New Purchase";
+			sourceTree = "<group>";
+		};
 		4D2EB5CB210686E9004AEA54 /* Account Options */ = {
 			isa = PBXGroup;
 			children = (
@@ -362,6 +375,7 @@
 			children = (
 				4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */,
 				4D2EB5C321038F34004AEA54 /* InformationViewController.swift */,
+				4D2C5F8B211A799000364CB6 /* New Purchase */,
 				4DFFC25F210C99FE006D6062 /* Current Information */,
 			);
 			path = Maps;
@@ -662,6 +676,7 @@
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
 				4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */,
 				4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */,
+				4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */,
 				4D2EB5C421038F34004AEA54 /* InformationViewController.swift in Sources */,
 				4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */,
 				4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */,
@@ -702,6 +717,7 @@
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
 				4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */,
 				4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */,
+				4D2C5F8A211938D100364CB6 /* ReserveViewController.swift in Sources */,
 				4D41B21920CCA8F3002802A9 /* NewMessageController.swift in Sources */,
 				4D21D32320CC9FF9002D7005 /* ChatLogController.swift in Sources */,
 				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
@@ -868,7 +884,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -890,7 +906,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

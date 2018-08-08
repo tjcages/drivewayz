@@ -41,8 +41,8 @@ class LaunchAnimationsViewController: UIViewController {
         return controller
     }()
     
-    lazy var tabController: TabViewController = {
-        let controller = TabViewController()
+    lazy var tabController: SelectPurchaseViewController = {
+        let controller = SelectPurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Tab"
         return controller

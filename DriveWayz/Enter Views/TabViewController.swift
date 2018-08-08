@@ -412,7 +412,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }, completion: { (success) in
             self.saveParkingController.view.removeFromSuperview()
             self.newParkingController.view.removeFromSuperview()
-            UIApplication.shared.statusBarStyle = .lightContent
+//            UIApplication.shared.statusBarStyle = .lightContent
         })
     }
     
@@ -452,7 +452,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.view.layoutIfNeeded()
         }, completion: { (success) in
             self.newVehicleController.view.removeFromSuperview()
-            UIApplication.shared.statusBarStyle = .lightContent
+//            UIApplication.shared.statusBarStyle = .lightContent
         })
     }
     

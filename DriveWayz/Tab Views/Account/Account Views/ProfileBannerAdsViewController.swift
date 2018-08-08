@@ -63,7 +63,7 @@ class ProfileBannerAdsViewController: UIViewController {
         bannerImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         bannerImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         bannerImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 15).isActive = true
-        bannerImageView.heightAnchor.constraint(equalToConstant: 270).isActive = true
+        bannerImageView.heightAnchor.constraint(equalToConstant: 490).isActive = true
         
         self.view.addSubview(bannerContainer)
         self.view.sendSubview(toBack: bannerContainer)

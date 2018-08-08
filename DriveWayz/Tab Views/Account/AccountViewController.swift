@@ -424,7 +424,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         contentScrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentScrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         contentScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + statusHeight)
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + statusHeight + 240)
 
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
@@ -506,10 +506,11 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
         profileView.addSubview(bannerController.view)
+        bannerController.view.backgroundColor = UIColor.red
         bannerController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         bannerController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 15).isActive = true
         bannerController.view.topAnchor.constraint(equalTo: recentController.view.bottomAnchor, constant: 40).isActive = true
-        bannerController.view.heightAnchor.constraint(equalToConstant: 270).isActive = true
+        bannerController.view.heightAnchor.constraint(equalToConstant: 490).isActive = true
 
     }
     
@@ -588,19 +589,19 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     var currentHeightAnchor: NSLayoutConstraint?
-    lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 20)
+    lazy var currentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 260)
     
     func changeCurrentView(height: CGFloat) {
         self.currentController.view.alpha = 1
         self.currentHeightAnchor?.constant = height
         if height >= 300 {
-            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 455)
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 695)
             currentSize = contentScrollView.contentSize
         } else if height >= 200 {
-            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 255)
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 495)
             currentSize = contentScrollView.contentSize
         } else {
-            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 80)
+            contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 320)
             currentSize = contentScrollView.contentSize
         }
         UIView.animate(withDuration: 0.3, animations: {

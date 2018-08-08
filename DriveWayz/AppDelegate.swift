@@ -60,19 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-//    func configureNotifications() {
-//        let center = UNUserNotificationCenter.current()
-//        center.requestAuthorization(options: [.alert, .badge, .sound])
-//        { (granted, error) in
-//            //
-//        }
-//
-//        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
-//        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
-//        UNUserNotificationCenter.current().setNotificationCategories([category])
-//    }
-    
-    
     func applicationDidBecomeActive(_ application: UIApplication) {
         AppEventsLogger.activate(application)
     }
@@ -168,56 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-//        // ...
-//        if error != nil {
-//            // ...
-//            return
-//        }
-//
-//        guard let authentication = user.authentication else { return }
-//        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-//                                                       accessToken: authentication.accessToken)
-//        Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
-//            if error != nil {
-//                // ...
-//                return
-//            }
-//            // User is signed in
-//            // ...
-//        }
-//    }
-//
-//    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-//        // Perform any operations when the user disconnects from app here.
-//        // ...
-//    }
-    
 }
-
-
-//extension AppDelegate: UNUserNotificationCenterDelegate {
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        completionHandler([.alert, .sound])
-//    }
-//
-//    // For handling tap and user actions
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//        switch response.actionIdentifier {
-//        case "action1":
-//            print("Action First Tapped")
-//        case "action2":
-//            print("Action Second Tapped")
-//        default:
-//            break
-//        }
-//        completionHandler()
-//    }
-//
-//}
 
 
 extension AppDelegate : MessagingDelegate {

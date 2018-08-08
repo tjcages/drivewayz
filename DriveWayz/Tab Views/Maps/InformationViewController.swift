@@ -315,7 +315,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         reserveContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reserveContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         reserveContainer.topAnchor.constraint(equalTo: self.infoContainer.bottomAnchor, constant: 10).isActive = true
-        reserveContainerHeightAnchor = reserveContainer.heightAnchor.constraint(equalToConstant: 120)
+        reserveContainerHeightAnchor = reserveContainer.heightAnchor.constraint(equalToConstant: 320)
             reserveContainerHeightAnchor.isActive = true
         
         reserveContainer.addSubview(reserveController.view)
