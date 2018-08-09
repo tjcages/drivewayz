@@ -506,7 +506,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
         profileView.addSubview(bannerController.view)
-        bannerController.view.backgroundColor = UIColor.red
         bannerController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         bannerController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 15).isActive = true
         bannerController.view.topAnchor.constraint(equalTo: recentController.view.bottomAnchor, constant: 40).isActive = true

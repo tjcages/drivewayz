@@ -338,8 +338,8 @@
 		4D2C5F8B211A799000364CB6 /* New Purchase */ = {
 			isa = PBXGroup;
 			children = (
-				4D2C5F89211938D100364CB6 /* ReserveViewController.swift */,
 				4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */,
+				4D2C5F89211938D100364CB6 /* ReserveViewController.swift */,
 			);
 			path = "New Purchase";
 			sourceTree = "<group>";

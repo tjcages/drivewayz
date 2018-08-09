@@ -174,14 +174,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         return view
     }()
     
-    lazy var purchaseViewController: PurchaseViewController = {
-        let controller = PurchaseViewController()
+    lazy var purchaseViewController: SelectPurchaseViewController = {
+        let controller = SelectPurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Purchase Controller"
         controller.delegate = self
-        controller.hoursDelegate = self
-        controller.view.layer.cornerRadius = 10
+//        controller.hoursDelegate = self
         
         return controller
     }()
@@ -253,25 +252,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     lazy var swipeTutorial: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().blurColor()
+        let background = CAGradientLayer().lightBlurColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
         view.layer.insertSublayer(background, at: 0)
-        view.alpha = 1
+        view.alpha = 0
         
+        return view
+    }()
+    
+    var swipeLabel: UILabel = {
         let label = UILabel()
         label.text = "Swipe up for more info, down to dismiss"
         label.textColor = Theme.WHITE
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
         
-        view.addSubview(label)
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        label.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        return view
+        return label
     }()
     
     override func viewDidLoad() {
@@ -653,6 +651,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         swipeTutorial.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         swipeTutorial.heightAnchor.constraint(equalToConstant: 160).isActive = true
         
+        view.addSubview(swipeLabel)
+        swipeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        swipeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        swipeLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
+        swipeLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
     }
     
     func setupLeaveAReview(parkingID: String) {
@@ -704,10 +708,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         gestureRecognizer2.direction = .down
         purchaseViewController.view.addGestureRecognizer(gestureRecognizer2)
         purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        purchaseViewAnchor = purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 80)
+        purchaseViewAnchor = purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 160)
             purchaseViewAnchor.isActive = true
-        purchaseViewController.view.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 80)
+        purchaseViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 140)
             hoursButtonAnchor.isActive = true
         
         self.view.addSubview(informationViewController.view)
@@ -735,6 +739,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.purchaseViewAnchor.constant = -self.view.frame.height
             self.fullBlurView.alpha = 0.9
             self.swipeTutorial.alpha = 0
+            self.swipeLabel.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
@@ -749,10 +754,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }
     
     func purchaseButtonSwipedDown() {
+        purchaseViewController.minimizeHours()
+        purchaseViewController.currentSender()
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
         UIView.animate(withDuration: 0.3, animations: {
-            self.purchaseViewAnchor.constant = 80
+            self.purchaseViewAnchor.constant = 160
+            self.swipeTutorial.alpha = 0
             self.fullBlurView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -770,8 +778,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     @objc func informationButtonSwiped() {
         self.delegate?.showTabController()
         UIView.animate(withDuration: 0.5, animations: {
-            self.purchaseViewAnchor.constant = -15
+            self.purchaseViewAnchor.constant = 0
             self.fullBlurView.alpha = 0
+            self.swipeTutorial.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
@@ -805,11 +814,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }
     
     func openHoursButton() {
-        self.hoursButtonAnchor.constant = 200
+        self.hoursButtonAnchor.constant = 315
+        UIView.animate(withDuration: 0.2) {
+            self.fullBlurView.alpha = 0.6
+            self.view.layoutIfNeeded()
+        }
     }
     
     func closeHoursButton() {
-        self.hoursButtonAnchor.constant = 80
+        self.hoursButtonAnchor.constant = 140
+        UIView.animate(withDuration: 0.2) {
+            self.fullBlurView.alpha = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
     func sendAvailability(availability: Bool) {
@@ -963,7 +980,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                 //
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.purchaseViewAnchor.constant = -15
+                    self.purchaseViewAnchor.constant = 0
+                    self.swipeTutorial.alpha = 1
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     //
@@ -1205,10 +1223,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         if UserDefaults.standard.bool(forKey: "swipeTutorialCompleted") == false {
             UIView.animate(withDuration: 0.3) {
                 self.swipeTutorial.alpha = 1
+                self.swipeLabel.alpha = 1
             }
         }
         else {
-            self.swipeTutorial.removeFromSuperview()
+            self.swipeLabel.removeFromSuperview()
         }
     }
     

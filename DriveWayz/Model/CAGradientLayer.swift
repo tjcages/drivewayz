@@ -40,6 +40,21 @@ extension CAGradientLayer {
         
         return gradientLayer
     }
+    
+    @objc func lightBlurColor() -> CAGradientLayer {
+        
+        let topColor = UIColor.clear
+        let bottomColor = Theme.WHITE
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+        
+        return gradientLayer
+    }
 }
 
 extension UIImageView

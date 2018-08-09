@@ -12,16 +12,17 @@ import Firebase
 class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var parkingID: String?
+    var finalFrom: String?
+    var finalTo: String?
+    var finalFromDay: String = "Today"
+    var finalToDay: String = "Today"
+    
+    var delegate: handleReservations?
     
     var viewContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 5
-//        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-//        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-//        view.layer.shadowRadius = 1
-//        view.layer.shadowOpacity = 0.8
+        view.backgroundColor = UIColor.clear
         
         return view
     }()
@@ -215,13 +216,8 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var infoContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = UIColor.clear
         view.alpha = 0
-//        view.layer.cornerRadius = 5
-//        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-//        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-//        view.layer.shadowRadius = 3
-//        view.layer.shadowOpacity = 0.8
         
         return view
     }()
@@ -262,47 +258,13 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         return label
     }()
     
-    var todayImage: UIImageView = {
-        let image = UIImage(named: "Expand")
-        let imageView = UIImageView(image: image)
-        imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = Theme.PRIMARY_DARK_COLOR
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
-    var fromLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
-        label.text = "From:"
-        
-        return label
-    }()
-    
-    var toLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
-        label.text = "To:"
-        
-        return label
-    }()
-    
     var fromDayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.black
+        label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.text = "Thursday 24"
         
         return label
@@ -310,23 +272,64 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     var toDayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.black
+        label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.text = "Friday 25"
         
         return label
     }()
     
+    var toLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
+        label.backgroundColor = UIColor.clear
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "to"
+        
+        return label
+    }()
+    
+    var checkButton: UIButton = {
+        let image = UIImage(named: "Checkmark")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton()
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.PRIMARY_DARK_COLOR
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(checkButtonPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var needHours: UIButton = {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("Please select a full hour to park", for: .normal)
+        view.titleLabel?.textColor = Theme.WHITE
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        view.titleLabel?.textAlignment = .center
+        view.titleLabel?.numberOfLines = 2
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.alpha = 0
+        view.layer.cornerRadius = 10
+        view.isUserInteractionEnabled = false
+        
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.black
         
         timeToPicker.delegate = self
+        timeToPicker.dataSource = self
         timeFromPicker.delegate = self
+        timeFromPicker.dataSource = self
 
         setupView()
     }
@@ -343,9 +346,15 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         view.addSubview(viewContainer)
         viewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        viewContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        viewContainer.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        viewContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        viewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         viewContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        
+        view.addSubview(needHours)
+        needHours.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
+        needHours.bottomAnchor.constraint(equalTo: viewContainer.topAnchor, constant: -55).isActive = true
+        needHours.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        needHours.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         viewContainer.addSubview(daysContainer)
         daysContainer.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 10).isActive = true
@@ -433,66 +442,88 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         viewContainer.addSubview(infoContainer)
         infoContainer.topAnchor.constraint(equalTo: daysContainer.bottomAnchor, constant: 40).isActive = true
         infoContainer.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
-        infoContainer.widthAnchor.constraint(equalTo: viewContainer.widthAnchor, constant: -80).isActive = true
-        infoContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        infoContainer.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
+        infoContainer.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor).isActive = true
         
         viewContainer.addSubview(selectionLabel)
         selectionLabel.centerXAnchor.constraint(equalTo: infoContainer.centerXAnchor).isActive = true
-        selectionLabel.centerYAnchor.constraint(equalTo: infoContainer.centerYAnchor).isActive = true
+        selectionLabel.centerYAnchor.constraint(equalTo: infoContainer.centerYAnchor, constant: -30).isActive = true
         selectionLabel.widthAnchor.constraint(equalTo: infoContainer.widthAnchor).isActive = true
         selectionLabel.heightAnchor.constraint(equalTo: infoContainer.heightAnchor).isActive = true
         
-        viewContainer.addSubview(todayImage)
-        todayImage.centerXAnchor.constraint(equalTo: firstButton.centerXAnchor).isActive = true
-        todayImage.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 5).isActive = true
-        todayImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        todayImage.heightAnchor.constraint(equalToConstant: 15).isActive = true
-        
         viewContainer.addSubview(todayLabel)
-        todayLabel.centerXAnchor.constraint(equalTo: todayImage.centerXAnchor).isActive = true
-        todayLabel.topAnchor.constraint(equalTo: todayImage.bottomAnchor, constant: -5).isActive = true
+        todayLabel.centerXAnchor.constraint(equalTo: firstButton.centerXAnchor).isActive = true
+        todayLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor).isActive = true
         todayLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         todayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        infoContainer.addSubview(fromLabel)
-        fromLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 10).isActive = true
-        fromLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        fromLabel.topAnchor.constraint(equalTo: infoContainer.topAnchor, constant: 5).isActive = true
-        fromLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        infoContainer.addSubview(toLabel)
-        toLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 10).isActive = true
-        toLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        toLabel.topAnchor.constraint(equalTo: infoContainer.centerYAnchor, constant: -10).isActive = true
-        toLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
         infoContainer.addSubview(fromDayLabel)
-        fromDayLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 40).isActive = true
-        fromDayLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        fromDayLabel.topAnchor.constraint(equalTo: fromLabel.bottomAnchor, constant: 0).isActive = true
+        fromDayLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 60).isActive = true
+        fromDayLabel.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        fromDayLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 10).isActive = true
         fromDayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         infoContainer.addSubview(timeFromPicker)
-        timeFromPicker.rightAnchor.constraint(equalTo: infoContainer.rightAnchor, constant: -20).isActive = true
+        timeFromPicker.rightAnchor.constraint(equalTo: infoContainer.rightAnchor, constant: -70).isActive = true
         timeFromPicker.centerYAnchor.constraint(equalTo: fromDayLabel.centerYAnchor).isActive = true
         timeFromPicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeFromPicker.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+        infoContainer.addSubview(toLabel)
+        toLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 70).isActive = true
+        toLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        toLabel.topAnchor.constraint(equalTo: fromDayLabel.bottomAnchor, constant: 10).isActive = true
+        toLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         infoContainer.addSubview(toDayLabel)
-        toDayLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 40).isActive = true
-        toDayLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        toDayLabel.topAnchor.constraint(equalTo: toLabel.bottomAnchor, constant: 0).isActive = true
+        toDayLabel.leftAnchor.constraint(equalTo: infoContainer.leftAnchor, constant: 60).isActive = true
+        toDayLabel.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        toDayLabel.topAnchor.constraint(equalTo: toLabel.bottomAnchor, constant: 10).isActive = true
         toDayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         infoContainer.addSubview(timeToPicker)
-        timeToPicker.rightAnchor.constraint(equalTo: infoContainer.rightAnchor, constant: -20).isActive = true
+        timeToPicker.rightAnchor.constraint(equalTo: infoContainer.rightAnchor, constant: -70).isActive = true
         timeToPicker.centerYAnchor.constraint(equalTo: toDayLabel.centerYAnchor).isActive = true
         timeToPicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeToPicker.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+        infoContainer.addSubview(checkButton)
+        checkButton.leftAnchor.constraint(equalTo: timeToPicker.rightAnchor, constant: 10).isActive = true
+        checkButton.centerYAnchor.constraint(equalTo: timeToPicker.centerYAnchor).isActive = true
+        checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+    }
+    
+    @objc func checkButtonPressed(sender: UIButton) {
+        let from = "\(String(describing: finalFrom!)) \(finalFromDay)"
+        let to = "\(String(describing: finalTo!)) \(finalToDay)"
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a EEEE"
+        let fromDate = formatter.date(from: from)
+        let toDate = formatter.date(from: to)
+        let hours = -(Double((fromDate?.hours(from: toDate!))!))
+        print(hours)
+        
+        if hours <= 0 {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.needHours.alpha = 0.9
+            }) { (success) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.needHours.alpha = 0
+                    })
+                }
+            }
+        } else {
+            self.delegate?.bringParkNow()
+            self.delegate?.reserveCheckPressed(from: from, to: to, hour: hours)
+        }
     }
     
     var currentDays: [String] = []
+    var weekDays: [String] = []
     
     func setDays() {
         let formatter = DateFormatter()
@@ -509,6 +540,8 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             let weekDay = dayWeek[first]
             let weekNumber = dayWeek[middle ..< last]
             self.currentDays.append(dayWeek)
+            let dayArray = dayWeek.split(separator: " ")
+            self.weekDays.append(String(dayArray[0]))
             
             if i == 0 {
                 self.firstButton.setTitle("\(weekDay)", for: .normal)
@@ -532,13 +565,250 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
     }
     
-    func setTimes() {
+    func setTimes(sender: UIButton, status: Bool) {
+        let formatter = DateFormatter()
+        let fullFormatter = DateFormatter()
+        let dayFormatter = DateFormatter()
+        formatter.dateFormat = "HH"
+        fullFormatter.dateFormat = "h:mm a"
+        dayFormatter.dateFormat = "EEEE"
+        fullFormatter.amSymbol = "am"
+        fullFormatter.pmSymbol = "pm"
+        
         let ref = Database.database().reference().child("parking").child(self.parkingID!).child("Availability")
         ref.observe(.value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                print(dictionary)
+                let sunday = dictionary["Sunday"] as? [String:AnyObject]
+                let saturday = dictionary["Saturday"] as? [String:AnyObject]
+                let friday = dictionary["Friday"] as? [String:AnyObject]
+                let thursday = dictionary["Thursday"] as? [String:AnyObject]
+                let wednesday = dictionary["Wednesday"] as? [String:AnyObject]
+                let tuesday = dictionary["Tuesday"] as? [String:AnyObject]
+                let monday = dictionary["Monday"] as? [String:AnyObject]
+                
+                let index = sender.tag - 1
+                var day: [String:AnyObject] = [:]
+                let value = self.weekDays[index]
+
+                if value == "Monday" {
+                    day = monday!
+                } else if value == "Tuesday" {
+                    day = tuesday!
+                } else if value == "Wednesday" {
+                    day = wednesday!
+                } else if value == "Thursday" {
+                    day = thursday!
+                } else if value == "Friday" {
+                    day = friday!
+                } else if value == "Saturday" {
+                    day = saturday!
+                } else if value == "Sunday" {
+                    day = sunday!
+                }
+                if sender == self.firstButton {
+                    //////// first button
+                    var currentDate = Date()
+                    let intDate = Int(formatter.string(from: currentDate))
+                    self.firstFromTimeValues = []
+                    let from = day["From"] as? String
+                    let to = day["To"] as? String
+                    
+                    if from != "All day" && to != "All day" {
+                        let fromDate = fullFormatter.date(from: from!)
+                        let fromDateInt = Int(formatter.string(from: fromDate!))
+                        let toDate = fullFormatter.date(from: to!)
+                        var toDateInt = Int(formatter.string(from: toDate!))
+                        if toDateInt == 0 {
+                            toDateInt = 24
+                        }
+                        if intDate! >= fromDateInt! {
+                            for _ in intDate!..<24 {
+                                let stringDate = fullFormatter.string(from: currentDate)
+                                self.firstFromTimeValues.append(stringDate)
+                                currentDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate)!
+                                self.finalFromDay = value
+                            }
+                            if status == false {
+                                for date in intDate!..<toDateInt! {
+                                    if date == 24 {
+                                        let addDate = formatter.date(from: String(0))
+                                        let newDate = fullFormatter.string(from: addDate!)
+                                        self.toTimeValues.append(newDate)
+                                        self.finalToDay = value
+                                    } else {
+                                        let addDate = formatter.date(from: String(date))
+                                        let newDate = fullFormatter.string(from: addDate!)
+                                        self.toTimeValues.append(newDate)
+                                        self.finalToDay = value
+                                    }
+                                }
+                                self.timeToPicker.reloadAllComponents()
+                            }
+                        } else {
+                            for date in fromDateInt!...toDateInt! {
+                                if date == 24 {
+                                    let addDate = formatter.date(from: String(0))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.firstFromTimeValues.append(newDate)
+                                    self.finalFromDay = value
+                                } else {
+                                    let addDate = formatter.date(from: String(date))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.firstFromTimeValues.append(newDate)
+                                    self.finalFromDay = value
+                                }
+                            }
+                        }
+                    } else {
+                        print("All day!")
+                        self.fromTimeValues = []
+                        for _ in intDate!..<23 {
+                            let stringDate = fullFormatter.string(from: currentDate)
+                            self.firstFromTimeValues.append(stringDate)
+                            currentDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate)!
+                            self.finalFromDay = value
+                        }
+                        if status == false {
+                            self.toTimeValues = []
+                            for date in (intDate!+1)...24 {
+                                if date == 24 {
+                                    let addDate = formatter.date(from: String(0))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                } else {
+                                    let addDate = formatter.date(from: String(date))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                }
+                            }
+                            self.timeToPicker.reloadAllComponents()
+                        }
+                    }
+                    self.fromTimeValues = self.firstFromTimeValues
+                    self.timeFromPicker.reloadAllComponents()
+                    //////// first button
+                } else {
+                    let from = day["From"] as? String
+                    let to = day["To"] as? String
+                    
+                    if from != "All day" && to != "All day" {
+                        let fromDate = fullFormatter.date(from: from!)
+                        let fromDateInt = Int(formatter.string(from: fromDate!))
+                        let toDate = fullFormatter.date(from: to!)
+                        var toDateInt = Int(formatter.string(from: toDate!))
+                        if toDateInt == 0 {
+                            toDateInt = 24
+                        }
+                        var appendArray: [String] = []
+                        for date in fromDateInt!...toDateInt! {
+                            if date == 24 {
+                                let addDate = formatter.date(from: String(0))
+                                let newDate = fullFormatter.string(from: addDate!)
+                                appendArray.append(newDate)
+                            } else {
+                                let addDate = formatter.date(from: String(date))
+                                let newDate = fullFormatter.string(from: addDate!)
+                                appendArray.append(newDate)
+                            }
+                        }
+                        self.toTimeValues = []
+                        if sender == self.secondButton {
+                            self.secondFromTimeValues = appendArray
+                            self.toTimeValues = self.secondFromTimeValues
+                            self.timeToPicker.reloadAllComponents()
+                            self.finalToDay = value
+                        } else if sender == self.thirdButton {
+                            self.thirdFromTimeValues = appendArray
+                            self.toTimeValues = self.thirdFromTimeValues
+                            self.timeToPicker.reloadAllComponents()
+                            self.finalToDay = value
+                        } else if sender == self.fourthButton {
+                            self.fourthFromTimeValues = appendArray
+                            self.toTimeValues = self.fourthFromTimeValues
+                            self.timeToPicker.reloadAllComponents()
+                            self.finalToDay = value
+                        } else if sender == self.fifthButton {
+                            self.fifthFromTimeValues = appendArray
+                            self.toTimeValues = self.fifthFromTimeValues
+                            self.timeToPicker.reloadAllComponents()
+                            self.finalToDay = value
+                        } else if sender == self.sixthButton {
+                            self.sixthFromTimeValues = appendArray
+                            self.toTimeValues = self.sixthFromTimeValues
+                            self.timeToPicker.reloadAllComponents()
+                            self.finalToDay = value
+                        }
+                        if status == false {
+                            self.fromTimeValues = []
+                            self.toTimeValues = []
+                            for date in fromDateInt!...toDateInt! {
+                                if date == 24 {
+                                    let addDate = formatter.date(from: String(0))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                    self.finalFromDay = value
+                                } else {
+                                    let addDate = formatter.date(from: String(date))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                    self.finalFromDay = value
+                                }
+                            }
+                            self.timeToPicker.reloadAllComponents()
+                            self.timeFromPicker.reloadAllComponents()
+                        }
+                    } else {
+                        print("All day!")
+                        self.toTimeValues = []
+                        if status == true {
+                            for date in 1...24 {
+                                if date == 24 {
+                                    let addDate = formatter.date(from: String(0))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                } else {
+                                    let addDate = formatter.date(from: String(date))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.finalToDay = value
+                                }
+                            }
+                            self.timeToPicker.reloadAllComponents()
+                        } else if status == false {
+                            self.fromTimeValues = []
+                            for date in 1...24 {
+                                if date == 24 {
+                                    let addDate = formatter.date(from: String(0))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalFromDay = value
+                                } else {
+                                    let addDate = formatter.date(from: String(date))
+                                    let newDate = fullFormatter.string(from: addDate!)
+                                    self.toTimeValues.append(newDate)
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalFromDay = value
+                                }
+                            }
+                            self.timeToPicker.reloadAllComponents()
+                            self.timeFromPicker.reloadAllComponents()
+                        }
+                    }
+                }
             }
         }
+        self.timeFromPicker.selectRow(0, inComponent: 0, animated: true)
+        self.timeToPicker.selectRow(0, inComponent: 0, animated: true)
+        self.timeFromPicker.reloadAllComponents()
+        self.timeToPicker.reloadAllComponents()
     }
     
     var lastDayPressed: UIButton?
@@ -571,7 +841,6 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 lastDayFrom = fromDayLabel.text
                 lastDayTo = toDayLabel.text
             }
-            self.setTimes()
         } else {
             if sender == lastDayPressed {
                 fromDayLabel.text = lastDayFrom
@@ -586,6 +855,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var selectionLineRight: NSLayoutConstraint!
     
     @objc func buttonPressed(sender: UIButton) {
+        self.delegate?.hideParkNow()
         if sender.backgroundColor == UIColor.clear {
             UIView.animate(withDuration: 0.2, animations: {
                 sender.backgroundColor = UIColor.black
@@ -594,6 +864,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 self.daysSelected.append(sender.tag)
                 let index = sender.tag
                 if self.daysSelected.count > 1 {
+                    self.setTimes(sender: sender, status: true)
                     UIView.animate(withDuration: 0.2) {
                         self.selectionLine.alpha = 1
                     }
@@ -613,6 +884,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         }
                     }
                 } else {
+                    self.setTimes(sender: sender, status: false)
                     self.selectionLineLeft = self.selectionLine.leftAnchor.constraint(equalTo: sender.leftAnchor)
                         self.selectionLineLeft.isActive = true
                     self.selectionLineRight = self.selectionLine.rightAnchor.constraint(equalTo: sender.rightAnchor)
@@ -622,7 +894,6 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     self.infoContainer.alpha = 0.7
                     self.selectionLabel.alpha = 0
                     self.todayLabel.alpha = 0
-                    self.todayImage.alpha = 0
                     self.view.layoutIfNeeded()
                 })
             }
@@ -665,11 +936,11 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }) { (success) in
                 self.daysSelected.removeLast()
                 if self.daysSelected.count == 0 {
+                    self.delegate?.bringParkNow()
                     UIView.animate(withDuration: 0.2, animations: {
                         self.infoContainer.alpha = 0
                         self.selectionLabel.alpha = 1
                         self.todayLabel.alpha = 1
-                        self.todayImage.alpha = 1
                     })
                 }
             }
@@ -720,36 +991,64 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.timeValues.count
+        if pickerView == timeToPicker {
+            return self.toTimeValues.count
+        } else {
+            return self.fromTimeValues.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.timeValues[row] as? String
+        if pickerView == timeToPicker {
+            return self.toTimeValues[row]
+        } else {
+            return self.fromTimeValues[row]
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
-        
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 16)
-        label.text = self.timeValues[row] as? String
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.amSymbol = "am"
+        formatter.pmSymbol = "pm"
+        if pickerView == timeToPicker {
+            label.text = self.toTimeValues[row]
+        } else if pickerView == timeFromPicker {
+            label.text = self.fromTimeValues[row]
+        }
         view.addSubview(label)
+        self.finalFrom = fromTimeValues[0]
+        self.finalTo = toTimeValues[0]
         
         return view
 
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
+        if pickerView == timeToPicker {
+            self.finalTo = self.toTimeValues[row]
+        } else if pickerView == timeFromPicker {
+            self.finalFrom = self.fromTimeValues[row]
+        }
     }
     
-    private let timeValues: NSArray = ["All day","1:00 am","1:30 am","2:00 am","2:30 am","3:00 am","3:30 am","4:00 am","4:30 am","5:00 am","5:30 am","6:00 am","6:30 am","7:00 am","7:30 am","8:00 am","8:30 am","9:00 am","9:30 am","10:00 am","10:30 am","11:00 am","11:30 am","12:00 pm","12:30 pm","1:00 pm","1:30 pm","2:00 pm","2:30 pm","3:00 pm","3:30 pm","4:00 pm","4:30 pm","5:00 pm","5:30 pm","6:00 pm","6:30 pm","7:00 pm","7:30 pm","8:00 pm","8:30 pm","9:00 pm","9:30 pm","10:00 pm","10:30 pm","11:00 pm","11:30 pm","12:00 am","12:30 am"]
-//    private let pmTimeValues: NSArray = ["All day","12:00 pm","12:30 pm","1:00 pm","1:30 pm","2:00 pm","2:30 pm","3:00 pm","3:30 pm","4:00 pm","4:30 pm","5:00 pm","5:30 pm","6:00 pm","6:30 pm","7:00 pm","7:30 pm","8:00 pm","8:30 pm","9:00 pm","9:30 pm","10:00 pm","10:30 pm","11:00 pm","11:30 pm","12:00 am","12:30 am"]
+    var toTimeValues: [String] = []
+    var fromTimeValues: [String] = []
     
+    private var firstFromTimeValues: [String] = []
+    private var secondFromTimeValues: [String] = []
+    private var thirdFromTimeValues: [String] = []
+    private var fourthFromTimeValues: [String] = []
+    private var fifthFromTimeValues: [String] = []
+    private var sixthFromTimeValues: [String] = []
 
 }
 
@@ -769,6 +1068,9 @@ extension Date {
     }
     var isLastDayOfMonth: Bool {
         return tomorrow.month != month
+    }
+    func hours(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date, to: self).hour ?? 0
     }
 }
 

@@ -41,8 +41,8 @@ class LaunchAnimationsViewController: UIViewController {
         return controller
     }()
     
-    lazy var tabController: SelectPurchaseViewController = {
-        let controller = SelectPurchaseViewController()
+    lazy var tabController: TabViewController = {
+        let controller = TabViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Tab"
         return controller
@@ -110,6 +110,7 @@ class LaunchAnimationsViewController: UIViewController {
             self.tabController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.tabController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.tabController.view.alpha = 0
+            UIApplication.shared.statusBarStyle = .default
         } else {
             self.view.addSubview(self.startupController.view)
             self.addChildViewController(self.startupController)
@@ -120,6 +121,7 @@ class LaunchAnimationsViewController: UIViewController {
             self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.startupController.view.alpha = 0
+            UIApplication.shared.statusBarStyle = .lightContent
         }
     }
 
