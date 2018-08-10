@@ -366,12 +366,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                                                     self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
                                                     UIView.animate(withDuration: 0.5, animations: {
                                                         currentButton.alpha = 1
+                                                        self.swipeTutorial.alpha = 0
                                                     })
                                                 })
                                             } else {
                                                 self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
                                                 UIView.animate(withDuration: 0.5, animations: {
                                                     currentButton.alpha = 1
+                                                    self.swipeTutorial.alpha = 0
                                                     self.purchaseViewController.view.alpha = 0
                                                     self.view.layoutIfNeeded()
                                                 })
@@ -756,6 +758,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     func purchaseButtonSwipedDown() {
         purchaseViewController.minimizeHours()
         purchaseViewController.currentSender()
+        purchaseViewController.checkButtonSender()
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
         UIView.animate(withDuration: 0.3, animations: {

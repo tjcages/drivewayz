@@ -265,8 +265,6 @@ class CurrentParkingViewController: UIViewController {
                 let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
                 let thirdTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(thirdSeconds), repeats: false)
                 let thirdRequest = UNNotificationRequest(identifier: "timerDone3", content: thirdContent, trigger: thirdTrigger)
-                let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
-                let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
                 
                 UNUserNotificationCenter.current().removeAllDeliveredNotifications()
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -286,9 +284,13 @@ class CurrentParkingViewController: UIViewController {
                         print("Error sending third notification: ", error!)
                     }
                 }
-                UNUserNotificationCenter.current().add(fourthRequest) { (error) in
-                    if error != nil {
-                        print("Error sending fourth notification: ", error!)
+                if fourthSeconds > 0 {
+                    let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
+                    let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
+                    UNUserNotificationCenter.current().add(fourthRequest) { (error) in
+                        if error != nil {
+                            print("Error sending fourth notification: ", error!)
+                        }
                     }
                 }
             }

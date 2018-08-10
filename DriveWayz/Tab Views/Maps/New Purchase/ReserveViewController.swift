@@ -502,10 +502,15 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a EEEE"
         let fromDate = formatter.date(from: from)
-        let toDate = formatter.date(from: to)
-        let hours = -(Double((fromDate?.hours(from: toDate!))!))
+        var toDate = formatter.date(from: to)
+        var hours = 0.0
+        if finalTo == "12:00 am" {
+            toDate = toDate?.tomorrow
+            hours = (Double((toDate?.hours(from: fromDate!))!)) - 12.0
+        } else {
+            hours = (Double((toDate?.hours(from: fromDate!))!))
+        }
         print(hours)
-        
         if hours <= 0 {
             UIView.animate(withDuration: 0.3, animations: {
                 self.needHours.alpha = 0.9
