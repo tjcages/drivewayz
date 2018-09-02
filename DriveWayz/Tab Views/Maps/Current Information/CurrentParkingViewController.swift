@@ -184,7 +184,6 @@ class CurrentParkingViewController: UIViewController {
         { (granted, error) in
             //
         }
-        
         let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
         let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
         UNUserNotificationCenter.current().setNotificationCategories([category])
@@ -232,25 +231,25 @@ class CurrentParkingViewController: UIViewController {
             content.title = "Your current parking spot has expired!"
             content.subtitle = "Please move your vehicle or extend time in app."
             content.body = "Hold down for quick options!"
-            content.badge = 1
+            content.badge = 0
             content.sound = UNNotificationSound.default()
             content.categoryIdentifier = "actionCategory"
             
             secondContent.title = "You have overstayed your allotted time!"
             secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
-            secondContent.badge = 1
+            secondContent.badge = 0
             secondContent.sound = UNNotificationSound.default()
             secondContent.categoryIdentifier = "actionCategory"
             
             thirdContent.title = "You have been charged for an extra hour."
             thirdContent.body = "Please move your vehicle or extend time."
-            thirdContent.badge = 1
+            thirdContent.badge = 0
             thirdContent.sound = UNNotificationSound.default()
             thirdContent.categoryIdentifier = "actionCategory"
             
             fourthContent.title = "You have 20 minutes left for your parking spot"
             fourthContent.body = "Check in with the app to extend time!"
-            fourthContent.badge = 1
+            fourthContent.badge = 0
             fourthContent.sound = UNNotificationSound.default()
             
             let firstSeconds = (self.hours! * 3600) + (10 * 60)

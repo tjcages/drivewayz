@@ -37,7 +37,7 @@ open class Floaty: UIView {
     /**
      This object's button size.
      */
-    @objc open var size: CGFloat = 50 {
+    @objc open var size: CGFloat = 56 {
         didSet {
             self.setNeedsDisplay()
             self.recalculateItemsOrigin()
@@ -79,7 +79,7 @@ open class Floaty: UIView {
      Button color.
      */
     @IBInspectable
-    @objc open var buttonColor: UIColor = UIColor(red: 245, green: 245, blue: 245, alpha: 1)
+    @objc open var buttonColor: UIColor = UIColor(red: 73/255.0, green: 151/255.0, blue: 241/255.0, alpha: 1)
     
     /**
      Button image.
@@ -95,19 +95,19 @@ open class Floaty: UIView {
      Plus icon color inside button.
      */
     @IBInspectable
-    @objc open var plusColor: UIColor = UIColor(red: 87, green: 159, blue: 179, alpha: 0.9)
+    @objc open var plusColor: UIColor = UIColor(white: 0.2, alpha: 1)
     
     /**
      Background overlaying color.
      */
     @IBInspectable
-    @objc open var overlayColor: UIColor = UIColor.black.withAlphaComponent(0.7)
+    @objc open var overlayColor: UIColor = UIColor.black.withAlphaComponent(0.3)
     
     /**
      The space between the item and item.
      */
     @IBInspectable
-    @objc open var itemSpace: CGFloat = 24
+    @objc open var itemSpace: CGFloat = 14
     
     /**
      Child item's default size.
@@ -166,11 +166,11 @@ open class Floaty: UIView {
      Whether or not floaty responds to keyboard notifications and adjusts its position accordingly
      */
     @IBInspectable
-    @objc open var respondsToKeyboard: Bool = false
+    @objc open var respondsToKeyboard: Bool = true
     
-    @objc open var openAnimationType: FloatyOpenAnimationType = .slideLeft
+    @objc open var openAnimationType: FloatyOpenAnimationType = .pop
     
-    @objc open var verticalDirection: FloatyVerticalDirection = .down
+    @objc open var verticalDirection: FloatyVerticalDirection = .up
     
     @objc open var friendlyTap: Bool = true
     

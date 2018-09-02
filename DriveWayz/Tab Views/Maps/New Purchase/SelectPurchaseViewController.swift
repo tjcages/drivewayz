@@ -13,7 +13,7 @@ import UserNotifications
 import Alamofire
 
 protocol handleReservations {
-    func reserveCheckPressed(from: String, to: String, hour: Double)
+    func reserveCheckPressed(from: String, to: String, hour: Double, fromTimestamp: Date, toTimestamp: Date)
     func hideParkNow()
     func bringParkNow()
 }
@@ -22,6 +22,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var parkingCost: String?
     var delegate: controlHoursButton?
+    var fromDateTimestampValue: Date?
+    var toDateTimestampValue: Date?
     
     var viewContainer: UIView = {
         let view = UIView()
@@ -441,7 +443,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         toReserveLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
         toReserveLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         toReserveLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        toReserveLabel.centerXAnchor.constraint(equalTo: reserveFromLabel.rightAnchor, constant: 15).isActive = true
+        toReserveLabel.centerXAnchor.constraint(equalTo: reserveFromLabel.rightAnchor, constant: 25).isActive = true
         
         self.view.addSubview(line2)
         line2.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
@@ -543,7 +545,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         }
     }
     
-    func reserveCheckPressed(from: String, to: String, hour: Double) {
+    func reserveCheckPressed(from: String, to: String, hour: Double, fromTimestamp: Date, toTimestamp: Date) {
+        self.fromDateTimestampValue = fromTimestamp
+        self.toDateTimestampValue = toTimestamp
         self.minimizeHours()
         self.reserveFromLabel.setTitle(from, for: .normal)
         self.reserveToLabel.setTitle(to, for: .normal)
@@ -657,6 +661,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         UIView.animate(withDuration: 0.2) {
             self.currentSegment.alpha = 1
             self.reserveButton.alpha = 1
+            self.reserveCostAnchor.constant = 10
             self.reserveButton.isUserInteractionEnabled = true
         }
     }
@@ -975,20 +980,24 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     @objc private func handleConfirmRideButtonTapped() {
-        
         self.paymentInProgress = true
-        
-        
-        
-        
-        self.changeReserveButton()
-        self.updateUserProfile()
         self.addCurrentParking()
+        if reserveSegmentAnchor.isActive == true {
+            self.changeReserveButton()
+            self.reserveParking()
+        } else if currentSegmentAnchor.isActive == true {
+            self.changeReserveButton()
+            self.updateUserProfileCurrent()
+            UIView.animate(withDuration: 0.3) {
+                currentButton.alpha = 1
+            }
+        }
         self.notify(status: true)
-        self.reserveCostAnchor.constant = 10
-        
-        
-        
+        UIView.animate(withDuration: 0.3) {
+            self.reserveCostAnchor.constant = 10
+            self.view.layoutIfNeeded()
+        }
+        //////////////////////////////////////////////////////////////////////////
         
 //        self.paymentContext.requestPayment()
     }
@@ -1036,7 +1045,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         case .active:
             // Show completion state
             reserveButton.backgroundColor = .white
-            reserveButton.setTitle("Complete Ride", for: .normal)
+            reserveButton.setTitle("Working", for: .normal)
             reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
             reserveButton.setImage(nil, for: .normal)
             reserveButton.isEnabled = true
@@ -1112,8 +1121,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.notify(status: false)
         case .success:
             self.changeReserveButton()
-            self.updateUserProfile()
-            self.addCurrentParking()
+//            self.updateUserProfileCurrent()
+//            self.addCurrentParking()
             self.notify(status: true)
         case .userCancellation:
             return
@@ -1155,13 +1164,50 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         }) { (success) in
             self.removeDelegate?.purchaseButtonSwipedDown()
             UIView.animate(withDuration: 0.3, animations: {
-                currentButton.alpha = 1
                 self.view.alpha = 0
             })
         }
     }
     
-    private func updateUserProfile() {
+    private func reserveParking() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let timestamp = NSDate().timeIntervalSince1970
+        let ref = Database.database().reference().child("users").child(currentUser)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let futureRes = dictionary["upcomingParking"] as? [String:AnyObject] {
+                    print("Already have a reservation")
+                } else {
+                    let from = self.fromDateTimestampValue?.timeIntervalSince1970
+                    let to = self.toDateTimestampValue?.timeIntervalSince1970
+                    ref.child("upcomingParking").child(self.parkingId).updateChildValues(["timestamp": timestamp, "hours": self.hours, "parkingID": self.parkingId, "cost": self.cost, "startTime": from!, "endTime": to!])
+                    let parkingRef = Database.database().reference().child("parking").child(self.parkingId).child("Upcoming")
+                    parkingRef.updateChildValues(["currentUser": currentUser])
+                    parkingRef.observe(.childAdded) { (snapshot) in
+                        self.sendNewCurrent(status: "upcoming")
+                    }
+                    
+                    let beginTimeInterval = (self.fromDateTimestampValue?.timeIntervalSince1970)! - timestamp
+                    let content = UNMutableNotificationContent()
+                    content.title = "Your parking reservation has begun."
+                    content.subtitle = "Please open in app to confirm."
+                    content.body = "We have given you a 10 minute buffer time."
+                    content.badge = 0
+                    content.sound = UNNotificationSound.default()
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: beginTimeInterval, repeats: false)
+                    let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request) { (error) in
+                        if error != nil {
+                            print("Error sending upcoming reservation notification: ", error!)
+                        }
+                    }
+                }
+            }
+        }
+        self.paymentInProgress = false
+    }
+    
+    private func updateUserProfileCurrent() {
 
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let timestamp = NSDate().timeIntervalSince1970
@@ -1253,6 +1299,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     sendRef.updateChildValues(["status": "In use", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
                 } else if status == "end" {
                     sendRef.updateChildValues(["status": "Finished", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
+                } else if status == "upcoming" {
+                    let upcomingRef = Database.database().reference().child("upcomingParking").child(currentUser)
+                    upcomingRef.updateChildValues(["status": "In use", "deviceID": AppDelegate.DEVICEID, "fromID": currentUser, "toID": self.id])
                 }
                 self.fetchNewCurrent(key: self.id, name: firstName, status: status)
             }
@@ -1297,6 +1346,34 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             guard let currentUser = Auth.auth().currentUser?.uid else {return}
             let deleteRef = Database.database().reference().child("currentParking")
             deleteRef.child(currentUser).removeValue()
+        } else if status == "upcoming" {
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            let ref = Database.database().reference().child("users").child(currentUser).child("upcomingParking").child(self.parkingId)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    let fromTimestamp = dictionary["startTime"] as? TimeInterval
+                    let toTimestamp = dictionary["endTime"] as? TimeInterval
+                    let fromDate = Date(timeIntervalSince1970: fromTimestamp!)
+                    let toDate = Date(timeIntervalSince1970: toTimestamp!)
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "h:mm a EEEE"
+                    let fromString = formatter.string(from: fromDate)
+                    let toString = formatter.string(from: toDate)
+                    
+                    let title = "\(name) has reserved your spot from"
+                    let subtitle = "\(fromString) to \(toString)"
+                    let body = "Open to see more details."
+                    let toDevice = fromDevice
+                    var headers: HTTPHeaders = HTTPHeaders()
+                    
+                    headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+                    let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "subtitle": subtitle, "badge": 0, "sound": "default"]] as [String:Any]
+                    
+                    Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+                        //
+                    }
+                }
+            }
         }
     }
 

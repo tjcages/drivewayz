@@ -216,6 +216,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.clear
 
         editingTableView.delegate = self
         editingTableView.dataSource = self

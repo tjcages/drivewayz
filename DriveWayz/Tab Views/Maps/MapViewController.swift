@@ -180,6 +180,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Purchase Controller"
         controller.delegate = self
+        controller.removeDelegate = self
 //        controller.hoursDelegate = self
         
         return controller
@@ -783,7 +784,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = 0
             self.fullBlurView.alpha = 0
-            self.swipeTutorial.alpha = 1
+            if self.purchaseViewController.view.alpha == 1 {
+                self.swipeTutorial.alpha = 1
+            }
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
@@ -1177,7 +1180,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                 let placemarks = placemarks,
                 let location = placemarks.first?.location
                 else {
-                    print("No location selected")
+                    print("No location selected", error?.localizedDescription as Any)
                     return
             }
             let locationCamera: CLLocation? = location

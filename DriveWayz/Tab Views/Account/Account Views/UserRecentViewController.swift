@@ -86,6 +86,8 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
         parkingPicker.dataSource = self
         check = false
         
+        view.clipsToBounds = false
+        
         setupViews()
         observeUserParkingSpots()
     }

@@ -6,7 +6,7 @@ target 'DriveWayz' do
   use_frameworks!
 
   # Pods for DriveWayz
-	pod ‘Firebase/Auth’
+	pod ‘Firebase/Auth'
 	pod 'Firebase/Core'
 	pod 'Firebase/Messaging'
 	pod 'Firebase/Database'
@@ -29,6 +29,6 @@ target 'DriveWayz' do
 	pod 'FacebookLogin'
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Cosmos', '~> 16.0'
-	pod "TOMSMorphingLabel", "~> 0.5"
+	pod 'TOMSMorphingLabel', '~> 0.5'
 
 end

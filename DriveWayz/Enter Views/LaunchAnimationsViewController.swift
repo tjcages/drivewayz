@@ -91,7 +91,7 @@ class LaunchAnimationsViewController: UIViewController {
                         self.startupController.view.alpha = 1
                         self.view.layoutIfNeeded()
                     }, completion: { (success) in
-                        //
+                        UIApplication.shared.statusBarStyle = .default
                     })
                 }
             }
@@ -121,7 +121,7 @@ class LaunchAnimationsViewController: UIViewController {
             self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.startupController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .lightContent
+            UIApplication.shared.statusBarStyle = .default
         }
     }
 

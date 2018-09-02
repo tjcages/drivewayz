@@ -152,7 +152,7 @@ class ParkingAvailabilityViewController: UIViewController {
         
         if day == "Monday" {
             if Monday == 1 {
-                if MondayTo == "All day" && MondayFrom == "All day" {
+                if MondayTo == "All day" || MondayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = MondayTo
@@ -201,7 +201,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Tuesday" {
             if Tuesday == 1 {
-                if TuesdayTo == "All day" && TuesdayFrom == "All day" {
+                if TuesdayTo == "All day" || TuesdayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = TuesdayTo
@@ -250,7 +250,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Wednesday" {
             if Wednesday == 1 {
-                if WednesdayTo == "All day" && WednesdayFrom == "All day" {
+                if WednesdayTo == "All day" || WednesdayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = WednesdayTo
@@ -299,7 +299,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Thursday" {
             if Thursday == 1 {
-                if ThursdayTo == "All day" && ThursdayFrom == "All day" {
+                if ThursdayTo == "All day" || ThursdayFrom == "All day" {
                      self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = ThursdayTo
@@ -348,7 +348,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Friday" {
             if Friday == 1 {
-                if FridayTo == "All day" && FridayFrom == "All day" {
+                if FridayTo == "All day" || FridayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = FridayTo
@@ -397,7 +397,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Saturday" {
             if Saturday == 1 {
-                if SaturdayTo == "All day" && SaturdayFrom == "All day" {
+                if SaturdayTo == "All day" || SaturdayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = SaturdayTo
@@ -446,7 +446,7 @@ class ParkingAvailabilityViewController: UIViewController {
             }
         } else if day == "Sunday" {
             if Sunday == 1 {
-                if SundayTo == "All day" && SundayFrom == "All day" {
+                if SundayTo == "All day" || SundayFrom == "All day" {
                     self.delegate?.sendAvailability(availability: true)
                 } else {
                     let to = SundayTo

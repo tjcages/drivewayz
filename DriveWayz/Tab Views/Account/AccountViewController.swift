@@ -33,6 +33,7 @@ protocol sendNewParking {
 protocol controlsAccountViews {
     func removeOptionsFromView()
     func changeCurrentView(height: CGFloat)
+    func removeAnalyticsController()
 }
 
 class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsAccountViews, sendNewParking {
@@ -84,6 +85,15 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
         controller.delegate = self
+        return controller
+    }()
+    
+    lazy var upcomingController: UserUpcomingViewController = {
+        let controller = UserUpcomingViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Upcoming"
+        
         return controller
     }()
     
@@ -329,7 +339,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return parking
     }()
     
-    var Main = ["Profile", "Hosting", "Vehicle", "Options"]
+    var Main = ["Profile", "Hosting", "Vehicle", "Analytics", "Options"]
     var Options = ["", "Main", "Coupons", "Settings", "Terms", "Contact us!", "Logout"]
     
     var effect: UIVisualEffect!
@@ -489,11 +499,20 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileSegment.heightAnchor.constraint(equalToConstant: 40).isActive = true
         profileSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
         
+        profileView.addSubview(upcomingController.view)
+        upcomingController.didMove(toParentViewController: self)
+        upcomingController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
+        upcomingController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
+        upcomingController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 30).isActive = true
+        currentHeightAnchor = upcomingController.view.heightAnchor.constraint(equalToConstant: 460)
+//        currentController.view.alpha = 0
+        currentHeightAnchor?.isActive = true
+        
         profileView.addSubview(currentController.view)
         currentController.didMove(toParentViewController: self)
         currentController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
         currentController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
-        currentController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 30).isActive = true
+        currentController.view.topAnchor.constraint(equalTo: upcomingController.view.bottomAnchor, constant: 20).isActive = true
         currentHeightAnchor = currentController.view.heightAnchor.constraint(equalToConstant: 0)
         currentController.view.alpha = 0
         currentHeightAnchor?.isActive = true
@@ -502,7 +521,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 20).isActive = true
+        recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 40).isActive = true
         recentController.view.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
         profileView.addSubview(bannerController.view)
@@ -926,7 +945,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.mainTableHeight.constant = 175
+                        self.mainTableHeight.constant = 222
                         self.mainView.alpha = 0.9
                         let image = UIImage(named: "feed")
                         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
@@ -967,15 +986,52 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                     }
                 }
             } else if indexPath.row == (Main.count-2) {
+                self.openMainOptions()
+                self.view.addSubview(analController.view)
+                analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+                analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+                analControllerAnchor = analController.view.leftAnchor.constraint(equalTo: self.view.rightAnchor)
+                    analControllerAnchor.isActive = true
+                analController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                self.view.layoutIfNeeded()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    UIView.animate(withDuration: 0.3) {
+                        self.analControllerAnchor.constant = -self.view.frame.width
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            } else if indexPath.row == (Main.count-3) {
                 self.vehiclePressedFunc()
                 self.openMainOptions()
-            } else if indexPath.row == (Main.count-3) {
+            } else if indexPath.row == (Main.count-4) {
                 self.parkingPressedFunc()
                 self.openMainOptions()
-            } else if indexPath.row == (Main.count-4) {
+            } else if indexPath.row == (Main.count-5) {
                 self.recentPressedFunc()
                 self.openMainOptions()
             }
+        }
+    }
+    
+    var analControllerAnchor: NSLayoutConstraint!
+    
+    lazy var analController: AnalyticsViewController = {
+        let controller = AnalyticsViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Analytics"
+        controller.delegate = self
+        return controller
+    }()
+    
+    func removeAnalyticsController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.analControllerAnchor.constant = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.analController.willMove(toParentViewController: nil)
+            self.analController.view.removeFromSuperview()
+            self.analController.removeFromParentViewController()
         }
     }
     
@@ -1019,7 +1075,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }()
     
     var mainView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 175))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 222))
         view.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
         view.alpha = 0.9
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -1063,7 +1119,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     func openMainOptions() {
         if mainView.alpha == 0 && optionsTabViewConstraint.constant == 120 {
             UIView.animate(withDuration: 0.2, animations: {
-                self.mainTableHeight.constant = 175
+                self.mainTableHeight.constant = 222
                 self.mainView.alpha = 0.9
                 let image = UIImage(named: "feed")
                 let tintedImage = image?.withRenderingMode(.alwaysTemplate)

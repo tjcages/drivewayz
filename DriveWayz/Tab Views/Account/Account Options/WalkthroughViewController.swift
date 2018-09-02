@@ -365,6 +365,7 @@ class WalkthroughViewController: UIViewController {
                 self.termsContainer.alpha = 0
                 self.blurBackgroundStartup.alpha = 0
             }) { (success) in
+                self.delegate?.moveToMap()
                 self.accept.isUserInteractionEnabled = true
                 self.view.removeFromSuperview()
                 self.blurBackgroundStartup.removeFromSuperview()

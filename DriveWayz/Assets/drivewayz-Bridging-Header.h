@@ -9,5 +9,6 @@
 #ifndef drivewayz_Bridging_Header_h
 #define drivewayz_Bridging_Header_h
 #include <ifaddrs.h>
+#import <Firebase.h>
 
 #endif /* drivewayz_Bridging_Header_h */

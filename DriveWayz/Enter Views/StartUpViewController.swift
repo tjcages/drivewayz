@@ -355,7 +355,6 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     override func viewDidLoad() {
         super.viewDidLoad()
         self.facebookLogin.delegate = self
-        UIApplication.shared.statusBarStyle = .lightContent
 
         setupBackground()
         configurePageControl()
@@ -587,7 +586,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     }
     
     @objc func loginButtonPressed() {
-        
+        self.view.endEditing(true)
         if self.userPasswordTextField.alpha == 0 {
             self.loginButtonCenterAnchor.constant = 50
             self.backIconTopAnchor.constant = -60
@@ -681,7 +680,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     }
     
     @objc func registerButtonPressed() {
-        
+        self.view.endEditing(true)
         if self.NewUserPasswordTextField.alpha == 0 {
             self.driveWayzTopAnchor.constant = 50
             self.registerButtonCenterAnchor.constant = 50
@@ -728,6 +727,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         NewUserRepeatPasswordTextField.endEditing(true)
         NewUserFirstNameTextField.endEditing(true)
         NewUserLastNameTextField.endEditing(true)
+        self.view.endEditing(true)
         
         let userProfileUrl: String = ""
         
@@ -1031,7 +1031,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

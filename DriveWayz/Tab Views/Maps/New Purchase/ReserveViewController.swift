@@ -500,17 +500,16 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let to = "\(String(describing: finalTo!)) \(finalToDay)"
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a EEEE"
+        let finalFormatter = DateFormatter()
+        formatter.dateFormat = "h:mm a EEEE YYYY/MM/dd"
+        finalFormatter.dateFormat = "h:mm a EEEE"
         let fromDate = formatter.date(from: from)
-        var toDate = formatter.date(from: to)
-        var hours = 0.0
-        if finalTo == "12:00 am" {
-            toDate = toDate?.tomorrow
-            hours = (Double((toDate?.hours(from: fromDate!))!)) - 12.0
-        } else {
-            hours = (Double((toDate?.hours(from: fromDate!))!))
-        }
-        print(hours)
+        let toDate = formatter.date(from: to)
+        let hours = (Double((toDate?.hours(from: fromDate!))!))
+        
+        let finalFromString = finalFormatter.string(from: fromDate!)
+        let finalToString = finalFormatter.string(from: toDate!)
+        
         if hours <= 0 {
             UIView.animate(withDuration: 0.3, animations: {
                 self.needHours.alpha = 0.9
@@ -523,16 +522,17 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
         } else {
             self.delegate?.bringParkNow()
-            self.delegate?.reserveCheckPressed(from: from, to: to, hour: hours)
+            self.delegate?.reserveCheckPressed(from: finalFromString, to: finalToString, hour: hours, fromTimestamp: fromDate!, toTimestamp: toDate!)
         }
     }
     
     var currentDays: [String] = []
     var weekDays: [String] = []
+    var fullDays: [String] = []
     
     func setDays() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE dd"
+        formatter.dateFormat = "EEEE YYYY/MM/dd"
         
         var day = Date().yesterday
         for i in 0..<6 {
@@ -594,26 +594,29 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 let index = sender.tag - 1
                 var day: [String:AnyObject] = [:]
                 let value = self.weekDays[index]
+                let currentDays = self.currentDays[index]
 
-                if value == "Monday" {
+                if value == "Monday" && monday != nil {
                     day = monday!
-                } else if value == "Tuesday" {
+                } else if value == "Tuesday" && tuesday != nil {
                     day = tuesday!
-                } else if value == "Wednesday" {
+                } else if value == "Wednesday" && wednesday != nil {
                     day = wednesday!
-                } else if value == "Thursday" {
+                } else if value == "Thursday" && thursday != nil {
                     day = thursday!
-                } else if value == "Friday" {
+                } else if value == "Friday" && friday != nil {
                     day = friday!
-                } else if value == "Saturday" {
+                } else if value == "Saturday" && saturday != nil {
                     day = saturday!
-                } else if value == "Sunday" {
+                } else if value == "Sunday" && sunday != nil {
                     day = sunday!
                 }
                 if sender == self.firstButton {
                     //////// first button
                     var currentDate = Date()
+                    currentDate = currentDate.nearestHour()!
                     let intDate = Int(formatter.string(from: currentDate))
+                    
                     self.firstFromTimeValues = []
                     let from = day["From"] as? String
                     let to = day["To"] as? String
@@ -631,36 +634,38 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                 let stringDate = fullFormatter.string(from: currentDate)
                                 self.firstFromTimeValues.append(stringDate)
                                 currentDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate)!
-                                self.finalFromDay = value
+                                self.finalFromDay = currentDays
                             }
                             if status == false {
+                                self.toTimeValues = []
                                 for date in intDate!..<toDateInt! {
                                     if date == 24 {
                                         let addDate = formatter.date(from: String(0))
                                         let newDate = fullFormatter.string(from: addDate!)
                                         self.toTimeValues.append(newDate)
-                                        self.finalToDay = value
+                                        self.finalToDay = currentDays
                                     } else {
                                         let addDate = formatter.date(from: String(date))
                                         let newDate = fullFormatter.string(from: addDate!)
                                         self.toTimeValues.append(newDate)
-                                        self.finalToDay = value
+                                        self.finalToDay = currentDays
                                     }
                                 }
                                 self.timeToPicker.reloadAllComponents()
                             }
                         } else {
+                            self.fromTimeValues = []
                             for date in fromDateInt!...toDateInt! {
                                 if date == 24 {
                                     let addDate = formatter.date(from: String(0))
                                     let newDate = fullFormatter.string(from: addDate!)
-                                    self.firstFromTimeValues.append(newDate)
-                                    self.finalFromDay = value
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalFromDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
-                                    self.firstFromTimeValues.append(newDate)
-                                    self.finalFromDay = value
+                                    self.fromTimeValues.append(newDate)
+                                    self.finalFromDay = currentDays
                                 }
                             }
                         }
@@ -671,7 +676,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             let stringDate = fullFormatter.string(from: currentDate)
                             self.firstFromTimeValues.append(stringDate)
                             currentDate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate)!
-                            self.finalFromDay = value
+                            self.finalFromDay = currentDays
                         }
                         if status == false {
                             self.toTimeValues = []
@@ -680,12 +685,12 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                     let addDate = formatter.date(from: String(0))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
-                                    self.finalToDay = value
+                                    self.finalToDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
-                                    self.finalToDay = value
+                                    self.finalToDay = currentDays
                                 }
                             }
                             self.timeToPicker.reloadAllComponents()
@@ -697,6 +702,12 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 } else {
                     let from = day["From"] as? String
                     let to = day["To"] as? String
+                    
+                    if from == nil || to == nil {
+                        self.toTimeValues = ["N/A"]
+                        self.timeToPicker.reloadAllComponents()
+                        return
+                    }
                     
                     if from != "All day" && to != "All day" {
                         let fromDate = fullFormatter.date(from: from!)
@@ -723,27 +734,27 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             self.secondFromTimeValues = appendArray
                             self.toTimeValues = self.secondFromTimeValues
                             self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = value
+                            self.finalToDay = currentDays
                         } else if sender == self.thirdButton {
                             self.thirdFromTimeValues = appendArray
                             self.toTimeValues = self.thirdFromTimeValues
                             self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = value
+                            self.finalToDay = currentDays
                         } else if sender == self.fourthButton {
                             self.fourthFromTimeValues = appendArray
                             self.toTimeValues = self.fourthFromTimeValues
                             self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = value
+                            self.finalToDay = currentDays
                         } else if sender == self.fifthButton {
                             self.fifthFromTimeValues = appendArray
                             self.toTimeValues = self.fifthFromTimeValues
                             self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = value
+                            self.finalToDay = currentDays
                         } else if sender == self.sixthButton {
                             self.sixthFromTimeValues = appendArray
                             self.toTimeValues = self.sixthFromTimeValues
                             self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = value
+                            self.finalToDay = currentDays
                         }
                         if status == false {
                             self.fromTimeValues = []
@@ -754,15 +765,15 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
-                                    self.finalToDay = value
-                                    self.finalFromDay = value
+                                    self.finalToDay = currentDays
+                                    self.finalFromDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
-                                    self.finalToDay = value
-                                    self.finalFromDay = value
+                                    self.finalToDay = currentDays
+                                    self.finalFromDay = currentDays
                                 }
                             }
                             self.timeToPicker.reloadAllComponents()
@@ -777,12 +788,12 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                     let addDate = formatter.date(from: String(0))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
-                                    self.finalToDay = value
+                                    self.finalToDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
-                                    self.finalToDay = value
+                                    self.finalToDay = currentDays
                                 }
                             }
                             self.timeToPicker.reloadAllComponents()
@@ -794,13 +805,13 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
-                                    self.finalFromDay = value
+                                    self.finalFromDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
-                                    self.finalFromDay = value
+                                    self.finalFromDay = currentDays
                                 }
                             }
                             self.timeToPicker.reloadAllComponents()
@@ -822,7 +833,13 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @objc func showDates(sender: UIButton) {
         if sender.backgroundColor == UIColor.clear {
-            let dayIndex = self.currentDays[sender.tag-1]
+            let formatter = DateFormatter()
+            let dayFormatter = DateFormatter()
+            formatter.dateFormat = "EEEE YYYY/MM/dd"
+            dayFormatter.dateFormat = "EEEE dd"
+            let day = formatter.date(from: self.currentDays[sender.tag-1])
+            
+            let dayIndex = dayFormatter.string(from: day!)
             let daySplit = dayIndex.split(separator: " ")
             let dayName = String(daySplit[0])
             let dayNumber = String(daySplit[1])
@@ -1076,6 +1093,12 @@ extension Date {
     }
     func hours(from date: Date) -> Int {
         return Calendar.current.dateComponents([.hour], from: date, to: self).hour ?? 0
+    }
+    func nearestHour() -> Date? {
+        var components = NSCalendar.current.dateComponents([.minute], from: self)
+        let minute = components.minute ?? 0
+        components.minute = minute >= 0 ? 60 - minute : -minute
+        return Calendar.current.date(byAdding: components, to: self)
     }
 }
 

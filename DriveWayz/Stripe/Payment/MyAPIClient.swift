@@ -74,7 +74,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             
                     let url = self.baseURL.appendingPathComponent("ephemeral_keys")
                     Alamofire.request(url, method: .post, parameters: [
-                        "api_version": "2018-05-21",
+                        "api_version": "2018-08-23",
                         "email": email!,
                         ])
                         .validate(statusCode: 200..<300)
