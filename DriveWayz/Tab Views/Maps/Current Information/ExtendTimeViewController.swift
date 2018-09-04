@@ -19,7 +19,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     var hoursDelegate: controlHoursButton?
     var extendDelegate: extendTimeController?
     
-    let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
     
     let paymentCurrency = "usd"

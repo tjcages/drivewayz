@@ -34,6 +34,8 @@ protocol controlsAccountViews {
     func removeOptionsFromView()
     func changeCurrentView(height: CGFloat)
     func removeAnalyticsController()
+    func bringUpcomingViewController()
+    func hideUpcomingViewController()
 }
 
 class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsAccountViews, sendNewParking {
@@ -93,6 +95,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
+        controller.delegate = self
         
         return controller
     }()
@@ -434,7 +437,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         contentScrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         contentScrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         contentScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + statusHeight + 240)
+        contentScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + statusHeight + 440)
 
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
@@ -483,6 +486,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     var profileViewAnchor: NSLayoutConstraint!
+    var upcomingViewHeightAnchor: NSLayoutConstraint!
     
     func setupProfileViews() {
 
@@ -504,9 +508,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         upcomingController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
         upcomingController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
         upcomingController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 30).isActive = true
-        currentHeightAnchor = upcomingController.view.heightAnchor.constraint(equalToConstant: 460)
-//        currentController.view.alpha = 0
-        currentHeightAnchor?.isActive = true
+        upcomingViewHeightAnchor = upcomingController.view.heightAnchor.constraint(equalToConstant: 460)
+        upcomingController.view.alpha = 0
+        upcomingViewHeightAnchor?.isActive = true
         
         profileView.addSubview(currentController.view)
         currentController.didMove(toParentViewController: self)
@@ -518,6 +522,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         currentHeightAnchor?.isActive = true
         
         profileView.addSubview(recentController.view)
+        profileView.bringSubview(toFront: recentController.view)
         recentController.didMove(toParentViewController: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -530,6 +535,22 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         bannerController.view.topAnchor.constraint(equalTo: recentController.view.bottomAnchor, constant: 40).isActive = true
         bannerController.view.heightAnchor.constraint(equalToConstant: 490).isActive = true
 
+    }
+    
+    func bringUpcomingViewController() {
+        self.upcomingViewHeightAnchor?.constant = 460
+        UIView.animate(withDuration: 0.3) {
+            self.upcomingController.view.alpha = 1
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func hideUpcomingViewController() {
+        self.upcomingViewHeightAnchor?.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.upcomingController.view.alpha = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
     var parkingViewAnchor: NSLayoutConstraint!

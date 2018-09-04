@@ -478,7 +478,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                                         let parking = ParkingSpots(dictionary: dictionary)
                                         let parkingID = dictionary["parkingID"] as! String
                                         self.parkingSpotsDictionary[parkingID] = parking
-                                        self.reloadOfTable()
+                                        DispatchQueue.main.async(execute: {
+                                            self.reloadOfTable()
+                                        })
                                     })
                                 } else {
                                     dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
@@ -486,7 +488,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                                     let parking = ParkingSpots(dictionary: dictionary)
                                     let parkingID = dictionary["parkingID"] as! String
                                     self.parkingSpotsDictionary[parkingID] = parking
-                                    self.reloadOfTable()
+                                    DispatchQueue.main.async(execute: {
+                                        self.reloadOfTable()
+                                    })
                                 }
                             }
                         })

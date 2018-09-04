@@ -23,7 +23,7 @@ protocol controlHourButton {
 //    var delegate: removePurchaseView?
 //    var hoursDelegate: controlHoursButton?
 //
-//    let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+//    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //    let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
 //    
 //    let paymentCurrency = "usd"

@@ -11,6 +11,8 @@ import Firebase
 
 class UserUpcomingViewController: UIViewController {
     
+    var delegate: controlsAccountViews?
+    
     var current: UIView = {
         let current = UIView()
         current.layer.cornerRadius = 15
@@ -89,6 +91,7 @@ class UserUpcomingViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        checkUpcomingStatus()
     }
     
     func setupViews() {
@@ -137,6 +140,20 @@ class UserUpcomingViewController: UIViewController {
         imageController.view.heightAnchor.constraint(equalToConstant: 260).isActive = true
         
     }
+    
+    func checkUpcomingStatus() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("upcomingParking")
+        ref.observe(.childAdded) { (snapshot) in
+            self.delegate?.bringUpcomingViewController()
+            print(snapshot)
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                print(dictionary)
+            }
+        }
+    }
+    
+    
 
 }
 
