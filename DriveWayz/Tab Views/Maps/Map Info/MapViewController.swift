@@ -55,13 +55,14 @@ protocol removePurchaseView {
 protocol controlHoursButton {
     func openHoursButton()
     func closeHoursButton()
+    func drawCurrentPath(dest: CLLocation)
 }
 
 protocol controlNewHosts {
     func sendNewHost()
 }
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, removePurchaseView, controlHoursButton, controlNewHosts {
+class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate, GMSMapViewDelegate, GMSAutocompleteViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
 
     let cellId = "cellId"
     var currentActive: Bool = false
@@ -167,20 +168,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         return parking
     }()
     
-    var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        return view
-    }()
-    
     lazy var purchaseViewController: SelectPurchaseViewController = {
         let controller = SelectPurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Purchase Controller"
-        controller.delegate = self
-        controller.removeDelegate = self
+//        controller.delegate = self
+//        controller.removeDelegate = self
 //        controller.hoursDelegate = self
         
         return controller
@@ -191,8 +185,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Information Controller"
-        controller.delegate = self
-        controller.hostDelegate = self
+//        controller.delegate = self
+//        controller.hostDelegate = self
         
         return controller
     }()
@@ -203,7 +197,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         controller.title = "Reviews Controller"
         controller.view.alpha = 0
-        controller.delegate = self
+//        controller.delegate = self
         
         return controller
     }()
@@ -410,11 +404,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }
     
     func observeUserParkingSpots() {
-        if Auth.auth().currentUser?.uid != nil {
-            print("Welcome User")
-        } else {
-            return
-        }
         let ref = Database.database().reference().child("user-parking")
         ref.observe(.childAdded, with: { (snapshot) in
             let parkingID = [snapshot.key]
@@ -637,32 +626,32 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         tabFeed.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 15).isActive = true
         tabFeed.centerXAnchor.constraint(equalTo: topSearch.centerXAnchor).isActive = true
         
-        self.view.addSubview(currentButton)
-        currentButton.addTarget(self, action: #selector(currentParkingPressed(sender:)), for: .touchUpInside)
-        currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
-        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
-        currentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        currentButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
+//        self.view.addSubview(currentButton)
+//        currentButton.addTarget(self, action: #selector(currentParkingPressed(sender:)), for: .touchUpInside)
+//        currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
+//        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
+//        currentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+//        currentButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
         
-        self.view.addSubview(purchaseStaus)
-        purchaseStaus.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
-        purchaseStaus.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 20).isActive = true
-        purchaseStatusWidthAnchor = purchaseStaus.widthAnchor.constraint(equalToConstant: 120)
-            purchaseStatusWidthAnchor.isActive = true
-        purchaseStatusHeightAnchor = purchaseStaus.heightAnchor.constraint(equalToConstant: 40)
-            purchaseStatusHeightAnchor.isActive = true
-
-        self.view.addSubview(swipeTutorial)
-        swipeTutorial.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        swipeTutorial.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        swipeTutorial.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        swipeTutorial.heightAnchor.constraint(equalToConstant: 160).isActive = true
-        
-        view.addSubview(swipeLabel)
-        swipeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        swipeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        swipeLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
-        swipeLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//        self.view.addSubview(purchaseStaus)
+//        purchaseStaus.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+//        purchaseStaus.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 20).isActive = true
+//        purchaseStatusWidthAnchor = purchaseStaus.widthAnchor.constraint(equalToConstant: 120)
+//            purchaseStatusWidthAnchor.isActive = true
+//        purchaseStatusHeightAnchor = purchaseStaus.heightAnchor.constraint(equalToConstant: 40)
+//            purchaseStatusHeightAnchor.isActive = true
+//
+//        self.view.addSubview(swipeTutorial)
+//        swipeTutorial.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        swipeTutorial.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        swipeTutorial.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        swipeTutorial.heightAnchor.constraint(equalToConstant: 160).isActive = true
+//        
+//        view.addSubview(swipeLabel)
+//        swipeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        swipeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+//        swipeLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
+//        swipeLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
     }
     

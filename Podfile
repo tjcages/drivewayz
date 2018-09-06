@@ -30,5 +30,6 @@ target 'DriveWayz' do
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Cosmos', '~> 16.0'
 	pod 'TOMSMorphingLabel', '~> 0.5'
+	pod 'Cluster'
 
 end

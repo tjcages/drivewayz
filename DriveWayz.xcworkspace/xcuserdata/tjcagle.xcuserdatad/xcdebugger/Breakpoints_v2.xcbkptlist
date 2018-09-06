@@ -25,13 +25,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "DriveWayz/Tab Views/Account/Account Views/UserUpcomingViewController.swift"
-            timestampString = "557774307.760088"
+            filePath = "DriveWayz/Tab Views/Maps/MockRappersService.swift"
+            timestampString = "557818027.443325"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
-            landmarkName = "checkUpcomingStatus()"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "allBattleRappers(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DriveWayz/Tab Views/Maps/TestViewController.swift"
+            timestampString = "557816387.773019"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "inject(service:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

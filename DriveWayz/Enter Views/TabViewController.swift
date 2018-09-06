@@ -109,8 +109,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return button
     }()
     
-    lazy var mapController: MapViewController = {
-        let controller = MapViewController()
+    lazy var mapController: MapKitViewController = {
+        let controller = MapKitViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Map"

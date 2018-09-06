@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Use your location to navigate to current parking spots.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Use your location to track parking spots near you and direct you to those spots.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -88,6 +92,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Use your location to track parking spots near you and direct you to those spots.</string>
 	<key>networkAccessAllowed</key>
 	<true/>
 </dict>

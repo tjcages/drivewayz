@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GooglePlaces
 
 class UserUpcomingViewController: UIViewController {
     
@@ -49,23 +50,23 @@ class UserUpcomingViewController: UIViewController {
         return chart
     }()
     
-    lazy var infoController: ParkingInfoViewController = {
-        let controller = ParkingInfoViewController()
+    lazy var infoController: UpcomingInfoViewController = {
+        let controller = UpcomingInfoViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Info"
         return controller
     }()
     
-    lazy var imageController: ParkingImageViewController = {
-        let controller = ParkingImageViewController()
-        self.addChildViewController(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Image"
-        controller.currentParkingImageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: 260)
-        controller.currentParkingImageView.roundCorners([.bottomLeft, .bottomRight], radius: 10)
+    lazy var upcomingParkingImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: 260)
+        imageView.roundCorners([.bottomLeft, .bottomRight], radius: 10)
         
-        return controller
+        return imageView
     }()
     
     var fromToLabel: UILabel = {
@@ -118,8 +119,8 @@ class UserUpcomingViewController: UIViewController {
         currentContainer.addSubview(infoController.view)
         infoController.view.leftAnchor.constraint(equalTo: currentContainer.leftAnchor).isActive = true
         infoController.view.rightAnchor.constraint(equalTo: currentContainer.rightAnchor).isActive = true
-        infoController.view.topAnchor.constraint(equalTo: currentContainer.topAnchor).isActive = true
-        infoController.view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        infoController.view.topAnchor.constraint(equalTo: currentContainer.topAnchor, constant: 10).isActive = true
+        infoController.view.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         currentContainer.addSubview(line)
         line.leftAnchor.constraint(equalTo: currentContainer.leftAnchor, constant: 20).isActive = true
@@ -133,11 +134,11 @@ class UserUpcomingViewController: UIViewController {
         fromToLabel.topAnchor.constraint(equalTo: infoController.view.bottomAnchor, constant: 10).isActive = true
         fromToLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        currentContainer.addSubview(imageController.view)
-        imageController.view.leftAnchor.constraint(equalTo: currentContainer.leftAnchor).isActive = true
-        imageController.view.rightAnchor.constraint(equalTo: currentContainer.rightAnchor).isActive = true
-        imageController.view.topAnchor.constraint(equalTo: fromToLabel.bottomAnchor, constant: 5).isActive = true
-        imageController.view.heightAnchor.constraint(equalToConstant: 260).isActive = true
+        currentContainer.addSubview(upcomingParkingImageView)
+        upcomingParkingImageView.leftAnchor.constraint(equalTo: currentContainer.leftAnchor).isActive = true
+        upcomingParkingImageView.rightAnchor.constraint(equalTo: currentContainer.rightAnchor).isActive = true
+        upcomingParkingImageView.topAnchor.constraint(equalTo: fromToLabel.bottomAnchor, constant: 5).isActive = true
+        upcomingParkingImageView.heightAnchor.constraint(equalToConstant: 260).isActive = true
         
     }
     
@@ -145,10 +146,43 @@ class UserUpcomingViewController: UIViewController {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let ref = Database.database().reference().child("users").child(currentUser).child("upcomingParking")
         ref.observe(.childAdded) { (snapshot) in
-            self.delegate?.bringUpcomingViewController()
-            print(snapshot)
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                print(dictionary)
+                let parkingID = dictionary["parkingID"] as? String
+                let startTime = dictionary["startTime"] as? Double
+                let endTime = dictionary["endTime"] as? Double
+                let startDate = Date(timeIntervalSince1970: startTime!)
+                let endDate = Date(timeIntervalSince1970: endTime!)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "h:mm a EE"
+                formatter.amSymbol = "am"
+                formatter.pmSymbol = "pm"
+                let startString = formatter.string(from: startDate)
+                let endString = formatter.string(from: endDate)
+                self.fromToLabel.text = "\(startString) to \(endString)"
+                let parkingRef = Database.database().reference().child("parking").child(parkingID!)
+                parkingRef.observeSingleEvent(of: .value, with: { (parkingSnap) in
+                    if let parkingDict = parkingSnap.value as? [String:AnyObject] {
+                        let name = parkingDict["parkingCity"] as? String
+                        let address = parkingDict["parkingAddress"] as? String
+                        let price = parkingDict["parkingCost"] as? String
+                        let parkingImageURL = parkingDict["parkingImageURL"] as? String
+                        var officialRating: Double = 5.0
+                        if let rating = parkingDict["rating"] as? Int {
+                            parkingRef.child("Reviews").observeSingleEvent(of: .value, with: { (ratingSnap) in
+                                let count = ratingSnap.childrenCount
+                                officialRating = Double(rating/Int(count))
+                                self.infoController.setData(cityAddress: name!, parkingCost: price!, formattedAddress: address!, rating: officialRating)
+                            })
+                        }
+                        self.infoController.setData(cityAddress: name!, parkingCost: price!, formattedAddress: address!, rating: officialRating)
+                        self.delegate?.bringUpcomingViewController()
+                        if parkingImageURL == nil {
+                            self.upcomingParkingImageView.image = UIImage(named: "profileprofile")
+                        } else {
+                            self.upcomingParkingImageView.loadImageUsingCacheWithUrlString(parkingImageURL!)
+                        }
+                    }
+                })
             }
         }
     }

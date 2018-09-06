@@ -11,6 +11,7 @@ import Stripe
 import Firebase
 import UserNotifications
 import Alamofire
+import GooglePlaces
 
 protocol handleReservations {
     func reserveCheckPressed(from: String, to: String, hour: Double, fromTimestamp: Date, toTimestamp: Date)
@@ -18,10 +19,11 @@ protocol handleReservations {
     func bringParkNow()
 }
 
-class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, STPPaymentContextDelegate, handleReservations {
+class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, STPPaymentContextDelegate, UNUserNotificationCenterDelegate, handleReservations {
     
     var parkingCost: String?
     var delegate: controlHoursButton?
+    var saveDelegate: controlSaveLocation?
     var fromDateTimestampValue: Date?
     var toDateTimestampValue: Date?
     
@@ -980,6 +982,17 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     @objc private func handleConfirmRideButtonTapped() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+            if granted {
+                DispatchQueue.main.async { // Correct
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                
+            }
+            
+        }
         self.paymentInProgress = true
         self.addCurrentParking()
         if reserveSegmentAnchor.isActive == true {
@@ -988,6 +1001,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         } else if currentSegmentAnchor.isActive == true {
             self.changeReserveButton()
             self.updateUserProfileCurrent()
+            self.drawNewRoute()
             UIView.animate(withDuration: 0.3) {
                 currentButton.alpha = 1
             }
@@ -1169,14 +1183,36 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         }
     }
     
+    func drawNewRoute() {
+        let ref = Database.database().reference().child("parking").child(self.parkingId)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let address = dictionary["parkingAddress"] as? String {
+                    let geoCoder = CLGeocoder()
+                    geoCoder.geocodeAddressString(address) { (placemarks, error) in
+                        guard
+                            let placemarks = placemarks,
+                            let location = placemarks.first?.location
+                            else {
+                                print("Couldn't find location to draw routes")
+                                return
+                        }
+                        self.delegate?.drawCurrentPath(dest: location)
+                    }
+                }
+            }
+        }
+    }
+    
     private func reserveParking() {
+        self.saveDelegate?.saveUserCurrentLocation()
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let timestamp = NSDate().timeIntervalSince1970
         let ref = Database.database().reference().child("users").child(currentUser)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let futureRes = dictionary["upcomingParking"] as? [String:AnyObject] {
-                    print("Already have a reservation")
+                if (dictionary["upcomingParking"] as? [String:AnyObject]) != nil {
+                    self.sendPreviousUpcomingAlert()
                 } else {
                     let from = self.fromDateTimestampValue?.timeIntervalSince1970
                     let to = self.toDateTimestampValue?.timeIntervalSince1970
@@ -1186,7 +1222,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     parkingRef.observe(.childAdded) { (snapshot) in
                         self.sendNewCurrent(status: "upcoming")
                     }
-                    
                     let beginTimeInterval = (self.fromDateTimestampValue?.timeIntervalSince1970)! - timestamp
                     let content = UNMutableNotificationContent()
                     content.title = "Your parking reservation has begun."
@@ -1315,6 +1350,12 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 self.setupPushNotifications(fromDevice: fromDevice!, name: name, status: status)
             }
         }
+    }
+    
+    func sendPreviousUpcomingAlert() {
+        let alert = UIAlertController(title: "You have already reserved a spot.", message: "Currently you can only reserve one spot at a time! You have not been charged.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
     
     fileprivate func setupPushNotifications(fromDevice: String, name: String, status: String) {

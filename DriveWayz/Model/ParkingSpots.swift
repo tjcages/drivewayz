@@ -17,6 +17,7 @@ class ParkingSpots: NSObject {
     var parkingAddress: String?
     var parkingCity: String?
     var id: String?
+    var currentAvailable: String?
     var parkingID: String?
     var parkingDistance: String?
     var message: String?
@@ -45,6 +46,7 @@ class ParkingSpots: NSObject {
         parkingAddress = dictionary["parkingAddress"] as? String
         parkingCity = dictionary["parkingCity"] as? String
         id = dictionary["id"] as? String
+        currentAvailable = dictionary["currentUser"] as? String
         parkingID = dictionary["parkingID"] as? String
         parkingDistance = dictionary["parkingDistance"] as? String
         message = dictionary["message"] as? String

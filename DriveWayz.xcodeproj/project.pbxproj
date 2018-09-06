@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41ACB8080A342D9A8DF4F036 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E9F5790FD804CE2A75F8CE /* Pods_DriveWayz.framework */; };
 		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
 		4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */; };
 		4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */; };
@@ -57,8 +58,11 @@
 		4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */; };
 		4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */; };
 		4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A7320CD976C00F404A7 /* Theme.swift */; };
+		4D8CE1E5213FA51E00C6C61E /* ParkingAnnotationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */; };
+		4D8CE1EA2140C97D00C6C61E /* UpcomingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CE1E92140C97D00C6C61E /* UpcomingInfoViewController.swift */; };
 		4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */; };
 		4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */; };
+		4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FB806213EF70400899829 /* MapKitViewController.swift */; };
 		4DB06D0B2138CD26008A30ED /* HeatMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB06D0A2138CD26008A30ED /* HeatMapViewController.swift */; };
 		4DC4B9D620CDA018004FFBCE /* AirbnbDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */; };
 		4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */; };
@@ -88,7 +92,6 @@
 		4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */; };
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
-		929DA69767B520FC238259AB /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5018E1533A3166B7C9D80CAD /* Pods_DriveWayz.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -105,7 +108,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		30341E568A87E3AA27ED1347 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
+		30E9F5790FD804CE2A75F8CE /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C238383162172B15EF6FB14 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
 		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
 		4D057AF32115F690003F9EED /* ExtendTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendTimeViewController.swift; sourceTree = "<group>"; };
 		4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,8 +162,11 @@
 		4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAGradientLayer.swift; sourceTree = "<group>"; };
 		4D6A5A7320CD976C00F404A7 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		4D745B1620FB9CAD00F82BDF /* DriveWayz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveWayz.entitlements; sourceTree = "<group>"; };
+		4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAnnotationViews.swift; sourceTree = "<group>"; };
+		4D8CE1E92140C97D00C6C61E /* UpcomingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingInfoViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoViewController.swift; sourceTree = "<group>"; };
+		4D9FB806213EF70400899829 /* MapKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewController.swift; sourceTree = "<group>"; };
 		4DB06D0A2138CD26008A30ED /* HeatMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatMapViewController.swift; sourceTree = "<group>"; };
 		4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirbnbDatePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentParkingViewController.swift; sourceTree = "<group>"; };
@@ -191,8 +198,7 @@
 		4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecentViewController.swift; sourceTree = "<group>"; };
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
-		5018E1533A3166B7C9D80CAD /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		972481F94A8277A79FDB5BDA /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
+		EF7FE3D2B7DA0C7EA26ED1BB /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,7 +208,7 @@
 			files = (
 				4DC4B9D620CDA018004FFBCE /* AirbnbDatePicker.framework in Frameworks */,
 				4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */,
-				929DA69767B520FC238259AB /* Pods_DriveWayz.framework in Frameworks */,
+				41ACB8080A342D9A8DF4F036 /* Pods_DriveWayz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +221,7 @@
 				4D21D2D620CC9FC3002D7005 /* DriveWayz */,
 				4D21D2D520CC9FC3002D7005 /* Products */,
 				90AD91F4ABE5AAC0BB7393D9 /* Frameworks */,
-				8CA680510ED9C88E29C3523A /* Pods */,
+				51EEF417506D6FE3FDC4FA3C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -369,7 +375,7 @@
 				4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */,
 				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
 				4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */,
-				4DFFC258210B4F09006D6062 /* CurrentViewController.swift */,
+				4D8CE1E92140C97D00C6C61E /* UpcomingInfoViewController.swift */,
 			);
 			path = "Setup Account";
 			sourceTree = "<group>";
@@ -389,12 +395,22 @@
 		4D53F9A420D97BC300A1C1FA /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */,
+				4D8CE1E821406CDE00C6C61E /* Map Info */,
+				4D9FB806213EF70400899829 /* MapKitViewController.swift */,
 				4D2EB5C321038F34004AEA54 /* InformationViewController.swift */,
 				4D2C5F8B211A799000364CB6 /* New Purchase */,
 				4DFFC25F210C99FE006D6062 /* Current Information */,
 			);
 			path = Maps;
+			sourceTree = "<group>";
+		};
+		4D8CE1E821406CDE00C6C61E /* Map Info */ = {
+			isa = PBXGroup;
+			children = (
+				4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */,
+				4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */,
+			);
+			path = "Map Info";
 			sourceTree = "<group>";
 		};
 		4DCA492520F0186700F00B3B /* Stripe */ = {
@@ -461,6 +477,7 @@
 			children = (
 				4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */,
 				4DFC29102134989200013FC3 /* UserUpcomingViewController.swift */,
+				4DFFC258210B4F09006D6062 /* CurrentViewController.swift */,
 				4DFB449720F407CA007A54B1 /* UserVehicleViewController.swift */,
 				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
 				4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */,
@@ -468,11 +485,11 @@
 			path = "Account Views";
 			sourceTree = "<group>";
 		};
-		8CA680510ED9C88E29C3523A /* Pods */ = {
+		51EEF417506D6FE3FDC4FA3C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				972481F94A8277A79FDB5BDA /* Pods-DriveWayz.debug.xcconfig */,
-				30341E568A87E3AA27ED1347 /* Pods-DriveWayz.release.xcconfig */,
+				EF7FE3D2B7DA0C7EA26ED1BB /* Pods-DriveWayz.debug.xcconfig */,
+				3C238383162172B15EF6FB14 /* Pods-DriveWayz.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -482,7 +499,7 @@
 			children = (
 				4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */,
 				4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */,
-				5018E1533A3166B7C9D80CAD /* Pods_DriveWayz.framework */,
+				30E9F5790FD804CE2A75F8CE /* Pods_DriveWayz.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -494,13 +511,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4D21D2E620CC9FC4002D7005 /* Build configuration list for PBXNativeTarget "DriveWayz" */;
 			buildPhases = (
-				D748A4A6645D6B97E4A7B80E /* [CP] Check Pods Manifest.lock */,
+				FEFF9845C3F9D7D7ECD117F8 /* [CP] Check Pods Manifest.lock */,
 				4D21D2D020CC9FC3002D7005 /* Sources */,
 				4D21D2D120CC9FC3002D7005 /* Frameworks */,
 				4D21D2D220CC9FC3002D7005 /* Resources */,
 				4DCFE79020FC2A6F00073677 /* Embed App Extensions */,
-				669B759C097EF376B043F0D4 /* [CP] Embed Pods Frameworks */,
-				6937DCBA961EED19F10A3535 /* [CP] Copy Pods Resources */,
+				F017ADADCA3B7B5D9B78BE5B /* [CP] Embed Pods Frameworks */,
+				C9F8400B7123F29AAFF99543 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -570,71 +587,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		669B759C097EF376B043F0D4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AirbnbDatePicker/AirbnbDatePicker.framework",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
-				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AirbnbDatePicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOMSMorphingLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6937DCBA961EED19F10A3535 /* [CP] Copy Pods Resources */ = {
+		C9F8400B7123F29AAFF99543 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -662,7 +615,73 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D748A4A6645D6B97E4A7B80E /* [CP] Check Pods Manifest.lock */ = {
+		F017ADADCA3B7B5D9B78BE5B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AirbnbDatePicker/AirbnbDatePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/Cluster/Cluster.framework",
+				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
+				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AirbnbDatePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cluster.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOMSMorphingLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FEFF9845C3F9D7D7ECD117F8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -687,11 +706,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D8CE1E5213FA51E00C6C61E /* ParkingAnnotationViews.swift in Sources */,
 				4DFFC259210B4F09006D6062 /* CurrentViewController.swift in Sources */,
 				4D21D31320CC9FF9002D7005 /* Users.swift in Sources */,
 				4D2EB5BA2101527A004AEA54 /* SaveParkingViewController.swift in Sources */,
 				4DCA492E20F018D500F00B3B /* CheckoutViewController.swift in Sources */,
 				4D45074021379932005CD8D7 /* ProfitsViewController.swift in Sources */,
+				4D8CE1EA2140C97D00C6C61E /* UpcomingInfoViewController.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
@@ -713,6 +734,7 @@
 				4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */,
 				4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */,
 				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
+				4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */,
 				4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */,
 				4D21D31420CC9FF9002D7005 /* bro in Sources */,
 				4D21D32B20CC9FF9002D7005 /* NotificationsNavViewController.swift in Sources */,
@@ -900,7 +922,7 @@
 		};
 		4D21D2E720CC9FC4002D7005 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 972481F94A8277A79FDB5BDA /* Pods-DriveWayz.debug.xcconfig */;
+			baseConfigurationReference = EF7FE3D2B7DA0C7EA26ED1BB /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -922,7 +944,7 @@
 		};
 		4D21D2E820CC9FC4002D7005 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30341E568A87E3AA27ED1347 /* Pods-DriveWayz.release.xcconfig */;
+			baseConfigurationReference = 3C238383162172B15EF6FB14 /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;

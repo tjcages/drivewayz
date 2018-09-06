@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 var informationScrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -36,6 +37,7 @@ protocol sendNewHostControl {
 }
 
 class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController, sendNewHostControl {
+    
     
     var delegate: removePurchaseView?
     var hostDelegate: controlNewHosts?
@@ -505,6 +507,9 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func drawCurrentPath(dest: CLLocation) {
     }
     
 

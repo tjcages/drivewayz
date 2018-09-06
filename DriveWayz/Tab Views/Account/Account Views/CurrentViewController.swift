@@ -301,7 +301,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
                                     let time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
                                     let formatter = DateFormatter()
                                     formatter.timeZone = TimeZone.current
-                                    formatter.dateFormat = "hh:mm"
+                                    formatter.dateFormat = "h:mm"
                                     let dateString = formatter.string(from: time as Date)
                                     
                                     let endTimeInterval = TimeInterval((timestamp! + seconds))
