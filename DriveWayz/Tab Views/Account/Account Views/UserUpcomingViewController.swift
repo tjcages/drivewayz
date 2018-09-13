@@ -14,6 +14,13 @@ class UserUpcomingViewController: UIViewController {
     
     var delegate: controlsAccountViews?
     
+    var notificationController: NotifyUpcomingViewController = {
+        let controller = NotifyUpcomingViewController()
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
     var current: UIView = {
         let current = UIView()
         current.layer.cornerRadius = 15
@@ -93,6 +100,10 @@ class UserUpcomingViewController: UIViewController {
         
         setupViews()
         checkUpcomingStatus()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.notificationController.checkForUpcoming()
     }
     
     func setupViews() {
@@ -184,6 +195,9 @@ class UserUpcomingViewController: UIViewController {
                     }
                 })
             }
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.delegate?.hideUpcomingViewController()
         }
     }
     

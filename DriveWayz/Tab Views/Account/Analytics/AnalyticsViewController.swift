@@ -98,6 +98,26 @@ class AnalyticsViewController: UIViewController {
         return controller
     }()
     
+    var totalUsersLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Total users"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        
+        return label
+    }()
+    
+    var totalHostsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Total hosts"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        
+        return label
+    }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +125,7 @@ class AnalyticsViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         
         setupViews()
+        setData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -150,7 +171,7 @@ class AnalyticsViewController: UIViewController {
         exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 3)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2)
         scrollView.topAnchor.constraint(equalTo: topBar.bottomAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -181,13 +202,35 @@ class AnalyticsViewController: UIViewController {
         profitsController.view.topAnchor.constraint(equalTo: newUsersController.view.bottomAnchor, constant: 40).isActive = true
         profitsController.view.heightAnchor.constraint(equalToConstant: (profitsController.view.frame.width) * 0.6 + 40).isActive = true
         
+        scrollView.addSubview(totalUsersLabel)
+        totalUsersLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        totalUsersLabel.topAnchor.constraint(equalTo: profitsController.view.bottomAnchor, constant: 50).isActive = true
+        totalUsersLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
+        totalUsersLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        scrollView.addSubview(totalHostsLabel)
+        totalHostsLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        totalHostsLabel.topAnchor.constraint(equalTo: totalUsersLabel.bottomAnchor, constant: 0).isActive = true
+        totalHostsLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
+        totalHostsLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
         self.delegate?.removeAnalyticsController()
     }
     
-    
+    func setData() {
+        let ref = Database.database().reference()
+        ref.child("users").observeSingleEvent(of: .value) { (snapshot) in
+            let count = snapshot.childrenCount
+            self.totalUsersLabel.text = "Total users: \(count)"
+        }
+        ref.child("parking").observeSingleEvent(of: .value) { (snapshot) in
+            let count = snapshot.childrenCount
+            self.totalHostsLabel.text = "Total hosts: \(count)"
+        }
+    }
 
 
 }

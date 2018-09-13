@@ -139,8 +139,23 @@ class ParkingAvailabilityViewController: UIViewController {
     func checkAvailablility(id: String) {
         let ref = Database.database().reference().child("parking").child(id).child("Current")
         ref.observe(.childAdded) { (snapshot) in
-            self.delegate?.sendAvailability(availability: false)
-            return
+            ref.observeSingleEvent(of: .value, with: { (currentSnap) in
+                let count = currentSnap.childrenCount
+                let countRef = Database.database().reference().child("parking").child(id)
+                countRef.observeSingleEvent(of: .value, with: { (parkSnap) in
+                    if let dictionary = parkSnap.value as? [String:AnyObject] {
+                        if let numberString = dictionary["numberOfSpots"] as? String {
+                            let numberSpots: Int = Int(numberString)!
+                            if numberSpots > count {
+                                self.delegate?.sendAvailability(availability: true)
+                            } else {
+                                self.delegate?.sendAvailability(availability: false)
+                                return
+                            }
+                        }
+                    }
+                })
+            })
         }
         ref.observe(.childRemoved) { (snapshot) in
             self.delegate?.sendAvailability(availability: true)

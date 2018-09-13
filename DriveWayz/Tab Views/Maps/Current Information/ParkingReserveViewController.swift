@@ -99,11 +99,26 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         return label
     }()
     
+    var parkingType: UITextView = {
+        let label = UITextView()
+        label.textAlignment = .left
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "Parking type..."
+        label.backgroundColor = UIColor.white
+        label.isEditable = false
+        label.isUserInteractionEnabled = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentInset = UIEdgeInsetsMake(5, 20, 5, 20)
+        
+        return label
+    }()
+    
     var paymentSegment: UIButton = {
         let reviews = UIButton()
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
-        reviews.setTitle("Reserve", for: .normal)
+        reviews.setTitle("Category", for: .normal)
         reviews.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center
@@ -130,15 +145,15 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         return line
     }()
     
-    lazy var reservationController: ReserveViewController = {
-        let controller = ReserveViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Reservations"
-        controller.view.layer.cornerRadius = 5
-        controller.view.alpha = 1
-        
-        return controller
-    }()
+//    lazy var reservationController: ReserveViewController = {
+//        let controller = ReserveViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Reservations"
+//        controller.view.layer.cornerRadius = 5
+//        controller.view.alpha = 1
+//
+//        return controller
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,7 +182,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func setData(formattedAddress: String, message: String, parkingID: String, id: String) {
-        reservationController.setData(parkingID: parkingID)
+//        reservationController.setData(parkingID: parkingID)
         self.address = formattedAddress
         self.parkingID = parkingID
         self.id = id
@@ -175,6 +190,39 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             self.userMessage.text = "Host - \(message)"
         } else {
             self.userMessage.text = "No host message"
+        }
+        self.giveParkingType(parkingID: parkingID)
+    }
+    
+    func giveParkingType(parkingID: String) {
+        let ref = Database.database().reference().child("parking").child(parkingID)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let parkingString = dictionary["numberOfSpots"] as? String {
+                    let parkingNumber: Int = Int(parkingString)!
+                    if parkingNumber > 1 {
+                        if let parkingType = dictionary["parkingType"] as? String {
+                            if parkingType == "parkingLot" {
+                                self.parkingType.text = "This is one space in a parking lot \n- There are \(parkingNumber) spots total"
+                            } else if parkingType == "apartment" {
+                                self.parkingType.text = "This is one of the apartment parking spaces \n- There are \(parkingNumber) spots total"
+                            } else if parkingType == "house" {
+                                self.parkingType.text = "This is one space for house \n- There are \(parkingNumber) spots total"
+                            }
+                        }
+                    } else {
+                        if let parkingType = dictionary["parkingType"] as? String {
+                            if parkingType == "parkingLot" {
+                                self.parkingType.text = "This is one space in a parking lot \n- There is only one spot"
+                            } else if parkingType == "apartment" {
+                                self.parkingType.text = "This is one of the apartment parking spaces \n- There is only one spot"
+                            } else if parkingType == "house" {
+                                self.parkingType.text = "This is the one space for house"
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -191,24 +239,39 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     
     func setParkingInformation(status: Bool) {
         self.currentCheck = true
-        let ref = Database.database().reference().child("users").child(self.id!).child("Payments")
+        let ref = Database.database().reference().child("parking").child(self.parkingID!)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             self.parkingCheck = false
-            let count = snapshot.childrenCount
-            if count == 1 {
-                self.Current.remove(at: 0)
-                self.Current.insert("People have parked here \(count) time", at: 0)
-                self.currentTableView.reloadData()
-            } else {
-                self.Current.remove(at: 0)
-                self.Current.insert("People have parked here \(count) times", at: 0)
-                self.currentTableView.reloadData()
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let numberString = dictionary["numberOfSpots"] as? String {
+                    let numberSpots: Int = Int(numberString)!
+                    if dictionary["Current"] != nil {
+                        let currentRef = ref.child("Current")
+                        currentRef.observeSingleEvent(of: .value, with: { (currentSnap) in
+                            let currentNumber = Int(currentSnap.childrenCount)
+                            if numberSpots > currentNumber {
+                                self.Current.remove(at: 0)
+                                self.Current.insert("\(numberSpots-currentNumber) out of \(String(describing: numberSpots)) spaces are left here", at: 0)
+                                self.currentTableView.reloadData()
+                            } else {
+                                self.Current.remove(at: 0)
+                                self.Current.insert("There are no spots left at the moment", at: 0)
+                                self.currentTableView.reloadData()
+                            }
+                        })
+                    } else {
+                        if numberSpots > 1 {
+                            self.Current.remove(at: 0)
+                            self.Current.insert("There are currently \(String(describing: numberSpots)) spaces ready!", at: 0)
+                            self.currentTableView.reloadData()
+                        } else {
+                            self.Current.remove(at: 0)
+                            self.Current.insert("There is one spot ready!", at: 0)
+                            self.currentTableView.reloadData()
+                        }
+                    }
+                }
             }
-        }
-        if self.parkingCheck == true {
-            self.Current.remove(at: 0)
-            self.Current.insert("Nobody has parked here yet", at: 0)
-            self.currentTableView.reloadData()
         }
         let checkRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current")
         checkRef.observe(.childAdded) { (snapshot) in
@@ -295,12 +358,19 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         detailsTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
         detailsTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
-        parkingView.addSubview(reservationController.view)
-        reservationsTableAnchor = reservationController.view.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
+        parkingView.addSubview(paymentTableView)
+        reservationsTableAnchor = paymentTableView.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor, constant: self.view.frame.width)
             reservationsTableAnchor.isActive = true
-        reservationController.view.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
-        reservationController.view.topAnchor.constraint(equalTo: parkingView.topAnchor, constant: 35).isActive = true
-        reservationController.view.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
+        paymentTableView.widthAnchor.constraint(equalTo: parkingView.widthAnchor, constant: -20).isActive = true
+        paymentTableView.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
+        paymentTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
+        
+        paymentTableView.addSubview(parkingType)
+        paymentTableView.bringSubview(toFront: parkingType)
+        parkingType.centerXAnchor.constraint(equalTo: paymentTableView.centerXAnchor).isActive = true
+        parkingType.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
+        parkingType.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 5).isActive = true
+        parkingType.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor, constant: -10).isActive = true
         
         detailsTableView.addSubview(userMessage)
         detailsTableView.bringSubview(toFront: userMessage)

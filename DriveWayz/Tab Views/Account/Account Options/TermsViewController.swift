@@ -26,7 +26,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false

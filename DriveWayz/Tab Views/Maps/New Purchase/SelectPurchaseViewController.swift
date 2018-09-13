@@ -107,6 +107,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         maskLayer.path = path.cgPath
         button.layer.mask = maskLayer
         button.addTarget(self, action: #selector(handleRequestRideButtonTapped), for: .touchUpInside)
+        button.alpha = 0.6
+        button.isUserInteractionEnabled = false
         
         return button
     }()
@@ -503,6 +505,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveFromLabel.alpha = 0
             self.reserveCostLabel.alpha = 0
             self.line3.alpha = 0
+            self.reserveButton.alpha = 1
+            self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.2, animations: {
@@ -533,6 +537,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveFromLabel.alpha = 0
             self.reserveCostLabel.alpha = 0
             self.line3.alpha = 0
+            self.reserveButton.alpha = 0.6
+            self.reserveButton.isUserInteractionEnabled = false
 //            self.currentSegment.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -585,6 +591,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.reserveFromLabel.alpha = 1
                     self.reserveCostLabel.alpha = 1
                     self.line3.alpha = 1
+                    self.reserveButton.alpha = 1
+                    self.reserveButton.isUserInteractionEnabled = true
                 })
             }
         }
@@ -662,9 +670,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     func bringParkNow() {
         UIView.animate(withDuration: 0.2) {
             self.currentSegment.alpha = 1
-            self.reserveButton.alpha = 1
             self.reserveCostAnchor.constant = 10
-            self.reserveButton.isUserInteractionEnabled = true
         }
     }
     
@@ -819,7 +825,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 if self.paymentInProgress {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
-                    self.reserveButton.alpha = 1
+                    self.reserveButton.alpha = 0.6
+                    self.reserveButton.isUserInteractionEnabled = false
                     self.reserveButton.backgroundColor = Theme.DARK_GRAY
                     self.reserveButton.setTitle("", for: .normal)
                 }
@@ -827,9 +834,10 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
                     self.reserveButton.alpha = 1
+                    self.reserveButton.isUserInteractionEnabled = true
                     self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.reserveButton.setTitle("Reserve Spot", for: .normal)
+                        self.reserveButton.setTitle("Book Spot", for: .normal)
                     }
                 }
             }, completion: nil)
@@ -989,31 +997,10 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 DispatchQueue.main.async { // Correct
                     UIApplication.shared.registerForRemoteNotifications()
                 }
-                
             }
-            
         }
         self.paymentInProgress = true
-        self.addCurrentParking()
-        if reserveSegmentAnchor.isActive == true {
-            self.changeReserveButton()
-            self.reserveParking()
-        } else if currentSegmentAnchor.isActive == true {
-            self.changeReserveButton()
-            self.updateUserProfileCurrent()
-            self.drawNewRoute()
-            UIView.animate(withDuration: 0.3) {
-                currentButton.alpha = 1
-            }
-        }
-        self.notify(status: true)
-        UIView.animate(withDuration: 0.3) {
-            self.reserveCostAnchor.constant = 10
-            self.view.layoutIfNeeded()
-        }
-        //////////////////////////////////////////////////////////////////////////
-        
-//        self.paymentContext.requestPayment()
+        self.paymentContext.requestPayment()
     }
     
     
@@ -1036,7 +1023,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     func reloadRequestRideButton() {
         // Show disabled state
         reserveButton.backgroundColor = Theme.DARK_GRAY
-        reserveButton.setTitle("Reserve Spot", for: .normal)
+        reserveButton.setTitle("Book Spot", for: .normal)
         reserveButton.setTitleColor(.white, for: .normal)
         //        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
         reserveButton.isEnabled = false
@@ -1045,7 +1032,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         case .none:
             // Show enabled state
             reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
-            reserveButton.setTitle("Reserve Spot", for: .normal)
+            reserveButton.setTitle("Book Spot", for: .normal)
             reserveButton.setTitleColor(.white, for: .normal)
             //            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
             reserveButton.isEnabled = true
@@ -1134,11 +1121,23 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         case .error:
             self.notify(status: false)
         case .success:
-            self.changeReserveButton()
-//            self.updateUserProfileCurrent()
-//            self.addCurrentParking()
+            self.addCurrentParking()
+            if reserveSegmentAnchor.isActive == true {
+                self.reserveParking()
+            } else if currentSegmentAnchor.isActive == true {
+                self.updateUserProfileCurrent()
+                self.drawNewRoute()
+                UIView.animate(withDuration: 0.3) {
+                    currentButton.alpha = 1
+                }
+            }
             self.notify(status: true)
+            UIView.animate(withDuration: 0.3) {
+                self.reserveCostAnchor.constant = 10
+                self.view.layoutIfNeeded()
+            }
         case .userCancellation:
+            self.notify(status: false)
             return
         }
     }
@@ -1152,7 +1151,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.view.layoutIfNeeded()
         }) { (success) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.reserveButton.setTitle("Reserve Spot", for: .normal)
+                self.reserveButton.setTitle("Book Spot", for: .normal)
                 self.reserveButton.removeTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
                 self.reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
             }
@@ -1175,6 +1174,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.reserveButton.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3, animations: {
             self.reserveButton.alpha = 0.6
+            self.reserveButton.isUserInteractionEnabled = false
         }) { (success) in
             self.removeDelegate?.purchaseButtonSwipedDown()
             UIView.animate(withDuration: 0.3, animations: {
@@ -1207,6 +1207,11 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     private func reserveParking() {
         self.saveDelegate?.saveUserCurrentLocation()
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        
+        let couponRef = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
+        couponRef.removeValue()
+        couponActive = nil
+        
         let timestamp = NSDate().timeIntervalSince1970
         let ref = Database.database().reference().child("users").child(currentUser)
         ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -1218,7 +1223,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     let to = self.toDateTimestampValue?.timeIntervalSince1970
                     ref.child("upcomingParking").child(self.parkingId).updateChildValues(["timestamp": timestamp, "hours": self.hours, "parkingID": self.parkingId, "cost": self.cost, "startTime": from!, "endTime": to!])
                     let parkingRef = Database.database().reference().child("parking").child(self.parkingId).child("Upcoming")
-                    parkingRef.updateChildValues(["currentUser": currentUser])
+                    parkingRef.updateChildValues(["\(currentUser)": currentUser])
                     parkingRef.observe(.childAdded) { (snapshot) in
                         self.sendNewCurrent(status: "upcoming")
                     }
@@ -1237,6 +1242,19 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                         }
                     }
                 }
+            }
+        }
+        let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")
+        let currentRef = Database.database().reference().child("users").child(self.id)
+        currentRef.observeSingleEvent(of: .value) { (current) in
+            let dictionary = current.value as? [String:AnyObject]
+            var currentFunds = dictionary!["userFunds"] as? Double
+            if currentFunds != nil {} else {currentFunds = 0}
+            paymentRef.observeSingleEvent(of: .value) { (snapshot) in
+                self.count =  Int(snapshot.childrenCount)
+                let payRef = paymentRef.child("\(self.count)")
+                let newFunds = Double(currentFunds!) + (Double(self.cost) * 0.75)
+                payRef.updateChildValues(["cost": self.cost, "currentFunds": newFunds, "hours": self.hours, "user": currentUser, "timestamp": timestamp, "parkingID": self.parkingId])
             }
         }
         self.paymentInProgress = false
@@ -1261,7 +1279,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let parkingRef = Database.database().reference().child("parking").child(self.parkingId)
         let currentParkingRef = parkingRef.child("Current")
         parkingRef.updateChildValues(["previousUser": currentUser])
-        currentParkingRef.updateChildValues(["currentUser": currentUser])
+        currentParkingRef.updateChildValues(["\(currentUser)": currentUser])
         
         let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")
         let currentRef = Database.database().reference().child("users").child(self.id)

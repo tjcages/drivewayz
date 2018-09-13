@@ -179,7 +179,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func startUpActivity() {
         
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = UIBlurEffect(style: .light)
         blurSquare = UIVisualEffectView(effect: blurEffect)
         blurSquare.layer.cornerRadius = 15
         blurSquare.alpha = 1

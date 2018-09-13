@@ -85,8 +85,9 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         return addParkingLabel
     }()
     
-    var currentParkingImageView: UIImageView = {
-        let currentParkingImageView = UIImageView()
+    lazy var currentParkingImageView: UIImageView = {
+        let currentParkingImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: 290))
+        currentParkingImageView.roundCorners([.bottomLeft, .bottomRight], radius: 10)
         currentParkingImageView.translatesAutoresizingMaskIntoConstraints = false
         currentParkingImageView.contentMode = .scaleAspectFill
         currentParkingImageView.backgroundColor = UIColor.white
@@ -309,12 +310,12 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         currentParkingImageView.leftAnchor.constraint(equalTo: newParkingPage.leftAnchor).isActive = true
         currentParkingImageView.topAnchor.constraint(equalTo: parkingDate.bottomAnchor, constant: 290).isActive = true
         currentParkingImageView.rightAnchor.constraint(equalTo: newParkingPage.rightAnchor).isActive = true
-        currentParkingImageView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        currentParkingImageView.heightAnchor.constraint(equalToConstant: 290).isActive = true
 
         self.view.addSubview(editingContainer)
         editingContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         editingContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        editingContainer.topAnchor.constraint(equalTo: newParkingPage.bottomAnchor, constant: 10).isActive = true
+        editingContainer.topAnchor.constraint(equalTo: newParkingPage.bottomAnchor, constant: 20).isActive = true
         editingContainer.heightAnchor.constraint(equalToConstant: 220).isActive = true
 
         editingContainer.addSubview(editingTableView)

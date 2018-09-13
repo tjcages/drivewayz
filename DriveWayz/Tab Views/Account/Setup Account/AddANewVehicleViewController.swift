@@ -19,9 +19,9 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     var color: String = "Black"
     
     let visualBlurEffect: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.8
+        blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -40,26 +40,12 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     
     var vehicleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        label.numberOfLines = 1
         label.text = "Add a Vehicle"
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         
         return label
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.isScrollEnabled = false
-        view.showsVerticalScrollIndicator = true
-        view.showsHorizontalScrollIndicator = false
-        view.keyboardDismissMode = .interactive
-        
-        return view
     }()
     
     var registerANewVehicleLabel: UILabel!
@@ -162,13 +148,16 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     private let colorValues: NSArray = ["Black", "Grey", "Silver", "Blue", "Brown", "Gold", "Cyan", "Green", "Magenta", "Orange", "Purple", "Red", "Yellow", "White"]
 
     lazy var exitButton: UIButton = {
-        let exitButton = UIButton()
-        let exitImage = UIImage(named: "exit")
-        exitButton.setImage(exitImage, for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.addTarget(self, action: #selector(exitAddVehicle), for: .touchUpInside)
+        let button = UIButton()
+        let origImage = UIImage(named: "Delete")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(exitAddVehicle), for: .touchUpInside)
         
-        return exitButton
+        return button
     }()
     
     var saveVehicleButton: UIButton = {
@@ -178,9 +167,9 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         button.setTitle("", for: .selected)
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(saveVehicleButtonPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -192,7 +181,6 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         
         self.colorPicker.delegate = self
         self.colorPicker.dataSource = self
-        self.scrollView.delegate = self
         UIApplication.shared.statusBarStyle = .lightContent
 
         setupAddAVehicleView()
@@ -212,30 +200,21 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         visualBlurEffect.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
         
         self.view.addSubview(newVehicleContainer)
-        newVehicleContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80).isActive = true
-        newVehicleContainer.heightAnchor.constraint(equalToConstant: 400).isActive = true
         newVehicleContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        newVehicleContainer.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6)).isActive = true
-        
-        newVehicleContainer.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: 150, height: 600)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissKeyboard))
-        scrollView.addGestureRecognizer(tapGesture)
-        scrollView.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 60).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: newVehicleContainer.bottomAnchor, constant: -60).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor).isActive = true
+        newVehicleContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        newVehicleContainer.heightAnchor.constraint(equalToConstant: self.view.frame.height - 160).isActive = true
+        newVehicleContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
         
         newVehicleContainer.addSubview(vehicleLabel)
-        vehicleLabel.centerXAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor).isActive = true
-        vehicleLabel.widthAnchor.constraint(equalTo: newVehicleContainer.widthAnchor).isActive = true
-        vehicleLabel.centerYAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 30).isActive = true
-        vehicleLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        vehicleLabel.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 24).isActive = true
+        vehicleLabel.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor).isActive = true
+        vehicleLabel.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 12).isActive = true
+        vehicleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
     
         newVehicleContainer.addSubview(saveVehicleButton)
         saveVehicleButton.centerXAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor).isActive = true
-        saveVehicleButton.widthAnchor.constraint(equalTo: newVehicleContainer.widthAnchor, constant: -80).isActive = true
-        saveVehicleButton.centerYAnchor.constraint(equalTo: newVehicleContainer.bottomAnchor, constant: -30).isActive = true
+        saveVehicleButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        saveVehicleButton.bottomAnchor.constraint(equalTo: newVehicleContainer.bottomAnchor, constant: -20).isActive = true
         saveVehicleButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         saveVehicleButton.addSubview(activityIndicatorVehicleView)
@@ -244,47 +223,47 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         activityIndicatorVehicleView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         activityIndicatorVehicleView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        scrollView.addSubview(vehicleMake)
-        vehicleMake.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
+        newVehicleContainer.addSubview(vehicleMake)
+        vehicleMake.topAnchor.constraint(equalTo: vehicleLabel.bottomAnchor, constant: 20).isActive = true
         vehicleMake.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 8).isActive = true
         vehicleMake.rightAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: -4).isActive = true
         vehicleMake.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        scrollView.addSubview(vehicleModel)
-        vehicleModel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
+        newVehicleContainer.addSubview(vehicleModel)
+        vehicleModel.topAnchor.constraint(equalTo: vehicleLabel.bottomAnchor, constant: 20).isActive = true
         vehicleModel.leftAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: 4).isActive = true
         vehicleModel.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -8).isActive = true
         vehicleModel.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        scrollView.addSubview(vehicleYear)
+        newVehicleContainer.addSubview(vehicleYear)
         vehicleYear.topAnchor.constraint(equalTo: vehicleModel.bottomAnchor, constant: 32).isActive = true
         vehicleYear.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 8).isActive = true
         vehicleYear.rightAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: -4).isActive = true
         vehicleYear.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        scrollView.addSubview(colorPicker)
+        newVehicleContainer.addSubview(colorPicker)
         colorPicker.topAnchor.constraint(equalTo: vehicleModel.bottomAnchor, constant: 32).isActive = true
         colorPicker.leftAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: 50).isActive = true
         colorPicker.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -8).isActive = true
         colorPicker.heightAnchor.constraint(equalToConstant: 75).isActive = true
         
-        scrollView.addSubview(colorView)
+        newVehicleContainer.addSubview(colorView)
         colorView.centerYAnchor.constraint(equalTo: colorPicker.centerYAnchor).isActive = true
         colorView.rightAnchor.constraint(equalTo: colorPicker.leftAnchor, constant: -10).isActive = true
         colorView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         colorView.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        scrollView.addSubview(vehicleLicensePlate)
+        newVehicleContainer.addSubview(vehicleLicensePlate)
         vehicleLicensePlate.topAnchor.constraint(equalTo: vehicleYear .bottomAnchor, constant: 32).isActive = true
         vehicleLicensePlate.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 24).isActive = true
         vehicleLicensePlate.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -24).isActive = true
         vehicleLicensePlate.heightAnchor.constraint(equalToConstant: 63).isActive = true
 
         self.view.addSubview(exitButton)
-        exitButton.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: 35).isActive = true
-        exitButton.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: -40).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 34).isActive = true
+        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
     }
     
@@ -506,6 +485,10 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     }
     
     @objc func handleDismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     

@@ -146,8 +146,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return controller
     }()
     
-    lazy var saveParkingController: SaveParkingViewController = {
-        let controller = SaveParkingViewController()
+    lazy var saveParkingController: ConfigureParkingViewController = {
+        let controller = ConfigureParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Save Parking"
         controller.parkingDelegate = self
@@ -412,6 +412,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }, completion: { (success) in
             self.saveParkingController.view.removeFromSuperview()
             self.newParkingController.view.removeFromSuperview()
+            self.accountController.scrollToTop()
 //            UIApplication.shared.statusBarStyle = .lightContent
         })
     }
@@ -452,6 +453,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.view.layoutIfNeeded()
         }, completion: { (success) in
             self.newVehicleController.view.removeFromSuperview()
+            self.accountController.scrollToTop()
 //            UIApplication.shared.statusBarStyle = .lightContent
         })
     }

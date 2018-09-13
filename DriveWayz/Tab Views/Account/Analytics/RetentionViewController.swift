@@ -118,6 +118,7 @@ class RetentionViewController: UIViewController {
         
         setupViews()
         configurePageControl()
+//        setData()
         setChart(chart: profitsPieChart, dataPoints: profits, values: unitsSold)
         setChart(chart: usersPieChart, dataPoints: users, values: unitsSold)
         setChart(chart: hostsPieChart, dataPoints: hosts, values: unitsSold)
@@ -156,6 +157,11 @@ class RetentionViewController: UIViewController {
         hostsPieChart.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
     }
+    
+//    func setData() {
+//        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+//        let ref = Database.database().reference().child(<#T##pathString: String##String#>)
+//    }
     
     func setChart(chart: PieChartView, dataPoints: [String], values: [Double]) {
         

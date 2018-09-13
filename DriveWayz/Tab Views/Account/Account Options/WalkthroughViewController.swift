@@ -17,14 +17,13 @@ class WalkthroughViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
-        view.alpha = 0.8
         view.layer.cornerRadius = 10
         
         return view
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -149,8 +148,8 @@ class WalkthroughViewController: UIViewController {
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -164,8 +163,8 @@ class WalkthroughViewController: UIViewController {
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
         button.alpha = 0
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(backPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -211,8 +210,8 @@ class WalkthroughViewController: UIViewController {
             termsContainerCenterAnchor.isActive = true
         termsContainerHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 400)
             termsContainerHeightAnchor.isActive = true
-        termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
+        termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
         
         termsContainer.addSubview(segmentView)
         segmentTopAnchor = segmentView.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 60)
@@ -274,15 +273,15 @@ class WalkthroughViewController: UIViewController {
         
         termsContainer.addSubview(accept)
         confirmAnchor = accept.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor)
-        confirmAnchor.isActive = true
-        confirmWidthAnchor = accept.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -80)
-        confirmWidthAnchor.isActive = true
+            confirmAnchor.isActive = true
+        confirmWidthAnchor = accept.widthAnchor.constraint(equalToConstant: 160)
+            confirmWidthAnchor.isActive = true
         accept.centerYAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -30).isActive = true
         accept.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         termsContainer.addSubview(back)
-        back.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: -60).isActive = true
-        back.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -200).isActive = true
+        back.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: -70).isActive = true
+        back.widthAnchor.constraint(equalToConstant: 120).isActive = true
         back.centerYAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -30).isActive = true
         back.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -326,8 +325,8 @@ class WalkthroughViewController: UIViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 self.termsContainerHeightAnchor.constant = 500
                 self.termsContainerCenterAnchor.constant = 0
-                self.confirmAnchor.constant = 60
-                self.confirmWidthAnchor.constant = -200
+                self.confirmAnchor.constant = 70
+                self.confirmWidthAnchor.constant = 120
                 self.text1.alpha = 0
                 self.startupPages.currentPage = 2
                 self.delegate?.moveTopProfile()
@@ -344,7 +343,7 @@ class WalkthroughViewController: UIViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 self.termsContainerHeightAnchor.constant = 375
                 self.confirmAnchor.constant = 0
-                self.confirmWidthAnchor.constant = -80
+                self.confirmWidthAnchor.constant = 160
                 self.back.alpha = 0
                 self.text2.alpha = 0
                 self.image2.alpha = 0
@@ -380,7 +379,7 @@ class WalkthroughViewController: UIViewController {
             //
         } else if text1.alpha == 1 {
             UIView.animate(withDuration: 0.3, animations: {
-                self.termsContainer.alpha = 0.8
+                self.termsContainer.alpha = 1
                 self.mapTextAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -411,7 +410,7 @@ class WalkthroughViewController: UIViewController {
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.confirmWidthAnchor.constant = -80
+                    self.confirmWidthAnchor.constant = 160
                     self.startupPages.currentPage = 1
                     self.termsContainerCenterAnchor.constant = self.view.frame.height / 2 - 90 - 60
                     self.segmentTopAnchor.constant = 0
@@ -428,7 +427,7 @@ class WalkthroughViewController: UIViewController {
                 self.termsContainerHeightAnchor.constant = 500
                 self.termsContainerCenterAnchor.constant = 0
                 self.confirmAnchor.constant = 60
-                self.confirmWidthAnchor.constant = -200
+                self.confirmWidthAnchor.constant = 120
                 self.text3.alpha = 0
                 self.startupPages.currentPage = 2
                 self.view.layoutIfNeeded()
@@ -441,27 +440,8 @@ class WalkthroughViewController: UIViewController {
                     self.back.alpha = 1
                     self.view.layoutIfNeeded()
                 })
+                self.accept.setTitle("Next", for: .normal)
             }
-//
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.termsContainerHeightAnchor.constant = 375
-//                self.confirmAnchor.constant = 0
-//                self.confirmWidthAnchor.constant = -80
-//                self.back.alpha = 0
-//                self.text2.alpha = 0
-//                self.image2.alpha = 0
-//                self.startupPages.currentPage = 3
-//                self.view.layoutIfNeeded()
-//            }) { (success) in
-//                self.accept.isUserInteractionEnabled = true
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    self.lastAnchor.constant = 0
-//                    self.view.layoutIfNeeded()
-//                })
-//
-//            }
-            
-            
         }
     }
     

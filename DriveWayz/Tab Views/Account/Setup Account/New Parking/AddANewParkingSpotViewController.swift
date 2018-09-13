@@ -34,7 +34,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     var parkingImageURL: String?
     
     var visualBlurEffect: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurparkingInfoView = UIVisualEffectView(effect: blurEffect)
         blurparkingInfoView.alpha = 0.8
         blurparkingInfoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -57,6 +57,10 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         let view = GMSMapView()
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.7).cgColor
+        view.layer.borderWidth = 0.5
+        view.layer.cornerRadius = 20
+        
         return view
     }()
     
@@ -72,7 +76,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -81,43 +85,24 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         return blurEffectView
     }()
     
-    lazy var panoLabel: UILabel = {
-        let panoLabel = UILabel()
-        panoLabel.text = "Please pan around until you can clearly see the parking spot. Try to fit the entire view within the line on the left."
-        panoLabel.textColor = UIColor.white
-        panoLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        panoLabel.contentMode = .center
-        panoLabel.numberOfLines = 4
-        panoLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        return panoLabel
-    }()
-    
-    lazy var panoLine: UIView = {
-        let panoLine = UIView()
-        panoLine.backgroundColor = Theme.PRIMARY_COLOR
-        panoLine.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
-        panoLine.layer.borderWidth = 1
-        panoLine.translatesAutoresizingMaskIntoConstraints = false
-        
-        return panoLine
-    }()
-    
     lazy var exitButton: UIButton = {
-        let exitButton = UIButton()
-        let exitImage = UIImage(named: "exit")
-        exitButton.setImage(exitImage, for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.addTarget(self, action: #selector(dismissPano), for: .touchUpInside)
+        let button = UIButton()
+        let origImage = UIImage(named: "Delete")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(dismissPano), for: .touchUpInside)
         
-        return exitButton
+        return button
     }()
     
     
     var overlay: UIView = {
         let overlay = UIView(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
-        overlay.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        overlay.layer.borderWidth = 2
+//        overlay.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+//        overlay.layer.borderWidth = 2
         overlay.backgroundColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5)
         
         return overlay
@@ -126,7 +111,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     lazy var dotLabel: UILabel = {
         let panoLabel = UILabel()
         panoLabel.text = "Please move the dots to highlight the area for parking. Press confirm when the dots clearly indicate the spot."
-        panoLabel.textColor = UIColor.white
+        panoLabel.textColor = Theme.BLACK
         panoLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         panoLabel.contentMode = .center
         panoLabel.numberOfLines = 4
@@ -136,23 +121,43 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }()
     
     lazy var dotShotButton: UIButton = {
-        let screenShot = UIButton()
-        screenShot.backgroundColor = Theme.PRIMARY_COLOR
-        screenShot.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
-        screenShot.layer.shadowRadius = 3
-        screenShot.layer.shadowOpacity = 0
-        screenShot.translatesAutoresizingMaskIntoConstraints = false
-        screenShot.setTitle("Confirm Parking Spot", for: .normal)
-        screenShot.tintColor = UIColor.white
-        screenShot.layer.cornerRadius = 15
-        screenShot.alpha = 1
-        screenShot.addTarget(self, action: #selector(finalScreenShot(sender:)), for: .touchUpInside)
+        let button = UIButton()
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Confirm Parking Spot", for: .normal)
+        button.tintColor = UIColor.white
+        button.layer.cornerRadius = 15
+        button.alpha = 1
+        button.addTarget(self, action: #selector(finalScreenShot(sender:)), for: .touchUpInside)
         
-        return screenShot
+        return button
+    }()
+    
+    lazy var hideDotsButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.clear
+        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.7).cgColor
+        button.layer.borderWidth = 1
+        button.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Hide dots", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.7), for: .normal)
+        button.tintColor = UIColor.white
+        button.layer.cornerRadius = 15
+        button.alpha = 1
+        button.addTarget(self, action: #selector(hideButtons(sender:)), for: .touchUpInside)
+        
+        return button
     }()
     
     let fullBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -161,7 +166,13 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         return blurEffectView
     }()
     
-    var screenShotView: UIImageView!
+    lazy var screenShotView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.backgroundColor = UIColor.red
+        
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -183,6 +194,15 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         pickerParking = UIImagePickerController()
         pickerParking?.delegate = self
         pickerParking?.allowsEditing = true
+        
+        present(pickerParking!, animated: true, completion: nil)
+    }
+    
+    @objc func handleTakeAnImageView() {
+        pickerParking = UIImagePickerController()
+        pickerParking?.delegate = self
+        pickerParking?.allowsEditing = true
+        pickerParking?.sourceType = .camera
         
         present(pickerParking!, animated: true, completion: nil)
     }
@@ -268,8 +288,8 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         self.view.addSubview(addANewParkingView)
         addANewParkingView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         addANewParkingView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        addANewParkingView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 50).isActive = true
-        addANewParkingView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 170).isActive = true
+        addANewParkingView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        addANewParkingView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 80).isActive = true
         
         addANewParkingView.addSubview(mapView)
         mapView.centerXAnchor.constraint(equalTo: addANewParkingView.centerXAnchor).isActive = true
@@ -280,7 +300,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         addANewParkingView.addSubview(searchBar)
         searchBar.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
         searchBar.centerXAnchor.constraint(equalTo: addANewParkingView.centerXAnchor).isActive = true
-        searchBar.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        searchBar.widthAnchor.constraint(equalToConstant: self.view.frame.width - 120).isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: 35).isActive = true
         let searchImage = UIImage(named: "map_Pin")
         setupTextField(textField: searchBar, img: searchImage!)
@@ -303,17 +323,11 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         correctButtonBottomAnchor = correctButton.bottomAnchor.constraint(equalTo: addANewParkingView.bottomAnchor, constant: 40)
         correctButtonBottomAnchor.isActive = true
         
-        let exitButton = UIButton()
-        let exitImage = UIImage(named: "exit")
-        exitButton.setImage(exitImage, for: .normal)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.addTarget(self, action: #selector(exitAddParking), for: .touchUpInside)
         addANewParkingView.addSubview(exitButton)
-        
-        exitButton.rightAnchor.constraint(equalTo: addANewParkingView.rightAnchor, constant: 16).isActive = true
-        exitButton.topAnchor.constraint(equalTo: addANewParkingView.topAnchor, constant: -16).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        exitButton.rightAnchor.constraint(equalTo: addANewParkingView.rightAnchor, constant: -10).isActive = true
+        exitButton.topAnchor.constraint(equalTo: addANewParkingView.topAnchor, constant: 8).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
     }
     
@@ -378,6 +392,9 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertActionStyle.default, handler: { action in
             self.handleSelectParkingImageView()
         }))
+        alert.addAction(UIAlertAction(title: "Take a Photo", style: UIAlertActionStyle.default, handler: { action in
+            self.handleTakeAnImageView()
+        }))
         alert.addAction(UIAlertAction(title: "Google Street View", style: UIAlertActionStyle.default, handler: { action in
             self.sendAlready()
         }))
@@ -407,31 +424,9 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         textField.leftView = paddingView
     }
     
-    @objc func handleLogout() {
-        
-        do {
-            try Auth.auth().signOut()
-        } catch let logoutError {
-            print(logoutError)
-        }
-        
-        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StartUpViewController") as! StartUpViewController
-        
-        present(viewController, animated: true, completion: nil)
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         addANewParkingView.endEditing(true)
-    }
-    
-    @objc func tabBarRight() {
-        print("Rightmost VC")
-    }
-    @objc func tabBarLeft() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tabBarController?.selectedIndex = 1
-        }, completion: nil)
     }
     
     
@@ -445,21 +440,15 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         fullBlurView.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
         fullBlurView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
-        screenShotView = UIImageView(image: parkingSpotImage)
-        screenShotView.contentMode = .scaleAspectFit
-        screenShotView.translatesAutoresizingMaskIntoConstraints = false
+        screenShotView.image = parkingSpotImage
+        screenShotView.frame = CGRect(x: 0, y: 120, width: self.view.frame.width, height: self.view.frame.width * (parkingSpotImage?.scale)!)
         self.view.addSubview(screenShotView)
-        
-        screenShotView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        screenShotView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        screenShotView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 120).isActive = true
-        screenShotView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(dotLabel)
         dotLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
@@ -472,14 +461,19 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         dotShotButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         dotShotButton.widthAnchor.constraint(equalToConstant: 215).isActive = true
         dotShotButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60).isActive = true
+        
+        self.view.addSubview(hideDotsButton)
+        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        hideDotsButton.bottomAnchor.constraint(equalTo: dotShotButton.topAnchor, constant: -10).isActive = true
+        hideDotsButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        hideDotsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         addOverlay()
     }
     
     @objc func finalScreenShot(sender: UIButton) {
         let contextImage = view?.snapshot
-        let rect = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height + 80)
-        let croppedImage = cropping(contextImage!, toRect: rect)
+        let croppedImage = cropping(contextImage!)
         parkingSpotImage = croppedImage
         parking = parking + 1
         startActivityIndicator()
@@ -653,21 +647,46 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
     }
     
-    func cropping(_ inputImage: UIImage, toRect cropRect: CGRect) -> UIImage {
-        
-        let cropZone = CGRect(x:cropRect.origin.x,
-                              y:cropRect.origin.y,
-                              width:cropRect.size.width * 2,
-                              height:cropRect.size.height)
-        
-        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+    var toColor: Bool = true
+    
+    @objc func hideButtons(sender: UIButton) {
+        if self.dot1View.alpha == 1 {
+            UIView.animate(withDuration: 0.2) {
+                self.dot1View.alpha = 0
+                self.dot2View.alpha = 0
+                self.dot3View.alpha = 0
+                self.dot4View.alpha = 0
+                self.overlay.alpha = 0
+                self.shapeLayer.fillColor = UIColor.clear.cgColor
+            }
+            self.toColor = false
+            self.hideDotsButton.setTitle("Bring dots", for: .normal)
+        } else {
+            UIView.animate(withDuration: 0.2) {
+                self.dot1View.alpha = 1
+                self.dot2View.alpha = 1
+                self.dot3View.alpha = 1
+                self.dot4View.alpha = 1
+                self.overlay.alpha = 1
+                self.shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
+            }
+            self.toColor = true
+            self.hideDotsButton.setTitle("Hide dots", for: .normal)
+        }
+        self.moveOverlay()
+    }
+    
+    func cropping(_ inputImage: UIImage) -> UIImage {
+//        let cropZone = CGRect(x: 0, y: 120, width: self.view.frame.width, height: self.view.frame.width * (parkingSpotImage?.scale)!)
+//        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+        guard let cutImageRef: CGImage = inputImage.cgImage
+
             else {
                 return inputImage
         }
         
         let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
         return croppedImage
-        
     }
     
     func startPan() {
@@ -755,10 +774,17 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         path.addLine(to: CGPoint(x: dot4.center.x, y: dot4.center.y))
         path.close()
         
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
-        shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
-        shapeLayer.fillRule = kCAFillRuleEvenOdd
+        if self.toColor == true {
+            shapeLayer.path = path.cgPath
+            shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
+            shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
+            shapeLayer.fillRule = kCAFillRuleEvenOdd
+        } else {
+            shapeLayer.path = path.cgPath
+            shapeLayer.strokeColor = UIColor.clear.cgColor
+            shapeLayer.fillColor = UIColor.clear.cgColor
+            shapeLayer.fillRule = kCAFillRuleEvenOdd
+        }
     }
 
 }

@@ -111,6 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         timerStarted = false
         CurrentParkingViewController().restartDatabaseTimer()
         startTimer()
+        let notificationController = NotifyUpcomingViewController()
+        notificationController.checkForUpcoming()
     }
     
     func startTimer() {
@@ -194,6 +196,20 @@ extension AppDelegate : MessagingDelegate {
     }
 
 }
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.userInfo)
+        completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound]) 
+    }
+    
+}
+
 
 
 

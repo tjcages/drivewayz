@@ -476,7 +476,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     func endCurrentParking() {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-        let parkingRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current")
+        let parkingRef = Database.database().reference().child("parking").child(self.parkingID!).child("Current").child(currentUser)
         ref.removeValue()
         parkingRef.removeValue()
         

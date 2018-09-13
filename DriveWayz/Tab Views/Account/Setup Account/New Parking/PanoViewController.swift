@@ -36,7 +36,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     lazy var blurEffectView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0.5
         blurEffectView.layer.cornerRadius = 15
@@ -48,7 +48,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -133,7 +133,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     let fullBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -158,18 +158,26 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     func setupPano() {
         
         view.addSubview(exitButton)
-        
         exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
         exitButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        switch device {
+        case .iphone8:
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+        case .iphoneX:
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
         
         view.addSubview(panoLabel)
-        
-        panoLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
         panoLabel.rightAnchor.constraint(equalTo: exitButton.leftAnchor, constant: 4).isActive = true
         panoLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor).isActive = true
         panoLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
+        switch device {
+        case .iphone8:
+            panoLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
+        case .iphoneX:
+            panoLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
+        }
         
         view.addSubview(blurEffectView)
         view.bringSubview(toFront: panoLabel)
@@ -190,7 +198,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         screenShotButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         screenShotButton.widthAnchor.constraint(equalToConstant: 215).isActive = true
         screenShotButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60).isActive = true
-        
+
     }
     
     var dot1View: UIView!
@@ -307,9 +315,18 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     @objc func takeScreenShot(sender: UIButton) {
 
-        let contextImage = view?.snapshot
-        let rect = CGRect(x: 0, y: 200, width: self.view.frame.width, height: self.view.frame.height + 80)
-        let croppedImage = cropping(contextImage!, toRect: rect)
+        switch device {
+        case .iphone8:
+            let contextImage = view?.snapshot
+            let rect = CGRect(x: 0, y: 200, width: self.view.frame.width, height: self.view.frame.height + 80)
+            let croppedImage = cropping(contextImage!, toRect: rect)
+            self.screenShotView = UIImageView(image: croppedImage)
+        case .iphoneX:
+            let contextImage = view?.snapshot
+            let rect = CGRect(x: 0, y: 148, width: self.view.frame.width, height: 400)
+            let croppedImage = cropping(contextImage!, toRect: rect)
+            self.screenShotView = UIImageView(image: croppedImage)
+        }
         
         self.view.addSubview(fullBlurView)
         fullBlurView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -317,9 +334,9 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         fullBlurView.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
         fullBlurView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
 
-        screenShotView = UIImageView(image: croppedImage)
         screenShotView.contentMode = .scaleAspectFit
-        screenShotView.translatesAutoresizingMaskIntoConstraints = false
+        screenShotView.frame = CGRect(x: 0, y: 148, width: self.view.frame.width, height: 400)
+//        screenShotView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(screenShotView)
         
         screenShotView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -329,15 +346,25 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         self.view.addSubview(exitButton)
         exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
         exitButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        switch device {
+        case .iphone8:
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+        case .iphoneX:
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
         
         self.view.addSubview(dotLabel)
-        dotLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
         dotLabel.rightAnchor.constraint(equalTo: exitButton.leftAnchor, constant: 4).isActive = true
         dotLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor).isActive = true
         dotLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
+        switch device {
+        case .iphone8:
+            dotLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 24).isActive = true
+        case .iphoneX:
+            dotLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
+        }
         
         self.view.addSubview(dotShotButton)
         dotShotButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -347,13 +374,12 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         self.screenShotButton.removeFromSuperview()
         addOverlay()
+
     }
     
     @objc func finalScreenShot(sender: UIButton) {
-        
         let contextImage = view?.snapshot
-        let rect = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height + 80)
-        let croppedImage = cropping(contextImage!, toRect: rect)
+        let croppedImage = cropping(contextImage!, toRect: CGRect.zero)
         parkingSpotImage = croppedImage
         parking = parking + 1
         startActivityIndicator()
@@ -399,20 +425,49 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }
     
     func cropping(_ inputImage: UIImage, toRect cropRect: CGRect) -> UIImage {
-        
-        let cropZone = CGRect(x:cropRect.origin.x,
-                              y:cropRect.origin.y,
-                              width:cropRect.size.width * 2,
-                              height:cropRect.size.height)
-
-        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
-            else {
-                return inputImage
+        switch device {
+        case .iphone8:
+            if cropRect != CGRect.zero {
+                let cropZone = CGRect(x:cropRect.origin.x,
+                                      y:cropRect.origin.y,
+                                      width:cropRect.size.width * 2,
+                                      height:cropRect.size.height)
+                guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+                    else {
+                        return inputImage
+                }
+                let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+                return croppedImage
+            } else {
+                guard let cutImageRef: CGImage = inputImage.cgImage
+                    else {
+                        return inputImage
+                }
+                let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+                return croppedImage
+                
+            }
+        case .iphoneX:
+            if cropRect != CGRect.zero {
+                let cropZone = CGRect(x: 0,
+                                      y: 400,
+                                      width: 4000,
+                                      height: 1200)
+                guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+                    else {
+                        return inputImage
+                }
+                let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+                return croppedImage
+            } else {
+                guard let cutImageRef: CGImage = inputImage.cgImage
+                    else {
+                        return inputImage
+                }
+                let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
+                return croppedImage
+            }
         }
-
-        let croppedImage: UIImage = UIImage(cgImage: cutImageRef)
-        return croppedImage
-        
     }
     
     func startPan() {

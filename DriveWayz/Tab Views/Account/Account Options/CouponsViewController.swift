@@ -26,7 +26,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -236,11 +236,11 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (self.Codes.count - 1) >= count {
             let alert = UIAlertController(title: "Confirm", message: "Would you like to activate this coupon now? It will be applied to your next purchase.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (pressed) in
+                guard let currentUser = Auth.auth().currentUser?.uid else {return}
                 let code = self.Codes[count]
                 let stringArray = coupon!.components(separatedBy: CharacterSet.decimalDigits.inverted)
                 for item in stringArray {
                     if let number = Int(item) {
-                        guard let currentUser = Auth.auth().currentUser?.uid else {return}
                         let ref = Database.database().reference().child("users").child(currentUser)
                         ref.child("CurrentCoupon").updateChildValues(["coupon": number])
                         ref.child("Coupons").updateChildValues([code: ""])
@@ -255,6 +255,50 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                         }) { (success) in
                             self.delegate?.removeOptionsFromView()
                         }
+                    } else {
+                        let ref = Database.database().reference().child("users").child(currentUser)
+                        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let dictionary = snapshot.value as? [String:AnyObject] {
+                                if let parking = dictionary["Parking"] as? [String:AnyObject] {
+                                    let parkingID = parking["parkingID"] as? String
+                                    ref.child("Coupons").updateChildValues([code: ""])
+                                    let couponArray = coupon!.split(separator: " ")
+                                    let value: String = String(couponArray[0])
+                                    var dollars: Int = 0
+                                    if value == "Five" {
+                                        dollars = 5
+                                    } else if value == "Ten" {
+                                        dollars = 10
+                                    }
+                                    if let previousFunds = dictionary["userFunds"] {
+                                        let funds = Double(truncating: previousFunds as! NSNumber) + Double(dollars)
+                                        ref.updateChildValues(["userFunds": funds])
+                                    } else {
+                                        ref.updateChildValues(["userFunds": dollars])
+                                    }
+                                    self.sendAlert(title: "Success!", message: "Your account has been credited $\(dollars) for becoming a host!")
+                                    
+                                    let timestamp = Date().timeIntervalSince1970
+                                    let paymentRef = Database.database().reference().child("users").child(currentUser).child("Payments")
+                                    let currentRef = Database.database().reference().child("users").child(currentUser)
+                                    currentRef.observeSingleEvent(of: .value) { (current) in
+                                        let dictionary = current.value as? [String:AnyObject]
+                                        var currentFunds = dictionary!["userFunds"] as? Double
+                                        if currentFunds != nil {} else {currentFunds = 0}
+                                        paymentRef.observeSingleEvent(of: .value) { (snapshot) in
+                                            self.count =  Int(snapshot.childrenCount)
+                                            let payRef = paymentRef.child("\(self.count)")
+                                            let newFunds = Double(currentFunds!) + (Double(dollars))
+                                            payRef.updateChildValues(["cost": dollars, "currentFunds": newFunds, "hours": 0, "user": currentUser, "timestamp": timestamp, "parkingID": parkingID!])
+                                        }
+                                    }
+                                    
+                                    self.delegate?.removeOptionsFromView()
+                                } else {
+                                    self.sendAlert(title: "Not quite!", message: "You must first become a host by signing up your parking space.")
+                                }
+                            }
+                        })
                     }
                 }
             }))

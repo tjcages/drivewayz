@@ -230,7 +230,8 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         self.view.addSubview(transfer)
         transfer.rightAnchor.constraint(equalTo: chartContainer.rightAnchor, constant: -20).isActive = true
         transfer.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: -35).isActive = true
-        transfer.sizeToFit()
+        transfer.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        transfer.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(refresh)
         refresh.centerYAnchor.constraint(equalTo: profits.centerYAnchor).isActive = true
@@ -303,7 +304,15 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     if let account = dictionary["accountID"] as? String {
-                        self.removeFunds(account: account)
+                        if let userFunds = dictionary["userFunds"] as? Double {
+                            if userFunds >= 15.0 {
+                                self.removeFunds(account: account)
+                            } else {
+                                self.sendAlert(title: "Almost there!", message: "You must have earned at least $15 or more before you can transfer money to your account.")
+                            }
+                        } else {
+                            self.sendAlert(title: "Not yet", message: "You must first earn funds by having users park in your spot before you can transfer money to your account!")
+                        }
                     } else {
                         self.delegate?.sendBankAccount()
                     }
@@ -328,6 +337,12 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                 }
             }, withCancel: nil)
         }
+    }
+    
+    func sendAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 
 }

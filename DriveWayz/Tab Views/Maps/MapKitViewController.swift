@@ -359,7 +359,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         self.view.addSubview(couponStaus)
         couponStaus.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
-        couponStaus.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -110).isActive = true
+        couponStaus.bottomAnchor.constraint(equalTo: purchaseViewController.view.topAnchor, constant: -80).isActive = true
         couponStaus.widthAnchor.constraint(equalToConstant: 80).isActive = true
         couponStaus.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -670,6 +670,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let ref = Database.database().reference().child("user-parking")
         ref.observe(.childAdded, with: { (snapshot) in
             let parkingID = [snapshot.key]
+            self.parkingSpots = []
+            self.parkingSpotsDictionary = [:]
+            let annotations = self.mapView.annotations
+            self.clusterManager.remove(annotations)
+            self.mapView.removeAnnotations(annotations)
             self.fetchParking(parkingID: parkingID)
         }, withCancel: nil)
         ref.observe(.childRemoved, with: { (snapshot) in
@@ -763,27 +768,29 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let annotations = self.mapView.annotations
         self.mapView.removeAnnotations(annotations)
         self.clusterManager.remove(annotations)
-        for number in 0...(parkingSpots.count - 1) {
-            let marker = Annotation()
-            let parking = parkingSpots[number]
-            
-            let geoCoder = CLGeocoder()
-            geoCoder.geocodeAddressString(parking.parkingAddress!) { (placemarks, error) in
-                guard let placemarks = placemarks, let location = placemarks.first?.location else {
-                    return
+        if parkingSpots.count > 0 {
+            for number in 0...(parkingSpots.count - 1) {
+                let marker = Annotation()
+                let parking = parkingSpots[number]
+                
+                let geoCoder = CLGeocoder()
+                geoCoder.geocodeAddressString(parking.parkingAddress!) { (placemarks, error) in
+                    guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                        return
+                    }
+                    marker.title = parking.parkingCost
+                    marker.subtitle = "\(number)"
+                    marker.coordinate = location.coordinate
+                    if parking.currentAvailable == nil {
+                        let color = Theme.PRIMARY_COLOR
+                        marker.style = .color(color, radius: 25)
+                    } else {
+                        let color = Theme.DARK_GRAY.withAlphaComponent(0.7)
+                        marker.style = .color(color, radius: 25)
+                    }
+                    self.clusterManager.add(marker)
+                    self.clusterManager.reload(mapView: self.mapView)
                 }
-                marker.title = parking.parkingCost
-                marker.subtitle = "\(number)"
-                marker.coordinate = location.coordinate
-                if parking.currentAvailable == nil {
-                    let color = Theme.PRIMARY_COLOR
-                    marker.style = .color(color, radius: 25)
-                } else {
-                    let color = Theme.DARK_GRAY.withAlphaComponent(0.7)
-                    marker.style = .color(color, radius: 25)
-                }
-                self.clusterManager.add(marker)
-                self.clusterManager.reload(mapView: self.mapView)
             }
         }
     }
@@ -803,7 +810,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         region.span.latitudeDelta = 0.01
         region.span.longitudeDelta = 0.01
         self.mapView.setRegion(region, animated: true)
-        self.showPartyMarkers()
+        DispatchQueue.main.async {
+            self.clusterManager.reload(mapView: self.mapView)
+        }
     }
     
     
@@ -895,7 +904,10 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 })
                 self.currentData = .notReserved
                 self.currentActive = false
-                self.showPartyMarkers()
+                self.observeUserParkingSpots()
+                DispatchQueue.main.async {
+                    self.clusterManager.reload(mapView: self.mapView)
+                }
                 self.currentParkingDisappear()
                 CurrentParkingViewController().stopTimerTest()
             }, withCancel: nil)
@@ -1017,14 +1029,16 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 }
             }
             mapView.setVisibleMapRect(zoomRect, animated: true)
-        } else {
+        } else if annotation.subtitle! != nil && annotation.subtitle! != "" {
             self.swipeTutorialCheck()
             self.checkForCoupons()
             if let string = view.annotation!.subtitle, string != nil {
                 if let intFromString = Int(string!) {
-                    let parking = parkingSpots[intFromString]
-                    self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
-                    self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+                    if parkingSpots.count >= intFromString {
+                        let parking = parkingSpots[intFromString]
+                        self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
+                        self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+                    }
                 }
             }
             if #available(iOS 11.0, *) {} else {
@@ -1053,6 +1067,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 }
             }
         }
+        searchBar.attributedPlaceholder = NSAttributedString(string: "",
+                                                             attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+        UIView.animate(withDuration: 0.3, animations: {
+            self.textSearchBarFarRightAnchor.isActive = false
+            self.textSearchBarCloseRightAnchor.isActive = true
+            self.view.layoutIfNeeded()
+        })
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {

@@ -16,15 +16,15 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var parkingDelegate: controlsNewParking?
 //    var viewDelegate: controlsAccountViews?
     
-    let visualBlurEffect: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.8
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return blurEffectView
-    }()
+//    let visualBlurEffect: UIVisualEffectView = {
+//        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.alpha = 0.8
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        return blurEffectView
+//    }()
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -775,11 +775,11 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
     
     func setupDayOfTheWeeks() {
         
-        self.view.addSubview(visualBlurEffect)
-        visualBlurEffect.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        visualBlurEffect.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        visualBlurEffect.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        visualBlurEffect.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+//        self.view.addSubview(visualBlurEffect)
+//        visualBlurEffect.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        visualBlurEffect.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        visualBlurEffect.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+//        visualBlurEffect.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         weekContainer = UIView()
         weekContainer.backgroundColor = UIColor.clear

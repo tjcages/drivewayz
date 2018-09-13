@@ -96,5 +96,7 @@
 	<string>Use your location to track parking spots near you and direct you to those spots.</string>
 	<key>networkAccessAllowed</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Use your camera to take a photo of your parking space.</string>
 </dict>
 </plist>

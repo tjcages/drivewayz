@@ -49,6 +49,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     var visualBlurEffect = UIVisualEffectView()
     var picker = UIImagePickerController()
     
+    enum emailConfirmation {
+        case confirmed
+        case unconfirmed
+    }
+    var emailConfirmed: emailConfirmation = .unconfirmed
+    
     var contentScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -342,7 +348,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         return parking
     }()
     
-    var Main = ["Profile", "Hosting", "Vehicle", "Analytics", "Options"]
+    var Main: [String] = []
     var Options = ["", "Main", "Coupons", "Settings", "Terms", "Contact us!", "Logout"]
     
     var effect: UIVisualEffect!
@@ -379,6 +385,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupOptions()
         startUpActivity()
         setupMainTableView()
+        configureOptions()
     }
     
     @objc func segmentRight(sender: UISwipeGestureRecognizer) {
@@ -966,7 +973,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     UIView.animate(withDuration: 0.2, animations: {
-                        self.mainTableHeight.constant = 222
+                        switch self.emailConfirmed {
+                        case .confirmed:
+                            self.mainTableHeight.constant = 222
+                        case .unconfirmed:
+                            self.mainTableHeight.constant = 174
+                        }
                         self.mainView.alpha = 0.9
                         let image = UIImage(named: "feed")
                         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
@@ -982,7 +994,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                 }
             }
         } else {
-            if indexPath.row == (Main.count-1) {
+            if Main[indexPath.row] == "Options" {
                 UIView.animate(withDuration: 0.1, animations: {
                     self.mainTableView.alpha = 0
                 }) { (success) in
@@ -1006,7 +1018,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                         }
                     }
                 }
-            } else if indexPath.row == (Main.count-2) {
+            } else if Main[indexPath.row] == "Analytics" {
                 self.openMainOptions()
                 self.view.addSubview(analController.view)
                 analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -1021,13 +1033,13 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
                         self.view.layoutIfNeeded()
                     }
                 }
-            } else if indexPath.row == (Main.count-3) {
+            } else if Main[indexPath.row] == "Vehicle" {
                 self.vehiclePressedFunc()
                 self.openMainOptions()
-            } else if indexPath.row == (Main.count-4) {
+            } else if Main[indexPath.row] == "Hosting" {
                 self.parkingPressedFunc()
                 self.openMainOptions()
-            } else if indexPath.row == (Main.count-5) {
+            } else if Main[indexPath.row] == "Profile" {
                 self.recentPressedFunc()
                 self.openMainOptions()
             }
@@ -1096,15 +1108,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }()
     
     var mainView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 222))
+        let view = UIView()
         view.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
         view.alpha = 0.9
         view.translatesAutoresizingMaskIntoConstraints = false
-        let rectShape = CAShapeLayer()
-        rectShape.bounds = view.frame
-        rectShape.position = view.center
-        rectShape.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.bottomLeft , .bottomRight , .topLeft], cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        view.layer.mask = rectShape
         view.alpha = 0
         
         return view
@@ -1140,7 +1147,12 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     func openMainOptions() {
         if mainView.alpha == 0 && optionsTabViewConstraint.constant == 120 {
             UIView.animate(withDuration: 0.2, animations: {
-                self.mainTableHeight.constant = 222
+                switch self.emailConfirmed {
+                case .confirmed:
+                    self.mainTableHeight.constant = 222
+                case .unconfirmed:
+                    self.mainTableHeight.constant = 174
+                }
                 self.mainView.alpha = 0.9
                 let image = UIImage(named: "feed")
                 let tintedImage = image?.withRenderingMode(.alwaysTemplate)
@@ -1173,6 +1185,41 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
+    func configureOptions() {
+        guard let currentUser = Auth.auth().currentUser?.email else { return }
+        let ref = Database.database().reference().child("ConfirmedEmails")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String] {
+                let count = dictionary.count
+                for i in 0..<count {
+                    let email = dictionary[i]
+                    if email == currentUser {
+                        self.Main = ["Profile", "Hosting", "Vehicle", "Analytics", "Options"]
+                        self.mainTableView.reloadData()
+                        self.emailConfirmed = .confirmed
+                        self.mainView.frame = CGRect(x: 0, y: 0, width: 100, height: 222)
+                        let rectShape = CAShapeLayer()
+                        rectShape.bounds = self.mainView.frame
+                        rectShape.position = self.mainView.center
+                        rectShape.path = UIBezierPath(roundedRect: self.mainView.bounds, byRoundingCorners: [.bottomLeft , .bottomRight , .topLeft], cornerRadii: CGSize(width: 10, height: 10)).cgPath
+                        self.mainView.layer.mask = rectShape
+                        return
+                    } else {
+                        self.Main = ["Profile", "Hosting", "Vehicle", "Options"]
+                        self.emailConfirmed = .unconfirmed
+                        self.mainView.frame = CGRect(x: 0, y: 0, width: 100, height: 174)
+                        let rectShape = CAShapeLayer()
+                        rectShape.bounds = self.mainView.frame
+                        rectShape.position = self.mainView.center
+                        rectShape.path = UIBezierPath(roundedRect: self.mainView.bounds, byRoundingCorners: [.bottomLeft , .bottomRight , .topLeft], cornerRadii: CGSize(width: 10, height: 10)).cgPath
+                        self.mainView.layer.mask = rectShape
+                    }
+                }
+                self.mainTableView.reloadData()
+            }
+        }
+    }
+    
     @objc func optionsTabGestureTapped(sender: UIButton) {
         openMainOptions()
     }
@@ -1183,6 +1230,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func setupAddAParkingSpot() {
         self.delegate?.setupNewParking(parkingImage: .noImage)
+    }
+    
+    func scrollToTop() {
+        self.contentScrollView.scrollsToTop = true
     }
 
 }
