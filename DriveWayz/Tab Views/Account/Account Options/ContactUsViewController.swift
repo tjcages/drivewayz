@@ -240,10 +240,10 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                     let userMessagesRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
                     
                     let messageId = childRef.key
-                    userMessagesRef.updateChildValues([messageId: 1])
+                    userMessagesRef.updateChildValues(["messageId": 1])
                     
                     let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child("\(String(describing: fromName))")
-                    recipientUserMessagesRef.updateChildValues([messageId: 1])
+                    recipientUserMessagesRef.updateChildValues(["messageId": 1])
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         UIView.animate(withDuration: 0.3, animations: {

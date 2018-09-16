@@ -667,14 +667,14 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func observeUserParkingSpots() {
-        let ref = Database.database().reference().child("user-parking")
+        self.parkingSpots = []
+        self.parkingSpotsDictionary = [:]
+        let annotations = self.mapView.annotations
+        self.clusterManager.remove(annotations)
+        self.mapView.removeAnnotations(annotations)
+        let ref = Database.database().reference().child("parking")
         ref.observe(.childAdded, with: { (snapshot) in
             let parkingID = [snapshot.key]
-            self.parkingSpots = []
-            self.parkingSpotsDictionary = [:]
-            let annotations = self.mapView.annotations
-            self.clusterManager.remove(annotations)
-            self.mapView.removeAnnotations(annotations)
             self.fetchParking(parkingID: parkingID)
         }, withCancel: nil)
         ref.observe(.childRemoved, with: { (snapshot) in
@@ -688,9 +688,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             var avgRating: Double = 5
             let messageRef = Database.database().reference().child("parking").child(parking)
             messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                
                 if var dictionary = snapshot.value as? [String:AnyObject] {
-                    
                     let parkingAddress = dictionary["parkingAddress"] as! String
                     let geoCoder = CLGeocoder()
                     geoCoder.geocodeAddressString(parkingAddress) { (placemarks, error) in

@@ -207,7 +207,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
                             } else if parkingType == "apartment" {
                                 self.parkingType.text = "This is one of the apartment parking spaces \n- There are \(parkingNumber) spots total"
                             } else if parkingType == "house" {
-                                self.parkingType.text = "This is one space for house \n- There are \(parkingNumber) spots total"
+                                self.parkingType.text = "This is one space for a residential home \n- There are \(parkingNumber) spots total"
                             }
                         }
                     } else {
@@ -217,7 +217,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
                             } else if parkingType == "apartment" {
                                 self.parkingType.text = "This is one of the apartment parking spaces \n- There is only one spot"
                             } else if parkingType == "house" {
-                                self.parkingType.text = "This is the one space for house"
+                                self.parkingType.text = "This is the space for the residential home"
                             }
                         }
                     }

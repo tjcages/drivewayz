@@ -376,7 +376,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         let userRef = Database.database().reference().child("users").child(id).child("Vehicle")
         
         let vehicleID = childRef.key
-        userVehicleRef.updateChildValues([vehicleID: 1])
+        userVehicleRef.updateChildValues(["vehicleID": 1])
         userRef.updateChildValues(["vehicleID": vehicleID])
         
         var values = ["vehicleID": vehicleID, "id": id, "timestamp": timestamp] as [String : Any]

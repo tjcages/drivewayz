@@ -760,10 +760,10 @@ class ConfigureParkingViewController: UIViewController {
         let userRef = Database.database().reference().child("users").child(id).child("Parking")
         
         let parkingID = childRef.key
-        userParkingRef.updateChildValues([parkingID: 1])
-        userRef.updateChildValues(["parkingID": parkingID])
+        userParkingRef.updateChildValues([parkingID!: 1])
+        userRef.updateChildValues(["parkingID": parkingID!])
 
-        var values = ["parkingID": parkingID, "id": id, "timestamp": timestamp] as [String : Any]
+        var values = ["parkingID": parkingID!, "id": id, "timestamp": timestamp] as [String : Any]
         
         properties.forEach({values[$0] = $1})
         
@@ -774,7 +774,7 @@ class ConfigureParkingViewController: UIViewController {
             }
         }
         finishAddingParking()
-        addOtherProperties(parkingID: parkingID)
+        addOtherProperties(parkingID: parkingID!)
     }
     
     func finishAddingParking() {

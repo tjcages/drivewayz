@@ -9,8 +9,8 @@ import Foundation
 
 @objc public final class PushNotifications: NSObject {
     private let session = URLSession(configuration: .default)
-    private let preIISOperationQueue = DispatchQueue(label: "com.pusher.pushnotifications.pre.iis.operation.queue")
-    private let persistenceStorageOperationQueue = DispatchQueue(label: "com.pusher.pushnotifications.persistence.storage.operation.queue")
+    private let preIISOperationQueue = DispatchQueue(label: Constants.DispatchQueue.preIISOperationQueue)
+    private let persistenceStorageOperationQueue = DispatchQueue(label: Constants.DispatchQueue.persistenceStorageOperationQueue)
     private let networkService: PushNotificationsNetworkable
 
     // The object that acts as the delegate of push notifications.
@@ -115,8 +115,12 @@ import Foundation
         }
 
         networkService.register(url: url, deviceToken: deviceToken, instanceId: instanceId) { [weak self] (device) in
-            guard let device = device else { return }
-            guard let strongSelf = self else { return }
+            guard
+                let device = device,
+                let strongSelf = self
+            else {
+                return
+            }
 
             strongSelf.persistenceStorageOperationQueue.async {
                 if Device.idAlreadyPresent() {
@@ -124,12 +128,18 @@ import Foundation
                 } else {
                     Device.persist(device.id)
 
-                    if let initialInterestSet = device.initialInterestSet, initialInterestSet.count > 0 {
-                        let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+                    let initialInterestSet = device.initialInterestSet ?? []
+                    let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+                    if initialInterestSet.count > 0 {
                         persistenceService.persist(interests: initialInterestSet)
                     }
 
                     strongSelf.preIISOperationQueue.async {
+                        let interests = persistenceService.getSubscriptions() ?? []
+                        if !initialInterestSet.containsSameElements(as: interests) {
+                            strongSelf.syncInterests()
+                        }
+
                         completion()
                     }
 
@@ -156,7 +166,7 @@ import Foundation
         }
 
         self.persistenceStorageOperationQueue.async {
-            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: Constants.UserDefaults.suiteName)!)
 
             let interestAdded = persistenceService.persist(interest: interest)
 
@@ -166,7 +176,9 @@ import Foundation
                         let deviceId = Device.getDeviceId(),
                         let instanceId = Instance.getInstanceId(),
                         let url = URL(string: "https://\(instanceId).pushnotifications.pusher.com/device_api/v1/instances/\(instanceId)/devices/apns/\(deviceId)/interests/\(interest)")
-                        else { return }
+                    else {
+                        return
+                    }
 
                     let networkService: PushNotificationsNetworkable = NetworkService(session: self.session)
                     networkService.subscribe(url: url, completion: { _ in
@@ -203,7 +215,7 @@ import Foundation
         }
 
         self.persistenceStorageOperationQueue.async {
-            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: Constants.UserDefaults.suiteName)!)
 
             let interestsChanged = persistenceService.persist(interests: interests)
 
@@ -213,7 +225,9 @@ import Foundation
                         let deviceId = Device.getDeviceId(),
                         let instanceId = Instance.getInstanceId(),
                         let url = URL(string: "https://\(instanceId).pushnotifications.pusher.com/device_api/v1/instances/\(instanceId)/devices/apns/\(deviceId)/interests")
-                        else { return }
+                    else {
+                        return
+                    }
 
                     let networkService: PushNotificationsNetworkable = NetworkService(session: self.session)
                     networkService.setSubscriptions(url: url, interests: interests, completion: { _ in
@@ -250,7 +264,7 @@ import Foundation
         }
 
         self.persistenceStorageOperationQueue.async {
-            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+            let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: Constants.UserDefaults.suiteName)!)
 
             let interestRemoved = persistenceService.remove(interest: interest)
 
@@ -297,7 +311,7 @@ import Foundation
      */
     /// - Tag: getInterests
     @objc public func getInterests() -> [String]? {
-        let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+        let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: Constants.UserDefaults.suiteName)!)
 
         return persistenceService.getSubscriptions()
     }
@@ -306,7 +320,9 @@ import Foundation
         guard
             let delegate = delegate,
             let interests = self.getInterests()
-        else { return }
+        else {
+            return
+        }
 
         return delegate.interestsSetDidChange(interests: interests)
     }
@@ -319,22 +335,27 @@ import Foundation
     /// - Tag: handleNotification
     @discardableResult
     @objc public func handleNotification(userInfo: [AnyHashable: Any]) -> RemoteNotificationType {
-        guard FeatureFlags.DeliveryTrackingEnabled else { return .ShouldProcess }
+        guard FeatureFlags.DeliveryTrackingEnabled else {
+            return .ShouldProcess
+        }
 
         #if os(iOS)
             let applicationState = UIApplication.shared.applicationState
-        #endif
-
-        #if os(iOS)
-            guard let eventType = EventTypeHandler.getNotificationEventType(userInfo: userInfo, applicationState: applicationState) else { return .ShouldProcess }
+            guard let eventType = EventTypeHandler.getNotificationEventType(userInfo: userInfo, applicationState: applicationState) else {
+                return .ShouldProcess
+            }
         #elseif os(OSX)
-            guard let eventType = EventTypeHandler.getNotificationEventType(userInfo: userInfo) else { return .ShouldProcess }
+            guard let eventType = EventTypeHandler.getNotificationEventType(userInfo: userInfo) else {
+                return .ShouldProcess
+            }
         #endif
 
         guard
             let instanceId = Instance.getInstanceId(),
             let url = URL(string: "https://\(instanceId).pushnotifications.pusher.com/reporting_api/v2/instances/\(instanceId)/events")
-        else { return EventTypeHandler.getRemoteNotificationType(userInfo) }
+        else {
+            return EventTypeHandler.getRemoteNotificationType(userInfo)
+        }
 
         let networkService: PushNotificationsNetworkable = NetworkService(session: self.session)
         networkService.track(url: url, eventType: eventType, completion: { _ in })
@@ -357,7 +378,9 @@ import Foundation
             let deviceId = Device.getDeviceId(),
             let instanceId = Instance.getInstanceId(),
             let url = URL(string: "https://\(instanceId).pushnotifications.pusher.com/device_api/v1/instances/\(instanceId)/devices/apns/\(deviceId)/metadata")
-            else { return }
+        else {
+            return
+        }
 
         let networkService: PushNotificationsNetworkable = NetworkService(session: self.session)
         networkService.syncMetadata(url: url, completion: { _ in })
@@ -370,10 +393,12 @@ import Foundation
             let deviceId = Device.getDeviceId(),
             let instanceId = Instance.getInstanceId(),
             let url = URL(string: "https://\(instanceId).pushnotifications.pusher.com/device_api/v1/instances/\(instanceId)/devices/apns/\(deviceId)/interests")
-            else { return }
+        else {
+            return
+        }
 
         let networkService: PushNotificationsNetworkable = NetworkService(session: self.session)
-        let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: "PushNotifications")!)
+        let persistenceService: InterestPersistable = PersistenceService(service: UserDefaults(suiteName: Constants.UserDefaults.suiteName)!)
         let interestsHash = interests.calculateMD5Hash()
         if interestsHash != persistenceService.getServerConfirmedInterestsHash() {
             networkService.setSubscriptions(url: url, interests: interests, completion: { _ in

@@ -244,14 +244,12 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
                 self.navigationController?.popViewController(animated: true)
                 self.navigationController?.popViewController(animated: true)
                 self.navigationController?.navigationBar.isHidden = true
-                UIApplication.shared.statusBarStyle = .lightContent
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
                     //
                 }
             } else {
                 //payment error
                 self.navigationController?.popViewController(animated: true)
-                UIApplication.shared.statusBarStyle = .lightContent
             }
         }
         alertController.addAction(action)
@@ -335,6 +333,5 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     @objc func dismissDetails(sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         self.navigationController?.navigationBar.isHidden = true
-        UIApplication.shared.statusBarStyle = .lightContent
     }
 }

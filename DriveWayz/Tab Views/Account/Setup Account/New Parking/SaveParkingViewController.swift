@@ -629,7 +629,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let userRef = Database.database().reference().child("users").child(id).child("Parking")
         
         let parkingID = childRef.key
-        userParkingRef.updateChildValues([parkingID: 1])
+        userParkingRef.updateChildValues(["parkingID": 1])
         userRef.updateChildValues(["parkingID": parkingID])
         
         var values = ["parkingID": parkingID, "id": id, "timestamp": timestamp] as [String : Any]

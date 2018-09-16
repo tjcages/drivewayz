@@ -138,7 +138,11 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     func addPropertiesToDatabase(parkingID: String) {
         let ref = Database.database().reference().child("parking").child(parkingID)
         let text = message.text
-        ref.updateChildValues(["message": text!])
+        if text == "Add any useful information so the user can better find your spot" {
+            ref.updateChildValues(["message": ""])
+        } else {
+            ref.updateChildValues(["message": text!])
+        }
     }
 
 
