@@ -11,7 +11,7 @@ import Firebase
 
 class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollViewDelegate {
 
-    var delegate: controlsAccountViews?
+    var delegate: controlsAccountOptions?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -25,7 +25,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -240,10 +240,10 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                     let userMessagesRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
                     
                     let messageId = childRef.key
-                    userMessagesRef.updateChildValues(["messageId": 1])
+                    userMessagesRef.updateChildValues([messageId!: 1])
                     
                     let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child("\(String(describing: fromName))")
-                    recipientUserMessagesRef.updateChildValues(["messageId": 1])
+                    recipientUserMessagesRef.updateChildValues([messageId!: 1])
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         UIView.animate(withDuration: 0.3, animations: {
@@ -253,7 +253,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                                 self.accept.alpha = 1
                                 self.accept.isUserInteractionEnabled = true
                             }, completion: nil)
-                            self.delegate?.removeOptionsFromView()
+                            self.delegate?.hideContactUsController()
                         }
                     }
                 }
@@ -272,7 +272,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         UIView.animate(withDuration: 0.3, animations: {
             self.view.alpha = 0
         }) { (success) in
-            self.delegate?.removeOptionsFromView()
+            self.delegate?.hideContactUsController()
         }
     }
 

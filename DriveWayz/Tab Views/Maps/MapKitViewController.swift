@@ -47,7 +47,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var topSearch: UIButton = {
         let search = UIButton(type: .custom)
         let image = UIImage(named: "Search")
-        search.setImage(image, for: .normal)
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        search.setImage(tintedImage, for: .normal)
+        search.tintColor = Theme.PRIMARY_DARK_COLOR
         search.translatesAutoresizingMaskIntoConstraints = false
         search.addTarget(self, action: #selector(animateSearchBar(sender:)), for: .touchUpInside)
         
@@ -57,15 +59,15 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     let searchBar: UITextField = {
         let search = UITextField()
         search.layer.cornerRadius = 20
-        search.backgroundColor = Theme.PRIMARY_DARK_COLOR
-        search.textColor = Theme.WHITE
+        search.backgroundColor = Theme.WHITE
+        search.textColor = Theme.PRIMARY_DARK_COLOR
         search.alpha = 0.9
         search.layer.shadowColor = Theme.DARK_GRAY.cgColor
         search.layer.shadowOffset = CGSize(width: 1, height: 1)
         search.layer.shadowRadius = 1
         search.layer.shadowOpacity = 0.8
         search.attributedPlaceholder = NSAttributedString(string: "",
-                                                          attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                          attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
         search.translatesAutoresizingMaskIntoConstraints = false
         return search
     }()
@@ -261,8 +263,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.view.bringSubview(toFront: topSearch)
         
         self.view.addSubview(locatorButton)
-        locatorButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 8).isActive = true
-        locatorButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
+        locatorButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
+        locatorButton.topAnchor.constraint(equalTo: topSearch.bottomAnchor, constant: 12).isActive = true
         locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
@@ -271,10 +273,16 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         self.view.addSubview(currentButton)
         currentButton.addTarget(self, action: #selector(currentParkingPressed(sender:)), for: .touchUpInside)
-        currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
-        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
         currentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         currentButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
+        switch device {
+        case .iphone8:
+            currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
+            currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
+        case .iphoneX:
+            currentButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30).isActive = true
+            currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -8).isActive = true
+        }
         
         self.view.addSubview(purchaseStaus)
         purchaseStaus.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
@@ -571,10 +579,10 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func setupLocationManager() {
         
         mapView.delegate = self
-        mapView.showsScale = true
         mapView.showsPointsOfInterest = true
         mapView.showsTraffic = true
         mapView.showsUserLocation = true
+        mapView.showsScale = true
         
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -606,7 +614,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     @objc func animateSearchBar(sender: UIButton) {
         if self.textSearchBarCloseRightAnchor.isActive == true {
             searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                                 attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = true
                 self.textSearchBarCloseRightAnchor.isActive = false
@@ -614,7 +622,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             })
         } else {
             searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                                 attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = false
                 self.textSearchBarCloseRightAnchor.isActive = true

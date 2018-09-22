@@ -51,5 +51,69 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DriveWayz/Tab Views/Account/Hosting/CurrentViewController.swift"
+            timestampString = "559337589.063432"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "535"
+            endingLineNumber = "535"
+            landmarkName = "setupNoView()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DriveWayz.CurrentViewController.setupNoView() -&gt; ()"
+                  moduleName = "DriveWayz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/Hosting/CurrentViewController.swift"
+                  timestampString = "559337589.384894"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "535"
+                  endingLineNumber = "535"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in DriveWayz.CurrentViewController.setupNoView() -&gt; ()"
+                  moduleName = "DriveWayz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/Hosting/CurrentViewController.swift"
+                  timestampString = "559337589.386669"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "536"
+                  endingLineNumber = "536"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DriveWayz/Tab Views/Account/AccountViewController.swift"
+            timestampString = "559337589.063488"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "821"
+            endingLineNumber = "821"
+            landmarkName = "handleLogout()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

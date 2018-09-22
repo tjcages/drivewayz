@@ -29,20 +29,54 @@ protocol controlsNewParking {
     func moveToMap()
 }
 
-class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsNewParking {
+protocol controlsAccountOptions {
+    func openAccountView()
+    func closeAccountView()
+    
+    func moveToMap()
+    func bringUpcomingController()
+    func bringHostingController()
+    func bringNewHostingController(parkingImage: ParkingImage)
+    func bringVehicleController()
+    func bringNewVehicleController(vehicleStatus: VehicleStatus)
+    func bringAnalyticsController()
+    func bringCouponsController()
+    func bringContactUsController()
+    func bringTermsController()
+    
+    func hideUpcomingController()
+    func hideHostingController()
+    func hideNewHostingController()
+    func hideVehicleController()
+    func hideNewVehicleController()
+    func hideAnalyticsController()
+    func hideCouponsController()
+    func hideContactUsController()
+    func hideTermsController()
+}
+
+class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsAccountOptions {
     
     var swipe: Int = 1
+    var delegate: handleStatusBarHide?
     
-    var pin: UILabel = {
-        let label = UILabel()
-        label.text = "▾"
-        label.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-        label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = Theme.DARK_GRAY
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+    lazy var fullBlurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         
-        return label
+        return blurEffectView
+    }()
+    
+    var blurView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0
+        
+        return view
     }()
     
     lazy var container: UIView = {
@@ -115,7 +149,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Map"
         controller.delegate = self
-        controller.vehicleDelegate = self
+//        controller.vehicleDelegate = self
         return controller
     }()
     
@@ -124,6 +158,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Profile"
+//        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var accountSlideController: AccountSlideViewController = {
+        let controller = AccountSlideViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Profile"
+        controller.moveDelegate = self
         controller.delegate = self
         return controller
     }()
@@ -134,6 +178,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Walkthrough"
         controller.view.alpha = 0
+//        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var hostingController: HostingViewController = {
+        let controller = HostingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Hosting"
         controller.delegate = self
         return controller
     }()
@@ -150,8 +202,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         let controller = ConfigureParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Save Parking"
-        controller.parkingDelegate = self
-//        controller.viewDelegate = self
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var vehicleController: VehicleViewController = {
+        let controller = VehicleViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Vehicle"
+        controller.delegate = self
         return controller
     }()
     
@@ -165,6 +225,50 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return controller
     }()
     
+    lazy var upcomingController: UpcomingViewController = {
+        let controller = UpcomingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Upcoming"
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var contactController: ContactUsViewController = {
+        let controller = ContactUsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Contact Us!"
+        controller.view.alpha = 0
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var termsController: TermsViewController = {
+        let controller = TermsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Terms"
+        controller.view.alpha = 0
+        controller.delegateOptions = self
+        return controller
+    }()
+    
+    lazy var couponController: CouponsViewController = {
+        let controller = CouponsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Coupons"
+        controller.view.alpha = 0
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var analController: AnalyticsViewController = {
+        let controller = AnalyticsViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Analytics"
+        controller.delegate = self
+        return controller
+    }()
+    
     var mapControllerAnchor: NSLayoutConstraint!
     var accountControllerAnchor: NSLayoutConstraint!
     var mapCenterAnchor: NSLayoutConstraint!
@@ -172,12 +276,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     
     var containerLeftAnchor: NSLayoutConstraint!
     var containerRightAnchor: NSLayoutConstraint!
+    
+    var statusBarShouldBeHidden = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        UIApplication.shared.applicationIconBadgeNumber = 0
         UIApplication.shared.statusBarStyle = .default
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
@@ -187,7 +293,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         
         setupViews()
         fetchUser()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -195,6 +300,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
+    var accountControllerWidthAnchor: NSLayoutConstraint!
+    var accountControllerHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -205,12 +312,28 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         mapController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         mapController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        self.view.addSubview(accountController.view)
-        accountControllerAnchor = accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width)
-        accountControllerAnchor.isActive = true
-        accountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        accountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        accountController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.view.addSubview(fullBlurView)
+        fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        fullBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        fullBlurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
+        self.view.addSubview(blurView)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(moveToMapSwipe(sender:)))
+        blurView.addGestureRecognizer(gesture)
+        blurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        blurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        blurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        blurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
+        self.view.addSubview(accountSlideController.view)
+        accountControllerAnchor = accountSlideController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            accountControllerAnchor.isActive = true
+        accountControllerWidthAnchor = accountSlideController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+            accountControllerWidthAnchor.isActive = true
+        accountSlideController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        accountControllerHeightAnchor = accountSlideController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor)
+            accountControllerHeightAnchor.isActive = true
         
         accountController.view.addSubview(map)
         map.rightAnchor.constraint(equalTo: accountController.view.rightAnchor, constant: -10).isActive = true
@@ -233,12 +356,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         case .iphoneX:
             profile.topAnchor.constraint(equalTo: mapController.view.topAnchor, constant: 45).isActive = true
         }
-        
-//        self.view.addSubview(pin)
-//        pin.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        pin.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 6).isActive = true
-//        pin.widthAnchor.constraint(equalToConstant: 20).isActive = true
-//        pin.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
     }
     
@@ -269,19 +386,24 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     }
     
     func moveTopProfile() {
-        UIApplication.shared.statusBarStyle = .lightContent
-        if mapControllerAnchor.constant == 0 {
-//            self.containerLeftAnchor.constant = 0
-//            self.containerRightAnchor.constant = -self.view.frame.width/3
-            UIView.animate(withDuration: 0.3, animations: {
-                UIApplication.shared.statusBarStyle = .lightContent
-                self.accountControllerAnchor.constant = 0
-                self.mapControllerAnchor.constant = -self.view.frame.width
-//                self.mapCenterAnchor.constant = self.view.frame.width/4
-//                self.profileCenterAnchor.constant = self.view.frame.width/2
-                self.view.layoutIfNeeded()
-            }) { (success) in
+        self.delegate?.hideStatusBar()
+        UIView.animate(withDuration: 0.3, animations: {
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
+            self.accountControllerAnchor.constant = self.view.frame.width/3.5
+            self.mapControllerAnchor.constant = 0
+            if self.accountSlideController.hostMarkShouldShow == true {
+                self.accountSlideController.hostingMark.alpha = 1
+            } else {
+                self.accountSlideController.hostingMark.alpha = 0
             }
+            if self.accountSlideController.upcomingMarkShouldShow == true {
+                self.accountSlideController.upcomingMark.alpha = 1
+            } else {
+                self.accountSlideController.upcomingMark.alpha = 0
+            }
+            self.view.layoutIfNeeded()
+        }) { (success) in
         }
     }
     
@@ -294,19 +416,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     }
     
     func moveToMap() {
-        UIApplication.shared.statusBarStyle = .default
-        if accountControllerAnchor.constant == 0 {
-//            self.containerLeftAnchor.constant = self.view.frame.width/3
-//            self.containerRightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3, animations: {
-                UIApplication.shared.statusBarStyle = .default
-                self.mapControllerAnchor.constant = 0
-                self.accountControllerAnchor.constant = self.view.frame.width
-//                self.mapCenterAnchor.constant = self.view.frame.width/2
-//                self.profileCenterAnchor.constant = self.view.frame.width*3/4
-                self.view.layoutIfNeeded()
-            }) { (success) in
-            }
+        self.delegate?.bringStatusBar()
+        UIView.animate(withDuration: 0.3, animations: {
+            self.fullBlurView.alpha = 0
+            self.blurView.alpha = 0
+            self.mapControllerAnchor.constant = 0
+            self.accountControllerAnchor.constant = self.view.frame.width
+            self.view.layoutIfNeeded()
+        }) { (success) in
         }
     }
 
@@ -315,20 +432,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         // Dispose of any resources that can be recreated.
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-    
     @objc func handleLogout() {
         
-        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-        UserDefaults.standard.synchronize()
-        
-        let myViewController: StartUpViewController = StartUpViewController()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.window?.rootViewController = myViewController
-        appDelegate.window?.makeKeyAndVisible()
-        
+//        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+//        UserDefaults.standard.synchronize()
+//
+//        let myViewController: StartUpViewController = StartUpViewController()
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        appDelegate.window?.rootViewController = myViewController
+//        appDelegate.window?.makeKeyAndVisible()
+//        
     }
     
     func fetchUser() {
@@ -358,105 +471,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return
     }
 
-    var parkingAnchor: NSLayoutConstraint!
-    
-    func setupNewParking(parkingImage: ParkingImage) {
-        switch parkingImage {
-        case .yesImage:
-            
-            self.newParkingController.view.removeFromSuperview()
-            self.view.layoutIfNeeded()
-
-            self.view.addSubview(saveParkingController.view)
-            self.addChildViewController(saveParkingController)
-            saveParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            parkingAnchor = saveParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            parkingAnchor.isActive = true
-            saveParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            saveParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.parkingAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-        default:
-            
-            self.view.addSubview(newParkingController.view)
-            self.addChildViewController(newParkingController)
-            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            parkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            parkingAnchor.isActive = true
-            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.parkingAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-            
-        }
-    }
-    
-    func removeNewParkingView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.parkingAnchor.constant = self.view.frame.height
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.saveParkingController.view.removeFromSuperview()
-            self.newParkingController.view.removeFromSuperview()
-            self.accountController.scrollToTop()
-//            UIApplication.shared.statusBarStyle = .lightContent
-        })
-    }
-    
+    var hostingAnchor: NSLayoutConstraint!
+    var newParkingAnchor: NSLayoutConstraint!
     var vehicleAnchor: NSLayoutConstraint!
-    
-    func setupNewVehicle(vehicleStatus: VehicleStatus) {
-        switch vehicleStatus {
-        case .yesVehicle:
-            
-            self.newVehicleController.view.removeFromSuperview()
-            
-        case .noVehicle:
-            
-            self.view.addSubview(newVehicleController.view)
-            self.addChildViewController(newVehicleController)
-            newVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            vehicleAnchor = newVehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            vehicleAnchor.isActive = true
-            newVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newVehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.vehicleAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    UIApplication.shared.statusBarStyle = .default
-                })
-            }
-            
-        }
-    }
-    
-    func removeNewVehicleView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.vehicleAnchor.constant = self.view.frame.height
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.newVehicleController.view.removeFromSuperview()
-            self.accountController.scrollToTop()
-//            UIApplication.shared.statusBarStyle = .lightContent
-        })
-    }
+    var newVehicleAnchor: NSLayoutConstraint!
+    var analControllerAnchor: NSLayoutConstraint!
+    var upcomingAnchor: NSLayoutConstraint!
     
     func hideTabController() {
         UIView.animate(withDuration: 0.2) {
@@ -469,6 +489,355 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         UIView.animate(withDuration: 0.2) {
             self.map.alpha = 1
             self.profile.alpha = 1
+        }
+    }
+    
+    func bringTermsController() {
+        self.view.addSubview(self.termsController.view)
+        self.addChildViewController(termsController)
+        self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.termsController.view.alpha = 0
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.termsController.view.alpha = 1
+            })
+        }
+    }
+    
+    func bringUpcomingController() {
+        self.view.addSubview(upcomingController.view)
+        upcomingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        upcomingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        upcomingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        upcomingAnchor = upcomingController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+            upcomingAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.accountSlideController.mainLabel.text = "Reservations"
+            UIView.animate(withDuration: 0.3) {
+                self.accountSlideController.mainLabel.alpha = 1
+                self.upcomingAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func bringHostingController() {
+        self.view.addSubview(hostingController.view)
+        hostingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        hostingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        hostingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        hostingAnchor = hostingController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+            hostingAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.accountSlideController.mainLabel.text = "Hosting"
+            UIView.animate(withDuration: 0.3) {
+                self.accountSlideController.mainLabel.alpha = 1
+                self.hostingAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func bringNewHostingController(parkingImage: ParkingImage) {
+        switch parkingImage {
+        case .yesImage:
+            self.newParkingController.view.removeFromSuperview()
+            self.view.layoutIfNeeded()
+            self.view.addSubview(saveParkingController.view)
+            self.addChildViewController(saveParkingController)
+            saveParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            newParkingAnchor = saveParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            newParkingAnchor.isActive = true
+            saveParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            saveParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.accountSlideController.mainLabel.text = "New Host"
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.newParkingAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+        default:
+            self.view.addSubview(newParkingController.view)
+            self.addChildViewController(newParkingController)
+            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            newParkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            newParkingAnchor.isActive = true
+            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.newParkingAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+        }
+    }
+    
+    func bringVehicleController() {
+        self.view.addSubview(vehicleController.view)
+        vehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        vehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        vehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        vehicleAnchor = vehicleController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+            vehicleAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.accountSlideController.mainLabel.text = "Vehicle"
+            UIView.animate(withDuration: 0.3) {
+                self.accountSlideController.mainLabel.alpha = 1
+                self.vehicleAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func bringNewVehicleController(vehicleStatus: VehicleStatus) {
+        switch vehicleStatus {
+        case .yesVehicle:
+            self.newVehicleController.view.removeFromSuperview()
+        case .noVehicle:
+            self.view.addSubview(newVehicleController.view)
+            self.addChildViewController(newVehicleController)
+            newVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            newVehicleAnchor = newVehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            newVehicleAnchor.isActive = true
+            newVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            newVehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.accountSlideController.mainLabel.text = "New Vehicle"
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.accountSlideController.mainLabel.alpha = 1
+                    self.newVehicleAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    UIApplication.shared.statusBarStyle = .default
+                })
+            }
+        }
+    }
+    
+    func bringAnalyticsController() {
+        self.view.addSubview(analController.view)
+        analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        analController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        analControllerAnchor = analController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+            analControllerAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.accountSlideController.mainLabel.text = "Analytics"
+            UIView.animate(withDuration: 0.3, animations: {
+                self.accountSlideController.mainLabel.alpha = 1
+                self.analController.driveWayzLogo.alpha = 1
+                self.analControllerAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }, completion: { (success) in
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.analController.driveWayzLogo.alpha = 1
+                })
+            })
+        }
+    }
+    
+    func bringCouponsController() {
+        self.view.addSubview(self.couponController.view)
+        self.addChildViewController(couponController)
+        self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.couponController.view.alpha = 0
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.couponController.view.alpha = 1
+            })
+        }
+    }
+    
+    func bringContactUsController() {
+        self.view.addSubview(self.contactController.view)
+        self.addChildViewController(contactController)
+        self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.contactController.view.alpha = 0
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.contactController.view.alpha = 1
+            })
+        }
+    }
+    
+    //////////////////////
+    
+    func hideUpcomingController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.upcomingAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.upcomingController.willMove(toParentViewController: nil)
+            self.upcomingController.view.removeFromSuperview()
+            self.upcomingController.removeFromParentViewController()
+        }
+    }
+    
+    func hideTermsController() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.termsController.view.alpha = 0
+        }) { (success) in
+            self.termsController.willMove(toParentViewController: nil)
+            self.termsController.view.removeFromSuperview()
+            self.termsController.removeFromParentViewController()
+            self.closeAccountView()
+        }
+    }
+    
+    func hideHostingController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.hostingAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.hostingController.willMove(toParentViewController: nil)
+            self.hostingController.view.removeFromSuperview()
+            self.hostingController.removeFromParentViewController()
+        }
+    }
+    
+    func hideNewHostingController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.newParkingAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }, completion: { (success) in
+            self.saveParkingController.view.removeFromSuperview()
+            self.newParkingController.view.removeFromSuperview()
+            self.accountController.scrollToTop()
+        })
+    }
+    
+    func hideVehicleController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.vehicleAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.vehicleController.willMove(toParentViewController: nil)
+            self.vehicleController.view.removeFromSuperview()
+            self.vehicleController.removeFromParentViewController()
+        }
+    }
+    
+    func hideNewVehicleController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.newVehicleAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }, completion: { (success) in
+            self.newVehicleController.view.removeFromSuperview()
+            self.accountController.scrollToTop()
+        })
+    }
+    
+    func hideAnalyticsController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.analController.driveWayzLogo.alpha = 0
+            self.analControllerAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.closeAccountView()
+            self.analController.willMove(toParentViewController: nil)
+            self.analController.view.removeFromSuperview()
+            self.analController.removeFromParentViewController()
+        }
+    }
+    
+    func hideCouponsController() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.couponController.view.alpha = 0
+        }) { (success) in
+            self.couponController.willMove(toParentViewController: nil)
+            self.couponController.view.removeFromSuperview()
+            self.couponController.removeFromParentViewController()
+            self.closeAccountView()
+        }
+    }
+    
+    func hideContactUsController() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.contactController.view.alpha = 0
+        }) { (success) in
+            self.contactController.willMove(toParentViewController: nil)
+            self.contactController.view.removeFromSuperview()
+            self.contactController.removeFromParentViewController()
+            self.closeAccountView()
+        }
+    }
+    
+    func openAccountView() {
+        self.accountControllerAnchor.constant = self.view.frame.width/3
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.accountControllerAnchor.constant = -5
+            self.accountControllerWidthAnchor.constant = 0
+            self.accountControllerHeightAnchor.constant = 20
+            UIView.animate(withDuration: 0.3, animations: {
+                self.accountSlideController.profileImageView.alpha = 0
+                self.accountSlideController.profileName.alpha = 0
+                self.accountSlideController.profileLine.alpha = 0
+                self.accountSlideController.termsLine.alpha = 0
+                self.accountSlideController.optionsTableView.alpha = 0
+                self.accountSlideController.termsTableView.alpha = 0
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.delegate?.bringStatusBar()
+            }
+        }
+    }
+    
+    func closeAccountView() {
+        self.delegate?.hideStatusBar()
+        self.accountControllerAnchor.constant = self.view.frame.width/3.5
+        self.accountControllerWidthAnchor.constant = 0
+        self.accountControllerHeightAnchor.constant = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.profileImageView.alpha = 1
+            self.accountSlideController.profileName.alpha = 1
+            self.accountSlideController.profileLine.alpha = 1
+            self.accountSlideController.termsLine.alpha = 1
+            self.accountSlideController.optionsTableView.alpha = 1
+            self.accountSlideController.termsTableView.alpha = 1
+            self.accountSlideController.addButton.alpha = 1
+            if self.accountSlideController.hostMarkShouldShow == true {
+                self.accountSlideController.hostingMark.alpha = 1
+            } else {
+                self.accountSlideController.hostingMark.alpha = 0
+            }
+            if self.accountSlideController.upcomingMarkShouldShow == true {
+                self.accountSlideController.upcomingMark.alpha = 1
+            } else {
+                self.accountSlideController.upcomingMark.alpha = 0
+            }
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
         }
     }
     

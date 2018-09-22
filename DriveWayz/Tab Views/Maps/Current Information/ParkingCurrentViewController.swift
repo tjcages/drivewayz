@@ -386,7 +386,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             cell.textLabel?.text = Current[indexPath.row]
             cell.separatorInset = UIEdgeInsets(top: 0, left: 160, bottom: 0, right: 10)
             if indexPath.row == (Current.count-1) {
-                cell.textLabel?.textColor = UIColor.red
+                cell.textLabel?.textColor = Theme.HARMONY_COLOR
             } else if indexPath.row == 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
                 cell.textLabel?.textColor = Theme.DARK_GRAY

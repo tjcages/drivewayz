@@ -27,7 +27,7 @@ var couponActive: Int?
 var currentButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.backgroundColor = Theme.PRIMARY_COLOR
+    button.backgroundColor = Theme.HARMONY_COLOR
     button.layer.shadowColor = Theme.DARK_GRAY.cgColor
     button.layer.shadowOffset = CGSize(width: 1, height: 1)
     button.layer.shadowRadius = 1

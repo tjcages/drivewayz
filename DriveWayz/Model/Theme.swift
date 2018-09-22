@@ -1,9 +1,9 @@
 //
 //  Theme.swift
-//  airbnb-main
 //
-//  Created by Yonas Stephen on 29/3/17.
-//  Copyright © 2017 Yonas Stephen. All rights reserved.
+//
+//  Created by Tyler J. Cagle on 29/3/17.
+//  Copyright © 2017 Tyler J. Cagle. All rights reserved.
 //
 
 import UIKit
@@ -11,6 +11,7 @@ import UIKit
 class Theme {
     
     static let PRIMARY_COLOR = UIColor(red: 87/255, green: 159/255, blue: 179/255, alpha: 1)
+    static let HARMONY_COLOR = UIColor(red: 189/255, green: 33/255, blue: 37/255, alpha: 1)
     static let PRIMARY_DARK_COLOR = UIColor(red: 47/255, green: 117/255, blue: 139/255, alpha: 1)
     static let SECONDARY_COLOR = UIColor(red: 247/255, green: 89/255, blue: 89/255, alpha: 1)
     static let TERTIARY_COLOR = UIColor(red: 255/255, green: 90/255, blue: 95/255, alpha: 1)

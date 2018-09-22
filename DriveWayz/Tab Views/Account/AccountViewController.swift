@@ -38,7 +38,7 @@ protocol controlsAccountViews {
     func hideUpcomingViewController()
 }
 
-class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, controlsAccountViews, sendNewParking {
+class AccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, controlsBankAccount, sendNewParking {
 
     var parkingImage: ParkingImage = ParkingImage.noImage
     var parkingStatus: ParkingStatus = ParkingStatus.noParking
@@ -92,7 +92,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
-        controller.delegate = self
+//        controller.delegate = self
         return controller
     }()
     
@@ -101,7 +101,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
-        controller.delegate = self
+//        controller.delegate = self
         
         return controller
     }()
@@ -124,9 +124,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var parkingController: UserParkingViewController = {
         let controller = UserParkingViewController()
-        controller.viewDelegate = self
+//        controller.viewDelegate = self
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
+//        controller.delegate = self
         controller.bankDelegate = self
         controller.title = "Parking"
         return controller
@@ -136,7 +136,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let controller = UserVehicleViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
+//        controller.delegate = self
         controller.title = "Vehicle"
         return controller
     }()
@@ -818,8 +818,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         } catch let logoutError {
             print(logoutError)
         }
-        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StartUpViewController") as! StartUpViewController
-            present(viewController, animated: true, completion: nil)
+        let myViewController: StartUpViewController = StartUpViewController()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = myViewController
+        appDelegate.window?.makeKeyAndVisible()
     }
     
     override func didReceiveMemoryWarning() {
@@ -911,201 +913,201 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == optionsTableView {
-            if indexPath.row == (Options.count-1) {
-                handleLogout()
-                self.openMainOptions()
-            } else if indexPath.row == (Options.count-2) {
-                
-                self.view.addSubview(self.contactController.view)
-                self.addChildViewController(contactController)
-                self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-                self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-                self.contactController.view.alpha = 0
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    UIView.animate(withDuration: 0.2, animations: {
-                        self.contactController.view.alpha = 1
-                    })
-                }
-                self.openMainOptions()
-            } else if indexPath.row == (Options.count-3) {
-                
-                self.view.addSubview(self.termsController.view)
-                self.addChildViewController(termsController)
-                self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-                self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-                self.termsController.view.alpha = 0
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    UIView.animate(withDuration: 0.2, animations: {
-                        self.termsController.view.alpha = 1
-                    })
-                }
-                self.openMainOptions()
-            } else if indexPath.row == (Options.count-5) {
-                
-                self.view.addSubview(self.couponController.view)
-                self.addChildViewController(couponController)
-                self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-                self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-                self.couponController.view.alpha = 0
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    UIView.animate(withDuration: 0.2, animations: {
-                        self.couponController.view.alpha = 1
-                    })
-                }
-                self.openMainOptions()
-            } else if indexPath.row == (Options.count-6) {
-                self.optionsTabViewConstraint.constant = 120
-                UIView.animate(withDuration: 0.1, animations: {
-                    let image = UIImage(named: "feed")
-                    let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                    self.tabFeed.setImage(tintedImage, for: .normal)
-                    self.tabFeed.tintColor = Theme.DARK_GRAY
-                    self.view.layoutIfNeeded()
-                }) { (success) in
-                    UIView.animate(withDuration: 0.2, animations: {
-                        switch self.emailConfirmed {
-                        case .confirmed:
-                            self.mainTableHeight.constant = 222
-                        case .unconfirmed:
-                            self.mainTableHeight.constant = 174
-                        }
-                        self.mainView.alpha = 0.9
-                        let image = UIImage(named: "feed")
-                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                        self.tabFeed.setImage(tintedImage, for: .normal)
-                        self.tabFeed.tintColor = Theme.WHITE
-                        self.tabFeed.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
-                        self.view.layoutIfNeeded()
-                    }) { (success) in
-                        UIView.animate(withDuration: 0.2) {
-                            self.mainTableView.alpha = 1
-                        }
-                    }
-                }
-            }
-        } else {
-            if Main[indexPath.row] == "Options" {
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.mainTableView.alpha = 0
-                }) { (success) in
-                    UIView.animate(withDuration: 0.2, animations: {
-                        let image = UIImage(named: "feed")
-                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                        self.tabFeed.setImage(tintedImage, for: .normal)
-                        self.tabFeed.tintColor = Theme.DARK_GRAY
-                        self.tabFeed.layer.backgroundColor = UIColor.clear.cgColor
-                        self.mainTableHeight.constant = 0
-                        self.mainView.alpha = 0
-                        self.view.layoutIfNeeded()
-                }) { (success) in
-                        self.optionsTabViewConstraint.constant = 0
-                        UIView.animate(withDuration: 0.2) {
-                            let image = UIImage(named: "feed")
-                            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-                            self.tabFeed.setImage(tintedImage, for: .normal)
-                            self.tabFeed.tintColor = Theme.WHITE
-                            self.view.layoutIfNeeded()
-                        }
-                    }
-                }
-            } else if Main[indexPath.row] == "Analytics" {
-                self.openMainOptions()
-                self.view.addSubview(analController.view)
-                analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-                analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-                analControllerAnchor = analController.view.leftAnchor.constraint(equalTo: self.view.rightAnchor)
-                    analControllerAnchor.isActive = true
-                analController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                self.view.layoutIfNeeded()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    UIView.animate(withDuration: 0.3) {
-                        self.analControllerAnchor.constant = -self.view.frame.width
-                        self.view.layoutIfNeeded()
-                    }
-                }
-            } else if Main[indexPath.row] == "Vehicle" {
-                self.vehiclePressedFunc()
-                self.openMainOptions()
-            } else if Main[indexPath.row] == "Hosting" {
-                self.parkingPressedFunc()
-                self.openMainOptions()
-            } else if Main[indexPath.row] == "Profile" {
-                self.recentPressedFunc()
-                self.openMainOptions()
-            }
-        }
+//        if tableView == optionsTableView {
+//            if indexPath.row == (Options.count-1) {
+//                handleLogout()
+//                self.openMainOptions()
+//            } else if indexPath.row == (Options.count-2) {
+//
+//                self.view.addSubview(self.contactController.view)
+//                self.addChildViewController(contactController)
+//                self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//                self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//                self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//                self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//                self.contactController.view.alpha = 0
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        self.contactController.view.alpha = 1
+//                    })
+//                }
+//                self.openMainOptions()
+//            } else if indexPath.row == (Options.count-3) {
+//
+//                self.view.addSubview(self.termsController.view)
+//                self.addChildViewController(termsController)
+//                self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//                self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//                self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//                self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//                self.termsController.view.alpha = 0
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        self.termsController.view.alpha = 1
+//                    })
+//                }
+//                self.openMainOptions()
+//            } else if indexPath.row == (Options.count-5) {
+//
+//                self.view.addSubview(self.couponController.view)
+//                self.addChildViewController(couponController)
+//                self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//                self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//                self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//                self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//                self.couponController.view.alpha = 0
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        self.couponController.view.alpha = 1
+//                    })
+//                }
+//                self.openMainOptions()
+//            } else if indexPath.row == (Options.count-6) {
+//                self.optionsTabViewConstraint.constant = 120
+//                UIView.animate(withDuration: 0.1, animations: {
+//                    let image = UIImage(named: "feed")
+//                    let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//                    self.tabFeed.setImage(tintedImage, for: .normal)
+//                    self.tabFeed.tintColor = Theme.DARK_GRAY
+//                    self.view.layoutIfNeeded()
+//                }) { (success) in
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        switch self.emailConfirmed {
+//                        case .confirmed:
+//                            self.mainTableHeight.constant = 222
+//                        case .unconfirmed:
+//                            self.mainTableHeight.constant = 174
+//                        }
+//                        self.mainView.alpha = 0.9
+//                        let image = UIImage(named: "feed")
+//                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//                        self.tabFeed.setImage(tintedImage, for: .normal)
+//                        self.tabFeed.tintColor = Theme.WHITE
+//                        self.tabFeed.layer.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8).cgColor
+//                        self.view.layoutIfNeeded()
+//                    }) { (success) in
+//                        UIView.animate(withDuration: 0.2) {
+//                            self.mainTableView.alpha = 1
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            if Main[indexPath.row] == "Options" {
+//                UIView.animate(withDuration: 0.1, animations: {
+//                    self.mainTableView.alpha = 0
+//                }) { (success) in
+//                    UIView.animate(withDuration: 0.2, animations: {
+//                        let image = UIImage(named: "feed")
+//                        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//                        self.tabFeed.setImage(tintedImage, for: .normal)
+//                        self.tabFeed.tintColor = Theme.DARK_GRAY
+//                        self.tabFeed.layer.backgroundColor = UIColor.clear.cgColor
+//                        self.mainTableHeight.constant = 0
+//                        self.mainView.alpha = 0
+//                        self.view.layoutIfNeeded()
+//                }) { (success) in
+//                        self.optionsTabViewConstraint.constant = 0
+//                        UIView.animate(withDuration: 0.2) {
+//                            let image = UIImage(named: "feed")
+//                            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+//                            self.tabFeed.setImage(tintedImage, for: .normal)
+//                            self.tabFeed.tintColor = Theme.WHITE
+//                            self.view.layoutIfNeeded()
+//                        }
+//                    }
+//                }
+//            } else if Main[indexPath.row] == "Analytics" {
+//                self.openMainOptions()
+//                self.view.addSubview(analController.view)
+//                analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//                analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//                analControllerAnchor = analController.view.leftAnchor.constraint(equalTo: self.view.rightAnchor)
+//                    analControllerAnchor.isActive = true
+//                analController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//                self.view.layoutIfNeeded()
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                    UIView.animate(withDuration: 0.3) {
+//                        self.analControllerAnchor.constant = -self.view.frame.width
+//                        self.view.layoutIfNeeded()
+//                    }
+//                }
+//            } else if Main[indexPath.row] == "Vehicle" {
+//                self.vehiclePressedFunc()
+//                self.openMainOptions()
+//            } else if Main[indexPath.row] == "Hosting" {
+//                self.parkingPressedFunc()
+//                self.openMainOptions()
+//            } else if Main[indexPath.row] == "Profile" {
+//                self.recentPressedFunc()
+//                self.openMainOptions()
+//            }
+//        }
     }
     
     var analControllerAnchor: NSLayoutConstraint!
     
-    lazy var analController: AnalyticsViewController = {
-        let controller = AnalyticsViewController()
-        self.addChildViewController(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Analytics"
-        controller.delegate = self
-        return controller
-    }()
+//    lazy var analController: AnalyticsViewController = {
+//        let controller = AnalyticsViewController()
+//        self.addChildViewController(controller)
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Analytics"
+////        controller.delegate = self
+//        return controller
+//    }()
+//
+//    func removeAnalyticsController() {
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.analControllerAnchor.constant = 0
+//            self.view.layoutIfNeeded()
+//        }) { (success) in
+//            self.analController.willMove(toParentViewController: nil)
+//            self.analController.view.removeFromSuperview()
+//            self.analController.removeFromParentViewController()
+//        }
+//    }
+//
+//    func removeOptionsFromView() {
+//        contactController.willMove(toParentViewController: nil)
+//        contactController.view.removeFromSuperview()
+//        contactController.removeFromParentViewController()
+//        termsController.willMove(toParentViewController: nil)
+//        termsController.view.removeFromSuperview()
+//        termsController.removeFromParentViewController()
+//        couponController.willMove(toParentViewController: nil)
+//        couponController.view.removeFromSuperview()
+//        couponController.removeFromParentViewController()
+//    }
     
-    func removeAnalyticsController() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.analControllerAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.analController.willMove(toParentViewController: nil)
-            self.analController.view.removeFromSuperview()
-            self.analController.removeFromParentViewController()
-        }
-    }
-    
-    func removeOptionsFromView() {
-        contactController.willMove(toParentViewController: nil)
-        contactController.view.removeFromSuperview()
-        contactController.removeFromParentViewController()
-        termsController.willMove(toParentViewController: nil)
-        termsController.view.removeFromSuperview()
-        termsController.removeFromParentViewController()
-        couponController.willMove(toParentViewController: nil)
-        couponController.view.removeFromSuperview()
-        couponController.removeFromParentViewController()
-    }
-    
-    lazy var contactController: ContactUsViewController = {
-        let controller = ContactUsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Contact Us!"
-        controller.view.alpha = 0
-        controller.delegate = self
-        return controller
-    }()
-    
-    lazy var termsController: TermsViewController = {
-        let controller = TermsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Terms"
-        controller.view.alpha = 0
-        controller.delegateOptions = self
-        return controller
-    }()
-    
-    lazy var couponController: CouponsViewController = {
-        let controller = CouponsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Coupons"
-        controller.view.alpha = 0
-        controller.delegate = self
-        return controller
-    }()
+//    lazy var contactController: ContactUsViewController = {
+//        let controller = ContactUsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Contact Us!"
+//        controller.view.alpha = 0
+//        controller.delegate = self
+//        return controller
+//    }()
+//
+//    lazy var termsController: TermsViewController = {
+//        let controller = TermsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Terms"
+//        controller.view.alpha = 0
+//        controller.delegateOptions = self
+//        return controller
+//    }()
+//
+//    lazy var couponController: CouponsViewController = {
+//        let controller = CouponsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Coupons"
+//        controller.view.alpha = 0
+//        controller.delegate = self
+//        return controller
+//    }()
     
     var mainView: UIView = {
         let view = UIView()
@@ -1238,4 +1240,20 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
 
 }
 
+
+extension UIView {
+    
+    func roundCorners(corners:UIRectCorner, radius: CGFloat) {
+        
+        DispatchQueue.main.async {
+            let path = UIBezierPath(roundedRect: self.bounds,
+                                    byRoundingCorners: corners,
+                                    cornerRadii: CGSize(width: radius, height: radius))
+            let maskLayer = CAShapeLayer()
+            maskLayer.frame = self.bounds
+            maskLayer.path = path.cgPath
+            self.layer.mask = maskLayer
+        }
+    }
+}
 

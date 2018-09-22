@@ -9,14 +9,19 @@
 import UIKit
 import TOMSMorphingLabel
 
-class LaunchAnimationsViewController: UIViewController {
+protocol handleStatusBarHide {
+    func hideStatusBar()
+    func bringStatusBar()
+}
+
+class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
     var morphingLabel: TOMSMorphingLabel = {
         let label = TOMSMorphingLabel()
-        label.text = "driveWayz"
+        label.text = "DRIVEWAYZ"
         label.animationDuration = 1.2
         label.textAlignment = .center
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.WHITE
         label.font = UIFont.systemFont(ofSize: 40, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -27,15 +32,15 @@ class LaunchAnimationsViewController: UIViewController {
         let image = UIImage(named: "DrivewayzCar")
         let view = UIImageView(image: image)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
+        view.tintColor = Theme.WHITE
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
     
-    lazy var startupController: StartUpViewController = {
-        let controller = StartUpViewController()
+    lazy var startupController: SignInViewController = {
+        let controller = SignInViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Startup"
         return controller
@@ -45,6 +50,7 @@ class LaunchAnimationsViewController: UIViewController {
         let controller = TabViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Tab"
+        controller.delegate = self
         return controller
     }()
     
@@ -53,6 +59,13 @@ class LaunchAnimationsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        let background = CAGradientLayer().mixColors()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        background.zPosition = -10
+        view.layer.insertSublayer(background, at: 0)
         
         self.view.addSubview(drivewayzCar)
         drivewayzCarAnchor = drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
@@ -85,8 +98,6 @@ class LaunchAnimationsViewController: UIViewController {
                         self.startupAnchor.constant = 0
                         self.drivewayzCar.alpha = 0
                         self.morphingLabel.alpha = 0
-//                        self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-//                        self.morphingLabel.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                         self.tabController.view.alpha = 1
                         self.startupController.view.alpha = 1
                         self.view.layoutIfNeeded()
@@ -124,12 +135,35 @@ class LaunchAnimationsViewController: UIViewController {
             UIApplication.shared.statusBarStyle = .default
         }
     }
+    
+    func hideStatusBar() {
+        statusBarShouldBeHidden = true
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func bringStatusBar() {
+        statusBarShouldBeHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    var statusBarShouldBeHidden = false
+    
+    override var prefersStatusBarHidden: Bool {
+        return statusBarShouldBeHidden
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
     
 
 }

@@ -316,7 +316,7 @@ class CurrentParkingViewController: UIViewController {
             timeRemaining.text = "Times up"
         }
         if timeRemaining.text == "Times up" {
-            timeRemaining.textColor = UIColor.red
+            timeRemaining.textColor = Theme.HARMONY_COLOR
         } else {
             timeRemaining.textColor = Theme.PRIMARY_DARK_COLOR
         }

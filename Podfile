@@ -16,7 +16,7 @@ target 'DriveWayz' do
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
 	pod 'AirbnbDatePicker'
-	pod 'TextFieldEffects'
+	pod 'TextFieldEffects', '~> 1.4.0'
     	pod 'Floaty', '~> 4.0.0'
 	pod 'GooglePlaces'
 	pod 'GooglePlacePicker'
@@ -24,12 +24,12 @@ target 'DriveWayz' do
     	pod 'GeoFire', :git => 'https://github.com/firebase/geofire-objc.git'
 	pod 'Stripe'
 	pod 'Alamofire'
-	pod 'Charts'
 	pod 'SwiftyJSON'
 	pod 'FacebookLogin'
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Cosmos', '~> 16.0'
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Cluster'
+	pod 'Charts'
 
 end

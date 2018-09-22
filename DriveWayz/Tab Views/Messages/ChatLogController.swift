@@ -403,7 +403,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)
         
         let zoomingImageView = UIImageView(frame: startingFrame!)
-        zoomingImageView.backgroundColor = UIColor.red
+        zoomingImageView.backgroundColor = Theme.HARMONY_COLOR
         zoomingImageView.image = startingImageView.image
         zoomingImageView.isUserInteractionEnabled = true
         zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))

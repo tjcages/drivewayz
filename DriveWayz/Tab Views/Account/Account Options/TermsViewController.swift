@@ -12,7 +12,7 @@ import Firebase
 class TermsViewController: UIViewController, UIScrollViewDelegate {
     
     var delegate: setupTermsControl?
-    var delegateOptions: controlsAccountViews?
+    var delegateOptions: controlsAccountOptions?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -26,7 +26,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -73,13 +73,14 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     var scrollToBottom: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "logout")
+        let image = UIImage(named: "Back")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
+        button.transform = CGAffineTransform.identity.rotated(by: CGFloat(-Double.pi/2))
         button.tintColor = Theme.WHITE
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         button.alpha = 0.9
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         button.addTarget(self, action: #selector(scrollToBottom(sender:)), for: .touchUpInside)
         
@@ -153,7 +154,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         scrollToBottom.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -65).isActive = true
         scrollToBottom.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -5).isActive = true
         scrollToBottom.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        scrollToBottom.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        scrollToBottom.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
@@ -167,7 +168,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
             UIView.animate(withDuration: 0.3, animations: {
                 self.view.alpha = 0
             }) { (success) in
-                self.delegateOptions?.removeOptionsFromView()
+                self.delegateOptions?.hideTermsController()
             }
         } else {
             self.delegate?.agreeToTerms()

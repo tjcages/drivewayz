@@ -20,7 +20,7 @@ class RetentionViewController: UIViewController {
         chart.chartDescription?.text = "Profits"
         chart.chartDescription?.position = CGPoint(x: 80, y: 40)
         chart.chartDescription?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         chart.holeRadiusPercent = 0.3
         chart.transparentCircleRadiusPercent = 0.4
         
@@ -44,7 +44,7 @@ class RetentionViewController: UIViewController {
         chart.chartDescription?.text = "Users"
         chart.chartDescription?.position = CGPoint(x: 80, y: 40)
         chart.chartDescription?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         chart.holeRadiusPercent = 0.3
         chart.transparentCircleRadiusPercent = 0.4
         
@@ -68,7 +68,7 @@ class RetentionViewController: UIViewController {
         chart.chartDescription?.text = "Hosts"
         chart.chartDescription?.position = CGPoint(x: 80, y: 40)
         chart.chartDescription?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        chart.chartDescription?.font = UIFont.systemFont(ofSize: 24, weight: .regular)
         chart.holeRadiusPercent = 0.3
         chart.transparentCircleRadiusPercent = 0.4
         

@@ -433,7 +433,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         ref.observe(.childAdded) { (snapshot) in
             self.check = false
             UIView.animate(withDuration: 0.3, animations: {
-                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1145)
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1450)
                 self.reserveContainerHeightAnchor.constant = 165
                 self.currentController.view.alpha = 1
                 self.reserveController.view.alpha = 0
@@ -443,7 +443,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         ref.observe(.childRemoved) { (snapshot) in
             self.check = false
             UIView.animate(withDuration: 0.3, animations: {
-                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1100)
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1400)
                 self.reserveContainerHeightAnchor.constant = 120
                 self.currentController.view.alpha = 0
                 self.reserveController.view.alpha = 1

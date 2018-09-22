@@ -999,8 +999,25 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 }
             }
         }
+        
+        self.addCurrentParking()
+        if reserveSegmentAnchor.isActive == true {
+            self.reserveParking()
+        } else if currentSegmentAnchor.isActive == true {
+            self.updateUserProfileCurrent()
+            self.drawNewRoute()
+            UIView.animate(withDuration: 0.3) {
+                currentButton.alpha = 1
+            }
+        }
+        self.notify(status: true)
+        UIView.animate(withDuration: 0.3) {
+            self.reserveCostAnchor.constant = 10
+            self.view.layoutIfNeeded()
+        }
+        
         self.paymentInProgress = true
-        self.paymentContext.requestPayment()
+//        self.paymentContext.requestPayment() /////////////////////////////////////////////////////////////// NO PAYMENTS
     }
     
     
@@ -1278,7 +1295,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         
         let parkingRef = Database.database().reference().child("parking").child(self.parkingId)
         let currentParkingRef = parkingRef.child("Current")
-        parkingRef.updateChildValues(["previousUser": currentUser])
+        parkingRef.updateChildValues(["previousUser": currentUser, "previousCost": self.cost])
         currentParkingRef.updateChildValues(["\(currentUser)": currentUser])
         
         let paymentRef = Database.database().reference().child("users").child(self.id).child("Payments")

@@ -12,7 +12,7 @@ import TextFieldEffects
 
 class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var delegate: controlsAccountViews?
+    var delegate: controlsAccountOptions?
     
     var termsContainer: UIView = {
         let view = UIView()
@@ -26,7 +26,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     var blurBackgroundStartup: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -253,7 +253,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                         UIView.animate(withDuration: 0.3, animations: {
                             self.view.alpha = 0
                         }) { (success) in
-                            self.delegate?.removeOptionsFromView()
+                            self.delegate?.hideCouponsController()
                         }
                     } else {
                         let ref = Database.database().reference().child("users").child(currentUser)
@@ -293,7 +293,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                                         }
                                     }
                                     
-                                    self.delegate?.removeOptionsFromView()
+                                    self.delegate?.hideCouponsController()
                                 } else {
                                     self.sendAlert(title: "Not quite!", message: "You must first become a host by signing up your parking space.")
                                 }
@@ -314,7 +314,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         UIView.animate(withDuration: 0.3, animations: {
             self.view.alpha = 0
         }) { (success) in
-            self.delegate?.removeOptionsFromView()
+            self.delegate?.hideCouponsController()
         }
     }
     
