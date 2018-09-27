@@ -63,8 +63,8 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(agreeToTerms(sender:)), for: .touchUpInside)
         
         return button

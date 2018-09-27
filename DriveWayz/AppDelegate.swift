@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         
         UIApplication.shared.applicationIconBadgeNumber = 0
-        application.registerForRemoteNotifications()
+//        application.registerForRemoteNotifications()
         
         return true
     }

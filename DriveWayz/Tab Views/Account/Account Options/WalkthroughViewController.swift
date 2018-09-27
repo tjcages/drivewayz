@@ -132,7 +132,7 @@ class WalkthroughViewController: UIViewController {
         let page = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
         page.numberOfPages = 4
         page.currentPage = 0
-        page.tintColor = Theme.DARK_GRAY
+        page.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         page.pageIndicatorTintColor = Theme.DARK_GRAY
         page.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
         page.translatesAutoresizingMaskIntoConstraints = false

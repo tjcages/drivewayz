@@ -15,7 +15,6 @@ target 'DriveWayz' do
 	pod 'Firebase/Invites'
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
-	pod 'AirbnbDatePicker'
 	pod 'TextFieldEffects', '~> 1.4.0'
     	pod 'Floaty', '~> 4.0.0'
 	pod 'GooglePlaces'
@@ -29,7 +28,7 @@ target 'DriveWayz' do
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Cosmos', '~> 16.0'
 	pod 'TOMSMorphingLabel', '~> 0.5'
+	pod 'Charts', '~> 3.1.1'
 	pod 'Cluster'
-	pod 'Charts'
 
 end

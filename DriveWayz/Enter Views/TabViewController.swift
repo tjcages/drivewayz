@@ -285,9 +285,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         UIApplication.shared.statusBarStyle = .default
         UIApplication.shared.applicationIconBadgeNumber = 0
         
-        if Auth.auth().currentUser?.uid == nil {
-            perform(#selector(handleLogout), with: nil, afterDelay: 0)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            if Auth.auth().currentUser?.uid == nil {
+//                self.perform(#selector(self.handleLogout), with: nil, afterDelay: 0)
+//            }
+//        }
         
         self.tabBarController?.tabBar.isHidden = true
         
@@ -434,41 +436,32 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     
     @objc func handleLogout() {
         
-//        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-//        UserDefaults.standard.synchronize()
-//
-//        let myViewController: StartUpViewController = StartUpViewController()
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        appDelegate.window?.rootViewController = myViewController
-//        appDelegate.window?.makeKeyAndVisible()
-//        
+        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+        UserDefaults.standard.synchronize()
+
+        let myViewController: SignInViewController = SignInViewController()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = myViewController
+        appDelegate.window?.makeKeyAndVisible()
     }
     
     func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        let isUserSeenWalkthrough: Bool = UserDefaults.standard.bool(forKey: "userSeenWalkthrough")
+        if isUserSeenWalkthrough == false {
+            self.view.addSubview(self.walkthroughController.view)
+            self.walkthroughController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            self.walkthroughController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            self.walkthroughController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.walkthroughController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.walkthroughController.view.alpha = 1
+            })
+            UserDefaults.standard.set(true, forKey: "userSeenWalkthrough")
+            UserDefaults.standard.synchronize()
+        } else {
             return
         }
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let userVehicleID = dictionary["Vehicle"] as? [String:AnyObject]
-                let userParkingID = dictionary["Parking"] as? [String:AnyObject]
-                
-                if userVehicleID == nil && userParkingID == nil {
-                    
-                    self.view.addSubview(self.walkthroughController.view)
-                    self.walkthroughController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                    self.walkthroughController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-                    self.walkthroughController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                    self.walkthroughController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-                    
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.walkthroughController.view.alpha = 1
-                    })
-                    
-                }
-            }
-        }, withCancel: nil)
-        return
     }
 
     var hostingAnchor: NSLayoutConstraint!
@@ -477,6 +470,10 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     var newVehicleAnchor: NSLayoutConstraint!
     var analControllerAnchor: NSLayoutConstraint!
     var upcomingAnchor: NSLayoutConstraint!
+    
+    func refreshSpots() {
+        self.mapController.observeUserParkingSpots()
+    }
     
     func hideTabController() {
         UIView.animate(withDuration: 0.2) {
@@ -699,6 +696,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideTermsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.termsController.view.alpha = 0
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
         }) { (success) in
             self.termsController.willMove(toParentViewController: nil)
             self.termsController.view.removeFromSuperview()
@@ -771,6 +770,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideCouponsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.couponController.view.alpha = 0
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
         }) { (success) in
             self.couponController.willMove(toParentViewController: nil)
             self.couponController.view.removeFromSuperview()
@@ -782,6 +783,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideContactUsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.contactController.view.alpha = 0
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
         }) { (success) in
             self.contactController.willMove(toParentViewController: nil)
             self.contactController.view.removeFromSuperview()

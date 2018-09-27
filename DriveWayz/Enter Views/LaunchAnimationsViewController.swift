@@ -12,14 +12,16 @@ import TOMSMorphingLabel
 protocol handleStatusBarHide {
     func hideStatusBar()
     func bringStatusBar()
+    func lightContentStatusBar()
+    func defaultStatusBar()
 }
 
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
     var morphingLabel: TOMSMorphingLabel = {
         let label = TOMSMorphingLabel()
-        label.text = "DRIVEWAYZ"
-        label.animationDuration = 1.2
+        label.text = "Drivewayz"
+        label.animationDuration = 1.6
         label.textAlignment = .center
         label.textColor = Theme.WHITE
         label.font = UIFont.systemFont(ofSize: 40, weight: .light)
@@ -30,7 +32,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
     var drivewayzCar: UIImageView = {
         let image = UIImage(named: "DrivewayzCar")
-        let view = UIImageView(image: image)
+        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImageOrientation.upMirrored)
+        let view = UIImageView(image: flip)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
         view.alpha = 0
@@ -43,6 +46,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         let controller = SignInViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Startup"
+        controller.delegate = self
         return controller
     }()
     
@@ -62,17 +66,17 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         
         UIApplication.shared.statusBarStyle = .lightContent
         
-        let background = CAGradientLayer().mixColors()
+        let background = CAGradientLayer().startColors()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         background.zPosition = -10
         view.layer.insertSublayer(background, at: 0)
         
         self.view.addSubview(drivewayzCar)
-        drivewayzCarAnchor = drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+        drivewayzCarAnchor = drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -self.view.frame.width)
             drivewayzCarAnchor.isActive = true
         drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -40).isActive = true
         drivewayzCar.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        drivewayzCar.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        drivewayzCar.widthAnchor.constraint(equalToConstant: 190).isActive = true
         
         self.checkViews()
         
@@ -82,8 +86,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     }
     
     func animate() {
-        UIView.animate(withDuration: 0.6, animations: {
-            self.drivewayzCarAnchor.constant = -4
+        UIView.animate(withDuration: 0.8, animations: {
+            self.drivewayzCarAnchor.constant = 0
             self.drivewayzCar.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -102,7 +106,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
                         self.startupController.view.alpha = 1
                         self.view.layoutIfNeeded()
                     }, completion: { (success) in
-                        UIApplication.shared.statusBarStyle = .default
+//                        UIApplication.shared.statusBarStyle = .default
                     })
                 }
             }
@@ -121,7 +125,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.tabController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.tabController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.tabController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .default
+            self.defaultStatusBar()
         } else {
             self.view.addSubview(self.startupController.view)
             self.addChildViewController(self.startupController)
@@ -132,7 +136,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.startupController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .default
+            self.lightContentStatusBar()
         }
     }
     
@@ -149,6 +153,20 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -156,6 +174,15 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     }
     
     var statusBarShouldBeHidden = false
+    var statusBarColor = false
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
+        }
+    }
     
     override var prefersStatusBarHidden: Bool {
         return statusBarShouldBeHidden

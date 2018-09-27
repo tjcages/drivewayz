@@ -30,7 +30,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         let controller = DataChartsViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
+//        controller.delegate = self
         controller.title = "Charts"
         return controller
     }()
@@ -186,6 +186,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
 
         setupViews()
         fetchUserAndSetupParking()
+        checkIfUnavailable()
     }
     
     var checkForParking: Bool = true
@@ -454,16 +455,16 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
             sendAlert(title: "Sorry..", message: "Currently this functionality is not available. We will let you know when this becomes available.", tag: 4)
 //            sendAlert(message: "Are you sure you want to change the cost per hour of your spot? This will only take place if the spot is vacated.", tag: 4)
         } else if indexPath.row == (Edits.count-5) {
-            sendAlert(title: "Sorry..", message: "Currently this functionality is not available. We will let you know when this becomes available.", tag: 5)
-//            sendAlert(message: "Are you sure you'd like to make your spot unavailable for a while? You will need to manually set it back to available.", tag: 5)
+//            sendAlert(title: "Sorry..", message: "Currently this functionality is not available. We will let you know when this becomes available.", tag: 5)
+            sendAlert(title: "Confirm", message: "Are you sure you'd like to make your spot unavailable for a while? You will need to manually set it back to available.", tag: 5)
         }
     }
     
     func sendAlert(title: String, message: String, tag: Int) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (true) in
-            let userId = Auth.auth().currentUser?.uid
-            let userRef = Database.database().reference().child("users").child(userId!)
+            guard let userId = Auth.auth().currentUser?.uid else { return }
+            let userRef = Database.database().reference().child("users").child(userId)
             userRef.observeSingleEvent(of: .value) { (snapshot) in
                 let checkRef = userRef.child("Parking")
                 checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -485,11 +486,15 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
                         } else if tag == 2 {
                             
                         } else if tag == 3 {
-                            
+//                            self.delegate?.bringNewHostingController()
                         } else if tag == 4 {
-                            
+//                            self.delegate?.bringNewHostingController()
                         } else if tag == 5 {
-                            
+                            if self.Edits[0] == "Make unavailable" {
+                                parkingRef.child("Current").updateChildValues(["Unavailable": "Unavailable"])
+                            } else if self.Edits[0] == "Make AVAILABLE" {
+                                parkingRef.child("Current").removeValue()
+                            }
                         }
                     }
                 })
@@ -497,6 +502,28 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true)
+    }
+    
+    func checkIfUnavailable() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let userRef = Database.database().reference().child("users").child(userId).child("Parking")
+        userRef.observe(.childAdded) { (snapshot) in
+            if let dictionary = snapshot.value as? String {
+                let parkingRef = Database.database().reference().child("parking").child(dictionary).child("Current")
+                parkingRef.observe(.childAdded, with: { (park) in
+                    if let parkDict = park.value as? String {
+                        if parkDict == "Unavailable" {
+                            self.Edits = ["Make AVAILABLE", "Edit hourly cost", "Edit availability", "Retake picture", "Delete host spot"]
+                            self.editingTableView.reloadData()
+                        }
+                    }
+                })
+                parkingRef.observe(.childRemoved, with: { (park) in
+                    self.Edits = ["Make unavailable", "Edit hourly cost", "Edit availability", "Retake picture", "Delete host spot"]
+                    self.editingTableView.reloadData()
+                })
+            }
+        }
     }
     
     func sendBankAccount() {

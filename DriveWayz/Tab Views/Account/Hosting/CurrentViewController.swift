@@ -246,10 +246,25 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     func observeCurrent(parkingID: String) {
         let ref = Database.database().reference().child("parking").child(parkingID).child("Current")
         ref.observe(.childAdded, with: { (snapshot) in
-            checkPreviousUser = false
-            let user = snapshot.value as? String
-            self.setData(newUser: user!)
-            self.setupCurrentViews(state: .current)
+            if let available = snapshot.value as? String {
+                if available == "Unavailable" {
+                    self.setupCurrentViews(state: .none)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        self.setupNoView()
+                    }
+                    return
+                } else {
+                    checkPreviousUser = false
+                    let user = snapshot.value as? String
+                    self.setData(newUser: user!)
+                    self.setupCurrentViews(state: .current)
+                }
+            } else {
+                checkPreviousUser = false
+                let user = snapshot.value as? String
+                self.setData(newUser: user!)
+                self.setupCurrentViews(state: .current)
+            }
         }, withCancel: nil)
         ref.observe(.childRemoved) { (snapshot) in
             self.setupCurrentViews(state: .previous)
@@ -258,8 +273,11 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
             let previousRef = Database.database().reference().child("parking").child(parkingID)
             previousRef.observe(.value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
-                    if (dictionary["Current"] as? [String:AnyObject]) != nil {
-                        //
+                    if let current = dictionary["Current"] as? [String:AnyObject] {
+                        if current["Unavailable"] != nil {
+                            self.setupCurrentViews(state: .none)
+                            return
+                        }
                     } else {
                         if let previousUser = dictionary["previousUser"] as? String {
                             self.setData(newUser: previousUser)

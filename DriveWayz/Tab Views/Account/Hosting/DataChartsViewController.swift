@@ -7,21 +7,21 @@
 //
 
 import UIKit
-//import Charts
+import Charts
 import Stripe
 import Firebase
 
 class DataChartsViewController: UIViewController, ChartViewDelegate {
-    
+
     var timeArray: [Double] = []
     var costArray: [Double] = [0]
     var count: Int = 0
-    
+
     lazy var bankController: BankAccountViewController = {
         let controller = BankAccountViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Bank"
-        
+
         return controller
     }()
 
@@ -34,10 +34,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         chart.layer.shadowOpacity = 0.8
         chart.layer.cornerRadius = 10
         chart.layer.shadowRadius = 1
-        
+
         return chart
     }()
-    
+
     var chartView: LineChartView = {
         let chart = LineChartView()
         chart.translatesAutoresizingMaskIntoConstraints = false
@@ -59,30 +59,30 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         chart.legend.textColor = UIColor.white
         chart.layer.cornerRadius = 10
         chart.isUserInteractionEnabled = false
-        
+
         return chart
     }()
-    
+
     var profitsLabel: UILabel = {
         let profits = UILabel()
         profits.text = "Profits:"
         profits.textColor = Theme.PRIMARY_DARK_COLOR
         profits.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         profits.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return profits
     }()
-    
+
     var profits: UILabel = {
         let profits = UILabel()
         profits.text = "$0.00"
         profits.textColor = Theme.PRIMARY_COLOR
         profits.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         profits.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return profits
     }()
-    
+
     var transfer: UIButton = {
         let transfer = UIButton()
         transfer.backgroundColor = UIColor.clear
@@ -91,10 +91,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         transfer.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         transfer.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         transfer.addTarget(self, action: #selector(checkAccount(sender:)), for: .touchUpInside)
-        
+
         return transfer
     }()
-    
+
     var refresh: UIButton = {
         let refresh = UIButton()
         let image = UIImage(named: "Checkmark")
@@ -103,10 +103,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         refresh.tintColor = Theme.PRIMARY_COLOR
         refresh.translatesAutoresizingMaskIntoConstraints = false
         refresh.addTarget(self, action: #selector(updateCharts), for: .touchUpInside)
-        
+
         return refresh
     }()
-    
+
     var hostHours: UITextView = {
         let label = UITextView()
         label.text = "Hours"
@@ -116,10 +116,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         label.contentMode = .left
         label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.isUserInteractionEnabled = false
-        
+
         return label
     }()
-    
+
     var hostTimes: UITextView = {
         let label = UITextView()
         label.text = "Times"
@@ -129,26 +129,26 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         label.contentMode = .left
         label.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.isUserInteractionEnabled = false
-        
+
         return label
     }()
-    
+
     var months: [String]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.view.backgroundColor = UIColor.clear
         chartView.delegate = self
-        
+
         pullData()
         setupCharts()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.didMove(toParentViewController: self)
-        
+
         self.timeArray = []
         self.costArray = [0]
     }
@@ -157,7 +157,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func pullData() {
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         let timeRef = Database.database().reference().child("users").child(currentUser)
@@ -180,7 +180,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                 }
             }
         }
-    
+
         let userRef = Database.database().reference().child("users").child(currentUser).child("Payments")
         userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             let count = snapshot.childrenCount
@@ -201,44 +201,44 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             }
         })
     }
-    
+
 
     func setupCharts() {
-        
+
         self.view.addSubview(chartContainer)
         chartContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
         chartContainer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         chartContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         chartContainer.heightAnchor.constraint(equalToConstant: 305).isActive = true
-        
+
         self.view.addSubview(chartView)
         chartView.topAnchor.constraint(equalTo: chartContainer.topAnchor, constant: 40).isActive = true
         chartView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         chartView.leftAnchor.constraint(equalTo: chartContainer.leftAnchor).isActive = true
         chartView.heightAnchor.constraint(equalToConstant: 190).isActive = true
-        
+
         self.view.addSubview(profitsLabel)
         profitsLabel.leftAnchor.constraint(equalTo: chartView.leftAnchor, constant: 20).isActive = true
         profitsLabel.topAnchor.constraint(equalTo: chartView.topAnchor, constant: -20).isActive = true
         profitsLabel.sizeToFit()
-        
+
         self.view.addSubview(profits)
         profits.leftAnchor.constraint(equalTo: profitsLabel.rightAnchor, constant: 5).isActive = true
         profits.topAnchor.constraint(equalTo: chartView.topAnchor, constant: -20).isActive = true
         profits.sizeToFit()
-        
+
         self.view.addSubview(transfer)
         transfer.rightAnchor.constraint(equalTo: chartContainer.rightAnchor, constant: -20).isActive = true
         transfer.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: -35).isActive = true
         transfer.widthAnchor.constraint(equalToConstant: 120).isActive = true
         transfer.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
+
         self.view.addSubview(refresh)
         refresh.centerYAnchor.constraint(equalTo: profits.centerYAnchor).isActive = true
         refresh.rightAnchor.constraint(equalTo: chartView.rightAnchor, constant: -15).isActive = true
         refresh.widthAnchor.constraint(equalToConstant: 20).isActive = true
         refresh.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
+
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
         line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
@@ -247,19 +247,19 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         line.widthAnchor.constraint(equalTo: chartContainer.widthAnchor).isActive = true
         line.centerXAnchor.constraint(equalTo: chartContainer.centerXAnchor).isActive = true
-        
+
         self.view.addSubview(hostHours)
         hostHours.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
         hostHours.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 5).isActive = true
         hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -30).isActive = true
         hostHours.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
+
         self.view.addSubview(hostTimes)
         hostTimes.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
         hostTimes.topAnchor.constraint(equalTo: hostHours.bottomAnchor, constant: 5).isActive = true
         hostTimes.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -40).isActive = true
         hostTimes.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
+
 //        let line2 = UIView()
 //        line2.translatesAutoresizingMaskIntoConstraints = false
 //        line2.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
@@ -268,17 +268,17 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
 //        line2.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
 //        line2.widthAnchor.constraint(equalTo: chartContainer.widthAnchor).isActive = true
 //        line2.centerXAnchor.constraint(equalTo: chartContainer.centerXAnchor).isActive = true
-        
+
     }
-    
+
     func setChart(dataPoints: [Double], values: [Double], count: Int) {
         var dataEntries: [BarChartDataEntry] = []
-        
+
         for i in 0..<(count) {
             let dataEntry = BarChartDataEntry(x: Double(i), yValues: [Double(values[i])])
             dataEntries.append(dataEntry)
         }
-        
+
         let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Money made")
         lineChartDataSet.circleColors = [Theme.PRIMARY_COLOR]
         lineChartDataSet.circleHoleRadius = 0
@@ -290,23 +290,23 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         chartView.leftAxis.axisMaximum = lineChartData.yMax
         chartView.leftAxis.axisMinimum = 0
         chartView.xAxis.axisMaximum = lineChartData.xMax
-        
+
         chartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
     }
-    
+
     @objc func updateCharts() {
         self.timeArray = []
         self.costArray = [0]
         pullData()
     }
-    
+
     func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: Highlight) {
-        
+
 //        print("\(entry.value) in \(months[entry.index])")
     }
-    
+
     var delegate: sendBankAccount?
-    
+
     @objc func checkAccount(sender: UIButton) {
         if let currentUser = Auth.auth().currentUser?.uid {
             let checkRef = Database.database().reference().child("users").child(currentUser)
@@ -329,7 +329,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             }, withCancel: nil)
         }
     }
-    
+
     func removeFunds(account: String) {
         if let currentUser = Auth.auth().currentUser?.uid {
             let checkRef = Database.database().reference().child("users").child(currentUser)
@@ -347,7 +347,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             }, withCancel: nil)
         }
     }
-    
+
     func sendAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))

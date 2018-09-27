@@ -43,6 +43,22 @@ extension CAGradientLayer {
     
     @objc func mixColors() -> CAGradientLayer {
         
+        let topColor = Theme.WHITE
+        let bottomColor = Theme.PRIMARY_COLOR
+//        let bottomColor = UIColor(red: 34/255, green: 48/255, blue: 70/255, alpha: 1)
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        
+        return gradientLayer
+    }
+    
+    @objc func startColors() -> CAGradientLayer {
+        
         let topColor = Theme.PRIMARY_COLOR
         let bottomColor = UIColor(red: 34/255, green: 48/255, blue: 70/255, alpha: 1)
         

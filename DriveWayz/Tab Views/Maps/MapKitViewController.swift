@@ -213,9 +213,14 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         setupViews()
         setupAdditionalViews()
         setupViewController()
-        setupLocationManager()
-        observeUserParkingSpots()
         checkCurrentParking()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.setupLocationManager()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.observeUserParkingSpots()
+        }
     }
     
     override public func didReceiveMemoryWarning() {
@@ -575,6 +580,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
 //    ///////////////////////////////// LOCATION MANAGER
     
+    var searchedForPlace: Bool = false
     
     func setupLocationManager() {
         
@@ -591,16 +597,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
+            self.showPartyMarkers()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // change 2 to desired number of seconds
-            
-            let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
-            var region = MKCoordinateRegion()
-            region.center = location
-            region.span.latitudeDelta = 0.01
-            region.span.longitudeDelta = 0.01
-            self.mapView.setRegion(region, animated: true)
+        if self.searchedForPlace == false {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // change 2 to desired number of seconds
+                let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
+                var region = MKCoordinateRegion()
+                region.center = location
+                region.span.latitudeDelta = 0.01
+                region.span.longitudeDelta = 0.01
+                self.mapView.setRegion(region, animated: true)
+            }
+        } else {
+            return
         }
     }
     
@@ -646,6 +656,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         self.locationManager.startUpdatingLocation()
         self.present(autoCompleteController, animated: true, completion: nil)
+        self.searchedForPlace = true
         return false
     }
     

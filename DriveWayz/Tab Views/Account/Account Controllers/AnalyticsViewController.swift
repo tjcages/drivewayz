@@ -23,9 +23,9 @@ class AnalyticsViewController: UIViewController {
     }()
     
     var driveWayzLogo: UIImageView = {
-        let view = UIImageView()
         let image = UIImage(named: "DrivewayzCar")
-        view.image = image
+        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImageOrientation.upMirrored)
+        let view = UIImageView(image: flip)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.DARK_GRAY

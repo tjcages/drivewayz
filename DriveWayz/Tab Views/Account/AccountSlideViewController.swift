@@ -17,9 +17,15 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Home", "Reservations", "Hosting", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+    enum emailConfirmation {
+        case confirmed
+        case unconfirmed
+    }
+    var emailConfirmed: emailConfirmation = .unconfirmed
+    
+    var options: [String] = ["Home", "Reservations", "Hosting", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
     var terms: [String] = ["Terms"]
-    var optionsImages: [UIImage] = [UIImage(named: "Home")!, UIImage(named: "account")!, UIImage(named: "parkingIcon")!, UIImage(named: "vehicle")!, UIImage(named: "analytics")!, UIImage(named: "coupon")!, UIImage(named: "contactUs")!, UIImage(named: "logout")!, UIImage(named: "terms")!]
+    var optionsImages: [UIImage] = [UIImage(named: "Home")!, UIImage(named: "parkingIcon")!, UIImage(named: "analytics")!, UIImage(named: "vehicle")!, UIImage(named: "account")!, UIImage(named: "coupon")!, UIImage(named: "contactUs")!, UIImage(named: "logout")!, UIImage(named: "terms")!]
     let cellId = "cellId"
     
     lazy var container: UIView = {
@@ -181,6 +187,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         setHomeIndex()
         checkForMarks()
         checkForUpcoming()
+        configureOptions()
     }
 
     override func didReceiveMemoryWarning() {
@@ -480,9 +487,6 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
             cell.imageView?.image = cell.imageView?.image?.withRenderingMode(.alwaysTemplate)
             cell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         }
-        if indexPath.row == (options.count-2) {
-            cell.profileImageView.backgroundColor = UIColor.clear
-        }
         cell.selectionStyle = .none
         
         return cell
@@ -520,9 +524,13 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
             } else if options[indexPath.row] == "Vehicle" {
                 self.openAccountView()
                 self.delegate?.bringVehicleController()
-            } else if options[indexPath.row] == "Analytics" {
-                self.openAccountView()
-                self.delegate?.bringAnalyticsController()
+            } else if options[indexPath.row] == "Messages" {
+                if self.emailConfirmed == .confirmed {
+                    self.openAccountView()
+                    self.delegate?.bringAnalyticsController()
+                } else {
+                    self.displayAlertMessage(userMessage: "Currently this functionality is unavailable.", title: "Sorry!")
+                }
             } else if options[indexPath.row] == "Coupons" {
                 self.delegate?.moveToMap()
                 self.delegate?.bringCouponsController()
@@ -558,8 +566,17 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         } catch let logoutError {
             print(logoutError)
         }
-        let viewController: StartUpViewController = StartUpViewController()
+        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+        UserDefaults.standard.synchronize()
+        let viewController: SignInViewController = SignInViewController()
         present(viewController, animated: true, completion: nil)
+    }
+    
+    func displayAlertMessage(userMessage: String, title: String) {
+        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func moveMainLabelUp() {
@@ -580,6 +597,25 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         let index = IndexPath(row: 0, section: 0)
         self.optionsTableView.selectRow(at: index, animated: true, scrollPosition: .top)
         optionsTableView.delegate?.tableView!(optionsTableView, didSelectRowAt: index)
+    }
+    
+    func configureOptions() {
+        guard let currentUser = Auth.auth().currentUser?.email else { return }
+        let ref = Database.database().reference().child("ConfirmedEmails")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String] {
+                let count = dictionary.count
+                for i in 0..<count {
+                    let email = dictionary[i]
+                    if email == currentUser {
+                        self.emailConfirmed = .confirmed
+                        return
+                    } else {
+                        self.emailConfirmed = .unconfirmed
+                    }
+                }
+            }
+        }
     }
 
 

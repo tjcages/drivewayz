@@ -48,11 +48,11 @@ class CurrentParkingViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
-        configureNotifications()
         checkCurrentParking()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        configureNotifications()
         timer.invalidate()
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")

@@ -15,8 +15,11 @@ class NotifyUpcomingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNotifications()
         checkForUpcoming()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        configureNotifications()
     }
 
     override func didReceiveMemoryWarning() {

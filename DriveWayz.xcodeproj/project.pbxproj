@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25FF2D799E4034467F5386F9 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44996B58777BFB5D3EE201C5 /* Pods_DriveWayz.framework */; };
 		4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4721476BB100A380B8 /* PickCostViewController.swift */; };
 		4D035F4A21477DB500A380B8 /* SpotsMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */; };
 		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
@@ -19,7 +20,6 @@
 		4D21D2DD20CC9FC3002D7005 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D21D2DB20CC9FC3002D7005 /* Main.storyboard */; };
 		4D21D2E220CC9FC4002D7005 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D21D2E020CC9FC4002D7005 /* LaunchScreen.storyboard */; };
 		4D21D31320CC9FF9002D7005 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2EC20CC9FF9002D7005 /* Users.swift */; };
-		4D21D31420CC9FF9002D7005 /* bro in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2ED20CC9FF9002D7005 /* bro */; };
 		4D21D31720CC9FF9002D7005 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2F020CC9FF9002D7005 /* Message.swift */; };
 		4D21D31820CC9FF9002D7005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D21D2F120CC9FF9002D7005 /* Assets.xcassets */; };
 		4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2F320CC9FF9002D7005 /* UserCell.swift */; };
@@ -36,7 +36,6 @@
 		4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */; };
 		4D26EE6120E5C5DB00E369EF /* ParkingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */; };
 		4D2B28FA2155B1960083F588 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2B28F92155B1960083F588 /* SignInViewController.swift */; };
-		4D2B28FC2156D1DE0083F588 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2B28FB2156D1DE0083F588 /* PhoneNumberViewController.swift */; };
 		4D2C5F8A211938D100364CB6 /* ReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C5F89211938D100364CB6 /* ReserveViewController.swift */; };
 		4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */; };
 		4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */; };
@@ -66,6 +65,8 @@
 		4D79A6F52152FA56003D1711 /* UpcomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D79A6F42152FA56003D1711 /* UpcomingViewController.swift */; };
 		4D8CE1E5213FA51E00C6C61E /* ParkingAnnotationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */; };
 		4D8CE1EA2140C97D00C6C61E /* UpcomingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CE1E92140C97D00C6C61E /* UpcomingInfoViewController.swift */; };
+		4D8CFF352158433400FE22A5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CFF342158433400FE22A5 /* RegisterViewController.swift */; };
+		4D8CFF372158854E00FE22A5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8CFF362158854E00FE22A5 /* LoginViewController.swift */; };
 		4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */; };
 		4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */; };
 		4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FB806213EF70400899829 /* MapKitViewController.swift */; };
@@ -76,7 +77,6 @@
 		4DC261B12145E05B00D6DCD3 /* ConfigureParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC261B02145E05B00D6DCD3 /* ConfigureParkingViewController.swift */; };
 		4DC261B4214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC261B3214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift */; };
 		4DC261B62147525E00D6DCD3 /* SelectTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */; };
-		4DC4B9D620CDA018004FFBCE /* AirbnbDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */; };
 		4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */; };
 		4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492620F018D200F00B3B /* CheckoutRowView.swift */; };
 		4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492720F018D200F00B3B /* Buttons.swift */; };
@@ -103,7 +103,6 @@
 		4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */; };
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
-		52A8767CD4AA729F78E1C499 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547E6B3F2F75FF1E6B5B3240 /* Pods_DriveWayz.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,6 +119,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		44996B58777BFB5D3EE201C5 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D035F4721476BB100A380B8 /* PickCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickCostViewController.swift; sourceTree = "<group>"; };
 		4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsMessageViewController.swift; sourceTree = "<group>"; };
 		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
@@ -133,7 +133,6 @@
 		4D21D2DC20CC9FC3002D7005 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4D21D2E120CC9FC4002D7005 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D21D2EC20CC9FF9002D7005 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
-		4D21D2ED20CC9FF9002D7005 /* bro */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bro; sourceTree = "<group>"; };
 		4D21D2F020CC9FF9002D7005 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		4D21D2F120CC9FF9002D7005 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D21D2F320CC9FF9002D7005 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -150,7 +149,6 @@
 		4D26EE5E20E5C5DB00E369EF /* ParkingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTableViewCell.swift; sourceTree = "<group>"; };
 		4D26EE5F20E5C5DB00E369EF /* ParkingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ParkingTableViewCell.xib; sourceTree = "<group>"; };
 		4D2B28F92155B1960083F588 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		4D2B28FB2156D1DE0083F588 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		4D2C5F89211938D100364CB6 /* ReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveViewController.swift; sourceTree = "<group>"; };
 		4D2C5F8C211A79AE00364CB6 /* SelectPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPurchaseViewController.swift; sourceTree = "<group>"; };
 		4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsCell.swift; sourceTree = "<group>"; };
@@ -181,6 +179,8 @@
 		4D79A6F42152FA56003D1711 /* UpcomingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingViewController.swift; sourceTree = "<group>"; };
 		4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAnnotationViews.swift; sourceTree = "<group>"; };
 		4D8CE1E92140C97D00C6C61E /* UpcomingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingInfoViewController.swift; sourceTree = "<group>"; };
+		4D8CFF342158433400FE22A5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		4D8CFF362158854E00FE22A5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoViewController.swift; sourceTree = "<group>"; };
 		4D9FB806213EF70400899829 /* MapKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewController.swift; sourceTree = "<group>"; };
@@ -191,7 +191,6 @@
 		4DC261B02145E05B00D6DCD3 /* ConfigureParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureParkingViewController.swift; sourceTree = "<group>"; };
 		4DC261B3214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleAvailabilityViewController.swift; sourceTree = "<group>"; };
 		4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTimesViewController.swift; sourceTree = "<group>"; };
-		4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirbnbDatePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC886FC20F8E0FD000540D6 /* CurrentParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentParkingViewController.swift; sourceTree = "<group>"; };
 		4DCA492620F018D200F00B3B /* CheckoutRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutRowView.swift; sourceTree = "<group>"; };
 		4DCA492720F018D200F00B3B /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -220,9 +219,8 @@
 		4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecentViewController.swift; sourceTree = "<group>"; };
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
-		547E6B3F2F75FF1E6B5B3240 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2F3DB5055B0A9BFB0A3C05A /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
-		E99D958F146C54BD05F75A48 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
+		834ED965628D32DA4ED83FE0 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
+		B0A63AD02ED20C81E9D0AE9D /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,9 +228,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DC4B9D620CDA018004FFBCE /* AirbnbDatePicker.framework in Frameworks */,
 				4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */,
-				52A8767CD4AA729F78E1C499 /* Pods_DriveWayz.framework in Frameworks */,
+				25FF2D799E4034467F5386F9 /* Pods_DriveWayz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,7 +242,7 @@
 				4D21D2D620CC9FC3002D7005 /* DriveWayz */,
 				4D21D2D520CC9FC3002D7005 /* Products */,
 				90AD91F4ABE5AAC0BB7393D9 /* Frameworks */,
-				8C1F98C5CC6CE31F11CFF73C /* Pods */,
+				CB223BB3A4FB2C756E815728 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -353,7 +350,6 @@
 		4D21D33C20CCA463002D7005 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				4D21D2ED20CC9FF9002D7005 /* bro */,
 				4D21D2FD20CC9FF9002D7005 /* SettingNavViewController.swift */,
 				4D21D30120CC9FF9002D7005 /* FeedNavViewController.swift */,
 				4D21D30820CC9FF9002D7005 /* NotificationsNavViewController.swift */,
@@ -379,7 +375,8 @@
 			children = (
 				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
 				4D2B28F92155B1960083F588 /* SignInViewController.swift */,
-				4D2B28FB2156D1DE0083F588 /* PhoneNumberViewController.swift */,
+				4D8CFF342158433400FE22A5 /* RegisterViewController.swift */,
+				4D8CFF362158854E00FE22A5 /* LoginViewController.swift */,
 			);
 			path = "Sign In";
 			sourceTree = "<group>";
@@ -561,23 +558,22 @@
 			path = "Notifications-Banner Ads";
 			sourceTree = "<group>";
 		};
-		8C1F98C5CC6CE31F11CFF73C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E99D958F146C54BD05F75A48 /* Pods-DriveWayz.debug.xcconfig */,
-				D2F3DB5055B0A9BFB0A3C05A /* Pods-DriveWayz.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		90AD91F4ABE5AAC0BB7393D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4DC4B9D520CDA018004FFBCE /* AirbnbDatePicker.framework */,
 				4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */,
-				547E6B3F2F75FF1E6B5B3240 /* Pods_DriveWayz.framework */,
+				44996B58777BFB5D3EE201C5 /* Pods_DriveWayz.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB223BB3A4FB2C756E815728 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				834ED965628D32DA4ED83FE0 /* Pods-DriveWayz.debug.xcconfig */,
+				B0A63AD02ED20C81E9D0AE9D /* Pods-DriveWayz.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -587,13 +583,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4D21D2E620CC9FC4002D7005 /* Build configuration list for PBXNativeTarget "DriveWayz" */;
 			buildPhases = (
-				33597550610F5FEB104798B9 /* [CP] Check Pods Manifest.lock */,
+				A6B5A3C730A9371863FFB97E /* [CP] Check Pods Manifest.lock */,
 				4D21D2D020CC9FC3002D7005 /* Sources */,
 				4D21D2D120CC9FC3002D7005 /* Frameworks */,
 				4D21D2D220CC9FC3002D7005 /* Resources */,
 				4DCFE79020FC2A6F00073677 /* Embed App Extensions */,
-				BE98FC3AE1E8EE9FD7AD5DBC /* [CP] Embed Pods Frameworks */,
-				EDFE8A80ED42F0839575B622 /* [CP] Copy Pods Resources */,
+				7F5A17F7EC12F3C57032CFE9 /* [CP] Embed Pods Frameworks */,
+				A6C07CBC4A19B7DA95BE89C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -663,32 +659,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		33597550610F5FEB104798B9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BE98FC3AE1E8EE9FD7AD5DBC /* [CP] Embed Pods Frameworks */ = {
+		7F5A17F7EC12F3C57032CFE9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AirbnbDatePicker/AirbnbDatePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
@@ -716,7 +693,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AirbnbDatePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
@@ -747,7 +723,25 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EDFE8A80ED42F0839575B622 /* [CP] Copy Pods Resources */ = {
+		A6B5A3C730A9371863FFB97E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6C07CBC4A19B7DA95BE89C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -808,7 +802,6 @@
 				4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */,
 				4DC261B4214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift in Sources */,
 				4D2EB5C221016EED004AEA54 /* ParkingStatus.swift in Sources */,
-				4D2B28FC2156D1DE0083F588 /* PhoneNumberViewController.swift in Sources */,
 				4DBC151B2142FEE3003CBED7 /* NotifyUpcomingViewController.swift in Sources */,
 				4D21D32F20CC9FF9002D7005 /* AccountNavViewController.swift in Sources */,
 				4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */,
@@ -817,7 +810,6 @@
 				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
 				4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */,
 				4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */,
-				4D21D31420CC9FF9002D7005 /* bro in Sources */,
 				4D21D32B20CC9FF9002D7005 /* NotificationsNavViewController.swift in Sources */,
 				4D21D31E20CC9FF9002D7005 /* MessageTableViewController.swift in Sources */,
 				4D78BDFC214F03F700631801 /* OptionsCell.swift in Sources */,
@@ -840,6 +832,7 @@
 				4D21D31720CC9FF9002D7005 /* Message.swift in Sources */,
 				4D2EB5CE21068731004AEA54 /* TermsViewController.swift in Sources */,
 				4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */,
+				4D8CFF352158433400FE22A5 /* RegisterViewController.swift in Sources */,
 				4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */,
 				4D035F4A21477DB500A380B8 /* SpotsMessageViewController.swift in Sources */,
 				4D2EB5C621039486004AEA54 /* ParkingImageViewController.swift in Sources */,
@@ -858,6 +851,7 @@
 				4D2C5F8A211938D100364CB6 /* ReserveViewController.swift in Sources */,
 				4D41B21920CCA8F3002802A9 /* NewMessageController.swift in Sources */,
 				4D45073C21377F34005CD8D7 /* NewUsersViewController.swift in Sources */,
+				4D8CFF372158854E00FE22A5 /* LoginViewController.swift in Sources */,
 				4D21D32320CC9FF9002D7005 /* ChatLogController.swift in Sources */,
 				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
 				4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */,
@@ -1010,7 +1004,7 @@
 		};
 		4D21D2E720CC9FC4002D7005 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E99D958F146C54BD05F75A48 /* Pods-DriveWayz.debug.xcconfig */;
+			baseConfigurationReference = 834ED965628D32DA4ED83FE0 /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -1025,14 +1019,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.coappdesign.drivewayz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		4D21D2E820CC9FC4002D7005 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2F3DB5055B0A9BFB0A3C05A /* Pods-DriveWayz.release.xcconfig */;
+			baseConfigurationReference = B0A63AD02ED20C81E9D0AE9D /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -1047,7 +1041,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.coappdesign.drivewayz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Assets/drivewayz-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

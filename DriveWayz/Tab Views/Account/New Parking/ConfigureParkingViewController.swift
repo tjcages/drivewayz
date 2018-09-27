@@ -445,7 +445,7 @@ class ConfigureParkingViewController: UIViewController {
             nextButtonWidthAnchor.isActive = true
         
         self.view.addSubview(backButton)
-        backButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -80).isActive = true
+        backButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -90).isActive = true
         backButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -576,7 +576,7 @@ class ConfigureParkingViewController: UIViewController {
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.scheduleControllerAnchor.constant = 0
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
@@ -588,7 +588,7 @@ class ConfigureParkingViewController: UIViewController {
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.timesControllerAnchor.constant = 0
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
@@ -601,7 +601,7 @@ class ConfigureParkingViewController: UIViewController {
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.costsControllerAnchor.constant = 0
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
@@ -669,7 +669,7 @@ class ConfigureParkingViewController: UIViewController {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.scheduleControllerAnchor.constant = 0
                     self.scheduleController.view.alpha = 1
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
@@ -683,7 +683,7 @@ class ConfigureParkingViewController: UIViewController {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.timesControllerAnchor.constant = 0
                     self.timesController.view.alpha = 1
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
@@ -696,7 +696,7 @@ class ConfigureParkingViewController: UIViewController {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.costsControllerAnchor.constant = 0
                     self.costsController.view.alpha = 1
-                    self.nextButtonCenterAnchor.constant = 60
+                    self.nextButtonCenterAnchor.constant = 50
                     self.nextButtonTopAnchor.constant = -20
                     self.nextButtonHeightAnchor.constant = 40
                     self.nextButtonWidthAnchor.constant = 160
