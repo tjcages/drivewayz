@@ -13,7 +13,7 @@ protocol sendBankAccount {
     func sendBankAccount()
 }
 
-class UserParkingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, sendBankAccount {
+class UserParkingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, controlBankAccount {
     
     enum UserState {
         case current
@@ -22,15 +22,13 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     var userState: UserState = UserState.current
     
     var delegate: handleCurrentParking?
-//    var parkingDelegate: controlsNewParking?
-//    var viewDelegate: controlsAccountViews?
     var bankDelegate: controlsBankAccount?
     
     lazy var earningsController: DataChartsViewController = {
         let controller = DataChartsViewController()
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.delegate = self
+        controller.delegate = self
         controller.title = "Charts"
         return controller
     }()
@@ -526,7 +524,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func sendBankAccount() {
+    func bringBankAccountController() {
         self.bankDelegate?.setupBankAccount()
     }
     

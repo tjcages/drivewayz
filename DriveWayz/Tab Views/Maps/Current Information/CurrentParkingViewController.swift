@@ -93,24 +93,15 @@ class CurrentParkingViewController: UIViewController {
             currentRef.observe(.childAdded, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     currentParking = true
-                    let parkingID = dictionary["parkingID"] as? String
                     self.timestamp = dictionary["timestamp"] as? Double
                     self.hours = dictionary["hours"] as? Int
                     if timerStarted == false {
                         timerStarted = true
                         self.startTiming()
                     }
-                    let parkingRef = Database.database().reference().child("parking").child(parkingID!)
-                    parkingRef.observeSingleEvent(of: .value, with: { (pull) in
-                        if let pullRef = pull.value as? [String:AnyObject] {
-                            let address = pullRef["parkingAddress"] as? String
-                    
-                            if notificationSent == false {
-                                notificationSent = true
-                                self.startTimerNotification(address: address!)
-                            }
-                        }
-                    })
+                    if notificationSent == false {
+                        notificationSent = true
+                    }
                 }
             }, withCancel: nil)
             currentRef.observe(.childRemoved, with: { (snapshot) in
@@ -189,107 +180,97 @@ class CurrentParkingViewController: UIViewController {
         UNUserNotificationCenter.current().setNotificationCategories([category])
     }
     
-    func startTimerNotification(address: String) {
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(address) { (placemarks, error) in
-            guard
-                let placemarks = placemarks,
-                let location = placemarks.first?.location
-                else {
-                    print("Couldn't find location")
-                    return
-            }
-            let mapboxCoordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let camera = SnapshotCamera(lookingAtCenter: mapboxCoordinate, zoomLevel: 16.0)
-            let options = SnapshotOptions(styleURL: URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")!, camera: camera, size: CGSize(width: 288, height: 200))
-            let markerOverlay = Marker(
-                coordinate: mapboxCoordinate,
-                size: .small,
-                iconName: "car"
-            )
-            markerOverlay.color = Theme.PRIMARY_COLOR
-            options.overlays = [markerOverlay]
-            let content = UNMutableNotificationContent()
-            let secondContent = UNMutableNotificationContent()
-            let thirdContent = UNMutableNotificationContent()
-            let fourthContent = UNMutableNotificationContent()
+    func startTimerNotification(location: CLLocation) {
+        let mapboxCoordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let camera = SnapshotCamera(lookingAtCenter: mapboxCoordinate, zoomLevel: 16.0)
+        let options = SnapshotOptions(styleURL: URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")!, camera: camera, size: CGSize(width: 288, height: 200))
+        let markerOverlay = Marker(
+            coordinate: mapboxCoordinate,
+            size: .small,
+            iconName: "car"
+        )
+        markerOverlay.color = Theme.PRIMARY_COLOR
+        options.overlays = [markerOverlay]
+        let content = UNMutableNotificationContent()
+        let secondContent = UNMutableNotificationContent()
+        let thirdContent = UNMutableNotificationContent()
+        let fourthContent = UNMutableNotificationContent()
+        
+        let mapboxAccessToken = "pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ"
+        let snapshot = Snapshot(options: options, accessToken: mapboxAccessToken)
+        let identifier = ProcessInfo.processInfo.globallyUniqueString
+        
+        if let attachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
+            content.attachments = [attachment]
+        }
+        if let secondAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
+            secondContent.attachments = [secondAttachment]
+        }
+        if let thirdAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
+            thirdContent.attachments = [thirdAttachment]
+        }
+        
+        content.title = "Your current parking spot has expired!"
+        content.subtitle = "Please move your vehicle or extend time in app."
+        content.body = "Hold down for quick options!"
+        content.badge = 0
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "actionCategory"
+        
+        secondContent.title = "You have overstayed your allotted time!"
+        secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
+        secondContent.badge = 0
+        secondContent.sound = UNNotificationSound.default()
+        secondContent.categoryIdentifier = "actionCategory"
+        
+        thirdContent.title = "You have been charged for an extra hour."
+        thirdContent.body = "Please move your vehicle or extend time."
+        thirdContent.badge = 0
+        thirdContent.sound = UNNotificationSound.default()
+        thirdContent.categoryIdentifier = "actionCategory"
+        
+        fourthContent.title = "You have 20 minutes left for your parking spot"
+        fourthContent.body = "Check in with the app to extend time!"
+        fourthContent.badge = 0
+        fourthContent.sound = UNNotificationSound.default()
+        
+        let firstSeconds = (self.hours! * 3600) + (10 * 60)
+        let secondSeconds = firstSeconds + (15 * 60)
+        let thirdSeconds = firstSeconds + (30 * 60)
+        let fourthSeconds = firstSeconds - (20 * 60)
+        
+        if seconds! >= 0 {
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(firstSeconds), repeats: false)
+            let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
+            let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)
+            let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
+            let thirdTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(thirdSeconds), repeats: false)
+            let thirdRequest = UNNotificationRequest(identifier: "timerDone3", content: thirdContent, trigger: thirdTrigger)
             
-            let mapboxAccessToken = "pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ"
-            let snapshot = Snapshot(options: options, accessToken: mapboxAccessToken)
-            let identifier = ProcessInfo.processInfo.globallyUniqueString
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             
-            if let attachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-                content.attachments = [attachment]
-            }
-            if let secondAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-                secondContent.attachments = [secondAttachment]
-            }
-            if let thirdAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-                thirdContent.attachments = [thirdAttachment]
-            }
-            
-            content.title = "Your current parking spot has expired!"
-            content.subtitle = "Please move your vehicle or extend time in app."
-            content.body = "Hold down for quick options!"
-            content.badge = 0
-            content.sound = UNNotificationSound.default()
-            content.categoryIdentifier = "actionCategory"
-            
-            secondContent.title = "You have overstayed your allotted time!"
-            secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
-            secondContent.badge = 0
-            secondContent.sound = UNNotificationSound.default()
-            secondContent.categoryIdentifier = "actionCategory"
-            
-            thirdContent.title = "You have been charged for an extra hour."
-            thirdContent.body = "Please move your vehicle or extend time."
-            thirdContent.badge = 0
-            thirdContent.sound = UNNotificationSound.default()
-            thirdContent.categoryIdentifier = "actionCategory"
-            
-            fourthContent.title = "You have 20 minutes left for your parking spot"
-            fourthContent.body = "Check in with the app to extend time!"
-            fourthContent.badge = 0
-            fourthContent.sound = UNNotificationSound.default()
-            
-            let firstSeconds = (self.hours! * 3600) + (10 * 60)
-            let secondSeconds = firstSeconds + (15 * 60)
-            let thirdSeconds = firstSeconds + (30 * 60)
-            let fourthSeconds = firstSeconds - (20 * 60)
-            
-            if seconds! >= 0 {
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(firstSeconds), repeats: false)
-                let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
-                let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)
-                let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
-                let thirdTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(thirdSeconds), repeats: false)
-                let thirdRequest = UNNotificationRequest(identifier: "timerDone3", content: thirdContent, trigger: thirdTrigger)
-                
-                UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                
-                UNUserNotificationCenter.current().add(request) { (error) in
-                    if error != nil {
-                        print("Error sending first notification: ", error!)
-                    }
+            UNUserNotificationCenter.current().add(request) { (error) in
+                if error != nil {
+                    print("Error sending first notification: ", error!)
                 }
-                UNUserNotificationCenter.current().add(secondRequest) { (error) in
-                    if error != nil {
-                        print("Error sending second notification: ", error!)
-                    }
+            }
+            UNUserNotificationCenter.current().add(secondRequest) { (error) in
+                if error != nil {
+                    print("Error sending second notification: ", error!)
                 }
-                UNUserNotificationCenter.current().add(thirdRequest) { (error) in
-                    if error != nil {
-                        print("Error sending third notification: ", error!)
-                    }
+            }
+            UNUserNotificationCenter.current().add(thirdRequest) { (error) in
+                if error != nil {
+                    print("Error sending third notification: ", error!)
                 }
-                if fourthSeconds > 0 {
-                    let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
-                    let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
-                    UNUserNotificationCenter.current().add(fourthRequest) { (error) in
-                        if error != nil {
-                            print("Error sending fourth notification: ", error!)
-                        }
+            }
+            if fourthSeconds > 0 {
+                let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
+                let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
+                UNUserNotificationCenter.current().add(fourthRequest) { (error) in
+                    if error != nil {
+                        print("Error sending fourth notification: ", error!)
                     }
                 }
             }
@@ -382,6 +363,10 @@ extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
+    
+}
+
+extension MapKitViewController {
     
 }
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2C8075C8B755B89F84C3A3EEE13EFDD5"
+               BlueprintIdentifier = "C48CE9ABA1E0F5E5E4F72EBE0030F777"
                BuildableName = "TOMSMorphingLabel.framework"
                BlueprintName = "TOMSMorphingLabel"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2C8075C8B755B89F84C3A3EEE13EFDD5"
+            BlueprintIdentifier = "C48CE9ABA1E0F5E5E4F72EBE0030F777"
             BuildableName = "TOMSMorphingLabel.framework"
             BlueprintName = "TOMSMorphingLabel"
             ReferencedContainer = "container:Pods.xcodeproj">

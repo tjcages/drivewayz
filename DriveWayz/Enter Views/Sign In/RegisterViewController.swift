@@ -10,12 +10,23 @@ import UIKit
 import FacebookLogin
 import FacebookCore
 import SwiftyJSON
+import Firebase
+import NVActivityIndicatorView
 
 class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsControl {
     
     var delegate: handleSignInViews?
+    var verificationCode: String?
     
     var pageControl : UIPageControl = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
+    
+    var loadingActivity: NVActivityIndicatorView = {
+        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_COLOR, padding: 0)
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.alpha = 0
+        
+        return loading
+    }()
     
     lazy var exitButton: UIButton = {
         let button = UIButton()
@@ -46,12 +57,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title1: UILabel = {
         let label = UILabel()
         label.text = "Save money"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
@@ -62,9 +74,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 3
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
@@ -84,25 +97,27 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title2: UILabel = {
         let label = UILabel()
         label.text = "Save time"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
     
     lazy var label2: UILabel = {
         let label = UILabel()
-        label.text = "Don't waste time anymore searching for parking. Just reserve an open spot and avoid the hassle."
+        label.text = "Stop wasting your time searching for a parking spot. Simply reserve a driveway and avoid the hassle."
         label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 3
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
@@ -122,25 +137,27 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title3: UILabel = {
         let label = UILabel()
         label.text = "Choose Drivewayz"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
     
     lazy var label3: UILabel = {
         let label = UILabel()
-        label.text = "One goal, one passion - Smarter Parking."
+        label.text = "One Goal, One Passion - Smarter Parking."
         label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 4
         label.adjustsFontForContentSizeCategory = false
+        label.alpha = 0
         
         return label
     }()
@@ -149,7 +166,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
-        blurEffectView.alpha = 0.4
+        blurEffectView.alpha = 0
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -164,8 +181,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         gesture1.direction = .right
         let gesture2 = UISwipeGestureRecognizer(target: self, action: #selector(backgroundSwippedLeft))
         gesture2.direction = .left
+        let gesture3 = UISwipeGestureRecognizer(target: self, action: #selector(exitButtonSent))
+        gesture3.direction = .down
         container.addGestureRecognizer(gesture1)
         container.addGestureRecognizer(gesture2)
+        container.addGestureRecognizer(gesture3)
         
         return container
     }()
@@ -210,12 +230,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         return button
     }()
     
-    var registerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Let's start with your phone number"
+    var registerLabel: UITextView = {
+        let label = UITextView()
+        label.text = "Let's start with your name"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        label.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        label.clipsToBounds = false
+        label.isEditable = false
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -240,6 +264,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        label.alpha = 0
         
         return label
     }()
@@ -249,6 +274,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let origImage = UIImage(named: "USA")
         button.setImage(origImage, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
         
         return button
     }()
@@ -257,9 +283,22 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY
-        view.layer.cornerRadius = 1.5
         
         return view
+    }()
+    
+    var verificationTextField: UITextField = {
+        let field = UITextField()
+        field.backgroundColor = UIColor.clear
+        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.placeholder = "• • • • • •"
+        field.textAlignment = .center
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.tintColor = Theme.HARMONY_COLOR
+        field.textColor = Theme.BLACK
+        field.keyboardType = .numberPad
+        
+        return field
     }()
     
     var emailTextField: UITextField = {
@@ -324,7 +363,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var errorButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Please enter a valid phone number", for: .normal)
+        button.setTitle("Please enter your full name", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -349,18 +388,71 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitle("Login with Facebook", for: .normal)
+        button.setTitle("Sign in with Facebook", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.addTarget(self, action: #selector(facebookSignUp), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         
         return button
+    }()
+    
+    var orLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "or"
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textAlignment = .center
+        label.backgroundColor = Theme.WHITE
+        label.alpha = 0
+        
+        return label
+    }()
+    
+    var orLine: UIView = {
+        let line = UIView()
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.alpha = 0
+        
+        return line
+    }()
+    
+    var emailAndPasswordOption: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.setTitle("Sign up with email and password", for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.alpha = 0
+        button.addTarget(self, action: #selector(signUpWithEmail(sender:)), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        
+        return button
+    }()
+    
+    var informationLabel: UITextView = {
+        let label = UITextView()
+        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        label.backgroundColor = UIColor.clear
+        label.text = "This option is generally better if you are sigining up to become a host"
+        label.textColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        label.layer.cornerRadius = 10
+        label.isEditable = false
+        label.isUserInteractionEnabled = false
+        label.contentInset = UIEdgeInsets(top: 30, left: 10, bottom: 10, right: 10)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.alpha = 0
+        label.textAlignment = .center
+        
+        return label
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         phoneNumberTextField.delegate = self
+        verificationTextField.delegate = self
         emailTextField.delegate = self
         nameField.delegate = self
         passwordField.delegate = self
@@ -368,7 +460,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         view.backgroundColor = UIColor.clear
         
         let background = CAGradientLayer().mixColors()
-        background.frame = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
+        background.frame = CGRect(x: 0, y: self.view.frame.height*2/3, width: self.view.frame.width, height: self.view.frame.height/3)
         background.zPosition = -10
         mainView.layer.insertSublayer(background, at: 0)
         
@@ -413,19 +505,19 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         
         self.view.addSubview(label1)
         label1.centerXAnchor.constraint(equalTo: background1.centerXAnchor).isActive = true
-        label1.centerYAnchor.constraint(equalTo: background1.centerYAnchor, constant: 40).isActive = true
+        label1.centerYAnchor.constraint(equalTo: background1.centerYAnchor, constant: 160).isActive = true
         label1.widthAnchor.constraint(equalToConstant: 300).isActive = true
         label1.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         self.view.addSubview(label2)
         label2.centerXAnchor.constraint(equalTo: background2.centerXAnchor).isActive = true
-        label2.centerYAnchor.constraint(equalTo: background2.centerYAnchor, constant: 40).isActive = true
+        label2.centerYAnchor.constraint(equalTo: background2.centerYAnchor, constant: 160).isActive = true
         label2.widthAnchor.constraint(equalToConstant: 300).isActive = true
         label2.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         self.view.addSubview(label3)
         label3.centerXAnchor.constraint(equalTo: background3.centerXAnchor).isActive = true
-        label3.centerYAnchor.constraint(equalTo: background3.centerYAnchor, constant: 40).isActive = true
+        label3.centerYAnchor.constraint(equalTo: background3.centerYAnchor, constant: 160).isActive = true
         label3.widthAnchor.constraint(equalToConstant: 300).isActive = true
         label3.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -458,9 +550,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }
     
     var emailCenterAnchor: NSLayoutConstraint!
-    var nameCenterAnchor: NSLayoutConstraint!
+    var verificationCenterAnchor: NSLayoutConstraint!
+    var phoneNumberCenterAnchor: NSLayoutConstraint!
     var passwordCenterAnchor: NSLayoutConstraint!
     var repeatCenterAnchor: NSLayoutConstraint!
+    var fieldLineWidthAnchor: NSLayoutConstraint!
     
     func setupMainView() {
         
@@ -472,10 +566,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         mainView.leftAnchor.constraint(equalTo: background3.rightAnchor).isActive = true
         
         self.view.addSubview(registerLabel)
-        registerLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 40).isActive = true
+        registerLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 30).isActive = true
         registerLabel.leftAnchor.constraint(equalTo: mainView.leftAnchor, constant: 12).isActive = true
         registerLabel.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -12).isActive = true
-        registerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        registerLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.view.addSubview(USAButton)
         USAButton.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
@@ -489,17 +583,25 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         areaCodeLabel.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -40).isActive = true
         areaCodeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        self.view.addSubview(phoneNumberTextField)
-        phoneNumberTextField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
-        phoneNumberTextField.leftAnchor.constraint(equalTo: mainView.leftAnchor, constant: 40).isActive = true
-        phoneNumberTextField.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -50).isActive = true
-        phoneNumberTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.view.addSubview(nameField)
+        nameField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
+        nameField.widthAnchor.constraint(equalTo: mainView.widthAnchor, constant: -40).isActive = true
+        nameField.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        nameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(phoneLine)
-        phoneLine.leftAnchor.constraint(equalTo: phoneNumberTextField.leftAnchor).isActive = true
-        phoneLine.rightAnchor.constraint(equalTo: phoneNumberTextField.rightAnchor).isActive = true
-        phoneLine.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor).isActive = true
-        phoneLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        phoneLine.centerXAnchor.constraint(equalTo: nameField.centerXAnchor).isActive = true
+        fieldLineWidthAnchor = phoneLine.widthAnchor.constraint(equalTo: nameField.widthAnchor)
+            fieldLineWidthAnchor.isActive = true
+        phoneLine.topAnchor.constraint(equalTo: nameField.bottomAnchor).isActive = true
+        phoneLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        self.view.addSubview(verificationTextField)
+        verificationTextField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
+        verificationTextField.widthAnchor.constraint(equalTo: mainView.widthAnchor, constant: -40).isActive = true
+        verificationCenterAnchor = verificationTextField.centerXAnchor.constraint(equalTo: mainView.centerXAnchor, constant: self.view.frame.width)
+            verificationCenterAnchor.isActive = true
+        verificationTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(emailTextField)
         emailTextField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
@@ -508,12 +610,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             emailCenterAnchor.isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        self.view.addSubview(nameField)
-        nameField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
-        nameField.widthAnchor.constraint(equalTo: mainView.widthAnchor, constant: -40).isActive = true
-        nameCenterAnchor = nameField.centerXAnchor.constraint(equalTo: mainView.centerXAnchor, constant: self.view.frame.width)
-            nameCenterAnchor.isActive = true
-        nameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.view.addSubview(phoneNumberTextField)
+        phoneNumberTextField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
+        phoneNumberTextField.widthAnchor.constraint(equalTo: mainView.widthAnchor, constant: -80).isActive = true
+        phoneNumberCenterAnchor = phoneNumberTextField.centerXAnchor.constraint(equalTo: mainView.centerXAnchor, constant: self.view.frame.width)
+            phoneNumberCenterAnchor.isActive = true
+        phoneNumberTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(passwordField)
         passwordField.topAnchor.constraint(equalTo: registerLabel.bottomAnchor, constant: 40).isActive = true
@@ -534,6 +636,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         errorButton.widthAnchor.constraint(equalTo: phoneNumberTextField.widthAnchor, constant: 20).isActive = true
         errorButton.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor, constant: 10).isActive = true
         errorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.view.addSubview(loadingActivity)
+        loadingActivity.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        loadingActivity.topAnchor.constraint(equalTo: phoneLine.bottomAnchor, constant: 20).isActive = true
+        loadingActivity.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        loadingActivity.heightAnchor.constraint(equalTo: loadingActivity.widthAnchor).isActive = true
         
     }
     
@@ -572,7 +680,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         self.view.addSubview(nextButton)
         nextButtonCenterAnchor = nextButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor)
         nextButtonCenterAnchor.isActive = true
-        nextButtonTopAnchor = nextButton.bottomAnchor.constraint(equalTo: mainView.centerYAnchor, constant: 50)
+        nextButtonTopAnchor = nextButton.bottomAnchor.constraint(equalTo: mainView.centerYAnchor, constant: 60)
         nextButtonTopAnchor.isActive = true
         nextButtonHeightAnchor = nextButton.heightAnchor.constraint(equalToConstant: 40)
         nextButtonHeightAnchor.isActive = true
@@ -581,7 +689,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         
         self.view.addSubview(backButton)
         backButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor, constant: -90).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: mainView.centerYAnchor, constant: 50).isActive = true
+        backButton.bottomAnchor.constraint(equalTo: mainView.centerYAnchor, constant: 60).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
@@ -589,7 +697,31 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         facebookLoginButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
         facebookLoginButton.widthAnchor.constraint(equalTo: mainView.widthAnchor).isActive = true
         facebookLoginButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -30).isActive = true
-        facebookLoginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        facebookLoginButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        self.view.addSubview(orLine)
+        orLine.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        orLine.widthAnchor.constraint(equalTo: mainView.widthAnchor).isActive = true
+        orLine.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 40).isActive = true
+        orLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        self.view.addSubview(orLabel)
+        orLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        orLabel.centerYAnchor.constraint(equalTo: orLine.centerYAnchor).isActive = true
+        orLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        orLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.view.addSubview(emailAndPasswordOption)
+        emailAndPasswordOption.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        emailAndPasswordOption.widthAnchor.constraint(equalTo: mainView.widthAnchor).isActive = true
+        emailAndPasswordOption.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 10).isActive = true
+        emailAndPasswordOption.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.view.addSubview(informationLabel)
+        informationLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
+        informationLabel.topAnchor.constraint(equalTo: emailAndPasswordOption.bottomAnchor, constant: 10).isActive = true
+        informationLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        informationLabel.widthAnchor.constraint(equalTo: emailTextField.widthAnchor, constant: -20).isActive = true
         
     }
     
@@ -657,51 +789,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }
     
     @objc func moveToNextController(sender: UIButton) {
-        if self.phoneNumberTextField.alpha == 1 {
-            if self.phoneNumberTextField.text?.count != 14 {
-                self.errorButton.setTitle("Please enter a valid phone number", for: .normal)
-                UIView.animate(withDuration: 0.2) {
-                    self.errorButton.alpha = 1
-                }
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.facebookLoginButton.alpha = 0
-                    self.errorButton.alpha = 0
-                    self.phoneNumberTextField.alpha = 0
-                    self.areaCodeLabel.alpha = 0
-                    self.USAButton.alpha = 0
-                }) { (success) in
-                    self.registerLabel.text = "Enter your email address"
-                    self.emailTextField.becomeFirstResponder()
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.emailCenterAnchor.constant = 0
-                        self.nextButtonCenterAnchor.constant = 50
-                        self.backButton.alpha = 1
-                        self.view.layoutIfNeeded()
-                    })
-                }
-            }
-        } else if self.emailTextField.alpha == 1 && self.emailCenterAnchor.constant == 0 {
-            guard let email = self.emailTextField.text else { return }
-            if !email.contains("@") || !email.contains(".") {
-                self.errorButton.setTitle("Please enter a valid email", for: .normal)
-                UIView.animate(withDuration: 0.2) {
-                    self.errorButton.alpha = 1
-                }
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.errorButton.alpha = 0
-                    self.emailTextField.alpha = 0
-                }) { (success) in
-                    self.nameField.becomeFirstResponder()
-                    self.registerLabel.text = "Enter your full name"
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.nameCenterAnchor.constant = 0
-                        self.view.layoutIfNeeded()
-                    })
-                }
-            }
-        } else if self.nameField.alpha == 1 && self.nameCenterAnchor.constant == 0 {
+        if self.nameField.alpha == 1 {
             guard let name = self.nameField.text else { return }
             if !name.contains(" ") {
                 self.errorButton.setTitle("Please enter your full name", for: .normal)
@@ -712,16 +800,125 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 UIView.animate(withDuration: 0.3, animations: {
                     self.errorButton.alpha = 0
                     self.nameField.alpha = 0
+                    self.facebookLoginButton.alpha = 0
+                    self.loadingActivity.alpha = 0
+                    self.loadingActivity.alpha = 1
                 }) { (success) in
-                    self.passwordField.becomeFirstResponder()
-                    self.registerLabel.text = "Choose a secure password"
+                    self.view.endEditing(true)
+                    self.nextButton.setTitle("Send Code", for: .normal)
+                    self.registerLabel.text = "Please enter your phone number for verification"
+                    self.view.layoutIfNeeded()
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.passwordCenterAnchor.constant = 0
+                        self.phoneNumberCenterAnchor.constant = -10
+                        self.areaCodeLabel.alpha = 1
+                        self.USAButton.alpha = 1
+                        self.nextButtonCenterAnchor.constant = 50
+                        self.backButton.alpha = 1
+                        self.emailAndPasswordOption.alpha = 1
+                        self.orLine.alpha = 1
+                        self.orLabel.alpha = 1
+                        self.informationLabel.alpha = 1
                         self.view.layoutIfNeeded()
                     })
                 }
             }
-        } else if self.passwordField.alpha == 1 && self.passwordCenterAnchor.constant == 0 {
+        } else if self.phoneNumberCenterAnchor.constant == -10 && self.phoneNumberTextField.alpha == 1 {
+            if self.phoneNumberTextField.text?.count != 14 {
+                self.errorButton.setTitle("Please enter a valid phone number", for: .normal)
+                UIView.animate(withDuration: 0.2) {
+                    self.errorButton.alpha = 1
+                }
+            } else {
+                if self.emailTextField.alpha == 0 {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.errorButton.alpha = 0
+                        self.phoneNumberTextField.alpha = 0
+                        self.areaCodeLabel.alpha = 0
+                        self.USAButton.alpha = 0
+                    }) { (success) in
+                        self.passwordField.becomeFirstResponder()
+                        self.registerLabel.text = "Choose a secure password"
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.passwordCenterAnchor.constant = 0
+                            self.view.layoutIfNeeded()
+                        })
+                    }
+                } else {
+                    self.loadingActivity.startAnimating()
+                    UIView.animate(withDuration: 0.2) {
+                        self.loadingActivity.alpha = 1
+                    }
+                    guard var phoneNumber = self.phoneNumberTextField.text else { return }
+                    phoneNumber = phoneNumber.replacingOccurrences(of: "(", with: "")
+                    phoneNumber = phoneNumber.replacingOccurrences(of: ")", with: "")
+                    phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
+                    phoneNumber = "+1" + phoneNumber.replacingOccurrences(of: "-", with: "")
+                    self.nextButton.isUserInteractionEnabled = false
+                    PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
+                        if let error = error {
+                            self.sendAlert(message: error.localizedDescription)
+                            self.nextButton.isUserInteractionEnabled = true
+                            UIView.animate(withDuration: 0.2, animations: {
+                                self.loadingActivity.alpha = 0
+                            })
+                            self.loadingActivity.stopAnimating()
+                            return
+                        }
+                        self.nextButton.isUserInteractionEnabled = true
+                        self.verificationCode = verificationID
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.facebookLoginButton.alpha = 0
+                            self.errorButton.alpha = 0
+                            self.phoneNumberTextField.alpha = 0
+                            self.areaCodeLabel.alpha = 0
+                            self.USAButton.alpha = 0
+                            self.orLine.alpha = 0
+                            self.orLabel.alpha = 0
+                            self.emailAndPasswordOption.alpha = 0
+                            self.informationLabel.alpha = 0
+                            self.loadingActivity.alpha = 0
+                        }) { (success) in
+                            self.loadingActivity.stopAnimating()
+                            let number = self.phoneNumberTextField.text
+                            self.view.endEditing(true)
+                            UIView.animate(withDuration: 0.3, animations: {
+                                self.verificationCenterAnchor.constant = 0
+                                self.fieldLineWidthAnchor.constant = -self.phoneNumberTextField.frame.width/2 - 20
+                                self.view.layoutIfNeeded()
+                            })
+                            self.registerLabel.text = "Enter the six digit verification code sent to \(number!)"
+                            self.nextButton.setTitle("Confirm", for: .normal)
+                        }
+                    }
+                }
+            }
+        } else if self.emailCenterAnchor.constant == 0 && self.emailTextField.alpha == 1 {
+            guard let email = self.emailTextField.text else { return }
+            if !email.contains("@") || !email.contains(".") {
+                self.errorButton.setTitle("Please enter a valid email", for: .normal)
+                UIView.animate(withDuration: 0.2) {
+                    self.errorButton.alpha = 1
+                }
+            } else {
+                self.phoneNumberCenterAnchor.constant = self.view.frame.width
+                self.phoneNumberTextField.alpha = 1
+                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.errorButton.alpha = 0
+                    self.emailTextField.alpha = 0
+                }) { (success) in
+                    self.phoneNumberTextField.becomeFirstResponder()
+                    self.registerLabel.text = "Please enter your phone number"
+//                    self.registerLabel.text = "Choose a secure password"
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.phoneNumberCenterAnchor.constant = -10
+                        self.USAButton.alpha = 1
+                        self.areaCodeLabel.alpha = 1
+                        self.view.layoutIfNeeded()
+                    })
+                }
+            }
+        } else if self.passwordCenterAnchor.constant == 0 && self.passwordField.alpha == 1 {
             guard let password = self.passwordField.text else { return }
             if password.count < 8 {
                 self.errorButton.setTitle("Needs to be at least 8 characters", for: .normal)
@@ -737,7 +934,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.registerLabel.text = "Repeat password"
                     UIView.animate(withDuration: 0.3, animations: {
                         self.nextButtonCenterAnchor.constant = 0
-                        self.nextButtonTopAnchor.constant = 0
+                        self.nextButtonTopAnchor.constant = 15
                         self.nextButtonHeightAnchor.constant = 50
                         self.nextButtonWidthAnchor.constant = 240
                         self.nextButton.layer.cornerRadius = 25
@@ -767,33 +964,86 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }
     
     @objc func moveBackController(sender: UIButton) {
-        if self.emailCenterAnchor.constant == 0 && self.emailTextField.alpha == 1 {
+        if self.phoneNumberCenterAnchor.constant == -10 && self.phoneNumberTextField.alpha == 1 {
+            if self.emailTextField.alpha == 0 {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.phoneNumberCenterAnchor.constant = self.view.frame.width
+                    self.USAButton.alpha = 0
+                    self.areaCodeLabel.alpha = 0
+                    self.errorButton.alpha = 0
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.emailTextField.becomeFirstResponder()
+                    self.registerLabel.text = "Enter your email address"
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.emailTextField.alpha = 1
+                    })
+                }
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.phoneNumberCenterAnchor.constant = self.view.frame.width
+                    self.USAButton.alpha = 0
+                    self.areaCodeLabel.alpha = 0
+                    self.nextButtonCenterAnchor.constant = 0
+                    self.backButton.alpha = 0
+                    self.errorButton.alpha = 0
+                    self.emailAndPasswordOption.alpha = 0
+                    self.orLine.alpha = 0
+                    self.orLabel.alpha = 0
+                    self.informationLabel.alpha = 0
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.nameField.becomeFirstResponder()
+                    self.nextButton.setTitle("Next", for: .normal)
+                    self.registerLabel.text = "Let's start with your name"
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.nameField.alpha = 1
+                        self.facebookLoginButton.alpha = 1
+                    })
+                }
+            }
+        } else if self.emailCenterAnchor.constant == 0 && self.emailTextField.alpha == 1 {
             UIView.animate(withDuration: 0.3, animations: {
                 self.emailCenterAnchor.constant = self.view.frame.width
-                self.nextButtonCenterAnchor.constant = 0
-                self.backButton.alpha = 0
                 self.errorButton.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.phoneNumberTextField.becomeFirstResponder()
-                self.registerLabel.text = "Let's start with your phone number"
+                self.view.endEditing(true)
+                self.nextButton.setTitle("Send Code", for: .normal)
+                self.registerLabel.text = "Please enter your phone number for verification"
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.facebookLoginButton.alpha = 1
+                    self.phoneNumberCenterAnchor.constant = -10
+                    self.phoneNumberTextField.alpha = 1
+                    self.orLine.alpha = 1
+                    self.orLabel.alpha = 1
+                    self.emailAndPasswordOption.alpha = 1
+                    self.informationLabel.alpha = 1
+                    self.areaCodeLabel.alpha = 1
+                    self.USAButton.alpha = 1
+                    self.view.layoutIfNeeded()
+                })
+            }
+        } else if self.verificationCenterAnchor.constant == 0 && self.verificationTextField.alpha == 1 {
+            self.loadingActivity.stopAnimating()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.verificationCenterAnchor.constant = self.view.frame.width
+                self.fieldLineWidthAnchor.constant = 0
+                self.errorButton.alpha = 0
+                self.loadingActivity.alpha = 0
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.view.endEditing(true)
+                self.nextButton.setTitle("Send Code", for: .normal)
+                self.registerLabel.text = "Please enter your phone number for verification"
+                self.verificationTextField.text = ""
+                UIView.animate(withDuration: 0.3, animations: {
                     self.phoneNumberTextField.alpha = 1
                     self.areaCodeLabel.alpha = 1
                     self.USAButton.alpha = 1
-                })
-            }
-        } else if self.nameCenterAnchor.constant == 0 && self.nameField.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.nameCenterAnchor.constant = self.view.frame.width
-                self.errorButton.alpha = 0
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.emailTextField.becomeFirstResponder()
-                self.registerLabel.text = "Enter your email address"
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.emailTextField.alpha = 1
+                    self.orLine.alpha = 1
+                    self.orLabel.alpha = 1
+                    self.emailAndPasswordOption.alpha = 1
+                    self.informationLabel.alpha = 1
                 })
             }
         } else if self.passwordCenterAnchor.constant == 0 && self.passwordField.alpha == 1 {
@@ -802,16 +1052,20 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.errorButton.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.nameField.becomeFirstResponder()
-                self.registerLabel.text = "Enter your full name"
+                self.phoneNumberTextField.becomeFirstResponder()
+                self.registerLabel.text = "Please enter your phone number for verification"
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.nameField.alpha = 1
+                    self.phoneNumberTextField.alpha = 1
+                    self.USAButton.alpha = 1
+                    self.areaCodeLabel.alpha = 1
                 })
             }
         } else if self.repeatCenterAnchor.constant == 0 && self.repeatPasswordField.alpha == 1 {
+            self.loadingActivity.stopAnimating()
             UIView.animate(withDuration: 0.3, animations: {
                 self.repeatCenterAnchor.constant = self.view.frame.width
                 self.errorButton.alpha = 0
+                self.loadingActivity.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.passwordField.becomeFirstResponder()
@@ -834,6 +1088,33 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         }
     }
     
+    @objc func signUpWithEmail(sender: UIButton) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.errorButton.alpha = 0
+            self.phoneNumberTextField.alpha = 0
+            self.USAButton.alpha = 0
+            self.areaCodeLabel.alpha = 0
+            self.orLine.alpha = 0
+            self.orLabel.alpha = 0
+            self.emailAndPasswordOption.alpha = 0
+            self.informationLabel.alpha = 0
+        }) { (success) in
+            self.emailTextField.becomeFirstResponder()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.phoneNumberTextField.alpha = 0
+                self.USAButton.alpha = 0
+                self.areaCodeLabel.alpha = 0
+                self.emailCenterAnchor.constant = 0
+                self.fieldLineWidthAnchor.constant = 0
+                self.nextButtonCenterAnchor.constant = 50
+                self.backButton.alpha = 1
+                self.view.layoutIfNeeded()
+            })
+            self.registerLabel.text = "Enter your email address"
+            self.nextButton.setTitle("Next", for: .normal)
+        }
+    }
+    
     func setupTerms() {
         self.view.addSubview(termsController.view)
         self.addChildViewController(termsController)
@@ -842,8 +1123,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         self.view.layoutIfNeeded()
+        self.loadingActivity.startAnimating()
         UIView.animate(withDuration: 0.3) {
             self.termsController.view.alpha = 1
+            self.loadingActivity.alpha = 1
         }
     }
     
@@ -855,22 +1138,86 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             self.termsController.view.removeFromSuperview()
             self.termsController.removeFromParentViewController()
         }
-        self.signUp()
+        self.signUp(withEmail: true)
         self.delegate?.defaultStatusBar()
     }
     
-    func signUp() {
+    func registerWithPhoneNumber() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            guard let userVerification = self.verificationTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
+            if userVerification.count == 6 {
+                self.view.endEditing(true)
+                let credential = PhoneAuthProvider.provider().credential(withVerificationID: self.verificationCode!, verificationCode: userVerification)
+                Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                        if let error = error {
+                            UIView.animate(withDuration: 0.2, animations: {
+                                self.loadingActivity.alpha = 0
+                            })
+                            self.loadingActivity.stopAnimating()
+                            self.sendAlert(message: error.localizedDescription)
+                            self.verificationTextField.becomeFirstResponder()
+                            return
+                        }
+                        guard let uid = authResult?.user.uid else { return }
+                        guard let phoneNumber = self.phoneNumberTextField.text, let userName = self.nameField.text else { return }
+                        let userEmail = ""
+                        let userProfileUrl = ""
+                        let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
+                        let usersReference = ref.child("users").child(uid)
+                        let values = ["name": userName,
+                                      "email": userEmail,
+                                      "phone": "+1 " + phoneNumber,
+                                      "picture": userProfileUrl,
+                                      "DeviceID": AppDelegate.DEVICEID]
+                        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                            if err != nil {
+                                self.sendAlert(message: (err?.localizedDescription)!)
+                                return
+                            }
+                            UIView.animate(withDuration: 0.2, animations: {
+                                self.loadingActivity.alpha = 0
+                            })
+                            self.loadingActivity.stopAnimating()
+                            print("Successfully logged in!")
+                            UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                            UserDefaults.standard.synchronize()
+                            
+                            let myViewController: TabViewController = TabViewController()
+                            myViewController.removeFromParentViewController()
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            appDelegate.window?.rootViewController = myViewController
+                            appDelegate.window?.makeKeyAndVisible()
+                            
+                            self.dismiss(animated: true, completion: nil)
+                            
+                        })
+                    }
+                }
+            } else {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.loadingActivity.alpha = 0
+                })
+                self.loadingActivity.stopAnimating()
+            }
+        }
+    }
+    
+    func signUp(withEmail: Bool) {
         self.view.endEditing(true)
-        
         let userProfileUrl: String = ""
-        
-        guard let phoneNumber = phoneNumberTextField.text, let userEmail = emailTextField.text, let userName = nameField.text, let userPassword = passwordField.text else {
+        guard let phoneNumber = phoneNumberTextField.text, var userEmail = emailTextField.text, let userName = nameField.text, var userPassword = passwordField.text else {
             print("Error")
             return
         }
+        if withEmail == false {
+            let randomString = String.random()
+            userEmail = randomString + "@drivewayz.com"
+            userPassword = self.verificationCode!
+        }
         Auth.auth().createUser(withEmail: userEmail, password: userPassword, completion: { (user, error) in
             if error != nil {
-                print(error!)
+                self.sendAlert(message: (error?.localizedDescription)!)
                 return
             }
             guard let uid = user?.user.uid else {return}
@@ -878,14 +1225,18 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             let usersReference = ref.child("users").child(uid)
             let values = ["name": userName,
                           "email": userEmail,
-                          "phone": phoneNumber,
+                          "phone": "+1 " + phoneNumber,
                           "picture": userProfileUrl,
                           "DeviceID": AppDelegate.DEVICEID]
             usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
-                    print(err!)
+                    self.sendAlert(message: (err?.localizedDescription)!)
                     return
                 }
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.loadingActivity.alpha = 0
+                })
+                self.loadingActivity.stopAnimating()
                 print("Successfully logged in!")
                 UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                 UserDefaults.standard.synchronize()
@@ -963,10 +1314,25 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         }
     }
     
-    func exitButtonSent() {
+    @objc func exitButtonSent() {
         self.view.endEditing(true)
         self.delegate?.lightContentStatusBar()
         self.delegate?.hideRegisterPage()
+        UIView.animate(withDuration: 0.2) {
+            self.blurBackground.alpha = 0
+            self.title1.alpha = 0
+            self.title2.alpha = 0
+            self.title3.alpha = 0
+            self.label1.alpha = 0
+            self.label2.alpha = 0
+            self.label3.alpha = 0
+        }
+    }
+    
+    func sendAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
@@ -983,17 +1349,56 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             UIView.animate(withDuration: 0.2) {
                 self.nextButton.alpha = 1
                 self.errorButton.alpha = 0
+                self.informationLabel.alpha = 0
             }
         }
         if textField == self.phoneNumberTextField {
             var fullString = textField.text ?? ""
             fullString.append(string)
+            if fullString.count == 14 {
+                self.view.endEditing(true)
+            }
             if range.length == 1 {
                 textField.text = format(phoneNumber: fullString, shouldRemoveLastDigit: true)
             } else {
                 textField.text = format(phoneNumber: fullString)
             }
             return false
+        } else if textField == self.verificationTextField {
+            guard let fullString = textField.text else { return false }
+            if fullString.count == 10 {
+                self.loadingActivity.startAnimating()
+                UIView.animate(withDuration: 0.2) {
+                    self.loadingActivity.alpha = 1
+                }
+                self.registerWithPhoneNumber()
+            } else {
+                self.loadingActivity.stopAnimating()
+                UIView.animate(withDuration: 0.2) {
+                    self.loadingActivity.alpha = 0
+                }
+            }
+            if fullString.count < 11 {
+                let  char = string.cString(using: String.Encoding.utf8)!
+                let isBackSpace = strcmp(char, "\\b")
+                if !(isBackSpace == -92) {
+                    textField.text = fullString + " "
+                } else {
+                    guard let string = textField.text else { return false }
+                    textField.text = String(string.dropLast())
+                }
+                return true
+            } else if range.length == 1 {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.loadingActivity.alpha = 0
+                })
+                self.loadingActivity.stopAnimating()
+                guard let string = textField.text else { return false }
+                textField.text = String(string.dropLast())
+                return true
+            } else {
+                return false
+            }
         } else {
             return true
         }
@@ -1029,6 +1434,22 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         return number
     }
     
+    func animate() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.blurBackground.alpha = 0.5
+                self.title1.alpha = 1
+                self.title2.alpha = 1
+                self.title3.alpha = 1
+                self.label1.alpha = 1
+                self.label2.alpha = 1
+                self.label3.alpha = 1
+            }, completion: { (success) in
+                //
+            })
+        }
+    }
+    
     var statusBarStyle: Bool = true
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -1041,4 +1462,19 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
 
 
+}
+
+
+extension Collection {
+    public func chunk(n: Int) -> [SubSequence] {
+        var res: [SubSequence] = []
+        var i = startIndex
+        var j: Index
+        while i != endIndex {
+            j = index(i, offsetBy: n, limitedBy: endIndex) ?? endIndex
+            res.append(self[i..<j])
+            i = j
+        }
+        return res
+    }
 }

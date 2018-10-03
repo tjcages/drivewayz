@@ -982,7 +982,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                         self.reserveButton.addTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
                     }
                 } else {
-                    self.removeDelegate?.addAVehicleReminder()
                     self.sendHelp(title: "Vehicle Info Needed", message: "You must enter your vehicle information before reserving a spot")
                 }
             }
@@ -1017,7 +1016,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         }
         
         self.paymentInProgress = true
-//        self.paymentContext.requestPayment() /////////////////////////////////////////////////////////////// NO PAYMENTS
+//        self.paymentContext.requestPayment() ////////////////////////////// PAYMENT NOT SET UP CURRENTLY
     }
     
     
@@ -1183,7 +1182,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     func sendHelp(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (success) in
+            self.removeDelegate?.addAVehicleReminder()
+        }))
         self.present(alert, animated: true)
     }
     
@@ -1201,24 +1202,24 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func drawNewRoute() {
-        let ref = Database.database().reference().child("parking").child(self.parkingId)
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let address = dictionary["parkingAddress"] as? String {
-                    let geoCoder = CLGeocoder()
-                    geoCoder.geocodeAddressString(address) { (placemarks, error) in
-                        guard
-                            let placemarks = placemarks,
-                            let location = placemarks.first?.location
-                            else {
-                                print("Couldn't find location to draw routes")
-                                return
-                        }
-                        self.delegate?.drawCurrentPath(dest: location)
-                    }
-                }
-            }
-        }
+//        let ref = Database.database().reference().child("parking").child(self.parkingId)
+//        ref.observeSingleEvent(of: .value) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                if let address = dictionary["parkingAddress"] as? String {
+////                    let geoCoder = CLGeocoder()
+////                    geoCoder.geocodeAddressString(address) { (placemarks, error) in
+////                        guard
+////                            let placemarks = placemarks,
+////                            let location = placemarks.first?.location
+////                            else {
+////                                print("Couldn't find location to draw routes")
+////                                return
+////                        }
+////                        self.delegate?.drawCurrentPath(dest: location, navigation: false)
+////                    }
+//                }
+//            }
+//        }
     }
     
     private func reserveParking() {

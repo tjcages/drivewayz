@@ -23,7 +23,7 @@ protocol moveControllers {
 protocol controlsNewParking {
     func setupNewParking(parkingImage: ParkingImage)
     func removeNewParkingView()
-    func setupNewVehicle(vehicleStatus: VehicleStatus)
+    func bringNewVehicleController(vehicleStatus: VehicleStatus)
     func removeNewVehicleView()
     func moveTopProfile()
     func moveToMap()
@@ -43,6 +43,7 @@ protocol controlsAccountOptions {
     func bringCouponsController()
     func bringContactUsController()
     func bringTermsController()
+    func bringBankAccountController()
     
     func hideUpcomingController()
     func hideHostingController()
@@ -53,6 +54,7 @@ protocol controlsAccountOptions {
     func hideCouponsController()
     func hideContactUsController()
     func hideTermsController()
+    func hideBankAccountController()
 }
 
 class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsAccountOptions {
@@ -149,7 +151,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Map"
         controller.delegate = self
-//        controller.vehicleDelegate = self
+        controller.vehicleDelegate = self
         return controller
     }()
     
@@ -265,6 +267,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Analytics"
+        controller.delegate = self
+        return controller
+    }()
+    
+    lazy var bankAccountController: BankAccountViewController = {
+        let controller = BankAccountViewController()
+        self.addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Bank Account"
         controller.delegate = self
         return controller
     }()
@@ -470,6 +481,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     var newVehicleAnchor: NSLayoutConstraint!
     var analControllerAnchor: NSLayoutConstraint!
     var upcomingAnchor: NSLayoutConstraint!
+    var bankAccountCenterAnchor: NSLayoutConstraint!
     
     func refreshSpots() {
         self.mapController.observeUserParkingSpots()
@@ -488,6 +500,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.profile.alpha = 1
         }
     }
+    
     
     func bringTermsController() {
         self.view.addSubview(self.termsController.view)
@@ -679,6 +692,23 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }
     }
     
+    func bringBankAccountController() {
+        self.view.addSubview(self.bankAccountController.view)
+        self.addChildViewController(bankAccountController)
+        self.bankAccountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.bankAccountController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.bankAccountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        bankAccountCenterAnchor = self.bankAccountController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            bankAccountCenterAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.bankAccountCenterAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
     //////////////////////
     
     func hideUpcomingController() {
@@ -690,6 +720,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.upcomingController.willMove(toParentViewController: nil)
             self.upcomingController.view.removeFromSuperview()
             self.upcomingController.removeFromParentViewController()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -703,6 +734,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.termsController.view.removeFromSuperview()
             self.termsController.removeFromParentViewController()
             self.closeAccountView()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -715,6 +747,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.hostingController.willMove(toParentViewController: nil)
             self.hostingController.view.removeFromSuperview()
             self.hostingController.removeFromParentViewController()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -739,6 +772,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.vehicleController.willMove(toParentViewController: nil)
             self.vehicleController.view.removeFromSuperview()
             self.vehicleController.removeFromParentViewController()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -764,6 +798,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.analController.willMove(toParentViewController: nil)
             self.analController.view.removeFromSuperview()
             self.analController.removeFromParentViewController()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -777,6 +812,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.couponController.view.removeFromSuperview()
             self.couponController.removeFromParentViewController()
             self.closeAccountView()
+            self.accountSlideController.setHomeIndex()
         }
     }
     
@@ -790,6 +826,18 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.contactController.view.removeFromSuperview()
             self.contactController.removeFromParentViewController()
             self.closeAccountView()
+            self.accountSlideController.setHomeIndex()
+        }
+    }
+    
+    func hideBankAccountController() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.bankAccountCenterAnchor.constant = self.view.frame.width
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.bankAccountController.willMove(toParentViewController: nil)
+            self.bankAccountController.view.removeFromSuperview()
+            self.bankAccountController.removeFromParentViewController()
         }
     }
     

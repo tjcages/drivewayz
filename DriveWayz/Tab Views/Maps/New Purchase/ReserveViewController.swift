@@ -621,6 +621,13 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     let from = day["From"] as? String
                     let to = day["To"] as? String
                     
+                    if from == nil || to == nil {
+                        self.toTimeValues = ["N/A"]
+                        self.fromTimeValues = ["N/A"]
+                        self.timeToPicker.reloadAllComponents()
+                        return
+                    }
+                    
                     if from != "All day" && to != "All day" {
                         let fromDate = fullFormatter.date(from: from!)
                         let fromDateInt = Int(formatter.string(from: fromDate!))

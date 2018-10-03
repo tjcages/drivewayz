@@ -30,5 +30,6 @@ target 'DriveWayz' do
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.1.1'
 	pod 'Cluster'
+	pod 'NVActivityIndicatorView'
 
 end

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import Firebase
 
 class ParkingSpots: NSObject {
@@ -23,6 +24,7 @@ class ParkingSpots: NSObject {
     var message: String?
     var rating: Double?
     var Availability: [String]?
+    var location: CLLocation?
     
     var payment: Double?
     var hours: Int?
@@ -51,6 +53,7 @@ class ParkingSpots: NSObject {
         parkingDistance = dictionary["parkingDistance"] as? String
         message = dictionary["message"] as? String
         rating = dictionary["rating"] as? Double
+        location = dictionary["location"] as? CLLocation
         payment = dictionary["payment"] as? Double
         hours = dictionary["hours"] as? Int
         Availability = dictionary["Availability"] as? [String]

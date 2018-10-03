@@ -140,11 +140,6 @@ class SignInViewController: UIViewController, handleSignInViews {
     override func viewDidLoad() {
         super.viewDidLoad()
         UIApplication.shared.statusBarStyle = .lightContent
-
-//        let background = CAGradientLayer().mixColors()
-//        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        background.zPosition = -10
-//        view.layer.insertSublayer(background, at: 0)
         
         setupViews()
     }
@@ -244,7 +239,12 @@ class SignInViewController: UIViewController, handleSignInViews {
             UIView.animate(withDuration: 0.2, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1
-                self.whiteViewTopAnchor.constant = 170
+                switch device {
+                case .iphone8:
+                    self.whiteViewTopAnchor.constant = 170
+                case .iphoneX:
+                    self.whiteViewTopAnchor.constant = 200
+                }
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
                 //
@@ -281,6 +281,7 @@ class SignInViewController: UIViewController, handleSignInViews {
             UIView.animate(withDuration: 0.3, animations: {
                 self.registerController.view.alpha = 1
             }) { (success) in
+                self.registerController.animate()
                 if self.registerController.pageControl.currentPage == 3 {
                     self.delegate?.defaultStatusBar()
                     UIApplication.shared.statusBarStyle = .default

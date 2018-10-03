@@ -24,6 +24,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     var parkingID: String?
     var delegate: controlCurrentParkingOptions?
     var extendDelegate: removePurchaseView?
+    var navigationDelegate: extendTimeController?
     
     let parkingView: UIView = {
         let view = UIView()
@@ -72,7 +73,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         return controller
     }()
     
-    var Current = ["Extend time", "Open in maps", "Leave parking spot"]
+    var Current = ["Extend time", "Open navigation", "Leave parking spot"]
     var Details = ["Message host"]
     var Payment = ["Total cost", "Additional cost", "Payment method"]
     
@@ -426,36 +427,21 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
                 self.leaveAReview()
                 self.delegate?.closeExtendTimeView()
             } else if indexPath.row == (Current.count-2) {
-                self.openMapForPlace()
                 self.delegate?.closeExtendTimeView()
+                if self.Current[indexPath.row] == "Open navigation" {
+                    self.navigationDelegate?.openNavigation()
+                    self.Current = ["Extend time", "Close navigation", "Leave parking spot"]
+                    self.currentTableView.reloadData()
+                } else {
+                    self.navigationDelegate?.closeNavigation()
+                    self.Current = ["Extend time", "Open navigation", "Leave parking spot"]
+                    self.currentTableView.reloadData()
+                }
             } else if indexPath.row == (Current.count-3) {
                 self.extendTime()
             }
         } else {
             
-        }
-    }
-        
-    func openMapForPlace() {
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(self.address!) { (placemarks, error) in
-            guard
-                let placemarks = placemarks,
-                let location = placemarks.first?.location
-                else {
-                    print("no location found for directions")
-                    return
-            }
-            let regionDistance:CLLocationDistance = 1000;
-            let coordinates = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-            let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
-            
-            let options = [MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)]
-            
-            let placemark = MKPlacemark(coordinate: coordinates)
-            let mapItem = MKMapItem(placemark: placemark)
-            mapItem.name = "\(self.address!)"
-            mapItem.openInMaps(launchOptions: options)
         }
     }
     

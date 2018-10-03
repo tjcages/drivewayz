@@ -11,7 +11,7 @@ import TextFieldEffects
 
 class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate {
     
-    var delegate: controlsBankAccount?
+    var delegate: controlsAccountOptions?
     
     var scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -918,8 +918,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     }
     
     @objc func dismissDetails(sender: UIButton) {
-        self.delegate?.removeBankAccountView()
-        UIApplication.shared.statusBarStyle = .lightContent
+        self.delegate?.hideBankAccountController()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

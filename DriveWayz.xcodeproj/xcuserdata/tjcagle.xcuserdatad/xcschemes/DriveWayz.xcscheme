@@ -61,10 +61,17 @@
             ReferencedContainer = "container:DriveWayz.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "disable"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
       <LocationScenarioReference
-         identifier = "New York, NY, USA"
+         identifier = "San Francisco, CA, USA"
          referenceType = "1">
       </LocationScenarioReference>
    </LaunchAction>

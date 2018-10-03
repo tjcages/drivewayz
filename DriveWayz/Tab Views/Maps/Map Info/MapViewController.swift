@@ -55,7 +55,9 @@ protocol removePurchaseView {
 protocol controlHoursButton {
     func openHoursButton()
     func closeHoursButton()
-    func drawCurrentPath(dest: CLLocation)
+    func drawCurrentPath(dest: CLLocation, navigation: Bool)
+    func currentParkingDisappear()
+    func hideNavigation()
 }
 
 protocol controlNewHosts {
@@ -359,6 +361,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                                                         avgRating = rating / Double(counting)
                                                     }
                                                     self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
+                                                    self.purchaseViewController.setData(parkingCost: parkingCost!, parkingID: parkingID!, id: parkingID!)
                                                     UIView.animate(withDuration: 0.5, animations: {
                                                         currentButton.alpha = 1
                                                         self.swipeTutorial.alpha = 0
@@ -366,6 +369,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                                                 })
                                             } else {
                                                 self.informationViewController.setData(cityAddress: parkingCity!, imageURL: parkingImageURL!, parkingCost: parkingCost!, formattedAddress: parkingAddress!, timestamp: timestamp!, id: id!, parkingID: parkingID!, parkingDistance: formattedDistance, rating: avgRating, message: message!)
+                                                self.purchaseViewController.setData(parkingCost: parkingCost!, parkingID: parkingID!, id: parkingID!)
                                                 UIView.animate(withDuration: 0.5, animations: {
                                                     currentButton.alpha = 1
                                                     self.swipeTutorial.alpha = 0
@@ -971,8 +975,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.swipeTutorialCheck()
             guard let customMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let parking = parkingSpots[customMarkerView.tag]
-            informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
-            purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+            self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
+            self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
             
             self.purchaseViewController.view.alpha = 1
             UIView.animate(withDuration: 0.3, animations: {
@@ -1215,7 +1219,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }
 
     func addAVehicleReminder() {
-        self.vehicleDelegate?.setupNewVehicle(vehicleStatus: .noVehicle)
+        self.vehicleDelegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
     }
     
     func swipeTutorialCheck() {

@@ -22,7 +22,6 @@ var parking: Int = 0
 
 protocol controlsBankAccount {
     func setupBankAccount()
-    func removeBankAccountView()
 }
 
 protocol sendNewParking {
@@ -118,7 +117,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         let controller = BankAccountViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Charts"
-        controller.delegate = self
+//        controller.delegate = self
         return controller
     }()
     
@@ -1227,7 +1226,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func setupAddAVehicle() {
-        self.delegate?.setupNewVehicle(vehicleStatus: .noVehicle)
+        self.delegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
     }
     
     func setupAddAParkingSpot() {

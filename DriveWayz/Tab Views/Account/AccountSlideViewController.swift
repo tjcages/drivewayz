@@ -617,6 +617,10 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
             }
         }
     }
+    
+    func bringBankAccountOptions() {
+        self.delegate?.bringBankAccountController()
+    }
 
 
 }

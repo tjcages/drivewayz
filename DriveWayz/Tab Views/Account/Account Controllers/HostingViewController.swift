@@ -14,7 +14,8 @@ protocol handleCurrentParking {
     func hideNewHostingController()
 }
 
-class HostingViewController: UIViewController, handleCurrentParking {
+class HostingViewController: UIViewController, handleCurrentParking, controlsBankAccount {
+    
 
     var delegate: controlsAccountOptions?
     
@@ -76,6 +77,7 @@ class HostingViewController: UIViewController, handleCurrentParking {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Parking"
         controller.delegate = self
+        controller.bankDelegate = self
         
         return controller
     }()
@@ -201,6 +203,10 @@ class HostingViewController: UIViewController, handleCurrentParking {
     func hideNewHostingController() {
         self.delegate?.hideHostingController()
         self.delegate?.bringHostingController()
+    }
+    
+    func setupBankAccount() {
+        self.delegate?.bringBankAccountController()
     }
 
 }

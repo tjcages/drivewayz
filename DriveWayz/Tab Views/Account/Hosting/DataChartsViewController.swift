@@ -11,7 +11,13 @@ import Charts
 import Stripe
 import Firebase
 
+protocol controlBankAccount {
+    func bringBankAccountController()
+}
+
 class DataChartsViewController: UIViewController, ChartViewDelegate {
+    
+    var delegate: controlBankAccount?
 
     var timeArray: [Double] = []
     var costArray: [Double] = [0]
@@ -249,9 +255,9 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         line.centerXAnchor.constraint(equalTo: chartContainer.centerXAnchor).isActive = true
 
         self.view.addSubview(hostHours)
-        hostHours.leftAnchor.constraint(equalTo: chartContainer.leftAnchor, constant: 20).isActive = true
+        hostHours.centerXAnchor.constraint(equalTo: chartContainer.centerXAnchor).isActive = true
         hostHours.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 5).isActive = true
-        hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -30).isActive = true
+        hostHours.widthAnchor.constraint(equalTo: chartContainer.widthAnchor, constant: -10).isActive = true
         hostHours.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         self.view.addSubview(hostTimes)
@@ -304,9 +310,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
 
 //        print("\(entry.value) in \(months[entry.index])")
     }
-
-    var delegate: sendBankAccount?
-
+    
     @objc func checkAccount(sender: UIButton) {
         if let currentUser = Auth.auth().currentUser?.uid {
             let checkRef = Database.database().reference().child("users").child(currentUser)
@@ -323,7 +327,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
                             self.sendAlert(title: "Not yet", message: "You must first earn funds by having users park in your spot before you can transfer money to your account!")
                         }
                     } else {
-                        self.delegate?.sendBankAccount()
+                        self.bringBankAccountController()
                     }
                 }
             }, withCancel: nil)
@@ -352,6 +356,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
+    }
+    
+    func bringBankAccountController() {
+        self.delegate?.bringBankAccountController()
     }
 
 }

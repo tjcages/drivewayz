@@ -30,18 +30,24 @@ protocol controlCurrentParkingOptions {
 
 protocol extendTimeController {
     func closeExtendTimeView()
+    func openNavigation()
+    func closeNavigation()
 }
 
 protocol sendNewHostControl {
     func sendNewHost()
 }
 
+var isNavigating: Bool = false
+
 class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController, sendNewHostControl {
     
     
     var delegate: removePurchaseView?
     var hostDelegate: controlNewHosts?
+    var navigationDelegate: controlHoursButton?
     var parkingID: String?
+    var parkingLocation: CLLocation?
     
     lazy var infoController: ParkingInfoViewController = {
         let controller = ParkingInfoViewController()
@@ -83,6 +89,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
+        controller.navigationDelegate = self
         controller.view.alpha = 0
         
         return controller
@@ -275,6 +282,19 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         reviewsController.setData(parkingID: parkingID)
         currentController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID)
         purchaseController.setData(parkingCost: parkingCost, parkingID: parkingID, id: id)
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//            let geoCoder = CLGeocoder()
+//            geoCoder.geocodeAddressString(formattedAddress) { (placemarks, error) in
+//                guard
+//                    let placemarks = placemarks,
+//                    let location = placemarks.first?.location
+//                    else {
+//                        print("Couldn't find location to draw routes")
+//                        return
+//                }
+//                self.parkingLocation = location
+//            }
+//        }
     }
     
     func sendAvailability(availability: Bool) {
@@ -481,7 +501,24 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
                 self.pictureHeightAnchor.constant = 10
                 self.view.layoutIfNeeded()
             })
+            self.closeNavigation()
         }
+    }
+    
+    func openNavigation() {
+        isNavigating = true
+        self.currentParkingDisappear()
+        self.navigationDelegate?.drawCurrentPath(dest: self.parkingLocation!, navigation: true)
+    }
+    
+    func closeNavigation() {
+        isNavigating = false
+        self.currentParkingDisappear()
+        self.navigationDelegate?.hideNavigation()
+    }
+    
+    func currentParkingDisappear() {
+        self.navigationDelegate?.currentParkingDisappear()
     }
     
     func openHoursButton() {
@@ -509,8 +546,8 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         // Dispose of any resources that can be recreated.
     }
     
-    func drawCurrentPath(dest: CLLocation) {
-    }
+    func drawCurrentPath(dest: CLLocation, navigation: Bool) {}
+    func hideNavigation() {}
     
 
 }

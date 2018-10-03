@@ -369,7 +369,7 @@ class WalkthroughViewController: UIViewController {
                 self.view.removeFromSuperview()
                 self.blurBackgroundStartup.removeFromSuperview()
                 self.termsContainer.removeFromSuperview()
-                self.delegate?.setupNewVehicle(vehicleStatus: VehicleStatus.noVehicle)
+                self.delegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
             }
         }
     }

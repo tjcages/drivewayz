@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import CoreLocation
+import AVFoundation
 import GooglePlaces
 import Firebase
 import Cluster
@@ -21,7 +23,7 @@ protocol controlSaveLocation {
 class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate, UITextViewDelegate, MKMapViewDelegate, removePurchaseView, controlHoursButton, controlNewHosts, controlSaveLocation {
     
     var delegate: moveControllers?
-    var vehicleDelegate: controlsNewParking?
+    var vehicleDelegate: controlsAccountOptions?
     
     let clusterManager = ClusterManager()
     let locationManager = CLLocationManager()
@@ -100,7 +102,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         controller.delegate = self
         controller.removeDelegate = self
         controller.saveDelegate = self
-        //        controller.hoursDelegate = self
         
         return controller
     }()
@@ -112,6 +113,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         controller.title = "Information Controller"
         controller.delegate = self
         controller.hostDelegate = self
+        controller.navigationDelegate = self
         
         return controller
     }()
@@ -195,6 +197,33 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return label
     }()
     
+    var navigationLabel: UITextView = {
+        let label = UITextView()
+        label.backgroundColor = Theme.WHITE
+        label.alpha = 0
+        label.text = "Start Navigation"
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.textColor = Theme.BLACK
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.layer.shadowColor = Theme.HARMONY_COLOR.cgColor
+        label.layer.shadowOffset = CGSize(width: 1, height: 1)
+        label.layer.shadowRadius = 5
+        label.layer.shadowOpacity = 0.8
+//        label.textAlignment = .center
+        label.clipsToBounds = false
+        label.isEditable = false
+        label.isUserInteractionEnabled = false
+        label.contentInset = UIEdgeInsets(top: 36, left: 12, bottom: 24, right: 12)
+        
+        return label
+    }()
+    
+    var currentParkingController: CurrentParkingViewController = {
+        let controller = CurrentParkingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        return controller
+    }()
+    
     
 //    ///////////////////////////////////////////// VIEW DID LOAD
     
@@ -213,14 +242,18 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         setupViews()
         setupAdditionalViews()
         setupViewController()
-        checkCurrentParking()
+        if self.currentActive == false {
+            checkCurrentParking()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.setupLocationManager()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.observeUserParkingSpots()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//            if self.searchedForPlace == false {
+//                self.observeUserParkingSpots()
+//            }
+//        }
     }
     
     override public func didReceiveMemoryWarning() {
@@ -236,6 +269,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var containerHeightAnchor: NSLayoutConstraint!
     var purchaseStatusWidthAnchor: NSLayoutConstraint!
     var purchaseStatusHeightAnchor: NSLayoutConstraint!
+    var locatorButtonTopAnchor: NSLayoutConstraint!
+    var locatorButtonBottomAnchor: NSLayoutConstraint!
+    var navigationLabelHeight: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -269,7 +305,10 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         self.view.addSubview(locatorButton)
         locatorButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
-        locatorButton.topAnchor.constraint(equalTo: topSearch.bottomAnchor, constant: 12).isActive = true
+        locatorButtonTopAnchor = locatorButton.topAnchor.constraint(equalTo: topSearch.bottomAnchor, constant: 12)
+            locatorButtonTopAnchor.isActive = true
+        locatorButtonBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
+            locatorButtonBottomAnchor.isActive = false
         locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
@@ -302,6 +341,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         swipeTutorial.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         swipeTutorial.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         swipeTutorial.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        
+        self.view.addSubview(navigationLabel)
+        navigationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        navigationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        navigationLabel.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        navigationLabelHeight = navigationLabel.heightAnchor.constraint(equalToConstant: 90)
+            navigationLabelHeight.isActive = true
     
     }
     
@@ -424,7 +470,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     @objc func informationButtonSwiped() {
-        self.delegate?.showTabController()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = 0
             self.fullBlurView.alpha = 0
@@ -435,6 +480,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }) { (success) in
             informationScrollView.isScrollEnabled = false
             UIApplication.shared.statusBarStyle = .default
+        }
+        if isNavigating == false {
+            self.delegate?.showTabController()
+            self.locatorButtonBottomAnchor.isActive = false
+            self.locatorButtonTopAnchor.isActive = true
+            UIView.animate(withDuration: 0.2) {
+                self.navigationLabel.alpha = 0
+                self.searchBar.alpha = 1
+                self.topSearch.alpha = 1
+                self.delegate?.showTabController()
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.delegate?.hideTabController()
         }
     }
     
@@ -452,7 +511,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func currentParkingDisappear() {
-        self.delegate?.showTabController()
         self.purchaseViewController.view.alpha = 0
         UIView.animate(withDuration: 0.3, animations: {
             self.purchaseViewAnchor.constant = 0
@@ -460,6 +518,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }) { (success) in
             self.purchaseViewController.view.alpha = 0
             UIApplication.shared.statusBarStyle = .default
+        }
+        if isNavigating == false {
+            self.delegate?.showTabController()
+            self.locatorButtonBottomAnchor.isActive = false
+            self.locatorButtonTopAnchor.isActive = true
+            UIView.animate(withDuration: 0.2) {
+                self.navigationLabel.alpha = 0
+                self.searchBar.alpha = 1
+                self.topSearch.alpha = 1
+                self.delegate?.showTabController()
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.delegate?.hideTabController()
         }
     }
     
@@ -552,7 +624,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
 
     func addAVehicleReminder() {
-        self.vehicleDelegate?.setupNewVehicle(vehicleStatus: .noVehicle)
+        self.vehicleDelegate?.openAccountView()
+        self.vehicleDelegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
     }
     
     func swipeTutorialCheck() {
@@ -573,7 +646,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func sendNewHost() {
-        self.vehicleDelegate?.setupNewParking(parkingImage: .noImage)
+        self.vehicleDelegate?.bringNewHostingController(parkingImage: .noImage)
     }
     
     
@@ -589,6 +662,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         mapView.showsTraffic = true
         mapView.showsUserLocation = true
         mapView.showsScale = true
+        mapView.showsBuildings = true
+        mapView.mapType = .standard
+        mapView.showsCompass = false
         
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -597,11 +673,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            self.showPartyMarkers()
+            if self.currentActive == false && self.searchedForPlace == false {
+                self.observeUserParkingSpots()
+            }
         }
         
         if self.searchedForPlace == false {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // change 2 to desired number of seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
                 var region = MKCoordinateRegion()
                 region.center = location
@@ -615,10 +693,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = Theme.PRIMARY_COLOR
-        renderer.lineWidth = 5
-        return renderer
+        if overlay is MKPolyline {
+            let renderer = MKPolylineRenderer(overlay: overlay)
+            renderer.strokeColor = Theme.PRIMARY_COLOR
+            renderer.lineWidth = 5
+            return renderer
+        }
+        return MKOverlayRenderer()
     }
 
     @objc func animateSearchBar(sender: UIButton) {
@@ -686,11 +767,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func observeUserParkingSpots() {
-        self.parkingSpots = []
-        self.parkingSpotsDictionary = [:]
-        let annotations = self.mapView.annotations
-        self.clusterManager.remove(annotations)
-        self.mapView.removeAnnotations(annotations)
+//        self.parkingSpots = []
+//        self.parkingSpotsDictionary = [:]
+//        let annotations = self.mapView.annotations
+//        self.clusterManager.remove(annotations)
+//        self.mapView.removeAnnotations(annotations)
         let ref = Database.database().reference().child("parking")
         ref.observe(.childAdded, with: { (snapshot) in
             let parkingID = [snapshot.key]
@@ -708,53 +789,33 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             let messageRef = Database.database().reference().child("parking").child(parking)
             messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if var dictionary = snapshot.value as? [String:AnyObject] {
-                    let parkingAddress = dictionary["parkingAddress"] as! String
-                    let geoCoder = CLGeocoder()
-                    geoCoder.geocodeAddressString(parkingAddress) { (placemarks, error) in
-                        guard
-                            let placemarks = placemarks,
-                            let location = placemarks.first?.location
-                            else {
-                                // handle no location found
-                                return
-                        }
-                        DispatchQueue.main.async(execute: {
-                            if let myLocation: CLLocation = self.mapView.userLocation.location {
-                                let distanceToParking = (location.distance(from: myLocation)) / 1609.34 // miles
-                                let roundedStepValue = Double(round(10 * distanceToParking) / 10)
-                                let formattedDistance = String(format: "%.1f", roundedStepValue)
-                                dictionary.updateValue(formattedDistance as AnyObject, forKey: "parkingDistance")
-                                
-                                if let rating = dictionary["rating"] as? Double {
-                                    let reviewsRef = messageRef.child("Reviews")
-                                    reviewsRef.observeSingleEvent(of: .value, with: { (count) in
-                                        let counting = count.childrenCount
-                                        if counting == 0 {
-                                            avgRating = rating
-                                        } else {
-                                            avgRating = rating / Double(counting)
-                                        }
-                                        
-                                        dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
-                                        
-                                        let parking = ParkingSpots(dictionary: dictionary)
-                                        let parkingID = dictionary["parkingID"] as! String
-                                        self.parkingSpotsDictionary[parkingID] = parking
-                                        DispatchQueue.main.async(execute: {
-                                            self.reloadOfTable()
-                                        })
-                                    })
-                                } else {
-                                    dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
-                                    
-                                    let parking = ParkingSpots(dictionary: dictionary)
-                                    let parkingID = dictionary["parkingID"] as! String
-                                    self.parkingSpotsDictionary[parkingID] = parking
-                                    DispatchQueue.main.async(execute: {
-                                        self.reloadOfTable()
-                                    })
-                                }
+                    if let rating = dictionary["rating"] as? Double {
+                        let reviewsRef = messageRef.child("Reviews")
+                        reviewsRef.observeSingleEvent(of: .value, with: { (count) in
+                            let counting = count.childrenCount
+                            if counting == 0 {
+                                avgRating = rating
+                            } else {
+                                avgRating = rating / Double(counting)
                             }
+
+                            dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
+
+                            let parking = ParkingSpots(dictionary: dictionary)
+                            let parkingID = dictionary["parkingID"] as! String
+                            self.parkingSpotsDictionary[parkingID] = parking
+                            DispatchQueue.main.async(execute: {
+                                self.reloadOfTable()
+                            })
+                        })
+                    } else {
+                        dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
+
+                        let parking = ParkingSpots(dictionary: dictionary)
+                        let parkingID = dictionary["parkingID"] as! String
+                        self.parkingSpotsDictionary[parkingID] = parking
+                        DispatchQueue.main.async(execute: {
+                            self.reloadOfTable()
                         })
                     }
                 }
@@ -765,7 +826,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     private func reloadOfTable() {
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-        
     }
     
     var timer: Timer?
@@ -775,16 +835,15 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.parkingSpots.sort(by: { (message1, message2) -> Bool in
             return ((message1.parkingDistance! as NSString).intValue) < ((message2.parkingDistance! as NSString).intValue)
         })
-        
         DispatchQueue.main.async(execute: {
             self.showPartyMarkers()
         })
     }
     
     func showPartyMarkers() {
-        let annotations = self.mapView.annotations
-        self.mapView.removeAnnotations(annotations)
-        self.clusterManager.remove(annotations)
+//        let annotations = self.mapView.annotations
+//        self.mapView.removeAnnotations(annotations)
+//        self.clusterManager.remove(annotations)
         if parkingSpots.count > 0 {
             for number in 0...(parkingSpots.count - 1) {
                 let marker = Annotation()
@@ -793,11 +852,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 let geoCoder = CLGeocoder()
                 geoCoder.geocodeAddressString(parking.parkingAddress!) { (placemarks, error) in
                     guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                        print("Couldn't find location showing party markers")
                         return
                     }
                     marker.title = parking.parkingCost
                     marker.subtitle = "\(number)"
                     marker.coordinate = location.coordinate
+
+                    if let myLocation: CLLocation = self.mapView.userLocation.location {
+                        let distanceToParking = (location.distance(from: myLocation)) / 1609.34 // miles
+                        let roundedStepValue = Double(round(10 * distanceToParking) / 10)
+                        let formattedDistance = String(format: "%.1f", roundedStepValue)
+                        parking.parkingDistance = formattedDistance
+                    }
+                    
                     if parking.currentAvailable == nil {
                         let color = Theme.PRIMARY_COLOR
                         marker.style = .color(color, radius: 25)
@@ -828,7 +896,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         region.span.longitudeDelta = 0.01
         self.mapView.setRegion(region, animated: true)
         DispatchQueue.main.async {
-            self.clusterManager.reload(mapView: self.mapView)
+            self.mapView.userTrackingMode = .followWithHeading
+            if self.currentActive == false {
+                self.reloadOfTable()
+//                self.clusterManager.reload(mapView: self.mapView)
+            }
         }
     }
     
@@ -854,6 +926,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                             let parkingID = pullRef["parkingID"] as? String
                             let parkingAddress = pullRef["parkingAddress"] as? String
                             let message = pullRef["message"] as? String
+                            self.destinationString = parkingAddress!
                             
                             let geoCoder = CLGeocoder()
                             geoCoder.geocodeAddressString(parkingAddress!) { (placemarks, error) in
@@ -861,9 +934,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                                     let placemarks = placemarks,
                                     let location = placemarks.first?.location
                                     else {
-                                        // handle no location found
+                                        print("MapKit can't find location")
                                         return
                                 }
+                                self.currentParkingController.startTimerNotification(location: location)
+                                self.informationViewController.parkingLocation = location
                                 DispatchQueue.main.async(execute: {
                                     if let myLocation: CLLocation = self.mapView.userLocation.location {
                                         let distanceToParking = (location.distance(from: myLocation)) / 1609.34 // miles
@@ -872,7 +947,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                                         
                                         self.destination = location
                                         self.currentData = .yesReserved
-                                        self.drawCurrentPath(dest: location)
+                                        self.drawCurrentPath(dest: location, navigation: false)
                                         
                                         if let rating = pullRef["rating"] as? Double {
                                             let reviewsRef = parkingRef.child("Reviews")
@@ -906,6 +981,14 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 }
             }, withCancel: nil)
             currentRef.observe(.childRemoved, with: { (snapshot) in
+                self.parkingSpots = []
+                self.parkingSpotsDictionary = [:]
+                let annotations = self.mapView.annotations
+                self.clusterManager.remove(annotations)
+                self.mapView.removeAnnotations(annotations)
+                self.searchedForPlace = false
+                self.currentActive = false
+
                 let mapOverlays = self.mapView.overlays
                 self.mapView.removeOverlays(mapOverlays)
                 let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
@@ -920,32 +1003,29 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                     self.view.layoutIfNeeded()
                 })
                 self.currentData = .notReserved
-                self.currentActive = false
-                self.observeUserParkingSpots()
-                DispatchQueue.main.async {
-                    self.clusterManager.reload(mapView: self.mapView)
-                }
+//                self.observeUserParkingSpots()
                 self.currentParkingDisappear()
-                CurrentParkingViewController().stopTimerTest()
+                self.currentParkingController.stopTimerTest()
             }, withCancel: nil)
         } else {
             return
         }
     }
     
-    func drawCurrentPath(dest: CLLocation) {
-        let annotations = self.mapView.annotations
-        self.clusterManager.remove(annotations)
-        self.mapView.removeAnnotations(annotations)
-        self.currentActive = true
-        
-        let marker = Annotation()
-        marker.title = "Destination"
-        marker.coordinate = dest.coordinate
-        let color = Theme.PRIMARY_COLOR
-        marker.style = .color(color, radius: 25)
-        self.mapView.addAnnotation(marker)
-        
+    func drawCurrentPath(dest: CLLocation, navigation: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            let annotations = self.mapView.annotations
+            self.clusterManager.remove(annotations)
+            self.mapView.removeAnnotations(annotations)
+            self.currentActive = true
+            
+            let marker = Annotation()
+            marker.title = "Destination"
+            marker.coordinate = dest.coordinate
+            let color = Theme.PRIMARY_COLOR
+            marker.style = .color(color, radius: 25)
+            self.mapView.addAnnotation(marker)
+        }
         let sourceCoordinates = self.locationManager.location?.coordinate
         
         let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinates!)
@@ -973,9 +1053,15 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.mapView.add(route.polyline, level: .aboveRoads)
             let rect = route.polyline.boundingMapRect
             self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
+            self.navigationLabel.alpha = 0
+            self.view.layoutIfNeeded()
+            if navigation == true {
+                self.getDirections(to: route)
+            }
         })
     }
     
+    var destinationString: String = "Arrived at destination"
     var annotationSelected: MKAnnotation?
     var currentActive: Bool = false
     
@@ -1026,7 +1112,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if currentActive == false {
             clusterManager.reload(mapView: mapView) { finished in
-                print("")
+                //
             }
         }
     }
@@ -1111,6 +1197,107 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             views.forEach { $0.alpha = 1 }
         }, completion: nil)
     }
+    
+//    ////////////////////////////////// MAP NAVIGATION
+    
+    var currentCoordinate: CLLocationCoordinate2D?
+    var navigationSteps = [MKRouteStep]()
+    let speechSythensizer = AVSpeechSynthesizer()
+    var stepCounter = 1
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if self.currentActive == true {
+            locationManager.stopUpdatingLocation()
+            guard let currentLocation = locations.first else { return }
+            self.currentCoordinate = currentLocation.coordinate
+            self.mapView.userTrackingMode = .followWithHeading
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        self.stepCounter += 1
+        if self.stepCounter < self.navigationSteps.count {
+            let currentStep = self.navigationSteps[stepCounter]
+            let nextMessage = "In \(currentStep.distance) meters \(currentStep.instructions)."
+            self.speakDirections(message: nextMessage)
+        } else {
+            let message = self.destinationString
+            self.speakDirections(message: message)
+            self.stepCounter = 0
+            self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
+        }
+    }
+    
+    func getDirections(to primaryRoute: MKRoute) {
+        self.mapView.userTrackingMode = .followWithHeading
+        self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
+        self.navigationSteps = primaryRoute.steps
+        for i in 0 ..< primaryRoute.steps.count {
+            let step = primaryRoute.steps[i]
+            let region = CLCircularRegion(center: step.polyline.coordinate, radius: 20, identifier: "\(i)")
+            self.locationManager.startMonitoring(for: region)
+            let circle = MKCircle(center: region.center, radius: region.radius)
+            self.mapView.add(circle)
+        }
+        let firstDistance = self.convertDistance(dist: self.navigationSteps[1].distance, nav: self.navigationSteps[1].instructions)
+        let secondDistance = self.convertDistance(dist: self.navigationSteps[2].distance, nav: self.navigationSteps[2].instructions)
+        let initialMessage = "In \(firstDistance), then in \(secondDistance)."
+        self.speakDirections(message: initialMessage)
+        self.stepCounter += 1
+    }
+    
+    func speakDirections(message: String) {
+        self.navigationLabel.text = message
+        let numLines = (self.navigationLabel.contentSize.height / (self.navigationLabel.font?.lineHeight)!)
+        if numLines < 2 {
+            self.navigationLabelHeight.constant = 70
+        } else if numLines < 3 {
+            self.navigationLabelHeight.constant = 90
+        } else if numLines < 4 {
+            self.navigationLabelHeight.constant = 110
+        } else {
+            self.navigationLabelHeight.constant = 130
+        }
+        self.locatorButtonTopAnchor.isActive = false
+        self.locatorButtonBottomAnchor.isActive = true
+        UIView.animate(withDuration: 0.2) {
+            self.navigationLabel.alpha = 1
+            self.searchBar.alpha = 0
+            self.topSearch.alpha = 0
+            self.delegate?.hideTabController()
+            self.view.layoutIfNeeded()
+        }
+        let speechUtterance = AVSpeechUtterance(string: message)
+        self.speechSythensizer.speak(speechUtterance)
+    }
+    
+    func convertDistance(dist: Double, nav: String) -> String {
+        let first = String(nav.prefix(1)).lowercased()
+        let other = String(nav.dropFirst())
+        let feetDist = dist * 3.28084
+        if feetDist > 500 {
+            let mileDist = feetDist/5280
+            return "\(mileDist.rounded(toPlaces: 1)) miles \(first+other)"
+        } else {
+            return "\(Int(round(feetDist/10)*10)) feet \(first+other)"
+        }
+    }
+    
+    func hideNavigation() {
+        isEditing = false
+        self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
+        self.locatorButtonBottomAnchor.isActive = false
+        self.locatorButtonTopAnchor.isActive = true
+        UIView.animate(withDuration: 0.2) {
+            self.navigationLabel.alpha = 0
+            self.searchBar.alpha = 1
+            self.topSearch.alpha = 1
+            self.delegate?.showTabController()
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
 }
 
 class BorderedClusterAnnotationView: ClusterAnnotationView {
