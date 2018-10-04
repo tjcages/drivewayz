@@ -119,7 +119,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
         reviews.setTitle("Payment", for: .normal)
-        reviews.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        reviews.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center
         reviews.addTarget(self, action: #selector(vehiclePressed(sender:)), for: .touchUpInside)
@@ -283,7 +283,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func recentPressedFunc() {
-        self.delegate?.closeExtendTimeView()
+//        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = true
             self.segmentLineLeftAnchor2.isActive = false
@@ -307,7 +307,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func parkingPressedFunc() {
-        self.delegate?.closeExtendTimeView()
+//        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = true
@@ -331,7 +331,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func vehiclePressedFunc() {
-        self.delegate?.closeExtendTimeView()
+//        self.delegate?.closeExtendTimeView()
         UIView.animate(withDuration: 0.2, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = false

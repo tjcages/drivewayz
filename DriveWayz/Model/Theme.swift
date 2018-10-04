@@ -10,9 +10,11 @@ import UIKit
 
 class Theme {
     
-    static let PRIMARY_COLOR = UIColor(red: 87/255, green: 159/255, blue: 179/255, alpha: 1)
+//    static let PRIMARY_COLOR = UIColor(red: 87/255, green: 159/255, blue: 179/255, alpha: 1)
+    static let PRIMARY_COLOR = UIColor(red: 30/255, green: 163/255, blue: 204/255, alpha: 1)
     static let HARMONY_COLOR = UIColor(red: 189/255, green: 33/255, blue: 37/255, alpha: 1)
-    static let PRIMARY_DARK_COLOR = UIColor(red: 47/255, green: 117/255, blue: 139/255, alpha: 1)
+//    static let PRIMARY_DARK_COLOR = UIColor(red: 47/255, green: 117/255, blue: 139/255, alpha: 1)
+    static let PRIMARY_DARK_COLOR = UIColor(red: 19/255, green: 123/255, blue: 212/255, alpha: 1)
     static let SECONDARY_COLOR = UIColor(red: 247/255, green: 89/255, blue: 89/255, alpha: 1)
     static let TERTIARY_COLOR = UIColor(red: 255/255, green: 90/255, blue: 95/255, alpha: 1)
     static let SEETHROUGH_PRIMARY = UIColor(red: 136/255, green: 209/255, blue: 255/255, alpha: 1)

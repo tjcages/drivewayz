@@ -18,7 +18,7 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, InviteDeleg
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = UIColor.clear
-        imageView.layer.cornerRadius = 5
+//        imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         
@@ -30,7 +30,7 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, InviteDeleg
         view.backgroundColor = UIColor.clear
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -73,7 +73,7 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, InviteDeleg
         bannerImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         bannerImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         bannerImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        bannerImageView.heightAnchor.constraint(equalToConstant: 260).isActive = true
+        bannerImageView.heightAnchor.constraint(equalToConstant: 280).isActive = true
         
         self.view.addSubview(bannerContainer)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(inviteTapped(_:)))

@@ -239,7 +239,7 @@ class CurrentParkingViewController: UIViewController {
         let thirdSeconds = firstSeconds + (30 * 60)
         let fourthSeconds = firstSeconds - (20 * 60)
         
-        if seconds! >= 0 {
+        if seconds != nil && seconds! >= 0 {
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(firstSeconds), repeats: false)
             let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
             let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)

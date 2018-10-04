@@ -60,7 +60,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "24"
@@ -89,7 +89,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "25"
@@ -118,7 +118,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "26"
@@ -147,7 +147,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "27"
@@ -176,39 +176,10 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "28"
-        
-        return label
-    }()
-    
-    var sixthButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 20
-        button.tag = 6
-        button.setTitle("S", for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(showDates(sender:)), for: .touchUpInside)
-        button.addTarget(self, action: #selector(buttonPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    var sixthLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = "29"
         
         return label
     }()
@@ -238,7 +209,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Select the days you want to reserve"
@@ -250,7 +221,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.PRIMARY_DARK_COLOR
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Today"
@@ -262,7 +233,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Thursday 24"
@@ -274,7 +245,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Friday 25"
@@ -284,27 +255,14 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     var toLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
         
         return label
-    }()
-    
-    var checkButton: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.PRIMARY_DARK_COLOR
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(checkButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
     }()
     
     var needHours: UIButton = {
@@ -321,6 +279,20 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         view.isUserInteractionEnabled = false
         
         return view
+    }()
+    
+    lazy var reserveButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Select Times", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
+        button.backgroundColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.addTarget(self, action: #selector(checkButtonPressed(sender:)), for: .touchUpInside)
+        button.layer.cornerRadius = 5
+        button.isUserInteractionEnabled = false
+        
+        return button
     }()
 
     override func viewDidLoad() {
@@ -348,7 +320,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         viewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         viewContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         viewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        viewContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        viewContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         view.addSubview(needHours)
         needHours.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
@@ -391,12 +363,6 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         fifthButton.topAnchor.constraint(equalTo: daysContainer.topAnchor).isActive = true
         fifthButton.bottomAnchor.constraint(equalTo: daysContainer.bottomAnchor).isActive = true
         fifthButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        daysContainer.addSubview(sixthButton)
-        sixthButton.leftAnchor.constraint(equalTo: fifthButton.rightAnchor, constant: 20).isActive = true
-        sixthButton.topAnchor.constraint(equalTo: daysContainer.topAnchor).isActive = true
-        sixthButton.bottomAnchor.constraint(equalTo: daysContainer.bottomAnchor).isActive = true
-        sixthButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         daysContainer.addSubview(selectionLine)
         daysContainer.sendSubview(toBack: selectionLine)
@@ -454,7 +420,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         viewContainer.addSubview(todayLabel)
         todayLabel.centerXAnchor.constraint(equalTo: firstButton.centerXAnchor).isActive = true
         todayLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor).isActive = true
-        todayLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        todayLabel.widthAnchor.constraint(equalToConstant: 70).isActive = true
         todayLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         infoContainer.addSubview(fromDayLabel)
@@ -487,28 +453,29 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         timeToPicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeToPicker.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        infoContainer.addSubview(checkButton)
-        checkButton.leftAnchor.constraint(equalTo: timeToPicker.rightAnchor, constant: 10).isActive = true
-        checkButton.centerYAnchor.constraint(equalTo: timeToPicker.centerYAnchor).isActive = true
-        checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(reserveButton)
+        reserveButton.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor, constant: -24).isActive = true
+        reserveButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
+        reserveButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -12).isActive = true
+        reserveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
     
     @objc func checkButtonPressed(sender: UIButton) {
-        let from = "\(String(describing: finalFrom!)) \(finalFromDay)"
-        let to = "\(String(describing: finalTo!)) \(finalToDay)"
-        
+        guard let finalFromStg = finalFrom, let finalToStg = finalTo else { return }
+        let from = "\(finalFromStg) \(finalFromDay)"
+        let to = "\(finalToStg) \(finalToDay)"
+
         let formatter = DateFormatter()
         let finalFormatter = DateFormatter()
         formatter.dateFormat = "h:mm a EEEE YYYY/MM/dd"
         finalFormatter.dateFormat = "h:mm a EEEE"
-        let fromDate = formatter.date(from: from)
-        let toDate = formatter.date(from: to)
-        let hours = (Double((toDate?.hours(from: fromDate!))!))
+        guard let fromDate = formatter.date(from: from) else { return }
+        guard let toDate = formatter.date(from: to) else { return }
+        let hours = Double((toDate.hours(from: fromDate)))
         
-        let finalFromString = finalFormatter.string(from: fromDate!)
-        let finalToString = finalFormatter.string(from: toDate!)
+        let finalFromString = finalFormatter.string(from: fromDate)
+        let finalToString = finalFormatter.string(from: toDate)
         
         if hours <= 0 {
             UIView.animate(withDuration: 0.3, animations: {
@@ -522,7 +489,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
         } else {
             self.delegate?.bringParkNow()
-            self.delegate?.reserveCheckPressed(from: finalFromString, to: finalToString, hour: hours, fromTimestamp: fromDate!, toTimestamp: toDate!)
+            self.delegate?.reserveCheckPressed(from: finalFromString, to: finalToString, hour: hours, fromTimestamp: fromDate, toTimestamp: toDate)
         }
     }
     
@@ -563,9 +530,6 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             } else if i == 4 {
                 self.fifthButton.setTitle("\(weekDay)", for: .normal)
                 self.fifthLabel.text = String(weekNumber)
-            } else if i == 5 {
-                self.sixthButton.setTitle("\(weekDay)", for: .normal)
-                self.sixthLabel.text = String(weekNumber)
             }
         }
     }
@@ -757,11 +721,6 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             self.toTimeValues = self.fifthFromTimeValues
                             self.timeToPicker.reloadAllComponents()
                             self.finalToDay = currentDays
-                        } else if sender == self.sixthButton {
-                            self.sixthFromTimeValues = appendArray
-                            self.toTimeValues = self.sixthFromTimeValues
-                            self.timeToPicker.reloadAllComponents()
-                            self.finalToDay = currentDays
                         }
                         if status == false {
                             self.fromTimeValues = []
@@ -813,12 +772,14 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
                                     self.finalFromDay = currentDays
+                                    self.finalToDay = currentDays
                                 } else {
                                     let addDate = formatter.date(from: String(date))
                                     let newDate = fullFormatter.string(from: addDate!)
                                     self.toTimeValues.append(newDate)
                                     self.fromTimeValues.append(newDate)
                                     self.finalFromDay = currentDays
+                                    self.finalToDay = currentDays
                                 }
                             }
                             self.timeToPicker.reloadAllComponents()
@@ -886,6 +847,8 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @objc func buttonPressed(sender: UIButton) {
         self.delegate?.hideParkNow()
         if sender.backgroundColor == UIColor.clear {
+            self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            self.reserveButton.isUserInteractionEnabled = true
             UIView.animate(withDuration: 0.2, animations: {
                 sender.backgroundColor = UIColor.black
                 sender.setTitleColor(Theme.WHITE, for: .normal)
@@ -954,6 +917,8 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 self.selectionLineRight = nil
                 self.lastDayPressed = nil
                 self.selectionLine.alpha = 0
+                self.reserveButton.backgroundColor = Theme.DARK_GRAY
+                self.reserveButton.isUserInteractionEnabled = true
                 UIView.animate(withDuration: 0.2) {
                     self.view.layoutIfNeeded()
                 }
@@ -1042,7 +1007,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
@@ -1054,8 +1019,12 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             label.text = self.fromTimeValues[row]
         }
         view.addSubview(label)
-        self.finalFrom = fromTimeValues[0]
-        self.finalTo = toTimeValues[0]
+        if self.fromTimeValues.count > 0 {
+            self.finalFrom = fromTimeValues[0]
+        }
+        if self.toTimeValues.count > 0 {
+            self.finalTo = toTimeValues[0]
+        }
         
         return view
 
@@ -1063,9 +1032,13 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == timeToPicker {
-            self.finalTo = self.toTimeValues[row]
+            if self.toTimeValues.count > 0 {
+                self.finalTo = self.toTimeValues[row]
+            }
         } else if pickerView == timeFromPicker {
-            self.finalFrom = self.fromTimeValues[row]
+            if self.fromTimeValues.count > 0 {
+                self.finalFrom = self.fromTimeValues[row]
+            }
         }
     }
     

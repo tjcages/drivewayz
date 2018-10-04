@@ -165,11 +165,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     
     @objc func agreeToTerms(sender: UIButton) {
         if Auth.auth().currentUser != nil {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.view.alpha = 0
-            }) { (success) in
-                self.delegateOptions?.hideTermsController()
-            }
+            self.delegateOptions?.hideTermsController()
         } else {
             self.delegate?.agreeToTerms()
         }

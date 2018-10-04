@@ -127,7 +127,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Payment", for: .normal)
+        button.setTitle("Select Payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentMode = .center
         button.titleLabel?.textAlignment = .center

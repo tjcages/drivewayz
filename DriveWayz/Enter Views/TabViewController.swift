@@ -400,6 +400,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     
     func moveTopProfile() {
         self.delegate?.hideStatusBar()
+        self.mapController.purchaseButtonSwipedDown()
         UIView.animate(withDuration: 0.3, animations: {
             self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
@@ -727,7 +728,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideTermsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.termsController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
+//            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.termsController.willMove(toParentViewController: nil)
@@ -805,7 +806,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideCouponsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.couponController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
+//            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.couponController.willMove(toParentViewController: nil)
@@ -819,7 +820,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideContactUsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.contactController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
+//            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.contactController.willMove(toParentViewController: nil)

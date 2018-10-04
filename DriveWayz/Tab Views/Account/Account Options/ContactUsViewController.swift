@@ -34,6 +34,14 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         return blurView
     }()
     
+    var viewContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        
+        return view
+    }()
+    
     var terms: UILabel = {
         let label = UILabel()
         label.textColor = Theme.PRIMARY_COLOR
@@ -64,9 +72,9 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         button.setTitle("Send", for: .normal)
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -76,12 +84,11 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.DARK_GRAY.cgColor
-        button.alpha = 0.6
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(backPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -118,6 +125,9 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         inputTextField.delegate = self
         scrollView.delegate = self
         
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+        viewContainer.addGestureRecognizer(gesture)
+        
         setupTerms()
     }
     
@@ -133,6 +143,12 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         blurBackgroundStartup.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         blurBackgroundStartup.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         blurBackgroundStartup.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
+        self.view.addSubview(viewContainer)
+        viewContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        viewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        viewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        viewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
         self.view.addSubview(termsContainer)
         termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
@@ -159,7 +175,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         inputTextField.leftAnchor.constraint(equalTo: termsContainer.leftAnchor, constant: 10).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -10).isActive = true
         inputTextField.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10).isActive = true
-        inputTextField.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        inputTextField.heightAnchor.constraint(equalToConstant: 140).isActive = true
         
         termsContainer.addSubview(terms)
         terms.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor).isActive = true
@@ -267,13 +283,19 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
             textView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         }
     }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "Enter text here"
+        }
+    }
+    
+    @objc func endEditing() {
+        self.view.endEditing(true)
+    }
 
     @objc func backPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.alpha = 0
-        }) { (success) in
-            self.delegate?.hideContactUsController()
-        }
+        self.delegate?.hideContactUsController()
     }
 
     

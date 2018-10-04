@@ -125,7 +125,9 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.tabController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.tabController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.tabController.view.alpha = 0
-            self.defaultStatusBar()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.defaultStatusBar()
+            }
         } else {
             self.view.addSubview(self.startupController.view)
             self.addChildViewController(self.startupController)
@@ -136,7 +138,9 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.startupController.view.alpha = 0
-            self.lightContentStatusBar()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.lightContentStatusBar()
+            }
         }
     }
     
@@ -174,7 +178,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     }
     
     var statusBarShouldBeHidden = false
-    var statusBarColor = false
+    var statusBarColor = true
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if statusBarColor == true {

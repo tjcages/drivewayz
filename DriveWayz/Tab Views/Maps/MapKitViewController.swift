@@ -15,6 +15,7 @@ import Firebase
 import Cluster
 
 var userLocation: CLLocation?
+var alreadyLoadedSpots: Bool = false
 
 protocol controlSaveLocation {
     func saveUserCurrentLocation()
@@ -148,22 +149,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        view.alpha = 0
-        view.layer.cornerRadius = 10
-        view.isUserInteractionEnabled = false
-        
-        return view
-    }()
-    
-    var couponStaus: UIButton = {
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("", for: .normal)
-        view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        view.titleLabel?.textAlignment = .center
-        view.titleLabel?.numberOfLines = 2
-        view.backgroundColor = Theme.PRIMARY_COLOR
         view.alpha = 0
         view.layer.cornerRadius = 10
         view.isUserInteractionEnabled = false
@@ -398,11 +383,12 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let gestureRecognizer2 = UISwipeGestureRecognizer(target: self, action: #selector(purchaseButtonSwipedDownSender))
         gestureRecognizer2.direction = .down
         purchaseViewController.view.addGestureRecognizer(gestureRecognizer2)
+        
         purchaseViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        purchaseViewAnchor = purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 160)
+        purchaseViewAnchor = purchaseViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 240)
             purchaseViewAnchor.isActive = true
-        purchaseViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
-        hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 140)
+        purchaseViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        hoursButtonAnchor = purchaseViewController.view.heightAnchor.constraint(equalToConstant: 220)
             hoursButtonAnchor.isActive = true
         
         self.view.addSubview(informationViewController.view)
@@ -413,18 +399,12 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         informationViewController.view.addGestureRecognizer(gesture)
         informationViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationViewController.view.topAnchor.constraint(equalTo: purchaseViewController.view.bottomAnchor, constant: 35).isActive = true
-        informationViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 10).isActive = true
+        informationViewController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         informationViewController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height - 30).isActive = true
-        
-        self.view.addSubview(couponStaus)
-        couponStaus.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
-        couponStaus.bottomAnchor.constraint(equalTo: purchaseViewController.view.topAnchor, constant: -80).isActive = true
-        couponStaus.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        couponStaus.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(swipeLabel)
         swipeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        swipeLabel.bottomAnchor.constraint(equalTo: purchaseViewController.view.topAnchor, constant: -30).isActive = true
+        swipeLabel.bottomAnchor.constraint(equalTo: purchaseViewController.view.topAnchor, constant: -20).isActive = true
         swipeLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
         swipeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -458,7 +438,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
         UIView.animate(withDuration: 0.3, animations: {
-            self.purchaseViewAnchor.constant = 160
+            self.purchaseViewAnchor.constant = 240
             self.swipeTutorial.alpha = 0
             self.fullBlurView.alpha = 0
             self.view.layoutIfNeeded()
@@ -536,7 +516,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func openHoursButton() {
-        self.hoursButtonAnchor.constant = 315
+        self.hoursButtonAnchor.constant = 340
         UIView.animate(withDuration: 0.2) {
             self.fullBlurView.alpha = 0.6
             self.view.layoutIfNeeded()
@@ -544,7 +524,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func closeHoursButton() {
-        self.hoursButtonAnchor.constant = 140
+        self.hoursButtonAnchor.constant = 220
         UIView.animate(withDuration: 0.2) {
             self.fullBlurView.alpha = 0
             self.view.layoutIfNeeded()
@@ -557,21 +537,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     @objc func currentParkingPressed(sender: UIButton) {
         currentParkingSender()
-    }
-    
-    func checkForCoupons() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
-        ref.observe(.childAdded) { (snapshot) in
-            let percent = snapshot.value as? Int
-            self.couponStaus.setTitle("\(percent!)% off!", for: .normal)
-            self.couponStaus.alpha = 0.8
-            couponActive = percent!
-        }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.couponStaus.setTitle("", for: .normal)
-            self.couponStaus.alpha = 0
-        }
     }
     
     func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
@@ -673,7 +638,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            if self.currentActive == false && self.searchedForPlace == false {
+            if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
                 self.observeUserParkingSpots()
             }
         }
@@ -772,15 +737,18 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
 //        let annotations = self.mapView.annotations
 //        self.clusterManager.remove(annotations)
 //        self.mapView.removeAnnotations(annotations)
-        let ref = Database.database().reference().child("parking")
-        ref.observe(.childAdded, with: { (snapshot) in
-            let parkingID = [snapshot.key]
-            self.fetchParking(parkingID: parkingID)
-        }, withCancel: nil)
-        ref.observe(.childRemoved, with: { (snapshot) in
-            self.parkingSpotsDictionary.removeValue(forKey: snapshot.key)
-            self.reloadOfTable()
-        }, withCancel: nil)
+        if alreadyLoadedSpots == false {
+            alreadyLoadedSpots = true
+            let ref = Database.database().reference().child("parking")
+            ref.observe(.childAdded, with: { (snapshot) in
+                let parkingID = [snapshot.key]
+                self.fetchParking(parkingID: parkingID)
+            }, withCancel: nil)
+            ref.observe(.childRemoved, with: { (snapshot) in
+                self.parkingSpotsDictionary.removeValue(forKey: snapshot.key)
+                self.reloadOfTable()
+            }, withCancel: nil)
+        }
     }
     
     private func fetchParking(parkingID: [String]) {
@@ -988,6 +956,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 self.mapView.removeAnnotations(annotations)
                 self.searchedForPlace = false
                 self.currentActive = false
+//                alreadyLoadedSpots = false
 
                 let mapOverlays = self.mapView.overlays
                 self.mapView.removeOverlays(mapOverlays)
@@ -1134,13 +1103,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             mapView.setVisibleMapRect(zoomRect, animated: true)
         } else if annotation.subtitle! != nil && annotation.subtitle! != "" {
             self.swipeTutorialCheck()
-            self.checkForCoupons()
             if let string = view.annotation!.subtitle, string != nil {
                 if let intFromString = Int(string!) {
                     if parkingSpots.count >= intFromString {
                         let parking = parkingSpots[intFromString]
                         self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
                         self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+                        self.purchaseViewController.resetReservationButton()
                     }
                 }
             }
@@ -1185,7 +1154,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         if annotation is ClusterAnnotation {} else {
             UIView.animate(withDuration: 0.2) {
                 view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.couponStaus.alpha = 0
                 self.swipeLabel.alpha = 0
             }
         }

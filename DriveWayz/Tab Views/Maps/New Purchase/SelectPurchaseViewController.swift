@@ -31,22 +31,11 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 5
+//        view.roundCorners(corners: [.topLeft, .topRight], radius: 10)
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
-    }()
-    
-    lazy var swipeBlur: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().lightBlurColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 160)
-        view.layer.insertSublayer(background, at: 0)
-        view.alpha = 0
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.6
         
         return view
     }()
@@ -64,7 +53,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
         info.setTitle("Park now", for: .normal)
-        info.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        info.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         info.setTitleColor(Theme.BLACK, for: .normal)
         info.titleLabel?.textAlignment = .center
         info.addTarget(self, action: #selector(currentPressed(sender:)), for: .touchUpInside)
@@ -77,8 +66,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         availability.translatesAutoresizingMaskIntoConstraints = false
         availability.backgroundColor = UIColor.clear
         availability.setTitle("Reserve", for: .normal)
-        availability.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        availability.setTitleColor(Theme.BLACK, for: .normal)
+        availability.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        availability.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
         availability.titleLabel?.textAlignment = .center
         availability.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
         
@@ -94,28 +83,21 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }()
     
     lazy var reserveButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 20, height: 50))
+        let button = UIButton()
         button.setTitle("Book Spot", for: .normal)
-        button.setTitle("", for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
         button.backgroundColor = Theme.PRIMARY_DARK_COLOR
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.WHITE, for: .normal)
-        let path = UIBezierPath(roundedRect:button.bounds,
-                                byRoundingCorners:[.bottomRight, .bottomLeft],
-                                cornerRadii: CGSize(width: 5, height: 5))
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = path.cgPath
-        button.layer.mask = maskLayer
         button.addTarget(self, action: #selector(handleRequestRideButtonTapped), for: .touchUpInside)
-        button.alpha = 0.6
-        button.isUserInteractionEnabled = false
+        button.layer.cornerRadius = 5
         
         return button
     }()
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Payment", for: .normal)
+        button.setTitle("Select Payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentMode = .center
         button.titleLabel?.textAlignment = .center
@@ -131,9 +113,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.7), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         
         return button
     }()
@@ -142,9 +123,10 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitleColor(Theme.BLACK, for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
         button.setTitle("1 hour", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.setImage(UIImage(named: "hourParkingIcon"), for: .normal)
+//        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         button.addTarget(self, action: #selector(hourButtonPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -152,9 +134,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var currentTimeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.BLACK
+        label.textColor = Theme.PRIMARY_DARK_COLOR
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "8:00 am"
@@ -165,9 +147,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var toLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
@@ -179,33 +161,19 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var timeToPicker: UIPickerView = {
         let picker = UIPickerView()
         picker.backgroundColor = UIColor.clear
-        picker.tintColor = Theme.DARK_GRAY
-        picker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
+        picker.tintColor = Theme.PRIMARY_DARK_COLOR
+        picker.frame = CGRect(x: 0, y: 0, width: 400, height: 380)
         picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.setValue(Theme.BLACK, forKeyPath: "textColor")
+        picker.setValue(Theme.PRIMARY_DARK_COLOR, forKeyPath: "textColor")
         picker.alpha = 0
         
         return picker
     }()
     
-    var checkButton: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.PRIMARY_DARK_COLOR
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0
-        button.addTarget(self, action: #selector(checkButtonPressed(sender:)), for: .touchUpInside)
-
-        return button
-    }()
-    
     var line: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.OFF_WHITE
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return line
     }()
@@ -213,15 +181,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var line2: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.OFF_WHITE
-        
-        return line
-    }()
-    
-    var line3: UIView = {
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.OFF_WHITE
+        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         line.alpha = 0
         
         return line
@@ -246,7 +206,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
         button.titleLabel?.numberOfLines = 2
         button.alpha = 0
         button.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
@@ -262,7 +222,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
         button.titleLabel?.numberOfLines = 2
         button.alpha = 0
         button.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
@@ -274,10 +234,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.7), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        button.titleLabel?.textAlignment = .center
-        button.setTitle("$8.00", for: .normal)
+        button.setTitleColor(Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.alpha = 0
         
         return button
@@ -285,15 +243,55 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var toReserveLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
         label.alpha = 0
         
         return label
+    }()
+    
+    let exitButton: UIButton = {
+        let exitButton = UIButton()
+        let image = UIImage(named: "Expand")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        exitButton.setImage(tintedImage, for: .normal)
+        exitButton.tintColor = Theme.BLACK
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+        exitButton.addTarget(self, action: #selector(exitHoursButton(sender:)), for: .touchUpInside)
+        exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
+        exitButton.alpha = 0
+        
+        return exitButton
+    }()
+    
+    var slideView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.alpha = 0.9
+        view.layer.cornerRadius = 4
+        
+        return view
+    }()
+    
+    var couponStaus: UIButton = {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setTitle("", for: .normal)
+        view.titleLabel?.textColor = Theme.WHITE
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.textAlignment = .center
+        view.titleLabel?.numberOfLines = 2
+        view.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.6)
+        view.alpha = 0
+        view.layer.cornerRadius = 5
+        view.isUserInteractionEnabled = false
+        
+        return view
     }()
 
     override func viewDidLoad() {
@@ -306,9 +304,17 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
         self.activityIndicator.alpha = 0
         
+        let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(reserveSwiped(sender:)))
+        leftGesture.direction = .left
+        viewContainer.addGestureRecognizer(leftGesture)
+        let rightGesture = UISwipeGestureRecognizer(target: self, action: #selector(currentSwiped(sender:)))
+        rightGesture.direction = .right
+        viewContainer.addGestureRecognizer(rightGesture)
+        
         setupViews()
         setupExtraViews()
         setTimes()
+        checkForCoupons()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -344,22 +350,25 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var currentSegmentAnchor: NSLayoutConstraint!
     var reserveSegmentAnchor: NSLayoutConstraint!
     var viewContainerHeightAnchor: NSLayoutConstraint!
-    var reserveCostAnchor : NSLayoutConstraint!
+    var reserveWidthAnchor: NSLayoutConstraint!
+    var costButtonHeightAnchor: NSLayoutConstraint!
+    var reserveCostButtonHeightAnchor: NSLayoutConstraint!
+    var exitButtonHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(swipeBlur)
-        swipeBlur.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        swipeBlur.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        swipeBlur.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        swipeBlur.heightAnchor.constraint(equalToConstant: 160).isActive = true
-        
         self.view.addSubview(viewContainer)
-        viewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15).isActive = true
-        viewContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
-        viewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        viewContainerHeightAnchor = viewContainer.heightAnchor.constraint(equalToConstant: 140)
+        viewContainerHeightAnchor = viewContainer.heightAnchor.constraint(equalToConstant: 220)
             viewContainerHeightAnchor.isActive = true
+        viewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        viewContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        viewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        
+        self.view.addSubview(slideView)
+        slideView.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
+        slideView.bottomAnchor.constraint(equalTo: viewContainer.topAnchor, constant: -8).isActive = true
+        slideView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        slideView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.view.addSubview(segmentControlView)
         segmentControlView.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 5).isActive = true
@@ -382,84 +391,80 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.view.addSubview(selectionLine)
         selectionLine.topAnchor.constraint(equalTo: segmentControlView.bottomAnchor).isActive = true
         selectionLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        selectionLine.widthAnchor.constraint(equalToConstant: self.view.frame.width / 4 - 10).isActive = true
+        selectionLine.widthAnchor.constraint(equalToConstant: self.view.frame.width / 4 + 20).isActive = true
         currentSegmentAnchor = selectionLine.centerXAnchor.constraint(equalTo: currentSegment.centerXAnchor)
             currentSegmentAnchor.isActive = true
         reserveSegmentAnchor = selectionLine.centerXAnchor.constraint(equalTo: reserveSegment.centerXAnchor)
             reserveSegmentAnchor.isActive = false
         
         self.view.addSubview(reserveButton)
-        reserveButton.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor).isActive = true
-        reserveButton.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
+        reserveButton.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor, constant: -24).isActive = true
+        reserveButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
+        reserveWidthAnchor = reserveButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -72)
+            reserveWidthAnchor.isActive = true
         reserveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        reserveButton.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         
         self.view.addSubview(paymentButton)
         paymentButton.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        paymentButton.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
-        paymentButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        paymentButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor).isActive = true
-        
-        self.view.addSubview(reserveFromLabel)
-        reserveFromLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        reserveFromLabel.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3 - 20).isActive = true
-        reserveFromLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        reserveFromLabel.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 5).isActive = true
+        paymentButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        paymentButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
+        paymentButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
         
         self.view.addSubview(costButton)
-        costButton.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        costButton.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
+        costButtonHeightAnchor = costButton.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -40)
+            costButtonHeightAnchor.isActive = true
+        costButton.widthAnchor.constraint(equalTo: viewContainer.widthAnchor, constant: -200).isActive = true
         costButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        costButton.leftAnchor.constraint(equalTo: paymentButton.rightAnchor).isActive = true
-        
-        self.view.addSubview(reserveToLabel)
-        reserveToLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        reserveToLabel.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3 - 20).isActive = true
-        reserveToLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        reserveToLabel.leftAnchor.constraint(equalTo: paymentButton.rightAnchor, constant: 35).isActive = true
+        costButton.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         
         self.view.addSubview(hoursButton)
-        hoursButton.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        hoursButton.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
-        hoursButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        hoursButton.leftAnchor.constraint(equalTo: costButton.rightAnchor).isActive = true
-        
-        self.view.addSubview(reserveCostLabel)
-        reserveCostLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        reserveCostLabel.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3).isActive = true
-        reserveCostLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        reserveCostAnchor = reserveCostLabel.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: 10)
-            reserveCostAnchor.isActive = true
-        
-        self.view.addSubview(line3)
-        line3.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        line3.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        line3.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        line3.centerXAnchor.constraint(equalTo: reserveCostLabel.leftAnchor, constant: 15).isActive = true
+        hoursButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -8).isActive = true
+        hoursButton.heightAnchor.constraint(equalTo: reserveButton.heightAnchor).isActive = true
+        hoursButton.widthAnchor.constraint(equalTo: hoursButton.heightAnchor).isActive = true
+        hoursButton.centerYAnchor.constraint(equalTo: reserveButton.centerYAnchor).isActive = true
         
         self.view.addSubview(line)
-        line.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        line.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        line.centerXAnchor.constraint(equalTo: paymentButton.rightAnchor).isActive = true
-        
-        self.view.addSubview(toReserveLabel)
-        toReserveLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        toReserveLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        toReserveLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        toReserveLabel.centerXAnchor.constraint(equalTo: reserveFromLabel.rightAnchor, constant: 25).isActive = true
+        line.bottomAnchor.constraint(equalTo: paymentButton.topAnchor, constant: -5).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
+        line.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         
         self.view.addSubview(line2)
-        line2.bottomAnchor.constraint(equalTo: reserveButton.topAnchor).isActive = true
-        line2.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        line2.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        line2.centerXAnchor.constraint(equalTo: hoursButton.leftAnchor).isActive = true
+        line2.bottomAnchor.constraint(equalTo: paymentButton.topAnchor, constant: -25).isActive = true
+        line2.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        line2.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
+        line2.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
+        
+        self.view.addSubview(toReserveLabel)
+        toReserveLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -10).isActive = true
+        toReserveLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        toReserveLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        toReserveLabel.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
+        
+        self.view.addSubview(reserveToLabel)
+        reserveToLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -10).isActive = true
+        reserveToLabel.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3 - 20).isActive = true
+        reserveToLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        reserveToLabel.leftAnchor.constraint(equalTo: toReserveLabel.rightAnchor, constant: 10).isActive = true
+        
+        self.view.addSubview(reserveFromLabel)
+        reserveFromLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -10).isActive = true
+        reserveFromLabel.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 20) / 3 - 20).isActive = true
+        reserveFromLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        reserveFromLabel.rightAnchor.constraint(equalTo: toReserveLabel.leftAnchor, constant: -10).isActive = true
+        
+        self.view.addSubview(reserveCostLabel)
+        reserveCostButtonHeightAnchor = reserveCostLabel.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -60)
+            reserveCostButtonHeightAnchor.isActive = true
+        reserveCostLabel.widthAnchor.constraint(equalTo: viewContainer.widthAnchor, constant: -200).isActive = true
+        reserveCostLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        reserveCostLabel.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         
         self.view.addSubview(toLabel)
         toLabel.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         toLabel.widthAnchor.constraint(equalToConstant: 30).isActive = true
         toLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        toLabel.centerYAnchor.constraint(equalTo: viewContainer.centerYAnchor, constant: -30).isActive = true
+        toLabel.centerYAnchor.constraint(equalTo: viewContainer.centerYAnchor, constant: -40).isActive = true
         
         self.view.addSubview(currentTimeLabel)
         currentTimeLabel.rightAnchor.constraint(equalTo: toLabel.leftAnchor).isActive = true
@@ -473,20 +478,25 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         timeToPicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeToPicker.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.view.addSubview(checkButton)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(checkButtonPressed(sender:)))
-        checkButton.addGestureRecognizer(gesture)
-        checkButton.leftAnchor.constraint(equalTo: timeToPicker.rightAnchor, constant: 10).isActive = true
-        checkButton.centerYAnchor.constraint(equalTo: toLabel.centerYAnchor).isActive = true
-        checkButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        checkButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        viewContainer.addSubview(reserveController.view)
+        self.view.addSubview(reserveController.view)
         self.addChildViewController(reserveController)
         reserveController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reserveController.view.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
         reserveController.view.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 45).isActive = true
-        reserveController.view.bottomAnchor.constraint(equalTo: reserveButton.topAnchor, constant: -10).isActive = true
+        reserveController.view.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor).isActive = true
+        
+        self.view.addSubview(exitButton)
+        exitButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
+        exitButtonHeightAnchor = exitButton.centerYAnchor.constraint(equalTo: toLabel.centerYAnchor)
+            exitButtonHeightAnchor.isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.view.addSubview(couponStaus)
+        couponStaus.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 10).isActive = true
+        couponStaus.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 50).isActive = true
+        couponStaus.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        couponStaus.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
     }
     
@@ -494,37 +504,67 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         currentSender()
     }
     
+    @objc func currentSwiped(sender: UISwipeGestureRecognizer) {
+        if self.currentSegment.alpha == 1 {
+            currentSender()
+        }
+    }
+    
     func currentSender() {
         self.minimizeHours()
         self.reserveSegmentAnchor.isActive = false
         self.currentSegmentAnchor.isActive = true
+        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
+        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         UIView.animate(withDuration: 0.2, animations: {
             self.reserveController.view.alpha = 0
             self.toReserveLabel.alpha = 0
             self.reserveToLabel.alpha = 0
             self.reserveFromLabel.alpha = 0
             self.reserveCostLabel.alpha = 0
-            self.line3.alpha = 0
+            self.line2.alpha = 0
             self.reserveButton.alpha = 1
             self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.2, animations: {
-                self.viewContainerHeightAnchor.constant = 140
+                self.viewContainerHeightAnchor.constant = 220
+                self.reserveWidthAnchor.constant = -72
                 self.paymentButton.alpha = 1
                 self.costButton.alpha = 1
                 self.hoursButton.alpha = 1
                 self.line.alpha = 1
-                self.line2.alpha = 1
                 self.view.layoutIfNeeded()
             })
+            self.reserveButton.setTitle("Book Spot", for: .normal)
+        }
+        if self.isCouponActive == true {
+            self.couponStaus.alpha = 0.8
+        } else {
+            self.couponStaus.alpha = 0
         }
     }
 
     @objc func reservePressed(sender: UIButton) {
+        self.reserveSender()
+    }
+    
+    @objc func reserveSwiped(sender: UISwipeGestureRecognizer) {
+        if self.reserveSegment.alpha == 1 {
+            self.reserveSender()
+        }
+    }
+    
+    func reserveSender() {
         self.expandHours()
         self.currentSegmentAnchor.isActive = false
         self.reserveSegmentAnchor.isActive = true
+        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.reserveSegment.setTitleColor(Theme.BLACK, for: .normal)
+        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.currentSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         self.currentSegment.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.2, animations: {
             self.paymentButton.alpha = 0
@@ -536,16 +576,18 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveToLabel.alpha = 0
             self.reserveFromLabel.alpha = 0
             self.reserveCostLabel.alpha = 0
-            self.line3.alpha = 0
+            self.couponStaus.alpha = 0
             self.reserveButton.alpha = 0.6
-            self.reserveButton.isUserInteractionEnabled = false
-//            self.currentSegment.alpha = 0
+            //            self.currentSegment.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.2, animations: {
-                self.viewContainerHeightAnchor.constant = 315
+                self.reserveCostButtonHeightAnchor.constant = -60
+                self.viewContainerHeightAnchor.constant = 340
+                self.reserveWidthAnchor.constant = -12
                 self.view.layoutIfNeeded()
             }) { (success) in
+                self.reserveButton.setTitle("Reserve Spot", for: .normal)
                 UIView.animate(withDuration: 0.2, animations: {
                     self.reserveController.view.alpha = 1
                 })
@@ -577,11 +619,12 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.costButton.alpha = 0
             self.hoursButton.alpha = 0
             self.line.alpha = 0
-            self.line2.alpha = 0
             self.reserveController.view.alpha = 0
+            self.exitButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.viewContainerHeightAnchor.constant = 140
+            self.viewContainerHeightAnchor.constant = 220
+            self.reserveCostButtonHeightAnchor.constant = -60
             UIView.animate(withDuration: 0.2, animations: {
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -590,48 +633,111 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.reserveToLabel.alpha = 1
                     self.reserveFromLabel.alpha = 1
                     self.reserveCostLabel.alpha = 1
-                    self.line3.alpha = 1
+                    self.line2.alpha = 1
                     self.reserveButton.alpha = 1
                     self.reserveButton.isUserInteractionEnabled = true
+                    self.view.layoutIfNeeded()
                 })
             }
+        }
+        if self.isCouponActive == true {
+            self.couponStaus.alpha = 0.8
+        } else {
+            self.couponStaus.alpha = 0
         }
     }
     
     @objc func hourButtonPressed(sender: UIButton) {
-        viewContainerHeightAnchor.constant = 200
+        viewContainerHeightAnchor.constant = 220
         self.currentSegment.isUserInteractionEnabled = false
         self.setTimes()
         UIView.animate(withDuration: 0.2, animations: {
             self.hoursButton.alpha = 0
-            self.reserveButton.alpha = 0.6
+            self.costButton.alpha = 0
             self.reserveSegment.alpha = 0
-            self.reserveButton.isUserInteractionEnabled = false
+            self.couponStaus.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.2, animations: {
+                self.reserveWidthAnchor.constant = -12
                 self.toLabel.alpha = 1
                 self.timeToPicker.alpha = 1
                 self.currentTimeLabel.alpha = 1
-                self.checkButton.alpha = 1
+                self.exitButton.alpha = 1
+                self.reserveButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.reserveButton.removeTarget(self, action: #selector(self.bringBackReserve(sender:)), for: .touchUpInside)
+                self.reserveButton.removeTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
+                self.reserveButton.addTarget(self, action: #selector(self.checkButtonPressed(sender:)), for: .touchUpInside)
+                self.reserveButton.setTitle("Select hours", for: .normal)
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc func exitHoursButton(sender: UIButton) {
+        self.viewContainerHeightAnchor.constant = 220
+        self.reserveSegmentAnchor.isActive = false
+        self.currentSegmentAnchor.isActive = true
+        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
+        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
+        UIView.animate(withDuration: 0.2, animations: {
+            self.costButtonHeightAnchor.constant = -40
+            self.toLabel.alpha = 0
+            self.timeToPicker.alpha = 0
+            self.currentTimeLabel.alpha = 0
+            self.exitButton.alpha = 0
+            self.line2.alpha = 0
+            self.reserveCostLabel.alpha = 0
+            self.costButton.alpha = 1
+            self.reserveSegment.alpha = 1
+            self.reserveButton.alpha = 1
+            self.line.alpha = 1
+            self.paymentButton.alpha = 1
+            self.reserveButton.isUserInteractionEnabled = true
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: 0.2, animations: {
+                self.reserveWidthAnchor.constant = -72
+                self.viewContainerHeightAnchor.constant = 220
+                self.exitButtonHeightAnchor.constant = 0
+                self.hoursButton.alpha = 1
+                self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                self.view.layoutIfNeeded()
             })
+            self.reserveButton.setTitle("Book Spot", for: .normal)
+            self.reserveButton.removeTarget(self, action: #selector(self.checkButtonPressed(sender:)), for: .touchUpInside)
+            self.reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
+            if self.isCouponActive == true {
+                self.couponStaus.alpha = 0.8
+            } else {
+                self.couponStaus.alpha = 0
+            }
         }
     }
     
     @objc func checkButtonPressed(sender: UIButton) {
-        viewContainerHeightAnchor.constant = 140
+        viewContainerHeightAnchor.constant = 220
         UIView.animate(withDuration: 0.2, animations: {
             self.toLabel.alpha = 0
             self.timeToPicker.alpha = 0
             self.currentTimeLabel.alpha = 0
-            self.checkButton.alpha = 0
+            self.exitButton.alpha = 0
+//            self.checkButton.alpha = 0
+            self.costButton.alpha = 1
             self.reserveSegment.alpha = 1
             self.reserveButton.alpha = 1
             self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.2, animations: {
+                self.reserveWidthAnchor.constant = -72
                 self.hoursButton.alpha = 1
+                self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                self.view.layoutIfNeeded()
             })
             let costString = self.parkingCost?.replacingOccurrences(of: "$", with: "")
             let cost = Double(costString!.replacingOccurrences(of: "/hour", with: ""))
@@ -643,6 +749,38 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.cost = payment
             let paymentString = String(format: "$%.2f", payment)
             self.costButton.setTitle(paymentString, for: .normal)
+            
+            self.reserveButton.removeTarget(self, action: #selector(self.checkButtonPressed(sender:)), for: .touchUpInside)
+            self.reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
+            if self.hours > 1 {
+                self.reserveButton.setTitle("Book Spot for \(self.hours) hours", for: .normal)
+            } else {
+                self.reserveButton.setTitle("Book Spot for 1 hour", for: .normal)
+            }
+            self.view.layoutIfNeeded()
+        }
+        if self.isCouponActive == true {
+            self.couponStaus.alpha = 0.8
+        } else {
+            self.couponStaus.alpha = 0
+        }
+    }
+    
+    func resetReservationButton() {
+        self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        self.reserveButton.setTitle("Book Spot", for: .normal)
+        self.costButtonHeightAnchor.constant = -40
+        self.exitButton.alpha = 0
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.alpha = 0
+        self.currentSegment.alpha = 1
+        self.line2.alpha = 0
+        self.view.layoutIfNeeded()
+        self.currentSender()
+        if self.isCouponActive == true {
+            self.couponStaus.alpha = 0.8
+        } else {
+            self.couponStaus.alpha = 0
         }
     }
     
@@ -651,7 +789,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.toLabel.alpha = 0
             self.timeToPicker.alpha = 0
             self.currentTimeLabel.alpha = 0
-            self.checkButton.alpha = 0
+//            self.checkButton.alpha = 0
             self.reserveSegment.alpha = 1
             self.reserveButton.alpha = 1
             self.reserveButton.isUserInteractionEnabled = true
@@ -662,15 +800,12 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     func hideParkNow() {
         UIView.animate(withDuration: 0.2) {
             self.currentSegment.alpha = 0
-            self.reserveButton.alpha = 0.6
-            self.reserveButton.isUserInteractionEnabled = false
         }
     }
     
     func bringParkNow() {
         UIView.animate(withDuration: 0.2) {
             self.currentSegment.alpha = 1
-            self.reserveCostAnchor.constant = 10
         }
     }
     
@@ -735,7 +870,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.text = self.futureHours[row]
         view.addSubview(label)
         
@@ -826,7 +961,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
                     self.reserveButton.alpha = 0.6
-                    self.reserveButton.isUserInteractionEnabled = false
                     self.reserveButton.backgroundColor = Theme.DARK_GRAY
                     self.reserveButton.setTitle("", for: .normal)
                 }
@@ -845,18 +979,13 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     lazy var unavailable: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 20, height: 50))
+        let button = UIButton()
         button.backgroundColor = Theme.DARK_GRAY
-        button.setTitle("Unavailable currently", for: .normal)
+        button.setTitle("Unavailable", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 1
-        button.clipsToBounds = true
-        let path = UIBezierPath(roundedRect:button.bounds,
-                                byRoundingCorners:[.bottomRight, .bottomLeft],
-                                cornerRadii: CGSize(width: 5, height: 5))
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = path.cgPath
-        button.layer.mask = maskLayer
+        button.layer.cornerRadius = 5
         
         return button
     }()
@@ -916,7 +1045,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         unavailable.rightAnchor.constraint(equalTo: reserveButton.rightAnchor).isActive = true
         unavailable.bottomAnchor.constraint(equalTo: reserveButton.bottomAnchor).isActive = true
         unavailable.leftAnchor.constraint(equalTo: reserveButton.leftAnchor).isActive = true
-        unavailable.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        unavailable.heightAnchor.constraint(equalTo: reserveButton.heightAnchor).isActive = true
         
         self.view.addSubview(activityIndicator)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -930,18 +1059,14 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     @objc func bringBackReserve(sender: UIButton) {
         UIView.animate(withDuration: 0.3, animations: {
             if sender == self.reserveCostLabel {
-                self.reserveCostAnchor.constant = 10
                 self.reserveFromLabel.alpha = 1
                 self.reserveToLabel.alpha = 1
                 self.toReserveLabel.alpha = 1
-                self.line3.alpha = 1
                 self.view.layoutIfNeeded()
             } else {
-                self.reserveCostAnchor.constant = 10
                 self.paymentButton.alpha = 1
                 self.hoursButton.alpha = 1
                 self.line.alpha = 1
-                self.line2.alpha = 1
                 self.view.layoutIfNeeded()
             }
         }) { (success) in
@@ -964,7 +1089,11 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if (dictionary[currentUser] as? [String:AnyObject]) != nil {
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.reserveCostAnchor.constant = (-self.view.frame.width / 2 + (self.view.frame.width - 20) / 6)
+                        self.reserveWidthAnchor.constant = -12
+                        self.viewContainerHeightAnchor.constant = 180
+                        self.costButtonHeightAnchor.constant = -20
+                        self.exitButtonHeightAnchor.constant = 10
+                        self.reserveCostButtonHeightAnchor.constant = -20
                         self.paymentButton.alpha = 0
                         self.reserveFromLabel.alpha = 0
                         self.reserveToLabel.alpha = 0
@@ -972,7 +1101,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                         self.hoursButton.alpha = 0
                         self.line.alpha = 0
                         self.line2.alpha = 0
-                        self.line3.alpha = 0
+                        self.exitButton.alpha = 1
                         self.view.layoutIfNeeded()
                     }) { (success) in
                         self.costButton.addTarget(self, action: #selector(self.bringBackReserve(sender:)), for: .touchUpInside)
@@ -998,25 +1127,21 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 }
             }
         }
-        
-        self.addCurrentParking()
-        if reserveSegmentAnchor.isActive == true {
-            self.reserveParking()
-        } else if currentSegmentAnchor.isActive == true {
-            self.updateUserProfileCurrent()
-            self.drawNewRoute()
-            UIView.animate(withDuration: 0.3) {
-                currentButton.alpha = 1
-            }
-        }
-        self.notify(status: true)
-        UIView.animate(withDuration: 0.3) {
-            self.reserveCostAnchor.constant = 10
-            self.view.layoutIfNeeded()
-        }
+//
+//        self.addCurrentParking()
+//        if reserveSegmentAnchor.isActive == true {
+//            self.reserveParking()
+//        } else if currentSegmentAnchor.isActive == true {
+//            self.updateUserProfileCurrent()
+//            self.drawNewRoute()
+//            UIView.animate(withDuration: 0.3) {
+//                currentButton.alpha = 1
+//            }
+//        }
+//        self.notify(status: true)
         
         self.paymentInProgress = true
-//        self.paymentContext.requestPayment() ////////////////////////////// PAYMENT NOT SET UP CURRENTLY
+        self.paymentContext.requestPayment()
     }
     
     
@@ -1025,7 +1150,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         guard let selectedPaymentMethod = paymentContext.selectedPaymentMethod else {
             // Show default image, text, and color
             //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
-            paymentButton.setTitle("Payment", for: .normal)
+            paymentButton.setTitle("Select Payment", for: .normal)
             paymentButton.setTitleColor(Theme.BLACK, for: .normal)
             return
         }
@@ -1149,7 +1274,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             }
             self.notify(status: true)
             UIView.animate(withDuration: 0.3) {
-                self.reserveCostAnchor.constant = 10
                 self.view.layoutIfNeeded()
             }
         case .userCancellation:
@@ -1189,10 +1313,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func addCurrentParking() {
-        self.reserveButton.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3, animations: {
             self.reserveButton.alpha = 0.6
-            self.reserveButton.isUserInteractionEnabled = false
         }) { (success) in
             self.removeDelegate?.purchaseButtonSwipedDown()
             UIView.animate(withDuration: 0.3, animations: {
@@ -1453,8 +1575,25 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             }
         }
     }
-
     
+    var isCouponActive: Bool = false
+
+    func checkForCoupons() {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")
+        ref.observe(.childAdded) { (snapshot) in
+            let percent = snapshot.value as? Int
+            self.couponStaus.setTitle("\(percent!)% off!", for: .normal)
+            self.couponStaus.alpha = 0.8
+            couponActive = percent!
+            self.isCouponActive = true
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.couponStaus.setTitle("", for: .normal)
+            self.couponStaus.alpha = 0
+            self.isCouponActive = false
+        }
+    }
     
     
     

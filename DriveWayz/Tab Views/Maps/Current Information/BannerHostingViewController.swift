@@ -18,7 +18,7 @@ class BannerHostingViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.clear
-        imageView.layer.cornerRadius = 5
+//        imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         
@@ -30,7 +30,7 @@ class BannerHostingViewController: UIViewController {
         view.backgroundColor = UIColor.clear
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1

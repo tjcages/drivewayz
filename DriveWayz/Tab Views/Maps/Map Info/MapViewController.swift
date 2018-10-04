@@ -991,18 +991,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                 }
             }
             
-            let center = UNUserNotificationCenter.current()
-            center.delegate = self
-            center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
-                
-                if granted {
-                    DispatchQueue.main.async { // Correct
-                        UIApplication.shared.registerForRemoteNotifications()
-                    }
-                    
-                }
-                
-            }
+//            let center = UNUserNotificationCenter.current()
+//            center.delegate = self
+//            center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+//                if granted {
+//                    DispatchQueue.main.async { // Correct
+//                        UIApplication.shared.registerForRemoteNotifications()
+//                    }
+//                }
+//            }
             
             guard let newMarkerView = marker.iconView as? CustomMarkerView else { return false }
             let newMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.WHITE, tag: newMarkerView.tag)

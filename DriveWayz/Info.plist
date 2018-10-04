@@ -28,7 +28,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.7</string>
+	<string>3.2</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -49,7 +49,9 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>com.googleusercontent.apps.174551543020-cpn1tp43ikju0c3bvl2dtleqjgdr0sph</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -70,6 +72,8 @@
 		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>

@@ -3,7 +3,7 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "Screen Shot 2018-09-26 at 5.49.08 PM-4.png",
+      "filename" : "appicon-4.png",
       "scale" : "2x"
     },
     {
@@ -34,7 +34,7 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "Screen Shot 2018-09-26 at 5.49.08 PM-3.png",
+      "filename" : "appicon-3.png",
       "scale" : "2x"
     },
     {
@@ -80,19 +80,19 @@
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "Screen Shot 2018-09-26 at 5.49.08 PM-2.png",
+      "filename" : "appicon-2.png",
       "scale" : "2x"
     },
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "Screen Shot 2018-09-26 at 5.49.08 PM-1.png",
+      "filename" : "appicon-1.png",
       "scale" : "2x"
     },
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "Screen Shot 2018-09-26 at 5.49.08 PM.png",
+      "filename" : "appicon.png",
       "scale" : "1x"
     }
   ],

@@ -52,7 +52,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var currentCoupons: UILabel = {
         let label = UILabel()
         label.textColor = Theme.PRIMARY_COLOR
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         label.numberOfLines = 2
@@ -61,31 +61,31 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         return label
     }()
     
-    var redeem: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Redeem", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
-        button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(redeemPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var accept: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Activate", for: .normal)
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
-        button.alpha = 1
+        
+        return button
+    }()
+    
+    var accept2: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Redeem", for: .normal)
+        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(redeemPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
         
         return button
     }()
@@ -93,14 +93,38 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var back: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitle("Exit", for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.DARK_GRAY.cgColor
-        button.alpha = 0.6
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(backPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var back2: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Back", for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(redeemPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
+    var plusButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "plus-1"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(redeemPressed(sender:)), for: .touchUpInside)
+        button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         
         return button
     }()
@@ -145,34 +169,46 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.view.addSubview(termsContainer)
         termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20).isActive = true
-        termsHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 300)
+        termsHeightAnchor = termsContainer.heightAnchor.constraint(equalToConstant: 220)
             termsHeightAnchor.isActive = true
         termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         
         termsContainer.addSubview(currentCoupons)
         currentCoupons.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor).isActive = true
-        currentCoupons.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -20).isActive = true
-        currentCoupons.centerYAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 30).isActive = true
-        currentCoupons.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        currentCoupons.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -48).isActive = true
+        currentCoupons.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 10).isActive = true
+        currentCoupons.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         termsContainer.addSubview(accept)
-        accept.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: 60).isActive = true
-        accept.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -200).isActive = true
-        accept.centerYAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -70).isActive = true
+        accept.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: 50).isActive = true
+        accept.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -10).isActive = true
         accept.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        accept.widthAnchor.constraint(equalToConstant: 160).isActive = true
         
         termsContainer.addSubview(back)
-        back.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: -60).isActive = true
-        back.widthAnchor.constraint(equalTo: termsContainer.widthAnchor, constant: -200).isActive = true
-        back.centerYAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -70).isActive = true
+        back.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: -90).isActive = true
+        back.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -10).isActive = true
         back.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        back.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
-        termsContainer.addSubview(redeem)
-        redeem.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor).isActive = true
-        redeem.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        redeem.topAnchor.constraint(equalTo: back.bottomAnchor, constant: 5).isActive = true
-        redeem.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        termsContainer.addSubview(accept2)
+        accept2.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: 50).isActive = true
+        accept2.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -10).isActive = true
+        accept2.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        accept2.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        
+        termsContainer.addSubview(back2)
+        back2.centerXAnchor.constraint(equalTo: termsContainer.centerXAnchor, constant: -90).isActive = true
+        back2.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -10).isActive = true
+        back2.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        back2.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        termsContainer.addSubview(plusButton)
+        plusButton.rightAnchor.constraint(equalTo: termsContainer.rightAnchor, constant: -24).isActive = true
+        plusButton.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 8).isActive = true
+        plusButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        plusButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         termsContainer.addSubview(redeemField)
         redeemField.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -60).isActive = true
@@ -189,6 +225,9 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.termsHeightAnchor.constant = 180
                 self.back.alpha = 0
                 self.accept.alpha = 0
+                self.back2.alpha = 1
+                self.accept2.alpha = 1
+                self.plusButton.alpha = 0
                 self.couponsTableView.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -197,7 +236,6 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.currentCoupons.text = "Redeem Coupons"
                     self.view.layoutIfNeeded()
                 }, completion: { (success) in
-                    //
                 })
             }
         } else {
@@ -211,9 +249,12 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
             }) { (success) in
                 UIView.animate(withDuration: 0.3, animations: {
                     self.currentCoupons.text = "Current Coupons"
-                    self.termsHeightAnchor.constant = 300
+                    self.termsHeightAnchor.constant = 260
                     self.back.alpha = 1
                     self.accept.alpha = 1
+                    self.plusButton.alpha = 1
+                    self.back2.alpha = 0
+                    self.accept2.alpha = 0
                     self.couponsTableView.alpha = 1
                     self.view.layoutIfNeeded()
                 }, completion: { (success) in
@@ -311,11 +352,11 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     
     @objc func backPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.alpha = 0
-        }) { (success) in
-            self.delegate?.hideCouponsController()
-        }
+        self.delegate?.hideCouponsController()
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.view.alpha = 0
+//        }) { (success) in
+//        }
     }
     
     var count: Int = 0
@@ -408,7 +449,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         termsContainer.addSubview(couponsTableView)
         couponsTableView.topAnchor.constraint(equalTo: currentCoupons.bottomAnchor, constant: 10).isActive = true
-        couponsTableView.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -100).isActive = true
+        couponsTableView.bottomAnchor.constraint(equalTo: accept.topAnchor, constant: -10).isActive = true
         couponsTableView.leftAnchor.constraint(equalTo: termsContainer.leftAnchor).isActive = true
         couponsTableView.rightAnchor.constraint(equalTo: termsContainer.rightAnchor).isActive = true
         

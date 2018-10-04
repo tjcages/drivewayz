@@ -128,7 +128,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         
         self.paymentContext = paymentContext
 
-        self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
+        self.paymentRow = CheckoutRowView(title: "Select Payment", detail: "Select Payment",
                                           theme: .default())
         self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
                                         theme: .default())

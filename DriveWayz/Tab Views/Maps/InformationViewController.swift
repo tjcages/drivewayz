@@ -61,7 +61,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
         view.alpha = 1
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -74,7 +74,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ParkingReserveViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Reserve"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
         controller.view.alpha = 0
@@ -86,7 +86,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ParkingCurrentViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
         controller.navigationDelegate = self
@@ -100,7 +100,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = Theme.WHITE
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -114,7 +114,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
 //        self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Image"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         return controller
     }()
@@ -124,7 +124,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = Theme.WHITE
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -137,7 +137,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ParkingAvailabilityViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Availability"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
         
@@ -149,7 +149,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = Theme.WHITE
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -162,7 +162,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ParkingReviewsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Reviews"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         
         return controller
@@ -173,7 +173,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = UIColor.clear
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -187,7 +187,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = Theme.WHITE
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -212,7 +212,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ExtendTimeViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Purchase"
-        controller.view.layer.cornerRadius = 5
+//        controller.view.layer.cornerRadius = 5
         controller.view.alpha = 0
         controller.hoursDelegate = self
         controller.extendDelegate = self
@@ -225,7 +225,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = UIColor.clear
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -247,7 +247,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         view.backgroundColor = UIColor.clear
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 5
+//        view.layer.cornerRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
@@ -314,7 +314,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(scrollViewDidPan(sender:)))
         gesture.direction = .up
         informationScrollView.addGestureRecognizer(gesture)
-        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1400)
+        informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1450)
         informationScrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationScrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -370,7 +370,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         pictureHeightAnchor = pictureContainer.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)
             pictureHeightAnchor.isActive = true
-        pictureContainer.heightAnchor.constraint(equalToConstant: 320).isActive = true
+        pictureContainer.heightAnchor.constraint(equalToConstant: 360).isActive = true
         
         pictureContainer.addSubview(pictureController.view)
         pictureController.view.centerXAnchor.constraint(equalTo: pictureContainer.centerXAnchor).isActive = true
@@ -419,7 +419,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         
         informationScrollView.addSubview(smallBannerContainer)
         smallBannerContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        smallBannerContainer.topAnchor.constraint(equalTo: bannerController.view.bottomAnchor, constant: 10).isActive = true
+        smallBannerContainer.topAnchor.constraint(equalTo: bannerController.view.bottomAnchor, constant: 25).isActive = true
         smallBannerContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         smallBannerContainer.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
@@ -438,6 +438,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
             } else if scrollView.contentOffset.y >= 5.0 {
                 informationScrollView.isScrollEnabled = true
             }
+//            scrollView.contentOffset.y = scrollView.contentOffset.y/2
         }
     }
     
@@ -453,7 +454,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         ref.observe(.childAdded) { (snapshot) in
             self.check = false
             UIView.animate(withDuration: 0.3, animations: {
-                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1450)
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1500)
                 self.reserveContainerHeightAnchor.constant = 165
                 self.currentController.view.alpha = 1
                 self.reserveController.view.alpha = 0
@@ -463,7 +464,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         ref.observe(.childRemoved) { (snapshot) in
             self.check = false
             UIView.animate(withDuration: 0.3, animations: {
-                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1400)
+                informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1450)
                 self.reserveContainerHeightAnchor.constant = 120
                 self.currentController.view.alpha = 0
                 self.reserveController.view.alpha = 1

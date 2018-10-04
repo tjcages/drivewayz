@@ -78,3 +78,15 @@ extension String {
         return randomString
     }
 }
+
+extension UIView{
+    func roundedView(){
+        let maskPath1 = UIBezierPath(roundedRect: bounds,
+                                     byRoundingCorners: [.topLeft , .topRight],
+                                     cornerRadii: CGSize(width: 8, height: 8))
+        let maskLayer1 = CAShapeLayer()
+        maskLayer1.frame = bounds
+        maskLayer1.path = maskPath1.cgPath
+        layer.mask = maskLayer1
+    }
+}

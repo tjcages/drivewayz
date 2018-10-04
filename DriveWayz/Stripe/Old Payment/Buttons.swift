@@ -54,10 +54,11 @@ class PaymentButton: UIButton  {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setTitle("Payment", for: .normal)
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        self.setTitle("Select Payment", for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         self.backgroundColor = UIColor.clear
         self.alpha = 0.5
+        self.titleLabel?.textAlignment = .left
         self.translatesAutoresizingMaskIntoConstraints = false
         //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
         self.setTitleColor(Theme.DARK_GRAY, for: .normal)

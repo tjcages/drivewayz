@@ -22,7 +22,7 @@ class ParkingInfoViewController: UIViewController {
     let labelTitle: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .light)
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -31,7 +31,7 @@ class ParkingInfoViewController: UIViewController {
     let labelDistance: UILabel = {
         let label = UILabel()
         label.text = "Distance"
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,7 +40,7 @@ class ParkingInfoViewController: UIViewController {
     let labelCost: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         label.textColor = Theme.PRIMARY_DARK_COLOR
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -101,7 +101,7 @@ class ParkingInfoViewController: UIViewController {
         labelDistance.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 5).isActive = true
         labelDistance.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 5).isActive = true
         labelDistance.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
-        labelDistance.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        labelDistance.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         parkingView.addSubview(labelCost)
         labelCost.leftAnchor.constraint(equalTo: labelTitle.leftAnchor, constant: 5).isActive = true
@@ -110,10 +110,10 @@ class ParkingInfoViewController: UIViewController {
         labelCost.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         parkingView.addSubview(stars)
-        stars.leftAnchor.constraint(greaterThanOrEqualTo: parkingView.centerXAnchor, constant: 20).isActive = true
+        stars.leftAnchor.constraint(greaterThanOrEqualTo: parkingView.centerXAnchor, constant: 0).isActive = true
         stars.centerYAnchor.constraint(equalTo: labelDistance.centerYAnchor).isActive = true
         stars.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        stars.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
     }
     

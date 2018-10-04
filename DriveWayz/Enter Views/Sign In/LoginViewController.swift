@@ -67,6 +67,36 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    lazy var emailChooseButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "email")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+        button.alpha = 1
+        button.addTarget(self, action: #selector(emailPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    lazy var phoneChooseButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "phone")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+        button.alpha = 1
+        button.addTarget(self, action: #selector(phoneNumberPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var loginLabel: UITextView = {
         let label = UITextView()
         label.text = "Please choose a sign in method"
@@ -194,7 +224,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitle("phone number", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
         button.addTarget(self, action: #selector(phoneNumberPressed(sender:)), for: .touchUpInside)
         
@@ -206,7 +236,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitle("email and password", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
         button.addTarget(self, action: #selector(emailPressed(sender:)), for: .touchUpInside)
         
@@ -403,22 +433,34 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         facebookLoginButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(choosePhoneNumber)
-        choosePhoneNumber.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 100).isActive = true
+        choosePhoneNumber.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 60).isActive = true
         choosePhoneNumber.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         choosePhoneNumber.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        choosePhoneNumber.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        choosePhoneNumber.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        self.view.addSubview(chooseEmail)
-        chooseEmail.topAnchor.constraint(equalTo: choosePhoneNumber.bottomAnchor, constant: 50).isActive = true
-        chooseEmail.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        chooseEmail.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        chooseEmail.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.view.addSubview(phoneChooseButton)
+        phoneChooseButton.topAnchor.constraint(equalTo: choosePhoneNumber.bottomAnchor, constant: 10).isActive = true
+        phoneChooseButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        phoneChooseButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        phoneChooseButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         self.view.addSubview(orLine)
         orLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         orLine.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        orLine.topAnchor.constraint(equalTo: choosePhoneNumber.bottomAnchor, constant: 25).isActive = true
+        orLine.topAnchor.constraint(equalTo: phoneChooseButton.bottomAnchor, constant: 45).isActive = true
         orLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        self.view.addSubview(chooseEmail)
+        chooseEmail.topAnchor.constraint(equalTo: orLine.bottomAnchor, constant: 35).isActive = true
+        chooseEmail.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        chooseEmail.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        chooseEmail.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.view.addSubview(emailChooseButton)
+        emailChooseButton.topAnchor.constraint(equalTo: chooseEmail.bottomAnchor, constant: 10).isActive = true
+        emailChooseButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        emailChooseButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        emailChooseButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         self.view.addSubview(orLabel)
         orLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -547,7 +589,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             case .failed(let error):
                 self.displayAlertMessage(userMessage: error.localizedDescription, title: "Error")
             case .cancelled:
-                self.displayAlertMessage(userMessage: "User cancelled login.", title: "Error")
+                print("User canceled Facebook login")
             case .success( _, _, let accessToken):
                 let access = accessToken
                 let accessTok = access.authenticationToken
@@ -611,6 +653,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.orLabel.alpha = 0
             self.orLine.alpha = 0
             self.facebookLoginButton.alpha = 0
+            self.phoneChooseButton.alpha = 0
+            self.emailChooseButton.alpha = 0
         }) { (success) in
             UIView.animate(withDuration: 0.3, animations: {
                 self.nextButtonCenterAnchor.constant = 50
@@ -633,6 +677,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.orLabel.alpha = 0
             self.orLine.alpha = 0
             self.facebookLoginButton.alpha = 0
+            self.phoneChooseButton.alpha = 0
+            self.emailChooseButton.alpha = 0
         }) { (success) in
             UIView.animate(withDuration: 0.3, animations: {
                 self.emailCenterAnchor.constant = 50
@@ -738,6 +784,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.orLine.alpha = 1
                     self.orLabel.alpha = 1
                     self.facebookLoginButton.alpha = 1
+                    self.phoneChooseButton.alpha = 1
+                    self.emailChooseButton.alpha = 1
                 })
             }
         }
@@ -781,6 +829,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.orLabel.alpha = 1
                 self.orLine.alpha = 1
                 self.facebookLoginButton.alpha = 1
+                self.phoneChooseButton.alpha = 1
+                self.emailChooseButton.alpha = 1
             })
         }
     }
