@@ -70,12 +70,14 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     let email = dictionary["email"] as? String
+                    let name = dictionary["name"] as? String
                     self.account = dictionary["accountID"] as? String
             
                     let url = self.baseURL.appendingPathComponent("ephemeral_keys")
                     Alamofire.request(url, method: .post, parameters: [
-                        "api_version": "2018-08-23",
+                        "api_version": "2018-09-24",
                         "email": email!,
+                        "description": name!
                         ])
                         .validate(statusCode: 200..<300)
                         .responseJSON { responseJSON in
