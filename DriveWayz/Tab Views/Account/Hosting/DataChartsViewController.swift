@@ -153,7 +153,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.didMove(toParentViewController: self)
+        self.didMove(toParent: self)
 
         self.timeArray = []
         self.costArray = [0]

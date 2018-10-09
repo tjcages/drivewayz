@@ -19,7 +19,7 @@ class OptionsCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         imageView.layer.cornerRadius = 35/2
-        imageView.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        imageView.imageEdgeInsets = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
         
         return imageView
     }()
@@ -34,7 +34,7 @@ class OptionsCell: UITableViewCell {
         return view
     }()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubview(profileImageView)

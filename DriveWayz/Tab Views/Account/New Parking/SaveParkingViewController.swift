@@ -27,7 +27,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
 //    }()
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -66,7 +66,6 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = .lightContent
 
         costPicker.delegate = self
         costPicker.dataSource = self
@@ -582,7 +581,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             return
         }
         let storageRef = Storage.storage().reference().child("parking_images").child("\(formattedAddress).jpg")
-        if let uploadData = UIImageJPEGRepresentation(parkingSpotImage!, 0.5) {
+        if let uploadData = parkingSpotImage!.jpegData(compressionQuality: 0.5) {
             storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                 if error != nil {
                     print(error!)

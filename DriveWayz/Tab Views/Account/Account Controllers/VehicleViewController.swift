@@ -41,7 +41,7 @@ class VehicleViewController: UIViewController, handleNewVehicle {
     
     lazy var userVehicleController: UserVehicleViewController = {
         let controller = UserVehicleViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Vehicle"
         controller.delegate = self

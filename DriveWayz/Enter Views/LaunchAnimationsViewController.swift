@@ -32,7 +32,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
     var drivewayzCar: UIImageView = {
         let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImageOrientation.upMirrored)
+        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
         let view = UIImageView(image: flip)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
@@ -63,8 +63,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UIApplication.shared.statusBarStyle = .lightContent
         
         let background = CAGradientLayer().startColors()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
@@ -117,8 +115,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if isUserLoggedIn == true {
             self.view.addSubview(self.tabController.view)
-            self.addChildViewController(self.tabController)
-            self.tabController.willMove(toParentViewController: self)
+            self.addChild(self.tabController)
+            self.tabController.willMove(toParent: self)
             self.tabController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
             self.startupAnchor = self.tabController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             self.startupAnchor.isActive = true
@@ -130,8 +128,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             }
         } else {
             self.view.addSubview(self.startupController.view)
-            self.addChildViewController(self.startupController)
-            self.startupController.willMove(toParentViewController: self)
+            self.addChild(self.startupController)
+            self.startupController.willMove(toParent: self)
             self.startupController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
             self.startupAnchor = self.startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             self.startupAnchor.isActive = true

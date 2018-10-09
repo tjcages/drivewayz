@@ -13,14 +13,14 @@ class ConfigureParkingViewController: UIViewController {
     var delegate: controlsAccountOptions?
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
     }()
     
     let visualBlurEffect: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -718,7 +718,7 @@ class ConfigureParkingViewController: UIViewController {
             return
         }
         let storageRef = Storage.storage().reference().child("parking_images").child("\(formattedAddress).jpg")
-        if let uploadData = UIImageJPEGRepresentation(parkingSpotImage!, 0.5) {
+        if let uploadData = parkingSpotImage!.jpegData(compressionQuality: 0.5) {
             storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                 if error != nil {
                     print(error!)

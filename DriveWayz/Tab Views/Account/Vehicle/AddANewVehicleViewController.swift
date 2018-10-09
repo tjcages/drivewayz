@@ -105,7 +105,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     }()
     
     let activityIndicatorVehicleView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let aiv = UIActivityIndicatorView(style: .gray)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -171,7 +171,6 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         
         self.colorPicker.delegate = self
         self.colorPicker.dataSource = self
-        UIApplication.shared.statusBarStyle = .lightContent
 
         setupAddAVehicleView()
     }
@@ -267,7 +266,10 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     
     var pickerVehicle: UIImagePickerController?
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
         var selectedImageFromPicker: UIImage?
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -324,7 +326,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
             
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("vehicle_images").child("\(imageName).jpg")
-            if let uploadData = UIImageJPEGRepresentation(image, 0.5) {
+            if let uploadData = image.jpegData(compressionQuality: 0.5) {
                 storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                     if error != nil {
                         print(error!)
@@ -484,4 +486,9 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         self.view.endEditing(true)
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

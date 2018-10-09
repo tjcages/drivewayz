@@ -59,7 +59,7 @@ class UserUpcomingViewController: UIViewController {
     
     lazy var infoController: UpcomingInfoViewController = {
         let controller = UpcomingInfoViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Info"
         return controller

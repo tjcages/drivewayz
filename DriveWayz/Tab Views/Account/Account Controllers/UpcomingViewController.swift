@@ -61,7 +61,7 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
     
     lazy var userUpcomingController: UserUpcomingViewController = {
         let controller = UserUpcomingViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
         controller.delegate = self
@@ -70,7 +70,7 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
     
     lazy var recentController: UserRecentViewController = {
         let controller = UserRecentViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Recent"
         return controller

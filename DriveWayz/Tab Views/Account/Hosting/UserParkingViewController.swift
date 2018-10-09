@@ -26,7 +26,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     
     lazy var earningsController: DataChartsViewController = {
         let controller = DataChartsViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.title = "Charts"
@@ -35,7 +35,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     
     lazy var availabilityController: PersonalAvailabilityViewController = {
         let controller = PersonalAvailabilityViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Availability"
         return controller
@@ -259,7 +259,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     
     func setupViews() {
         self.view.addSubview(newParkingPage)
-        self.view.sendSubview(toBack: newParkingPage)
+        self.view.sendSubviewToBack(newParkingPage)
         
         newParkingPage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         newParkingPage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
@@ -350,15 +350,15 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
             }) { (success) in
                 
                 self.view.addSubview(self.earningsController.view)
-                self.earningsController.didMove(toParentViewController: self)
-                self.addChildViewController(self.earningsController)
+                self.earningsController.didMove(toParent: self)
+                self.addChild(self.earningsController)
                 self.earningsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
                 self.earningsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
                 self.earningsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
                 self.earningsController.view.heightAnchor.constraint(equalToConstant: 360).isActive = true
                 
                 self.view.addSubview(self.availabilityController.view)
-                self.availabilityController.didMove(toParentViewController: self)
+                self.availabilityController.didMove(toParent: self)
                 self.availabilityController.view.centerXAnchor.constraint(equalTo: self.earningsController.view.centerXAnchor).isActive = true
                 self.availabilityController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
                 self.availabilityController.view.topAnchor.constraint(equalTo: self.earningsController.view.bottomAnchor, constant: 110).isActive = true
@@ -368,12 +368,12 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func setupNoView() {
-        self.earningsController.willMove(toParentViewController: nil)
+        self.earningsController.willMove(toParent: nil)
         self.earningsController.view.removeFromSuperview()
-        self.earningsController.removeFromParentViewController()
-        self.availabilityController.willMove(toParentViewController: nil)
+        self.earningsController.removeFromParent()
+        self.availabilityController.willMove(toParent: nil)
         self.availabilityController.view.removeFromSuperview()
-        self.availabilityController.removeFromParentViewController()
+        self.availabilityController.removeFromParent()
         
         UIView.animate(withDuration: 0.3, animations: {
             self.parkingPageHeightAnchorTall.isActive = false
@@ -429,7 +429,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.textLabel?.textAlignment = .center
-        cell.separatorInset = UIEdgeInsetsMake(0, 10, 0, 10)
+        cell.separatorInset = UIEdgeInsets.init(top: 0, left: 10, bottom: 0, right: 10)
         
         if indexPath.row == (Edits.count-1) {
             cell.textLabel?.textColor = Theme.HARMONY_COLOR

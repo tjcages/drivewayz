@@ -63,33 +63,40 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         case missingBaseURL
         case invalidResponse
     }
+    
+    var checkedCustomerKey: Bool = false
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {
         if let currentUser = Auth.auth().currentUser?.uid {
-            let checkRef = Database.database().reference().child("users").child(currentUser)
-            checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    let email = dictionary["email"] as? String
-                    let name = dictionary["name"] as? String
-                    self.account = dictionary["accountID"] as? String
-            
-                    let url = self.baseURL.appendingPathComponent("ephemeral_keys")
-                    Alamofire.request(url, method: .post, parameters: [
-                        "api_version": "2018-09-24",
-                        "email": email!,
-                        "description": name!
-                        ])
-                        .validate(statusCode: 200..<300)
-                        .responseJSON { responseJSON in
-                            switch responseJSON.result {
-                            case .success(let json):
-                                completion(json as? [String: AnyObject], nil)
-                            case .failure(let error):
-                                completion(nil, error)
-                            }
+            if self.checkedCustomerKey == false {
+                self.checkedCustomerKey = true
+                let checkRef = Database.database().reference().child("users").child(currentUser)
+                checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        var email = dictionary["email"] as? String
+                        if email == "" {
+                            guard let name = dictionary["name"] as? String else { return }
+                            email = name
                         }
-                }
-            }, withCancel: nil)
+                        self.account = dictionary["accountID"] as? String
+                        
+                        let url = self.baseURL.appendingPathComponent("ephemeral_keys")
+                        Alamofire.request(url, method: .post, parameters: [
+                            "api_version": "2018-09-24",
+                            "email": email!
+                            ])
+                            .validate(statusCode: 200..<300)
+                            .responseJSON { responseJSON in
+                                switch responseJSON.result {
+                                case .success(let json):
+                                    completion(json as? [String: AnyObject], nil)
+                                case .failure(let error):
+                                    completion(nil, error)
+                                }
+                        }
+                    }
+                }, withCancel: nil)
+            }
         }
     }
     
@@ -231,13 +238,13 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
     
     static func showMessage(title: String, msg: String) {
         if title == "Success!" {
-            let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (success) in
                 UIApplication.topViewController()?.navigationController?.popViewController(animated: true)
             }))
             UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
         } else {
-            let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
         }

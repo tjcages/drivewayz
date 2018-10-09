@@ -135,7 +135,7 @@ class CurrentParkingViewController: UIViewController {
                                     if seconds >= 0 {
                                         if self.timerTest == nil {
                                             self.timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(self.prepareEndParking), userInfo: nil, repeats: false)
-                                            RunLoop.main.add(self.timerTest!, forMode: RunLoopMode.commonModes)
+                                            RunLoop.main.add(self.timerTest!, forMode: RunLoop.Mode.common)
                                         }
                                     }
                                 }
@@ -155,7 +155,7 @@ class CurrentParkingViewController: UIViewController {
             if seconds >= 0 {
                 if timerTest == nil {
                     timerTest =  Timer.scheduledTimer(timeInterval: TimeInterval(seconds), target: self, selector: #selector(prepareEndParking), userInfo: nil, repeats: false)
-                    RunLoop.main.add(timerTest!, forMode: RunLoopMode.commonModes)
+                    RunLoop.main.add(timerTest!, forMode: RunLoop.Mode.common)
                 }
             }
         }
@@ -214,25 +214,25 @@ class CurrentParkingViewController: UIViewController {
         content.subtitle = "Please move your vehicle or extend time in app."
         content.body = "Hold down for quick options!"
         content.badge = 0
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
         content.categoryIdentifier = "actionCategory"
         
         secondContent.title = "You have overstayed your allotted time!"
         secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
         secondContent.badge = 0
-        secondContent.sound = UNNotificationSound.default()
+        secondContent.sound = UNNotificationSound.default
         secondContent.categoryIdentifier = "actionCategory"
         
         thirdContent.title = "You have been charged for an extra hour."
         thirdContent.body = "Please move your vehicle or extend time."
         thirdContent.badge = 0
-        thirdContent.sound = UNNotificationSound.default()
+        thirdContent.sound = UNNotificationSound.default
         thirdContent.categoryIdentifier = "actionCategory"
         
         fourthContent.title = "You have 20 minutes left for your parking spot"
         fourthContent.body = "Check in with the app to extend time!"
         fourthContent.badge = 0
-        fourthContent.sound = UNNotificationSound.default()
+        fourthContent.sound = UNNotificationSound.default
         
         let firstSeconds = (self.hours! * 3600) + (10 * 60)
         let secondSeconds = firstSeconds + (15 * 60)
@@ -381,7 +381,7 @@ extension UNNotificationAttachment {
             try fileManager.createDirectory(at: tmpSubFolderURL, withIntermediateDirectories: true, attributes: nil)
             let imageFileIdentifier = identifier+".png"
             let fileURL = tmpSubFolderURL.appendingPathComponent(imageFileIdentifier)
-            guard let imageData = UIImagePNGRepresentation(image) else {
+            guard let imageData = image.pngData() else {
                 return nil
             }
             try imageData.write(to: fileURL)

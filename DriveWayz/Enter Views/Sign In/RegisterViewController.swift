@@ -45,7 +45,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var background1: UIView = {
         let background1 = UIImage(named: "background1")
         let imageView1 = UIImageView()
-        imageView1.contentMode = UIViewContentMode.scaleAspectFill
+        imageView1.contentMode = UIView.ContentMode.scaleAspectFill
         imageView1.clipsToBounds = true
         imageView1.image = background1
         imageView1.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +85,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var background2: UIView = {
         let background2 = UIImage(named: "background2")
         let imageView2 = UIImageView()
-        imageView2.contentMode = UIViewContentMode.scaleAspectFill
+        imageView2.contentMode = UIView.ContentMode.scaleAspectFill
         imageView2.clipsToBounds = true
         imageView2.image = background2
         imageView2.translatesAutoresizingMaskIntoConstraints = false
@@ -125,7 +125,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var background3: UIView = {
         let background3 = UIImage(named: "background3")
         let imageView3 = UIImageView()
-        imageView3.contentMode = UIViewContentMode.scaleAspectFill
+        imageView3.contentMode = UIView.ContentMode.scaleAspectFill
         imageView3.clipsToBounds = true
         imageView3.image = background3
         imageView3.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +163,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }()
     
     lazy var blurBackground: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.alpha = 0
@@ -376,7 +376,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
     lazy var termsController: TermsViewController = {
         let controller = TermsViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.title = "Terms"
@@ -559,7 +559,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     func setupMainView() {
         
         self.view.addSubview(mainView)
-        self.view.bringSubview(toFront: container)
+        self.view.bringSubviewToFront(container)
         mainView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         mainView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         mainView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
@@ -652,7 +652,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
     func configurePageControl() {
         
-        self.view.bringSubview(toFront: exitButton)
+        self.view.bringSubviewToFront(exitButton)
         exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -1117,7 +1117,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
     func setupTerms() {
         self.view.addSubview(termsController.view)
-        self.addChildViewController(termsController)
+        self.addChild(termsController)
         termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -1134,9 +1134,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         UIView.animate(withDuration: 0.3, animations: {
             self.termsController.view.alpha = 0
         }) { (success) in
-            self.termsController.willMove(toParentViewController: nil)
+            self.termsController.willMove(toParent: nil)
             self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParentViewController()
+            self.termsController.removeFromParent()
         }
         self.signUp(withEmail: true)
         self.delegate?.defaultStatusBar()
@@ -1184,7 +1184,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                             UserDefaults.standard.synchronize()
                             
                             let myViewController: TabViewController = TabViewController()
-                            myViewController.removeFromParentViewController()
+                            myViewController.removeFromParent()
                             let appDelegate = UIApplication.shared.delegate as! AppDelegate
                             appDelegate.window?.rootViewController = myViewController
                             appDelegate.window?.makeKeyAndVisible()
@@ -1242,7 +1242,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 UserDefaults.standard.synchronize()
                 
                 let myViewController: TabViewController = TabViewController()
-                myViewController.removeFromParentViewController()
+                myViewController.removeFromParent()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = myViewController
                 appDelegate.window?.makeKeyAndVisible()

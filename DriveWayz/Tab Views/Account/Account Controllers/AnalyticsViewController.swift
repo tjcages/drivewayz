@@ -24,7 +24,7 @@ class AnalyticsViewController: UIViewController {
     
     var driveWayzLogo: UIImageView = {
         let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImageOrientation.upMirrored)
+        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
         let view = UIImageView(image: flip)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
@@ -57,7 +57,7 @@ class AnalyticsViewController: UIViewController {
     
     lazy var retentionController: RetentionViewController = {
         let controller = RetentionViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Retention"
         
@@ -66,7 +66,7 @@ class AnalyticsViewController: UIViewController {
     
     lazy var newUsersController: NewUsersViewController = {
         let controller = NewUsersViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "New Users"
         
@@ -85,7 +85,7 @@ class AnalyticsViewController: UIViewController {
     
     lazy var profitsController: ProfitsViewController = {
         let controller = ProfitsViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Profits"
         
@@ -161,7 +161,7 @@ class AnalyticsViewController: UIViewController {
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(retentionController.view)
-        self.view.sendSubview(toBack: retentionController.view)
+        self.view.sendSubviewToBack(retentionController.view)
         retentionController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         retentionController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width * 5/6).isActive = true
         retentionController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: -20).isActive = true

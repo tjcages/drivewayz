@@ -44,7 +44,7 @@ class dropDownButton: UIButton, dropDownProtocol {
     
     override func didMoveToSuperview() {
         self.superview?.addSubview(dropView)
-        self.superview?.bringSubview(toFront: dropView)
+        self.superview?.bringSubviewToFront(dropView)
         dropView.bottomAnchor.constraint(equalTo: self.topAnchor).isActive = true
         dropView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         dropView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -10).isActive = true

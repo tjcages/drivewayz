@@ -22,7 +22,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     lazy var background5: UIView = {
         let background5 = UIImage(named: "background5")
         let imageView = UIImageView()
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.clipsToBounds = true
         imageView.image = background5
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     }()
     
     lazy var blurBackground: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.alpha = 0.4
@@ -53,7 +53,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     
     var drivewayzCar: UIImageView = {
         let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImageOrientation.upMirrored)
+        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
         let view = UIImageView(image: flip)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
@@ -112,7 +112,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
         controller.delegate = self
-        self.addChildViewController(controller)
+        self.addChild(controller)
         return controller
     }()
     
@@ -121,7 +121,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
         controller.delegate = self
-        self.addChildViewController(controller)
+        self.addChild(controller)
         return controller
     }()
     
@@ -139,7 +139,6 @@ class SignInViewController: UIViewController, handleSignInViews {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = .lightContent
         
         setupViews()
     }
@@ -261,7 +260,6 @@ class SignInViewController: UIViewController, handleSignInViews {
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.defaultStatusBar()
-            UIApplication.shared.statusBarStyle = .default
             UIView.animate(withDuration: 0.2, animations: {
                 self.loginController.view.alpha = 1
             }, completion: { (success) in
@@ -284,10 +282,8 @@ class SignInViewController: UIViewController, handleSignInViews {
                 self.registerController.animate()
                 if self.registerController.pageControl.currentPage == 3 {
                     self.delegate?.defaultStatusBar()
-                    UIApplication.shared.statusBarStyle = .default
                 } else {
                     self.delegate?.lightContentStatusBar()
-                    UIApplication.shared.statusBarStyle = .lightContent
                 }
             }
         }
@@ -323,12 +319,10 @@ class SignInViewController: UIViewController, handleSignInViews {
     
     func lightContentStatusBar() {
         self.delegate?.lightContentStatusBar()
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     
     func defaultStatusBar() {
         self.delegate?.defaultStatusBar()
-        UIApplication.shared.statusBarStyle = .default
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

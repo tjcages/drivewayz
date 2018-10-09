@@ -77,7 +77,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -158,7 +158,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }()
     
     let fullBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -183,8 +183,6 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
 
         mapView.delegate = self
         
-        UIApplication.shared.statusBarStyle = .lightContent
-        
         setupAddAParkingView()
         
     }
@@ -208,7 +206,10 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         present(pickerParking!, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
         var selectedImageFromPicker: UIImage?
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -230,7 +231,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         if picker == pickerParking {
             let storageRef = Storage.storage().reference().child("parking_images").child("\(imageName).jpg")
-            if let uploadData = UIImageJPEGRepresentation(selectedImageFromPicker!, 0.5) {
+            if let uploadData = selectedImageFromPicker!.jpegData(compressionQuality: 0.5) {
                 storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                     if error != nil {
                         print(error!)
@@ -389,14 +390,14 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc func selectPanoView(sender: UIButton) {
-        let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertControllerStyle.actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertActionStyle.default, handler: { action in
+        let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertController.Style.actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertAction.Style.default, handler: { action in
             self.handleSelectParkingImageView()
         }))
-        alert.addAction(UIAlertAction(title: "Take a Photo", style: UIAlertActionStyle.default, handler: { action in
+        alert.addAction(UIAlertAction(title: "Take a Photo", style: UIAlertAction.Style.default, handler: { action in
             self.handleTakeAnImageView()
         }))
-        alert.addAction(UIAlertAction(title: "Google Street View", style: UIAlertActionStyle.default, handler: { action in
+        alert.addAction(UIAlertAction(title: "Google Street View", style: UIAlertAction.Style.default, handler: { action in
             self.sendAlready()
         }))
         self.present(alert, animated: true, completion: nil)
@@ -417,7 +418,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     func setupTextField(textField: UITextField, img: UIImage){
-        textField.leftViewMode = UITextFieldViewMode.always
+        textField.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: 5, y: 5, width: 20, height: 20))
         imageView.image = img
         let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -524,14 +525,14 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
     }()
     
     let startActivityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -780,12 +781,12 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
             shapeLayer.path = path.cgPath
             shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
             shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
-            shapeLayer.fillRule = kCAFillRuleEvenOdd
+            shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
         } else {
             shapeLayer.path = path.cgPath
             shapeLayer.strokeColor = UIColor.clear.cgColor
             shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.fillRule = kCAFillRuleEvenOdd
+            shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
         }
     }
 
@@ -817,4 +818,9 @@ extension AccountViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

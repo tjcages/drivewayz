@@ -30,7 +30,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
 
     // 1) To get started with this demo, first head to https://dashboard.stripe.com/account/apikeys
     // and copy your "Test Publishable Key" (it looks like pk_test_abcdef) into the line below.
-    let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 
     // 2) Next, optionally, to have this demo save your user's payment details, head to
     // https://github.com/stripe/example-ios-backend/tree/v13.0.3, click "Deploy to Heroku", and follow
@@ -55,7 +55,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     let rowHeight: CGFloat = 60
     let productImage = UILabel()
     let costImage = UILabel()
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    let activityIndicator = UIActivityIndicatorView(style: .gray)
     let numberFormatter: NumberFormatter
     var product: String = ""
     var hours: Int = 0
@@ -159,7 +159,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.view.backgroundColor = Theme.OFF_WHITE
         var red: CGFloat = 0
         self.theme.primaryBackgroundColor.getRed(&red, green: nil, blue: nil, alpha: nil)
-        self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
+        self.activityIndicator.style = red < 0.5 ? .white : .gray
         self.navigationItem.title = "Drivewayz"
 
         self.productImage.font = UIFont.systemFont(ofSize: 32)

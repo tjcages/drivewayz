@@ -30,8 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.statusBarStyle = .default
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         detectDevice()
         FirebaseApp.configure()
@@ -41,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GMSServices.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
         GMSPlacesClient.provideAPIKey("AIzaSyCSdL_pkLxeCh2GsYlLAxn3NPHVI4KA3f0")
-        STPPaymentConfiguration.shared().publishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+        STPPaymentConfiguration.shared().publishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
         
         _ = self.window!.rootViewController
@@ -66,7 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
             }
         })
-        
         return true
     }
     
@@ -74,13 +72,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEventsLogger.activate(application)
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         let stripeHandled = Stripe.handleURLCallback(with: url)
         if (stripeHandled) {
             return true
         }
         else {
-            return self.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: "")
+            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
         }
     }
     
@@ -96,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // This method is where you handle URL opens if you are using univeral link URLs (eg "https://example.com/stripe_ios_callback")
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             if let url = userActivity.webpageURL {
                 let stripeHandled = Stripe.handleURLCallback(with: url)

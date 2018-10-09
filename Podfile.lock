@@ -6,10 +6,9 @@ PODS:
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
-  - Charts (3.1.1):
-    - Charts/Core (= 3.1.1)
-  - Charts/Core (3.1.1)
-  - Cluster (2.2.9)
+  - Charts (3.2.0):
+    - Charts/Core (= 3.2.0)
+  - Charts/Core (3.2.0)
   - Cosmos (16.0.0)
   - FacebookCore (0.4.0):
     - Bolts (~> 1.9)
@@ -19,9 +18,9 @@ PODS:
     - FacebookCore (~> 0.4)
     - FBSDKCoreKit (~> 4.36)
     - FBSDKLoginKit (~> 4.36)
-  - FBSDKCoreKit (4.36.0):
+  - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.36.0):
+  - FBSDKLoginKit (4.37.0):
     - FBSDKCoreKit
   - Firebase/Analytics (5.9.0):
     - Firebase/Core
@@ -97,7 +96,6 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Floaty (4.0.1)
   - GeoFire (3.0.0):
     - Firebase/Database (~> 5.0)
   - GoogleAPIClientForREST (1.3.6):
@@ -181,16 +179,15 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.4.0)
   - NVActivityIndicatorView/Presenter (4.4.0)
   - Protobuf (3.6.1)
-  - PushNotifications (1.0.1)
+  - PushNotifications (1.1.0)
   - Stripe (13.2.0)
   - SwiftyJSON (4.2.0)
-  - TextFieldEffects (1.4.0)
+  - TextFieldEffects (1.5.0)
   - TOMSMorphingLabel (0.5.1)
 
 DEPENDENCIES:
-  - Alamofire
-  - Charts (~> 3.1.1)
-  - Cluster
+  - Alamofire (~> 4.7.3)
+  - Charts (~> 3.2.0)
   - Cosmos (~> 16.0)
   - FacebookLogin
   - Firebase/Analytics
@@ -200,7 +197,6 @@ DEPENDENCIES:
   - Firebase/Invites
   - Firebase/Messaging
   - Firebase/Storage
-  - Floaty (~> 4.0.0)
   - GeoFire (from `https://github.com/firebase/geofire-objc.git`)
   - GoogleMaps
   - GooglePlacePicker
@@ -211,7 +207,7 @@ DEPENDENCIES:
   - PushNotifications
   - Stripe
   - SwiftyJSON
-  - TextFieldEffects (~> 1.4.0)
+  - TextFieldEffects
   - TOMSMorphingLabel (~> 0.5)
 
 SPEC REPOS:
@@ -219,7 +215,6 @@ SPEC REPOS:
     - Alamofire
     - Bolts
     - Charts
-    - Cluster
     - Cosmos
     - FacebookCore
     - FacebookLogin
@@ -237,7 +232,6 @@ SPEC REPOS:
     - FirebaseInvites
     - FirebaseMessaging
     - FirebaseStorage
-    - Floaty
     - GoogleAPIClientForREST
     - GoogleAppMeasurement
     - GoogleMaps
@@ -271,13 +265,12 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  Charts: 90a4d61da0f6e06684c591e3bcab11940fe61736
-  Cluster: 20155f2635cc603ac9164680c3a7d1fdf83ff187
+  Charts: 680c8328bd5e90cb14f67e00d2176f3113d19141
   Cosmos: 7bcee0fa858a9355a214f2a181be5dffcee42c81
   FacebookCore: 770e57cfe250a4de4458b682191c0ff062dee247
   FacebookLogin: eb0f2251aca835a94d70a5f7e580edc46d1e1603
-  FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
-  FBSDKLoginKit: 8bccb6064708ab2f4251a7fc4e3b6d8d00ad91ba
+  FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
+  FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
   FirebaseAnalytics: 831f1f127f4a75698e9875a87bf7e2668730d953
   FirebaseAnalyticsInterop: 31b00d2a916918327308b2dff47251eb96f9e4ad
@@ -290,7 +283,6 @@ SPEC CHECKSUMS:
   FirebaseInvites: da663c2436b88c2f56d13f38ea71e9055dc4c53d
   FirebaseMessaging: d6feeb06218d2675b4149b0ada925a6b707a74cf
   FirebaseStorage: fd82e5e5c474897e19972b34b22ac0f589dce04e
-  Floaty: 82854e1a5ef4fa208281ebd4da2f3d1e51ba67a6
   GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
   GoogleAPIClientForREST: 5b95b38a0fa912e8ac7bdcf9e124578ef1a61bf2
   GoogleAppMeasurement: 2b3a023a61239c8d002e6e4fcf4abce8eddce0e0
@@ -307,12 +299,12 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NVActivityIndicatorView: ec7440a57af2450319d3a4181cca7da6fc127064
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
-  PushNotifications: ad6058f44748ca9cb2a571fb6c2d9a9bf43e7ca4
+  PushNotifications: 8eee2fb66f3870025fe037883c88f5861f315bd0
   Stripe: 2c69e216061d54d9c538204bb4f58bd597ddfc5b
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
-  TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
+  TextFieldEffects: bf9e9cac7cb1a97d632fbcd0724bb6347dd86633
   TOMSMorphingLabel: 3e88a2bf5257f8993ebc51fb3109187a0bfb2c4d
 
-PODFILE CHECKSUM: 88f2bebdeafb1558b90b52d8e7c9021b1ac6e9a2
+PODFILE CHECKSUM: f66bc19dd62a6d597133e2838cf7e9ec3d8096b9
 
 COCOAPODS: 1.5.3

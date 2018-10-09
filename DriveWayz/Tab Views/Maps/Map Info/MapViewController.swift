@@ -141,7 +141,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         search.layer.shadowRadius = 1
         search.layer.shadowOpacity = 0.8
         search.attributedPlaceholder = NSAttributedString(string: "",
-                                                               attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         search.translatesAutoresizingMaskIntoConstraints = false
         return search
     }()
@@ -205,7 +205,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -271,7 +271,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = .default
         self.navigationController?.navigationBar.isHidden = true
         mapView.delegate = self
         
@@ -297,7 +296,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     
     override func viewDidAppear(_ animated: Bool) {
         self.checkCurrentParking()
-        UIApplication.shared.statusBarStyle = .default
     }
     
     func locationAuthStatus() {
@@ -622,7 +620,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         textSearchBarCloseRightAnchor.isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         setupTextField(textField: searchBar)
-        self.view.bringSubview(toFront: topSearch)
+        self.view.bringSubviewToFront(topSearch)
         
         self.view.addSubview(tabFeed)
         tabFeed.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -662,7 +660,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     func setupLeaveAReview(parkingID: String) {
         
         self.view.addSubview(reviewsViewController.view)
-        self.addChildViewController(reviewsViewController)
+        self.addChild(reviewsViewController)
         reviewsViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reviewsViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         reviewsViewController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -680,9 +678,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         UIView.animate(withDuration: 0.3, animations: {
             self.reviewsViewController.view.alpha = 0
         }) { (success) in
-            self.willMove(toParentViewController: nil)
+            self.willMove(toParent: nil)
             self.reviewsViewController.view.removeFromSuperview()
-            self.reviewsViewController.removeFromParentViewController()
+            self.reviewsViewController.removeFromParent()
         }
     }
     
@@ -699,8 +697,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(purchaseViewController.view)
-        self.addChildViewController(purchaseViewController)
-        purchaseViewController.didMove(toParentViewController: self)
+        self.addChild(purchaseViewController)
+        purchaseViewController.didMove(toParent: self)
         let gestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(purchaseButtonSwiped))
         gestureRecognizer.direction = .up
         purchaseViewController.view.addGestureRecognizer(gestureRecognizer)
@@ -715,8 +713,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             hoursButtonAnchor.isActive = true
         
         self.view.addSubview(informationViewController.view)
-        self.addChildViewController(informationViewController)
-        informationViewController.didMove(toParentViewController: self)
+        self.addChild(informationViewController)
+        informationViewController.didMove(toParent: self)
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(informationButtonSwiped))
         gesture.direction = .down
         informationViewController.view.addGestureRecognizer(gesture)
@@ -743,7 +741,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
-            UIApplication.shared.statusBarStyle = .default
         }
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
@@ -766,7 +763,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
-            UIApplication.shared.statusBarStyle = .default
             
             let oldMarker = self.currentMarker
             guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return }
@@ -787,7 +783,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
-            UIApplication.shared.statusBarStyle = .default
         }
     }
     
@@ -800,7 +795,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         }) { (success) in
             informationScrollView.isScrollEnabled = true
             self.purchaseViewController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .lightContent
         }
     }
     
@@ -812,7 +806,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             self.fullBlurView.alpha = 0
         }) { (success) in
             self.purchaseViewController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .default
         }
     }
     
@@ -1107,7 +1100,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                     
                     let bounds = GMSCoordinateBounds(coordinate: (myLocation?.coordinate)!, coordinate: endLocation.coordinate)
                     if self.currentActive == false {
-                        let update = GMSCameraUpdate.fit(bounds, with: UIEdgeInsetsMake(160, 120, 160, 120))
+                        let update = GMSCameraUpdate.fit(bounds, with: UIEdgeInsets.init(top: 160, left: 120, bottom: 160, right: 120))
                         self.mapView.animate(with: update)
                     }
                     self.currentActive = true
@@ -1119,7 +1112,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     @objc func animateSearchBar(sender: UIButton) {
         if self.textSearchBarCloseRightAnchor.isActive == true {
             searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = true
                 self.textSearchBarCloseRightAnchor.isActive = false
@@ -1127,7 +1120,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             })
         } else {
             searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = false
                 self.textSearchBarCloseRightAnchor.isActive = true
@@ -1137,7 +1130,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     }
     
     func setupTextField(textField: UITextField){
-        textField.leftViewMode = UITextFieldViewMode.always
+        textField.leftViewMode = UITextField.ViewMode.always
         let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 60, height: 30))
         textField.leftView = paddingView
     }

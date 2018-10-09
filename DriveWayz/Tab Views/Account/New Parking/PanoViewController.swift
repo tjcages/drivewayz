@@ -36,7 +36,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     lazy var blurEffectView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0.5
         blurEffectView.layer.cornerRadius = 15
@@ -48,7 +48,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -133,7 +133,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }()
     
     let fullBlur: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -180,8 +180,8 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         }
         
         view.addSubview(blurEffectView)
-        view.bringSubview(toFront: panoLabel)
-        view.bringSubview(toFront: exitButton)
+        view.bringSubviewToFront(panoLabel)
+        view.bringSubviewToFront(exitButton)
         blurEffectView.leftAnchor.constraint(equalTo: panoLabel.leftAnchor, constant: -24).isActive = true
         blurEffectView.rightAnchor.constraint(equalTo: exitButton.rightAnchor, constant: -16).isActive = true
         blurEffectView.topAnchor.constraint(equalTo: panoLabel.topAnchor, constant: 4).isActive = true
@@ -408,7 +408,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     }
     
     let activityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -558,7 +558,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         shapeLayer.path = path.cgPath
         shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
         shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
-        shapeLayer.fillRule = kCAFillRuleEvenOdd
+        shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
     }
     
 }

@@ -57,6 +57,7 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         self.rating = []
         self.userMessage = []
         self.timestamp = []
+        self.reviewsPicker.reloadData()
         let ref = Database.database().reference().child("parking").child(parkingID).child("Reviews")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [AnyObject] {
@@ -136,6 +137,10 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! ReviewsCell
         if userName.count != userMessage.count || userName.count != userImage.count || userName.count !=  timestamp.count || userName.count == 0 {
+            cell.userName.text = ""
+            cell.reviewLabel.text = "There have not been any reviews for this spot yet."
+            cell.date.text = ""
+            cell.stars.rating = 5
             return cell
         }
         cell.userName.text = userName[indexPath.row]
@@ -151,7 +156,5 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         }
         return cell
     }
-    
-    
 
 }

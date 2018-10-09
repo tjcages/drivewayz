@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import Floaty
 import FacebookLogin
 
 var database: Database!
@@ -88,7 +87,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var currentController: CurrentViewController = {
         let controller = CurrentViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
 //        controller.delegate = self
@@ -97,7 +96,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var upcomingController: UserUpcomingViewController = {
         let controller = UserUpcomingViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
 //        controller.delegate = self
@@ -107,7 +106,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var recentController: UserRecentViewController = {
         let controller = UserRecentViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Recent"
         return controller
@@ -133,7 +132,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     lazy var vehicleController: UserVehicleViewController = {
         let controller = UserVehicleViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
 //        controller.delegate = self
         controller.title = "Vehicle"
@@ -218,7 +217,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }()
   
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 1
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -237,7 +236,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     }()
     
     let startActivityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -366,7 +365,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         effect = visualBlurEffect.effect
         visualBlurEffect.effect = nil
-        UIApplication.shared.statusBarStyle = .lightContent
         
         let gestureRight = UISwipeGestureRecognizer(target: self, action: #selector(segmentRight(sender:)))
         gestureRight.direction = .right
@@ -459,7 +457,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         self.view.addSubview(segmentControlView)
-        self.view.sendSubview(toBack: segmentControlView)
+        self.view.sendSubviewToBack(segmentControlView)
         controlTopAnchor1 = segmentControlView.topAnchor.constraint(equalTo: profileWrap.bottomAnchor)
         controlTopAnchor1.isActive = true
         controlTopAnchor2 = segmentControlView.topAnchor.constraint(equalTo: view.topAnchor)
@@ -510,7 +508,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
         
         profileView.addSubview(upcomingController.view)
-        upcomingController.didMove(toParentViewController: self)
+        upcomingController.didMove(toParent: self)
         upcomingController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
         upcomingController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
         upcomingController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 30).isActive = true
@@ -519,7 +517,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         upcomingController.view.alpha = 0
         
         profileView.addSubview(currentController.view)
-        currentController.didMove(toParentViewController: self)
+        currentController.didMove(toParent: self)
         currentController.view.centerXAnchor.constraint(equalTo: profileView.centerXAnchor).isActive = true
         currentController.view.widthAnchor.constraint(equalTo: profileView.widthAnchor).isActive = true
         currentController.view.topAnchor.constraint(equalTo: upcomingController.view.bottomAnchor, constant: 20).isActive = true
@@ -528,8 +526,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         currentHeightAnchor?.isActive = true
         
         profileView.addSubview(recentController.view)
-        profileView.bringSubview(toFront: recentController.view)
-        recentController.didMove(toParentViewController: self)
+        profileView.bringSubviewToFront(recentController.view)
+        recentController.didMove(toParent: self)
         recentController.view.centerXAnchor.constraint(equalTo: currentController.view.centerXAnchor).isActive = true
         recentController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         recentController.view.topAnchor.constraint(equalTo: currentController.view.bottomAnchor, constant: 40).isActive = true
@@ -571,8 +569,8 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         parkingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         parkingView.addSubview(parkingController.view)
-        self.addChildViewController(parkingController)
-        parkingController.didMove(toParentViewController: self)
+        self.addChild(parkingController)
+        parkingController.didMove(toParent: self)
         parkingController.view.centerXAnchor.constraint(equalTo: parkingView.centerXAnchor).isActive = true
         parkingController.view.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
         parkingController.view.topAnchor.constraint(equalTo: parkingView.topAnchor).isActive = true
@@ -604,7 +602,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         vehicleSegment.widthAnchor.constraint(equalToConstant: (self.view.frame.width * 5/6) / 3).isActive = true
         
         vehicleView.addSubview(vehicleController.view)
-        vehicleController.didMove(toParentViewController: self)
+        vehicleController.didMove(toParent: self)
         vehicleController.view.centerXAnchor.constraint(equalTo: vehicleView.centerXAnchor).isActive = true
         vehicleController.view.widthAnchor.constraint(equalTo: vehicleView.widthAnchor).isActive = true
         vehicleController.view.topAnchor.constraint(equalTo: profileWrap.bottomAnchor, constant: 70).isActive = true
@@ -630,7 +628,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         statusBarColor.heightAnchor.constraint(equalToConstant: statusHeight).isActive = true
         statusBarColor.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
-        self.addChildViewController(parkingController)
+        self.addChild(parkingController)
     }
     
     var currentHeightAnchor: NSLayoutConstraint?
@@ -698,12 +696,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= 90 {
-            UIApplication.shared.statusBarStyle = .lightContent
             UIView.animate(withDuration: 0.3) {
                 self.statusBarColor.alpha = 0.9
             }
         } else {
-            UIApplication.shared.statusBarStyle = .lightContent
             UIView.animate(withDuration: 0.3) {
                 self.statusBarColor.alpha = 0
             }
@@ -720,7 +716,10 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(pickerProfile!, animated: true, completion: nil)
     }
   
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
         var selectedImageFromPicker: UIImage?
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -742,7 +741,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         if picker == pickerProfile {
             let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
-            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.5) {
+            if let uploadData = self.profileImageView.image!.jpegData(compressionQuality: 0.5) {
                 //        if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                     if error != nil {
@@ -870,8 +869,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
             UIView.animate(withDuration: 0.3, animations: {
                 self.bankAnchor.constant = 0
                 self.view.layoutIfNeeded()
-            }, completion: { (success) in
-                UIApplication.shared.statusBarStyle = .default
             })
         }
     }
@@ -882,7 +879,6 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.view.layoutIfNeeded()
         }, completion: { (success) in
             self.bankController.view.removeFromSuperview()
-            UIApplication.shared.statusBarStyle = .lightContent
         })
     }
     
@@ -1256,3 +1252,8 @@ extension UIView {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}

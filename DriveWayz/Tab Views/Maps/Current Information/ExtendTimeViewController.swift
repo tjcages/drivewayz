@@ -19,7 +19,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     var hoursDelegate: controlHoursButton?
     var extendDelegate: extendTimeController?
     
-    let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
     
     let paymentCurrency = "usd"
@@ -32,7 +32,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     private var paymentContext: STPPaymentContext
     
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    let activityIndicator = UIActivityIndicatorView(style: .gray)
     
     private enum RideRequestState {
         case none
@@ -234,7 +234,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         super.viewDidLoad()
         
         let red: CGFloat = 0
-        self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
+        self.activityIndicator.style = red < 0.5 ? .white : .gray
         self.activityIndicator.alpha = 0
         
         setupViews()
@@ -243,7 +243,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.didMove(toParentViewController: self)
+        self.didMove(toParent: self)
     }
     
     func setAvailability(available: Bool) {
@@ -378,7 +378,6 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         paymentButton.setImage(selectedPaymentMethod.image, for: .normal)
         paymentButton.setTitle(selectedPaymentMethod.label, for: .normal)
         paymentButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     
     func reloadRequestRideButton() {

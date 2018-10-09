@@ -125,7 +125,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var Edits = ["Delete vehicle"]
     
     let startActivityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv

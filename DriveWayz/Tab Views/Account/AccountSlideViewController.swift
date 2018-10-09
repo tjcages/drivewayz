@@ -88,7 +88,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         button.layer.shadowRadius = 1
         button.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
+        button.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 2, bottom: 2, right: 2)
         button.alpha = 1
         
         return button
@@ -151,7 +151,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         mark.layer.cornerRadius = 10
         mark.alpha = 0
         mark.translatesAutoresizingMaskIntoConstraints = false
-        mark.imageEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0)
+        mark.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 0, bottom: 2, right: 0)
         
         return mark
     }()
@@ -166,7 +166,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         mark.layer.cornerRadius = 10
         mark.alpha = 0
         mark.translatesAutoresizingMaskIntoConstraints = false
-        mark.imageEdgeInsets = UIEdgeInsetsMake(2, 0, 2, 0)
+        mark.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 0, bottom: 2, right: 0)
         
         return mark
     }()
@@ -255,7 +255,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         imageView.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor).isActive = true
         
         container.addSubview(addButton)
-        container.bringSubview(toFront: addButton)
+        container.bringSubviewToFront(addButton)
         addButton.addGestureRecognizer(gesture)
         addButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 40).isActive = true
         addButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor, constant: 40).isActive = true
@@ -325,7 +325,10 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         present(pickerProfile!, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
         var selectedImageFromPicker: UIImage?
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -347,7 +350,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         
         if picker == pickerProfile {
             let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
-            if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.5) {
+            if let uploadData = self.profileImageView.image!.jpegData(compressionQuality: 0.5) {
                 //        if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
                 storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
                     if error != nil {
@@ -573,8 +576,8 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     func displayAlertMessage(userMessage: String, title: String) {
-        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
@@ -623,4 +626,9 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     }
 
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

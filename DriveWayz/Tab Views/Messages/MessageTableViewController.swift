@@ -124,7 +124,7 @@ class MessageTableViewController: UIViewController, UITableViewDelegate, UITable
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }

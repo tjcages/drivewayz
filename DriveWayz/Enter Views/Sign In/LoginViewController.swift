@@ -570,7 +570,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.synchronize()
                 
                 let myViewController: TabViewController = TabViewController()
-                myViewController.removeFromParentViewController()
+                myViewController.removeFromParent()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = myViewController
                 appDelegate.window?.makeKeyAndVisible()
@@ -626,7 +626,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                         UserDefaults.standard.synchronize()
                                         
                                         let myViewController: TabViewController = TabViewController()
-                                        myViewController.removeFromParentViewController()
+                                        myViewController.removeFromParent()
                                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                         appDelegate.window?.rootViewController = myViewController
                                         appDelegate.window?.makeKeyAndVisible()
@@ -792,8 +792,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func displayAlertMessage(userMessage: String, title: String) {
-        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
@@ -861,7 +861,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         UserDefaults.standard.synchronize()
                         
                         let myViewController: TabViewController = TabViewController()
-                        myViewController.removeFromParentViewController()
+                        myViewController.removeFromParent()
                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
                         appDelegate.window?.rootViewController = myViewController
                         appDelegate.window?.makeKeyAndVisible()

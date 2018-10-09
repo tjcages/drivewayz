@@ -12,7 +12,7 @@ import CoreLocation
 import AVFoundation
 import GooglePlaces
 import Firebase
-import Cluster
+//import Cluster
 
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
@@ -26,7 +26,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var delegate: moveControllers?
     var vehicleDelegate: controlsAccountOptions?
     
-    let clusterManager = ClusterManager()
+//    let clusterManager = ClusterManager()
     let locationManager = CLLocationManager()
     let delta = 0.1
     
@@ -70,7 +70,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         search.layer.shadowRadius = 1
         search.layer.shadowOpacity = 0.8
         search.attributedPlaceholder = NSAttributedString(string: "",
-                                                          attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                          attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
         search.translatesAutoresizingMaskIntoConstraints = false
         return search
     }()
@@ -131,7 +131,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }()
     
     lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -215,14 +215,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.statusBarStyle = .default
         
         searchBar.delegate = self
         
-        clusterManager.cellSize = nil
-        clusterManager.maxZoomLevel = 17
-        clusterManager.minCountForClustering = 2
-        clusterManager.clusterPosition = .nearCenter
+//        clusterManager.cellSize = nil
+//        clusterManager.maxZoomLevel = 17
+//        clusterManager.minCountForClustering = 2
+//        clusterManager.clusterPosition = .nearCenter
         
         setupViews()
         setupAdditionalViews()
@@ -286,7 +285,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         textSearchBarCloseRightAnchor.isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         setupTextField(textField: searchBar)
-        self.view.bringSubview(toFront: topSearch)
+        self.view.bringSubviewToFront(topSearch)
         
         self.view.addSubview(locatorButton)
         locatorButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
@@ -338,7 +337,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     func setupLeaveAReview(parkingID: String) {
         self.view.addSubview(reviewsViewController.view)
-        self.addChildViewController(reviewsViewController)
+        self.addChild(reviewsViewController)
         reviewsViewController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reviewsViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         reviewsViewController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -356,9 +355,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UIView.animate(withDuration: 0.3, animations: {
             self.reviewsViewController.view.alpha = 0
         }) { (success) in
-            self.willMove(toParentViewController: nil)
+            self.willMove(toParent: nil)
             self.reviewsViewController.view.removeFromSuperview()
-            self.reviewsViewController.removeFromParentViewController()
+            self.reviewsViewController.removeFromParent()
         }
     }
     
@@ -375,8 +374,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(purchaseViewController.view)
-        self.addChildViewController(purchaseViewController)
-        purchaseViewController.didMove(toParentViewController: self)
+        self.addChild(purchaseViewController)
+        purchaseViewController.didMove(toParent: self)
         let gestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(purchaseButtonSwiped))
         gestureRecognizer.direction = .up
         purchaseViewController.view.addGestureRecognizer(gestureRecognizer)
@@ -392,8 +391,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             hoursButtonAnchor.isActive = true
         
         self.view.addSubview(informationViewController.view)
-        self.addChildViewController(informationViewController)
-        informationViewController.didMove(toParentViewController: self)
+        self.addChild(informationViewController)
+        informationViewController.didMove(toParent: self)
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(informationButtonSwiped))
         gesture.direction = .down
         informationViewController.view.addGestureRecognizer(gesture)
@@ -420,7 +419,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
-            UIApplication.shared.statusBarStyle = .default
         }
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
@@ -444,8 +442,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
-            UIApplication.shared.statusBarStyle = .default
-            self.mapView.deselectAnnotation(Annotation(), animated: true)
+            self.mapView.deselectAnnotation(MKPointAnnotation(), animated: true)
         }
     }
     
@@ -459,7 +456,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
-            UIApplication.shared.statusBarStyle = .default
         }
         if isNavigating == false {
             self.delegate?.showTabController()
@@ -486,7 +482,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }) { (success) in
             informationScrollView.isScrollEnabled = true
             self.purchaseViewController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .default
         }
     }
     
@@ -497,7 +492,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.fullBlurView.alpha = 0
         }) { (success) in
             self.purchaseViewController.view.alpha = 0
-            UIApplication.shared.statusBarStyle = .default
         }
         if isNavigating == false {
             self.delegate?.showTabController()
@@ -670,7 +664,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     @objc func animateSearchBar(sender: UIButton) {
         if self.textSearchBarCloseRightAnchor.isActive == true {
             searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = true
                 self.textSearchBarCloseRightAnchor.isActive = false
@@ -678,7 +672,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             })
         } else {
             searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = false
                 self.textSearchBarCloseRightAnchor.isActive = true
@@ -688,7 +682,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func setupTextField(textField: UITextField){
-        textField.leftViewMode = UITextFieldViewMode.always
+        textField.leftViewMode = UITextField.ViewMode.always
         let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 60, height: 30))
         textField.leftView = paddingView
     }
@@ -720,8 +714,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         searchBar.text = place.formattedAddress
         
         // Zoom in on coordinate
-        let span = MKCoordinateSpanMake(0.1, 0.1)
-        let region = MKCoordinateRegionMake(coordinate, span)
+        let span = MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let region = MKCoordinateRegion.init(center: coordinate, span: span)
         self.mapView.setRegion(region, animated: true)
 
         UIView.animate(withDuration: 0.3) {
@@ -753,12 +747,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     private func fetchParking(parkingID: [String]) {
         for parking in parkingID {
+            let parkingID = parking
             var avgRating: Double = 5
-            let messageRef = Database.database().reference().child("parking").child(parking)
-            messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            let ref = Database.database().reference().child("parking").child(parkingID)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if var dictionary = snapshot.value as? [String:AnyObject] {
                     if let rating = dictionary["rating"] as? Double {
-                        let reviewsRef = messageRef.child("Reviews")
+                        let reviewsRef = ref.child("Reviews")
                         reviewsRef.observeSingleEvent(of: .value, with: { (count) in
                             let counting = count.childrenCount
                             if counting == 0 {
@@ -770,6 +765,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                             dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
 
                             let parking = ParkingSpots(dictionary: dictionary)
+                            guard let parkingType = dictionary["parkingType"] as? String else { return }
+                            self.checkAvailabilityForMarkers(parking: parking, ref: ref, parkingType: parkingType)
                             let parkingID = dictionary["parkingID"] as! String
                             self.parkingSpotsDictionary[parkingID] = parking
                             DispatchQueue.main.async(execute: {
@@ -778,11 +775,12 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                         })
                     } else {
                         dictionary.updateValue(avgRating as AnyObject, forKey: "rating")
-
                         let parking = ParkingSpots(dictionary: dictionary)
-                        let parkingID = dictionary["parkingID"] as! String
-                        self.parkingSpotsDictionary[parkingID] = parking
+                        guard let parkingType = dictionary["parkingType"] as? String else { return }
+                        self.checkAvailabilityForMarkers(parking: parking, ref: ref, parkingType: parkingType)
                         DispatchQueue.main.async(execute: {
+                            let parkingID = dictionary["parkingID"] as! String
+                            self.parkingSpotsDictionary[parkingID] = parking
                             self.reloadOfTable()
                         })
                     }
@@ -814,7 +812,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
 //        self.clusterManager.remove(annotations)
         if parkingSpots.count > 0 {
             for number in 0...(parkingSpots.count - 1) {
-                let marker = Annotation()
+//                let marker = Annotation()
+                let marker = MKPointAnnotation()
                 let parking = parkingSpots[number]
                 
                 let geoCoder = CLGeocoder()
@@ -833,16 +832,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                         let formattedDistance = String(format: "%.1f", roundedStepValue)
                         parking.parkingDistance = formattedDistance
                     }
-                    
-                    if parking.currentAvailable == nil {
-                        let color = Theme.PRIMARY_COLOR
-                        marker.style = .color(color, radius: 25)
-                    } else {
-                        let color = Theme.DARK_GRAY.withAlphaComponent(0.7)
-                        marker.style = .color(color, radius: 25)
-                    }
-                    self.clusterManager.add(marker)
-                    self.clusterManager.reload(mapView: self.mapView)
+                    self.mapView.addAnnotation(marker)
+//                    self.clusterManager.add(marker)
+//                    self.clusterManager.reload(mapView: self.mapView)
                 }
             }
         }
@@ -866,7 +858,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         DispatchQueue.main.async {
             self.mapView.userTrackingMode = .followWithHeading
             if self.currentActive == false {
-                self.reloadOfTable()
+//                self.reloadOfTable()
 //                self.clusterManager.reload(mapView: self.mapView)
             }
         }
@@ -952,7 +944,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 self.parkingSpots = []
                 self.parkingSpotsDictionary = [:]
                 let annotations = self.mapView.annotations
-                self.clusterManager.remove(annotations)
+//                self.clusterManager.remove(annotations)
                 self.mapView.removeAnnotations(annotations)
                 self.searchedForPlace = false
                 self.currentActive = false
@@ -984,15 +976,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func drawCurrentPath(dest: CLLocation, navigation: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             let annotations = self.mapView.annotations
-            self.clusterManager.remove(annotations)
+//            self.clusterManager.remove(annotations)
             self.mapView.removeAnnotations(annotations)
             self.currentActive = true
-            
-            let marker = Annotation()
+
+            let marker = MKPointAnnotation()
             marker.title = "Destination"
             marker.coordinate = dest.coordinate
-            let color = Theme.PRIMARY_COLOR
-            marker.style = .color(color, radius: 25)
             self.mapView.addAnnotation(marker)
         }
         let sourceCoordinates = self.locationManager.location?.coordinate
@@ -1003,7 +993,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let sourceItem = MKMapItem(placemark: sourcePlacemark)
         let destItem = MKMapItem(placemark: destPlacemark)
         
-        let directionRequest = MKDirectionsRequest()
+        let directionRequest = MKDirections.Request()
         directionRequest.source = sourceItem
         directionRequest.destination = destItem
         
@@ -1019,9 +1009,9 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 return
             }
             let route = response.routes[0]
-            self.mapView.add(route.polyline, level: .aboveRoads)
+            self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             let rect = route.polyline.boundingMapRect
-            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
+            self.mapView.setRegion(MKCoordinateRegion.init(rect), animated: true)
             self.navigationLabel.alpha = 0
             self.view.layoutIfNeeded()
             if navigation == true {
@@ -1044,119 +1034,122 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? ClusterAnnotation {
-            guard let style = annotation.style else { return nil }
-            let identifier = "Cluster"
-            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-            if let view = view as? BorderedClusterAnnotationView {
-                view.annotation = annotation
-                view.style = style
-                view.configure()
-            } else {
-                view = BorderedClusterAnnotationView(annotation: annotation, reuseIdentifier: identifier, style: style, borderColor: .white)
-            }
-            return view
+//        if annotation is MKUserLocation {
+//            return MKAnnotationView(annotation: annotation, reuseIdentifier: "currentLocation")
+//        } else {
+//           return AvailableAnnotationView(annotation: annotation, reuseIdentifier: AvailableAnnotationView.ReuseID)
+//        }
+        if annotation is MKClusterAnnotation {
+            return ClusterAnnotationView(annotation: annotation, reuseIdentifier: ClusterAnnotationView.ReuseID)
         } else {
-            guard let annotation = annotation as? Annotation else { return nil }
-            if #available(iOS 11.0, *) {
-                return AvailableAnnotationView(annotation: annotation, reuseIdentifier: AvailableAnnotationView.ReuseID)
-            } else {
-                let annotationIdentifier = "AnnotationIdentifier"
-                var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
-                
-                if annotationView == nil {
-                    annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+            guard let annotation = annotation as? MKPointAnnotation else { return nil }
+            var parkingType: String = "house"
+            var currentAvailable: Bool = true
+            if annotation.subtitle! != "" {
+                if let string = annotation.subtitle {
+                    if let intFromString = Int(string) {
+                        if parkingSpots.count >= intFromString {
+                            let parking = parkingSpots[intFromString]
+                            parkingType = parking.parkingType!
+                            if parking.currentAvailable == true || parking.currentAvailable == nil {
+                                currentAvailable = true
+                            } else {
+                                currentAvailable = false
+                            }
+                        }
+                    }
                 }
-                
-                let pinImage = UIImage(named: "parkingMarker")
-                annotationView!.image = pinImage
-                annotationView!.frame.size = CGSize(width: 30, height: 35)
-                annotationView!.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                
-                return annotationView
+            }
+            if parkingType == "parkingLot" {
+                if currentAvailable == false {
+                    return UnavailableLotAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                } else {
+                    return AvailableLotAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                }
+            } else if parkingType == "apartment" {
+                if currentAvailable == false {
+                    return UnavailableApartmentAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                } else {
+                    return AvailableApartmentAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                }
+            } else {
+                if currentAvailable == false {
+                    return UnavailableHouseAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                } else {
+                    return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+                }
             }
         }
     }
-    
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        if currentActive == false {
-            clusterManager.reload(mapView: mapView) { finished in
-                //
-            }
-        }
-    }
+
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let annotation = view.annotation else { return }
         self.annotationSelected = annotation
-        if let cluster = annotation as? ClusterAnnotation {
-            var zoomRect = MKMapRectNull
-            for annotation in cluster.annotations {
-                let annotationPoint = MKMapPointForCoordinate(annotation.coordinate)
-                let pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0)
-                if MKMapRectIsNull(zoomRect) {
+        if let cluster = annotation as? MKClusterAnnotation {
+            var zoomRect = MKMapRect.null
+            for annotation in cluster.memberAnnotations {
+                let annotationPoint = MKMapPoint(annotation.coordinate)
+                let pointRect = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0, height: 0)
+                if MKMapRectEqualToRect(zoomRect, MKMapRect.null) {
                     zoomRect = pointRect
                 } else {
-                    zoomRect = MKMapRectUnion(zoomRect, pointRect)
+                    zoomRect = zoomRect.union(pointRect)
                 }
             }
             mapView.setVisibleMapRect(zoomRect, animated: true)
-        } else if annotation.subtitle! != nil && annotation.subtitle! != "" {
-            self.swipeTutorialCheck()
-            if let string = view.annotation!.subtitle, string != nil {
-                if let intFromString = Int(string!) {
-                    if parkingSpots.count >= intFromString {
-                        let parking = parkingSpots[intFromString]
-                        self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
-                        self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
-                        self.purchaseViewController.resetReservationButton()
+        } else if let annotation = annotation as? MKPointAnnotation {
+            if annotation.subtitle! != "" {
+                self.swipeTutorialCheck()
+                if let string = view.annotation!.subtitle, string != nil {
+                    if let intFromString = Int(string!) {
+                        if parkingSpots.count >= intFromString {
+                            let parking = parkingSpots[intFromString]
+                            self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
+                            self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+                            self.purchaseViewController.resetReservationButton()
+                        }
+                    }
+                }
+                let location: CLLocationCoordinate2D = annotation.coordinate
+                var region = MKCoordinateRegion()
+                region.center = location
+                region.span.latitudeDelta = 0.001
+                region.span.longitudeDelta = 0.001
+                self.mapView.setRegion(region, animated: true)
+                
+                self.purchaseViewController.view.alpha = 1
+                UIView.animate(withDuration: 0.3, animations: {
+                    //
+                }) { (success) in
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.purchaseViewAnchor.constant = 0
+                        self.swipeTutorial.alpha = 1
+                        self.view.layoutIfNeeded()
+                    }) { (success) in
+                        //
                     }
                 }
             }
-            if #available(iOS 11.0, *) {} else {
-                UIView.animate(withDuration: 0.2) {
-                    view.transform = CGAffineTransform(scaleX: 2, y: 2)
-                }
-            }
-            
-            let location: CLLocationCoordinate2D = annotation.coordinate
-            var region = MKCoordinateRegion()
-            region.center = location
-            region.span.latitudeDelta = 0.001
-            region.span.longitudeDelta = 0.001
-            self.mapView.setRegion(region, animated: true)
-            
-            self.purchaseViewController.view.alpha = 1
+            searchBar.attributedPlaceholder = NSAttributedString(string: "",
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
             UIView.animate(withDuration: 0.3, animations: {
-                //
-            }) { (success) in
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.purchaseViewAnchor.constant = 0
-                    self.swipeTutorial.alpha = 1
-                    self.view.layoutIfNeeded()
-                }) { (success) in
-                    //
-                }
-            }
+                self.textSearchBarFarRightAnchor.isActive = false
+                self.textSearchBarCloseRightAnchor.isActive = true
+                self.view.layoutIfNeeded()
+            })
         }
-        searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                             attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-        UIView.animate(withDuration: 0.3, animations: {
-            self.textSearchBarFarRightAnchor.isActive = false
-            self.textSearchBarCloseRightAnchor.isActive = true
-            self.view.layoutIfNeeded()
-        })
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         self.purchaseButtonSwipedDown()
-        guard let annotation = view.annotation else { return }
-        if annotation is ClusterAnnotation {} else {
+        guard view.annotation != nil else { return }
+//        if annotation is ClusterAnnotation {} else {
             UIView.animate(withDuration: 0.2) {
                 view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.swipeLabel.alpha = 0
             }
-        }
+//        }
     }
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
@@ -1169,7 +1162,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
 //    ////////////////////////////////// MAP NAVIGATION
     
     var currentCoordinate: CLLocationCoordinate2D?
-    var navigationSteps = [MKRouteStep]()
+    var navigationSteps = [MKRoute.Step]()
     let speechSythensizer = AVSpeechSynthesizer()
     var stepCounter = 1
     
@@ -1205,7 +1198,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             let region = CLCircularRegion(center: step.polyline.coordinate, radius: 20, identifier: "\(i)")
             self.locationManager.startMonitoring(for: region)
             let circle = MKCircle(center: region.center, radius: region.radius)
-            self.mapView.add(circle)
+            self.mapView.addOverlay(circle)
         }
         let firstDistance = self.convertDistance(dist: self.navigationSteps[1].distance, nav: self.navigationSteps[1].instructions)
         let secondDistance = self.convertDistance(dist: self.navigationSteps[2].distance, nav: self.navigationSteps[2].instructions)
@@ -1268,27 +1261,75 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
 }
 
-class BorderedClusterAnnotationView: ClusterAnnotationView {
-    let borderColor: UIColor
-    
-    init(annotation: MKAnnotation?, reuseIdentifier: String?, style: ClusterAnnotationStyle, borderColor: UIColor) {
-        self.borderColor = borderColor
-        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier, style: style)
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func configure() {
-        super.configure()
-        
-        switch style {
-        case .image:
-            layer.borderWidth = 0
-        case .color:
-            layer.borderColor = borderColor.cgColor
-            layer.borderWidth = 2
+extension MapKitViewController {
+    func checkAvailabilityForMarkers(parking: ParkingSpots, ref: DatabaseReference, parkingType: String) {
+        ref.child("Current").observe(.childAdded) { (snapshot) in
+            if let vailable = snapshot.value as? String {
+                if vailable == "Unavailable" {
+                    parking.currentAvailable = false
+                }
+            }
+            ref.observeSingleEvent(of: .value, with: { (currentSnap) in
+                let count = currentSnap.childrenCount
+                ref.observeSingleEvent(of: .value, with: { (parkSnap) in
+                    if let dictionary = parkSnap.value as? [String:AnyObject] {
+                        if let numberString = dictionary["numberOfSpots"] as? String {
+                            let numberSpots: Int = Int(numberString)!
+                            if numberSpots > count {
+                                parking.currentAvailable = true
+                            } else {
+                                parking.currentAvailable = false
+                            }
+                        }
+                    }
+                })
+            })
+        }
+        ref.child("Availability").observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if dictionary["Monday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Tuesday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Wednesday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Thursday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Friday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Saturday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+                if dictionary["Sunday"] as? Int == 0 {
+                    parking.currentAvailable = false
+                } else {
+                    parking.currentAvailable = true
+                }
+            }
+        }
+        if parkingType == "house" {
+            parking.parkingType = parkingType
+        } else if parkingType == "apartment" {
+            parking.parkingType = parkingType
+        } else if parkingType == "parkingLot" {
+            parking.parkingType = parkingType
         }
     }
 }

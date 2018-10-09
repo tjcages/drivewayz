@@ -94,7 +94,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         label.isEditable = false
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.contentInset = UIEdgeInsetsMake(5, 20, 5, 20)
+        label.contentInset = UIEdgeInsets.init(top: 5, left: 20, bottom: 5, right: 20)
         
         return label
     }()
@@ -109,7 +109,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         label.isEditable = false
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.contentInset = UIEdgeInsetsMake(5, 20, 5, 20)
+        label.contentInset = UIEdgeInsets.init(top: 5, left: 20, bottom: 5, right: 20)
         
         return label
     }()
@@ -366,14 +366,14 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         paymentTableView.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor).isActive = true
         
         paymentTableView.addSubview(parkingType)
-        paymentTableView.bringSubview(toFront: parkingType)
+        paymentTableView.bringSubviewToFront(parkingType)
         parkingType.centerXAnchor.constraint(equalTo: paymentTableView.centerXAnchor).isActive = true
         parkingType.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
         parkingType.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 5).isActive = true
         parkingType.bottomAnchor.constraint(equalTo: parkingView.bottomAnchor, constant: -10).isActive = true
         
         detailsTableView.addSubview(userMessage)
-        detailsTableView.bringSubview(toFront: userMessage)
+        detailsTableView.bringSubviewToFront(userMessage)
         userMessage.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
         userMessage.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
         userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 5).isActive = true

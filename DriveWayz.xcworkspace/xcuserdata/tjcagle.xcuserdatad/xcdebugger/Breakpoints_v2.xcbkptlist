@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Stripe/Payment/MyAPIClient.swift"
-            timestampString = "560356812.919078"
+            timestampString = "560747352.3360341"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "setFundsToZero()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,13 +58,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Account/AccountViewController.swift"
-            timestampString = "560279165.952369"
+            timestampString = "560747352.336162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "820"
-            endingLineNumber = "820"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "handleLogout()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DriveWayz.AccountViewController.handleLogout() -&gt; ()"
+                  moduleName = "DriveWayz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/AccountViewController.swift"
+                  timestampString = "560747352.728646"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "816"
+                  endingLineNumber = "816"
+                  offsetFromSymbolStart = "244">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DriveWayz.AccountViewController.handleLogout() -&gt; ()"
+                  moduleName = "DriveWayz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/AccountViewController.swift"
+                  timestampString = "560747352.7307661"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "816"
+                  endingLineNumber = "816"
+                  offsetFromSymbolStart = "1212">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Maps/Map Info/MapViewController.swift"
-            timestampString = "560366877.433432"
+            timestampString = "560747352.336235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "978"
-            endingLineNumber = "978"
+            startingLineNumber = "971"
+            endingLineNumber = "971"
             landmarkName = "mapView(_:didTap:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Maps/Map Info/MapViewController.swift"
-            timestampString = "560366877.433485"
+            timestampString = "560747352.33628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "checkCurrentParking()"
             landmarkType = "7">
          </BreakpointContent>

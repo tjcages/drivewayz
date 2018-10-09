@@ -13,7 +13,7 @@ import TextFieldEffects
 class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .whiteLarge)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv

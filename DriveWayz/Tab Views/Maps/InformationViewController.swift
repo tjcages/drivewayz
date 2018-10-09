@@ -356,7 +356,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         
         informationScrollView.addSubview(purchaseController.view)
 //        self.addChildViewController(purchaseController)
-        purchaseController.didMove(toParentViewController: self)
+        purchaseController.didMove(toParent: self)
         purchaseController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         purchaseController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         hoursTopAnchor = purchaseController.view.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)

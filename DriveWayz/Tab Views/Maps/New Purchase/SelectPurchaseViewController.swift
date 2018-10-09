@@ -301,7 +301,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.timeToPicker.dataSource = self
         
         let red: CGFloat = 0
-        self.activityIndicator.activityIndicatorViewStyle = red < 0.5 ? .white : .gray
+        self.activityIndicator.style = red < 0.5 ? .white : .gray
         self.activityIndicator.alpha = 0
         
         let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(reserveSwiped(sender:)))
@@ -319,7 +319,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.didMove(toParentViewController: self)
+        self.didMove(toParent: self)
     }
     
     func setAvailability(available: Bool) {
@@ -479,7 +479,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         timeToPicker.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.view.addSubview(reserveController.view)
-        self.addChildViewController(reserveController)
+        self.addChild(reserveController)
         reserveController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reserveController.view.widthAnchor.constraint(equalTo: viewContainer.widthAnchor).isActive = true
         reserveController.view.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 45).isActive = true
@@ -919,7 +919,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var removeDelegate: removePurchaseView?
     var hoursDelegate: controlHoursButton?
     
-    let stripePublishableKey = "pk_test_D5D2xLIBELH4ZlTwigJEWyKF"
+    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
     let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
     
     let paymentCurrency = "usd"
@@ -933,7 +933,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     private var paymentContext: STPPaymentContext
     
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    let activityIndicator = UIActivityIndicatorView(style: .gray)
     
     private enum RideRequestState {
         case none
@@ -1102,6 +1102,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                         self.line.alpha = 0
                         self.line2.alpha = 0
                         self.exitButton.alpha = 1
+                        self.couponStaus.alpha = 0
                         self.view.layoutIfNeeded()
                     }) { (success) in
                         self.costButton.addTarget(self, action: #selector(self.bringBackReserve(sender:)), for: .touchUpInside)
@@ -1260,6 +1261,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.paymentInProgress = false
         switch status {
         case .error:
+            print(error?.localizedDescription as Any)
             self.notify(status: false)
         case .success:
             self.addCurrentParking()
@@ -1373,7 +1375,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     content.subtitle = "Please open in app to confirm."
                     content.body = "We have given you a 10 minute buffer time."
                     content.badge = 0
-                    content.sound = UNNotificationSound.default()
+                    content.sound = UNNotificationSound.default
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: beginTimeInterval, repeats: false)
                     let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
                     UNUserNotificationCenter.current().add(request) { (error) in

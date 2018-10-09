@@ -321,7 +321,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     var agreement: UITextView = {
         let agreement = UITextView()
         
-        let serviceAttributes: [NSAttributedStringKey: Any] = [
+        let serviceAttributes: [NSAttributedString.Key: Any] = [
             .link: NSURL(string: "https://stripe.com/us/connect-account/legal")!,
             .foregroundColor: UIColor.blue
         ]
@@ -364,7 +364,6 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         self.routing.delegate = self
         self.account.delegate = self
         self.agreement.delegate = self
-        UIApplication.shared.statusBarStyle = .default
         
         setupViews()
 

@@ -33,7 +33,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var background1: UIView = {
         let background1 = UIImage(named: "background1")
         let imageView1 = UIImageView()
-        imageView1.contentMode = UIViewContentMode.scaleAspectFill
+        imageView1.contentMode = UIView.ContentMode.scaleAspectFill
         imageView1.clipsToBounds = true
         imageView1.image = background1
         imageView1.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +58,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var background2: UIView = {
         let background2 = UIImage(named: "background2")
         let imageView2 = UIImageView()
-        imageView2.contentMode = UIViewContentMode.scaleAspectFill
+        imageView2.contentMode = UIView.ContentMode.scaleAspectFill
         imageView2.clipsToBounds = true
         imageView2.image = background2
         imageView2.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +83,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var background3: UIView = {
         let background3 = UIImage(named: "background3")
         let imageView3 = UIImageView()
-        imageView3.contentMode = UIViewContentMode.scaleAspectFill
+        imageView3.contentMode = UIView.ContentMode.scaleAspectFill
         imageView3.clipsToBounds = true
         imageView3.image = background3
         imageView3.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +106,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     }()
     
     lazy var blurBackground: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.alpha = 0.6
@@ -344,7 +344,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     
     lazy var termsController: TermsViewController = {
         let controller = TermsViewController()
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.title = "Terms"
@@ -666,7 +666,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                     UserDefaults.standard.synchronize()
                     
                     let myViewController: TabViewController = TabViewController()
-                    myViewController.removeFromParentViewController()
+                    myViewController.removeFromParent()
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.rootViewController = myViewController
                     appDelegate.window?.makeKeyAndVisible()
@@ -795,7 +795,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 UserDefaults.standard.synchronize()
                 
                 let myViewController: TabViewController = TabViewController()
-                myViewController.removeFromParentViewController()
+                myViewController.removeFromParent()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = myViewController
                 appDelegate.window?.makeKeyAndVisible()
@@ -812,16 +812,15 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         UIView.animate(withDuration: 0.3, animations: {
             self.termsController.view.alpha = 0
         }) { (success) in
-            self.termsController.willMove(toParentViewController: nil)
+            self.termsController.willMove(toParent: nil)
             self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParentViewController()
+            self.termsController.removeFromParent()
         }
         if facebook == true {
             facebookSignUp()
         } else {
             signUp()
         }
-        UIApplication.shared.statusBarStyle = .default
     }
     
     @objc func backToMain() {
@@ -860,9 +859,9 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     }
     
     func displayAlertMessage(userMessage: String, title: String) {
-        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert)
         
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
         
         alert.addAction(action)
         
@@ -905,7 +904,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                                 UserDefaults.standard.synchronize()
                                 
                                 let myViewController: TabViewController = TabViewController()
-                                myViewController.removeFromParentViewController()
+                                myViewController.removeFromParent()
                                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                 appDelegate.window?.rootViewController = myViewController
                                 appDelegate.window?.makeKeyAndVisible()
@@ -1022,7 +1021,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     func setupTerms() {
         
         self.view.addSubview(termsController.view)
-        self.addChildViewController(termsController)
+        self.addChild(termsController)
         termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true

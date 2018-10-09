@@ -9,8 +9,8 @@
 import Foundation
 import MapKit
 
-@available(iOS 11.0, *)
-class AvailableAnnotationView: MKMarkerAnnotationView {
+//AVAILABLE PARKING
+class AvailableHouseAnnotationView: MKMarkerAnnotationView {
     
     static let ReuseID = "availableAnnotation"
     
@@ -33,28 +33,148 @@ class AvailableAnnotationView: MKMarkerAnnotationView {
     }
 }
 
-@available(iOS 11.0, *)
-class UnavailableAnnotationView: MKMarkerAnnotationView {
+class AvailableApartmentAnnotationView: MKMarkerAnnotationView {
     
-    static let ReuseID = "unavailableAnnotation"
+    static let ReuseID = "availableAnnotation"
     
+    /// - Tag: ClusterIdentifier
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        clusteringIdentifier = "unavailable"
+        clusteringIdentifier = "available"
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// - Tag: DisplayConfiguration
     override func prepareForDisplay() {
         super.prepareForDisplay()
-        displayPriority = .defaultHigh
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.PRIMARY_COLOR
+        glyphImage = UIImage(named: "apartmentIcon")
+    }
+}
+
+class AvailableLotAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.PRIMARY_COLOR
+        glyphImage = UIImage(named: "parkingIcon")
+    }
+}
+
+//UNAVAILABLE PARKING
+class UnavailableHouseAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
         markerTintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         glyphImage = UIImage(named: "parking")
     }
 }
+
+class UnavailableApartmentAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        glyphImage = UIImage(named: "apartmentIcon")
+    }
+}
+
+class UnavailableLotAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        glyphImage = UIImage(named: "parkingIcon")
+    }
+}
+
+
+class ClusterAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.WHITE
+        glyphTintColor = Theme.PRIMARY_DARK_COLOR
+        UIFont.systemFont(ofSize: 60, weight: .bold)
+        glyphImage = UIImage(named: "parking")
+    }
+}
+
 
 
 

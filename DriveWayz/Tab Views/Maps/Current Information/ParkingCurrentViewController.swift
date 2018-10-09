@@ -67,7 +67,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         let controller = CurrentParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Timer"
-        self.addChildViewController(controller)
+        self.addChild(controller)
         controller.delegate = self
         
         return controller
@@ -109,7 +109,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         label.isEditable = false
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.contentInset = UIEdgeInsetsMake(5, 20, 5, 20)
+        label.contentInset = UIEdgeInsets.init(top: 5, left: 20, bottom: 5, right: 20)
         
         return label
     }()
@@ -264,7 +264,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         timerController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         detailsTableView.addSubview(userMessage)
-        detailsTableView.bringSubview(toFront: userMessage)
+        detailsTableView.bringSubviewToFront(userMessage)
         userMessage.centerXAnchor.constraint(equalTo: detailsTableView.centerXAnchor).isActive = true
         userMessage.widthAnchor.constraint(equalTo: parkingView.widthAnchor).isActive = true
         userMessage.topAnchor.constraint(equalTo: detailsTableView.topAnchor, constant: 50).isActive = true

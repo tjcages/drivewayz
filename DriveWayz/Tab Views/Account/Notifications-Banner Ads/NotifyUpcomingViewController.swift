@@ -51,7 +51,7 @@ class NotifyUpcomingViewController: UIViewController {
         content.title = "Your parking reservation is ready!"
         content.subtitle = "Open in app for directions."
         content.badge = 0
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound.default
     
         let currentTime = Date().timeIntervalSince1970
         let seconds = startTime - currentTime
