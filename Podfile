@@ -27,7 +27,6 @@ target 'DriveWayz' do
 	pod 'Cosmos', '~> 16.0'
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.2.0'
-	#pod 'Cluster'
 	pod 'NVActivityIndicatorView'
 	pod 'TextFieldEffects'
 
