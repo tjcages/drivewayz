@@ -44,6 +44,7 @@ protocol controlsAccountOptions {
     func bringContactUsController()
     func bringTermsController()
     func bringBankAccountController()
+    func bringMessagesController()
     
     func hideUpcomingController()
     func hideHostingController()
@@ -55,6 +56,7 @@ protocol controlsAccountOptions {
     func hideContactUsController()
     func hideTermsController()
     func hideBankAccountController()
+    func hideMessagesController()
 }
 
 class TabViewController: UIViewController, UNUserNotificationCenterDelegate, moveControllers, controlsAccountOptions {
@@ -115,8 +117,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveToProfileTap(sender:)), for: .touchUpInside)
         button.backgroundColor = Theme.PRIMARY_DARK_COLOR
-        button.alpha = 0.9
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 55/2
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
         button.layer.shadowOffset = CGSize(width: 1, height: 1)
         button.layer.shadowRadius = 1
@@ -280,6 +281,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return controller
     }()
     
+    lazy var userMessagesController: UserMessagesViewController = {
+        let controller = UserMessagesViewController()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Messages"
+        controller.delegate = self
+        return controller
+    }()
+    
     var mapControllerAnchor: NSLayoutConstraint!
     var accountControllerAnchor: NSLayoutConstraint!
     var mapCenterAnchor: NSLayoutConstraint!
@@ -360,8 +370,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         
         mapController.view.addSubview(profile)
         profile.rightAnchor.constraint(equalTo: mapController.view.rightAnchor, constant: -10).isActive = true
-        profile.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        profile.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        profile.widthAnchor.constraint(equalToConstant: 55).isActive = true
+        profile.heightAnchor.constraint(equalToConstant: 55).isActive = true
         switch device {
         case .iphone8:
             profile.topAnchor.constraint(equalTo: mapController.view.topAnchor, constant: 30).isActive = true
@@ -481,6 +491,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     var newVehicleAnchor: NSLayoutConstraint!
     var analControllerAnchor: NSLayoutConstraint!
     var upcomingAnchor: NSLayoutConstraint!
+    var messagesAnchor: NSLayoutConstraint!
     var bankAccountCenterAnchor: NSLayoutConstraint!
     
     func refreshSpots() {
@@ -536,6 +547,24 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }
     }
     
+    func bringMessagesController() {
+        self.view.addSubview(userMessagesController.view)
+        userMessagesController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        userMessagesController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        userMessagesController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        messagesAnchor = userMessagesController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+            messagesAnchor.isActive = true
+        self.view.layoutIfNeeded()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.accountSlideController.mainLabel.text = "Messages"
+            UIView.animate(withDuration: 0.3) {
+                self.accountSlideController.mainLabel.alpha = 1
+                self.messagesAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
     func bringHostingController() {
         self.view.addSubview(hostingController.view)
         hostingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -570,6 +599,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
                 self.accountSlideController.mainLabel.text = "New Host"
                 UIView.animate(withDuration: 0.3, animations: {
                     self.newParkingAnchor.constant = 0
+                    self.accountSlideController.mainLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 })
             }
@@ -582,8 +612,10 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
             newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.accountSlideController.mainLabel.text = "New Host"
                 UIView.animate(withDuration: 0.3, animations: {
                     self.newParkingAnchor.constant = 0
+                    self.accountSlideController.mainLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 })
             }
@@ -718,16 +750,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }
     }
     
-    func hideTermsController() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.termsController.view.alpha = 0
-//            self.fullBlurView.alpha = 0.4
-            self.blurView.alpha = 1
+    func hideMessagesController() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.messagesAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
         }) { (success) in
-            self.termsController.willMove(toParent: nil)
-            self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParent()
-            self.closeAccountView()
+            self.userMessagesController.willMove(toParent: nil)
+            self.userMessagesController.view.removeFromSuperview()
+            self.userMessagesController.removeFromParent()
             self.accountSlideController.setHomeIndex()
         }
     }
@@ -799,7 +830,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideCouponsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.couponController.view.alpha = 0
-//            self.fullBlurView.alpha = 0.4
+            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.couponController.willMove(toParent: nil)
@@ -813,12 +844,26 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func hideContactUsController() {
         UIView.animate(withDuration: 0.2, animations: {
             self.contactController.view.alpha = 0
-//            self.fullBlurView.alpha = 0.4
+            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.contactController.willMove(toParent: nil)
             self.contactController.view.removeFromSuperview()
             self.contactController.removeFromParent()
+            self.closeAccountView()
+            self.accountSlideController.setHomeIndex()
+        }
+    }
+    
+    func hideTermsController() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.termsController.view.alpha = 0
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
+        }) { (success) in
+            self.termsController.willMove(toParent: nil)
+            self.termsController.view.removeFromSuperview()
+            self.termsController.removeFromParent()
             self.closeAccountView()
             self.accountSlideController.setHomeIndex()
         }
@@ -838,6 +883,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     func openAccountView() {
         self.accountControllerAnchor.constant = self.view.frame.width/3
         UIView.animate(withDuration: 0.1, animations: {
+            self.fullBlurView.alpha = 0.4
+            self.blurView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
             self.accountControllerAnchor.constant = -5
@@ -850,9 +897,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
                 self.accountSlideController.termsLine.alpha = 0
                 self.accountSlideController.optionsTableView.alpha = 0
                 self.accountSlideController.termsTableView.alpha = 0
+                self.accountSlideController.moreColorsButton.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.delegate?.bringStatusBar()
+                self.delegate?.lightContentStatusBar()
             }
         }
     }
@@ -869,7 +918,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.accountSlideController.termsLine.alpha = 1
             self.accountSlideController.optionsTableView.alpha = 1
             self.accountSlideController.termsTableView.alpha = 1
-            self.accountSlideController.addButton.alpha = 1
+            self.accountSlideController.moreColorsButton.alpha = 1
             if self.accountSlideController.hostMarkShouldShow == true {
                 self.accountSlideController.hostingMark.alpha = 1
             } else {
@@ -882,7 +931,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             }
             self.view.layoutIfNeeded()
         }) { (success) in
-            //
+            self.delegate?.defaultStatusBar()
         }
     }
     

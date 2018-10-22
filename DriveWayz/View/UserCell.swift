@@ -13,14 +13,10 @@ class UserCell: UITableViewCell {
     
     var message: Message? {
         didSet {
-            
             setUpNameAndProfileImage()
-            
             detailTextLabel?.text = message?.text
-            
             if let seconds = message?.timestamp?.doubleValue {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
-                
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm a"
                 timeLabel.text = dateFormatter.string(from: timestampDate as Date)
@@ -30,14 +26,10 @@ class UserCell: UITableViewCell {
     
     var parking: ParkingSpots? {
         didSet {
-            
             setUpParkingSpot()
-            
             detailTextLabel?.text = parking?.parkingCost
-            
             if let seconds = parking?.timestamp?.doubleValue {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
-                
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm a"
                 timeLabel.text = dateFormatter.string(from: timestampDate as Date)
@@ -46,40 +38,57 @@ class UserCell: UITableViewCell {
     }
     
     private func setUpNameAndProfileImage() {
-        
         if let ID = message?.chatPartnerID() {
             let ref = Database.database().reference().child("users").child(ID)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
-                    self.textLabel?.text = dictionary["name"] as? String
                     if let profileImageURL = dictionary["picture"] as? String {
                         self.profileImageView.loadImageUsingCacheWithUrlString(profileImageURL)
                     }
-                    
+                    if let name = dictionary["name"] as? String {
+                        var fullNameArr = name.split(separator: " ")
+                        let firstName: String = String(fullNameArr[0])
+                        if let lastName: String = fullNameArr.count > 1 ? String(fullNameArr[1]) : nil {
+                            var lastCharacter = lastName.chunk(n: 1)
+                            self.textLabel?.text = "\(firstName) \(lastCharacter[0])."
+                        } else {
+                            self.textLabel?.text = name
+                            if name == " Drivewayz " {
+                                self.profileImageView.image = UIImage(named: "background4")
+                            }
+                        }
+                    }
                 }
             }, withCancel: nil)
         }
     }
     
     private func setUpParkingSpot() {
-        
-            textLabel?.text = parking?.parkingCost
-        
+        textLabel?.text = parking?.parkingCost
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.backgroundColor = Theme.OFF_WHITE
+        self.backgroundColor = Theme.WHITE
         
-        textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
+        if textLabel?.text == " Drivewayz " {
+            textLabel?.textColor = Theme.PRIMARY_COLOR
+            textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        } else {
+            textLabel?.textColor = Theme.BLACK
+            textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        }
+        textLabel?.frame = CGRect(x: 74, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width + 10, height: textLabel!.frame.height)
         
-        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y + 2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
+        detailTextLabel?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        detailTextLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        detailTextLabel?.frame = CGRect(x: 74, y: detailTextLabel!.frame.origin.y + 2, width: self.frame.width - 124, height: detailTextLabel!.frame.height)
     }
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 24
+        imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -87,9 +96,10 @@ class UserCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = UIColor.darkGray
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
         return label
     }()
     
@@ -99,15 +109,13 @@ class UserCell: UITableViewCell {
         addSubview(profileImageView)
         addSubview(timeLabel)
         
-        //ios 9 constraint anchors
-        //need x,y,width,height anchors
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 30).isActive = true
-        timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
+        timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+        timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
         timeLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeLabel.heightAnchor.constraint(equalTo: textLabel!.heightAnchor).isActive = true
     }

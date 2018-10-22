@@ -127,7 +127,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Select Payment", for: .normal)
+        button.setTitle("Payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentMode = .center
         button.titleLabel?.textAlignment = .center
@@ -369,7 +369,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         guard let selectedPaymentMethod = paymentContext.selectedPaymentMethod else {
             // Show default image, text, and color
             //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
-            paymentButton.setTitle("Select Payment", for: .normal)
+            paymentButton.setTitle("Payment", for: .normal)
             paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
             return
         }

@@ -440,10 +440,55 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             } else if indexPath.row == (Current.count-3) {
                 self.extendTime()
             }
-        } else {
-            
+        } else if tableView == detailsTableView {
+            if indexPath.row == (Details.count-1) {
+                self.delegate?.closeExtendTimeView()
+                self.delegate?.openMessages()
+                self.setUserMessage()
+            }
         }
     }
+    
+    func setUserMessage() {
+        let ref = Database.database().reference().child("parking").child(self.parkingID!)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                if let userId = dictionary["id"] as? String {
+                    let ref = Database.database().reference()
+                    let toID = userId
+                    let fromID = Auth.auth().currentUser!.uid
+                    let timestamp = Int(Date().timeIntervalSince1970)
+                    
+                    let childRef = ref.child("messages").child(fromID)
+                    var values = ["toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
+                    
+                    let properties = ["text": "This is the beginning of your message history."] as [String : AnyObject]
+                    properties.forEach({values[$0] = $1})
+                    childRef.updateChildValues(values) { (error, ralf) in
+                        if error != nil {
+                            print(error ?? "")
+                            return
+                        }
+                        if let messageId = childRef.key {
+                            let vals = [messageId: 1] as [String: Int]
+                            
+                            let userMessagesRef = ref.child("user-messages").child(fromID).child(toID)
+                            userMessagesRef.updateChildValues(vals)
+                            
+                            let recipientUserMessagesRef = ref.child("user-messages").child(toID).child(fromID)
+                            recipientUserMessagesRef.updateChildValues(vals)
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            childRef.removeValue()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var users = [Users]()
+    var messagesController: UserMessagesViewController = UserMessagesViewController()
     
     func leaveAReview() {
         let alert = UIAlertController(title: "Confirm", message: "Please confirm that you have left the parking space. If you confirm and have not actually left within a certain time you risk being towed.", preferredStyle: .alert)

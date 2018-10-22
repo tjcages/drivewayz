@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Theme.PRIMARY_COLOR
         
         UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().delegate = self
 //        application.registerForRemoteNotifications()
         
         InstanceID.instanceID().instanceID(handler: { (result, error) in
@@ -111,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         CurrentParkingViewController().stopTimerTest()
     }
     
@@ -119,8 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         timerStarted = false
         CurrentParkingViewController().restartDatabaseTimer()
         startTimer()
-        let notificationController = NotifyUpcomingViewController()
-        notificationController.checkForUpcoming()
     }
     
     func startTimer() {
@@ -213,7 +212,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .badge, .sound]) 
+        
+        completionHandler([.alert, .sound])
     }
     
 }

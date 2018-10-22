@@ -217,7 +217,7 @@ class ConfigureParkingViewController: UIViewController {
         let origImage = UIImage(named: "Delete")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(removeAddNewParking(sender:)), for: .touchUpInside)
@@ -267,17 +267,17 @@ class ConfigureParkingViewController: UIViewController {
 
     func setupViews() {
         
-        self.view.addSubview(visualBlurEffect)
-        visualBlurEffect.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        visualBlurEffect.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        visualBlurEffect.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        visualBlurEffect.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        self.view.addSubview(visualBlurEffect)
+//        visualBlurEffect.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        visualBlurEffect.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+//        visualBlurEffect.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        visualBlurEffect.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(containerView)
         containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: self.view.frame.height - 160).isActive = true
-        containerView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        containerView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        containerView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 34).isActive = true
@@ -437,7 +437,7 @@ class ConfigureParkingViewController: UIViewController {
         self.view.addSubview(nextButton)
         nextButtonCenterAnchor = nextButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
             nextButtonCenterAnchor.isActive = true
-        nextButtonTopAnchor = nextButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
+        nextButtonTopAnchor = nextButton.topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 60)
             nextButtonTopAnchor.isActive = true
         nextButtonHeightAnchor = nextButton.heightAnchor.constraint(equalToConstant: 40)
             nextButtonHeightAnchor.isActive = true
@@ -446,7 +446,7 @@ class ConfigureParkingViewController: UIViewController {
         
         self.view.addSubview(backButton)
         backButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -90).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20).isActive = true
+        backButton.topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 60).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
@@ -463,7 +463,7 @@ class ConfigureParkingViewController: UIViewController {
     @objc func optionTapped(sender: UIButton) {
         if sender == houseIconLabel {
             self.parkingType = "house"
-            self.numberOfSpots = 2
+            self.numberOfSpots = 10
             self.numberLabel.text = "1"
             self.houseHeightAnchor.constant = 105
             self.apartmentHeightAnchor.constant = 5
@@ -488,7 +488,7 @@ class ConfigureParkingViewController: UIViewController {
             }
         } else if sender == apartmentIconLabel {
             self.parkingType = "apartment"
-            self.numberOfSpots = 2
+            self.numberOfSpots = 10
             self.numberLabel.text = "1"
             self.houseHeightAnchor.constant = 5
             self.apartmentHeightAnchor.constant = 105
@@ -616,7 +616,7 @@ class ConfigureParkingViewController: UIViewController {
                     self.messageControllerAnchor.constant = 0
                     self.messageController.view.alpha = 1
                     self.nextButtonCenterAnchor.constant = 0
-                    self.nextButtonTopAnchor.constant = -80
+                    self.nextButtonTopAnchor.constant = 0
                     self.nextButtonHeightAnchor.constant = 50
                     self.nextButtonWidthAnchor.constant = 200
                     self.nextButton.layer.cornerRadius = 25
@@ -697,7 +697,7 @@ class ConfigureParkingViewController: UIViewController {
                     self.costsControllerAnchor.constant = 0
                     self.costsController.view.alpha = 1
                     self.nextButtonCenterAnchor.constant = 50
-                    self.nextButtonTopAnchor.constant = -20
+                    self.nextButtonTopAnchor.constant = 60
                     self.nextButtonHeightAnchor.constant = 40
                     self.nextButtonWidthAnchor.constant = 160
                     self.nextButton.layer.cornerRadius = 20
@@ -798,6 +798,7 @@ class ConfigureParkingViewController: UIViewController {
     
     @objc func removeAddNewParking(sender: UIButton) {
         self.delegate?.hideNewHostingController()
+        self.delegate?.bringHostingController()
     }
 
 }

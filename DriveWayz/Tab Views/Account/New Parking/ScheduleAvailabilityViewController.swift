@@ -31,94 +31,101 @@ class ScheduleAvailabilityViewController: UIViewController {
     }()
     
     var mondayButton: UIButton = {
-        let monday = UIButton()
-        monday.setTitle("M", for: .normal)
-        monday.setTitleColor(Theme.WHITE, for: .normal)
-        monday.backgroundColor = Theme.PRIMARY_COLOR
-        monday.clipsToBounds = true
-        monday.layer.cornerRadius = 20
-        monday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        monday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("M", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return monday
+        return button
     }()
     
     var tuesdayButton: UIButton = {
-        let tuesday = UIButton()
-        tuesday.setTitle("T", for: .normal)
-        tuesday.setTitleColor(Theme.WHITE, for: .normal)
-        tuesday.backgroundColor = Theme.PRIMARY_COLOR
-        tuesday.clipsToBounds = true
-        tuesday.layer.cornerRadius = 20
-        tuesday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        tuesday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("T", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return tuesday
+        return button
     }()
     
     var wednesdayButton: UIButton = {
-        let wednesday = UIButton()
-        wednesday.setTitle("W", for: .normal)
-        wednesday.setTitleColor(Theme.WHITE, for: .normal)
-        wednesday.backgroundColor = Theme.PRIMARY_COLOR
-        wednesday.clipsToBounds = true
-        wednesday.layer.cornerRadius = 20
-        wednesday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        wednesday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("W", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return wednesday
+        return button
     }()
     
     var thursdayButton: UIButton = {
-        let thursday = UIButton()
-        thursday.setTitle("T", for: .normal)
-        thursday.setTitleColor(Theme.WHITE, for: .normal)
-        thursday.backgroundColor = Theme.PRIMARY_COLOR
-        thursday.clipsToBounds = true
-        thursday.layer.cornerRadius = 20
-        thursday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        thursday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("T", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return thursday
+        return button
     }()
     
     var fridayButton: UIButton = {
-        let friday = UIButton()
-        friday.setTitle("F", for: .normal)
-        friday.setTitleColor(Theme.WHITE, for: .normal)
-        friday.backgroundColor = Theme.PRIMARY_COLOR
-        friday.clipsToBounds = true
-        friday.layer.cornerRadius = 20
-        friday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        friday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("F", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return friday
+        return button
     }()
     
     var saturdayButton: UIButton = {
-        let saturday = UIButton()
-        saturday.setTitle("S", for: .normal)
-        saturday.setTitleColor(Theme.WHITE, for: .normal)
-        saturday.backgroundColor = Theme.PRIMARY_COLOR
-        saturday.clipsToBounds = true
-        saturday.layer.cornerRadius = 20
-        saturday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        saturday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("S", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return saturday
+        return button
     }()
     
     var sundayButton: UIButton = {
-        let sunday = UIButton()
-        sunday.setTitle("S", for: .normal)
-        sunday.setTitleColor(Theme.WHITE, for: .normal)
-        sunday.backgroundColor = Theme.PRIMARY_COLOR
-        sunday.clipsToBounds = true
-        sunday.layer.cornerRadius = 20
-        sunday.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
-        sunday.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.setTitle("S", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        return sunday
+        return button
     }()
     
     var daysAvailableLabel: UIButton = {
@@ -221,6 +228,34 @@ class ScheduleAvailabilityViewController: UIViewController {
         daysAvailableLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10).isActive = true
         daysAvailableLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         daysAvailableLabel.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        
+        startEmpty()
+    }
+    
+    func startEmpty() {
+        monday = 0
+        self.mondayButton.backgroundColor = UIColor.clear
+        self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        tuesday = 0
+        self.tuesdayButton.backgroundColor = UIColor.clear
+        self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        wednesday = 0
+        self.wednesdayButton.backgroundColor = UIColor.clear
+        self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        thursday = 0
+        self.thursdayButton.backgroundColor = UIColor.clear
+        self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        friday = 0
+        self.fridayButton.backgroundColor = UIColor.clear
+        self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        saturday = 0
+        self.saturdayButton.backgroundColor = UIColor.clear
+        self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        sunday = 0
+        self.sundayButton.backgroundColor = UIColor.clear
+        self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.daysAvailableLabel.alpha = 1
+        self.daysAvailableLabel.setTitle("None of the days are selected", for: .normal)
     }
     
     @objc func dayPressed(sender: UIButton) {

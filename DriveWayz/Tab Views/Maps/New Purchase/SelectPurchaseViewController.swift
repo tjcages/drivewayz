@@ -97,7 +97,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Select Payment", for: .normal)
+        button.setTitle("Payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentMode = .center
         button.titleLabel?.textAlignment = .center
@@ -782,6 +782,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         } else {
             self.couponStaus.alpha = 0
         }
+        self.reserveButton.removeTarget(self, action: #selector(self.handleConfirmRideButtonTapped), for: .touchUpInside)
+        self.reserveButton.addTarget(self, action: #selector(self.handleRequestRideButtonTapped), for: .touchUpInside)
     }
     
     func checkButtonSender() {
@@ -1128,21 +1130,47 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 }
             }
         }
-//
-//        self.addCurrentParking()
-//        if reserveSegmentAnchor.isActive == true {
-//            self.reserveParking()
-//        } else if currentSegmentAnchor.isActive == true {
-//            self.updateUserProfileCurrent()
-//            self.drawNewRoute()
-//            UIView.animate(withDuration: 0.3) {
-//                currentButton.alpha = 1
-//            }
-//        }
-//        self.notify(status: true)
+
+        self.addCurrentParking()
+        if reserveSegmentAnchor.isActive == true {
+            self.reserveParking()
+        } else if currentSegmentAnchor.isActive == true {
+            self.updateUserProfileCurrent()
+            self.drawNewRoute()
+            self.sendNotifications()
+            UIView.animate(withDuration: 0.3) {
+                self.resetReservationButton()
+                currentButton.alpha = 1
+            }
+        }
+        self.notify(status: true)
         
         self.paymentInProgress = true
-        self.paymentContext.requestPayment()
+//        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP
+    }
+    
+    var notificationController: SendNotificationsViewController = {
+        let controller = SendNotificationsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    func sendNotifications() {
+        let ref = Database.database().reference().child("parking").child(self.parkingId)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let parkingAddress = dictionary["parkingAddress"] as? String {
+                    let geoCoder = CLGeocoder()
+                    geoCoder.geocodeAddressString(parkingAddress) { (placemarks, error) in
+                        guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                            return
+                        }
+                        self.notificationController.sendNotifications(location: location)
+                    }
+                }
+            }
+        }
     }
     
     
@@ -1151,7 +1179,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         guard let selectedPaymentMethod = paymentContext.selectedPaymentMethod else {
             // Show default image, text, and color
             //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
-            paymentButton.setTitle("Select Payment", for: .normal)
+            paymentButton.setTitle("Payment", for: .normal)
             paymentButton.setTitleColor(Theme.BLACK, for: .normal)
             return
         }

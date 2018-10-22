@@ -11,8 +11,10 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FacebookLogin
+import GoogleSignIn
+import FirebaseInvites
 
-class AccountSlideViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class AccountSlideViewController: UIViewController, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, GIDSignInUIDelegate, InviteDelegate, GIDSignInDelegate {
     
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
@@ -30,7 +32,6 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     
     lazy var container: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.WHITE
         view.layer.shadowRadius = 5
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: -1, height: 1)
@@ -38,6 +39,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
 //        view.roundCorners(corners: .topLeft, radius: 10)
+        view.backgroundColor = Theme.PRIMARY_DARK_COLOR
         
         return view
     }()
@@ -71,27 +73,12 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     var profileName: UILabel = {
         let profileName = UILabel()
         profileName.translatesAutoresizingMaskIntoConstraints = false
-        profileName.textColor = Theme.BLACK
+        profileName.textColor = Theme.WHITE
         profileName.textAlignment = .center
-        profileName.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        profileName.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         profileName.text = "Name"
         
         return profileName
-    }()
-    
-    var addButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "Add")
-        button.setImage(image, for: .normal)
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowOpacity = 0.8
-        button.layer.shadowRadius = 1
-        button.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 2, bottom: 2, right: 2)
-        button.alpha = 1
-        
-        return button
     }()
     
     var profileLine: UIView = {
@@ -104,10 +91,13 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     
     var optionsTableView: UITableView = {
         let view = UITableView()
+        view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
         view.isScrollEnabled = false
+        view.roundCorners(corners: .bottomLeft, radius: 10)
+//        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         
         return view
     }()
@@ -118,6 +108,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
         view.isScrollEnabled = false
+        view.roundCorners(corners: .bottomLeft, radius: 10)
         
         return view
     }()
@@ -133,9 +124,9 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Analytics"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         label.alpha = 0
         
         return label
@@ -170,6 +161,34 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         
         return mark
     }()
+    
+    var moreColorsButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(UIImage(named: "moreColors"), for: .normal)
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(blurEffectView)
+        blurEffectView.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
+        blurEffectView.rightAnchor.constraint(equalTo: button.rightAnchor).isActive = true
+        blurEffectView.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
+        blurEffectView.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+        
+        let label = UILabel()
+        label.text = "Invite a friend and get 10% off!"
+        label.textColor = Theme.WHITE
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(label)
+        label.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 12).isActive = true
+        label.rightAnchor.constraint(equalTo: button.rightAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,7 +206,7 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         setHomeIndex()
         checkForMarks()
         checkForUpcoming()
-        configureOptions()
+//        configureOptions()
     }
 
     override func didReceiveMemoryWarning() {
@@ -208,20 +227,6 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
         container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        switch device {
-        case .iphone8:
-            let background = CAGradientLayer().blueColor()
-            background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-            background.zPosition = -10
-            container.layer.insertSublayer(background, at: 0)
-            container.layer.cornerRadius = 10
-        case .iphoneX:
-            let background = CAGradientLayer().blueColor()
-            background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIApplication.shared.statusBarFrame.height + 200)
-            background.zPosition = -10
-            container.layer.insertSublayer(background, at: 0)
-            container.layer.cornerRadius = 10
-        }
         
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
@@ -235,8 +240,6 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
     func setupTopView() {
         
         container.addSubview(profileImageView)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView(sender:)))
-        profileImageView.addGestureRecognizer(gesture)
         profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: -self.view.frame.width/7).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
@@ -248,19 +251,10 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         }
         
         container.addSubview(imageView)
-        imageView.addGestureRecognizer(gesture)
         imageView.leftAnchor.constraint(equalTo: profileImageView.leftAnchor).isActive = true
         imageView.rightAnchor.constraint(equalTo: profileImageView.rightAnchor).isActive = true
         imageView.topAnchor.constraint(equalTo: profileImageView.topAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor).isActive = true
-        
-        container.addSubview(addButton)
-        container.bringSubviewToFront(addButton)
-        addButton.addGestureRecognizer(gesture)
-        addButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor, constant: 40).isActive = true
-        addButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor, constant: 40).isActive = true
-        addButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        addButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         container.addSubview(profileName)
         profileName.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
@@ -274,21 +268,30 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 20).isActive = true
         profileLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
+        container.addSubview(moreColorsButton)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(inviteNewUser(sender:)))
+        moreColorsButton.addGestureRecognizer(gesture)
+        moreColorsButton.topAnchor.constraint(equalTo: profileLine.bottomAnchor, constant: -10).isActive = true
+        moreColorsButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        moreColorsButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
+        moreColorsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         container.addSubview(optionsTableView)
         optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        optionsTableView.topAnchor.constraint(equalTo: profileLine.bottomAnchor).isActive = true
-        optionsTableView.heightAnchor.constraint(equalToConstant: 360).isActive = true
+        optionsTableView.topAnchor.constraint(equalTo: moreColorsButton.bottomAnchor).isActive = true
+        optionsTableView.bottomAnchor.constraint(greaterThanOrEqualTo: container.bottomAnchor).isActive = true
+//        optionsTableView.heightAnchor.constraint(equalToConstant: 360).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
         
         container.addSubview(termsTableView)
         termsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        termsTableView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        termsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0).isActive = true
         termsTableView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
         switch device {
         case .iphone8:
-            termsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -10).isActive = true
+            termsTableView.heightAnchor.constraint(equalToConstant: 55).isActive = true
         case .iphoneX:
-            termsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30).isActive = true
+            termsTableView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         }
         
         container.addSubview(termsLine)
@@ -315,62 +318,6 @@ class AccountSlideViewController: UIViewController, UIImagePickerControllerDeleg
         self.delegate?.openAccountView()
     }
     
-    var pickerProfile: UIImagePickerController?
-    
-    @objc func handleSelectProfileImageView(sender: UITapGestureRecognizer) {
-        pickerProfile = UIImagePickerController()
-        pickerProfile?.delegate = self
-        pickerProfile?.allowsEditing = true
-        
-        present(pickerProfile!, animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
-        
-        var selectedImageFromPicker: UIImage?
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            selectedImageFromPicker = originalImage
-        }
-        
-        if let selectedImage = selectedImageFromPicker {
-            if picker == pickerProfile {
-                profileImageView.image = selectedImage
-                self.addButton.alpha = 0
-            }
-        }
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        let imageName = NSUUID().uuidString
-        
-        if picker == pickerProfile {
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
-            if let uploadData = self.profileImageView.image!.jpegData(compressionQuality: 0.5) {
-                //        if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
-                storageRef.putData(uploadData, metadata: nil, completion: {  (metadata, error) in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    storageRef.downloadURL(completion: { (url, error) in
-                        guard let profileImageURL = url?.absoluteString else {
-                            print("Error finding image url:", error!)
-                            return
-                        }
-                        let values = ["picture": profileImageURL]
-                        self.registerUserIntoDatabaseWithUID(uid: uid, values: values as [String : AnyObject])
-                    })
-                })
-            }
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
     var addShouldShow: Bool = false
     var upcomingMarkShouldShow: Bool = false
     
@@ -389,11 +336,9 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
                 let userPicture = dictionary["picture"] as? String
                 if userPicture == "" {
                     self.profileImageView.image = UIImage(named: "background4")
-                    self.addButton.alpha = 1
                     self.addShouldShow = true
                 } else {
                     self.profileImageView.loadImageUsingCacheWithUrlString(userPicture!)
-                    self.addButton.alpha = 0
                     self.addShouldShow = false
                 }
                 if (dictionary["upcomingParking"] as? [String:AnyObject]) != nil {
@@ -500,7 +445,6 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: 0.2) {
-            self.addButton.alpha = 0
             self.hostingMark.alpha = 0
             self.upcomingMark.alpha = 0
         }
@@ -511,9 +455,9 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
             self.previousCell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         }
         if let cell = optionsTableView.cellForRow(at: indexPath) as? OptionsCell {
-            cell.messageTextView.textColor = Theme.HARMONY_COLOR
+            cell.messageTextView.textColor = Theme.BLACK
             cell.imageView?.tintColor = Theme.PRIMARY_COLOR
-            cell.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.05)
+            cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
             cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
             self.previousCell = cell
         }
@@ -532,7 +476,8 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
                     self.openAccountView()
                     self.delegate?.bringAnalyticsController()
                 } else {
-                    self.displayAlertMessage(userMessage: "Currently this functionality is unavailable.", title: "Sorry!")
+                    self.openAccountView()
+                    self.delegate?.bringMessagesController()
                 }
             } else if options[indexPath.row] == "Coupons" {
                 self.delegate?.moveToMap()
@@ -597,9 +542,19 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     }
     
     func setHomeIndex() {
-        let index = IndexPath(row: 0, section: 0)
-        self.optionsTableView.selectRow(at: index, animated: true, scrollPosition: .top)
-        optionsTableView.delegate?.tableView!(optionsTableView, didSelectRowAt: index)
+        if self.previousCell != nil {
+            self.previousCell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+            self.previousCell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+            self.previousCell.backgroundColor = UIColor.clear
+            self.previousCell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        }
+        if let cell = optionsTableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? OptionsCell {
+            cell.messageTextView.textColor = Theme.BLACK
+            cell.imageView?.tintColor = Theme.PRIMARY_COLOR
+            cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
+            cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            self.previousCell = cell
+        }
     }
     
     func configureOptions() {
@@ -612,9 +567,13 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
                     let email = dictionary[i]
                     if email == currentUser {
                         self.emailConfirmed = .confirmed
+                        self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+                        self.optionsTableView.reloadData()
                         return
                     } else {
                         self.emailConfirmed = .unconfirmed
+                        self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
+                        self.optionsTableView.reloadData()
                     }
                 }
             }
@@ -623,6 +582,66 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     
     func bringBankAccountOptions() {
         self.delegate?.bringBankAccountController()
+    }
+    
+    @objc func inviteNewUser(sender: UITapGestureRecognizer) {
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+    }
+    
+    func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
+        if let error = error {
+            print("Failed: " + error.localizedDescription)
+        } else {
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            let ref = Database.database().reference().child("users").child(currentUser).child("Coupons")
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    if (dictionary["invite10"] as? String) != nil {
+                        let alert = UIAlertController(title: "Sorry!", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        self.present(alert, animated: true)
+                        return
+                    } else {
+                        ref.updateChildValues(["invite10": "10% off coupon!"])
+                        let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        self.present(alert, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if error != nil {
+            // ...
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        guard let prevUser = Auth.auth().currentUser else {return}
+        prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
+            if let invite = Invites.inviteDialog() {
+                invite.setInviteDelegate(self)
+                
+                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
+                invite.setTitle("Drivewayz")
+                //            invite.setDeepLink("app_url")
+                invite.setCallToActionText("Install!")
+                invite.open()
+            }
+        }
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
     }
 
 

@@ -118,7 +118,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
         let reviews = UIButton()
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
-        reviews.setTitle("Category", for: .normal)
+        reviews.setTitle("Type", for: .normal)
         reviews.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center

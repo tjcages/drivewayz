@@ -128,7 +128,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         
         self.paymentContext = paymentContext
 
-        self.paymentRow = CheckoutRowView(title: "Select Payment", detail: "Select Payment",
+        self.paymentRow = CheckoutRowView(title: "Payment", detail: "Payment",
                                           theme: .default())
         self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
                                         theme: .default())
@@ -306,7 +306,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             self.paymentRow.detail = paymentMethod.label
         }
         else {
-            self.paymentRow.detail = "Select Payment"
+            self.paymentRow.detail = "Payment"
         }
         self.totalRow.detail = self.numberFormatter.string(from: NSNumber(value: Float(self.paymentContext.paymentAmount)/100))!
     }

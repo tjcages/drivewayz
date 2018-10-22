@@ -202,7 +202,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
         button.layer.borderWidth = 2
@@ -1078,7 +1078,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.nextButtonWidthAnchor.constant = 160
                     self.nextButton.layer.cornerRadius = 20
                     self.nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
-                    self.nextButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.nextButton.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
                     self.nextButton.backgroundColor = UIColor.clear
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()

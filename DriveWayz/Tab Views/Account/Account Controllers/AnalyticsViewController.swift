@@ -28,7 +28,7 @@ class AnalyticsViewController: UIViewController {
         let view = UIImageView(image: flip)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
+        view.tintColor = Theme.WHITE
         view.alpha = 0
         
         return view
@@ -39,7 +39,7 @@ class AnalyticsViewController: UIViewController {
         let origImage = UIImage(named: "Delete")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
@@ -132,9 +132,9 @@ class AnalyticsViewController: UIViewController {
         
         self.view.addSubview(container)
         container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        container.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 40).isActive = true
-        container.heightAnchor.constraint(equalToConstant: self.view.frame.height - 160).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
+        container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true

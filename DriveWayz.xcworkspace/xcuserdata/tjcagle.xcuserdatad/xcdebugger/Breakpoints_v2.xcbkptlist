@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Stripe/Payment/MyAPIClient.swift"
-            timestampString = "560747352.3360341"
+            timestampString = "560797208.712186"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "220"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Account/AccountViewController.swift"
-            timestampString = "560747352.336162"
+            timestampString = "560797208.712317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "816"
@@ -74,12 +74,12 @@
                   moduleName = "DriveWayz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/AccountViewController.swift"
-                  timestampString = "560747352.728646"
+                  timestampString = "561877700.971491"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "816"
                   endingLineNumber = "816"
-                  offsetFromSymbolStart = "244">
+                  offsetFromSymbolStart = "264">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,12 +89,12 @@
                   moduleName = "DriveWayz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Tab%20Views/Account/AccountViewController.swift"
-                  timestampString = "560747352.7307661"
+                  timestampString = "561877700.973197"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "816"
                   endingLineNumber = "816"
-                  offsetFromSymbolStart = "1212">
+                  offsetFromSymbolStart = "1390">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Maps/Map Info/MapViewController.swift"
-            timestampString = "560747352.336235"
+            timestampString = "561275924.9153759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "971"
-            endingLineNumber = "971"
+            startingLineNumber = "972"
+            endingLineNumber = "972"
             landmarkName = "mapView(_:didTap:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DriveWayz/Tab Views/Maps/Map Info/MapViewController.swift"
-            timestampString = "560747352.33628"
+            timestampString = "561275924.915434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "checkCurrentParking()"
             landmarkType = "7">
          </BreakpointContent>

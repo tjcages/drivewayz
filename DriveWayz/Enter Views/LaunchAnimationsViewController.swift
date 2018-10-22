@@ -32,8 +32,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
     var drivewayzCar: UIImageView = {
         let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
-        let view = UIImageView(image: flip)
+//        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
+        let view = UIImageView(image: image)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
         view.alpha = 0

@@ -179,7 +179,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Send Code", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
         button.layer.borderWidth = 2

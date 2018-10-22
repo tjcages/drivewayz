@@ -50,11 +50,11 @@ class ParkingInfoViewController: UIViewController {
         let view = CosmosView()
         view.settings.updateOnTouch = false
         view.settings.fillMode = .precise
-        view.settings.starSize = 15
+        view.settings.starSize = 17.5
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        view.settings.emptyBorderColor = Theme.DARK_GRAY
-        view.settings.filledBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.settings.filledColor = Theme.PRIMARY_DARK_COLOR
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        view.settings.filledBorderColor = Theme.PRIMARY_DARK_COLOR
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         

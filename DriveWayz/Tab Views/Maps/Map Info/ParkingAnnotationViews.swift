@@ -28,7 +28,8 @@ class AvailableHouseAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.PRIMARY_COLOR
+        markerTintColor = Theme.WHITE
+        glyphTintColor = Theme.PRIMARY_DARK_COLOR
         glyphImage = UIImage(named: "parking")
     }
 }
@@ -51,7 +52,8 @@ class AvailableApartmentAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.PRIMARY_COLOR
+        markerTintColor = Theme.WHITE
+        glyphTintColor = Theme.PRIMARY_DARK_COLOR
         glyphImage = UIImage(named: "apartmentIcon")
     }
 }
@@ -74,8 +76,32 @@ class AvailableLotAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.PRIMARY_COLOR
+        markerTintColor = Theme.WHITE
+        glyphTintColor = Theme.PRIMARY_DARK_COLOR
         glyphImage = UIImage(named: "parkingIcon")
+    }
+}
+
+class DestinationAnnotationView: MKMarkerAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    /// - Tag: ClusterIdentifier
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        clusteringIdentifier = "available"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForDisplay() {
+        super.prepareForDisplay()
+        transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        displayPriority = .defaultLow
+        markerTintColor = Theme.PRIMARY_COLOR
+        glyphImage = UIImage(named: "destinationIcon")
     }
 }
 
@@ -168,8 +194,8 @@ class ClusterAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.WHITE
-        glyphTintColor = Theme.PRIMARY_DARK_COLOR
+        markerTintColor = Theme.PRIMARY_DARK_COLOR
+        glyphTintColor = Theme.WHITE
         UIFont.systemFont(ofSize: 60, weight: .bold)
         glyphImage = UIImage(named: "parking")
     }

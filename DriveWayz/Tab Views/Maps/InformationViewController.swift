@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import MapKit
+import AudioToolbox
 
 var informationScrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -26,6 +27,7 @@ protocol controlCurrentParkingOptions {
     func closeExtendTimeView()
     func sendAvailability(availability: Bool)
     func setupLeaveAReview()
+    func openMessages()
 }
 
 protocol extendTimeController {
@@ -264,6 +266,15 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         
         return controller
     }()
+    
+    var blurView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0
+        
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -332,11 +343,28 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         infoController.view.topAnchor.constraint(equalTo: infoContainer.topAnchor).isActive = true
         infoController.view.widthAnchor.constraint(equalTo: infoContainer.widthAnchor).isActive = true
         
+        let holdGesture = UILongPressGestureRecognizer(target: self, action: #selector(informationPictureHeld(sender:)))
+        holdGesture.minimumPressDuration = 0.2
+        pictureController.view.addGestureRecognizer(holdGesture)
+        
+        informationScrollView.addSubview(pictureContainer)
+        pictureContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        pictureHeightAnchor = pictureContainer.topAnchor.constraint(equalTo: infoContainer.bottomAnchor, constant: 10)
+        pictureHeightAnchor.isActive = true
+        pictureContainer.heightAnchor.constraint(equalToConstant: 360).isActive = true
+        
+        pictureContainer.addSubview(pictureController.view)
+        pictureController.view.centerXAnchor.constraint(equalTo: pictureContainer.centerXAnchor).isActive = true
+        pictureController.view.bottomAnchor.constraint(equalTo: pictureContainer.bottomAnchor).isActive = true
+        pictureController.view.topAnchor.constraint(equalTo: pictureContainer.topAnchor).isActive = true
+        pictureController.view.widthAnchor.constraint(equalTo: pictureContainer.widthAnchor).isActive = true
+        
         
         informationScrollView.addSubview(reserveContainer)
         reserveContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         reserveContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        reserveContainer.topAnchor.constraint(equalTo: self.infoContainer.bottomAnchor, constant: 10).isActive = true
+        reserveContainer.topAnchor.constraint(equalTo: self.pictureContainer.bottomAnchor, constant: 10).isActive = true
         reserveContainerHeightAnchor = reserveContainer.heightAnchor.constraint(equalToConstant: 120)
             reserveContainerHeightAnchor.isActive = true
         
@@ -365,24 +393,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
             hoursButtonAnchor.isActive = true
         
         
-        informationScrollView.addSubview(pictureContainer)
-        pictureContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        pictureHeightAnchor = pictureContainer.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)
-            pictureHeightAnchor.isActive = true
-        pictureContainer.heightAnchor.constraint(equalToConstant: 360).isActive = true
-        
-        pictureContainer.addSubview(pictureController.view)
-        pictureController.view.centerXAnchor.constraint(equalTo: pictureContainer.centerXAnchor).isActive = true
-        pictureController.view.bottomAnchor.constraint(equalTo: pictureContainer.bottomAnchor).isActive = true
-        pictureController.view.topAnchor.constraint(equalTo: pictureContainer.topAnchor).isActive = true
-        pictureController.view.widthAnchor.constraint(equalTo: pictureContainer.widthAnchor).isActive = true
-        
-        
         informationScrollView.addSubview(availabilityContainer)
         availabilityContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         availabilityContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        availabilityContainer.topAnchor.constraint(equalTo: pictureContainer.bottomAnchor, constant: 10).isActive = true
+        availabilityContainer.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10).isActive = true
         availabilityContainer.heightAnchor.constraint(equalToConstant: 230).isActive = true
         
         availabilityContainer.addSubview(availabilityController.view)
@@ -429,6 +443,49 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         smallBannerController.view.heightAnchor.constraint(equalTo: smallBannerContainer.heightAnchor).isActive = true
         smallBannerController.view.widthAnchor.constraint(equalTo: smallBannerContainer.widthAnchor).isActive = true
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(informationPictureTapped(sender:)))
+        blurView.addGestureRecognizer(tapGesture)
+        
+        self.view.addSubview(blurView)
+        blurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        blurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        blurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        blurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
+    }
+    
+    var playOnce: Bool = false
+    
+    @objc func informationPictureHeld(sender: UILongPressGestureRecognizer) {
+        if self.playOnce == false {
+            self.playOnce = true
+            AudioServicesPlaySystemSound(1519)
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.view.clipsToBounds = false
+            informationScrollView.contentOffset.y = 0
+            informationScrollView.isScrollEnabled = false
+            informationScrollView.isUserInteractionEnabled = false
+            self.blurView.alpha = 1
+            self.infoContainer.alpha = 0
+            self.reserveContainer.alpha = 0
+            self.availabilityContainer.alpha = 0
+            self.pictureContainer.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }
+    }
+    
+    @objc func informationPictureTapped(sender: UITapGestureRecognizer) {
+        self.playOnce = false
+        UIView.animate(withDuration: 0.2) {
+            self.view.clipsToBounds = true
+            informationScrollView.isScrollEnabled = true
+            informationScrollView.isUserInteractionEnabled = true
+            self.blurView.alpha = 0
+            self.infoContainer.alpha = 1
+            self.reserveContainer.alpha = 1
+            self.availabilityContainer.alpha = 1
+            self.pictureContainer.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -540,6 +597,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func sendNewHost() {
         self.hostDelegate?.sendNewHost()
+    }
+    
+    func openMessages() {
+        self.delegate?.openMessages()
     }
 
     override func didReceiveMemoryWarning() {

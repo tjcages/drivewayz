@@ -52,7 +52,6 @@ class CurrentParkingViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        configureNotifications()
         timer.invalidate()
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
@@ -130,7 +129,7 @@ class CurrentParkingViewController: UIViewController {
                                 timerStarted = true
                                 if currentParking == true {
                                     let currentTimestamp = NSDate().timeIntervalSince1970
-                                    let seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+                                    let seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600) + (600)) - Int(currentTimestamp.rounded())
                                     
                                     if seconds >= 0 {
                                         if self.timerTest == nil {
@@ -169,120 +168,6 @@ class CurrentParkingViewController: UIViewController {
         }
     }
     
-    func configureNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .badge, .sound])
-        { (granted, error) in
-            //
-        }
-        let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
-        let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
-        UNUserNotificationCenter.current().setNotificationCategories([category])
-    }
-    
-    func startTimerNotification(location: CLLocation) {
-        let mapboxCoordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let camera = SnapshotCamera(lookingAtCenter: mapboxCoordinate, zoomLevel: 16.0)
-        let options = SnapshotOptions(styleURL: URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")!, camera: camera, size: CGSize(width: 288, height: 200))
-        let markerOverlay = Marker(
-            coordinate: mapboxCoordinate,
-            size: .small,
-            iconName: "car"
-        )
-        markerOverlay.color = Theme.PRIMARY_COLOR
-        options.overlays = [markerOverlay]
-        let content = UNMutableNotificationContent()
-        let secondContent = UNMutableNotificationContent()
-        let thirdContent = UNMutableNotificationContent()
-        let fourthContent = UNMutableNotificationContent()
-        
-        let mapboxAccessToken = "pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ"
-        let snapshot = Snapshot(options: options, accessToken: mapboxAccessToken)
-        let identifier = ProcessInfo.processInfo.globallyUniqueString
-        
-        if let attachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-            content.attachments = [attachment]
-        }
-        if let secondAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-            secondContent.attachments = [secondAttachment]
-        }
-        if let thirdAttachment = UNNotificationAttachment.create(identifier: identifier, image: snapshot.image!, options: nil) {
-            thirdContent.attachments = [thirdAttachment]
-        }
-        
-        content.title = "Your current parking spot has expired!"
-        content.subtitle = "Please move your vehicle or extend time in app."
-        content.body = "Hold down for quick options!"
-        content.badge = 0
-        content.sound = UNNotificationSound.default
-        content.categoryIdentifier = "actionCategory"
-        
-        secondContent.title = "You have overstayed your allotted time!"
-        secondContent.body = "Please move your vehicle or you will be charged an extra hour in 15 minutes."
-        secondContent.badge = 0
-        secondContent.sound = UNNotificationSound.default
-        secondContent.categoryIdentifier = "actionCategory"
-        
-        thirdContent.title = "You have been charged for an extra hour."
-        thirdContent.body = "Please move your vehicle or extend time."
-        thirdContent.badge = 0
-        thirdContent.sound = UNNotificationSound.default
-        thirdContent.categoryIdentifier = "actionCategory"
-        
-        fourthContent.title = "You have 20 minutes left for your parking spot"
-        fourthContent.body = "Check in with the app to extend time!"
-        fourthContent.badge = 0
-        fourthContent.sound = UNNotificationSound.default
-        
-        let firstSeconds = (self.hours! * 3600) + (10 * 60)
-        let secondSeconds = firstSeconds + (15 * 60)
-        let thirdSeconds = firstSeconds + (30 * 60)
-        let fourthSeconds = firstSeconds - (20 * 60)
-        
-        if seconds != nil && seconds! >= 0 {
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(firstSeconds), repeats: false)
-            let request = UNNotificationRequest(identifier: "timerDone", content: content, trigger: trigger)
-            let secondTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(secondSeconds), repeats: false)
-            let secondRequest = UNNotificationRequest(identifier: "timerDone2", content: secondContent, trigger: secondTrigger)
-            let thirdTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(thirdSeconds), repeats: false)
-            let thirdRequest = UNNotificationRequest(identifier: "timerDone3", content: thirdContent, trigger: thirdTrigger)
-            
-            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            
-            UNUserNotificationCenter.current().add(request) { (error) in
-                if error != nil {
-                    print("Error sending first notification: ", error!)
-                }
-            }
-            UNUserNotificationCenter.current().add(secondRequest) { (error) in
-                if error != nil {
-                    print("Error sending second notification: ", error!)
-                }
-            }
-            UNUserNotificationCenter.current().add(thirdRequest) { (error) in
-                if error != nil {
-                    print("Error sending third notification: ", error!)
-                }
-            }
-            if fourthSeconds > 0 {
-                let fourthTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(fourthSeconds), repeats: false)
-                let fourthRequest = UNNotificationRequest(identifier: "timerDone4", content: fourthContent, trigger: fourthTrigger)
-                UNUserNotificationCenter.current().add(fourthRequest) { (error) in
-                    if error != nil {
-                        print("Error sending fourth notification: ", error!)
-                    }
-                }
-            }
-        }
-    }
-    
-    @objc func prepareEndParking() {
-    
-        print("Will end parking time")
-    
-    }
-    
     var timer = Timer()
     
     func runTimer() {
@@ -290,16 +175,13 @@ class CurrentParkingViewController: UIViewController {
     }
     
     @objc func updateTimer() {
-        if seconds! >= 0 {
+        if seconds! > 0 {
             seconds! = seconds! - 1
             timeRemaining.text = timeString(time: TimeInterval(seconds!))
+            timeRemaining.textColor = Theme.PRIMARY_DARK_COLOR
         } else {
             timeRemaining.text = "Times up"
-        }
-        if timeRemaining.text == "Times up" {
             timeRemaining.textColor = Theme.HARMONY_COLOR
-        } else {
-            timeRemaining.textColor = Theme.PRIMARY_DARK_COLOR
         }
     }
     
@@ -323,51 +205,11 @@ class CurrentParkingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-}
-
-extension CurrentParkingViewController: UNUserNotificationCenterDelegate {
     
-    //for displaying notification when app is in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        //If you don't want to show notification when app is open, do something here else and make a return here.
-        //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
-        
-        completionHandler([.alert, .badge, .sound])
+    @objc func prepareEndParking() {
+        print("Will end parking time")
     }
-    
-    // For handling tap and user actions
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        switch response.actionIdentifier {
-        case "endParking":
-            print("Action Second Tapped")
-            self.endCurrentParking()
-            self.delegate?.sendLeaveReview()
-        default:
-            break
-        }
-        completionHandler()
-    }
-    
-    func endCurrentParking() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-        ref.removeValue()
-        
-        
-        timerStarted = false
-        notificationSent = false
-        currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-    }
-    
-}
 
-extension MapKitViewController {
-    
 }
 
 

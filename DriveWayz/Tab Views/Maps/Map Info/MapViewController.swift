@@ -50,6 +50,7 @@ protocol removePurchaseView {
     func removeLeaveAReview()
     func showPurchaseStatus(status: Bool)
     func addAVehicleReminder()
+    func openMessages()
 }
 
 protocol controlHoursButton {
@@ -315,7 +316,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         if let userID = Auth.auth().currentUser?.uid {
             let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
                 currentRef.observe(.childAdded, with: { (snapshot) in
-                    CurrentParkingViewController().checkCurrentParking()
+//                    CurrentParkingViewController().checkCurrentParking()
                     if let dictionary = snapshot.value as? [String:AnyObject] {
                         let parkingID = dictionary["parkingID"] as? String
                         let parkingRef = Database.database().reference().child("parking").child(parkingID!)
@@ -398,7 +399,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                     })
                     self.currentData = .notReserved
                     self.currentParkingDisappear()
-                    CurrentParkingViewController().stopTimerTest()
+//                    CurrentParkingViewController().stopTimerTest()
                 }, withCancel: nil)
             } else {
                 return

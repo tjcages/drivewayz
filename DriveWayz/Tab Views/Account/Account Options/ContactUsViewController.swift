@@ -101,8 +101,8 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         input.text = "Enter text here"
         input.backgroundColor = Theme.OFF_WHITE
         input.layer.cornerRadius = 10
-        input.textColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        input.font = UIFont.boldSystemFont(ofSize: 16)
+        input.textColor = Theme.BLACK
+        input.font = UIFont.systemFont(ofSize: 18, weight: .light)
         input.translatesAutoresizingMaskIntoConstraints = false
         
         return input
@@ -216,9 +216,9 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         
         users.name = "Drivewayz"
         users.picture = ""
-        users.email = "drivewayzparking@gmail.com"
+        users.email = "drivewayz@parking.com"
         users.bio = ""
-        users.id = "2UEtVV7hpFUKDyB1Nr9xgXZq7512"
+        users.id = "5oiDGgeolqb6aM8hv43JQTzyLLH3"
         self.user = users
         sendMessageWithProperties()
 
@@ -240,25 +240,21 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         userRef.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let name = dictionary["name"] as? String
-                
-                let fromName = Auth.auth().currentUser?.displayName
                 let timestamp = Int(Date().timeIntervalSince1970)
-                let values = ["name": name!, "text": self.inputTextField.text, "fromID": fromID, "timestamp": timestamp] as [String : Any]
+                let values = ["name": name!, "text": self.inputTextField.text, "fromID": fromID, "timestamp": timestamp, "toID": toID] as [String : Any]
                 
-                childRef.updateChildValues(values) { (error, ref) in
+                childRef.updateChildValues(values) { (error, ralf) in
                     if error != nil {
                         print(error ?? "")
                         return
                     }
-                    
                     self.inputTextField.text = "Sent!"
                     
                     let userMessagesRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
-                    
                     let messageId = childRef.key
                     userMessagesRef.updateChildValues([messageId!: 1])
                     
-                    let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child("\(String(describing: fromName))")
+                    let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
                     recipientUserMessagesRef.updateChildValues([messageId!: 1])
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

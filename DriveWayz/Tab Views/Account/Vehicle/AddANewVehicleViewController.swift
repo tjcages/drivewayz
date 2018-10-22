@@ -19,7 +19,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     var vehicles: Int = 0
     var color: String = "Black"
     
-    var newVehicleContainer: UIView = {
+    var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
@@ -28,22 +28,12 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         return view
     }()
     
-    var vehicleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Add a Vehicle"
-        label.textColor = Theme.DARK_GRAY
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        
-        return label
-    }()
-    
     var registerANewVehicleLabel: UILabel!
     
     lazy var vehicleLicensePlate: MadokaTextField = {
         let vehicleLicensePlate = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
         vehicleLicensePlate.placeholderColor = Theme.DARK_GRAY
-        vehicleLicensePlate.borderColor = Theme.PRIMARY_COLOR
+        vehicleLicensePlate.borderColor = Theme.BLACK
         vehicleLicensePlate.placeholder = "Enter a Valid License Plate Number"
         vehicleLicensePlate.textColor = Theme.DARK_GRAY
         vehicleLicensePlate.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -56,7 +46,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     lazy var vehicleYear: MadokaTextField = {
         let vehicleYear = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
         vehicleYear.placeholderColor = Theme.DARK_GRAY
-        vehicleYear.borderColor = Theme.PRIMARY_COLOR
+        vehicleYear.borderColor = Theme.BLACK
         vehicleYear.placeholder = "Enter the Vehicle Year"
         vehicleYear.textColor = Theme.DARK_GRAY
         vehicleYear.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -68,7 +58,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     lazy var vehicleModel: MadokaTextField = {
         let vehicleModel = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
         vehicleModel.placeholderColor = Theme.DARK_GRAY
-        vehicleModel.borderColor = Theme.PRIMARY_COLOR
+        vehicleModel.borderColor = Theme.BLACK
         vehicleModel.placeholder = "Enter the Vehicle Model"
         vehicleModel.textColor = Theme.DARK_GRAY
         vehicleModel.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -80,7 +70,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     lazy var vehicleMake: MadokaTextField = {
         let vehicleMake = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
         vehicleMake.placeholderColor = Theme.DARK_GRAY
-        vehicleMake.borderColor = Theme.PRIMARY_COLOR
+        vehicleMake.borderColor = Theme.BLACK
         vehicleMake.placeholder = "Enter the Vehicle Maker"
         vehicleMake.textColor = Theme.DARK_GRAY
         vehicleMake.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -142,7 +132,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         let origImage = UIImage(named: "Delete")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(exitAddVehicle), for: .touchUpInside)
@@ -182,28 +172,16 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     
     func setupAddAVehicleView() {
         
-//        self.view.addSubview(visualBlurEffect)
-//        visualBlurEffect.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        visualBlurEffect.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-//        visualBlurEffect.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-//        visualBlurEffect.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-        
-        self.view.addSubview(newVehicleContainer)
-        newVehicleContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        newVehicleContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 40).isActive = true
-        newVehicleContainer.heightAnchor.constraint(equalToConstant: self.view.frame.height - 160).isActive = true
-        newVehicleContainer.widthAnchor.constraint(equalToConstant: self.view.frame.width - 20).isActive = true
-        
-//        newVehicleContainer.addSubview(vehicleLabel)
-//        vehicleLabel.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 24).isActive = true
-//        vehicleLabel.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor).isActive = true
-//        vehicleLabel.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: -38).isActive = true
-//        vehicleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(containerView)
+        containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        containerView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        containerView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
     
-        newVehicleContainer.addSubview(saveVehicleButton)
-        saveVehicleButton.centerXAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor).isActive = true
+        containerView.addSubview(saveVehicleButton)
+        saveVehicleButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         saveVehicleButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
-        saveVehicleButton.bottomAnchor.constraint(equalTo: newVehicleContainer.bottomAnchor, constant: -20).isActive = true
+        saveVehicleButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -100).isActive = true
         saveVehicleButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         saveVehicleButton.addSubview(activityIndicatorVehicleView)
@@ -212,40 +190,40 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         activityIndicatorVehicleView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         activityIndicatorVehicleView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        newVehicleContainer.addSubview(vehicleMake)
-        vehicleMake.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 20).isActive = true
-        vehicleMake.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 8).isActive = true
-        vehicleMake.rightAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: -4).isActive = true
+        containerView.addSubview(vehicleMake)
+        vehicleMake.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
+        vehicleMake.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        vehicleMake.rightAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -4).isActive = true
         vehicleMake.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        newVehicleContainer.addSubview(vehicleModel)
-        vehicleModel.topAnchor.constraint(equalTo: newVehicleContainer.topAnchor, constant: 20).isActive = true
-        vehicleModel.leftAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: 4).isActive = true
-        vehicleModel.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -8).isActive = true
+        containerView.addSubview(vehicleModel)
+        vehicleModel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
+        vehicleModel.leftAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 4).isActive = true
+        vehicleModel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8).isActive = true
         vehicleModel.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        newVehicleContainer.addSubview(vehicleYear)
+        containerView.addSubview(vehicleYear)
         vehicleYear.topAnchor.constraint(equalTo: vehicleModel.bottomAnchor, constant: 32).isActive = true
-        vehicleYear.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 8).isActive = true
-        vehicleYear.rightAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: -4).isActive = true
+        vehicleYear.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
+        vehicleYear.rightAnchor.constraint(equalTo: containerView.centerXAnchor, constant: -4).isActive = true
         vehicleYear.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
-        newVehicleContainer.addSubview(colorPicker)
+        containerView.addSubview(colorPicker)
         colorPicker.topAnchor.constraint(equalTo: vehicleModel.bottomAnchor, constant: 32).isActive = true
-        colorPicker.leftAnchor.constraint(equalTo: newVehicleContainer.centerXAnchor, constant: 50).isActive = true
-        colorPicker.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -8).isActive = true
+        colorPicker.leftAnchor.constraint(equalTo: containerView.centerXAnchor, constant: 50).isActive = true
+        colorPicker.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -8).isActive = true
         colorPicker.heightAnchor.constraint(equalToConstant: 75).isActive = true
         
-        newVehicleContainer.addSubview(colorView)
+        containerView.addSubview(colorView)
         colorView.centerYAnchor.constraint(equalTo: colorPicker.centerYAnchor).isActive = true
         colorView.rightAnchor.constraint(equalTo: colorPicker.leftAnchor, constant: -10).isActive = true
         colorView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         colorView.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        newVehicleContainer.addSubview(vehicleLicensePlate)
+        containerView.addSubview(vehicleLicensePlate)
         vehicleLicensePlate.topAnchor.constraint(equalTo: vehicleYear .bottomAnchor, constant: 32).isActive = true
-        vehicleLicensePlate.leftAnchor.constraint(equalTo: newVehicleContainer.leftAnchor, constant: 80).isActive = true
-        vehicleLicensePlate.rightAnchor.constraint(equalTo: newVehicleContainer.rightAnchor, constant: -80).isActive = true
+        vehicleLicensePlate.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 80).isActive = true
+        vehicleLicensePlate.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -80).isActive = true
         vehicleLicensePlate.heightAnchor.constraint(equalToConstant: 63).isActive = true
 
         self.view.addSubview(exitButton)
@@ -267,8 +245,8 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     var pickerVehicle: UIImagePickerController?
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
         
         var selectedImageFromPicker: UIImage?

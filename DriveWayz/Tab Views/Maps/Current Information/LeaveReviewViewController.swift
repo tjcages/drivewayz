@@ -84,9 +84,9 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         button.setTitle("Send", for: .normal)
         button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -98,10 +98,11 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.DARK_GRAY.cgColor
-        button.alpha = 0.6
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 10
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(backPressed(sender:)), for: .touchUpInside)
         
         return button
