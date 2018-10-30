@@ -62,7 +62,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         let image = UIImage(named: "Expand")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         exitButton.setImage(tintedImage, for: .normal)
-        exitButton.tintColor = Theme.PRIMARY_DARK_COLOR
+        exitButton.tintColor = Theme.SEA_BLUE
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.addTarget(self, action: #selector(dismissDetails(sender:)), for: .touchUpInside)
         exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
@@ -72,10 +72,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var name: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "First"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -85,10 +85,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var last: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Last"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -98,10 +98,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var addressLine1: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Address"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -111,10 +111,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var addressLine2: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Address line 2"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -124,10 +124,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var city: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "City"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -137,10 +137,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var state: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "State"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -150,10 +150,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var zip: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Zipcode"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -164,10 +164,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var day: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Birth Day"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -178,10 +178,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var month: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Month"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -192,10 +192,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var year: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Year"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -206,10 +206,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var phone: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Phone number"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -220,10 +220,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var ssnField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "_ _ _ _"
         label.textAlignment = .left
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -257,10 +257,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var routing: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Routing number"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad
@@ -271,10 +271,10 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     
     var account: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.placeholder = "Account number"
         label.textAlignment = .center
-        label.tintColor = Theme.PRIMARY_COLOR
+        label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.keyboardType = .numberPad

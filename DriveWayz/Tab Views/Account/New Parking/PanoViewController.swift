@@ -71,8 +71,8 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     lazy var panoLine: UIView = {
        let panoLine = UIView()
-        panoLine.backgroundColor = Theme.PRIMARY_COLOR
-        panoLine.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        panoLine.backgroundColor = Theme.PACIFIC_BLUE
+        panoLine.layer.borderColor = Theme.SEA_BLUE.cgColor
         panoLine.layer.borderWidth = 1
         panoLine.translatesAutoresizingMaskIntoConstraints = false
         
@@ -81,8 +81,8 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     lazy var screenShotButton: UIButton = {
         let screenShot = UIButton()
-        screenShot.backgroundColor = Theme.PRIMARY_COLOR
-        screenShot.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        screenShot.backgroundColor = Theme.PACIFIC_BLUE
+        screenShot.layer.shadowColor = Theme.SEA_BLUE.cgColor
         screenShot.layer.shadowRadius = 3
         screenShot.layer.shadowOpacity = 0
         screenShot.translatesAutoresizingMaskIntoConstraints = false
@@ -97,9 +97,9 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     var overlay: UIView = {
         let overlay = UIView(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
-        overlay.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+        overlay.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
         overlay.layer.borderWidth = 2
-        overlay.backgroundColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5)
+        overlay.backgroundColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5)
         
         return overlay
     }()
@@ -118,8 +118,8 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     lazy var dotShotButton: UIButton = {
         let screenShot = UIButton()
-        screenShot.backgroundColor = Theme.PRIMARY_COLOR
-        screenShot.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        screenShot.backgroundColor = Theme.PACIFIC_BLUE
+        screenShot.layer.shadowColor = Theme.SEA_BLUE.cgColor
         screenShot.layer.shadowRadius = 3
         screenShot.layer.shadowOpacity = 0
         screenShot.translatesAutoresizingMaskIntoConstraints = false
@@ -218,7 +218,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         dot1View = UIView()
         dot1View.layer.cornerRadius = 4
-        dot1View.backgroundColor = Theme.PRIMARY_COLOR
+        dot1View.backgroundColor = Theme.PACIFIC_BLUE
         dot1View.center = dot1.center
         dot1View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot1View)
@@ -243,7 +243,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         dot2View = UIView()
         dot2View.layer.cornerRadius = 4
-        dot2View.backgroundColor = Theme.PRIMARY_COLOR
+        dot2View.backgroundColor = Theme.PACIFIC_BLUE
         dot2View.center = dot1.center
         dot2View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot2View)
@@ -268,7 +268,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         dot3View = UIView()
         dot3View.layer.cornerRadius = 4
-        dot3View.backgroundColor = Theme.PRIMARY_COLOR
+        dot3View.backgroundColor = Theme.PACIFIC_BLUE
         dot3View.center = dot1.center
         dot3View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot3View)
@@ -293,7 +293,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         
         dot4View = UIView()
         dot4View.layer.cornerRadius = 4
-        dot4View.backgroundColor = Theme.PRIMARY_COLOR
+        dot4View.backgroundColor = Theme.PACIFIC_BLUE
         dot4View.center = dot1.center
         dot4View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot4View)
@@ -556,8 +556,8 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         path.close()
         
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
-        shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
+        shapeLayer.strokeColor = Theme.PACIFIC_BLUE.cgColor
+        shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
         shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
     }
     

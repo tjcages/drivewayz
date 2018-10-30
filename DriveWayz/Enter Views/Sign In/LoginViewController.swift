@@ -18,7 +18,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var verificationCode: String?
     
     var loadingActivity: NVActivityIndicatorView = {
-        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_COLOR, padding: 0)
+        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_RED, padding: 0)
         loading.translatesAutoresizingMaskIntoConstraints = false
         loading.alpha = 0
         
@@ -118,7 +118,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         field.placeholder = "email"
         field.textAlignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .none
         field.keyboardType = .emailAddress
@@ -134,7 +134,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         field.placeholder = "password"
         field.textAlignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .none
         field.isSecureTextEntry = true
@@ -166,7 +166,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Continue", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.layer.cornerRadius = 25
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
         button.addTarget(self, action: #selector(loginButtonPressed(sender:)), for: .touchUpInside)
@@ -179,9 +179,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Send Code", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -270,7 +270,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         field.placeholder = "(303) 555-1234"
         field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.keyboardType = .numberPad
         
@@ -314,7 +314,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         field.placeholder = "• • • • • •"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.keyboardType = .numberPad
         
@@ -326,7 +326,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Please enter a valid phone number", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
         button.layer.cornerRadius = 20
         button.alpha = 0
@@ -342,7 +342,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         verificationTextField.delegate = self
         
         let background = CAGradientLayer().mixColors()
-        background.frame = CGRect(x: 0, y: self.view.frame.height*2/3, width: self.view.frame.width, height: self.view.frame.height/3)
+        background.frame = CGRect(x: 0, y: self.view.frame.height-140, width: self.view.frame.width, height: 140)
         background.zPosition = -10
         view.layer.insertSublayer(background, at: 0)
         
@@ -378,13 +378,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.view.addSubview(loginLabel)
-        loginLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 30).isActive = true
+        loginLabel.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 60).isActive = true
         loginLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         loginLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         loginLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
         self.view.addSubview(emailTextField)
-        emailTextField.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 30).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 0).isActive = true
         emailTextField.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
         emailCenterAnchor = emailTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width*1.5)
             emailCenterAnchor.isActive = true
@@ -429,7 +429,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(facebookLoginButton)
         facebookLoginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         facebookLoginButton.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        facebookLoginButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30).isActive = true
+        facebookLoginButton.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80).isActive = true
         facebookLoginButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(choosePhoneNumber)
@@ -802,6 +802,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         self.delegate?.lightContentStatusBar()
         self.delegate?.hideLoginPage()
+        self.loginLabel.text = "Please choose a sign in method"
         self.animate()
     }
     
@@ -809,6 +810,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         self.delegate?.lightContentStatusBar()
         self.delegate?.hideLoginPage()
+        self.loginLabel.text = "Please choose a sign in method"
         self.animate()
     }
     

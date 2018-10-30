@@ -38,7 +38,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     lazy var redeemField: MadokaTextField = {
         let redeemField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: 150, height: 63))
         redeemField.placeholderColor = Theme.DARK_GRAY
-        redeemField.borderColor = Theme.PRIMARY_COLOR
+        redeemField.borderColor = Theme.PACIFIC_BLUE
         redeemField.text = ""
         redeemField.placeholder = "Enter coupon code"
         redeemField.textColor = Theme.DARK_GRAY
@@ -51,7 +51,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var currentCoupons: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
@@ -65,9 +65,9 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Activate", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
@@ -79,9 +79,9 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Redeem", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(redeemPressed(sender:)), for: .touchUpInside)

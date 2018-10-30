@@ -86,7 +86,7 @@ class RetentionViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -94,7 +94,7 @@ class RetentionViewController: UIViewController {
     var line2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -204,9 +204,9 @@ class RetentionViewController: UIViewController {
         
         self.pageControl.numberOfPages = 3
         self.pageControl.currentPage = 0
-        self.pageControl.tintColor = Theme.PRIMARY_COLOR
+        self.pageControl.tintColor = Theme.PACIFIC_BLUE
         self.pageControl.pageIndicatorTintColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+        self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.isUserInteractionEnabled = false
         

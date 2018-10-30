@@ -242,7 +242,7 @@ class SignInViewController: UIViewController, handleSignInViews {
                 case .iphone8:
                     self.whiteViewTopAnchor.constant = 170
                 case .iphoneX:
-                    self.whiteViewTopAnchor.constant = 200
+                    self.whiteViewTopAnchor.constant = 210
                 }
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
@@ -293,7 +293,12 @@ class SignInViewController: UIViewController, handleSignInViews {
         UIView.animate(withDuration: 0.2, animations: {
             self.loginController.view.alpha = 0
         }) { (success) in
-            self.whiteViewTopAnchor.constant = 170
+            switch device {
+            case .iphone8:
+                self.whiteViewTopAnchor.constant = 170
+            case .iphoneX:
+                self.whiteViewTopAnchor.constant = 210
+            }
             UIView.animate(withDuration: 0.3, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1
@@ -307,7 +312,12 @@ class SignInViewController: UIViewController, handleSignInViews {
         UIView.animate(withDuration: 0.2, animations: {
             self.registerController.view.alpha = 0
         }) { (success) in
-            self.whiteViewTopAnchor.constant = 170
+            switch device {
+            case .iphone8:
+                self.whiteViewTopAnchor.constant = 170
+            case .iphoneX:
+                self.whiteViewTopAnchor.constant = 210
+            }
             UIView.animate(withDuration: 0.3, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1

@@ -107,3 +107,60 @@ extension String {
         return ceil(boundingBox.width)
     }
 }
+
+extension UIButton {
+    /*
+     Add right arrow disclosure indicator to the button with normal and
+     highlighted colors for the title text and the image
+     */
+    func disclosureButton(baseColor:UIColor) {
+        self.setTitleColor(baseColor, for: .normal)
+        self.setTitleColor(baseColor.withAlphaComponent(0.3), for: .highlighted)
+        
+        guard let image = UIImage(named: "Expand")?.withRenderingMode(.alwaysTemplate).rotated(by: Measurement(value: -90, unit: .degrees)) else { return }
+        
+        self.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        self.imageView?.contentMode = .scaleAspectFit
+        self.setImage(image, for: .normal)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: self.bounds.size.width - image.size.width * 1.5 + 10, bottom: 0, right: 0);
+    }
+    
+}
+
+extension UIImage {
+    struct RotationOptions: OptionSet {
+        let rawValue: Int
+        
+        static let flipOnVerticalAxis = RotationOptions(rawValue: 1)
+        static let flipOnHorizontalAxis = RotationOptions(rawValue: 2)
+    }
+    
+    func rotated(by rotationAngle: Measurement<UnitAngle>, options: RotationOptions = []) -> UIImage? {
+        guard let cgImage = self.cgImage else { return nil }
+        
+        let rotationInRadians = CGFloat(rotationAngle.converted(to: .radians).value)
+        let transform = CGAffineTransform(rotationAngle: rotationInRadians)
+        var rect = CGRect(origin: .zero, size: self.size).applying(transform)
+        rect.origin = .zero
+        
+        let renderer = UIGraphicsImageRenderer(size: rect.size)
+        return renderer.image { renderContext in
+            renderContext.cgContext.translateBy(x: rect.midX, y: rect.midY)
+            renderContext.cgContext.rotate(by: rotationInRadians)
+            
+            let x = options.contains(.flipOnVerticalAxis) ? -1.0 : 1.0
+            let y = options.contains(.flipOnHorizontalAxis) ? 1.0 : -1.0
+            renderContext.cgContext.scaleBy(x: CGFloat(x), y: CGFloat(y))
+            
+            let drawRect = CGRect(origin: CGPoint(x: -self.size.width/2, y: -self.size.height/2), size: self.size)
+            renderContext.cgContext.draw(cgImage, in: drawRect)
+        }
+    }
+}
+
+
+class TagLabel: UILabel {
+    override func draw(_ rect: CGRect) {
+        super.drawText(in: rect.insetBy(dx: 8, dy: 0))
+    }
+}

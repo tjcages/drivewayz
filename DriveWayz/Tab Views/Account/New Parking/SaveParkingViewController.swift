@@ -110,7 +110,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if monday == 1 {
             monday = 0
             self.mondayButton.backgroundColor = UIColor.clear
-            self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.mondayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.mondayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.mondayTimeView.alpha = 0
@@ -120,7 +120,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             monday = 1
-            self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.mondayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.mondayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.mondayHeightAnchor.constant = 120
@@ -138,7 +138,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if tuesday == 1 {
             tuesday = 0
             self.tuesdayButton.backgroundColor = UIColor.clear
-            self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.tuesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.tuesdayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.tuesdayTimeView.alpha = 0
@@ -148,7 +148,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             tuesday = 1
-            self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.tuesdayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.tuesdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.tuesdayHeightAnchor.constant = 120
@@ -166,7 +166,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if wednesday == 1 {
             wednesday = 0
             self.wednesdayButton.backgroundColor = UIColor.clear
-            self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.wednesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.wednesdayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.wednesdayTimeView.alpha = 0
@@ -176,7 +176,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             wednesday = 1
-            self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.wednesdayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.wednesdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.wednesdayHeightAnchor.constant = 120
@@ -194,7 +194,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if thursday == 1 {
             thursday = 0
             self.thursdayButton.backgroundColor = UIColor.clear
-            self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.thursdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.thursdayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.thursdayTimeView.alpha = 0
@@ -204,7 +204,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             thursday = 1
-            self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.thursdayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.thursdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.thursdayHeightAnchor.constant = 120
@@ -222,7 +222,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if friday == 1 {
             friday = 0
             self.fridayButton.backgroundColor = UIColor.clear
-            self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.fridayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.fridayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.fridayTimeView.alpha = 0
@@ -232,7 +232,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             friday = 1
-            self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.fridayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.fridayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.fridayHeightAnchor.constant = 120
@@ -250,7 +250,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if saturday == 1 {
             saturday = 0
             self.saturdayButton.backgroundColor = UIColor.clear
-            self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.saturdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.saturdayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.saturdayTimeView.alpha = 0
@@ -260,7 +260,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             saturday = 1
-            self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.saturdayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.saturdayButton.setTitleColor(UIColor.white, for: .normal)
             if self.segment == 0 {
                 self.saturdayHeightAnchor.constant = 120
@@ -278,7 +278,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         if sunday == 1 {
             sunday = 0
             self.sundayButton.backgroundColor = UIColor.clear
-            self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            self.sundayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.sundayHeightAnchor.constant = 0
             UIView.animate(withDuration: 0.3) {
                 self.sundayTimeView.alpha = 0
@@ -288,7 +288,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }
         } else {
             sunday = 1
-            self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
+            self.sundayButton.backgroundColor = Theme.PACIFIC_BLUE
             self.sundayButton.setTitleColor(UIColor.white, for: .normal)
             if self.segment == 0 {
                 self.sundayHeightAnchor.constant = 120
@@ -1043,7 +1043,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let monday = UIButton()
         monday.setTitle("M", for: .normal)
         monday.setTitleColor(Theme.WHITE, for: .normal)
-        monday.backgroundColor = Theme.PRIMARY_COLOR
+        monday.backgroundColor = Theme.PACIFIC_BLUE
         monday.clipsToBounds = true
         monday.layer.cornerRadius = 20
         monday.addTarget(self, action: #selector(mondayPressed(sender:)), for: .touchUpInside)
@@ -1056,7 +1056,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let tuesday = UIButton()
         tuesday.setTitle("T", for: .normal)
         tuesday.setTitleColor(Theme.WHITE, for: .normal)
-        tuesday.backgroundColor = Theme.PRIMARY_COLOR
+        tuesday.backgroundColor = Theme.PACIFIC_BLUE
         tuesday.clipsToBounds = true
         tuesday.layer.cornerRadius = 20
         tuesday.addTarget(self, action: #selector(tuesdayPressed(sender:)), for: .touchUpInside)
@@ -1069,7 +1069,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let wednesday = UIButton()
         wednesday.setTitle("W", for: .normal)
         wednesday.setTitleColor(Theme.WHITE, for: .normal)
-        wednesday.backgroundColor = Theme.PRIMARY_COLOR
+        wednesday.backgroundColor = Theme.PACIFIC_BLUE
         wednesday.clipsToBounds = true
         wednesday.layer.cornerRadius = 20
         wednesday.addTarget(self, action: #selector(wednesdayPressed(sender:)), for: .touchUpInside)
@@ -1082,7 +1082,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let thursday = UIButton()
         thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
-        thursday.backgroundColor = Theme.PRIMARY_COLOR
+        thursday.backgroundColor = Theme.PACIFIC_BLUE
         thursday.clipsToBounds = true
         thursday.layer.cornerRadius = 20
         thursday.addTarget(self, action: #selector(thursdayPressed(sender:)), for: .touchUpInside)
@@ -1095,7 +1095,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let friday = UIButton()
         friday.setTitle("F", for: .normal)
         friday.setTitleColor(Theme.WHITE, for: .normal)
-        friday.backgroundColor = Theme.PRIMARY_COLOR
+        friday.backgroundColor = Theme.PACIFIC_BLUE
         friday.clipsToBounds = true
         friday.layer.cornerRadius = 20
         friday.addTarget(self, action: #selector(fridayPressed(sender:)), for: .touchUpInside)
@@ -1108,7 +1108,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let saturday = UIButton()
         saturday.setTitle("S", for: .normal)
         saturday.setTitleColor(Theme.WHITE, for: .normal)
-        saturday.backgroundColor = Theme.PRIMARY_COLOR
+        saturday.backgroundColor = Theme.PACIFIC_BLUE
         saturday.clipsToBounds = true
         saturday.layer.cornerRadius = 20
         saturday.addTarget(self, action: #selector(saturdayPressed(sender:)), for: .touchUpInside)
@@ -1121,7 +1121,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let sunday = UIButton()
         sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
-        sunday.backgroundColor = Theme.PRIMARY_COLOR
+        sunday.backgroundColor = Theme.PACIFIC_BLUE
         sunday.clipsToBounds = true
         sunday.layer.cornerRadius = 20
         sunday.addTarget(self, action: #selector(sundayPressed(sender:)), for: .touchUpInside)
@@ -1146,7 +1146,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         segment.selectedSegmentIndex = 0
         segment.layer.cornerRadius = 5
         segment.backgroundColor = UIColor.white
-        segment.tintColor = Theme.PRIMARY_COLOR
+        segment.tintColor = Theme.PACIFIC_BLUE
         segment.translatesAutoresizingMaskIntoConstraints = false
         segment.addTarget(self, action: #selector(changeSegmentCalendar(sender:)), for: .valueChanged)
         

@@ -27,7 +27,7 @@ var couponActive: Int?
 var currentButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.backgroundColor = Theme.HARMONY_COLOR
+    button.backgroundColor = Theme.HARMONY_RED
     button.layer.shadowColor = Theme.DARK_GRAY.cgColor
     button.layer.shadowOffset = CGSize(width: 1, height: 1)
     button.layer.shadowRadius = 1
@@ -111,7 +111,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         button.translatesAutoresizingMaskIntoConstraints = false
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(optionsTabGestureTapped))
         button.addTarget(self, action: #selector(optionsTabGestureTapped(sender:)), for: .touchUpInside)
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         button.layer.cornerRadius = 20
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
         button.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -134,7 +134,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     let searchBar: UITextField = {
         let search = UITextField()
         search.layer.cornerRadius = 20
-        search.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        search.backgroundColor = Theme.SEA_BLUE
         search.textColor = Theme.WHITE
         search.alpha = 0.9
         search.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -149,7 +149,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     
     let locatorButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         let image = UIImage(named: "my_location")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
@@ -239,7 +239,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
-        view.backgroundColor = Theme.PRIMARY_COLOR
+        view.backgroundColor = Theme.PACIFIC_BLUE
         view.alpha = 0
         view.layer.cornerRadius = 10
         view.isUserInteractionEnabled = false
@@ -537,7 +537,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         optionsTabView.widthAnchor.constraint(equalToConstant: 215).isActive = true
         
         let parkingView = UIView()
-        parkingView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        parkingView.backgroundColor = Theme.SEA_BLUE
         parkingView.alpha = 0.8
         parkingView.translatesAutoresizingMaskIntoConstraints = false
         parkingView.layer.borderColor = Theme.DARK_GRAY.cgColor
@@ -767,7 +767,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             
             let oldMarker = self.currentMarker
             guard let customMarkerView = oldMarker?.iconView as? CustomMarkerView else { return }
-            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: self.customMarkerWidth, height: self.customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: self.customMarkerWidth, height: self.customMarkerHeight), borderColor: Theme.PACIFIC_BLUE, tag: customMarkerView.tag)
             oldMarker?.iconView = customMarker
             self.currentMarker = nil
         }
@@ -1002,7 +1002,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             if currentMarker != nil {
                 let oldMarker = currentMarker
                 guard let oldMarkerView = oldMarker?.iconView as? CustomMarkerView else { return false }
-                let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: oldMarkerView.tag)
+                let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PACIFIC_BLUE, tag: oldMarkerView.tag)
                 oldMarker?.iconView = customMarker
             }
             self.currentMarker = marker
@@ -1012,7 +1012,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
         guard let customMarkerView = marker.iconView as? CustomMarkerView else { return }
-        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: customMarkerView.tag)
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PACIFIC_BLUE, tag: customMarkerView.tag)
         marker.iconView = customMarker
     }
     
@@ -1056,7 +1056,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
             let marker = GMSMarker()
             let parking = parkingSpots[number]
             
-            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PRIMARY_COLOR, tag: number)
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), borderColor: Theme.PACIFIC_BLUE, tag: number)
             marker.iconView = customMarker
             
             let geoCoder = CLGeocoder()
@@ -1095,7 +1095,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
                     let path = GMSPath.init(fromEncodedPath: points!)
                     let polyline = GMSPolyline.init(path: path)
                     polyline.strokeWidth = 4
-                    polyline.strokeColor = Theme.PRIMARY_COLOR
+                    polyline.strokeColor = Theme.PACIFIC_BLUE
                     polyline.map = self.mapView
                     self.currentPolyline.append(polyline)
                     

@@ -298,9 +298,9 @@ class HostMessageOptionsViewController: UIViewController {
     @objc func optionsButtonPressed(sender: UIButton) {
         if sender.backgroundColor == Theme.WHITE {
             UIView.animate(withDuration: 0.1) {
-                sender.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                sender.backgroundColor = Theme.SEA_BLUE
                 sender.setTitleColor(Theme.WHITE, for: .normal)
-                sender.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+                sender.layer.borderColor = Theme.SEA_BLUE.cgColor
                 sender.tag = 1
                 if self.lastButton != nil {
                     self.lastButton.backgroundColor = Theme.WHITE

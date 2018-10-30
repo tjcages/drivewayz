@@ -77,7 +77,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var selectionLine: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.backgroundColor = Theme.PACIFIC_BLUE
         
         return line
     }()
@@ -86,7 +86,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.setTitle("Book Spot", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.addTarget(self, action: #selector(handleRequestRideButtonTapped), for: .touchUpInside)
@@ -113,7 +113,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7), for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE.withAlphaComponent(0.7), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         
         return button
@@ -134,7 +134,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var currentTimeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.backgroundColor = UIColor.clear
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -161,10 +161,10 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var timeToPicker: UIPickerView = {
         let picker = UIPickerView()
         picker.backgroundColor = UIColor.clear
-        picker.tintColor = Theme.PRIMARY_DARK_COLOR
+        picker.tintColor = Theme.SEA_BLUE
         picker.frame = CGRect(x: 0, y: 0, width: 400, height: 380)
         picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.setValue(Theme.PRIMARY_DARK_COLOR, forKeyPath: "textColor")
+        picker.setValue(Theme.SEA_BLUE, forKeyPath: "textColor")
         picker.alpha = 0
         
         return picker
@@ -234,7 +234,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.7), for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE.withAlphaComponent(0.7), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.alpha = 0
         
@@ -286,7 +286,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
-        view.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.6)
+        view.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.6)
         view.alpha = 0
         view.layer.cornerRadius = 5
         view.isUserInteractionEnabled = false
@@ -705,7 +705,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 self.viewContainerHeightAnchor.constant = 220
                 self.exitButtonHeightAnchor.constant = 0
                 self.hoursButton.alpha = 1
-                self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                self.reserveButton.backgroundColor = Theme.SEA_BLUE
                 self.view.layoutIfNeeded()
             })
             self.reserveButton.setTitle("Book Spot", for: .normal)
@@ -736,7 +736,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             UIView.animate(withDuration: 0.2, animations: {
                 self.reserveWidthAnchor.constant = -72
                 self.hoursButton.alpha = 1
-                self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                self.reserveButton.backgroundColor = Theme.SEA_BLUE
                 self.view.layoutIfNeeded()
             })
             let costString = self.parkingCost?.replacingOccurrences(of: "$", with: "")
@@ -767,7 +767,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func resetReservationButton() {
-        self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        self.reserveButton.backgroundColor = Theme.SEA_BLUE
         self.reserveButton.setTitle("Book Spot", for: .normal)
         self.costButtonHeightAnchor.constant = -40
         self.exitButton.alpha = 0
@@ -971,7 +971,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.activityIndicator.alpha = 0
                     self.reserveButton.alpha = 1
                     self.reserveButton.isUserInteractionEnabled = true
-                    self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                    self.reserveButton.backgroundColor = Theme.SEA_BLUE
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.reserveButton.setTitle("Book Spot", for: .normal)
                     }
@@ -1201,7 +1201,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         switch rideRequestState {
         case .none:
             // Show enabled state
-            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            reserveButton.backgroundColor = Theme.SEA_BLUE
             reserveButton.setTitle("Book Spot", for: .normal)
             reserveButton.setTitleColor(.white, for: .normal)
             //            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
@@ -1217,7 +1217,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             // Show completion state
             reserveButton.backgroundColor = .white
             reserveButton.setTitle("Working", for: .normal)
-            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            reserveButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             reserveButton.setImage(nil, for: .normal)
             reserveButton.isEnabled = true
         }

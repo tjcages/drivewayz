@@ -29,7 +29,7 @@ class AvailableHouseAnnotationView: MKMarkerAnnotationView {
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
         markerTintColor = Theme.WHITE
-        glyphTintColor = Theme.PRIMARY_DARK_COLOR
+        glyphTintColor = Theme.SEA_BLUE
         glyphImage = UIImage(named: "parking")
     }
 }
@@ -53,7 +53,7 @@ class AvailableApartmentAnnotationView: MKMarkerAnnotationView {
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
         markerTintColor = Theme.WHITE
-        glyphTintColor = Theme.PRIMARY_DARK_COLOR
+        glyphTintColor = Theme.SEA_BLUE
         glyphImage = UIImage(named: "apartmentIcon")
     }
 }
@@ -77,7 +77,7 @@ class AvailableLotAnnotationView: MKMarkerAnnotationView {
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
         markerTintColor = Theme.WHITE
-        glyphTintColor = Theme.PRIMARY_DARK_COLOR
+        glyphTintColor = Theme.SEA_BLUE
         glyphImage = UIImage(named: "parkingIcon")
     }
 }
@@ -100,7 +100,7 @@ class DestinationAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.PRIMARY_COLOR
+        markerTintColor = Theme.PACIFIC_BLUE
         glyphImage = UIImage(named: "destinationIcon")
     }
 }
@@ -194,7 +194,7 @@ class ClusterAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.PRIMARY_DARK_COLOR
+        markerTintColor = Theme.SEA_BLUE
         glyphTintColor = Theme.WHITE
         UIFont.systemFont(ofSize: 60, weight: .bold)
         glyphImage = UIImage(named: "parking")

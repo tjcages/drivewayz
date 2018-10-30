@@ -32,7 +32,7 @@ class RecentParkingCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PRIMARY_COLOR
+        imageView.backgroundColor = Theme.PACIFIC_BLUE
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         
@@ -68,7 +68,7 @@ class RecentParkingCell: UICollectionViewCell {
     var costLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.font = UIFont.systemFont(ofSize: 12)
         label.text = "Total cost"
         label.isEditable = false
@@ -81,7 +81,7 @@ class RecentParkingCell: UICollectionViewCell {
     var priceLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.font = UIFont.systemFont(ofSize: 12)
         label.text = "- hourly cost"
         label.isEditable = false

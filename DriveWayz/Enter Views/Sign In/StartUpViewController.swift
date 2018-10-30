@@ -143,7 +143,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         loginButton.setTitle("Log in", for: .normal)
         loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         loginButton.backgroundColor = UIColor(white: 0.9, alpha: 0.3)
-        loginButton.tintColor = Theme.PRIMARY_COLOR
+        loginButton.tintColor = Theme.PACIFIC_BLUE
         loginButton.layer.borderColor = UIColor.white.cgColor
         loginButton.layer.borderWidth = 1
         loginButton.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +156,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         registerButton.setTitle("Register", for: .normal)
         registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         registerButton.backgroundColor = UIColor.clear
-        registerButton.tintColor = Theme.PRIMARY_COLOR
+        registerButton.tintColor = Theme.PACIFIC_BLUE
         registerButton.layer.borderColor = UIColor.white.cgColor
         registerButton.layer.borderWidth = 1
         registerButton.translatesAutoresizingMaskIntoConstraints = false
@@ -322,7 +322,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         backIcon.setImage(image, for: .normal)
         backIcon.transform = CGAffineTransform(scaleX: -1, y: 1)
         backIcon.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
-        backIcon.tintColor = Theme.PRIMARY_COLOR
+        backIcon.tintColor = Theme.PACIFIC_BLUE
         backIcon.alpha = 0
         backIcon.translatesAutoresizingMaskIntoConstraints = false
         
@@ -574,7 +574,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         self.pageControl.currentPage = 0
         self.pageControl.tintColor = Theme.WHITE
         self.pageControl.pageIndicatorTintColor = Theme.WHITE
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+        self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)

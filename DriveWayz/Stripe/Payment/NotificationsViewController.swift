@@ -169,7 +169,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
 
 var unavailable: UIButton = {
     let button = UIButton()
-    button.backgroundColor = Theme.PRIMARY_COLOR
+    button.backgroundColor = Theme.PACIFIC_BLUE
     button.setTitle("Unavailable currently", for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.alpha = 1

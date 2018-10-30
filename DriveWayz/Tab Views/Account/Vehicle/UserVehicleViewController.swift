@@ -90,7 +90,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         let vehicleLicenseInfo = UILabel()
         vehicleLicenseInfo.text = "License Plate"
         vehicleLicenseInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        vehicleLicenseInfo.textColor = Theme.PRIMARY_DARK_COLOR
+        vehicleLicenseInfo.textColor = Theme.SEA_BLUE
         vehicleLicenseInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleLicenseInfo.contentMode = .left
         vehicleLicenseInfo.alpha = 0
@@ -366,9 +366,9 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         cell.textLabel?.textAlignment = .center
         
         if indexPath.row == (Edits.count-1) {
-            cell.textLabel?.textColor = Theme.HARMONY_COLOR
+            cell.textLabel?.textColor = Theme.HARMONY_RED
         } else {
-            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+            cell.textLabel?.textColor = Theme.SEA_BLUE
         }
         
         return cell

@@ -40,7 +40,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     
     var terms: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -82,9 +82,9 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Send", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
@@ -111,7 +111,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     var inputTextField: UITextView = {
         let input = UITextView(frame: CGRect(x: 20.0, y: 90.0, width: 250.0, height: 100.0))
         input.isEditable = true
-        input.tintColor = Theme.PRIMARY_COLOR
+        input.tintColor = Theme.PACIFIC_BLUE
         input.text = "Enter text here"
         input.backgroundColor = Theme.OFF_WHITE
         input.layer.cornerRadius = 10

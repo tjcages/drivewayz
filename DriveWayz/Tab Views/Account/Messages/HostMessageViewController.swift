@@ -31,7 +31,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
@@ -290,7 +290,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         properties.forEach({values[$0] = $1})
         childRef.updateChildValues(values) { (error, ralf) in
             UIView.animate(withDuration: 0.1, animations: {
-                self.sendArrow.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                self.sendArrow.backgroundColor = Theme.SEA_BLUE
                 self.sendArrow.isUserInteractionEnabled = true
                 self.userTextView.text = "Enter message"
                 self.userTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)

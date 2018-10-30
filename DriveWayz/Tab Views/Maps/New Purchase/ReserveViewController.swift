@@ -219,7 +219,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     var todayLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.backgroundColor = UIColor.clear
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -847,7 +847,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @objc func buttonPressed(sender: UIButton) {
         self.delegate?.hideParkNow()
         if sender.backgroundColor == UIColor.clear {
-            self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            self.reserveButton.backgroundColor = Theme.SEA_BLUE
             self.reserveButton.isUserInteractionEnabled = true
             UIView.animate(withDuration: 0.2, animations: {
                 sender.backgroundColor = UIColor.black

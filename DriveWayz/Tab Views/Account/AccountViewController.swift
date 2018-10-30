@@ -228,9 +228,9 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var overlay: UIView = {
         let overlay = UIView(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
-        overlay.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+        overlay.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
         overlay.layer.borderWidth = 2
-        overlay.backgroundColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5)
+        overlay.backgroundColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5)
         
         return overlay
     }()
@@ -292,7 +292,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     var selectionLine: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.backgroundColor = Theme.PACIFIC_BLUE
         
         return line
     }()
@@ -300,7 +300,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
     var statusBarColor: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.backgroundColor = Theme.PACIFIC_BLUE
         line.alpha = 0
         
         return line

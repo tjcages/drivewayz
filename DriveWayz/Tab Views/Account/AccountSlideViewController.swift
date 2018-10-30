@@ -39,7 +39,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
 //        view.roundCorners(corners: .topLeft, radius: 10)
-        view.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        view.backgroundColor = Theme.SEA_BLUE
         
         return view
     }()
@@ -52,7 +52,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.white
-        imageView.layer.borderColor = Theme.HARMONY_COLOR.cgColor
+        imageView.layer.borderColor = Theme.HARMONY_RED.cgColor
         imageView.layer.borderWidth = 0.5
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
@@ -138,7 +138,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         mark.setImage(tintedImage, for: .normal)
         mark.tintColor = Theme.WHITE
-        mark.backgroundColor = Theme.HARMONY_COLOR
+        mark.backgroundColor = Theme.HARMONY_RED
         mark.layer.cornerRadius = 10
         mark.alpha = 0
         mark.translatesAutoresizingMaskIntoConstraints = false
@@ -153,7 +153,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         mark.setImage(tintedImage, for: .normal)
         mark.tintColor = Theme.WHITE
-        mark.backgroundColor = Theme.HARMONY_COLOR
+        mark.backgroundColor = Theme.HARMONY_RED
         mark.layer.cornerRadius = 10
         mark.alpha = 0
         mark.translatesAutoresizingMaskIntoConstraints = false
@@ -456,7 +456,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         }
         if let cell = optionsTableView.cellForRow(at: indexPath) as? OptionsCell {
             cell.messageTextView.textColor = Theme.BLACK
-            cell.imageView?.tintColor = Theme.PRIMARY_COLOR
+            cell.imageView?.tintColor = Theme.PACIFIC_BLUE
             cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
             cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
             self.previousCell = cell
@@ -550,7 +550,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         }
         if let cell = optionsTableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? OptionsCell {
             cell.messageTextView.textColor = Theme.BLACK
-            cell.imageView?.tintColor = Theme.PRIMARY_COLOR
+            cell.imageView?.tintColor = Theme.PACIFIC_BLUE
             cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
             cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
             self.previousCell = cell

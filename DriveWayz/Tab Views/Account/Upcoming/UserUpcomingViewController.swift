@@ -69,7 +69,7 @@ class UserUpcomingViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        imageView.backgroundColor = Theme.SEA_BLUE
         imageView.clipsToBounds = true
         
         return imageView
@@ -79,7 +79,7 @@ class UserUpcomingViewController: UIViewController {
         let label = UILabel()
         label.text = "From to To"
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -108,7 +108,7 @@ class UserUpcomingViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(current)
-        current.backgroundColor = Theme.PRIMARY_COLOR
+        current.backgroundColor = Theme.PACIFIC_BLUE
         current.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         current.heightAnchor.constraint(equalToConstant: 30).isActive = true
         current.widthAnchor.constraint(equalToConstant: 100).isActive = true

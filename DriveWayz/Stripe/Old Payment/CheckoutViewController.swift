@@ -165,7 +165,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.productImage.font = UIFont.systemFont(ofSize: 32)
         self.productImage.textColor = Theme.DARK_GRAY
         self.costImage.font = UIFont.systemFont(ofSize: 28)
-        self.costImage.textColor = Theme.PRIMARY_COLOR
+        self.costImage.textColor = Theme.PACIFIC_BLUE
         self.view.addSubview(self.totalRow)
         self.view.addSubview(self.paymentRow)
         self.view.addSubview(self.productImage)
@@ -179,7 +179,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             self?.paymentContext.pushPaymentMethodsViewController()
         }
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: exitButton, style: .plain, target: self, action: #selector(dismissDetails(sender:)))
-        self.navigationController?.navigationBar.tintColor = Theme.PRIMARY_COLOR
+        self.navigationController?.navigationBar.tintColor = Theme.PACIFIC_BLUE
     }
 
     override func viewDidLayoutSubviews() {

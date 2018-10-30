@@ -14,7 +14,7 @@ class ParkingImageViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        imageView.backgroundColor = Theme.SEA_BLUE
         
         return imageView
     }()

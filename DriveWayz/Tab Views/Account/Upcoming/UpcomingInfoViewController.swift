@@ -32,7 +32,7 @@ class UpcomingInfoViewController: UIViewController {
         let label = UILabel()
         label.text = "Price"
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

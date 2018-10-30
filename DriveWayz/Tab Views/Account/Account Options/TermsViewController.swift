@@ -60,9 +60,9 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     var accept: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(agreeToTerms(sender:)), for: .touchUpInside)

@@ -74,7 +74,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         let label = UILabel()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -107,7 +107,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         let label = UILabel()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -118,7 +118,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         let label = UILabel()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -384,7 +384,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     func setupViews() {
         
         self.view.addSubview(current)
-        current.backgroundColor = Theme.PRIMARY_COLOR
+        current.backgroundColor = Theme.PACIFIC_BLUE
         current.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         current.heightAnchor.constraint(equalToConstant: 30).isActive = true
         current.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -527,7 +527,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: 0.3, animations: {
-                self.current.backgroundColor = Theme.PRIMARY_COLOR
+                self.current.backgroundColor = Theme.PACIFIC_BLUE
                 self.current.alpha = 1
                 self.alertLabel.alpha = 1
                 self.editingTableView.alpha = 1
@@ -585,7 +585,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
 //        cell.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 160)
         
         if indexPath.row == (Edits.count-1) {
-            cell.textLabel?.textColor = Theme.HARMONY_COLOR
+            cell.textLabel?.textColor = Theme.HARMONY_RED
         } else {
             cell.textLabel?.textColor = Theme.DARK_GRAY
         }

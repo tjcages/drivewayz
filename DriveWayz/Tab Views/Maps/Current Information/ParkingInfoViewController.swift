@@ -41,7 +41,7 @@ class ParkingInfoViewController: UIViewController {
         let label = UILabel()
         label.text = "Price"
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -52,9 +52,9 @@ class ParkingInfoViewController: UIViewController {
         view.settings.fillMode = .precise
         view.settings.starSize = 17.5
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.PRIMARY_DARK_COLOR
+        view.settings.filledColor = Theme.SEA_BLUE
         view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        view.settings.filledBorderColor = Theme.PRIMARY_DARK_COLOR
+        view.settings.filledBorderColor = Theme.SEA_BLUE
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         

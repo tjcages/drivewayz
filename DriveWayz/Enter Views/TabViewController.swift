@@ -116,7 +116,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveToProfileTap(sender:)), for: .touchUpInside)
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         button.layer.cornerRadius = 55/2
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
         button.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -132,7 +132,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         let image = UIImage(named: "notification")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRIMARY_DARK_COLOR
+        button.tintColor = Theme.SEA_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveToMapTap(sender:)), for: .touchUpInside)
         button.backgroundColor = Theme.OFF_WHITE
@@ -193,15 +193,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return controller
     }()
     
-    lazy var newParkingController: AddANewParkingSpotViewController = {
-        let controller = AddANewParkingSpotViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "New Parking"
-        controller.delegate = self
-        return controller
-    }()
+//    lazy var newParkingController: AddANewParkingSpotViewController = {
+//        let controller = AddANewParkingSpotViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "New Parking"
+//        controller.delegate = self
+//        return controller
+//    }()
     
-    lazy var saveParkingController: ConfigureParkingViewController = {
+    lazy var configureParkingController: ConfigureParkingViewController = {
         let controller = ConfigureParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Save Parking"
@@ -584,42 +584,42 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     }
     
     func bringNewHostingController(parkingImage: ParkingImage) {
-        switch parkingImage {
-        case .yesImage:
-            self.newParkingController.view.removeFromSuperview()
+//        switch parkingImage {
+//        case .yesImage:
+//            self.newParkingController.view.removeFromSuperview()
             self.view.layoutIfNeeded()
-            self.view.addSubview(saveParkingController.view)
-            self.addChild(saveParkingController)
-            saveParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            newParkingAnchor = saveParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            self.view.addSubview(configureParkingController.view)
+            self.addChild(configureParkingController)
+            configureParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            newParkingAnchor = configureParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
             newParkingAnchor.isActive = true
-            saveParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            saveParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+            configureParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+            configureParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.accountSlideController.mainLabel.text = "New Host"
+                self.accountSlideController.mainLabel.text = ""
                 UIView.animate(withDuration: 0.3, animations: {
                     self.newParkingAnchor.constant = 0
                     self.accountSlideController.mainLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 })
             }
-        default:
-            self.view.addSubview(newParkingController.view)
-            self.addChild(newParkingController)
-            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            newParkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            newParkingAnchor.isActive = true
-            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.accountSlideController.mainLabel.text = "New Host"
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.newParkingAnchor.constant = 0
-                    self.accountSlideController.mainLabel.alpha = 1
-                    self.view.layoutIfNeeded()
-                })
-            }
-        }
+//        default:
+//            self.view.addSubview(newParkingController.view)
+//            self.addChild(newParkingController)
+//            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//            newParkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+//            newParkingAnchor.isActive = true
+//            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                self.accountSlideController.mainLabel.text = "New Host"
+//                UIView.animate(withDuration: 0.3, animations: {
+//                    self.newParkingAnchor.constant = 0
+//                    self.accountSlideController.mainLabel.alpha = 1
+//                    self.view.layoutIfNeeded()
+//                })
+//            }
+//        }
     }
     
     func bringVehicleController() {
@@ -782,8 +782,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.newParkingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }, completion: { (success) in
-            self.saveParkingController.view.removeFromSuperview()
-            self.newParkingController.view.removeFromSuperview()
+            self.configureParkingController.view.removeFromSuperview()
+//            self.newParkingController.view.removeFromSuperview()
             self.accountController.scrollToTop()
         })
     }

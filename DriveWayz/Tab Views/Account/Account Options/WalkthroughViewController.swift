@@ -34,7 +34,7 @@ class WalkthroughViewController: UIViewController {
     
     var terms: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -134,7 +134,7 @@ class WalkthroughViewController: UIViewController {
         page.currentPage = 0
         page.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         page.pageIndicatorTintColor = Theme.DARK_GRAY
-        page.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+        page.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
         page.translatesAutoresizingMaskIntoConstraints = false
         page.isUserInteractionEnabled = false
         
@@ -145,9 +145,9 @@ class WalkthroughViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
@@ -159,9 +159,9 @@ class WalkthroughViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Start!", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
+        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
         button.alpha = 0
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20

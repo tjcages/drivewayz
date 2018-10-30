@@ -114,7 +114,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         let label = UITextField()
         label.text = "Cost"
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left
         label.isUserInteractionEnabled = false
@@ -432,9 +432,9 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         cell.separatorInset = UIEdgeInsets.init(top: 0, left: 10, bottom: 0, right: 10)
         
         if indexPath.row == (Edits.count-1) {
-            cell.textLabel?.textColor = Theme.HARMONY_COLOR
+            cell.textLabel?.textColor = Theme.HARMONY_RED
         } else {
-            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+            cell.textLabel?.textColor = Theme.SEA_BLUE
         }
         
         return cell

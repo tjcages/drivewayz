@@ -139,7 +139,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     var selectionLine: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.backgroundColor = Theme.PACIFIC_BLUE
         
         return line
     }()
@@ -387,7 +387,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             cell.textLabel?.text = Current[indexPath.row]
             cell.separatorInset = UIEdgeInsets(top: 0, left: 160, bottom: 0, right: 10)
             if indexPath.row == (Current.count-1) {
-                cell.textLabel?.textColor = Theme.HARMONY_COLOR
+                cell.textLabel?.textColor = Theme.HARMONY_RED
             } else if indexPath.row == 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
                 cell.textLabel?.textColor = Theme.DARK_GRAY
@@ -401,7 +401,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
             return cell
         } else if tableView == detailsTableView {
             cell.textLabel?.text = Details[indexPath.row]
-            cell.textLabel?.textColor = Theme.PRIMARY_DARK_COLOR
+            cell.textLabel?.textColor = Theme.SEA_BLUE
             cell.backgroundColor = UIColor.clear
             cell.selectionStyle = .none
             self.detailsTableView.separatorStyle = .none

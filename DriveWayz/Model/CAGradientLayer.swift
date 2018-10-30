@@ -13,7 +13,7 @@ extension CAGradientLayer {
     
     @objc func blueColor() -> CAGradientLayer {
         
-        let topColor = Theme.PRIMARY_DARK_COLOR
+        let topColor = Theme.SEA_BLUE
         let bottomColor = Theme.WHITE
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
@@ -43,8 +43,8 @@ extension CAGradientLayer {
     
     @objc func mixColors() -> CAGradientLayer {
         
-        let topColor = Theme.WHITE
-        let bottomColor = Theme.PRIMARY_COLOR
+        let topColor = Theme.PACIFIC_BLUE
+        let bottomColor = Theme.SEA_BLUE
 //        let bottomColor = UIColor(red: 34/255, green: 48/255, blue: 70/255, alpha: 1)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
@@ -59,9 +59,9 @@ extension CAGradientLayer {
     
     @objc func startColors() -> CAGradientLayer {
         
-        let topColor = Theme.PRIMARY_COLOR
-        let bottomColor = UIColor(red: 17/255, green: 98/255, blue: 145/255, alpha: 1)
-//        let bottomColor = UIColor(red: 34/255, green: 48/255, blue: 70/255, alpha: 1)
+        let topColor = Theme.PACIFIC_BLUE
+        let bottomColor = Theme.PRUSSIAN_BLUE
+//        let bottomColor = UIColor(red: 17/255, green: 98/255, blue: 145/255, alpha: 1)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         
@@ -75,10 +75,12 @@ extension CAGradientLayer {
     
     @objc func lightBlurColor() -> CAGradientLayer {
         
-        let topColor = UIColor.clear
+        let topColor = Theme.WHITE.withAlphaComponent(0)
         let bottomColor = Theme.WHITE
+        let middleColor = Theme.WHITE
+        let moreMiddleColor = Theme.WHITE
         
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, moreMiddleColor.cgColor, bottomColor.cgColor]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors

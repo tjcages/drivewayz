@@ -320,6 +320,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         if tableView == currentMessagesTableView {
             container.addSubview(currentMessagesController.view)
+            self.addChild(currentMessagesController)
             currentMessagesController.didMove(toParent: self)
             currentMessagesController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             currentMessagesAnchor = currentMessagesController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)

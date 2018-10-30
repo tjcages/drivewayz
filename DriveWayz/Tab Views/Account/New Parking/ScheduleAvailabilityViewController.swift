@@ -34,7 +34,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("M", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -48,7 +48,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("T", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -62,7 +62,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("W", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -76,7 +76,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("T", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -90,7 +90,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("F", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -104,7 +104,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("S", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -118,7 +118,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.setTitle("S", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
@@ -235,25 +235,25 @@ class ScheduleAvailabilityViewController: UIViewController {
     func startEmpty() {
         monday = 0
         self.mondayButton.backgroundColor = UIColor.clear
-        self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.mondayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         tuesday = 0
         self.tuesdayButton.backgroundColor = UIColor.clear
-        self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.tuesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         wednesday = 0
         self.wednesdayButton.backgroundColor = UIColor.clear
-        self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.wednesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         thursday = 0
         self.thursdayButton.backgroundColor = UIColor.clear
-        self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.thursdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         friday = 0
         self.fridayButton.backgroundColor = UIColor.clear
-        self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.fridayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         saturday = 0
         self.saturdayButton.backgroundColor = UIColor.clear
-        self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.saturdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         sunday = 0
         self.sundayButton.backgroundColor = UIColor.clear
-        self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        self.sundayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         self.daysAvailableLabel.alpha = 1
         self.daysAvailableLabel.setTitle("None of the days are selected", for: .normal)
     }
@@ -263,70 +263,70 @@ class ScheduleAvailabilityViewController: UIViewController {
             if monday == 1 {
                 monday = 0
                 self.mondayButton.backgroundColor = UIColor.clear
-                self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.mondayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 monday = 1
-                self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.mondayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.mondayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == tuesdayButton {
             if tuesday == 1 {
                 tuesday = 0
                 self.tuesdayButton.backgroundColor = UIColor.clear
-                self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.tuesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 tuesday = 1
-                self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.tuesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.tuesdayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == wednesdayButton {
             if wednesday == 1 {
                 wednesday = 0
                 self.wednesdayButton.backgroundColor = UIColor.clear
-                self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.wednesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 wednesday = 1
-                self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.wednesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.wednesdayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == thursdayButton {
             if thursday == 1 {
                 thursday = 0
                 self.thursdayButton.backgroundColor = UIColor.clear
-                self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.thursdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 thursday = 1
-                self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.thursdayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.thursdayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == fridayButton {
             if friday == 1 {
                 friday = 0
                 self.fridayButton.backgroundColor = UIColor.clear
-                self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.fridayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 friday = 1
-                self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.fridayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.fridayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == saturdayButton {
             if saturday == 1 {
                 saturday = 0
                 self.saturdayButton.backgroundColor = UIColor.clear
-                self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.saturdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 saturday = 1
-                self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.saturdayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.saturdayButton.setTitleColor(UIColor.white, for: .normal)
             }
         } else if sender == sundayButton {
             if sunday == 1 {
                 sunday = 0
                 self.sundayButton.backgroundColor = UIColor.clear
-                self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                self.sundayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             } else {
                 sunday = 1
-                self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
+                self.sundayButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.sundayButton.setTitleColor(UIColor.white, for: .normal)
             }
         }

@@ -52,7 +52,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let image = UIImage(named: "Search")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         search.setImage(tintedImage, for: .normal)
-        search.tintColor = Theme.PRIMARY_DARK_COLOR
+        search.tintColor = Theme.SEA_BLUE
         search.translatesAutoresizingMaskIntoConstraints = false
         search.addTarget(self, action: #selector(animateSearchBar(sender:)), for: .touchUpInside)
         
@@ -63,13 +63,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let search = UITextField()
         search.layer.cornerRadius = 20
         search.backgroundColor = Theme.WHITE
-        search.textColor = Theme.PRIMARY_DARK_COLOR
+        search.textColor = Theme.SEA_BLUE
         search.layer.shadowColor = Theme.DARK_GRAY.cgColor
         search.layer.shadowOffset = CGSize(width: 1, height: 1)
         search.layer.shadowRadius = 1
         search.layer.shadowOpacity = 0.8
         search.attributedPlaceholder = NSAttributedString(string: "",
-                                                          attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                          attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
         search.translatesAutoresizingMaskIntoConstraints = false
         return search
     }()
@@ -80,7 +80,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.PRIMARY_DARK_COLOR
+        button.tintColor = Theme.SEA_BLUE
         button.backgroundColor = Theme.WHITE
         button.layer.cornerRadius = 20
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -178,7 +178,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         label.font = UIFont.systemFont(ofSize: 18, weight: .light)
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.layer.shadowColor = Theme.HARMONY_COLOR.cgColor
+        label.layer.shadowColor = Theme.HARMONY_RED.cgColor
         label.layer.shadowOffset = CGSize(width: 1, height: 1)
         label.layer.shadowRadius = 5
         label.layer.shadowOpacity = 0.8
@@ -620,7 +620,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = Theme.PRIMARY_COLOR
+            renderer.strokeColor = Theme.PACIFIC_BLUE
             renderer.lineWidth = 5
             return renderer
         }
@@ -630,7 +630,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     @objc func animateSearchBar(sender: UIButton) {
         if self.textSearchBarCloseRightAnchor.isActive == true {
             searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = true
                 self.textSearchBarCloseRightAnchor.isActive = false
@@ -638,7 +638,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             })
         } else {
             searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.PRIMARY_DARK_COLOR])
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
             UIView.animate(withDuration: 0.3, animations: {
                 self.textSearchBarFarRightAnchor.isActive = false
                 self.textSearchBarCloseRightAnchor.isActive = true

@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = startUpViewController
         window!.makeKeyAndVisible()
         
-        STPTheme.default().accentColor = Theme.PRIMARY_COLOR
+        STPTheme.default().accentColor = Theme.PACIFIC_BLUE
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         UNUserNotificationCenter.current().delegate = self

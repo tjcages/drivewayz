@@ -43,7 +43,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         field.font = UIFont.systemFont(ofSize: 18, weight: .light)
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 10
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         
         return field
     }()

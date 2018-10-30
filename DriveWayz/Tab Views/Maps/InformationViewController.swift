@@ -202,7 +202,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let label = UILabel()
         label.text = "Sign up today to become a host and make up to an extra $200 per month renting out your driveway!"
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.textAlignment = .left
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false

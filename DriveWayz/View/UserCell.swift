@@ -72,7 +72,7 @@ class UserCell: UITableViewCell {
         self.backgroundColor = Theme.WHITE
         
         if textLabel?.text == " Drivewayz " {
-            textLabel?.textColor = Theme.PRIMARY_COLOR
+            textLabel?.textColor = Theme.PACIFIC_BLUE
             textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         } else {
             textLabel?.textColor = Theme.BLACK

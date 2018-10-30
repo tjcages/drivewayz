@@ -77,7 +77,7 @@ class SendNotificationsViewController: UIViewController {
             size: .small,
             iconName: "car"
         )
-        markerOverlay.color = Theme.PRIMARY_COLOR
+        markerOverlay.color = Theme.PACIFIC_BLUE
         options.overlays = [markerOverlay]
         let content = UNMutableNotificationContent()
         let secondContent = UNMutableNotificationContent()

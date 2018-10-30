@@ -140,7 +140,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     var selectionLine: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.PRIMARY_COLOR
+        line.backgroundColor = Theme.PACIFIC_BLUE
         
         return line
     }()

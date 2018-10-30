@@ -172,7 +172,7 @@ class MessageOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Ask for open communications", for: .normal)
-        button.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -410,9 +410,9 @@ class MessageOptionsViewController: UIViewController {
     @objc func optionsButtonPressed(sender: UIButton) {
         if sender.backgroundColor == Theme.WHITE {
             UIView.animate(withDuration: 0.1) {
-                sender.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                sender.backgroundColor = Theme.SEA_BLUE
                 sender.setTitleColor(Theme.WHITE, for: .normal)
-                sender.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+                sender.layer.borderColor = Theme.SEA_BLUE.cgColor
                 sender.tag = 1
                 if self.lastButton != nil {
                     self.lastButton.backgroundColor = Theme.WHITE

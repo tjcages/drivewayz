@@ -115,7 +115,7 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.PRIMARY_DARK_COLOR
+        button.backgroundColor = Theme.SEA_BLUE
         button.layer.cornerRadius = 35/2
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
@@ -572,7 +572,7 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
             }
         }
         if message.fromID == Auth.auth().currentUser?.uid {
-            cell.bubbleView.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            cell.bubbleView.backgroundColor = Theme.SEA_BLUE
             cell.textView.textColor = UIColor.white
             cell.bubbleViewRightAnchor?.isActive = true
             cell.bubbleViewLeftAnchor?.isActive = false
@@ -647,25 +647,25 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
     func noCommunication(cell: ChatMessageCell) {
         cell.permissionView.alpha = 0
         self.messageOptionsController.sendCommunications.setTitle("Ask for open communications", for: .normal)
-        self.messageOptionsController.sendCommunications.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        self.messageOptionsController.sendCommunications.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         self.messageOptionsController.sendCommunicationsWidth.constant = 280
         self.messageOptionsController.informationLabel.text = "In order to speak freely with the host you must first ask their permission for open communications."
     }
     
     func openCommunications(cell: ChatMessageCell) {
-        self.speechCheck.tintColor = Theme.FOREST_GREEN
+        self.speechCheck.tintColor = Theme.GREEN_PIGMENT
         self.speechCheckLabel.text = "Open"
         self.speechCheck.alpha = 1
         self.speechCheckLabel.alpha = 1
         cell.permissionView.alpha = 1
-        cell.permissionOpened.backgroundColor = Theme.FOREST_GREEN
+        cell.permissionOpened.backgroundColor = Theme.GREEN_PIGMENT
         cell.permissionClosed.backgroundColor = .clear
         cell.permissionOpened.setTitleColor(Theme.WHITE, for: .normal)
         cell.permissionClosed.setTitleColor(Theme.BLACK, for: .normal)
         cell.permissionOpened.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         cell.permissionClosed.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
         self.messageOptionsController.sendCommunications.setTitle("Open", for: .normal)
-        self.messageOptionsController.sendCommunications.backgroundColor = Theme.FOREST_GREEN
+        self.messageOptionsController.sendCommunications.backgroundColor = Theme.GREEN_PIGMENT
         self.messageOptionsController.sendCommunicationsWidth.constant = 180
         self.shouldAnimate = true
         if self.isHost == false {

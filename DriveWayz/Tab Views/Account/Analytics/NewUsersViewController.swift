@@ -86,7 +86,7 @@ class NewUsersViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRIMARY_DARK_COLOR.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.2)
 
         return view
     }()
@@ -180,7 +180,7 @@ class NewUsersViewController: UIViewController {
         }
 
         let chartDataSet = BarChartDataSet(values: dataEntries, label: label.text)
-        chartDataSet.colors = [Theme.PRIMARY_COLOR]
+        chartDataSet.colors = [Theme.PACIFIC_BLUE]
         let chartData = BarChartData(dataSet: chartDataSet)
         chart.data = chartData
 
@@ -202,9 +202,9 @@ class NewUsersViewController: UIViewController {
 
         self.pageControl.numberOfPages = 4
         self.pageControl.currentPage = 0
-        self.pageControl.tintColor = Theme.PRIMARY_COLOR
+        self.pageControl.tintColor = Theme.PACIFIC_BLUE
         self.pageControl.pageIndicatorTintColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+        self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.isUserInteractionEnabled = false
 

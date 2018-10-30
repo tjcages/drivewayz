@@ -33,7 +33,7 @@ class ReviewsCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PRIMARY_COLOR
+        imageView.backgroundColor = Theme.PACIFIC_BLUE
         imageView.layer.cornerRadius = 25
         imageView.clipsToBounds = true
         
@@ -67,7 +67,7 @@ class ReviewsCell: UICollectionViewCell {
         let label = UITextField()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = Theme.PRIMARY_COLOR
+        label.textColor = Theme.PACIFIC_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
         label.isUserInteractionEnabled = false

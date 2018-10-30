@@ -38,7 +38,7 @@ class CurrentParkingViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = Theme.PRIMARY_DARK_COLOR
+        label.textColor = Theme.SEA_BLUE
         label.textAlignment = .left
         
         return label
@@ -178,10 +178,10 @@ class CurrentParkingViewController: UIViewController {
         if seconds! > 0 {
             seconds! = seconds! - 1
             timeRemaining.text = timeString(time: TimeInterval(seconds!))
-            timeRemaining.textColor = Theme.PRIMARY_DARK_COLOR
+            timeRemaining.textColor = Theme.SEA_BLUE
         } else {
             timeRemaining.text = "Times up"
-            timeRemaining.textColor = Theme.HARMONY_COLOR
+            timeRemaining.textColor = Theme.HARMONY_RED
         }
     }
     

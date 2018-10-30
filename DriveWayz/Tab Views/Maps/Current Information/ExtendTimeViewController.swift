@@ -67,7 +67,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
                     self.activityIndicator.stopAnimating()
                     self.activityIndicator.alpha = 0
                     self.reserveButton.alpha = 1
-                    self.reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                    self.reserveButton.backgroundColor = Theme.SEA_BLUE
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.reserveButton.setTitle("Reserve Spot", for: .normal)
                     }
@@ -144,7 +144,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 10, height: 40))
         button.setTitle("Reserve Spot", for: .normal)
         button.setTitle("", for: .selected)
-        button.backgroundColor = Theme.PRIMARY_COLOR
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.WHITE, for: .normal)
         let path = UIBezierPath(roundedRect:button.bounds,
@@ -377,7 +377,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         // Show selected payment method image, label, and darker color
         paymentButton.setImage(selectedPaymentMethod.image, for: .normal)
         paymentButton.setTitle(selectedPaymentMethod.label, for: .normal)
-        paymentButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+        paymentButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
     }
     
     func reloadRequestRideButton() {
@@ -391,7 +391,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         switch rideRequestState {
         case .none:
             // Show enabled state
-            reserveButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+            reserveButton.backgroundColor = Theme.SEA_BLUE
             reserveButton.setTitle("Reserve Spot", for: .normal)
             reserveButton.setTitleColor(.white, for: .normal)
             //            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
@@ -407,7 +407,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
             // Show completion state
             reserveButton.backgroundColor = .white
             reserveButton.setTitle("Complete Ride", for: .normal)
-            reserveButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+            reserveButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             reserveButton.setImage(nil, for: .normal)
             reserveButton.isEnabled = true
         }

@@ -104,7 +104,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         let overlay = UIView(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
 //        overlay.layer.borderColor = Theme.PRIMARY_COLOR.cgColor
 //        overlay.layer.borderWidth = 2
-        overlay.backgroundColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5)
+        overlay.backgroundColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5)
         
         return overlay
     }()
@@ -123,8 +123,8 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     
     lazy var dotShotButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Theme.PRIMARY_COLOR
-        button.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.backgroundColor = Theme.PACIFIC_BLUE
+        button.layer.shadowColor = Theme.SEA_BLUE.cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -142,7 +142,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.7).cgColor
         button.layer.borderWidth = 1
-        button.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.shadowColor = Theme.SEA_BLUE.cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -306,8 +306,8 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         setupTextField(textField: searchBar, img: searchImage!)
         
         correctButton = UIButton()
-        correctButton.backgroundColor = Theme.PRIMARY_COLOR
-        correctButton.layer.shadowColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        correctButton.backgroundColor = Theme.PACIFIC_BLUE
+        correctButton.layer.shadowColor = Theme.SEA_BLUE.cgColor
         correctButton.layer.shadowRadius = 3
         correctButton.layer.shadowOpacity = 0
         correctButton.translatesAutoresizingMaskIntoConstraints = false
@@ -554,7 +554,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         dot1View = UIView()
         dot1View.layer.cornerRadius = 4
-        dot1View.backgroundColor = Theme.PRIMARY_COLOR
+        dot1View.backgroundColor = Theme.PACIFIC_BLUE
         dot1View.center = dot1.center
         dot1View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot1View)
@@ -579,7 +579,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         dot2View = UIView()
         dot2View.layer.cornerRadius = 4
-        dot2View.backgroundColor = Theme.PRIMARY_COLOR
+        dot2View.backgroundColor = Theme.PACIFIC_BLUE
         dot2View.center = dot1.center
         dot2View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot2View)
@@ -604,7 +604,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         dot3View = UIView()
         dot3View.layer.cornerRadius = 4
-        dot3View.backgroundColor = Theme.PRIMARY_COLOR
+        dot3View.backgroundColor = Theme.PACIFIC_BLUE
         dot3View.center = dot1.center
         dot3View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot3View)
@@ -629,7 +629,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         dot4View = UIView()
         dot4View.layer.cornerRadius = 4
-        dot4View.backgroundColor = Theme.PRIMARY_COLOR
+        dot4View.backgroundColor = Theme.PACIFIC_BLUE
         dot4View.center = dot1.center
         dot4View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dot4View)
@@ -670,7 +670,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
                 self.dot3View.alpha = 1
                 self.dot4View.alpha = 1
                 self.overlay.alpha = 1
-                self.shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
+                self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
             }
             self.toColor = true
             self.hideDotsButton.setTitle("Hide dots", for: .normal)
@@ -778,8 +778,8 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         if self.toColor == true {
             shapeLayer.path = path.cgPath
-            shapeLayer.strokeColor = Theme.PRIMARY_COLOR.cgColor
-            shapeLayer.fillColor = Theme.PRIMARY_COLOR.withAlphaComponent(0.5).cgColor
+            shapeLayer.strokeColor = Theme.PACIFIC_BLUE.cgColor
+            shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
             shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
         } else {
             shapeLayer.path = path.cgPath

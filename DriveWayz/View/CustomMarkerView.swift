@@ -27,10 +27,10 @@
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
         
-        if borderColor == Theme.PRIMARY_COLOR {
+        if borderColor == Theme.PACIFIC_BLUE {
             view.backgroundColor = Theme.OFF_WHITE
         } else {
-            view.backgroundColor = Theme.PRIMARY_COLOR
+            view.backgroundColor = Theme.PACIFIC_BLUE
         }
         
         self.addSubview(view)

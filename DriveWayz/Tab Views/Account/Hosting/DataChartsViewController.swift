@@ -72,7 +72,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     var profitsLabel: UILabel = {
         let profits = UILabel()
         profits.text = "Profits:"
-        profits.textColor = Theme.PRIMARY_DARK_COLOR
+        profits.textColor = Theme.SEA_BLUE
         profits.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         profits.translatesAutoresizingMaskIntoConstraints = false
 
@@ -82,7 +82,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     var profits: UILabel = {
         let profits = UILabel()
         profits.text = "$0.00"
-        profits.textColor = Theme.PRIMARY_COLOR
+        profits.textColor = Theme.PACIFIC_BLUE
         profits.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         profits.translatesAutoresizingMaskIntoConstraints = false
 
@@ -95,7 +95,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         transfer.translatesAutoresizingMaskIntoConstraints = false
         transfer.setTitle("Transfer to bank", for: .normal)
         transfer.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        transfer.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        transfer.setTitleColor(Theme.SEA_BLUE, for: .normal)
         transfer.addTarget(self, action: #selector(checkAccount(sender:)), for: .touchUpInside)
 
         return transfer
@@ -106,7 +106,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         let image = UIImage(named: "Checkmark")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         refresh.setImage(tintedImage, for: .normal)
-        refresh.tintColor = Theme.PRIMARY_COLOR
+        refresh.tintColor = Theme.PACIFIC_BLUE
         refresh.translatesAutoresizingMaskIntoConstraints = false
         refresh.addTarget(self, action: #selector(updateCharts), for: .touchUpInside)
 
@@ -286,10 +286,10 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         }
 
         let lineChartDataSet = LineChartDataSet(values: dataEntries, label: "Money made")
-        lineChartDataSet.circleColors = [Theme.PRIMARY_COLOR]
+        lineChartDataSet.circleColors = [Theme.PACIFIC_BLUE]
         lineChartDataSet.circleHoleRadius = 0
         lineChartDataSet.circleRadius = 2
-        lineChartDataSet.colors = [Theme.PRIMARY_COLOR]
+        lineChartDataSet.colors = [Theme.PACIFIC_BLUE]
         let lineChartData = LineChartData(dataSet: lineChartDataSet)
         lineChartData.setDrawValues(false)
         chartView.data = lineChartData

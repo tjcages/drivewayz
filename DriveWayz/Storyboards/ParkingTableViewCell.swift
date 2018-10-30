@@ -21,7 +21,7 @@ class ParkingTableViewCell: UITableViewCell {
         setupShadow()
         
         parkingSpotCity.textColor = Theme.DARK_GRAY
-        parkingSpotCost.textColor = Theme.PRIMARY_DARK_COLOR
+        parkingSpotCost.textColor = Theme.SEA_BLUE
         parkingDistance.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         parkingDistance.textAlignment = .center
     }

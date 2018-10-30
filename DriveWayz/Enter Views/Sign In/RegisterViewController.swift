@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var pageControl : UIPageControl = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
     
     var loadingActivity: NVActivityIndicatorView = {
-        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_COLOR, padding: 0)
+        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_RED, padding: 0)
         loading.translatesAutoresizingMaskIntoConstraints = false
         loading.alpha = 0
         
@@ -202,9 +202,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
-        button.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PRIMARY_DARK_COLOR.cgColor
+        button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -251,7 +251,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "(303) 555-1234"
         field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.keyboardType = .numberPad
         
@@ -294,7 +294,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "• • • • • •"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.keyboardType = .numberPad
         
@@ -308,7 +308,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "drivewayz@example.com"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .none
         field.keyboardType = .emailAddress
@@ -323,7 +323,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "John Appleseed"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .words
         
@@ -337,7 +337,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "••••••••"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .none
         field.isSecureTextEntry = true
@@ -352,7 +352,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         field.placeholder = "••••••••"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.HARMONY_COLOR
+        field.tintColor = Theme.HARMONY_RED
         field.textColor = Theme.BLACK
         field.autocapitalizationType = .none
         field.isSecureTextEntry = true
@@ -365,7 +365,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Please enter your full name", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
         button.layer.cornerRadius = 20
         button.alpha = 0
@@ -430,24 +430,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         return button
     }()
     
-    var informationLabel: UITextView = {
-        let label = UITextView()
-        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        label.backgroundColor = UIColor.clear
-        label.text = "This option is generally better if you are sigining up to become a host"
-        label.textColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
-        label.layer.cornerRadius = 10
-        label.isEditable = false
-        label.isUserInteractionEnabled = false
-        label.contentInset = UIEdgeInsets(top: 30, left: 10, bottom: 10, right: 10)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        label.alpha = 0
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -460,7 +442,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         view.backgroundColor = UIColor.clear
         
         let background = CAGradientLayer().mixColors()
-        background.frame = CGRect(x: 0, y: self.view.frame.height*2/3, width: self.view.frame.width, height: self.view.frame.height/3)
+        background.frame = CGRect(x: 0, y: self.view.frame.height-140, width: self.view.frame.width, height: 140)
         background.zPosition = -10
         mainView.layer.insertSublayer(background, at: 0)
         
@@ -667,7 +649,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         self.pageControl.currentPage = 0
         self.pageControl.tintColor = Theme.WHITE
         self.pageControl.pageIndicatorTintColor = Theme.WHITE
-        self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+        self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)
@@ -696,7 +678,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         self.view.addSubview(facebookLoginButton)
         facebookLoginButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
         facebookLoginButton.widthAnchor.constraint(equalTo: mainView.widthAnchor).isActive = true
-        facebookLoginButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -30).isActive = true
+        facebookLoginButton.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80).isActive = true
         facebookLoginButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         self.view.addSubview(orLine)
@@ -717,12 +699,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         emailAndPasswordOption.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 10).isActive = true
         emailAndPasswordOption.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        self.view.addSubview(informationLabel)
-        informationLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive = true
-        informationLabel.topAnchor.constraint(equalTo: emailAndPasswordOption.bottomAnchor, constant: 10).isActive = true
-        informationLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        informationLabel.widthAnchor.constraint(equalTo: emailTextField.widthAnchor, constant: -20).isActive = true
-        
     }
     
     @objc func backgroundSwippedLeft() {
@@ -741,7 +717,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
-                self.pageControl.currentPageIndicatorTintColor = Theme.HARMONY_COLOR.withAlphaComponent(0.7)
+                self.pageControl.currentPageIndicatorTintColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
                 let origImage = UIImage(named: "Back")
                 let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                 self.exitButton.setImage(tintedImage, for: .normal)
@@ -753,7 +729,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0.4
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
-                self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+                self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
                 let origImage = UIImage(named: "Back")
                 let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                 self.exitButton.setImage(tintedImage, for: .normal)
@@ -779,7 +755,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0.4
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
-                self.pageControl.currentPageIndicatorTintColor = Theme.PRIMARY_COLOR
+                self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
                 let origImage = UIImage(named: "Back")
                 let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                 self.exitButton.setImage(tintedImage, for: .normal)
@@ -817,7 +793,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                         self.emailAndPasswordOption.alpha = 1
                         self.orLine.alpha = 1
                         self.orLabel.alpha = 1
-                        self.informationLabel.alpha = 1
                         self.view.layoutIfNeeded()
                     })
                 }
@@ -875,7 +850,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                             self.orLine.alpha = 0
                             self.orLabel.alpha = 0
                             self.emailAndPasswordOption.alpha = 0
-                            self.informationLabel.alpha = 0
                             self.loadingActivity.alpha = 0
                         }) { (success) in
                             self.loadingActivity.stopAnimating()
@@ -940,7 +914,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                         self.nextButton.layer.cornerRadius = 25
                         self.nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
                         self.nextButton.setTitleColor(Theme.WHITE, for: .normal)
-                        self.nextButton.backgroundColor = Theme.PRIMARY_DARK_COLOR
+                        self.nextButton.backgroundColor = Theme.SEA_BLUE
                         self.backButton.alpha = 1
                         self.repeatCenterAnchor.constant = 0
                         self.view.layoutIfNeeded()
@@ -990,7 +964,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.emailAndPasswordOption.alpha = 0
                     self.orLine.alpha = 0
                     self.orLabel.alpha = 0
-                    self.informationLabel.alpha = 0
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     self.nameField.becomeFirstResponder()
@@ -1017,7 +990,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.orLine.alpha = 1
                     self.orLabel.alpha = 1
                     self.emailAndPasswordOption.alpha = 1
-                    self.informationLabel.alpha = 1
                     self.areaCodeLabel.alpha = 1
                     self.USAButton.alpha = 1
                     self.view.layoutIfNeeded()
@@ -1043,7 +1015,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.orLine.alpha = 1
                     self.orLabel.alpha = 1
                     self.emailAndPasswordOption.alpha = 1
-                    self.informationLabel.alpha = 1
                 })
             }
         } else if self.passwordCenterAnchor.constant == 0 && self.passwordField.alpha == 1 {
@@ -1073,12 +1044,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 UIView.animate(withDuration: 0.3, animations: {
                     self.passwordField.alpha = 1
                     self.nextButtonCenterAnchor.constant = 50
-                    self.nextButtonTopAnchor.constant = 50
+                    self.nextButtonTopAnchor.constant = 60
                     self.nextButtonHeightAnchor.constant = 40
                     self.nextButtonWidthAnchor.constant = 160
                     self.nextButton.layer.cornerRadius = 20
                     self.nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
-                    self.nextButton.setTitleColor(Theme.PRIMARY_DARK_COLOR, for: .normal)
+                    self.nextButton.setTitleColor(Theme.SEA_BLUE, for: .normal)
                     self.nextButton.backgroundColor = UIColor.clear
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
@@ -1097,7 +1068,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             self.orLine.alpha = 0
             self.orLabel.alpha = 0
             self.emailAndPasswordOption.alpha = 0
-            self.informationLabel.alpha = 0
         }) { (success) in
             self.emailTextField.becomeFirstResponder()
             UIView.animate(withDuration: 0.3, animations: {
@@ -1349,7 +1319,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             UIView.animate(withDuration: 0.2) {
                 self.nextButton.alpha = 1
                 self.errorButton.alpha = 0
-                self.informationLabel.alpha = 0
             }
         }
         if textField == self.phoneNumberTextField {

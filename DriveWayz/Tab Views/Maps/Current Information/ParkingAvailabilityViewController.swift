@@ -533,19 +533,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if MondayTo == "All day" || MondayFrom == "All day" {
                                     self.mondayLabel.text = "All day"
-                                    self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.mondayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.mondayLabel.text = "From  \(String(describing: MondayFrom!))  to  \(String(describing: MondayTo!))"
-                                self.mondayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.mondayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.mondayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Monday = 0
                                 
                                 self.mondayButton.backgroundColor = UIColor.clear
-                                self.mondayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.mondayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.mondayLabel.text = "N/A"
                             }
                             if let tuesdayValues = availability["Tuesday"] as? [String:AnyObject] {
@@ -555,19 +555,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if TuesdayTo == "All day" || TuesdayFrom == "All day" {
                                     self.tuesdayLabel.text = "All day"
-                                    self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.tuesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.tuesdayLabel.text = "From  \(String(describing: TuesdayFrom!))  to  \(String(describing: TuesdayTo!))"
-                                self.tuesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.tuesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.tuesdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Tuesday = 0
                                 
                                 self.tuesdayButton.backgroundColor = UIColor.clear
-                                self.tuesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.tuesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.tuesdayLabel.text = "N/A"
                             }
                             if let wednedayValues = availability["Wednesday"] as? [String:AnyObject] {
@@ -577,19 +577,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if WednesdayTo == "All day" || WednesdayFrom == "All day" {
                                     self.wednesdayLabel.text = "All day"
-                                    self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.wednesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.wednesdayLabel.text = "From  \(String(describing: WednesdayFrom!))  to  \(String(describing: WednesdayTo!))"
-                                self.wednesdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.wednesdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.wednesdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Wednesday = 0
                                 
                                 self.wednesdayButton.backgroundColor = UIColor.clear
-                                self.wednesdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.wednesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.wednesdayLabel.text = "N/A"
                             }
                             if let thursdayValues = availability["Thursday"] as? [String:AnyObject] {
@@ -599,19 +599,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if ThursdayTo == "All day" || ThursdayFrom == "All day" {
                                     self.thursdayLabel.text = "All day"
-                                    self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.thursdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.thursdayLabel.text = "From  \(String(describing: ThursdayFrom!))  to  \(String(describing: ThursdayTo!))"
-                                self.thursdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.thursdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.thursdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Thursday = 0
                                 
                                 self.thursdayButton.backgroundColor = UIColor.clear
-                                self.thursdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.thursdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.thursdayLabel.text = "N/A"
                             }
                             if let fridayValues = availability["Friday"] as? [String:AnyObject] {
@@ -621,19 +621,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if FridayTo == "All day" || FridayFrom == "All day" {
                                     self.fridayLabel.text = "All day"
-                                    self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.fridayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.fridayLabel.text = "From  \(String(describing: FridayFrom!))  to  \(String(describing: FridayTo!))"
-                                self.fridayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.fridayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.fridayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Friday = 0
                                 
                                 self.fridayButton.backgroundColor = UIColor.clear
-                                self.fridayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.fridayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.fridayLabel.text = "N/A"
                             }
                             if let saturdayValues = availability["Saturday"] as? [String:AnyObject] {
@@ -643,19 +643,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if SaturdayTo == "All day" || SaturdayFrom == "All day" {
                                     self.saturdayLabel.text = "All day"
-                                    self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.saturdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.saturdayLabel.text = "From  \(String(describing: SaturdayFrom!))  to  \(String(describing: SaturdayTo!))"
-                                self.saturdayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.saturdayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.saturdayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Saturday = 0
                                 
                                 self.saturdayButton.backgroundColor = UIColor.clear
-                                self.saturdayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.saturdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.saturdayLabel.text = "N/A"
                             }
                             if let sundayValues = availability["Sunday"] as? [String:AnyObject] {
@@ -665,19 +665,19 @@ class ParkingAvailabilityViewController: UIViewController {
                                 
                                 if SundayTo == "All day" || SundayFrom == "All day" {
                                     self.sundayLabel.text = "All day"
-                                    self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                    self.sundayButton.backgroundColor = Theme.PACIFIC_BLUE
                                     self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 }
                                 
                                 self.sundayLabel.text = "From  \(String(describing: SundayFrom!))  to  \(String(describing: SundayTo!))"
-                                self.sundayButton.backgroundColor = Theme.PRIMARY_COLOR
+                                self.sundayButton.backgroundColor = Theme.PACIFIC_BLUE
                                 self.sundayButton.setTitleColor(Theme.WHITE, for: .normal)
                                 
                             } else {
                                 Sunday = 0
                                 
                                 self.sundayButton.backgroundColor = UIColor.clear
-                                self.sundayButton.setTitleColor(Theme.PRIMARY_COLOR, for: .normal)
+                                self.sundayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
                                 self.sundayLabel.text = "N/A"
                             }
                             self.checkAvailablility(id: userParkingID)
@@ -692,7 +692,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let monday = UIButton()
         monday.setTitle("M", for: .normal)
         monday.setTitleColor(Theme.WHITE, for: .normal)
-        monday.backgroundColor = Theme.PRIMARY_COLOR
+        monday.backgroundColor = Theme.PACIFIC_BLUE
         monday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         monday.clipsToBounds = true
         monday.layer.cornerRadius = 15
@@ -717,7 +717,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let tuesday = UIButton()
         tuesday.setTitle("T", for: .normal)
         tuesday.setTitleColor(Theme.WHITE, for: .normal)
-        tuesday.backgroundColor = Theme.PRIMARY_COLOR
+        tuesday.backgroundColor = Theme.PACIFIC_BLUE
         tuesday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         tuesday.clipsToBounds = true
         tuesday.layer.cornerRadius = 15
@@ -742,7 +742,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let wednesday = UIButton()
         wednesday.setTitle("W", for: .normal)
         wednesday.setTitleColor(Theme.WHITE, for: .normal)
-        wednesday.backgroundColor = Theme.PRIMARY_COLOR
+        wednesday.backgroundColor = Theme.PACIFIC_BLUE
         wednesday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         wednesday.clipsToBounds = true
         wednesday.layer.cornerRadius = 15
@@ -767,7 +767,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let thursday = UIButton()
         thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
-        thursday.backgroundColor = Theme.PRIMARY_COLOR
+        thursday.backgroundColor = Theme.PACIFIC_BLUE
         thursday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         thursday.clipsToBounds = true
         thursday.layer.cornerRadius = 15
@@ -792,7 +792,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let friday = UIButton()
         friday.setTitle("F", for: .normal)
         friday.setTitleColor(Theme.WHITE, for: .normal)
-        friday.backgroundColor = Theme.PRIMARY_COLOR
+        friday.backgroundColor = Theme.PACIFIC_BLUE
         friday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         friday.clipsToBounds = true
         friday.layer.cornerRadius = 15
@@ -817,7 +817,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let saturday = UIButton()
         saturday.setTitle("S", for: .normal)
         saturday.setTitleColor(Theme.WHITE, for: .normal)
-        saturday.backgroundColor = Theme.PRIMARY_COLOR
+        saturday.backgroundColor = Theme.PACIFIC_BLUE
         saturday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         saturday.clipsToBounds = true
         saturday.layer.cornerRadius = 15
@@ -842,7 +842,7 @@ class ParkingAvailabilityViewController: UIViewController {
         let sunday = UIButton()
         sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
-        sunday.backgroundColor = Theme.PRIMARY_COLOR
+        sunday.backgroundColor = Theme.PACIFIC_BLUE
         sunday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         sunday.clipsToBounds = true
         sunday.layer.cornerRadius = 15

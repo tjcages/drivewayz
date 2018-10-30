@@ -198,7 +198,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         segment.selectedSegmentIndex = 0
         segment.layer.cornerRadius = 5
         segment.backgroundColor = Theme.WHITE
-        segment.tintColor = Theme.PRIMARY_DARK_COLOR
+        segment.tintColor = Theme.SEA_BLUE
         segment.translatesAutoresizingMaskIntoConstraints = false
         segment.addTarget(self, action: #selector(changeSegmentCalendar(sender:)), for: .valueChanged)
         
