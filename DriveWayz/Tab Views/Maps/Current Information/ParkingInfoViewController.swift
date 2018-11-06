@@ -22,7 +22,7 @@ class ParkingInfoViewController: UIViewController {
     let labelTitle: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.font = UIFont.systemFont(ofSize: 22, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -31,7 +31,7 @@ class ParkingInfoViewController: UIViewController {
     let labelDistance: UILabel = {
         let label = UILabel()
         label.text = "Distance"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,7 +40,7 @@ class ParkingInfoViewController: UIViewController {
     let labelCost: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH4
         label.textColor = Theme.SEA_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

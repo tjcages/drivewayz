@@ -57,7 +57,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title1: UILabel = {
         let label = UILabel()
         label.text = "Save money"
-        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH2
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -71,7 +71,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var label1: UILabel = {
         let label = UILabel()
         label.text = "We're reinventing the way you think about parking by creating a network of private spots, now made public."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -97,7 +97,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title2: UILabel = {
         let label = UILabel()
         label.text = "Save time"
-        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH2
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -111,7 +111,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var label2: UILabel = {
         let label = UILabel()
         label.text = "Stop wasting your time searching for a parking spot. Simply reserve a driveway and avoid the hassle."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -137,7 +137,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var title3: UILabel = {
         let label = UILabel()
         label.text = "Choose Drivewayz"
-        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH2
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -151,7 +151,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     lazy var label3: UILabel = {
         let label = UILabel()
         label.text = "One Goal, One Passion - Smarter Parking."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -207,7 +207,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH4
         button.alpha = 0
         button.addTarget(self, action: #selector(moveToNextController(sender:)), for: .touchUpInside)
         
@@ -223,7 +223,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH4
         button.alpha = 0
         button.addTarget(self, action: #selector(moveBackController(sender:)), for: .touchUpInside)
         
@@ -235,7 +235,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         label.text = "Let's start with your name"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        label.font = Fonts.SSPLightH2
         label.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         label.clipsToBounds = false
         label.isEditable = false
@@ -247,7 +247,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var phoneNumberTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "(303) 555-1234"
         field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -263,7 +263,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         label.text = "+1"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        label.font = Fonts.SSPLightH2
         label.alpha = 0
         
         return label
@@ -290,7 +290,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var verificationTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "• • • • • •"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -304,7 +304,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var emailTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "drivewayz@example.com"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -319,7 +319,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var nameField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "John Appleseed"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -333,7 +333,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var passwordField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "••••••••"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -348,7 +348,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var repeatPasswordField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "••••••••"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -366,7 +366,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.setTitle("Please enter your full name", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH2
         button.layer.cornerRadius = 20
         button.alpha = 0
         button.isUserInteractionEnabled = false
@@ -391,7 +391,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.setTitle("Sign in with Facebook", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.addTarget(self, action: #selector(facebookSignUp), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         
         return button
     }()
@@ -425,7 +425,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.alpha = 0
         button.addTarget(self, action: #selector(signUpWithEmail(sender:)), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         
         return button
     }()
@@ -912,7 +912,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                         self.nextButtonHeightAnchor.constant = 50
                         self.nextButtonWidthAnchor.constant = 240
                         self.nextButton.layer.cornerRadius = 25
-                        self.nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+                        self.nextButton.titleLabel?.font = Fonts.SSPLightH2
                         self.nextButton.setTitleColor(Theme.WHITE, for: .normal)
                         self.nextButton.backgroundColor = Theme.SEA_BLUE
                         self.backButton.alpha = 1
@@ -1048,7 +1048,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.nextButtonHeightAnchor.constant = 40
                     self.nextButtonWidthAnchor.constant = 160
                     self.nextButton.layer.cornerRadius = 20
-                    self.nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+                    self.nextButton.titleLabel?.font = Fonts.SSPLightH3
                     self.nextButton.setTitleColor(Theme.SEA_BLUE, for: .normal)
                     self.nextButton.backgroundColor = UIColor.clear
                     self.backButton.alpha = 1

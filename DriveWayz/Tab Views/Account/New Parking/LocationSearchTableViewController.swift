@@ -56,11 +56,11 @@ class LocationSearchTableViewController: UITableViewController {
 
 extension LocationSearchTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if matchingItems.count > 4 {
+        if matchingItems.count > 1 {
             DispatchQueue.main.async {
                 self.view.alpha = 1
             }
-            return 4
+            return 1
         } else if matchingItems.count == 0 {
             self.view.alpha = 0
             return 0
@@ -119,7 +119,7 @@ extension LocationSearchTableViewController {
                 }
             }
             if let country = splitAddress.dropFirst().dropFirst().dropFirst().first {
-                self.delegate?.handleCountryAddress(text: String(country))
+                self.delegate?.handleCountryAddress(text: String(country.dropFirst()))
             }
         } else {
             self.delegate?.handleStreetAddress(text: address)

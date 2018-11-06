@@ -52,6 +52,9 @@
 		4D45073C21377F34005CD8D7 /* NewUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45073B21377F34005CD8D7 /* NewUsersViewController.swift */; };
 		4D45074021379932005CD8D7 /* ProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45073F21379932005CD8D7 /* ProfitsViewController.swift */; };
 		4D4D728F217945FF00D936DB /* ParkingMessageOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4D728E217945FF00D936DB /* ParkingMessageOptionsViewController.swift */; };
+		4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4E6931218A75C200E5D18A /* BusinessPicturesViewController.swift */; };
+		4D4E6934218B4D6500E5D18A /* BecomeHostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4E6933218B4D6500E5D18A /* BecomeHostViewController.swift */; };
+		4D4E6936218B566A00E5D18A /* StartHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4E6935218B566A00E5D18A /* StartHostingViewController.swift */; };
 		4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */; };
 		4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */; };
 		4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */; };
@@ -93,7 +96,6 @@
 		4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492920F018D300F00B3B /* MyAPIClient.swift */; };
 		4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA492A20F018D400F00B3B /* SettingsViewController.swift */; };
 		4DCC6C0121134D3200AEEF35 /* LaunchAnimationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */; };
-		4DCC6C03211354A300AEEF35 /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */; };
 		4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */; };
 		4DCDCD162173CE5C00E9E704 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCDCD152173CE5C00E9E704 /* ChatMessageCell.swift */; };
 		4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */; };
@@ -105,6 +107,20 @@
 		4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */; };
 		4DD95238218024C10036BB28 /* AmenitiesParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD95237218024C10036BB28 /* AmenitiesParkingViewController.swift */; };
 		4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9768420FE5446002C71BF /* PurchaseViewController.swift */; };
+		4DE49005218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FF8218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf */; };
+		4DE49006218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FF9218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf */; };
+		4DE49007218BF09000171BB8 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFA218BF09000171BB8 /* SourceSansPro-Regular.ttf */; };
+		4DE49008218BF09000171BB8 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFB218BF09000171BB8 /* SourceSansPro-Bold.ttf */; };
+		4DE49009218BF09000171BB8 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFC218BF09000171BB8 /* SourceSansPro-LightItalic.ttf */; };
+		4DE4900A218BF09000171BB8 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFD218BF09000171BB8 /* SourceSansPro-Light.ttf */; };
+		4DE4900B218BF09000171BB8 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFE218BF09000171BB8 /* SourceSansPro-Black.ttf */; };
+		4DE4900C218BF09000171BB8 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4DE48FFF218BF09000171BB8 /* OFL.txt */; };
+		4DE4900D218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49000218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf */; };
+		4DE4900E218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49001218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf */; };
+		4DE4900F218BF09000171BB8 /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49002218BF09000171BB8 /* SourceSansPro-SemiBold.ttf */; };
+		4DE49010218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49003218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf */; };
+		4DE49011218BF09000171BB8 /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49004218BF09000171BB8 /* SourceSansPro-Italic.ttf */; };
+		4DE49013218BF1AD00171BB8 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE49012218BF1AD00171BB8 /* Utility.swift */; };
 		4DE78F58216C5D8D00B99835 /* SendNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */; };
 		4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */; };
 		4DFB2675217164B10081502B /* MessageOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB2674217164B10081502B /* MessageOptionsViewController.swift */; };
@@ -179,6 +195,9 @@
 		4D45073B21377F34005CD8D7 /* NewUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUsersViewController.swift; sourceTree = "<group>"; };
 		4D45073F21379932005CD8D7 /* ProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitsViewController.swift; sourceTree = "<group>"; };
 		4D4D728E217945FF00D936DB /* ParkingMessageOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingMessageOptionsViewController.swift; sourceTree = "<group>"; };
+		4D4E6931218A75C200E5D18A /* BusinessPicturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessPicturesViewController.swift; sourceTree = "<group>"; };
+		4D4E6933218B4D6500E5D18A /* BecomeHostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BecomeHostViewController.swift; sourceTree = "<group>"; };
+		4D4E6935218B566A00E5D18A /* StartHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartHostingViewController.swift; sourceTree = "<group>"; };
 		4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
 		4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -221,7 +240,6 @@
 		4DCA492920F018D300F00B3B /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		4DCA492A20F018D400F00B3B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAnimationsViewController.swift; sourceTree = "<group>"; };
-		4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
 		4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4DCDCD152173CE5C00E9E704 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatMessageCell.swift; path = ../../../CollegeFeed/CollegeFeed/ChatMessageCell.swift; sourceTree = "<group>"; };
 		4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicles.swift; sourceTree = "<group>"; };
@@ -235,6 +253,20 @@
 		4DD95237218024C10036BB28 /* AmenitiesParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenitiesParkingViewController.swift; sourceTree = "<group>"; };
 		4DD9768420FE5446002C71BF /* PurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		4DE2D6AE20CCAB2000A07A37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = /Users/tjcagle/Desktop/COAD/Apps/DriveWayz/DriveWayz/Info.plist; sourceTree = "<absolute>"; };
+		4DE48FF8218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
+		4DE48FF9218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		4DE48FFA218BF09000171BB8 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
+		4DE48FFB218BF09000171BB8 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
+		4DE48FFC218BF09000171BB8 /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; };
+		4DE48FFD218BF09000171BB8 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
+		4DE48FFE218BF09000171BB8 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
+		4DE48FFF218BF09000171BB8 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		4DE49000218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
+		4DE49001218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; };
+		4DE49002218BF09000171BB8 /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
+		4DE49003218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		4DE49004218BF09000171BB8 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
+		4DE49012218BF1AD00171BB8 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNotificationsViewController.swift; sourceTree = "<group>"; };
 		4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHostingViewController.swift; sourceTree = "<group>"; };
 		4DFB2674217164B10081502B /* MessageOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageOptionsViewController.swift; sourceTree = "<group>"; };
@@ -312,6 +344,7 @@
 				4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */,
 				4D21D2FC20CC9FF9002D7005 /* Extensions.swift */,
 				4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */,
+				4DE49012218BF1AD00171BB8 /* Utility.swift */,
 				4D6A5A7320CD976C00F404A7 /* Theme.swift */,
 				4D2EB5C121016EED004AEA54 /* ParkingStatus.swift */,
 			);
@@ -516,7 +549,9 @@
 			children = (
 				4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */,
 				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
+				4D4E6933218B4D6500E5D18A /* BecomeHostViewController.swift */,
 				4DC261B02145E05B00D6DCD3 /* ConfigureParkingViewController.swift */,
+				4D4E6935218B566A00E5D18A /* StartHostingViewController.swift */,
 				4D74C3CA217F9A96008DC0F9 /* ParkingTypeViewController.swift */,
 				4D8EA26721816AE800F6469C /* ParkingOptionsTableViewController.swift */,
 				4D74C3CC217F9EC4008DC0F9 /* SpotNumberViewController.swift */,
@@ -525,6 +560,7 @@
 				4D8EA26521813F6A00F6469C /* LocationSearchTableViewController.swift */,
 				4DB79B5C2187DDC800928C7F /* MapParkingViewController.swift */,
 				4DB79B5E2188091800928C7F /* SpotPicturesViewController.swift */,
+				4D4E6931218A75C200E5D18A /* BusinessPicturesViewController.swift */,
 				4DC261B3214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift */,
 				4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */,
 				4D035F4721476BB100A380B8 /* PickCostViewController.swift */,
@@ -546,8 +582,8 @@
 		4DCCF9EB20CCA66100B70577 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				4DE48FF7218BF09000171BB8 /* Source_Sans_Pro */,
 				4D21D2F120CC9FF9002D7005 /* Assets.xcassets */,
-				4DCC6C022113548300AEEF35 /* Oswald-ExtraLight.ttf */,
 				4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */,
 				4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */,
 			);
@@ -571,6 +607,26 @@
 				4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */,
 			);
 			path = "Handle Notifications";
+			sourceTree = "<group>";
+		};
+		4DE48FF7218BF09000171BB8 /* Source_Sans_Pro */ = {
+			isa = PBXGroup;
+			children = (
+				4DE48FF8218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf */,
+				4DE48FF9218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf */,
+				4DE48FFA218BF09000171BB8 /* SourceSansPro-Regular.ttf */,
+				4DE48FFB218BF09000171BB8 /* SourceSansPro-Bold.ttf */,
+				4DE48FFC218BF09000171BB8 /* SourceSansPro-LightItalic.ttf */,
+				4DE48FFD218BF09000171BB8 /* SourceSansPro-Light.ttf */,
+				4DE48FFE218BF09000171BB8 /* SourceSansPro-Black.ttf */,
+				4DE48FFF218BF09000171BB8 /* OFL.txt */,
+				4DE49000218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf */,
+				4DE49001218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf */,
+				4DE49002218BF09000171BB8 /* SourceSansPro-SemiBold.ttf */,
+				4DE49003218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf */,
+				4DE49004218BF09000171BB8 /* SourceSansPro-Italic.ttf */,
+			);
+			path = Source_Sans_Pro;
 			sourceTree = "<group>";
 		};
 		4DFFC25E210C9965006D6062 /* Old Payment */ = {
@@ -707,13 +763,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DCC6C03211354A300AEEF35 /* Oswald-ExtraLight.ttf in Resources */,
+				4DE4900C218BF09000171BB8 /* OFL.txt in Resources */,
+				4DE4900A218BF09000171BB8 /* SourceSansPro-Light.ttf in Resources */,
+				4DE49005218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf in Resources */,
+				4DE4900F218BF09000171BB8 /* SourceSansPro-SemiBold.ttf in Resources */,
 				4D26EE6120E5C5DB00E369EF /* ParkingTableViewCell.xib in Resources */,
+				4DE49010218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf in Resources */,
 				4D21D2E220CC9FC4002D7005 /* LaunchScreen.storyboard in Resources */,
+				4DE49006218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
+				4DE4900E218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf in Resources */,
+				4DE4900B218BF09000171BB8 /* SourceSansPro-Black.ttf in Resources */,
+				4DE4900D218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf in Resources */,
+				4DE49007218BF09000171BB8 /* SourceSansPro-Regular.ttf in Resources */,
 				4D21D2DD20CC9FC3002D7005 /* Main.storyboard in Resources */,
+				4DE49011218BF09000171BB8 /* SourceSansPro-Italic.ttf in Resources */,
 				4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */,
 				4D42F8C920CCA6AA005A95BB /* Default-568h@2x.png in Resources */,
+				4DE49008218BF09000171BB8 /* SourceSansPro-Bold.ttf in Resources */,
 				4D21D31820CC9FF9002D7005 /* Assets.xcassets in Resources */,
+				4DE49009218BF09000171BB8 /* SourceSansPro-LightItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,6 +920,7 @@
 				4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */,
 				4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */,
 				4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */,
+				4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */,
 				4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */,
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
@@ -869,6 +938,7 @@
 				4DBC151B2142FEE3003CBED7 /* NotifyUpcomingViewController.swift in Sources */,
 				4D21D32F20CC9FF9002D7005 /* AccountNavViewController.swift in Sources */,
 				4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */,
+				4DE49013218BF1AD00171BB8 /* Utility.swift in Sources */,
 				4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */,
 				4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */,
 				4D74C3CD217F9EC4008DC0F9 /* SpotNumberViewController.swift in Sources */,
@@ -885,6 +955,7 @@
 				4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
 				4DC261B12145E05B00D6DCD3 /* ConfigureParkingViewController.swift in Sources */,
+				4D4E6936218B566A00E5D18A /* StartHostingViewController.swift in Sources */,
 				4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */,
 				4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */,
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
@@ -929,6 +1000,7 @@
 				4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */,
 				4DB8F1322150AE4200FC11BD /* HostingViewController.swift in Sources */,
 				4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */,
+				4D4E6934218B4D6500E5D18A /* BecomeHostViewController.swift in Sources */,
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */,

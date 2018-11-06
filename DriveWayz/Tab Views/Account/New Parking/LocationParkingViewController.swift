@@ -36,7 +36,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Country/Region"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -45,7 +45,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "United States"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.BLACK
         
@@ -65,7 +65,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Street Address"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -74,7 +74,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "123 Kennedy Ave."
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.returnKeyType = .done
@@ -97,7 +97,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "City"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -106,7 +106,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Philadelphia"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -127,7 +127,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "State"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -136,7 +136,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Pennsylvania"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -157,7 +157,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Zipcode"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -166,7 +166,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "19146"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)

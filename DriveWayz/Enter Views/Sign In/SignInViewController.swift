@@ -67,7 +67,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         label.text = "Drivewayz"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 40, weight: .light)
+        label.font = Fonts.SSPLightH0
         label.textAlignment = .center
         
         return label
@@ -78,7 +78,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Sign in", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH4
         button.alpha = 0
         button.addTarget(self, action: #selector(signInButtonPressed(sender:)), for: .touchUpInside)
         
@@ -91,7 +91,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         button.setTitle("Create a new account", for: .normal)
 //        button.setTitleColor(UIColor(red: 156/255, green: 166/255, blue: 176/255, alpha: 1), for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.alpha = 0
         button.addTarget(self, action: #selector(methodButtonPressed(sender:)), for: .touchUpInside)
         
@@ -130,7 +130,7 @@ class SignInViewController: UIViewController, handleSignInViews {
         label.text = "Sign in"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = Fonts.SSPBoldH2
         label.alpha = 0
         
         return label

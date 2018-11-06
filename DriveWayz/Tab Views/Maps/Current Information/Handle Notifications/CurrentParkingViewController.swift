@@ -37,7 +37,7 @@ class CurrentParkingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.SEA_BLUE
         label.textAlignment = .left
         

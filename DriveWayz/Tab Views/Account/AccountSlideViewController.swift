@@ -19,13 +19,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    enum emailConfirmation {
-        case confirmed
-        case unconfirmed
-    }
-    var emailConfirmed: emailConfirmation = .unconfirmed
-    
-    var options: [String] = ["Home", "Reservations", "Hosting", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
+    var options: [String] = ["Home", "Reservations", "Become a host", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
     var terms: [String] = ["Terms"]
     var optionsImages: [UIImage] = [UIImage(named: "Home")!, UIImage(named: "parkingIcon")!, UIImage(named: "analytics")!, UIImage(named: "vehicle")!, UIImage(named: "account")!, UIImage(named: "coupon")!, UIImage(named: "contactUs")!, UIImage(named: "logout")!, UIImage(named: "terms")!]
     let cellId = "cellId"
@@ -38,8 +32,32 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.layer.shadowOpacity = 0.8
         view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
-//        view.roundCorners(corners: .topLeft, radius: 10)
         view.backgroundColor = Theme.SEA_BLUE
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
+    lazy var shadowContainer: UIView = {
+        let view = UIView()
+        view.layer.shadowRadius = 5
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: -1, height: 1)
+        view.layer.shadowOpacity = 0.8
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        
+        return view
+    }()
+    
+    lazy var darkContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().darkBlurColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
+        background.zPosition = -10
+        view.layer.insertSublayer(background, at: 0)
         
         return view
     }()
@@ -75,7 +93,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileName.translatesAutoresizingMaskIntoConstraints = false
         profileName.textColor = Theme.WHITE
         profileName.textAlignment = .center
-        profileName.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        profileName.font = Fonts.SSPSemiBoldH1
         profileName.text = "Name"
         
         return profileName
@@ -126,7 +144,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         label.text = "Analytics"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        label.font = Fonts.SSPBoldH1
         label.alpha = 0
         
         return label
@@ -176,13 +194,25 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         blurEffectView.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
         blurEffectView.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
         
+        let back = UIButton()
+        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: -90, unit: .degrees))
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        back.setImage(tintedImage, for: .normal)
+        back.tintColor = Theme.WHITE
+        back.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(back)
+        back.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+        back.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 4).isActive = true
+        back.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        back.heightAnchor.constraint(equalTo: button.heightAnchor, constant: -16).isActive = true
+        
         let label = UILabel()
         label.text = "Invite a friend and get 10% off!"
         label.textColor = Theme.WHITE
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPSemiBoldH4
         label.translatesAutoresizingMaskIntoConstraints = false
         button.addSubview(label)
-        label.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 12).isActive = true
+        label.leftAnchor.constraint(equalTo: back.rightAnchor, constant: -4).isActive = true
         label.rightAnchor.constraint(equalTo: button.rightAnchor).isActive = true
         label.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
         label.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
@@ -206,7 +236,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         setHomeIndex()
         checkForMarks()
         checkForUpcoming()
-//        configureOptions()
+        configureHosts()
     }
 
     override func didReceiveMemoryWarning() {
@@ -222,11 +252,23 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func setupMainView() {
         
-        self.view.addSubview(container)
-        container.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5).isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        container.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
-        container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.view.addSubview(shadowContainer)
+        shadowContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5).isActive = true
+        shadowContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        shadowContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
+        shadowContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        
+        shadowContainer.addSubview(container)
+        container.leftAnchor.constraint(equalTo: shadowContainer.leftAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: shadowContainer.bottomAnchor).isActive = true
+        container.rightAnchor.constraint(equalTo: shadowContainer.rightAnchor).isActive = true
+        container.topAnchor.constraint(equalTo: shadowContainer.topAnchor).isActive = true
+        
+        container.addSubview(darkContainer)
+        darkContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5).isActive = true
+        darkContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        darkContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
+        darkContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
@@ -452,13 +494,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             self.previousCell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             self.previousCell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             self.previousCell.backgroundColor = UIColor.clear
-            self.previousCell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.previousCell.messageTextView.font = Fonts.SSPRegularH5
         }
         if let cell = optionsTableView.cellForRow(at: indexPath) as? OptionsCell {
             cell.messageTextView.textColor = Theme.BLACK
             cell.imageView?.tintColor = Theme.PACIFIC_BLUE
             cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
-            cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            cell.messageTextView.font = Fonts.SSPSemiBoldH5
             self.previousCell = cell
         }
         if tableView == optionsTableView {
@@ -468,17 +510,15 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             } else if options[indexPath.row] == "Hosting" {
                 self.openAccountView()
                 self.delegate?.bringHostingController()
+            } else if options[indexPath.row] == "Become a host" {
+                self.openAccountView()
+                self.delegate?.bringNewHostingController()
             } else if options[indexPath.row] == "Vehicle" {
                 self.openAccountView()
                 self.delegate?.bringVehicleController()
             } else if options[indexPath.row] == "Messages" {
-                if self.emailConfirmed == .confirmed {
-                    self.openAccountView()
-                    self.delegate?.bringAnalyticsController()
-                } else {
-                    self.openAccountView()
-                    self.delegate?.bringMessagesController()
-                }
+                self.openAccountView()
+                self.delegate?.bringMessagesController()
             } else if options[indexPath.row] == "Coupons" {
                 self.delegate?.moveToMap()
                 self.delegate?.bringCouponsController()
@@ -502,7 +542,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             cell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             cell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             cell.backgroundColor = UIColor.clear
-            cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            cell.messageTextView.font = Fonts.SSPRegularH5
         }
     }
     
@@ -546,37 +586,27 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             self.previousCell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             self.previousCell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             self.previousCell.backgroundColor = UIColor.clear
-            self.previousCell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            self.previousCell.messageTextView.font = Fonts.SSPRegularH5
         }
         if let cell = optionsTableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? OptionsCell {
             cell.messageTextView.textColor = Theme.BLACK
             cell.imageView?.tintColor = Theme.PACIFIC_BLUE
             cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
-            cell.messageTextView.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            cell.messageTextView.font = Fonts.SSPSemiBoldH5
             self.previousCell = cell
         }
     }
     
-    func configureOptions() {
-        guard let currentUser = Auth.auth().currentUser?.email else { return }
-        let ref = Database.database().reference().child("ConfirmedEmails")
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String] {
-                let count = dictionary.count
-                for i in 0..<count {
-                    let email = dictionary[i]
-                    if email == currentUser {
-                        self.emailConfirmed = .confirmed
-                        self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
-                        self.optionsTableView.reloadData()
-                        return
-                    } else {
-                        self.emailConfirmed = .unconfirmed
-                        self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
-                        self.optionsTableView.reloadData()
-                    }
-                }
-            }
+    func configureHosts() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(currentUser).child("Parking")
+        ref.observe(.childAdded) { (snapshot) in
+            self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+            self.optionsTableView.reloadData()
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.options = ["Home", "Reservations", "Become a host", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+            self.optionsTableView.reloadData()
         }
     }
     

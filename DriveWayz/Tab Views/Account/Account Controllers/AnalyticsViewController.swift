@@ -78,7 +78,7 @@ class AnalyticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "New Users"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        label.font = Fonts.SSPRegularH2
         
         return label
     }()
@@ -97,7 +97,7 @@ class AnalyticsViewController: UIViewController {
         label.text = "Total users"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH4
         
         return label
     }()
@@ -107,7 +107,7 @@ class AnalyticsViewController: UIViewController {
         label.text = "Total hosts"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH4
         
         return label
     }()

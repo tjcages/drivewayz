@@ -36,7 +36,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleLicensePlate.borderColor = Theme.BLACK
         vehicleLicensePlate.placeholder = "Enter a Valid License Plate Number"
         vehicleLicensePlate.textColor = Theme.DARK_GRAY
-        vehicleLicensePlate.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        vehicleLicensePlate.font = Fonts.SSPLightH4
         vehicleLicensePlate.translatesAutoresizingMaskIntoConstraints = false
         vehicleLicensePlate.textAlignment = .center
         
@@ -49,7 +49,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleYear.borderColor = Theme.BLACK
         vehicleYear.placeholder = "Enter the Vehicle Year"
         vehicleYear.textColor = Theme.DARK_GRAY
-        vehicleYear.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        vehicleYear.font = Fonts.SSPLightH4
         vehicleYear.translatesAutoresizingMaskIntoConstraints = false
         
         return vehicleYear
@@ -61,7 +61,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleModel.borderColor = Theme.BLACK
         vehicleModel.placeholder = "Enter the Vehicle Model"
         vehicleModel.textColor = Theme.DARK_GRAY
-        vehicleModel.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        vehicleModel.font = Fonts.SSPLightH4
         vehicleModel.translatesAutoresizingMaskIntoConstraints = false
         
         return vehicleModel
@@ -73,7 +73,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         vehicleMake.borderColor = Theme.BLACK
         vehicleMake.placeholder = "Enter the Vehicle Maker"
         vehicleMake.textColor = Theme.DARK_GRAY
-        vehicleMake.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        vehicleMake.font = Fonts.SSPLightH4
         vehicleMake.translatesAutoresizingMaskIntoConstraints = false
         
         return vehicleMake
@@ -400,7 +400,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         label.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         label.textAlignment = .center
         label.textColor = Theme.SEA_BLUE
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = Fonts.SSPRegularH3
         label.text = colorValues[row] as? String
         view.addSubview(label)
         

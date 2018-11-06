@@ -25,7 +25,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         label.text = "Please enter in some basic vehicle information. This information will only be available to hosts that you are currently parking with."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4
         label.textAlignment = .center
         
@@ -64,7 +64,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var addLabel: UILabel = {
         let addLabel = UILabel()
         addLabel.text = "Add a new Vehicle"
-        addLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        addLabel.font = Fonts.SSPSemiBoldH5
         addLabel.textColor = Theme.DARK_GRAY
         addLabel.translatesAutoresizingMaskIntoConstraints = false
         addLabel.textAlignment = .center
@@ -77,7 +77,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var vehicleInfo: UILabel = {
         let vehicleInfo = UILabel()
         vehicleInfo.text = "Vehicle Info"
-        vehicleInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        vehicleInfo.font = Fonts.SSPSemiBoldH5
         vehicleInfo.textColor = Theme.DARK_GRAY
         vehicleInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleInfo.contentMode = .left
@@ -89,7 +89,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var vehicleLicenseInfo: UILabel = {
         let vehicleLicenseInfo = UILabel()
         vehicleLicenseInfo.text = "License Plate"
-        vehicleLicenseInfo.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        vehicleLicenseInfo.font = Fonts.SSPSemiBoldH5
         vehicleLicenseInfo.textColor = Theme.SEA_BLUE
         vehicleLicenseInfo.translatesAutoresizingMaskIntoConstraints = false
         vehicleLicenseInfo.contentMode = .left

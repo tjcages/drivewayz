@@ -35,7 +35,7 @@ var currentButton: UIButton = {
     button.layer.cornerRadius = 5
     button.alpha = 0
     button.setTitle("Current Parking", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    button.titleLabel?.font = Fonts.SSPSemiBoldH5
     button.titleLabel?.textColor = Theme.WHITE
     
     return button
@@ -220,7 +220,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("", for: .normal)
         view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.font = Fonts.SSPSemiBoldH5
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
@@ -236,7 +236,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("", for: .normal)
         view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.font = Fonts.SSPSemiBoldH5
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.PACIFIC_BLUE
@@ -263,7 +263,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         label.text = "Swipe up for more info, down to dismiss"
         label.textColor = Theme.WHITE
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.alpha = 0
         
@@ -553,7 +553,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, UNUserNoti
         let parkingLabel = UILabel()
         parkingLabel.text = "Parking:"
         parkingLabel.textColor = UIColor.white
-        parkingLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        parkingLabel.font = Fonts.SSPBoldH2
         parkingLabel.translatesAutoresizingMaskIntoConstraints = false
         parkingLabel.textAlignment = .center
         parkingView.addSubview(parkingLabel)

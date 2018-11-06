@@ -177,7 +177,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileName.layer.masksToBounds = false
         profileName.clipsToBounds = false
         profileName.contentMode = .topLeft
-        profileName.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        profileName.font = Fonts.SSPSemiBoldH2
         
         return profileName
     }()
@@ -255,7 +255,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
         info.setTitle("Profile", for: .normal)
-        info.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        info.titleLabel?.font = Fonts.SSPSemiBoldH4
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
         info.addTarget(self, action: #selector(recentPressed(sender:)), for: .touchUpInside)
@@ -268,7 +268,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         availability.translatesAutoresizingMaskIntoConstraints = false
         availability.backgroundColor = UIColor.clear
         availability.setTitle("Hosting", for: .normal)
-        availability.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        availability.titleLabel?.font = Fonts.SSPSemiBoldH4
         availability.setTitleColor(Theme.DARK_GRAY, for: .normal)
         availability.titleLabel?.textAlignment = .center
         availability.addTarget(self, action: #selector(parkingPressed(sender:)), for: .touchUpInside)
@@ -281,7 +281,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
         reviews.setTitle("Vehicle", for: .normal)
-        reviews.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        reviews.titleLabel?.font = Fonts.SSPSemiBoldH4
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center
         reviews.addTarget(self, action: #selector(vehiclePressed(sender:)), for: .touchUpInside)

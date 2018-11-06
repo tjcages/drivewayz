@@ -144,7 +144,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("", for: .normal)
         view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.font = Fonts.SSPSemiBoldH5
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
@@ -160,7 +160,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         label.text = "Swipe up for more info, down to dismiss"
         label.textColor = Theme.WHITE
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.layer.cornerRadius = 20
@@ -175,7 +175,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         label.backgroundColor = Theme.WHITE
         label.alpha = 0
         label.text = "Start Navigation"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.layer.shadowColor = Theme.HARMONY_RED.cgColor
@@ -571,7 +571,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func sendNewHost() {
-        self.vehicleDelegate?.bringNewHostingController(parkingImage: .noImage)
+        self.vehicleDelegate?.bringNewHostingController()
     }
     
     

@@ -38,7 +38,7 @@ class UserUpcomingViewController: UIViewController {
         label.text = "Upcoming"
         label.textColor = Theme.WHITE
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -78,7 +78,7 @@ class UserUpcomingViewController: UIViewController {
     var fromToLabel: UILabel = {
         let label = UILabel()
         label.text = "From to To"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

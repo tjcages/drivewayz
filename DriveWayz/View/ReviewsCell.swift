@@ -44,7 +44,7 @@ class ReviewsCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -55,7 +55,7 @@ class ReviewsCell: UICollectionViewCell {
         let reviewLabel = UITextView()
         reviewLabel.textAlignment = .left
         reviewLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        reviewLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        reviewLabel.font = Fonts.SSPRegularH6
         reviewLabel.text = "There have not been any reviews for this spot yet."
         reviewLabel.isEditable = false
         reviewLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +66,7 @@ class ReviewsCell: UICollectionViewCell {
     var date: UITextField = {
         let label = UITextField()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.PACIFIC_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right

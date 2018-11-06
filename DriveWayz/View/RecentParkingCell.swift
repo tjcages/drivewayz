@@ -43,7 +43,7 @@ class RecentParkingCell: UICollectionViewCell {
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
-        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.text = "Address"
         label.isEditable = false
         label.isUserInteractionEnabled = false
@@ -56,7 +56,7 @@ class RecentParkingCell: UICollectionViewCell {
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = Fonts.SSPRegularH6
         label.text = "Hours spent"
         label.isEditable = false
         label.isUserInteractionEnabled = false
@@ -69,7 +69,7 @@ class RecentParkingCell: UICollectionViewCell {
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.SEA_BLUE
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = Fonts.SSPRegularH6
         label.text = "Total cost"
         label.isEditable = false
         label.isUserInteractionEnabled = false
@@ -82,7 +82,7 @@ class RecentParkingCell: UICollectionViewCell {
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.PACIFIC_BLUE
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = Fonts.SSPRegularH6
         label.text = "- hourly cost"
         label.isEditable = false
         label.isUserInteractionEnabled = false

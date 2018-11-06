@@ -36,7 +36,7 @@ protocol controlsAccountOptions {
     func moveToMap()
     func bringUpcomingController()
     func bringHostingController()
-    func bringNewHostingController(parkingImage: ParkingImage)
+    func bringNewHostingController()
     func bringVehicleController()
     func bringNewVehicleController(vehicleStatus: VehicleStatus)
     func bringAnalyticsController()
@@ -63,6 +63,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
     
     var swipe: Int = 1
     var delegate: handleStatusBarHide?
+    
+    enum emailConfirmation {
+        case confirmed
+        case unconfirmed
+    }
+    var emailConfirmed: emailConfirmation = .unconfirmed
     
     lazy var fullBlurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
@@ -146,6 +152,26 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         return button
     }()
     
+    var analyticsButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "analytics") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.SEA_BLUE
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 20
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 1
+        button.layer.shadowOpacity = 0.8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
+        button.addTarget(self, action: #selector(analyticsPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
     lazy var mapController: MapKitViewController = {
         let controller = MapKitViewController()
         self.addChild(controller)
@@ -206,6 +232,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Save Parking"
         controller.delegate = self
+        return controller
+    }()
+    
+    lazy var becomeHostController: BecomeHostViewController = {
+        let controller = BecomeHostViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Become Host"
+//        controller.delegate = self
         return controller
     }()
     
@@ -315,6 +349,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         
         setupViews()
         fetchUser()
+        configureOptions()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -378,6 +413,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         case .iphoneX:
             profile.topAnchor.constraint(equalTo: mapController.view.topAnchor, constant: 45).isActive = true
         }
+        
+        mapController.view.addSubview(analyticsButton)
+        analyticsButton.centerXAnchor.constraint(equalTo: profile.centerXAnchor).isActive = true
+        analyticsButton.topAnchor.constraint(equalTo: profile.bottomAnchor, constant: 12).isActive = true
+        analyticsButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        analyticsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
     }
     
@@ -502,6 +543,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         UIView.animate(withDuration: 0.2) {
             self.map.alpha = 0
             self.profile.alpha = 0
+            self.analyticsButton.alpha = 0
         }
     }
     
@@ -509,6 +551,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         UIView.animate(withDuration: 0.2) {
             self.map.alpha = 1
             self.profile.alpha = 1
+            if self.emailConfirmed == .confirmed {
+                self.analyticsButton.alpha = 1
+            }
         }
     }
     
@@ -583,43 +628,40 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }
     }
     
-    func bringNewHostingController(parkingImage: ParkingImage) {
-//        switch parkingImage {
-//        case .yesImage:
-//            self.newParkingController.view.removeFromSuperview()
-            self.view.layoutIfNeeded()
-            self.view.addSubview(configureParkingController.view)
-            self.addChild(configureParkingController)
-            configureParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            newParkingAnchor = configureParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            newParkingAnchor.isActive = true
-            configureParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            configureParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.accountSlideController.mainLabel.text = ""
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.newParkingAnchor.constant = 0
-                    self.accountSlideController.mainLabel.alpha = 1
-                    self.view.layoutIfNeeded()
-                })
-            }
-//        default:
-//            self.view.addSubview(newParkingController.view)
-//            self.addChild(newParkingController)
-//            newParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//            newParkingAnchor = newParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-//            newParkingAnchor.isActive = true
-//            newParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-//            newParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                self.accountSlideController.mainLabel.text = "New Host"
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    self.newParkingAnchor.constant = 0
-//                    self.accountSlideController.mainLabel.alpha = 1
-//                    self.view.layoutIfNeeded()
-//                })
-//            }
-//        }
+    func bringNewHostingController() {
+        self.view.layoutIfNeeded()
+        self.view.addSubview(configureParkingController.view)
+        self.addChild(configureParkingController)
+        configureParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        newParkingAnchor = configureParkingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+        newParkingAnchor.isActive = true
+        configureParkingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        configureParkingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        
+        self.view.addSubview(becomeHostController.view)
+        self.becomeHostController.view.alpha = 0
+        self.addChild(becomeHostController)
+        becomeHostController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        becomeHostController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        becomeHostController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        becomeHostController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.accountSlideController.mainLabel.alpha = 0
+            self.accountSlideController.mainLabel.text = "Become a host"
+            self.becomeHostController.startAnimations()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.becomeHostController.view.alpha = 1
+            }, completion: { (success) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.newParkingAnchor.constant = 0
+                        self.accountSlideController.mainLabel.alpha = 1
+                        self.view.layoutIfNeeded()
+                    })
+                }
+            })
+        }
     }
     
     func bringVehicleController() {
@@ -782,9 +824,13 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
             self.newParkingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }, completion: { (success) in
+            self.configureParkingController.willMove(toParent: nil)
             self.configureParkingController.view.removeFromSuperview()
-//            self.newParkingController.view.removeFromSuperview()
-            self.accountController.scrollToTop()
+            self.configureParkingController.removeFromParent()
+            self.accountSlideController.setHomeIndex()
+//            self.configureParkingController.view.removeFromSuperview()
+////            self.newParkingController.view.removeFromSuperview()
+//            self.accountController.scrollToTop()
         })
     }
     
@@ -933,6 +979,33 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, mov
         }) { (success) in
             self.delegate?.defaultStatusBar()
         }
+    }
+    
+    
+    func configureOptions() {
+        guard let currentUser = Auth.auth().currentUser?.email else { return }
+        let ref = Database.database().reference().child("ConfirmedEmails")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String] {
+                let count = dictionary.count
+                for i in 0..<count {
+                    let email = dictionary[i]
+                    if email == currentUser {
+                        self.emailConfirmed = .confirmed
+                        self.analyticsButton.alpha = 1
+                        return
+                    } else {
+                        self.emailConfirmed = .unconfirmed
+                        self.analyticsButton.alpha = 0
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func analyticsPressed(sender: UIButton) {
+        self.openAccountView()
+        self.bringAnalyticsController()
     }
     
 }

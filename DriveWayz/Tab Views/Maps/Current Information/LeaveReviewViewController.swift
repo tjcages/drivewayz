@@ -43,7 +43,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         label.text = "Leave a review"
         
@@ -55,7 +55,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.text = "Please leave a review for the host of the parking space and for future users."
         label.numberOfLines = 2
         

@@ -102,7 +102,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         label.text = "Please choose a sign in method"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        label.font = Fonts.SSPLightH2
         label.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         label.clipsToBounds = false
         label.isEditable = false
@@ -114,7 +114,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var emailTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "email"
         field.textAlignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +130,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var passwordField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "password"
         field.textAlignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -168,7 +168,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.layer.cornerRadius = 25
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH2
         button.addTarget(self, action: #selector(loginButtonPressed(sender:)), for: .touchUpInside)
         button.alpha = 0
         
@@ -184,7 +184,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.layer.borderColor = Theme.SEA_BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH2
         button.alpha = 0
         button.addTarget(self, action: #selector(moveToNextController(sender:)), for: .touchUpInside)
         
@@ -194,13 +194,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var backButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Back", for: .normal)
+        button.setTitle("Expand", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         button.backgroundColor = UIColor.clear
         button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.alpha = 0
         button.addTarget(self, action: #selector(moveBackController(sender:)), for: .touchUpInside)
         
@@ -214,7 +214,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.setTitle("Login with Facebook", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.addTarget(self, action: #selector(handleCustomFacebookLogin), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         
         return button
     }()
@@ -225,7 +225,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.backgroundColor = UIColor.clear
         button.setTitle("phone number", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH2
         button.addTarget(self, action: #selector(phoneNumberPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -237,7 +237,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.backgroundColor = UIColor.clear
         button.setTitle("email and password", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH2
         button.addTarget(self, action: #selector(emailPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -266,7 +266,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var phoneNumberTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "(303) 555-1234"
         field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -282,7 +282,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         label.text = "+1"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        label.font = Fonts.SSPLightH2
         label.alpha = 0
         
         return label
@@ -310,7 +310,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var verificationTextField: UITextField = {
         let field = UITextField()
         field.backgroundColor = UIColor.clear
-        field.font = UIFont.systemFont(ofSize: 26, weight: .light)
+        field.font = Fonts.SSPLightH2
         field.placeholder = "• • • • • •"
         field.textAlignment = .center
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -327,7 +327,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         button.setTitle("Please enter a valid phone number", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH4
         button.layer.cornerRadius = 20
         button.alpha = 0
         button.isUserInteractionEnabled = false

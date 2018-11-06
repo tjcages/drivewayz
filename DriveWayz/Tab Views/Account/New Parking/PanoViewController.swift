@@ -61,7 +61,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         let panoLabel = UILabel()
         panoLabel.text = "Please pan around until you can clearly see the parking spot. Try to fit the entire view within the line on the left."
         panoLabel.textColor = UIColor.white
-        panoLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        panoLabel.font = Fonts.SSPSemiBoldH6
         panoLabel.contentMode = .center
         panoLabel.numberOfLines = 4
         panoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -108,7 +108,7 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
         let panoLabel = UILabel()
         panoLabel.text = "Please move the dots to highlight the area for parking. Press confirm when the dots clearly indicate the spot."
         panoLabel.textColor = UIColor.white
-        panoLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        panoLabel.font = Fonts.SSPSemiBoldH6
         panoLabel.contentMode = .center
         panoLabel.numberOfLines = 4
         panoLabel.translatesAutoresizingMaskIntoConstraints = false

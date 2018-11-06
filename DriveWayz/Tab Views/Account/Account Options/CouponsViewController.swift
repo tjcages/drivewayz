@@ -42,7 +42,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         redeemField.text = ""
         redeemField.placeholder = "Enter coupon code"
         redeemField.textColor = Theme.DARK_GRAY
-        redeemField.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        redeemField.font = Fonts.SSPLightH4
         redeemField.translatesAutoresizingMaskIntoConstraints = false
         redeemField.alpha = 0
         
@@ -54,7 +54,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
         label.text = "Current Coupons"
         
@@ -471,7 +471,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.textLabel?.text = Coupons[indexPath.row]
         cell.tag = indexPath.row
         cell.textLabel?.textColor = Theme.DARK_GRAY
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        cell.textLabel?.font = Fonts.SSPRegularH5
         cell.backgroundColor = UIColor.white
         cell.selectionStyle = .gray
     

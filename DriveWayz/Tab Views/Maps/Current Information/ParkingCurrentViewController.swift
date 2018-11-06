@@ -46,7 +46,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
         info.setTitle("Current", for: .normal)
-        info.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        info.titleLabel?.font = Fonts.SSPSemiBoldH5
         info.setTitleColor(Theme.DARK_GRAY, for: .normal)
         info.titleLabel?.textAlignment = .center
         info.addTarget(self, action: #selector(recentPressed(sender:)), for: .touchUpInside)
@@ -82,7 +82,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         availability.translatesAutoresizingMaskIntoConstraints = false
         availability.backgroundColor = UIColor.clear
         availability.setTitle("Details", for: .normal)
-        availability.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        availability.titleLabel?.font = Fonts.SSPSemiBoldH5
         availability.setTitleColor(Theme.DARK_GRAY, for: .normal)
         availability.titleLabel?.textAlignment = .center
         availability.addTarget(self, action: #selector(parkingPressed(sender:)), for: .touchUpInside)
@@ -103,7 +103,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         let label = UITextView()
         label.textAlignment = .left
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.text = "User messages!"
         label.backgroundColor = Theme.WHITE
         label.isEditable = false
@@ -119,7 +119,7 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         reviews.translatesAutoresizingMaskIntoConstraints = false
         reviews.backgroundColor = UIColor.clear
         reviews.setTitle("Payment", for: .normal)
-        reviews.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        reviews.titleLabel?.font = Fonts.SSPSemiBoldH4
         reviews.setTitleColor(Theme.DARK_GRAY, for: .normal)
         reviews.titleLabel?.textAlignment = .center
         reviews.addTarget(self, action: #selector(vehiclePressed(sender:)), for: .touchUpInside)

@@ -28,7 +28,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textColor = Theme.DARK_GRAY
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 30, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -40,7 +40,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textColor = Theme.DARK_GRAY
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 30, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -52,7 +52,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -77,7 +77,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -90,7 +90,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -103,7 +103,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -116,7 +116,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -129,7 +129,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -142,7 +142,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -155,7 +155,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -169,7 +169,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -183,7 +183,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -197,7 +197,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -211,7 +211,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -225,7 +225,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .left
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -238,7 +238,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textColor = Theme.DARK_GRAY
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         
         return label
     }()
@@ -250,7 +250,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.alpha = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPLightH3
         
         return label
     }()
@@ -262,7 +262,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -276,7 +276,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         label.textAlignment = .center
         label.tintColor = Theme.PACIFIC_BLUE
         label.textColor = Theme.DARK_GRAY
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.keyboardType = .numberPad
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -335,7 +335,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         agreement.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         agreement.textAlignment = .center
         agreement.translatesAutoresizingMaskIntoConstraints = false
-        agreement.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        agreement.font = Fonts.SSPRegularH6
         agreement.alpha = 0
         agreement.backgroundColor = UIColor.clear
         agreement.translatesAutoresizingMaskIntoConstraints = false

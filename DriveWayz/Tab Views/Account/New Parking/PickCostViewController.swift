@@ -31,7 +31,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.text = "Please select a price per hour that users will think is cheap and fair. On average hosts near event lots charge $4.50/Hour."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4
         label.textAlignment = .center
         
@@ -43,7 +43,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.text = "Swipe left"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         
         return label
@@ -54,7 +54,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.text = "/Hour"
         label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = Fonts.SSPBoldH3
         label.contentMode = .center
         label.backgroundColor = Theme.WHITE
         
@@ -152,7 +152,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.frame = CGRect(x: 0, y: 0, width: 120, height: 140)
         label.textAlignment = .center
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = Fonts.SSPRegularH3
         
         if expensesListing == 1 {
             label.text = expensiveCostValues[row] as? String

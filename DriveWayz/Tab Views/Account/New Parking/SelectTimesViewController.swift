@@ -187,7 +187,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         calendar.text = "Select the days of availability:"
         calendar.textColor = Theme.BLACK
         calendar.translatesAutoresizingMaskIntoConstraints = false
-        calendar.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        calendar.font = Fonts.SSPSemiBoldH3
         
         return calendar
     }()
@@ -219,7 +219,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        fromLabel.font = Fonts.SSPRegularH4
         fromLabel.contentMode = .center
         pickerView.addSubview(fromLabel)
         
@@ -247,7 +247,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        toLabel.font = Fonts.SSPRegularH4
         toLabel.contentMode = .center
         pickerView.addSubview(toLabel)
         
@@ -422,7 +422,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
             label.textAlignment = .center
             label.textColor = Theme.BLACK
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = Fonts.SSPRegularH3
             label.text = pmTimeValues[row] as? String
             view.addSubview(label)
             
@@ -435,7 +435,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
             label.textAlignment = .center
             label.textColor = Theme.BLACK
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = Fonts.SSPRegularH3
             label.text = amTimeValues[row] as? String
             view.addSubview(label)
             
@@ -632,7 +632,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Monday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -674,7 +674,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         mondayTimeView.addSubview(fromLabel)
         
@@ -693,7 +693,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         mondayTimeView.addSubview(toLabel)
         
@@ -729,7 +729,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Tuesday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -771,7 +771,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         tuesdayTimeView.addSubview(fromLabel)
         
@@ -790,7 +790,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         tuesdayTimeView.addSubview(toLabel)
         
@@ -826,7 +826,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Wednesday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -868,7 +868,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         wednesdayTimeView.addSubview(fromLabel)
         
@@ -887,7 +887,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         wednesdayTimeView.addSubview(toLabel)
         
@@ -923,7 +923,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Thursday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -965,7 +965,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         thursdayTimeView.addSubview(fromLabel)
         
@@ -984,7 +984,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         thursdayTimeView.addSubview(toLabel)
         
@@ -1020,7 +1020,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Friday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1062,7 +1062,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         fridayTimeView.addSubview(fromLabel)
         
@@ -1081,7 +1081,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         fridayTimeView.addSubview(toLabel)
         
@@ -1117,7 +1117,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Saturday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1159,7 +1159,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         saturdayTimeView.addSubview(fromLabel)
         
@@ -1178,7 +1178,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         saturdayTimeView.addSubview(toLabel)
         
@@ -1214,7 +1214,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Sunday:"
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1256,7 +1256,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.BLACK
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         sundayTimeView.addSubview(fromLabel)
         
@@ -1275,7 +1275,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.BLACK
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         sundayTimeView.addSubview(toLabel)
         

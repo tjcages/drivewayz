@@ -60,7 +60,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "24"
@@ -89,7 +89,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "25"
@@ -118,7 +118,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "26"
@@ -147,7 +147,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "27"
@@ -176,7 +176,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "28"
@@ -209,7 +209,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = UIColor.black
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Select the days you want to reserve"
@@ -221,7 +221,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.SEA_BLUE
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Today"
@@ -233,7 +233,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Thursday 24"
@@ -245,7 +245,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.BLACK
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "Friday 25"
@@ -257,7 +257,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let label = UILabel()
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
@@ -270,7 +270,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Please select a full hour to park", for: .normal)
         view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        view.titleLabel?.font = Fonts.SSPSemiBoldH6
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
@@ -284,7 +284,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     lazy var reserveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Select Times", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.backgroundColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -1007,7 +1007,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"

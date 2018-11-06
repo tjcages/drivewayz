@@ -23,7 +23,7 @@ class SpotNumberViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Number of spots"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -32,7 +32,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "1"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = .clear
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
@@ -52,7 +52,7 @@ class SpotNumberViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Does the spot have a number?"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -77,7 +77,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -98,7 +98,7 @@ class SpotNumberViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Gate code?"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -123,7 +123,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
-        view.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -395,7 +395,7 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         }
         label.textColor = Theme.BLACK
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.text = "\(numbers[row])"
         
         return label

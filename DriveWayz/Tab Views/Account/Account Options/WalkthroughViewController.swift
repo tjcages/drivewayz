@@ -37,7 +37,7 @@ class WalkthroughViewController: UIViewController {
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         label.text = "Welcome to Drivewayz"
         
@@ -57,7 +57,7 @@ class WalkthroughViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.text = """
         We're reinventing the way you think about parking by creating a network of private spots, now made public.
         
@@ -75,7 +75,7 @@ class WalkthroughViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.text = "This is your home page. Enter your destination and view nearby parking options."
         label.numberOfLines = 4
         
@@ -98,7 +98,7 @@ class WalkthroughViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.text = "List your empty parking spot here and make quick and easy cash while helping others!"
         label.numberOfLines = 3
         
@@ -121,7 +121,7 @@ class WalkthroughViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.text = "All you need to begin finding cheap parking is upload some information about your vehicle!"
         label.numberOfLines = 3
         

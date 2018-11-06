@@ -22,7 +22,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -38,7 +38,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -54,7 +54,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -70,7 +70,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -86,7 +86,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -102,7 +102,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -118,7 +118,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -134,7 +134,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -150,7 +150,7 @@ class MessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -162,7 +162,7 @@ class MessageOptionsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Not what you're looking for?", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.addTarget(self, action: #selector(sendDifferentOptions(sender:)), for: .touchUpInside)
         
         return button
@@ -175,7 +175,7 @@ class MessageOptionsViewController: UIViewController {
         button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         
         return button
     }()
@@ -193,7 +193,7 @@ class MessageOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textAlignment = .center
         label.text = "In order to speak freely with the host you must first ask their permission for open communications."
         label.numberOfLines = 3
@@ -213,14 +213,14 @@ class MessageOptionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        spotTakenWidth = (spotTaken.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        cantFindWidth = (cantFind.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        pictureNotShowingWidth = (pictureNotShowing.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        incorrectTimeWidth = (incorrectTime.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        carTowedWidth = (carTowed.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        damagedCarWidth = (damagedCar.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        leaveEarlyWidth = (leaveEarly.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        wrongLocationWidth = (wrongLocation.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
+        spotTakenWidth = (spotTaken.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        cantFindWidth = (cantFind.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        pictureNotShowingWidth = (pictureNotShowing.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        incorrectTimeWidth = (incorrectTime.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        carTowedWidth = (carTowed.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        damagedCarWidth = (damagedCar.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        leaveEarlyWidth = (leaveEarly.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        wrongLocationWidth = (wrongLocation.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
         
         setupStackViews()
         setupViews()

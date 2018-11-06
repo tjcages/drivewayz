@@ -22,7 +22,7 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
         label.text = "Here you will be able to see all upcoming parking reservations that you have made."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 3
         label.textAlignment = .center
         

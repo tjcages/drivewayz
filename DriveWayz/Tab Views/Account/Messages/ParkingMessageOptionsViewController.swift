@@ -22,7 +22,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -38,7 +38,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -54,7 +54,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -70,7 +70,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -86,7 +86,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -102,7 +102,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -118,7 +118,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -134,7 +134,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.tag = 0
         button.addTarget(self, action: #selector(optionsButtonPressed(sender:)), for: .touchUpInside)
         
@@ -145,7 +145,7 @@ class ParkingMessageOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.text = "Quick options"
         
         return label
@@ -163,14 +163,14 @@ class ParkingMessageOptionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        spotTakenWidth = (spotTaken.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        cantFindWidth = (cantFind.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        pictureNotShowingWidth = (pictureNotShowing.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        incorrectTimeWidth = (incorrectTime.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        carTowedWidth = (carTowed.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        damagedCarWidth = (damagedCar.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        leaveEarlyWidth = (leaveEarly.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
-        wrongLocationWidth = (wrongLocation.titleLabel?.text?.width(withConstrainedHeight: 40, font: UIFont.systemFont(ofSize: 16, weight: .light)))! + 20
+        spotTakenWidth = (spotTaken.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        cantFindWidth = (cantFind.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        pictureNotShowingWidth = (pictureNotShowing.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        incorrectTimeWidth = (incorrectTime.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        carTowedWidth = (carTowed.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        damagedCarWidth = (damagedCar.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        leaveEarlyWidth = (leaveEarly.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
+        wrongLocationWidth = (wrongLocation.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
         
         setupStackViews()
         setupViews()

@@ -315,7 +315,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var mondayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -339,7 +339,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var tuesdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -363,7 +363,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var wednesdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -387,7 +387,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var thursdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -411,7 +411,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var fridayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -435,7 +435,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var saturdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -459,7 +459,7 @@ class PersonalAvailabilityViewController: UIViewController {
     var sundayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center

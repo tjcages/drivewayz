@@ -113,7 +113,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         let panoLabel = UILabel()
         panoLabel.text = "Please move the dots to highlight the area for parking. Press confirm when the dots clearly indicate the spot."
         panoLabel.textColor = Theme.BLACK
-        panoLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        panoLabel.font = Fonts.SSPSemiBoldH6
         panoLabel.contentMode = .center
         panoLabel.numberOfLines = 4
         panoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -147,7 +147,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         button.layer.shadowOpacity = 0
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Hide dots", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.7), for: .normal)
         button.tintColor = UIColor.white
         button.layer.cornerRadius = 15
@@ -492,12 +492,12 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
             dot3.removeFromSuperview()
             dot4.removeFromSuperview()
             self.shapeLayer.removeFromSuperlayer()
-            self.delegate?.bringNewHostingController(parkingImage: .yesImage)
+            self.delegate?.bringNewHostingController()
         })
     }
     
     func endPano() {
-        self.delegate?.bringNewHostingController(parkingImage: .yesImage)
+        self.delegate?.bringNewHostingController()
     }
     
     @objc func dismissPano() {

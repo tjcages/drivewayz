@@ -66,7 +66,7 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         let label = UILabel()
         label.text = ""
         label.textColor = Theme.BLACK
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         
@@ -160,7 +160,7 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
     var speechCheckLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Closed"
         label.textAlignment = .center
@@ -535,7 +535,7 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)], context: nil)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: Fonts.SSPRegularH5], context: nil)
     }
     
     fileprivate func setupCell(cell: ChatMessageCell, message: Message) {
@@ -556,16 +556,16 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
                     if let lastName: String = fullNameArr.count > 1 ? String(fullNameArr[1]) : nil {
                         var lastCharacter = lastName.chunk(n: 1)
                         self.currentLabel.text = "\(firstName) \(lastCharacter[0])."
-                        self.currentLabel.font = UIFont.systemFont(ofSize: 18, weight: .light)
+                        self.currentLabel.font = Fonts.SSPLightH4
                     } else {
                         self.currentLabel.text = userName
                         if userName == " Drivewayz " {
                             let image = UIImage(named: "background4")
                             self.profileImageView.image = image
-                            self.currentLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+                            self.currentLabel.font = Fonts.SSPSemiBoldH4
                             self.openCommunications(cell: cell)
                         } else {
-                            self.currentLabel.font = UIFont.systemFont(ofSize: 18, weight: .light)
+                            self.currentLabel.font = Fonts.SSPLightH4
                         }
                     }
                 }
@@ -662,8 +662,8 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
         cell.permissionClosed.backgroundColor = .clear
         cell.permissionOpened.setTitleColor(Theme.WHITE, for: .normal)
         cell.permissionClosed.setTitleColor(Theme.BLACK, for: .normal)
-        cell.permissionOpened.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        cell.permissionClosed.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        cell.permissionOpened.titleLabel?.font = Fonts.SSPSemiBoldH3
+        cell.permissionClosed.titleLabel?.font = Fonts.SSPLightH3
         self.messageOptionsController.sendCommunications.setTitle("Open", for: .normal)
         self.messageOptionsController.sendCommunications.backgroundColor = Theme.GREEN_PIGMENT
         self.messageOptionsController.sendCommunicationsWidth.constant = 180
@@ -702,8 +702,8 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
         cell.permissionClosed.backgroundColor = Theme.DARK_GRAY
         cell.permissionOpened.setTitleColor(Theme.BLACK, for: .normal)
         cell.permissionClosed.setTitleColor(Theme.WHITE, for: .normal)
-        cell.permissionClosed.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        cell.permissionOpened.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        cell.permissionClosed.titleLabel?.font = Fonts.SSPSemiBoldH3
+        cell.permissionOpened.titleLabel?.font = Fonts.SSPLightH3
         self.messageOptionsController.sendCommunications.setTitle("Pending...", for: .normal)
         self.messageOptionsController.informationLabel.text = "You must wait for the host's permission before freely communicating."
         self.messageOptionsController.sendCommunications.backgroundColor = Theme.DARK_GRAY

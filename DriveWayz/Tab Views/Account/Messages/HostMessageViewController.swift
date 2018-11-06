@@ -55,7 +55,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
     var userTextView: UITextView = {
         let view = UITextView()
         view.backgroundColor = Theme.WHITE
-        view.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        view.font = Fonts.SSPRegularH5
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         view.text = "Enter message"
         view.translatesAutoresizingMaskIntoConstraints = false

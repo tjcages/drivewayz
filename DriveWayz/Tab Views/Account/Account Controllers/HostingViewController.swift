@@ -24,7 +24,7 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
         label.text = "Make EASY money renting out your driveway while helping people in your community find cheap and easy parking."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4
         label.textAlignment = .center
         
@@ -199,7 +199,7 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
     
     func bringNewHostingController() {
         self.delegate?.hideHostingController()
-        self.delegate?.bringNewHostingController(parkingImage: .noImage)
+        self.delegate?.bringNewHostingController()
     }
     
     func hideNewHostingController() {

@@ -35,7 +35,7 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     var recentLabel: UITextView = {
         let label = UITextView()
         label.text = "Recent parking"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left
@@ -67,7 +67,7 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     var noRecentLabel: UITextView = {
         let label = UITextView()
         label.text = "You have no recent parking"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center

@@ -22,7 +22,7 @@ class UpcomingInfoViewController: UIViewController {
     let labelTitle: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = Fonts.SSPRegularH4
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

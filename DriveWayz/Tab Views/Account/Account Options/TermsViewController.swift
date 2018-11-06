@@ -50,7 +50,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         label.textColor = Theme.DARK_GRAY
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 500
         label.text = "Terms of Service"
         
@@ -136,7 +136,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         textView.rightAnchor.constraint(equalTo: termsContainer.rightAnchor).isActive = true
         textView.topAnchor.constraint(equalTo: termsContainer.topAnchor, constant: 60).isActive = true
         textView.bottomAnchor.constraint(equalTo: termsContainer.bottomAnchor, constant: -60).isActive = true
-        textView.contentSize = CGSize(width: self.view.frame.width-40, height: 10500)
+        textView.contentSize = CGSize(width: self.view.frame.width-40, height: 13500)
         
         textView.addSubview(agreement)
         agreement.topAnchor.constraint(equalTo: textView.topAnchor, constant: 10).isActive = true
@@ -159,7 +159,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func scrollToBottom(sender: UIButton) {
-        let bottomOffset = CGPoint(x: 0, y: 10500 - (self.view.frame.height - 210))
+        let bottomOffset = CGPoint(x: 0, y: 13500 - (self.view.frame.height - 210))
         self.textView.setContentOffset(bottomOffset, animated: true)
     }
     
@@ -177,7 +177,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         label.textAlignment = .left
         label.contentMode = .topLeft
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.numberOfLines = 620
         label.text = """
         Terms and Conditions DriveWayz LLC.
@@ -266,7 +266,7 @@ class TermsViewController: UIViewController, UIScrollViewDelegate {
         label.textAlignment = .left
         label.contentMode = .topLeft
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.numberOfLines = 400
         label.text = """
         

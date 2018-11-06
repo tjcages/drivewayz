@@ -40,7 +40,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
         label.textColor = Theme.WHITE
         label.textAlignment = .right
         label.alpha = 0
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -73,7 +73,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var userName: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.SEA_BLUE
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +84,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var userVehicleLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.DARK_GRAY
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -95,7 +95,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var userLicenseLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.DARK_GRAY
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +106,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var fromToLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +117,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var userPaymentLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.SEA_BLUE
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -128,7 +128,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var userLabel: UILabel = {
         let label = UILabel()
         label.text = "User:"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .left
         label.alpha = 0
@@ -140,7 +140,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var vehicleLabel: UILabel = {
         let label = UILabel()
         label.text = "Vehicle:"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .left
         label.alpha = 0
@@ -152,7 +152,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var licenseLabel: UILabel = {
         let label = UILabel()
         label.text = "License plate:"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .left
         label.alpha = 0
@@ -164,7 +164,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var paymentLabel: UILabel = {
         let label = UILabel()
         label.text = "Payed:"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .left
         label.alpha = 0
@@ -189,7 +189,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     var noCurrentLabel: UILabel = {
         let label = UILabel()
         label.text = "There are no people currently parked in your spot."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center

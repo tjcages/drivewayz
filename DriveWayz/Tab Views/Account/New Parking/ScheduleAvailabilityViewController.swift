@@ -23,7 +23,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         label.text = "It is best to select the maximum amount of days possible to increase the amount of potential profits."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.numberOfLines = 3
         label.textAlignment = .center
         
@@ -35,7 +35,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("M", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -49,7 +49,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("T", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -63,7 +63,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("W", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -77,7 +77,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("T", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -91,7 +91,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("F", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -105,7 +105,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("S", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)
@@ -119,7 +119,7 @@ class ScheduleAvailabilityViewController: UIViewController {
         button.setTitle("S", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.clipsToBounds = true
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(dayPressed(sender:)), for: .touchUpInside)

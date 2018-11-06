@@ -18,21 +18,21 @@ protocol handleStatusBarHide {
 
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
     
-    var morphingLabel: TOMSMorphingLabel = {
-        let label = TOMSMorphingLabel()
+    var morphingLabel: UILabel = {
+        let label = UILabel()
         label.text = "Drivewayz"
-        label.animationDuration = 1.6
         label.textAlignment = .center
         label.textColor = Theme.WHITE
-        label.font = UIFont.systemFont(ofSize: 40, weight: .light)
+        label.font = Fonts.SSPBoldH0
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
+        label.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         
         return label
     }()
     
     var drivewayzCar: UIImageView = {
-        let image = UIImage(named: "DrivewayzCar")
-//        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
+        let image = UIImage(named: "drivewayzLogo")
         let view = UIImageView(image: image)
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
@@ -63,7 +63,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+//        view.backgroundColor = Theme.BLACK
         let background = CAGradientLayer().startColors()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         background.zPosition = -10
@@ -72,9 +73,15 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         self.view.addSubview(drivewayzCar)
         drivewayzCarAnchor = drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -self.view.frame.width)
             drivewayzCarAnchor.isActive = true
-        drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -40).isActive = true
-        drivewayzCar.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        drivewayzCar.widthAnchor.constraint(equalToConstant: 190).isActive = true
+        drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20).isActive = true
+        drivewayzCar.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        drivewayzCar.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        self.view.addSubview(self.morphingLabel)
+        self.morphingLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true
+        self.morphingLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.morphingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.morphingLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 42).isActive = true
         
         self.checkViews()
         
@@ -90,12 +97,10 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.view.layoutIfNeeded()
         }) { (success) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.view.addSubview(self.morphingLabel)
-                self.morphingLabel.topAnchor.constraint(equalTo: self.drivewayzCar.bottomAnchor, constant: -40).isActive = true
-                self.morphingLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-                self.morphingLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-                self.morphingLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 42).isActive = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.morphingLabel.alpha = 1
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                     UIView.animate(withDuration: 0.5, animations: {
                         self.startupAnchor.constant = 0
                         self.drivewayzCar.alpha = 0
@@ -137,7 +142,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.startupController.view.alpha = 0
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.lightContentStatusBar()
+                self.defaultStatusBar()
             }
         }
     }

@@ -29,7 +29,7 @@ class ResultsCell: UITableViewCell {
     var nameTextView: UILabel = {
         let view = UILabel()
         view.text = ""
-        view.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        view.font = Fonts.SSPLightH4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
         

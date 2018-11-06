@@ -45,7 +45,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label1: UILabel = {
         let label = UILabel()
         label.text = "Find parking conveniently and easily. We provide cheaper options compared to conventional parking."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -70,7 +70,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label2: UILabel = {
         let label = UILabel()
         label.text = "Don't waste time anymore searching for parking. Just reserve an open spot and avoid the hassle."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -95,7 +95,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     lazy var label3: UILabel = {
         let label = UILabel()
         label.text = "One goal, one passion - Smarter Parking."
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = Fonts.SSPRegularH5
         label.textColor = UIColor.white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -141,7 +141,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     var loginButton: UIButton = {
        let loginButton = UIButton()
         loginButton.setTitle("Log in", for: .normal)
-        loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        loginButton.titleLabel?.font = Fonts.SSPSemiBoldH2
         loginButton.backgroundColor = UIColor(white: 0.9, alpha: 0.3)
         loginButton.tintColor = Theme.PACIFIC_BLUE
         loginButton.layer.borderColor = UIColor.white.cgColor
@@ -154,7 +154,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     var registerButton: UIButton = {
         let registerButton = UIButton()
         registerButton.setTitle("Register", for: .normal)
-        registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        registerButton.titleLabel?.font = Fonts.SSPSemiBoldH2
         registerButton.backgroundColor = UIColor.clear
         registerButton.tintColor = Theme.PACIFIC_BLUE
         registerButton.layer.borderColor = UIColor.white.cgColor
@@ -169,7 +169,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         orLabel.text = "or"
         orLabel.textColor = UIColor.white
         orLabel.textAlignment = .center
-        orLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        orLabel.font = Fonts.SSPSemiBoldH6
         orLabel.translatesAutoresizingMaskIntoConstraints = false
         return orLabel
     }()
@@ -194,7 +194,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         login.borderColor = Theme.WHITE
         login.placeholder = ""
         login.textColor = Theme.WHITE
-        login.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        login.font = Fonts.SSPLightH4
         login.alpha = 0
         login.translatesAutoresizingMaskIntoConstraints = false
         login.autocapitalizationType = .none
@@ -221,7 +221,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         password.borderColor = Theme.WHITE
         password.placeholder = ""
         password.textColor = Theme.WHITE
-        password.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        password.font = Fonts.SSPLightH4
         password.alpha = 0
         password.translatesAutoresizingMaskIntoConstraints = false
         password.autocapitalizationType = .none
@@ -247,7 +247,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         name.borderColor = Theme.WHITE
         name.placeholder = "First Name"
         name.textColor = Theme.WHITE
-        name.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        name.font = Fonts.SSPLightH4
         name.alpha = 0
         name.translatesAutoresizingMaskIntoConstraints = false
         name.clearButtonMode = .whileEditing
@@ -261,7 +261,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         name.borderColor = Theme.WHITE
         name.placeholder = "Last Name"
         name.textColor = Theme.WHITE
-        name.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        name.font = Fonts.SSPLightH4
         name.alpha = 0
         name.translatesAutoresizingMaskIntoConstraints = false
         name.clearButtonMode = .whileEditing
@@ -275,7 +275,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         email.borderColor = Theme.WHITE
         email.placeholder = "Email"
         email.textColor = Theme.WHITE
-        email.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        email.font = Fonts.SSPLightH4
         email.alpha = 0
         email.translatesAutoresizingMaskIntoConstraints = false
         email.autocapitalizationType = .none
@@ -290,7 +290,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         password.borderColor = Theme.WHITE
         password.placeholder = "Password"
         password.textColor = Theme.WHITE
-        password.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        password.font = Fonts.SSPLightH4
         password.alpha = 0
         password.translatesAutoresizingMaskIntoConstraints = false
         password.isSecureTextEntry = true
@@ -306,7 +306,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         password.borderColor = Theme.WHITE
         password.placeholder = "Repeat Password"
         password.textColor = Theme.WHITE
-        password.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        password.font = Fonts.SSPLightH4
         password.alpha = 0
         password.translatesAutoresizingMaskIntoConstraints = false
         password.isSecureTextEntry = true
@@ -332,7 +332,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     var forgotPassword: UIButton = {
         let forgot = UIButton()
         forgot.setTitle("Forgot Password?", for: .normal)
-        forgot.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        forgot.titleLabel?.font = Fonts.SSPLightH5
         forgot.titleLabel?.textColor = UIColor.white
         forgot.alpha = 0
         forgot.backgroundColor = UIColor.clear

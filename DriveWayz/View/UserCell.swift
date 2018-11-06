@@ -73,15 +73,15 @@ class UserCell: UITableViewCell {
         
         if textLabel?.text == " Drivewayz " {
             textLabel?.textColor = Theme.PACIFIC_BLUE
-            textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+            textLabel?.font = Fonts.SSPSemiBoldH3
         } else {
             textLabel?.textColor = Theme.BLACK
-            textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            textLabel?.font = Fonts.SSPLightH3
         }
         textLabel?.frame = CGRect(x: 74, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width + 10, height: textLabel!.frame.height)
         
         detailTextLabel?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        detailTextLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        detailTextLabel?.font = Fonts.SSPLightH5
         detailTextLabel?.frame = CGRect(x: 74, y: detailTextLabel!.frame.origin.y + 2, width: self.frame.width - 124, height: detailTextLabel!.frame.height)
     }
     
@@ -96,7 +96,7 @@ class UserCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right

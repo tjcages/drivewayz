@@ -73,7 +73,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     var addParkingLabel: UILabel = {
         let addParkingLabel = UILabel()
         addParkingLabel.text = "Add a new Parking Spot"
-        addParkingLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        addParkingLabel.font = Fonts.SSPSemiBoldH5
         addParkingLabel.textColor = Theme.DARK_GRAY
         addParkingLabel.translatesAutoresizingMaskIntoConstraints = false
         addParkingLabel.textAlignment = .center
@@ -98,7 +98,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     var parkingInfo: UITextView = {
         let label = UITextView()
         label.text = "Parking Info"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.textColor = Theme.DARK_GRAY
         label.backgroundColor = UIColor.clear
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     var parkingCost: UITextField = {
         let label = UITextField()
         label.text = "Cost"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.textColor = Theme.SEA_BLUE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left
@@ -126,7 +126,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     var parkingDate: UITextField = {
         let label = UITextField()
         label.text = "Date"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left

@@ -41,7 +41,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         agreement.textColor = Theme.OFF_WHITE
         agreement.textAlignment = .center
         agreement.translatesAutoresizingMaskIntoConstraints = false
-        agreement.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        agreement.font = Fonts.SSPRegularH6
         agreement.alpha = 1
         agreement.backgroundColor = UIColor.clear
         agreement.translatesAutoresizingMaskIntoConstraints = false
@@ -55,7 +55,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         field.borderColor = Theme.WHITE
         field.placeholder = "Enter a helpful message"
         field.textColor = Theme.WHITE
-        field.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        field.font = Fonts.SSPLightH4
         field.translatesAutoresizingMaskIntoConstraints = false
         
         return field
@@ -475,7 +475,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             label.frame = CGRect(x: 0, y: 0, width: 120, height: 140)
             label.textAlignment = .center
             label.textColor = UIColor.white
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = Fonts.SSPRegularH3
             
             if expensesListing == 1 {
                 label.text = expensiveCostValues[row] as? String
@@ -496,7 +496,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
             label.textAlignment = .center
             label.textColor = UIColor.white
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = Fonts.SSPRegularH3
             label.text = pmTimeValues[row] as? String
             view.addSubview(label)
             
@@ -509,7 +509,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
             label.textAlignment = .center
             label.textColor = UIColor.white
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = Fonts.SSPRegularH3
             label.text = amTimeValues[row] as? String
             view.addSubview(label)
             
@@ -941,7 +941,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         costLabel.text = "Cost:"
         costLabel.textColor = Theme.WHITE
         costLabel.translatesAutoresizingMaskIntoConstraints = false
-        costLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        costLabel.font = Fonts.SSPBoldH3
         costLabel.contentMode = .center
         scrollViewParking.addSubview(costLabel)
         
@@ -964,7 +964,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         hourLabel.text = "/Hour"
         hourLabel.textColor = Theme.WHITE
         hourLabel.translatesAutoresizingMaskIntoConstraints = false
-        hourLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        hourLabel.font = Fonts.SSPBoldH3
         hourLabel.contentMode = .center
         scrollViewParking.addSubview(hourLabel)
         
@@ -982,7 +982,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         saveParkingButton = UIButton()
         saveParkingButton.setTitle("Save", for: .normal)
         saveParkingButton.setTitle("", for: .selected)
-        saveParkingButton.titleLabel?.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        saveParkingButton.titleLabel?.font = Fonts.SSPBoldH0
         saveParkingButton.translatesAutoresizingMaskIntoConstraints = false
         saveParkingButton.titleLabel?.textColor = Theme.WHITE
         saveParkingButton.layer.cornerRadius = 30
@@ -1135,7 +1135,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         calendar.text = "Select the days of availability:"
         calendar.textColor = Theme.WHITE
         calendar.translatesAutoresizingMaskIntoConstraints = false
-        calendar.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        calendar.font = Fonts.SSPBoldH3
         
         return calendar
     }()
@@ -1158,7 +1158,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         times.text = "Times:"
         times.textColor = Theme.WHITE
         times.translatesAutoresizingMaskIntoConstraints = false
-        times.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        times.font = Fonts.SSPBoldH3
         times.contentMode = .center
         
         return times
@@ -1178,7 +1178,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH4
         fromLabel.contentMode = .center
         pickerView.addSubview(fromLabel)
         
@@ -1206,7 +1206,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH4
         toLabel.contentMode = .center
         pickerView.addSubview(toLabel)
         
@@ -1262,7 +1262,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Monday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1304,7 +1304,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         mondayTimeView.addSubview(fromLabel)
         
@@ -1323,7 +1323,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         mondayTimeView.addSubview(toLabel)
         
@@ -1359,7 +1359,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Tuesday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1401,7 +1401,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         tuesdayTimeView.addSubview(fromLabel)
         
@@ -1420,7 +1420,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         tuesdayTimeView.addSubview(toLabel)
         
@@ -1456,7 +1456,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Wednesday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1498,7 +1498,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         wednesdayTimeView.addSubview(fromLabel)
         
@@ -1517,7 +1517,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         wednesdayTimeView.addSubview(toLabel)
         
@@ -1553,7 +1553,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Thursday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1595,7 +1595,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         thursdayTimeView.addSubview(fromLabel)
         
@@ -1614,7 +1614,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         thursdayTimeView.addSubview(toLabel)
         
@@ -1650,7 +1650,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Friday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1692,7 +1692,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         fridayTimeView.addSubview(fromLabel)
         
@@ -1711,7 +1711,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         fridayTimeView.addSubview(toLabel)
         
@@ -1747,7 +1747,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Saturday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1789,7 +1789,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         saturdayTimeView.addSubview(fromLabel)
         
@@ -1808,7 +1808,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         saturdayTimeView.addSubview(toLabel)
         
@@ -1844,7 +1844,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         let label = UILabel()
         label.text = "Sunday:"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         
@@ -1886,7 +1886,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         fromLabel.text = "From"
         fromLabel.textColor = Theme.WHITE
         fromLabel.translatesAutoresizingMaskIntoConstraints = false
-        fromLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        fromLabel.font = Fonts.SSPSemiBoldH6
         fromLabel.contentMode = .center
         sundayTimeView.addSubview(fromLabel)
         
@@ -1905,7 +1905,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         toLabel.text = "To"
         toLabel.textColor = Theme.WHITE
         toLabel.translatesAutoresizingMaskIntoConstraints = false
-        toLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        toLabel.font = Fonts.SSPSemiBoldH6
         toLabel.contentMode = .center
         sundayTimeView.addSubview(toLabel)
         

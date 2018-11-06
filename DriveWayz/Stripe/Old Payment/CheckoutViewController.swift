@@ -162,9 +162,9 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.activityIndicator.style = red < 0.5 ? .white : .gray
         self.navigationItem.title = "Drivewayz"
 
-        self.productImage.font = UIFont.systemFont(ofSize: 32)
+        self.productImage.font = Fonts.SSPRegularH0
         self.productImage.textColor = Theme.DARK_GRAY
-        self.costImage.font = UIFont.systemFont(ofSize: 28)
+        self.costImage.font = Fonts.SSPRegularH1
         self.costImage.textColor = Theme.PACIFIC_BLUE
         self.view.addSubview(self.totalRow)
         self.view.addSubview(self.paymentRow)

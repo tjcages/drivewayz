@@ -27,7 +27,7 @@ class OptionsCell: UITableViewCell {
     var messageTextView: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
-        view.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         

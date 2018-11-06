@@ -27,7 +27,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         agreement.textColor = Theme.BLACK.withAlphaComponent(0.5)
         agreement.textAlignment = .center
         agreement.translatesAutoresizingMaskIntoConstraints = false
-        agreement.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        agreement.font = Fonts.SSPRegularH6
         agreement.alpha = 1
         agreement.backgroundColor = UIColor.clear
         agreement.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         field.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         field.text = "Add any useful information so the user can better find your spot"
         field.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        field.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        field.font = Fonts.SSPLightH4
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 10
         field.tintColor = Theme.HARMONY_RED

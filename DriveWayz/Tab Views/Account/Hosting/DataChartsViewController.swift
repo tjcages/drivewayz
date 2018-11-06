@@ -73,7 +73,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         let profits = UILabel()
         profits.text = "Profits:"
         profits.textColor = Theme.SEA_BLUE
-        profits.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        profits.font = Fonts.SSPSemiBoldH5
         profits.translatesAutoresizingMaskIntoConstraints = false
 
         return profits
@@ -83,7 +83,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         let profits = UILabel()
         profits.text = "$0.00"
         profits.textColor = Theme.PACIFIC_BLUE
-        profits.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        profits.font = Fonts.SSPBoldH5
         profits.translatesAutoresizingMaskIntoConstraints = false
 
         return profits
@@ -94,7 +94,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
         transfer.backgroundColor = UIColor.clear
         transfer.translatesAutoresizingMaskIntoConstraints = false
         transfer.setTitle("Transfer to bank", for: .normal)
-        transfer.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        transfer.titleLabel?.font = Fonts.SSPRegularH6
         transfer.setTitleColor(Theme.SEA_BLUE, for: .normal)
         transfer.addTarget(self, action: #selector(checkAccount(sender:)), for: .touchUpInside)
 
@@ -116,7 +116,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     var hostHours: UITextView = {
         let label = UITextView()
         label.text = "Hours"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left
@@ -129,7 +129,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
     var hostTimes: UITextView = {
         let label = UITextView()
         label.text = "Times"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .left

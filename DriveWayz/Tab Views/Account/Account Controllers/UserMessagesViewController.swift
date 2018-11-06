@@ -62,7 +62,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let label = UILabel()
         label.text = "Your current messages"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)
         label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
@@ -81,7 +81,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let label = UILabel()
         label.text = "Your previous messages"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        label.font = Fonts.SSPLightH4
         label.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)
         label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true

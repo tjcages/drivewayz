@@ -47,7 +47,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         label.textColor = Theme.PACIFIC_BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         label.text = "Contact Drivewayz!"
         
@@ -59,7 +59,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Fonts.SSPRegularH6
         label.text = "We at Drivewayz strive to give users the best experience that we can. That being said, we aren't perfect and we look for your constant support and ideas to constantly improve."
         label.numberOfLines = 4
         
@@ -102,7 +102,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         input.backgroundColor = Theme.OFF_WHITE
         input.layer.cornerRadius = 10
         input.textColor = Theme.BLACK
-        input.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        input.font = Fonts.SSPLightH4
         input.translatesAutoresizingMaskIntoConstraints = false
         
         return input

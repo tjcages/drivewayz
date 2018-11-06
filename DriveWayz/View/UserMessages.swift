@@ -25,7 +25,7 @@ class UserMessages: UITableViewCell {
     var hostTextView: UILabel = {
         let view = UILabel()
         view.text = "Host"
-        view.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        view.font = Fonts.SSPLightH4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
         
@@ -35,7 +35,7 @@ class UserMessages: UITableViewCell {
     var dateTextView: UILabel = {
         let view = UILabel()
         view.text = "10/10/18"
-        view.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        view.font = Fonts.SSPLightH5
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         view.textAlignment = .right

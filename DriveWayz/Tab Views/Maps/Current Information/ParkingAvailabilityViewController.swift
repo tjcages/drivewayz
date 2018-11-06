@@ -693,7 +693,7 @@ class ParkingAvailabilityViewController: UIViewController {
         monday.setTitle("M", for: .normal)
         monday.setTitleColor(Theme.WHITE, for: .normal)
         monday.backgroundColor = Theme.PACIFIC_BLUE
-        monday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        monday.titleLabel?.font = Fonts.SSPSemiBoldH5
         monday.clipsToBounds = true
         monday.layer.cornerRadius = 15
         monday.translatesAutoresizingMaskIntoConstraints = false
@@ -705,7 +705,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var mondayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -718,7 +718,7 @@ class ParkingAvailabilityViewController: UIViewController {
         tuesday.setTitle("T", for: .normal)
         tuesday.setTitleColor(Theme.WHITE, for: .normal)
         tuesday.backgroundColor = Theme.PACIFIC_BLUE
-        tuesday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        tuesday.titleLabel?.font = Fonts.SSPSemiBoldH5
         tuesday.clipsToBounds = true
         tuesday.layer.cornerRadius = 15
         tuesday.translatesAutoresizingMaskIntoConstraints = false
@@ -730,7 +730,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var tuesdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -743,7 +743,7 @@ class ParkingAvailabilityViewController: UIViewController {
         wednesday.setTitle("W", for: .normal)
         wednesday.setTitleColor(Theme.WHITE, for: .normal)
         wednesday.backgroundColor = Theme.PACIFIC_BLUE
-        wednesday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        wednesday.titleLabel?.font = Fonts.SSPSemiBoldH5
         wednesday.clipsToBounds = true
         wednesday.layer.cornerRadius = 15
         wednesday.translatesAutoresizingMaskIntoConstraints = false
@@ -755,7 +755,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var wednesdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -768,7 +768,7 @@ class ParkingAvailabilityViewController: UIViewController {
         thursday.setTitle("T", for: .normal)
         thursday.setTitleColor(Theme.WHITE, for: .normal)
         thursday.backgroundColor = Theme.PACIFIC_BLUE
-        thursday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        thursday.titleLabel?.font = Fonts.SSPSemiBoldH5
         thursday.clipsToBounds = true
         thursday.layer.cornerRadius = 15
         thursday.translatesAutoresizingMaskIntoConstraints = false
@@ -780,7 +780,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var thursdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -793,7 +793,7 @@ class ParkingAvailabilityViewController: UIViewController {
         friday.setTitle("F", for: .normal)
         friday.setTitleColor(Theme.WHITE, for: .normal)
         friday.backgroundColor = Theme.PACIFIC_BLUE
-        friday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        friday.titleLabel?.font = Fonts.SSPSemiBoldH5
         friday.clipsToBounds = true
         friday.layer.cornerRadius = 15
         friday.translatesAutoresizingMaskIntoConstraints = false
@@ -805,7 +805,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var fridayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -818,7 +818,7 @@ class ParkingAvailabilityViewController: UIViewController {
         saturday.setTitle("S", for: .normal)
         saturday.setTitleColor(Theme.WHITE, for: .normal)
         saturday.backgroundColor = Theme.PACIFIC_BLUE
-        saturday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        saturday.titleLabel?.font = Fonts.SSPSemiBoldH5
         saturday.clipsToBounds = true
         saturday.layer.cornerRadius = 15
         saturday.translatesAutoresizingMaskIntoConstraints = false
@@ -830,7 +830,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var saturdayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -843,7 +843,7 @@ class ParkingAvailabilityViewController: UIViewController {
         sunday.setTitle("S", for: .normal)
         sunday.setTitleColor(Theme.WHITE, for: .normal)
         sunday.backgroundColor = Theme.PACIFIC_BLUE
-        sunday.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        sunday.titleLabel?.font = Fonts.SSPSemiBoldH5
         sunday.clipsToBounds = true
         sunday.layer.cornerRadius = 15
         sunday.translatesAutoresizingMaskIntoConstraints = false
@@ -855,7 +855,7 @@ class ParkingAvailabilityViewController: UIViewController {
     var sundayLabel: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        label.font = Fonts.SSPLightH5
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center

@@ -35,7 +35,7 @@ class ReservationButton: UIButton {
         
         self.setTitle("Reserve Spot", for: .normal)
         self.setTitle("", for: .selected)
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        self.titleLabel?.font = Fonts.SSPRegularH4
         self.backgroundColor = UIColor.clear
         self.alpha = 0.5
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -55,7 +55,7 @@ class PaymentButton: UIButton  {
         super.init(frame: frame)
         
         self.setTitle("Payment", for: .normal)
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        self.titleLabel?.font = Fonts.SSPRegularH5
         self.backgroundColor = UIColor.clear
         self.alpha = 0.5
         self.titleLabel?.textAlignment = .left

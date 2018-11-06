@@ -113,7 +113,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     var totalCostLabel: UITextView = {
         let label = UITextView()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.font = Fonts.SSPRegularH4
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -166,7 +166,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         hours.setTitleColor(Theme.DARK_GRAY, for: .normal)
         hours.setTitle("^ hours", for: .normal)
         hours.alpha = 0.9
-        hours.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        hours.titleLabel?.font = Fonts.SSPRegularH5
         hours.dropView.dropDownOptions = ["1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours", "7 hours", "8 hours", "9 hours", "10 hours", "11 hours", "12 hours"]
         hours.delegate = self
         

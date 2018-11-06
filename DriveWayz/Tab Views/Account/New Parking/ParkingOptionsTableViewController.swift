@@ -49,7 +49,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Driveway", for: .normal)
         label.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -63,7 +63,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Our most common parking space. The spot is usually owned or leased by the host and can be a driveway or shared parking lot."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         
         return label
     }()
@@ -90,7 +90,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Shared parking lot", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -104,7 +104,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "A parking space that is owned by the property owner and leased by then tennant. Usually associated with one spot number in a lot."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -132,7 +132,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Shared parking garage", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -146,7 +146,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Parking outside a residential home or apartment complex and on the main street, susceptible to other traffic."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -174,7 +174,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Alley", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -188,7 +188,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -216,7 +216,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Gated", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -230,7 +230,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -258,7 +258,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Street", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -272,7 +272,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Only select this option if your parking spot is in between two buildings or behind a residential home and it is generally described as in an alley."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -302,7 +302,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Parking lot", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -316,7 +316,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -344,7 +344,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Garage/Structure lot", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -358,7 +358,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -386,7 +386,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Underground", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -400,7 +400,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -428,7 +428,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Condo parking", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -442,7 +442,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -470,7 +470,7 @@ class ParkingOptionsViewController: UIViewController {
         let label = UIButton()
         label.setTitle("Circular loop", for: .normal)
         label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.titleLabel?.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -484,7 +484,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.font = Fonts.SSPLightH6
         label.alpha = 0
         
         return label
@@ -547,7 +547,7 @@ class ParkingOptionsViewController: UIViewController {
         self.resetCondo()
         self.resetCircular()
         self.drivewayIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        self.drivewayIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
         self.drivewayImageView.tintColor = Theme.PACIFIC_BLUE
         self.drivewayImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         self.drivewayAnchor.constant = 100
@@ -613,7 +613,7 @@ class ParkingOptionsViewController: UIViewController {
         self.resetCondo()
         self.resetCircular()
         self.parkinglotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        self.parkinglotIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
         self.parkinglotImageView.tintColor = Theme.PACIFIC_BLUE
         self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         self.parkinglotAnchor.constant = 100
@@ -1011,7 +1011,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "driveway"
             UIView.animate(withDuration: 0.1) {
                 self.drivewayIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.drivewayIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.drivewayImageView.tintColor = Theme.PACIFIC_BLUE
                 self.drivewayImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.drivewayAnchor.constant = 100
@@ -1035,7 +1035,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "sharedLot"
             UIView.animate(withDuration: 0.1) {
                 self.sharedlotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.sharedlotIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.sharedlotImageView.tintColor = Theme.PACIFIC_BLUE
                 self.sharedlotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.sharedlotAnchor.constant = 100
@@ -1059,7 +1059,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "alley"
             UIView.animate(withDuration: 0.1) {
                 self.alleyIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.alleyIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.alleyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.alleyImageView.tintColor = Theme.PACIFIC_BLUE
                 self.alleyImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.alleyAnchor.constant = 100
@@ -1083,7 +1083,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "sharedCover"
             UIView.animate(withDuration: 0.1) {
                 self.sharedCoverIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.sharedCoverIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.sharedCoverImageView.tintColor = Theme.PACIFIC_BLUE
                 self.sharedCoverImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.sharedGarageAnchor.constant = 100
@@ -1106,7 +1106,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "gated"
             UIView.animate(withDuration: 0.1) {
                 self.gatedIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.gatedIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.gatedImageView.tintColor = Theme.PACIFIC_BLUE
                 self.gatedImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.gatedAnchor.constant = 100
@@ -1130,7 +1130,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "street"
             UIView.animate(withDuration: 0.1) {
                 self.streetIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.streetIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.streetIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.streetImageView.tintColor = Theme.PACIFIC_BLUE
                 self.streetImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.streetAnchor.constant = 100
@@ -1153,7 +1153,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "parkingLot"
             UIView.animate(withDuration: 0.1) {
                 self.parkinglotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.parkinglotIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.parkinglotImageView.tintColor = Theme.PACIFIC_BLUE
                 self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.parkinglotAnchor.constant = 100
@@ -1177,7 +1177,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "garage"
             UIView.animate(withDuration: 0.1) {
                 self.garageIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.garageIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.garageIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.garageImageView.tintColor = Theme.PACIFIC_BLUE
                 self.garageImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.garageAnchor.constant = 100
@@ -1200,7 +1200,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "underground"
             UIView.animate(withDuration: 0.1) {
                 self.undergroundIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.undergroundIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.undergroundIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.undergroundImageView.tintColor = Theme.PACIFIC_BLUE
                 self.undergroundImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.undergroundAnchor.constant = 100
@@ -1223,7 +1223,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "condo"
             UIView.animate(withDuration: 0.1) {
                 self.condoIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.condoIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.condoIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.condoImageView.tintColor = Theme.PACIFIC_BLUE
                 self.condoImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.condoAnchor.constant = 100
@@ -1246,7 +1246,7 @@ extension ParkingOptionsViewController {
             self.parkingType = "circular"
             UIView.animate(withDuration: 0.1) {
                 self.circularIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.circularIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+                self.circularIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
                 self.circularImageView.tintColor = Theme.PACIFIC_BLUE
                 self.circularImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.circularAnchor.constant = 100
@@ -1290,7 +1290,7 @@ extension ParkingOptionsViewController {
     func resetDriveway() {
         UIView.animate(withDuration: 0.1) {
             self.drivewayIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.drivewayIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.drivewayIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.drivewayImageView.tintColor = Theme.DARK_GRAY
             self.drivewayImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.drivewayAnchor.constant = 5
@@ -1302,7 +1302,7 @@ extension ParkingOptionsViewController {
     func resetSharedLot() {
         UIView.animate(withDuration: 0.1) {
             self.sharedlotIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.sharedlotIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.sharedlotImageView.tintColor = Theme.DARK_GRAY
             self.sharedlotImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.sharedlotAnchor.constant = 5
@@ -1314,7 +1314,7 @@ extension ParkingOptionsViewController {
     func resetSharedCover() {
         UIView.animate(withDuration: 0.1) {
             self.sharedCoverIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.sharedCoverIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.sharedCoverImageView.tintColor = Theme.DARK_GRAY
             self.sharedCoverImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.sharedGarageAnchor.constant = 5
@@ -1326,7 +1326,7 @@ extension ParkingOptionsViewController {
     func resetAlley() {
         UIView.animate(withDuration: 0.1) {
             self.alleyIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.alleyIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.alleyIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.alleyImageView.tintColor = Theme.DARK_GRAY
             self.alleyImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.alleyAnchor.constant = 5
@@ -1338,7 +1338,7 @@ extension ParkingOptionsViewController {
     func resetGated() {
         UIView.animate(withDuration: 0.1) {
             self.gatedIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.gatedIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.gatedIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.gatedImageView.tintColor = Theme.DARK_GRAY
             self.gatedImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.gatedAnchor.constant = 5
@@ -1350,7 +1350,7 @@ extension ParkingOptionsViewController {
     func resetStreet() {
         UIView.animate(withDuration: 0.1) {
             self.streetIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.streetIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.streetIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.streetImageView.tintColor = Theme.DARK_GRAY
             self.streetImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.streetAnchor.constant = 5
@@ -1362,7 +1362,7 @@ extension ParkingOptionsViewController {
     func resetParkingLot() {
         UIView.animate(withDuration: 0.1) {
             self.parkinglotIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.parkinglotIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.parkinglotImageView.tintColor = Theme.DARK_GRAY
             self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.parkinglotAnchor.constant = 5
@@ -1374,7 +1374,7 @@ extension ParkingOptionsViewController {
     func resetGarage() {
         UIView.animate(withDuration: 0.1) {
             self.garageIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.garageIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.garageIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.garageImageView.tintColor = Theme.DARK_GRAY
             self.garageImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.garageAnchor.constant = 5
@@ -1386,7 +1386,7 @@ extension ParkingOptionsViewController {
     func resetUnderground() {
         UIView.animate(withDuration: 0.1) {
             self.undergroundIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.undergroundIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.undergroundIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.undergroundImageView.tintColor = Theme.DARK_GRAY
             self.undergroundImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.undergroundAnchor.constant = 5
@@ -1398,7 +1398,7 @@ extension ParkingOptionsViewController {
     func resetCondo() {
         UIView.animate(withDuration: 0.1) {
             self.condoIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.condoIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.condoIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.condoImageView.tintColor = Theme.DARK_GRAY
             self.condoImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.condoAnchor.constant = 5
@@ -1410,7 +1410,7 @@ extension ParkingOptionsViewController {
     func resetCircular() {
         UIView.animate(withDuration: 0.1) {
             self.circularIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.circularIconLabel.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+            self.circularIconLabel.titleLabel?.font = Fonts.SSPLightH3
             self.circularImageView.tintColor = Theme.DARK_GRAY
             self.circularImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.circularAnchor.constant = 5

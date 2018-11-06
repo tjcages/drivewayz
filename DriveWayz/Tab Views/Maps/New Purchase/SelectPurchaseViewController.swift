@@ -53,7 +53,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         info.translatesAutoresizingMaskIntoConstraints = false
         info.backgroundColor = UIColor.clear
         info.setTitle("Park now", for: .normal)
-        info.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        info.titleLabel?.font = Fonts.SSPSemiBoldH2
         info.setTitleColor(Theme.BLACK, for: .normal)
         info.titleLabel?.textAlignment = .center
         info.addTarget(self, action: #selector(currentPressed(sender:)), for: .touchUpInside)
@@ -66,7 +66,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         availability.translatesAutoresizingMaskIntoConstraints = false
         availability.backgroundColor = UIColor.clear
         availability.setTitle("Reserve", for: .normal)
-        availability.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .light)
+        availability.titleLabel?.font = Fonts.SSPLightH2
         availability.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
         availability.titleLabel?.textAlignment = .center
         availability.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
@@ -85,7 +85,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     lazy var reserveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Book Spot", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.backgroundColor = Theme.SEA_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -103,7 +103,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH5
         button.addTarget(self, action: #selector(handlePaymentButtonTapped), for: .touchUpInside)
 
         return button
@@ -114,7 +114,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitleColor(Theme.SEA_BLUE.withAlphaComponent(0.7), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.titleLabel?.font = Fonts.SSPRegularH3
         
         return button
     }()
@@ -136,7 +136,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let label = UILabel()
         label.textColor = Theme.SEA_BLUE
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "8:00 am"
@@ -149,7 +149,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let label = UILabel()
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
@@ -206,7 +206,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.titleLabel?.numberOfLines = 2
         button.alpha = 0
         button.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
@@ -222,7 +222,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.titleLabel?.numberOfLines = 2
         button.alpha = 0
         button.addTarget(self, action: #selector(reservePressed(sender:)), for: .touchUpInside)
@@ -235,7 +235,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitleColor(Theme.SEA_BLUE.withAlphaComponent(0.7), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.titleLabel?.font = Fonts.SSPRegularH3
         button.alpha = 0
         
         return button
@@ -245,7 +245,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let label = UILabel()
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "to"
@@ -283,7 +283,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("", for: .normal)
         view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.titleLabel?.font = Fonts.SSPSemiBoldH5
         view.titleLabel?.textAlignment = .center
         view.titleLabel?.numberOfLines = 2
         view.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.6)
@@ -514,9 +514,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.minimizeHours()
         self.reserveSegmentAnchor.isActive = false
         self.currentSegmentAnchor.isActive = true
-        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.currentSegment.titleLabel?.font = Fonts.SSPSemiBoldH4
         self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
-        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.reserveSegment.titleLabel?.font = Fonts.SSPLightH4
         self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         UIView.animate(withDuration: 0.2, animations: {
             self.reserveController.view.alpha = 0
@@ -561,9 +561,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.expandHours()
         self.currentSegmentAnchor.isActive = false
         self.reserveSegmentAnchor.isActive = true
-        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.reserveSegment.titleLabel?.font = Fonts.SSPSemiBoldH4
         self.reserveSegment.setTitleColor(Theme.BLACK, for: .normal)
-        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.currentSegment.titleLabel?.font = Fonts.SSPLightH4
         self.currentSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         self.currentSegment.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.2, animations: {
@@ -680,9 +680,9 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.viewContainerHeightAnchor.constant = 220
         self.reserveSegmentAnchor.isActive = false
         self.currentSegmentAnchor.isActive = true
-        self.currentSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        self.currentSegment.titleLabel?.font = Fonts.SSPSemiBoldH4
         self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
-        self.reserveSegment.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
+        self.reserveSegment.titleLabel?.font = Fonts.SSPLightH4
         self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         UIView.animate(withDuration: 0.2, animations: {
             self.costButtonHeightAnchor.constant = -40
@@ -872,7 +872,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         label.frame = CGRect(x: 0, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH3
         label.text = self.futureHours[row]
         view.addSubview(label)
         
@@ -984,7 +984,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         let button = UIButton()
         button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Unavailable", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .light)
+        button.titleLabel?.font = Fonts.SSPLightH3
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 1
         button.layer.cornerRadius = 5

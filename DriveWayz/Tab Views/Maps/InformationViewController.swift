@@ -201,7 +201,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     var signUpLabel: UILabel = {
         let label = UILabel()
         label.text = "Sign up today to become a host and make up to an extra $200 per month renting out your driveway!"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = Fonts.SSPSemiBoldH6
         label.textColor = Theme.SEA_BLUE
         label.textAlignment = .left
         label.numberOfLines = 2
