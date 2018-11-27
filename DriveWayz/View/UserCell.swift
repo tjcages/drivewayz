@@ -16,10 +16,8 @@ class UserCell: UITableViewCell {
             setUpNameAndProfileImage()
             detailTextLabel?.text = message?.text
             if let seconds = message?.timestamp?.doubleValue {
-                let timestampDate = NSDate(timeIntervalSince1970: seconds)
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm a"
-                timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+                let stringDate = dayDifference(from: seconds)
+                timeLabel.text = stringDate
             }
         }
     }
@@ -118,6 +116,22 @@ class UserCell: UITableViewCell {
         timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
         timeLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         timeLabel.heightAnchor.constraint(equalTo: textLabel!.heightAnchor).isActive = true
+    }
+    
+    func dayDifference(from interval : TimeInterval) -> String {
+        let calendar = NSCalendar.current
+        let date = Date(timeIntervalSince1970: interval)
+        if calendar.isDateInYesterday(date) { return "Yesterday" }
+        else if calendar.isDateInToday(date) { return "Today" }
+        else if calendar.isDateInTomorrow(date) { return "Tomorrow" }
+        else {
+            let startOfNow = calendar.startOfDay(for: Date())
+            let startOfTimeStamp = calendar.startOfDay(for: date)
+            let components = calendar.dateComponents([.day], from: startOfNow, to: startOfTimeStamp)
+            let day = components.day!
+            if day < 1 { return "\(abs(day)) days" }
+            else { return "In \(day) days" }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

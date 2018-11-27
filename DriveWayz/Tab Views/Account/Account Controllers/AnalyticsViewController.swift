@@ -17,34 +17,8 @@ class AnalyticsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 10
         
         return view
-    }()
-    
-    var driveWayzLogo: UIImageView = {
-        let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
-        let view = UIImageView(image: flip)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.WHITE
-        view.alpha = 0
-        
-        return view
-    }()
-    
-    lazy var exitButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Delete")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
     }()
     
     var scrollView: UIScrollView = {
@@ -136,23 +110,6 @@ class AnalyticsViewController: UIViewController {
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
-        self.view.addSubview(exitButton)
-        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        case .iphoneX:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
-        }
-        
-        self.view.addSubview(driveWayzLogo)
-        driveWayzLogo.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        driveWayzLogo.topAnchor.constraint(equalTo: exitButton.topAnchor, constant: 10).isActive = true
-        driveWayzLogo.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        driveWayzLogo.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 2)
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
@@ -197,10 +154,6 @@ class AnalyticsViewController: UIViewController {
         totalHostsLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
         totalHostsLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-    }
-    
-    @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.hideAnalyticsController()
     }
     
     func setData() {

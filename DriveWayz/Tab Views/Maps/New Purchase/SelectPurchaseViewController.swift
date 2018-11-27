@@ -518,7 +518,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
         self.reserveSegment.titleLabel?.font = Fonts.SSPLightH4
         self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.reserveController.view.alpha = 0
             self.toReserveLabel.alpha = 0
             self.reserveToLabel.alpha = 0
@@ -529,7 +529,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.viewContainerHeightAnchor.constant = 220
                 self.reserveWidthAnchor.constant = -72
                 self.paymentButton.alpha = 1
@@ -566,7 +566,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.currentSegment.titleLabel?.font = Fonts.SSPLightH4
         self.currentSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
         self.currentSegment.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.paymentButton.alpha = 0
             self.costButton.alpha = 0
             self.hoursButton.alpha = 0
@@ -581,14 +581,14 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             //            self.currentSegment.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.reserveCostButtonHeightAnchor.constant = -60
                 self.viewContainerHeightAnchor.constant = 340
                 self.reserveWidthAnchor.constant = -12
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.reserveButton.setTitle("Reserve Spot", for: .normal)
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.reserveController.view.alpha = 1
                 })
             }
@@ -614,7 +614,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.currentSegmentAnchor.isActive = false
         self.reserveSegmentAnchor.isActive = true
         self.currentSegment.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.paymentButton.alpha = 0
             self.costButton.alpha = 0
             self.hoursButton.alpha = 0
@@ -625,10 +625,10 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         }) { (success) in
             self.viewContainerHeightAnchor.constant = 220
             self.reserveCostButtonHeightAnchor.constant = -60
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.view.layoutIfNeeded()
             }) { (success) in
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.toReserveLabel.alpha = 1
                     self.reserveToLabel.alpha = 1
                     self.reserveFromLabel.alpha = 1
@@ -651,14 +651,14 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         viewContainerHeightAnchor.constant = 220
         self.currentSegment.isUserInteractionEnabled = false
         self.setTimes()
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.hoursButton.alpha = 0
             self.costButton.alpha = 0
             self.reserveSegment.alpha = 0
             self.couponStaus.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.reserveWidthAnchor.constant = -12
                 self.toLabel.alpha = 1
                 self.timeToPicker.alpha = 1
@@ -684,7 +684,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.currentSegment.setTitleColor(Theme.BLACK, for: .normal)
         self.reserveSegment.titleLabel?.font = Fonts.SSPLightH4
         self.reserveSegment.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.5), for: .normal)
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.costButtonHeightAnchor.constant = -40
             self.toLabel.alpha = 0
             self.timeToPicker.alpha = 0
@@ -700,7 +700,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.reserveWidthAnchor.constant = -72
                 self.viewContainerHeightAnchor.constant = 220
                 self.exitButtonHeightAnchor.constant = 0
@@ -721,7 +721,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     @objc func checkButtonPressed(sender: UIButton) {
         viewContainerHeightAnchor.constant = 220
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.toLabel.alpha = 0
             self.timeToPicker.alpha = 0
             self.currentTimeLabel.alpha = 0
@@ -733,7 +733,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveButton.isUserInteractionEnabled = true
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.reserveWidthAnchor.constant = -72
                 self.hoursButton.alpha = 1
                 self.reserveButton.backgroundColor = Theme.SEA_BLUE
@@ -787,7 +787,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func checkButtonSender() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             self.toLabel.alpha = 0
             self.timeToPicker.alpha = 0
             self.currentTimeLabel.alpha = 0
@@ -800,13 +800,13 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func hideParkNow() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.currentSegment.alpha = 0
         }
     }
     
     func bringParkNow() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.currentSegment.alpha = 1
         }
     }
@@ -958,7 +958,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     var paymentInProgress: Bool = false {
         didSet {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.paymentInProgress {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
@@ -1059,7 +1059,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     @objc func bringBackReserve(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             if sender == self.reserveCostLabel {
                 self.reserveFromLabel.alpha = 1
                 self.reserveToLabel.alpha = 1
@@ -1090,7 +1090,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if (dictionary[currentUser] as? [String:AnyObject]) != nil {
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.reserveWidthAnchor.constant = -12
                         self.viewContainerHeightAnchor.constant = 180
                         self.costButtonHeightAnchor.constant = -20
@@ -1136,9 +1136,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.reserveParking()
         } else if currentSegmentAnchor.isActive == true {
             self.updateUserProfileCurrent()
-            self.drawNewRoute()
             self.sendNotifications()
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.resetReservationButton()
                 currentButton.alpha = 1
             }
@@ -1146,7 +1145,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.notify(status: true)
         
         self.paymentInProgress = true
-//        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP
+//        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
     }
     
     var notificationController: SendNotificationsViewController = {
@@ -1297,13 +1296,12 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 self.reserveParking()
             } else if currentSegmentAnchor.isActive == true {
                 self.updateUserProfileCurrent()
-                self.drawNewRoute()
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     currentButton.alpha = 1
                 }
             }
             self.notify(status: true)
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.view.layoutIfNeeded()
             }
         case .userCancellation:
@@ -1317,7 +1315,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func changeReserveButton() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.view.layoutIfNeeded()
         }) { (success) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -1343,35 +1341,14 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func addCurrentParking() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.reserveButton.alpha = 0.6
         }) { (success) in
             self.removeDelegate?.purchaseButtonSwipedDown()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.view.alpha = 0
             })
         }
-    }
-    
-    func drawNewRoute() {
-//        let ref = Database.database().reference().child("parking").child(self.parkingId)
-//        ref.observeSingleEvent(of: .value) { (snapshot) in
-//            if let dictionary = snapshot.value as? [String:AnyObject] {
-//                if let address = dictionary["parkingAddress"] as? String {
-////                    let geoCoder = CLGeocoder()
-////                    geoCoder.geocodeAddressString(address) { (placemarks, error) in
-////                        guard
-////                            let placemarks = placemarks,
-////                            let location = placemarks.first?.location
-////                            else {
-////                                print("Couldn't find location to draw routes")
-////                                return
-////                        }
-////                        self.delegate?.drawCurrentPath(dest: location, navigation: false)
-////                    }
-//                }
-//            }
-//        }
     }
     
     private func reserveParking() {

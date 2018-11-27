@@ -302,14 +302,14 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func setupCurrent() {
         self.informationLabel.text = "Your current vehicle information. This information will only be available to hosts that you are currently parking with."
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.vehiclePageHeightAnchorSmall.isActive = false
             self.vehiclePageHeightAnchorTall.isActive = true
             self.addLabel.alpha = 0
             self.addButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.vehicleInfo.alpha = 1
                 self.vehicleLicenseInfo.alpha = 1
                 self.editingContainer.alpha = 1
@@ -323,7 +323,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func setupNoView() {
         self.informationLabel.text = "Please enter in some basic vehicle information. This information will only be available to hosts that you are currently parking with."
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.vehiclePageHeightAnchorSmall.isActive = true
             self.vehiclePageHeightAnchorTall.isActive = false
             self.vehicleInfo.alpha = 0
@@ -332,7 +332,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
             self.editingTableView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.addLabel.alpha = 1
                 self.addButton.alpha = 1
                 self.view.layoutIfNeeded()

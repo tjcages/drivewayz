@@ -21,22 +21,8 @@ class VehicleViewController: UIViewController, handleNewVehicle {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 10
         
         return view
-    }()
-    
-    lazy var exitButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Delete")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
     }()
     
     lazy var userVehicleController: UserVehicleViewController = {
@@ -70,30 +56,12 @@ class VehicleViewController: UIViewController, handleNewVehicle {
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
-        self.view.addSubview(exitButton)
-        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        case .iphoneX:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
-        }
-        
         self.view.addSubview(userVehicleController.view)
         userVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         userVehicleController.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
         userVehicleController.view.topAnchor.constraint(equalTo: container.topAnchor, constant: 30).isActive = true
         userVehicleController.view.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
-    }
-    
-    @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.hideVehicleController()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.delegate?.closeAccountView()
-        }
     }
     
     func bringNewVehicle() {

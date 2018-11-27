@@ -298,15 +298,15 @@ class WalkthroughViewController: UIViewController {
     func nextPressedFunc() {
         self.accept.isUserInteractionEnabled = false
         if self.text.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.terms.alpha = 0
                 self.text.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.terms.alpha = 0
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
-                    UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.startupPages.currentPage = 1
                         self.termsContainerCenterAnchor.constant = self.view.frame.height / 2 - 90 - 60
                         self.segmentTopAnchor.constant = 0
@@ -315,14 +315,14 @@ class WalkthroughViewController: UIViewController {
                         self.view.layoutIfNeeded()
                     })
                 }, completion: { (success) in
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.termsContainer.alpha = 1
                         self.mapTextAnchor.constant = 0
                     })
                 })
             }
         } else if text1.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsContainerHeightAnchor.constant = 500
                 self.termsContainerCenterAnchor.constant = 0
                 self.confirmAnchor.constant = 70
@@ -333,14 +333,14 @@ class WalkthroughViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.nextAnchor.constant = 0
                     self.back.alpha = 1
                     self.view.layoutIfNeeded()
                 })
             }
         } else if self.nextAnchor.constant == 0 && text2.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsContainerHeightAnchor.constant = 375
                 self.confirmAnchor.constant = 0
                 self.confirmWidthAnchor.constant = 160
@@ -351,7 +351,7 @@ class WalkthroughViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.lastAnchor.constant = 0
                     self.text3.alpha = 1
                     self.view.layoutIfNeeded()
@@ -360,7 +360,7 @@ class WalkthroughViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }
         } else {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsContainer.alpha = 0
                 self.blurBackgroundStartup.alpha = 0
             }) { (success) in
@@ -378,14 +378,14 @@ class WalkthroughViewController: UIViewController {
         if self.text.alpha == 1 {
             //
         } else if text1.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsContainer.alpha = 1
                 self.mapTextAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
-                    UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.startupPages.currentPage = 0
                         self.termsContainerCenterAnchor.constant = 0
                         self.segmentTopAnchor.constant = 60
@@ -394,7 +394,7 @@ class WalkthroughViewController: UIViewController {
                         self.view.layoutIfNeeded()
                     })
                 }, completion: { (success) in
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.terms.alpha = 1
                         self.text.alpha = 1
                     })
@@ -402,14 +402,14 @@ class WalkthroughViewController: UIViewController {
             }
         } else if self.nextAnchor.constant == 0 && text2.alpha == 1 {
             self.delegate?.moveToMap()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.nextAnchor.constant = self.view.frame.width
                 self.back.alpha = 0
                 self.confirmAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.confirmWidthAnchor.constant = 160
                     self.startupPages.currentPage = 1
                     self.termsContainerCenterAnchor.constant = self.view.frame.height / 2 - 90 - 60
@@ -422,7 +422,7 @@ class WalkthroughViewController: UIViewController {
                 })
             }
         } else {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.lastAnchor.constant = self.view.frame.width
                 self.termsContainerHeightAnchor.constant = 500
                 self.termsContainerCenterAnchor.constant = 0
@@ -433,7 +433,7 @@ class WalkthroughViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.accept.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.nextAnchor.constant = 0
                     self.text2.alpha = 1
                     self.image2.alpha = 1

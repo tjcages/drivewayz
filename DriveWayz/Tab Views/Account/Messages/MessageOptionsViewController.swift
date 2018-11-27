@@ -366,7 +366,7 @@ class MessageOptionsViewController: UIViewController {
     @objc func sendDifferentOptions(sender: UIButton) {
         if extraOptions.titleLabel?.text == "Not what you're looking for?" {
             self.extraOptions.setTitle("Back to regular options", for: .normal)
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.spotTaken.alpha = 0
                 self.cantFind.alpha = 0
                 self.pictureNotShowing.alpha = 0
@@ -376,7 +376,7 @@ class MessageOptionsViewController: UIViewController {
                 self.leaveEarly.alpha = 0
                 self.wrongLocation.alpha = 0
             }) { (success) in
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.sendCommunicationsAnchor.constant = 0
                     self.view.layoutIfNeeded()
                 })
@@ -388,11 +388,11 @@ class MessageOptionsViewController: UIViewController {
     
     func bringBackFirstOptions() {
         self.extraOptions.setTitle("Not what you're looking for?", for: .normal)
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.sendCommunicationsAnchor.constant = self.view.frame.width
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.spotTaken.alpha = 1
                 self.cantFind.alpha = 1
                 self.pictureNotShowing.alpha = 1

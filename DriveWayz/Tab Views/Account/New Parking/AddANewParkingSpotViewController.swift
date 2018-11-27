@@ -653,7 +653,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     
     @objc func hideButtons(sender: UIButton) {
         if self.dot1View.alpha == 1 {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.dot1View.alpha = 0
                 self.dot2View.alpha = 0
                 self.dot3View.alpha = 0
@@ -664,7 +664,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
             self.toColor = false
             self.hideDotsButton.setTitle("Bring dots", for: .normal)
         } else {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.dot1View.alpha = 1
                 self.dot2View.alpha = 1
                 self.dot3View.alpha = 1

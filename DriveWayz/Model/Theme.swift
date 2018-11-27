@@ -10,10 +10,11 @@ import UIKit
 
 class Theme {
     
-    static let SEA_BLUE = UIColor(red: 19/255, green: 123/255, blue: 212/255, alpha: 1)
-//    static let SEA_BLUE = UIColor(red: 23/255, green: 104/255, blue: 151/255, alpha: 1)
+    static let SEA_BLUE = UIColor(red: 37/255, green: 137/255, blue: 220/255, alpha: 1)
+//    static let SEA_BLUE = UIColor(red: 19/255, green: 123/255, blue: 212/255, alpha: 1)
     static let PRUSSIAN_BLUE = UIColor(red: 19/255, green: 60/255, blue: 85/255, alpha: 1)
     static let PACIFIC_BLUE = UIColor(red: 19/255, green: 159/255, blue: 202/255, alpha: 1)
+    static let PURPLE = UIColor(red: 98/255, green: 51/255, blue: 215/255, alpha: 1)
     static let GREEN_PIGMENT = UIColor(red: 29/255, green: 163/255, blue: 72/255, alpha: 1)
     static let HARMONY_RED = UIColor(red: 204/255, green: 37/255, blue: 37/255, alpha: 1)
     

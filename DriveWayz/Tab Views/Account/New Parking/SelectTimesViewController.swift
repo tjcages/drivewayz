@@ -279,12 +279,12 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         switch sender.selectedSegmentIndex {
         case 1:
             segment = 0
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.scrollViewParking.alpha = 1
                 self.pickerView.alpha = 0
                 if self.monday == 1 {
                     self.mondayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.mondayTimeView.alpha = 1
                         self.mondayToPicker.alpha = 1
                         self.mondayFromPicker.alpha = 1
@@ -293,7 +293,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.tuesday == 1 {
                     self.tuesdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.tuesdayTimeView.alpha = 1
                         self.tuesdayToPicker.alpha = 1
                         self.tuesdayFromPicker.alpha = 1
@@ -302,7 +302,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.wednesday == 1 {
                     self.wednesdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.wednesdayTimeView.alpha = 1
                         self.wednesdayToPicker.alpha = 1
                         self.wednesdayFromPicker.alpha = 1
@@ -311,7 +311,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.thursday == 1 {
                     self.thursdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.thursdayTimeView.alpha = 1
                         self.thursdayToPicker.alpha = 1
                         self.thursdayFromPicker.alpha = 1
@@ -320,7 +320,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.friday == 1 {
                     self.fridayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.fridayTimeView.alpha = 1
                         self.fridayToPicker.alpha = 1
                         self.fridayFromPicker.alpha = 1
@@ -329,7 +329,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.saturday == 1 {
                     self.saturdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.saturdayTimeView.alpha = 1
                         self.saturdayToPicker.alpha = 1
                         self.saturdayFromPicker.alpha = 1
@@ -338,7 +338,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.sunday == 1 {
                     self.sundayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.sundayTimeView.alpha = 1
                         self.sundayToPicker.alpha = 1
                         self.sundayFromPicker.alpha = 1
@@ -349,7 +349,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             }, completion: nil)
         default:
             segment = 1
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.pickerView.alpha = 1
                 self.scrollViewParking.alpha = 0
                 self.mondayTimeView.alpha = 0

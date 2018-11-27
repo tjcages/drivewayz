@@ -589,7 +589,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
             self.confirm.removeTarget(nil, action: nil, for: .allEvents)
             self.confirm.addTarget(self, action: #selector(self.registerAccount(sender:)), for: .touchUpInside)
             self.bankLabel.alpha = 1
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.routing.alpha = 0
                 self.account.alpha = 0
                 self.label.text = "Please confirm your information"
@@ -649,7 +649,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 self.agreement.alpha = 1
             }
         } else if nameLeftAnchor.constant == 0 && name.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.name.alpha = 0
                 self.last.alpha = 0
                 self.confirmLeftAnchor.constant = self.view.frame.width/6
@@ -662,7 +662,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if addressLeftAnchor.constant == 0 && addressLine1.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.addressLine1.alpha = 0
                 self.addressLine2.alpha = 0
                 self.city.alpha = 0
@@ -676,7 +676,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if dayLeftAnchor.constant == -(self.view.frame.width/4) && day.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.day.alpha = 0
                 self.month.alpha = 0
                 self.year.alpha = 0
@@ -687,7 +687,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if phoneLeftAnchor.constant == 0 && ssnField.text == "" {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.phone.alpha = 0
             }) { (success) in
                 UIView.animate(withDuration: 0.5, animations: {
@@ -697,7 +697,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if ssnLeftAnchor.constant == 40 && xxx.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.ssnLabel.alpha = 0
                 self.xxx.alpha = 0
                 self.ssnField.alpha = 0
@@ -719,7 +719,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
             self.confirm.removeTarget(nil, action: nil, for: .allEvents)
             self.confirm.addTarget(self, action: #selector(self.nextPressed(sender:)), for: .touchUpInside)
             self.scrollView.scrollsToTop = true
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.name.alpha = 0
                 self.last.alpha = 0
                 self.addressLine1.alpha = 0
@@ -783,7 +783,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if dayLeftAnchor.constant == self.view.frame.width - (self.view.frame.width/4) {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.back.alpha = 0
                 self.addressLeftAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
@@ -796,7 +796,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if phoneLeftAnchor.constant == self.view.frame.width {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.dayLeftAnchor.constant = self.view.frame.width - (self.view.frame.width/4)
                 self.label.text = "Please confirm the information below"
                 self.view.layoutIfNeeded()
@@ -810,7 +810,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if ssnLeftAnchor.constant == self.view.frame.width  {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.phoneLeftAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -821,7 +821,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if routingLeftAnchor.constant == self.view.frame.width  {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.ssnLeftAnchor.constant = self.view.frame.width
                 self.ssnLabel.alpha = 0
                 self.view.layoutIfNeeded()
@@ -832,7 +832,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
                 })
             }
         } else if routingLeftAnchor.constant == 0  {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.routingLeftAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in

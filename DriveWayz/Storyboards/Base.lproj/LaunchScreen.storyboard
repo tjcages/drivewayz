@@ -10,8 +10,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SourceSansPro-Light.ttf">
-            <string>SourceSansPro-Light</string>
+        <array key="DroidSansMerged-Regular.ttf">
+            <string>DroidSans</string>
         </array>
     </customFonts>
     <scenes>
@@ -23,28 +23,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="purpleGradient" translatesAutoresizingMaskIntoConstraints="NO" id="xy4-13-aPY">
+                                <rect key="frame" x="0.0" y="-33" width="375" height="700"/>
+                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2018 DriveWayz, LLC. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="zzb-hL-Ofc">
                                 <rect key="frame" x="20" y="626" width="335" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="PxG-sz-09Z"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SourceSansPro-Light" family="Source Sans Pro" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.074509803921568626" green="0.62352941176470589" blue="0.792156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="xy4-13-aPY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-53" id="5qo-uP-wWi"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zzb-hL-Ofc" secondAttribute="trailing" constant="20" id="6tK-Nj-iAt"/>
+                            <constraint firstItem="xy4-13-aPY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Okg-vl-Tbg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xy4-13-aPY" secondAttribute="trailing" id="cxE-0W-zBZ"/>
                             <constraint firstItem="zzb-hL-Ofc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="fGp-bh-7bv"/>
                             <constraint firstAttribute="bottom" secondItem="zzb-hL-Ofc" secondAttribute="bottom" constant="20" symbolic="YES" id="k8D-VJ-FXJ"/>
+                            <constraint firstItem="zzb-hL-Ofc" firstAttribute="top" secondItem="xy4-13-aPY" secondAttribute="bottom" constant="-41" id="lgY-dj-wrt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="purpleGradient" width="750" height="1334"/>
+    </resources>
 </document>

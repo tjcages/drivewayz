@@ -392,7 +392,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func recentPressedFunc() {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.segmentLineLeftAnchor1.isActive = true
             self.segmentLineLeftAnchor2.isActive = false
             self.segmentLineLeftAnchor3.isActive = false
@@ -401,7 +401,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             self.paymentTableView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.currentTableAnchor.constant = 0
                 self.detailsTableAnchor.constant = self.view.frame.width
                 self.reservationsTableAnchor.constant = self.view.frame.width
@@ -415,7 +415,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func parkingPressedFunc() {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = true
             self.segmentLineLeftAnchor3.isActive = false
@@ -424,7 +424,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             self.paymentTableView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.currentTableAnchor.constant = self.view.frame.width
                 self.detailsTableAnchor.constant =  0
                 self.reservationsTableAnchor.constant = self.view.frame.width
@@ -438,7 +438,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func vehiclePressedFunc() {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.segmentLineLeftAnchor1.isActive = false
             self.segmentLineLeftAnchor2.isActive = false
             self.segmentLineLeftAnchor3.isActive = true
@@ -447,7 +447,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
             self.paymentTableView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.currentTableAnchor.constant = self.view.frame.width
                 self.detailsTableAnchor.constant = self.view.frame.width
                 self.reservationsTableAnchor.constant = 0

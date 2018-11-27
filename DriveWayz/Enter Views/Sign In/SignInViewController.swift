@@ -231,11 +231,11 @@ class SignInViewController: UIViewController, handleSignInViews {
     }
     
     func startAnimations() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.drivewayzTopAnchor.constant = -self.view.frame.height/3
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1
                 switch device {
@@ -253,14 +253,14 @@ class SignInViewController: UIViewController, handleSignInViews {
     
     @objc func signInButtonPressed(sender: UIButton) {
         self.whiteViewTopAnchor.constant = self.view.frame.height + 20
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationOut, animations: {
             self.signInButton.alpha = 0
             self.registerButton.alpha = 0
             self.separatorLine.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.defaultStatusBar()
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.loginController.view.alpha = 1
             }, completion: { (success) in
 
@@ -270,13 +270,13 @@ class SignInViewController: UIViewController, handleSignInViews {
     
     @objc func methodButtonPressed(sender: UIButton) {
         self.whiteViewTopAnchor.constant = self.view.frame.height + 20
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationOut, animations: {
             self.signInButton.alpha = 0
             self.registerButton.alpha = 0
             self.separatorLine.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.registerController.view.alpha = 1
             }) { (success) in
                 self.registerController.animate()
@@ -290,7 +290,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     }
     
     func hideLoginPage() {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.loginController.view.alpha = 0
         }) { (success) in
             switch device {
@@ -299,7 +299,7 @@ class SignInViewController: UIViewController, handleSignInViews {
             case .iphoneX:
                 self.whiteViewTopAnchor.constant = 210
             }
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1
                 self.separatorLine.alpha = 1
@@ -309,7 +309,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     }
     
     func hideRegisterPage() {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.registerController.view.alpha = 0
         }) { (success) in
             switch device {
@@ -318,7 +318,7 @@ class SignInViewController: UIViewController, handleSignInViews {
             case .iphoneX:
                 self.whiteViewTopAnchor.constant = 210
             }
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.signInButton.alpha = 1
                 self.registerButton.alpha = 1
                 self.separatorLine.alpha = 1

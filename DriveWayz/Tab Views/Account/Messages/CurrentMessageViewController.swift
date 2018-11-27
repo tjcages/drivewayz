@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import MobileCoreServices
 import AVFoundation
+import Alamofire
 
 protocol handSendButton {
     func bringSendButton()
@@ -330,42 +331,6 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
 
     func setMessage(message: String) {
         self.userMessage = message
-    }
-    
-    @objc func handleSend(sender: UIButton) {
-        let properties = ["text": self.userMessage] as [String : AnyObject]
-        sendMessageWithProperties(properties: properties)
-    }
-    
-    private func sendMessageWithProperties(properties: [String: AnyObject]) {
-        self.messageOptionsController.resetOptions()
-        self.hideSendButton()
-        
-        let ref = Database.database().reference()
-        let toID = self.userID
-        let fromID = Auth.auth().currentUser!.uid
-        let timestamp = Int(Date().timeIntervalSince1970)
-
-        let childRef = ref.child("messages").childByAutoId()
-        var values = ["toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
-        ref.child("messages").child(fromID).removeValue()
-        
-        properties.forEach({values[$0] = $1})
-        childRef.updateChildValues(values) { (error, ralf) in
-            if error != nil {
-                print(error ?? "")
-                return
-            }
-            if let messageId = childRef.key {
-                let vals = [messageId: 1] as [String: Int]
-            
-                let userMessagesRef = ref.child("user-messages").child(fromID).child(toID)
-                userMessagesRef.updateChildValues(vals)
-                
-                let recipientUserMessagesRef = ref.child("user-messages").child(toID).child(fromID)
-                recipientUserMessagesRef.updateChildValues(vals)
-            }
-        }
     }
     
     var shouldCheckID: String = ""
@@ -812,7 +777,7 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
         }
         let indexPath = NSIndexPath(item: self.messages.count - 1, section: 0)
         self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.view.layoutIfNeeded()
         }
     }
@@ -825,4 +790,82 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
 
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
     return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+
+
+extension CurrentMessageViewController {
+    
+    @objc func handleSend(sender: UIButton) {
+        let properties = ["text": self.userMessage] as [String : AnyObject]
+        sendMessageWithProperties(properties: properties)
+    }
+    
+    private func sendMessageWithProperties(properties: [String: AnyObject]) {
+        self.messageOptionsController.resetOptions()
+        self.hideSendButton()
+        
+        let ref = Database.database().reference()
+        let toID = self.userID
+        let fromID = Auth.auth().currentUser!.uid
+        let timestamp = Int(Date().timeIntervalSince1970)
+        
+        let childRef = ref.child("messages").childByAutoId()
+        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
+        
+        let userRef = ref.child("users").child(fromID)
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let userName = dictionary["name"] as? String
+                var fullNameArr = userName?.split(separator: " ")
+                let firstName: String = String(fullNameArr![0])
+                
+                self.fetchNewCurrent(key: self.userID, name: firstName)
+            }
+        }
+        
+        ref.child("messages").child(fromID).removeValue()
+        
+        properties.forEach({values[$0] = $1})
+        childRef.updateChildValues(values) { (error, ralf) in
+            if error != nil {
+                print(error ?? "")
+                return
+            }
+            if let messageId = childRef.key {
+                let vals = [messageId: 1] as [String: Int]
+                
+                let userMessagesRef = ref.child("user-messages").child(fromID).child(toID)
+                userMessagesRef.updateChildValues(vals)
+                
+                let recipientUserMessagesRef = ref.child("user-messages").child(toID).child(fromID)
+                recipientUserMessagesRef.updateChildValues(vals)
+            }
+        }
+    }
+    
+    func fetchNewCurrent(key: String, name: String) {
+        Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let fromDevice = dictionary["DeviceID"] as? String
+                self.setupPushNotifications(fromDevice: fromDevice!, name: name)
+            }
+        }
+    }
+    
+    fileprivate func setupPushNotifications(fromDevice: String, name: String) {
+        let title = "\(name) has sent you a message:"
+        let body = self.userMessage
+        let toDevice = fromDevice
+        var headers: HTTPHeaders = HTTPHeaders()
+        
+        headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+        let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
+        
+        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+            //
+        }
+    }
+    
+    
 }

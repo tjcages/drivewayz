@@ -18,14 +18,25 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     var delegate: handleSignInViews?
     var verificationCode: String?
     
-    var pageControl : UIPageControl = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
-    
     var loadingActivity: NVActivityIndicatorView = {
         let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_RED, padding: 0)
         loading.translatesAutoresizingMaskIntoConstraints = false
         loading.alpha = 0
         
         return loading
+    }()
+    
+    var pageControl: UIPageControl = {
+        let page = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
+        page.numberOfPages = 4
+        page.currentPage = 0
+        page.tintColor = Theme.WHITE
+        page.pageIndicatorTintColor = Theme.WHITE
+        page.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
+        page.translatesAutoresizingMaskIntoConstraints = false
+        page.isUserInteractionEnabled = false
+        
+        return page
     }()
     
     lazy var exitButton: UIButton = {
@@ -645,15 +656,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
         }
         
-        self.pageControl.numberOfPages = 4
-        self.pageControl.currentPage = 0
-        self.pageControl.tintColor = Theme.WHITE
-        self.pageControl.pageIndicatorTintColor = Theme.WHITE
-        self.pageControl.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)
-        
         pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -713,7 +716,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         }
         if self.pageControl.currentPage == 3 {
             self.delegate?.defaultStatusBar()
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
@@ -725,7 +728,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             }
         } else {
             self.delegate?.lightContentStatusBar()
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0.4
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
@@ -751,7 +754,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         }
         if self.pageControl.currentPage != 3 {
             self.delegate?.lightContentStatusBar()
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.setNeedsStatusBarAppearanceUpdate()
                 self.blurBackground.alpha = 0.4
                 self.pageControl.pageIndicatorTintColor = Theme.WHITE
@@ -769,11 +772,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             guard let name = self.nameField.text else { return }
             if !name.contains(" ") {
                 self.errorButton.setTitle("Please enter your full name", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.errorButton.alpha = 0
                     self.nameField.alpha = 0
                     self.facebookLoginButton.alpha = 0
@@ -784,7 +787,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.nextButton.setTitle("Send Code", for: .normal)
                     self.registerLabel.text = "Please enter your phone number for verification"
                     self.view.layoutIfNeeded()
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.phoneNumberCenterAnchor.constant = -10
                         self.areaCodeLabel.alpha = 1
                         self.USAButton.alpha = 1
@@ -800,12 +803,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         } else if self.phoneNumberCenterAnchor.constant == -10 && self.phoneNumberTextField.alpha == 1 {
             if self.phoneNumberTextField.text?.count != 14 {
                 self.errorButton.setTitle("Please enter a valid phone number", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
                 if self.emailTextField.alpha == 0 {
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.errorButton.alpha = 0
                         self.phoneNumberTextField.alpha = 0
                         self.areaCodeLabel.alpha = 0
@@ -813,14 +816,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     }) { (success) in
                         self.passwordField.becomeFirstResponder()
                         self.registerLabel.text = "Choose a secure password"
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.passwordCenterAnchor.constant = 0
                             self.view.layoutIfNeeded()
                         })
                     }
                 } else {
                     self.loadingActivity.startAnimating()
-                    UIView.animate(withDuration: 0.2) {
+                    UIView.animate(withDuration: animationIn) {
                         self.loadingActivity.alpha = 1
                     }
                     guard var phoneNumber = self.phoneNumberTextField.text else { return }
@@ -833,7 +836,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                         if let error = error {
                             self.sendAlert(message: error.localizedDescription)
                             self.nextButton.isUserInteractionEnabled = true
-                            UIView.animate(withDuration: 0.2, animations: {
+                            UIView.animate(withDuration: animationIn, animations: {
                                 self.loadingActivity.alpha = 0
                             })
                             self.loadingActivity.stopAnimating()
@@ -841,7 +844,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                         }
                         self.nextButton.isUserInteractionEnabled = true
                         self.verificationCode = verificationID
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.facebookLoginButton.alpha = 0
                             self.errorButton.alpha = 0
                             self.phoneNumberTextField.alpha = 0
@@ -855,7 +858,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                             self.loadingActivity.stopAnimating()
                             let number = self.phoneNumberTextField.text
                             self.view.endEditing(true)
-                            UIView.animate(withDuration: 0.3, animations: {
+                            UIView.animate(withDuration: animationIn, animations: {
                                 self.verificationCenterAnchor.constant = 0
                                 self.fieldLineWidthAnchor.constant = -self.phoneNumberTextField.frame.width/2 - 20
                                 self.view.layoutIfNeeded()
@@ -870,21 +873,21 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             guard let email = self.emailTextField.text else { return }
             if !email.contains("@") || !email.contains(".") {
                 self.errorButton.setTitle("Please enter a valid email", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
                 self.phoneNumberCenterAnchor.constant = self.view.frame.width
                 self.phoneNumberTextField.alpha = 1
                 self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.errorButton.alpha = 0
                     self.emailTextField.alpha = 0
                 }) { (success) in
                     self.phoneNumberTextField.becomeFirstResponder()
                     self.registerLabel.text = "Please enter your phone number"
 //                    self.registerLabel.text = "Choose a secure password"
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.phoneNumberCenterAnchor.constant = -10
                         self.USAButton.alpha = 1
                         self.areaCodeLabel.alpha = 1
@@ -896,17 +899,17 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             guard let password = self.passwordField.text else { return }
             if password.count < 8 {
                 self.errorButton.setTitle("Needs to be at least 8 characters", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.errorButton.alpha = 0
                     self.passwordField.alpha = 0
                 }) { (success) in
                     self.repeatPasswordField.becomeFirstResponder()
                     self.registerLabel.text = "Repeat password"
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.nextButtonCenterAnchor.constant = 0
                         self.nextButtonTopAnchor.constant = 15
                         self.nextButtonHeightAnchor.constant = 50
@@ -927,7 +930,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             guard let repeatPass = self.repeatPasswordField.text else { return }
             if password != repeatPass {
                 self.errorButton.setTitle("The passwords don't match", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
@@ -940,7 +943,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     @objc func moveBackController(sender: UIButton) {
         if self.phoneNumberCenterAnchor.constant == -10 && self.phoneNumberTextField.alpha == 1 {
             if self.emailTextField.alpha == 0 {
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberCenterAnchor.constant = self.view.frame.width
                     self.USAButton.alpha = 0
                     self.areaCodeLabel.alpha = 0
@@ -949,12 +952,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 }) { (success) in
                     self.emailTextField.becomeFirstResponder()
                     self.registerLabel.text = "Enter your email address"
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.emailTextField.alpha = 1
                     })
                 }
             } else {
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberCenterAnchor.constant = self.view.frame.width
                     self.USAButton.alpha = 0
                     self.areaCodeLabel.alpha = 0
@@ -969,14 +972,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.nameField.becomeFirstResponder()
                     self.nextButton.setTitle("Next", for: .normal)
                     self.registerLabel.text = "Let's start with your name"
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.nameField.alpha = 1
                         self.facebookLoginButton.alpha = 1
                     })
                 }
             }
         } else if self.emailCenterAnchor.constant == 0 && self.emailTextField.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.emailCenterAnchor.constant = self.view.frame.width
                 self.errorButton.alpha = 0
                 self.view.layoutIfNeeded()
@@ -984,7 +987,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.view.endEditing(true)
                 self.nextButton.setTitle("Send Code", for: .normal)
                 self.registerLabel.text = "Please enter your phone number for verification"
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberCenterAnchor.constant = -10
                     self.phoneNumberTextField.alpha = 1
                     self.orLine.alpha = 1
@@ -997,7 +1000,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             }
         } else if self.verificationCenterAnchor.constant == 0 && self.verificationTextField.alpha == 1 {
             self.loadingActivity.stopAnimating()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.verificationCenterAnchor.constant = self.view.frame.width
                 self.fieldLineWidthAnchor.constant = 0
                 self.errorButton.alpha = 0
@@ -1008,7 +1011,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 self.nextButton.setTitle("Send Code", for: .normal)
                 self.registerLabel.text = "Please enter your phone number for verification"
                 self.verificationTextField.text = ""
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberTextField.alpha = 1
                     self.areaCodeLabel.alpha = 1
                     self.USAButton.alpha = 1
@@ -1018,14 +1021,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 })
             }
         } else if self.passwordCenterAnchor.constant == 0 && self.passwordField.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.passwordCenterAnchor.constant = self.view.frame.width
                 self.errorButton.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.phoneNumberTextField.becomeFirstResponder()
                 self.registerLabel.text = "Please enter your phone number for verification"
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberTextField.alpha = 1
                     self.USAButton.alpha = 1
                     self.areaCodeLabel.alpha = 1
@@ -1033,7 +1036,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             }
         } else if self.repeatCenterAnchor.constant == 0 && self.repeatPasswordField.alpha == 1 {
             self.loadingActivity.stopAnimating()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.repeatCenterAnchor.constant = self.view.frame.width
                 self.errorButton.alpha = 0
                 self.loadingActivity.alpha = 0
@@ -1041,7 +1044,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             }) { (success) in
                 self.passwordField.becomeFirstResponder()
                 self.registerLabel.text = "Choose a secure password"
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.passwordField.alpha = 1
                     self.nextButtonCenterAnchor.constant = 50
                     self.nextButtonTopAnchor.constant = 60
@@ -1060,7 +1063,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }
     
     @objc func signUpWithEmail(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.errorButton.alpha = 0
             self.phoneNumberTextField.alpha = 0
             self.USAButton.alpha = 0
@@ -1070,7 +1073,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             self.emailAndPasswordOption.alpha = 0
         }) { (success) in
             self.emailTextField.becomeFirstResponder()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.phoneNumberTextField.alpha = 0
                 self.USAButton.alpha = 0
                 self.areaCodeLabel.alpha = 0
@@ -1094,14 +1097,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         self.view.layoutIfNeeded()
         self.loadingActivity.startAnimating()
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             self.termsController.view.alpha = 1
             self.loadingActivity.alpha = 1
         }
     }
     
     func agreeToTerms() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.termsController.view.alpha = 0
         }) { (success) in
             self.termsController.willMove(toParent: nil)
@@ -1121,7 +1124,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                         if let error = error {
-                            UIView.animate(withDuration: 0.2, animations: {
+                            UIView.animate(withDuration: animationIn, animations: {
                                 self.loadingActivity.alpha = 0
                             })
                             self.loadingActivity.stopAnimating()
@@ -1145,12 +1148,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                                 self.sendAlert(message: (err?.localizedDescription)!)
                                 return
                             }
-                            UIView.animate(withDuration: 0.2, animations: {
+                            UIView.animate(withDuration: animationIn, animations: {
                                 self.loadingActivity.alpha = 0
                             })
                             self.loadingActivity.stopAnimating()
                             print("Successfully logged in!")
                             UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                            UserDefaults.standard.set("\(userName)", forKey: "userName")
                             UserDefaults.standard.synchronize()
                             
                             let myViewController: TabViewController = TabViewController()
@@ -1165,7 +1169,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     }
                 }
             } else {
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.loadingActivity.alpha = 0
                 })
                 self.loadingActivity.stopAnimating()
@@ -1203,12 +1207,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                     self.sendAlert(message: (err?.localizedDescription)!)
                     return
                 }
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.loadingActivity.alpha = 0
                 })
                 self.loadingActivity.stopAnimating()
                 print("Successfully logged in!")
                 UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                UserDefaults.standard.set("\(userName)", forKey: "userName")
                 UserDefaults.standard.synchronize()
                 
                 let myViewController: TabViewController = TabViewController()
@@ -1267,6 +1272,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                                     }
                                     print("Successfully logged in!")
                                     UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                                    UserDefaults.standard.set("\(name)", forKey: "userName")
                                     UserDefaults.standard.synchronize()
                                     
                                     let myViewController: TabViewController = TabViewController()
@@ -1288,7 +1294,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         self.view.endEditing(true)
         self.delegate?.lightContentStatusBar()
         self.delegate?.hideRegisterPage()
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.blurBackground.alpha = 0
             self.title1.alpha = 0
             self.title2.alpha = 0
@@ -1316,7 +1322,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField.text != "" {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.nextButton.alpha = 1
                 self.errorButton.alpha = 0
             }
@@ -1337,13 +1343,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
             guard let fullString = textField.text else { return false }
             if fullString.count == 10 {
                 self.loadingActivity.startAnimating()
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.loadingActivity.alpha = 1
                 }
                 self.registerWithPhoneNumber()
             } else {
                 self.loadingActivity.stopAnimating()
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.loadingActivity.alpha = 0
                 }
             }
@@ -1358,7 +1364,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
                 }
                 return true
             } else if range.length == 1 {
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.loadingActivity.alpha = 0
                 })
                 self.loadingActivity.stopAnimating()
@@ -1405,7 +1411,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     
     func animate() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.blurBackground.alpha = 0.5
                 self.title1.alpha = 1
                 self.title2.alpha = 1

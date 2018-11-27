@@ -211,7 +211,7 @@ class UserUpcomingViewController: UIViewController {
     }
     
     func bringUpcomingParking() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.alertLabel.alpha = 1
             self.current.alpha = 1
             self.fromToLabel.alpha = 1
@@ -222,7 +222,7 @@ class UserUpcomingViewController: UIViewController {
     }
     
     func hideUpcomingParking() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.alertLabel.alpha = 0
             self.current.alpha = 0
             self.fromToLabel.alpha = 0

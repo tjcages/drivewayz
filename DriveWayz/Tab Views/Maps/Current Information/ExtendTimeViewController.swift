@@ -55,7 +55,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     var paymentInProgress: Bool = false {
         didSet {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.paymentInProgress {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1
@@ -326,7 +326,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     }
     
     @objc func bringBackReserve(sender: UITapGestureRecognizer) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.confirmContainer.alpha = 0
             self.totalCostLabel.alpha = 0
             self.view.layoutIfNeeded()
@@ -345,7 +345,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     @objc func handleRequestRideButtonTapped() {
         let stringCost = String(format: "%.2f", Double((self.price * Double(hours!))/100))
         totalCostLabel.text = "$\(stringCost)"
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.confirmContainer.alpha = 1
             self.totalCostLabel.alpha = 1
             self.view.layoutIfNeeded()
@@ -473,7 +473,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     func changeReserveButton() {
         self.extendDelegate?.closeExtendTimeView()
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.confirmContainer.alpha = 0
             self.totalCostLabel.alpha = 0
             self.view.layoutIfNeeded()
@@ -500,11 +500,11 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     func addCurrentParking() {
         reserveButton.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.reserveButton.alpha = 0.6
         }) { (success) in
             self.delegate?.purchaseButtonSwipedDown()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 currentButton.alpha = 1
                 self.view.alpha = 0
             })

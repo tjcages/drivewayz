@@ -112,7 +112,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.mondayButton.backgroundColor = UIColor.clear
             self.mondayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.mondayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.mondayTimeView.alpha = 0
                 self.mondayToPicker.alpha = 0
                 self.mondayFromPicker.alpha = 0
@@ -124,7 +124,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.mondayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.mondayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.mondayTimeView.alpha = 1
                     self.mondayToPicker.alpha = 1
                     self.mondayFromPicker.alpha = 1
@@ -140,7 +140,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.tuesdayButton.backgroundColor = UIColor.clear
             self.tuesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.tuesdayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.tuesdayTimeView.alpha = 0
                 self.tuesdayToPicker.alpha = 0
                 self.tuesdayFromPicker.alpha = 0
@@ -152,7 +152,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.tuesdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.tuesdayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.tuesdayTimeView.alpha = 1
                     self.tuesdayToPicker.alpha = 1
                     self.tuesdayFromPicker.alpha = 1
@@ -168,7 +168,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.wednesdayButton.backgroundColor = UIColor.clear
             self.wednesdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.wednesdayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.wednesdayTimeView.alpha = 0
                 self.wednesdayToPicker.alpha = 0
                 self.wednesdayFromPicker.alpha = 0
@@ -180,7 +180,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.wednesdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.wednesdayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.wednesdayTimeView.alpha = 1
                     self.wednesdayToPicker.alpha = 1
                     self.wednesdayFromPicker.alpha = 1
@@ -196,7 +196,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.thursdayButton.backgroundColor = UIColor.clear
             self.thursdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.thursdayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.thursdayTimeView.alpha = 0
                 self.thursdayToPicker.alpha = 0
                 self.thursdayFromPicker.alpha = 0
@@ -208,7 +208,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.thursdayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.thursdayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.thursdayTimeView.alpha = 1
                     self.thursdayToPicker.alpha = 1
                     self.thursdayFromPicker.alpha = 1
@@ -224,7 +224,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.fridayButton.backgroundColor = UIColor.clear
             self.fridayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.fridayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.fridayTimeView.alpha = 0
                 self.fridayToPicker.alpha = 0
                 self.fridayFromPicker.alpha = 0
@@ -236,7 +236,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.fridayButton.setTitleColor(UIColor.white, for: .normal)
             if segment == 0 {
                 self.fridayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.fridayTimeView.alpha = 1
                     self.fridayToPicker.alpha = 1
                     self.fridayFromPicker.alpha = 1
@@ -252,7 +252,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.saturdayButton.backgroundColor = UIColor.clear
             self.saturdayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.saturdayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.saturdayTimeView.alpha = 0
                 self.saturdayToPicker.alpha = 0
                 self.saturdayFromPicker.alpha = 0
@@ -264,7 +264,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.saturdayButton.setTitleColor(UIColor.white, for: .normal)
             if self.segment == 0 {
                 self.saturdayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.saturdayTimeView.alpha = 1
                     self.saturdayToPicker.alpha = 1
                     self.saturdayFromPicker.alpha = 1
@@ -280,7 +280,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.sundayButton.backgroundColor = UIColor.clear
             self.sundayButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
             self.sundayHeightAnchor.constant = 0
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.sundayTimeView.alpha = 0
                 self.sundayToPicker.alpha = 0
                 self.sundayFromPicker.alpha = 0
@@ -292,7 +292,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             self.sundayButton.setTitleColor(UIColor.white, for: .normal)
             if self.segment == 0 {
                 self.sundayHeightAnchor.constant = 120
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: animationIn) {
                     self.sundayTimeView.alpha = 1
                     self.sundayToPicker.alpha = 1
                     self.sundayFromPicker.alpha = 1
@@ -310,11 +310,11 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             segment = 0
             costLabelEverydayAnchor.isActive = false
             costLabelSpecificAnchor.isActive = true
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.pickerView.alpha = 0
                 if self.monday == 1 {
                     self.mondayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.mondayTimeView.alpha = 1
                         self.mondayToPicker.alpha = 1
                         self.mondayFromPicker.alpha = 1
@@ -323,7 +323,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.tuesday == 1 {
                     self.tuesdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.tuesdayTimeView.alpha = 1
                         self.tuesdayToPicker.alpha = 1
                         self.tuesdayFromPicker.alpha = 1
@@ -332,7 +332,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.wednesday == 1 {
                     self.wednesdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.wednesdayTimeView.alpha = 1
                         self.wednesdayToPicker.alpha = 1
                         self.wednesdayFromPicker.alpha = 1
@@ -341,7 +341,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.thursday == 1 {
                     self.thursdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.thursdayTimeView.alpha = 1
                         self.thursdayToPicker.alpha = 1
                         self.thursdayFromPicker.alpha = 1
@@ -350,7 +350,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.friday == 1 {
                     self.fridayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.fridayTimeView.alpha = 1
                         self.fridayToPicker.alpha = 1
                         self.fridayFromPicker.alpha = 1
@@ -359,7 +359,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.saturday == 1 {
                     self.saturdayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.saturdayTimeView.alpha = 1
                         self.saturdayToPicker.alpha = 1
                         self.saturdayFromPicker.alpha = 1
@@ -368,7 +368,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
                 }
                 if self.sunday == 1 {
                     self.sundayHeightAnchor.constant = 120
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: animationIn) {
                         self.sundayTimeView.alpha = 1
                         self.sundayToPicker.alpha = 1
                         self.sundayFromPicker.alpha = 1
@@ -382,7 +382,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
             segment = 1
             costLabelEverydayAnchor.isActive = true
             costLabelSpecificAnchor.isActive = false
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.pickerView.alpha = 1
                 self.mondayTimeView.alpha = 0
                 self.mondayToPicker.alpha = 0

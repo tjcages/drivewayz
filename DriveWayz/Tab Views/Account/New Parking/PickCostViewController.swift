@@ -7,13 +7,13 @@
 //
 
 import UIKit
+import CoreLocation
 
 class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var costParking: String = "$1.50"
     
-    private let cheapCostValues: NSArray = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00","$5.50","$6.00","$6.50","$7.00","$7.50","$8.00","$8.50","$9.00","$9.50","$10.00", "$10.50", "$11.00", "$11.50", "$12.00"]
-    private let expensiveCostValues: NSArray = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00","$5.50","$6.00","$6.50","$7.00","$7.50","$8.00","$8.50","$9.00","$9.50","$10.00", "$10.50","$11.00","$11.50","$12.00","$12.50","$13.00","$13.50","$14.00","$14.50","$15.00","$15.50","$16.00"]
+    private var costValues: [String] = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00"]
     
     var costPicker: UIPickerView = {
         let cost = UIPickerView()
@@ -33,7 +33,6 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4
-        label.textAlignment = .center
         
         return label
     }()
@@ -104,10 +103,34 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
+    func configureCustomPricing(state: String, city: String) {
+        let ref = Database.database().reference().child("CostLocations")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if let cities = dictionary["\(state)"] as? [String:AnyObject] {
+                    for cit in cities {
+                        let key = cit.key
+                        if key == city {
+                            if let cost = cit.value as? Double {
+                                self.costValues = []
+                                var i = cost - 2
+                                while i <= cost + 2 {
+                                    self.costValues.append("$\(i)0")
+                                    i = i + 0.5
+                                }
+                                self.costPicker.reloadAllComponents()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func removeTutorial() {
         self.costPicker.selectRow(1, inComponent: 0, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animationIn) {
                 self.swipeLabel.alpha = 0
             }
         }
@@ -129,19 +152,11 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if expensesListing == 1 {
-            return expensiveCostValues.count
-        } else {
-            return cheapCostValues.count
-        }
+        return costValues.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if expensesListing == 1 {
-            return expensiveCostValues[row] as? String
-        } else {
-            return cheapCostValues[row] as? String
-        }
+        return costValues[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -153,12 +168,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.textAlignment = .center
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
-        
-        if expensesListing == 1 {
-            label.text = expensiveCostValues[row] as? String
-        } else {
-            label.text = cheapCostValues[row] as? String
-        }
+        label.text = costValues[row]
         
         view.addSubview(label)
         
@@ -168,11 +178,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if expensesListing == 1 {
-            costParking = expensiveCostValues[row] as! String
-        } else {
-            costParking = cheapCostValues[row] as! String
-        }
+        costParking = costValues[row]
     }
     
     func addPropertiesToDatabase(parkingID: String) {

@@ -221,7 +221,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func redeemPressed(sender: UIButton) {
         self.check = true
         if accept.alpha == 1 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsHeightAnchor.constant = 180
                 self.back.alpha = 0
                 self.accept.alpha = 0
@@ -231,7 +231,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.couponsTableView.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.redeemField.alpha = 1
                     self.currentCoupons.text = "Redeem Coupons"
                     self.view.layoutIfNeeded()
@@ -243,11 +243,11 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 updateUserProfile(coupon: self.redeemField.text!)
             }
             self.redeemField.endEditing(true)
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.redeemField.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.currentCoupons.text = "Current Coupons"
                     self.termsHeightAnchor.constant = 260
                     self.back.alpha = 1
@@ -291,7 +291,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                             self.couponsTableView.reloadData()
                         })
                         self.sendAlert(title: "Success", message: "You have redeemed this coupon and it will be applied to your next purchase!")
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.view.alpha = 0
                         }) { (success) in
                             self.delegate?.hideCouponsController()
@@ -353,7 +353,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func backPressed(sender: UIButton) {
         self.delegate?.hideCouponsController()
-//        UIView.animate(withDuration: 0.3, animations: {
+//        UIView.animate(withDuration: animationIn, animations: {
 //            self.view.alpha = 0
 //        }) { (success) in
 //        }

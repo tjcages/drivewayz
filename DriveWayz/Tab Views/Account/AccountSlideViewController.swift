@@ -19,9 +19,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Home", "Reservations", "Become a host", "Vehicle", "Messages", "Coupons", "Contact us!", "Logout"]
-    var terms: [String] = ["Terms"]
-    var optionsImages: [UIImage] = [UIImage(named: "Home")!, UIImage(named: "parkingIcon")!, UIImage(named: "analytics")!, UIImage(named: "vehicle")!, UIImage(named: "account")!, UIImage(named: "coupon")!, UIImage(named: "contactUs")!, UIImage(named: "logout")!, UIImage(named: "terms")!]
+    var options: [String] = ["Book a Spot", "Reservations", "Vehicle", "Payment", "Inbox", "Settings", "Help", "Become a Host"]
+    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "credit_card")!, UIImage(named: "inbox")!, UIImage(named: "gear")!, UIImage(named: "tool")!, UIImage(named: "home-1")!]
     let cellId = "cellId"
     
     lazy var container: UIView = {
@@ -30,9 +29,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: -1, height: 1)
         view.layer.shadowOpacity = 0.8
-        view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.SEA_BLUE
+        view.backgroundColor = Theme.WHITE
         view.clipsToBounds = true
         
         return view
@@ -44,20 +42,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: -1, height: 1)
         view.layer.shadowOpacity = 0.8
-        view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
-        
-        return view
-    }()
-    
-    lazy var darkContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().darkBlurColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-        background.zPosition = -10
-        view.layer.insertSublayer(background, at: 0)
         
         return view
     }()
@@ -70,31 +56,21 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.white
-        imageView.layer.borderColor = Theme.HARMONY_RED.cgColor
-        imageView.layer.borderWidth = 0.5
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
+        imageView.layer.borderColor = Theme.PURPLE.cgColor
+        imageView.layer.borderWidth = 0.5
         
         return imageView
-    }()
-    
-    var imageView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 50
-        view.isUserInteractionEnabled = true
-        
-        return view
     }()
     
     var profileName: UILabel = {
         let profileName = UILabel()
         profileName.translatesAutoresizingMaskIntoConstraints = false
-        profileName.textColor = Theme.WHITE
+        profileName.textColor = Theme.BLACK
         profileName.textAlignment = .center
-        profileName.font = Fonts.SSPSemiBoldH1
-        profileName.text = "Name"
+        profileName.font = Fonts.SSPRegularH2
+        profileName.text = ""
         
         return profileName
     }()
@@ -102,7 +78,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         
         return view
     }()
@@ -113,41 +89,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
-        view.isScrollEnabled = false
-        view.roundCorners(corners: .bottomLeft, radius: 10)
-//        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         
         return view
-    }()
-    
-    var termsTableView: UITableView = {
-        let view = UITableView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.separatorStyle = .none
-        view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
-        view.isScrollEnabled = false
-        view.roundCorners(corners: .bottomLeft, radius: 10)
-        
-        return view
-    }()
-    
-    var termsLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        
-        return view
-    }()
-    
-    var mainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Analytics"
-        label.textColor = Theme.WHITE
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
-        label.alpha = 0
-        
-        return label
     }()
     
     var hostingMark: UIButton = {
@@ -180,44 +123,57 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         return mark
     }()
     
-    var moreColorsButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setBackgroundImage(UIImage(named: "moreColors"), for: .normal)
+    lazy var purpleGradient: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
         
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(blurEffectView)
-        blurEffectView.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
-        blurEffectView.rightAnchor.constraint(equalTo: button.rightAnchor).isActive = true
-        blurEffectView.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
-        blurEffectView.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+        let imageView = UIView()
+        let pattern = UIImage(named: "trianglesGridAd")
+        imageView.backgroundColor = UIColor(patternImage: pattern!)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        imageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        let back = UIButton()
-        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: -90, unit: .degrees))
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        back.setImage(tintedImage, for: .normal)
-        back.tintColor = Theme.WHITE
-        back.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(back)
-        back.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
-        back.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 4).isActive = true
-        back.widthAnchor.constraint(equalToConstant: 26).isActive = true
-        back.heightAnchor.constraint(equalTo: button.heightAnchor, constant: -16).isActive = true
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.font = Fonts.SSPSemiBoldH2
+        title.textColor = Theme.WHITE
+        title.textAlignment = .center
+        title.text = "INVITE A FRIEND"
+        view.addSubview(title)
+        title.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        title.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        title.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        title.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        let label = UILabel()
-        label.text = "Invite a friend and get 10% off!"
-        label.textColor = Theme.WHITE
-        label.font = Fonts.SSPSemiBoldH4
-        label.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(label)
-        label.leftAnchor.constraint(equalTo: back.rightAnchor, constant: -4).isActive = true
-        label.rightAnchor.constraint(equalTo: button.rightAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: button.topAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
-
-        return button
+        let subtitle = UILabel()
+        subtitle.translatesAutoresizingMaskIntoConstraints = false
+        subtitle.font = Fonts.SSPRegularH6
+        subtitle.textColor = Theme.WHITE
+        subtitle.textAlignment = .center
+        subtitle.text = "for 10% off your next booking"
+        view.addSubview(subtitle)
+        subtitle.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        subtitle.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        subtitle.topAnchor.constraint(equalTo: title.bottomAnchor).isActive = true
+        subtitle.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        return view
+    }()
+    
+    var settingsSelect: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        
+        return view
     }()
 
     override func viewDidLoad() {
@@ -227,13 +183,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         
         self.optionsTableView.delegate = self
         self.optionsTableView.dataSource = self
-        self.termsTableView.delegate = self
-        self.termsTableView.dataSource = self
 
         setupMainView()
         setupTopView()
         fetchUser()
-        setHomeIndex()
         checkForMarks()
         checkForUpcoming()
         configureHosts()
@@ -248,14 +201,12 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         return true
     }
     
-    var mainLabelAnchor: NSLayoutConstraint!
-    
     func setupMainView() {
         
         self.view.addSubview(shadowContainer)
-        shadowContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5).isActive = true
+        shadowContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -5).isActive = true
         shadowContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        shadowContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
+        shadowContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
         shadowContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
         shadowContainer.addSubview(container)
@@ -264,39 +215,20 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         container.rightAnchor.constraint(equalTo: shadowContainer.rightAnchor).isActive = true
         container.topAnchor.constraint(equalTo: shadowContainer.topAnchor).isActive = true
         
-        container.addSubview(darkContainer)
-        darkContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5).isActive = true
-        darkContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        darkContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 5).isActive = true
-        darkContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        mainLabelAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 82)
-            mainLabelAnchor.isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
     }
     
     func setupTopView() {
         
         container.addSubview(profileImageView)
-        profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: -self.view.frame.width/7).isActive = true
+        profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: self.view.frame.width/7).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 30).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 20).isActive = true
         case .iphoneX:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 30).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 20).isActive = true
         }
-        
-        container.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: profileImageView.leftAnchor).isActive = true
-        imageView.rightAnchor.constraint(equalTo: profileImageView.rightAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: profileImageView.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor).isActive = true
         
         container.addSubview(profileName)
         profileName.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
@@ -305,42 +237,30 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         container.addSubview(profileLine)
-        profileLine.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        profileLine.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 20).isActive = true
+        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3.5 + 12).isActive = true
+        profileLine.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 10).isActive = true
         profileLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        container.addSubview(moreColorsButton)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(inviteNewUser(sender:)))
-        moreColorsButton.addGestureRecognizer(gesture)
-        moreColorsButton.topAnchor.constraint(equalTo: profileLine.bottomAnchor, constant: -10).isActive = true
-        moreColorsButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        moreColorsButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
-        moreColorsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        container.addSubview(settingsSelect)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingSelected))
+        settingsSelect.addGestureRecognizer(tapGesture)
+        settingsSelect.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        settingsSelect.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        settingsSelect.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        settingsSelect.bottomAnchor.constraint(equalTo: profileLine.topAnchor).isActive = true
         
         container.addSubview(optionsTableView)
-        optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        optionsTableView.topAnchor.constraint(equalTo: moreColorsButton.bottomAnchor).isActive = true
-        optionsTableView.bottomAnchor.constraint(greaterThanOrEqualTo: container.bottomAnchor).isActive = true
-//        optionsTableView.heightAnchor.constraint(equalToConstant: 360).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: self.view.frame.width/3.5).isActive = true
+        optionsTableView.topAnchor.constraint(equalTo: profileLine.bottomAnchor).isActive = true
+        optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         
-        container.addSubview(termsTableView)
-        termsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        termsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0).isActive = true
-        termsTableView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -self.view.frame.width/3.5).isActive = true
-        switch device {
-        case .iphone8:
-            termsTableView.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        case .iphoneX:
-            termsTableView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        }
-        
-        container.addSubview(termsLine)
-        termsLine.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        termsLine.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        termsLine.bottomAnchor.constraint(equalTo: termsTableView.topAnchor, constant: -10).isActive = true
-        termsLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        container.addSubview(purpleGradient)
+        purpleGradient.leftAnchor.constraint(equalTo: container.leftAnchor, constant: self.view.frame.width/3.5).isActive = true
+        purpleGradient.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        purpleGradient.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        purpleGradient.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        optionsTableView.bottomAnchor.constraint(equalTo: purpleGradient.topAnchor).isActive = true
         
         container.addSubview(upcomingMark)
         upcomingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 57.5).isActive = true
@@ -364,6 +284,9 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var upcomingMarkShouldShow: Bool = false
     
     func fetchUser() {
+        if let isUserName: String = UserDefaults.standard.object(forKey: "userName") as? String {
+            self.profileName.text = isUserName
+        }
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -448,60 +371,42 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("canceled picker")
         dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == optionsTableView {
-            return self.options.count
-        } else {
-            return self.terms.count
-        }
+        return self.options.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 45
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
-        if tableView == optionsTableView {
-            cell.messageTextView.text = options[indexPath.row]
-            cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
-            cell.imageView?.image = cell.imageView?.image?.withRenderingMode(.alwaysTemplate)
-            cell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        } else {
-            cell.messageTextView.text = terms[0]
-            cell.profileImageView.setImage(optionsImages[optionsImages.count-1], for: .normal)
-            cell.imageView?.image = cell.imageView?.image?.withRenderingMode(.alwaysTemplate)
-            cell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        }
+        cell.messageTextView.text = options[indexPath.row]
+        cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
         cell.selectionStyle = .none
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
+        cell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
+        cell.messageTextView.textColor = Theme.BLACK
+    }
+    
     var analControllerAnchor: NSLayoutConstraint!
-    var previousCell: OptionsCell!
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.hostingMark.alpha = 0
             self.upcomingMark.alpha = 0
-        }
-        if self.previousCell != nil {
-            self.previousCell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            self.previousCell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            self.previousCell.backgroundColor = UIColor.clear
-            self.previousCell.messageTextView.font = Fonts.SSPRegularH5
-        }
-        if let cell = optionsTableView.cellForRow(at: indexPath) as? OptionsCell {
-            cell.messageTextView.textColor = Theme.BLACK
-            cell.imageView?.tintColor = Theme.PACIFIC_BLUE
-            cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
-            cell.messageTextView.font = Fonts.SSPSemiBoldH5
-            self.previousCell = cell
         }
         if tableView == optionsTableView {
             if options[indexPath.row] == "Reservations" {
@@ -510,13 +415,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             } else if options[indexPath.row] == "Hosting" {
                 self.openAccountView()
                 self.delegate?.bringHostingController()
-            } else if options[indexPath.row] == "Become a host" {
+            } else if options[indexPath.row] == "Become a Host" {
                 self.openAccountView()
                 self.delegate?.bringNewHostingController()
             } else if options[indexPath.row] == "Vehicle" {
                 self.openAccountView()
                 self.delegate?.bringVehicleController()
-            } else if options[indexPath.row] == "Messages" {
+            } else if options[indexPath.row] == "Inbox" {
                 self.openAccountView()
                 self.delegate?.bringMessagesController()
             } else if options[indexPath.row] == "Coupons" {
@@ -527,7 +432,12 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                 self.delegate?.bringContactUsController()
             } else if options[indexPath.row] == "Logout" {
                 self.handleLogout()
-            }  else if options[indexPath.row] == "Home" {
+            } else if options[indexPath.row] == "Settings" {
+                self.settingSelected()
+            } else if options[indexPath.row] == "Help" {
+                self.openAccountView()
+                self.delegate?.bringHelpController()
+            } else if options[indexPath.row] == "Book a Spot" {
                 self.delegate?.moveToMap()
             }
         } else {
@@ -536,13 +446,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         }
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        self.optionsTableView.deselectRow(at: indexPath, animated: true)
-        if let cell = optionsTableView.cellForRow(at: indexPath) as? OptionsCell {
-            cell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            cell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            cell.backgroundColor = UIColor.clear
-            cell.messageTextView.font = Fonts.SSPRegularH5
+    @objc func settingSelected() {
+        self.openAccountView()
+        if let image = self.profileImageView.image, let name = self.profileName.text {
+            self.delegate?.bringSettingsController(image: image, name: name)
         }
     }
     
@@ -565,36 +472,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func moveMainLabelUp() {
-        UIView.animate(withDuration: 0.2) {
-            self.mainLabelAnchor.constant = 48
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func moveMainLabelDown() {
-        UIView.animate(withDuration: 0.2) {
-            self.mainLabelAnchor.constant = 82
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func setHomeIndex() {
-        if self.previousCell != nil {
-            self.previousCell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            self.previousCell.imageView?.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-            self.previousCell.backgroundColor = UIColor.clear
-            self.previousCell.messageTextView.font = Fonts.SSPRegularH5
-        }
-        if let cell = optionsTableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? OptionsCell {
-            cell.messageTextView.textColor = Theme.BLACK
-            cell.imageView?.tintColor = Theme.PACIFIC_BLUE
-            cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.05)
-            cell.messageTextView.font = Fonts.SSPSemiBoldH5
-            self.previousCell = cell
-        }
     }
     
     func configureHosts() {

@@ -576,6 +576,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 appDelegate.window?.makeKeyAndVisible()
                 
                 self.dismiss(animated: true, completion: nil)
+                ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        if let name = dictionary["name"] as? String {
+                            UserDefaults.standard.set("\(name)", forKey: "userName")
+                            UserDefaults.standard.synchronize()
+                        }
+                    }
+                })
                 
             })
             
@@ -602,6 +610,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         if let dictionary = graphResponse.dictionaryValue {
                             let json = JSON(dictionary)
                             let email = json["email"].string!
+                            let pictureObject = json["picture"].dictionary!
+                            let pictureData = pictureObject["data"]?.dictionary!
+                            let pictureUrl = pictureData!["url"]?.string!
                             
                             let credentials = FacebookAuthProvider.credential(withAccessToken: accessTok)
                             Auth.auth().fetchSignInMethods(forEmail: email, completion: { (list, error) in
@@ -617,7 +628,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                         }
                                         
                                         guard let uid = Auth.auth().currentUser?.uid else {return}
-                                        let value = ["DeviceID": AppDelegate.DEVICEID] as [String:Any]
+                                        let value = ["DeviceID": AppDelegate.DEVICEID, "picture": pictureUrl!] as [String:Any]
                                         let ref = Database.database().reference().child("users").child(uid)
                                         ref.updateChildValues(value)
                                         
@@ -632,6 +643,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                         appDelegate.window?.makeKeyAndVisible()
                                         
                                         self.dismiss(animated: true, completion: nil)
+                                        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                                            if let dictionary = snapshot.value as? [String:AnyObject] {
+                                                if let name = dictionary["name"] as? String {
+                                                    UserDefaults.standard.set("\(name)", forKey: "userName")
+                                                    UserDefaults.standard.synchronize()
+                                                }
+                                            }
+                                        })
                                     }
                                 } else {
                                     self.displayAlertMessage(userMessage: "Please REGISTER with your Facebook account before attempting to login.", title: "Alert!")
@@ -647,7 +666,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func phoneNumberPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.choosePhoneNumber.alpha = 0
             self.chooseEmail.alpha = 0
             self.orLabel.alpha = 0
@@ -656,7 +675,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.phoneChooseButton.alpha = 0
             self.emailChooseButton.alpha = 0
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.nextButtonCenterAnchor.constant = 50
                 self.nextButton.alpha = 1
                 self.backButton.alpha = 1
@@ -671,7 +690,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func emailPressed(sender: UIButton) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.choosePhoneNumber.alpha = 0
             self.chooseEmail.alpha = 0
             self.orLabel.alpha = 0
@@ -680,7 +699,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.phoneChooseButton.alpha = 0
             self.emailChooseButton.alpha = 0
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.emailCenterAnchor.constant = 50
                 self.confirmButton.alpha = 1
                 self.view.layoutIfNeeded()
@@ -693,12 +712,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if self.phoneNumberCenterAnchor.constant == -20 && self.phoneNumberTextField.alpha == 1 {
             if self.phoneNumberTextField.text?.count != 14 {
                 self.errorButton.setTitle("Please enter a valid phone number", for: .normal)
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.errorButton.alpha = 1
                 }
             } else {
                 self.loadingActivity.startAnimating()
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.loadingActivity.alpha = 1
                 }
                 guard var phoneNumber = self.phoneNumberTextField.text else { return }
@@ -715,7 +734,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     }
                     self.nextButton.isUserInteractionEnabled = true
                     self.verificationCode = verificationID
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.facebookLoginButton.alpha = 0
                         self.errorButton.alpha = 0
                         self.phoneNumberTextField.alpha = 0
@@ -728,7 +747,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.loadingActivity.stopAnimating()
                         let number = self.phoneNumberTextField.text
                         self.view.endEditing(true)
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.verificationCenterAnchor.constant = 0
                             self.fieldLineWidthAnchor.constant = -self.phoneNumberTextField.frame.width/2 - 20
                             self.view.layoutIfNeeded()
@@ -744,7 +763,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @objc func moveBackController(sender: UIButton) {
         if self.verificationCenterAnchor.constant == 0 && self.verificationTextField.alpha == 1 {
             self.loadingActivity.stopAnimating()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.verificationCenterAnchor.constant = self.view.frame.width
                 self.fieldLineWidthAnchor.constant = 0
                 self.errorButton.alpha = 0
@@ -755,7 +774,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.nextButton.setTitle("Send Code", for: .normal)
                 self.loginLabel.text = "Please enter your phone number for verification"
                 self.verificationTextField.text = ""
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.phoneNumberTextField.alpha = 1
                     self.areaCodeLabel.alpha = 1
                     self.USAButton.alpha = 1
@@ -763,7 +782,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         } else if self.phoneNumberCenterAnchor.constant == -20 && self.phoneNumberTextField.alpha == 1 {
             self.loadingActivity.stopAnimating()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.phoneNumberCenterAnchor.constant = self.view.frame.width
                 self.areaCodeLabel.alpha = 0
                 self.USAButton.alpha = 0
@@ -778,7 +797,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.nextButton.setTitle("Send Code", for: .normal)
                 self.loginLabel.text = "Please choose a sign in method"
                 self.verificationTextField.text = ""
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.choosePhoneNumber.alpha = 1
                     self.chooseEmail.alpha = 1
                     self.orLine.alpha = 1
@@ -815,7 +834,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func animate() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.emailCenterAnchor.constant = self.view.frame.width * 1.5
             self.phoneNumberCenterAnchor.constant = self.view.frame.width
             self.USAButton.alpha = 0
@@ -825,7 +844,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.backButton.alpha = 0
             self.confirmButton.alpha = 0
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.chooseEmail.alpha = 1
                 self.choosePhoneNumber.alpha = 1
                 self.orLabel.alpha = 1
@@ -846,7 +865,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                         if let error = error {
-                            UIView.animate(withDuration: 0.2, animations: {
+                            UIView.animate(withDuration: animationIn, animations: {
                                 self.loadingActivity.alpha = 0
                             })
                             self.loadingActivity.stopAnimating()
@@ -854,7 +873,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             self.verificationTextField.becomeFirstResponder()
                             return
                         }
-                        UIView.animate(withDuration: 0.2, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.loadingActivity.alpha = 0
                         })
                         self.loadingActivity.stopAnimating()
@@ -869,10 +888,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         appDelegate.window?.makeKeyAndVisible()
                         
                         self.dismiss(animated: true, completion: nil)
+                        if let uid = authResult?.user.uid {
+                            let ref = Database.database().reference().child("users").child(uid)
+                            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                                if let dictionary = snapshot.value as? [String:AnyObject] {
+                                    if let name = dictionary["name"] as? String {
+                                        UserDefaults.standard.set("\(name)", forKey: "userName")
+                                        UserDefaults.standard.synchronize()
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
             } else {
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.loadingActivity.alpha = 0
                 })
                 self.loadingActivity.stopAnimating()
@@ -882,7 +912,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField.text != "" {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.nextButton.alpha = 1
                 self.errorButton.alpha = 0
             }
@@ -903,13 +933,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             guard let fullString = textField.text else { return false }
             if fullString.count == 10 {
                 self.loadingActivity.startAnimating()
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.loadingActivity.alpha = 1
                 }
                 self.registerWithPhoneNumber()
             } else {
                 self.loadingActivity.stopAnimating()
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.loadingActivity.alpha = 0
                 }
             }
@@ -924,7 +954,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 return true
             } else if range.length == 1 {
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.loadingActivity.alpha = 0
                 })
                 self.loadingActivity.stopAnimating()

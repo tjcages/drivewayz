@@ -8,10 +8,19 @@
 
 import UIKit
 
-class SpotPicturesViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+protocol handlePanoImages {
+    func confirmedImage(image: UIImage)
+    func imageDrawExited()
+}
+
+class SpotPicturesViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, handlePanoImages {
     
     var currentButton: UIButton?
     var pickerParking: UIImagePickerController?
+    var delegate: handleImageDrawing?
+    
+    var lattitude: Double = 1.0
+    var longitude: Double = 1.0
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -27,7 +36,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -44,7 +53,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -73,7 +82,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -90,7 +99,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -119,7 +128,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -136,7 +145,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -165,7 +174,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
@@ -182,7 +191,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -211,7 +220,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -228,7 +237,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -257,7 +266,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -274,7 +283,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -303,7 +312,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -320,7 +329,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -349,7 +358,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
@@ -366,7 +375,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Theme.OFF_WHITE
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
         return label
@@ -405,7 +414,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
@@ -438,7 +447,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         button.backgroundColor = Theme.OFF_WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
@@ -463,12 +472,28 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         
         return button
     }()
+    
+    lazy var checkmark: UIButton = {
+        let image = UIImage(named: "Checkmark")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton()
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button.layer.cornerRadius = 15
+        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.alpha = 0
+        
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViews()
         setupAdditionalViews()
+        
+        scrollView.addSubview(checkmark)
     }
     
     var singleRowAnchor: NSLayoutConstraint!
@@ -551,7 +576,8 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     
     @objc func selectImageControl(sender: UIButton) {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
+            self.checkmark.alpha = 0
             if sender == self.addAnImageButton1 {
                 self.selectImage(sender: sender, anchor: self.firstWidthAnchor, remove: self.spotRemove1)
             } else if sender == self.addAnImageButton2 {
@@ -576,8 +602,11 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         }
     }
     
+    var useRegular: Bool = true
+    
     func selectImage(sender: UIButton, anchor: NSLayoutConstraint, remove: UIButton) {
         self.currentButton = sender
+        self.checkmark.center = sender.center
         if sender.imageEdgeInsets == UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) {
             if sender.isSelected == true {
                 sender.widthAnchor.constraint(equalToConstant: self.view.frame.width*5/6).isActive = false
@@ -596,13 +625,16 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         } else {
             let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertController.Style.actionSheet)
             alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertAction.Style.default, handler: { action in
+                self.useRegular = true
                 self.handleSelectParkingImageView()
             }))
             alert.addAction(UIAlertAction(title: "Take a Photo", style: UIAlertAction.Style.default, handler: { action in
+                self.useRegular = true
                 self.handleTakeAnImageView()
             }))
             alert.addAction(UIAlertAction(title: "Google Street View", style: UIAlertAction.Style.default, handler: { action in
-                //            self.sendAlready()
+                self.useRegular = false
+                self.sendDraw(image: UIImage())
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(alert, animated: true, completion: nil)
@@ -612,7 +644,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     @objc func removeImagePressed(sender: UIButton) {
         let image = UIImage(named: "addImageIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             if sender == self.spotRemove1 {
                 self.selectImage(sender: self.addAnImageButton1, anchor: self.firstWidthAnchor, remove: self.spotRemove1)
                 self.addAnImageButton1.setImage(tintedImage, for: .normal)
@@ -685,12 +717,70 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         }
         if let selectedImage = selectedImageFromPicker {
             if picker == pickerParking {
-                self.currentButton?.setImage(selectedImage, for: .normal)
-                self.currentButton?.imageEdgeInsets = UIEdgeInsets.zero
+                self.sendDraw(image: selectedImage)
             }
         }
         dismiss(animated: true) {
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    var drawController: DrawSpotViewController!
+    
+    func sendDraw(image: UIImage) {
+        drawController = DrawSpotViewController()
+        drawController.view.translatesAutoresizingMaskIntoConstraints = false
+        drawController.delegate = self
+        drawController.view.alpha = 0
+        
+        self.view.addSubview(drawController.view)
+        drawController.setData(image: image, lattitude: self.lattitude, longitude: self.longitude)
+        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
+        drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.view.layoutIfNeeded()
+        self.delegate?.imageDrawSelected()
+        UIView.animate(withDuration: animationIn) {
+            self.drawController.view.alpha = 1
+        }
+        if self.useRegular == true {
+            self.drawController.useRegularImage()
+        } else {
+            self.drawController.useGoogleMaps()
+        }
+    }
+    
+    func imageDrawExited() {
+        UIView.animate(withDuration: animationIn, animations: {
+            self.drawController.view.alpha = 0
+            self.drawController.toColor = true
+        }) { (success) in
+            self.drawController.panoView.removeFromSuperview()
+            self.drawController.willMove(toParent: nil)
+            self.drawController.view.removeFromSuperview()
+            self.drawController.removeFromParent()
+        }
+    }
+    
+    func configureExited() {
+        self.delegate?.imageDrawExited()
+    }
+    
+    func confirmedImage(image: UIImage) {
+        self.currentButton?.setImage(image, for: .normal)
+        self.currentButton?.imageEdgeInsets = UIEdgeInsets.zero
+        self.configureExited()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            UIView.animate(withDuration: animationIn, animations: {
+                self.checkmark.alpha = 1
+            }) { (success) in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.checkmark.alpha = 0
+                    })
+                }
+            }
         }
     }
     
@@ -732,9 +822,9 @@ extension SpotPicturesViewController {
         addAnImageButton1.heightAnchor.constraint(equalTo: addAnImageButton1.widthAnchor).isActive = true
         
         addAnImageButton1.addSubview(spotLabel1)
-        spotLabel1.leftAnchor.constraint(equalTo: addAnImageButton1.leftAnchor).isActive = true
-        spotLabel1.topAnchor.constraint(equalTo: addAnImageButton1.topAnchor).isActive = true
-        spotLabel1.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel1.leftAnchor.constraint(equalTo: addAnImageButton1.leftAnchor, constant: 4).isActive = true
+        spotLabel1.topAnchor.constraint(equalTo: addAnImageButton1.topAnchor, constant: 4).isActive = true
+        spotLabel1.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel1.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton1.addSubview(spotRemove1)
@@ -753,9 +843,9 @@ extension SpotPicturesViewController {
         addAnImageButton2.heightAnchor.constraint(equalTo: addAnImageButton2.widthAnchor).isActive = true
         
         addAnImageButton2.addSubview(spotLabel2)
-        spotLabel2.leftAnchor.constraint(equalTo: addAnImageButton2.leftAnchor).isActive = true
-        spotLabel2.topAnchor.constraint(equalTo: addAnImageButton2.topAnchor).isActive = true
-        spotLabel2.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel2.leftAnchor.constraint(equalTo: addAnImageButton2.leftAnchor, constant: 4).isActive = true
+        spotLabel2.topAnchor.constraint(equalTo: addAnImageButton2.topAnchor, constant: 4).isActive = true
+        spotLabel2.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel2.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton2.addSubview(spotRemove2)
@@ -774,9 +864,9 @@ extension SpotPicturesViewController {
         addAnImageButton3.heightAnchor.constraint(equalTo: addAnImageButton3.widthAnchor).isActive = true
         
         addAnImageButton3.addSubview(spotLabel3)
-        spotLabel3.leftAnchor.constraint(equalTo: addAnImageButton3.leftAnchor).isActive = true
-        spotLabel3.topAnchor.constraint(equalTo: addAnImageButton3.topAnchor).isActive = true
-        spotLabel3.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel3.leftAnchor.constraint(equalTo: addAnImageButton3.leftAnchor, constant: 4).isActive = true
+        spotLabel3.topAnchor.constraint(equalTo: addAnImageButton3.topAnchor, constant: 4).isActive = true
+        spotLabel3.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel3.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton3.addSubview(spotRemove3)
@@ -795,9 +885,9 @@ extension SpotPicturesViewController {
         addAnImageButton4.heightAnchor.constraint(equalTo: addAnImageButton4.widthAnchor).isActive = true
         
         addAnImageButton4.addSubview(spotLabel4)
-        spotLabel4.leftAnchor.constraint(equalTo: addAnImageButton4.leftAnchor).isActive = true
-        spotLabel4.topAnchor.constraint(equalTo: addAnImageButton4.topAnchor).isActive = true
-        spotLabel4.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel4.leftAnchor.constraint(equalTo: addAnImageButton4.leftAnchor, constant: 4).isActive = true
+        spotLabel4.topAnchor.constraint(equalTo: addAnImageButton4.topAnchor, constant: 4).isActive = true
+        spotLabel4.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel4.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton4.addSubview(spotRemove4)
@@ -816,9 +906,9 @@ extension SpotPicturesViewController {
         addAnImageButton5.heightAnchor.constraint(equalTo: addAnImageButton5.widthAnchor).isActive = true
         
         addAnImageButton5.addSubview(spotLabel5)
-        spotLabel5.leftAnchor.constraint(equalTo: addAnImageButton5.leftAnchor).isActive = true
-        spotLabel5.topAnchor.constraint(equalTo: addAnImageButton5.topAnchor).isActive = true
-        spotLabel5.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel5.leftAnchor.constraint(equalTo: addAnImageButton5.leftAnchor, constant: 4).isActive = true
+        spotLabel5.topAnchor.constraint(equalTo: addAnImageButton5.topAnchor, constant: 4).isActive = true
+        spotLabel5.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel5.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton5.addSubview(spotRemove5)
@@ -837,9 +927,9 @@ extension SpotPicturesViewController {
         addAnImageButton6.heightAnchor.constraint(equalTo: addAnImageButton6.widthAnchor).isActive = true
         
         addAnImageButton6.addSubview(spotLabel6)
-        spotLabel6.leftAnchor.constraint(equalTo: addAnImageButton6.leftAnchor).isActive = true
-        spotLabel6.topAnchor.constraint(equalTo: addAnImageButton6.topAnchor).isActive = true
-        spotLabel6.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel6.leftAnchor.constraint(equalTo: addAnImageButton6.leftAnchor, constant: 4).isActive = true
+        spotLabel6.topAnchor.constraint(equalTo: addAnImageButton6.topAnchor, constant: 4).isActive = true
+        spotLabel6.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel6.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton6.addSubview(spotRemove6)
@@ -858,9 +948,9 @@ extension SpotPicturesViewController {
         addAnImageButton7.heightAnchor.constraint(equalTo: addAnImageButton7.widthAnchor).isActive = true
         
         addAnImageButton7.addSubview(spotLabel7)
-        spotLabel7.leftAnchor.constraint(equalTo: addAnImageButton7.leftAnchor).isActive = true
-        spotLabel7.topAnchor.constraint(equalTo: addAnImageButton7.topAnchor).isActive = true
-        spotLabel7.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel7.leftAnchor.constraint(equalTo: addAnImageButton7.leftAnchor, constant: 4).isActive = true
+        spotLabel7.topAnchor.constraint(equalTo: addAnImageButton7.topAnchor, constant: 4).isActive = true
+        spotLabel7.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel7.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton7.addSubview(spotRemove7)
@@ -879,9 +969,9 @@ extension SpotPicturesViewController {
         addAnImageButton8.heightAnchor.constraint(equalTo: addAnImageButton8.widthAnchor).isActive = true
         
         addAnImageButton8.addSubview(spotLabel8)
-        spotLabel8.leftAnchor.constraint(equalTo: addAnImageButton8.leftAnchor).isActive = true
-        spotLabel8.topAnchor.constraint(equalTo: addAnImageButton8.topAnchor).isActive = true
-        spotLabel8.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        spotLabel8.leftAnchor.constraint(equalTo: addAnImageButton8.leftAnchor, constant: 4).isActive = true
+        spotLabel8.topAnchor.constraint(equalTo: addAnImageButton8.topAnchor, constant: 4).isActive = true
+        spotLabel8.widthAnchor.constraint(equalToConstant: 65).isActive = true
         spotLabel8.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addAnImageButton8.addSubview(spotRemove8)

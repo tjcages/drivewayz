@@ -331,17 +331,17 @@ class ScheduleAvailabilityViewController: UIViewController {
             }
         }
         if monday == 1, tuesday == 1, wednesday == 1, thursday == 1, friday == 1, saturday == 1, sunday == 1 {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.daysAvailableLabel.alpha = 1
             }
             self.daysAvailableLabel.setTitle("All the days are currently selected", for: .normal)
         } else if monday == 0, tuesday == 0, wednesday == 0, thursday == 0, friday == 0, saturday == 0, sunday == 0 {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.daysAvailableLabel.alpha = 1
             }
             self.daysAvailableLabel.setTitle("None of the days are selected", for: .normal)
         } else {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.daysAvailableLabel.alpha = 0
             }
         }

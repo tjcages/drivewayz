@@ -58,27 +58,12 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         return controller
     }()
     
-    var infoContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = Theme.WHITE
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 1
-//        view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
-    }()
-    
-    lazy var reserveController: ParkingReserveViewController = {
-        let controller = ParkingReserveViewController()
+    lazy var reserveController: ParkingDetailsViewController = {
+        let controller = ParkingDetailsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Reserve"
-//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
-        controller.delegate = self
+//        controller.delegate = self
         controller.view.alpha = 0
         
         return controller
@@ -88,7 +73,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let controller = ParkingCurrentViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
-//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         controller.delegate = self
         controller.navigationDelegate = self
@@ -97,91 +81,21 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         return controller
     }()
     
-    var reserveContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = Theme.WHITE
-        view.alpha = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
-    }()
-    
     lazy var pictureController: ParkingImageViewController = {
         let controller = ParkingImageViewController()
-//        self.addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Image"
-//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         return controller
-    }()
-    
-    var pictureContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = Theme.WHITE
-        view.alpha = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
-    }()
-    
-    lazy var availabilityController: ParkingAvailabilityViewController = {
-        let controller = ParkingAvailabilityViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Availability"
-//        controller.view.layer.cornerRadius = 5
-        controller.view.clipsToBounds = true
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    var availabilityContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = Theme.WHITE
-        view.alpha = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
     }()
     
     lazy var reviewsController: ParkingReviewsViewController = {
         let controller = ParkingReviewsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Reviews"
-//        controller.view.layer.cornerRadius = 5
         controller.view.clipsToBounds = true
         
         return controller
-    }()
-    
-    var reviewsContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.clear
-        view.alpha = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 1
-        view.layer.shadowOpacity = 0.8
-        
-        return view
     }()
     
     var signUpContainer: UIView = {
@@ -289,28 +203,14 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         infoController.setData(cityAddress: cityAddress, parkingCost: parkingCost, formattedAddress: formattedAddress, timestamp: timestamp, parkingDistance: parkingDistance, rating: rating)
         pictureController.setData(imageURL: imageURL)
         reserveController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID, id: id)
-        availabilityController.setData(id: id)
         reviewsController.setData(parkingID: parkingID)
         currentController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID)
         purchaseController.setData(parkingCost: parkingCost, parkingID: parkingID, id: id)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-//            let geoCoder = CLGeocoder()
-//            geoCoder.geocodeAddressString(formattedAddress) { (placemarks, error) in
-//                guard
-//                    let placemarks = placemarks,
-//                    let location = placemarks.first?.location
-//                    else {
-//                        print("Couldn't find location to draw routes")
-//                        return
-//                }
-//                self.parkingLocation = location
-//            }
-//        }
     }
     
     func sendAvailability(availability: Bool) {
         self.delegate?.sendAvailability(availability: availability)
-        self.reserveController.setAvailability(available: availability)
+//        self.reserveController.setAvailability(available: availability)
     }
     
     var pictureHeightAnchor: NSLayoutConstraint!
@@ -331,97 +231,39 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         informationScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         informationScrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height - statusBarHeight).isActive = true
         
-        informationScrollView.addSubview(infoContainer)
-        infoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        infoContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        infoContainer.topAnchor.constraint(equalTo: informationScrollView.topAnchor, constant: 5).isActive = true
-        infoContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        infoContainer.addSubview(infoController.view)
-        infoController.view.centerXAnchor.constraint(equalTo: infoContainer.centerXAnchor).isActive = true
-        infoController.view.bottomAnchor.constraint(equalTo: infoContainer.bottomAnchor).isActive = true
-        infoController.view.topAnchor.constraint(equalTo: infoContainer.topAnchor).isActive = true
-        infoController.view.widthAnchor.constraint(equalTo: infoContainer.widthAnchor).isActive = true
+        informationScrollView.addSubview(infoController.view)
+        infoController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        infoController.view.heightAnchor.constraint(equalTo: infoController.parkingView.heightAnchor).isActive = true
+        infoController.view.topAnchor.constraint(equalTo: informationScrollView.topAnchor, constant: 8).isActive = true
+        infoController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         let holdGesture = UILongPressGestureRecognizer(target: self, action: #selector(informationPictureHeld(sender:)))
         holdGesture.minimumPressDuration = 0.2
         pictureController.view.addGestureRecognizer(holdGesture)
         
-        informationScrollView.addSubview(pictureContainer)
-        pictureContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        pictureContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        pictureHeightAnchor = pictureContainer.topAnchor.constraint(equalTo: infoContainer.bottomAnchor, constant: 10)
-        pictureHeightAnchor.isActive = true
-        pictureContainer.heightAnchor.constraint(equalToConstant: 360).isActive = true
+        informationScrollView.addSubview(pictureController.view)
+        pictureController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        pictureController.view.heightAnchor.constraint(equalTo: pictureController.parkingView.heightAnchor).isActive = true
+        pictureHeightAnchor = pictureController.view.topAnchor.constraint(equalTo: infoController.view.bottomAnchor, constant: 10)
+            pictureHeightAnchor.isActive = true
+        pictureController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        pictureContainer.addSubview(pictureController.view)
-        pictureController.view.centerXAnchor.constraint(equalTo: pictureContainer.centerXAnchor).isActive = true
-        pictureController.view.bottomAnchor.constraint(equalTo: pictureContainer.bottomAnchor).isActive = true
-        pictureController.view.topAnchor.constraint(equalTo: pictureContainer.topAnchor).isActive = true
-        pictureController.view.widthAnchor.constraint(equalTo: pictureContainer.widthAnchor).isActive = true
+        informationScrollView.addSubview(reserveController.view)
+        reserveController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        reserveController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        reserveController.view.topAnchor.constraint(equalTo: self.pictureController.view.bottomAnchor, constant: 8).isActive = true
+        reserveController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
+        informationScrollView.addSubview(reviewsController.view)
+        reviewsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        reviewsController.view.heightAnchor.constraint(equalToConstant: 210).isActive = true
+        reviewsController.view.topAnchor.constraint(equalTo: reserveController.view.bottomAnchor, constant: 8).isActive = true
+        reviewsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        informationScrollView.addSubview(reserveContainer)
-        reserveContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        reserveContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        reserveContainer.topAnchor.constraint(equalTo: self.pictureContainer.bottomAnchor, constant: 10).isActive = true
-        reserveContainerHeightAnchor = reserveContainer.heightAnchor.constraint(equalToConstant: 120)
-            reserveContainerHeightAnchor.isActive = true
-        
-        reserveContainer.addSubview(reserveController.view)
-        reserveController.view.centerXAnchor.constraint(equalTo: self.reserveContainer.centerXAnchor).isActive = true
-        reserveController.view.bottomAnchor.constraint(equalTo: self.reserveContainer.bottomAnchor).isActive = true
-        reserveController.view.topAnchor.constraint(equalTo: self.reserveContainer.topAnchor).isActive = true
-        reserveController.view.widthAnchor.constraint(equalTo: self.reserveContainer.widthAnchor).isActive = true
-
-        
-        reserveContainer.addSubview(currentController.view)
-        currentController.view.centerXAnchor.constraint(equalTo: self.reserveContainer.centerXAnchor).isActive = true
-        currentController.view.bottomAnchor.constraint(equalTo: self.reserveContainer.bottomAnchor).isActive = true
-        currentController.view.topAnchor.constraint(equalTo: self.reserveContainer.topAnchor).isActive = true
-        currentController.view.widthAnchor.constraint(equalTo: self.reserveContainer.widthAnchor).isActive = true
-        
-        
-        informationScrollView.addSubview(purchaseController.view)
-//        self.addChildViewController(purchaseController)
-        purchaseController.didMove(toParent: self)
-        purchaseController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        purchaseController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        hoursTopAnchor = purchaseController.view.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10)
-            hoursTopAnchor.isActive = true
-        hoursButtonAnchor = purchaseController.view.heightAnchor.constraint(equalToConstant: 80)
-            hoursButtonAnchor.isActive = true
-        
-        
-        informationScrollView.addSubview(availabilityContainer)
-        availabilityContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        availabilityContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        availabilityContainer.topAnchor.constraint(equalTo: reserveContainer.bottomAnchor, constant: 10).isActive = true
-        availabilityContainer.heightAnchor.constraint(equalToConstant: 230).isActive = true
-        
-        availabilityContainer.addSubview(availabilityController.view)
-        availabilityController.view.centerXAnchor.constraint(equalTo: availabilityContainer.centerXAnchor).isActive = true
-        availabilityController.view.bottomAnchor.constraint(equalTo: availabilityContainer.bottomAnchor).isActive = true
-        availabilityController.view.topAnchor.constraint(equalTo: availabilityContainer.topAnchor).isActive = true
-        availabilityController.view.widthAnchor.constraint(equalTo: availabilityContainer.widthAnchor).isActive = true
-        
-        informationScrollView.addSubview(reviewsContainer)
-        reviewsContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        reviewsContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        reviewsContainer.topAnchor.constraint(equalTo: availabilityContainer.bottomAnchor, constant: 10).isActive = true
-        reviewsContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
-        
-        reviewsContainer.addSubview(reviewsController.view)
-        reviewsController.view.centerXAnchor.constraint(equalTo: reviewsContainer.centerXAnchor).isActive = true
-        reviewsController.view.bottomAnchor.constraint(equalTo: reviewsContainer.bottomAnchor).isActive = true
-        reviewsController.view.topAnchor.constraint(equalTo: reviewsContainer.topAnchor).isActive = true
-        reviewsController.view.widthAnchor.constraint(equalTo: reviewsContainer.widthAnchor).isActive = true
-        
-    
         informationScrollView.addSubview(bannerContainer)
         bannerContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         bannerContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        bannerContainer.topAnchor.constraint(equalTo: reviewsContainer.bottomAnchor, constant: 10).isActive = true
+        bannerContainer.topAnchor.constraint(equalTo: reviewsController.view.bottomAnchor, constant: 8).isActive = true
         bannerContainer.heightAnchor.constraint(equalToConstant: 260).isActive = true
         
         bannerContainer.addSubview(bannerController.view)
@@ -461,30 +303,28 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
             self.playOnce = true
             AudioServicesPlaySystemSound(1519)
         }
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.view.clipsToBounds = false
             informationScrollView.contentOffset.y = 0
             informationScrollView.isScrollEnabled = false
             informationScrollView.isUserInteractionEnabled = false
             self.blurView.alpha = 1
-            self.infoContainer.alpha = 0
-            self.reserveContainer.alpha = 0
-            self.availabilityContainer.alpha = 0
-            self.pictureContainer.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            self.infoController.view.alpha = 0
+            self.reserveController.view.alpha = 0
+            self.pictureController.parkingView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         }
     }
     
     @objc func informationPictureTapped(sender: UITapGestureRecognizer) {
         self.playOnce = false
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.view.clipsToBounds = true
             informationScrollView.isScrollEnabled = true
             informationScrollView.isUserInteractionEnabled = true
             self.blurView.alpha = 0
-            self.infoContainer.alpha = 1
-            self.reserveContainer.alpha = 1
-            self.availabilityContainer.alpha = 1
-            self.pictureContainer.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.infoController.view.alpha = 1
+            self.reserveController.view.alpha = 1
+            self.pictureController.parkingView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }
     }
     
@@ -510,7 +350,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
         ref.observe(.childAdded) { (snapshot) in
             self.check = false
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1500)
                 self.reserveContainerHeightAnchor.constant = 165
                 self.currentController.view.alpha = 1
@@ -520,7 +360,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         }
         ref.observe(.childRemoved) { (snapshot) in
             self.check = false
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 informationScrollView.contentSize = CGSize(width: self.view.frame.width, height: 1450)
                 self.reserveContainerHeightAnchor.constant = 120
                 self.currentController.view.alpha = 0
@@ -529,7 +369,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
             })
         }
         if check == true {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.currentController.view.alpha = 0
                 self.reserveController.view.alpha = 1
             })
@@ -540,11 +380,11 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         if self.purchaseController.view.alpha >= 0.1 {
             self.closeExtendTimeView()
         } else {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.pictureHeightAnchor.constant = 100
                 self.view.layoutIfNeeded()
             }) { (success) in
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.purchaseController.view.alpha = 1
                 })
             }
@@ -552,10 +392,10 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     }
     
     func closeExtendTimeView() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.purchaseController.view.alpha = 0
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.pictureHeightAnchor.constant = 10
                 self.view.layoutIfNeeded()
             })

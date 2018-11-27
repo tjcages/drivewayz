@@ -12,12 +12,12 @@ import CoreLocation
 import AVFoundation
 import GooglePlaces
 import Firebase
-//import Cluster
 
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
 
 protocol controlSaveLocation {
+    func zoomToSearchLocation(address: String)
     func saveUserCurrentLocation()
 }
 
@@ -47,51 +47,135 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return view
     }()
     
-    var topSearch: UIButton = {
-        let search = UIButton(type: .custom)
-        let image = UIImage(named: "Search")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        search.setImage(tintedImage, for: .normal)
-        search.tintColor = Theme.SEA_BLUE
-        search.translatesAutoresizingMaskIntoConstraints = false
-        search.addTarget(self, action: #selector(animateSearchBar(sender:)), for: .touchUpInside)
+    var mainBar: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 15
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.6
         
-        return search
-    }()
-    
-    let searchBar: UITextField = {
-        let search = UITextField()
-        search.layer.cornerRadius = 20
-        search.backgroundColor = Theme.WHITE
-        search.textColor = Theme.SEA_BLUE
-        search.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        search.layer.shadowOffset = CGSize(width: 1, height: 1)
-        search.layer.shadowRadius = 1
-        search.layer.shadowOpacity = 0.8
-        search.attributedPlaceholder = NSAttributedString(string: "",
-                                                          attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
-        search.translatesAutoresizingMaskIntoConstraints = false
-        return search
+        return view
     }()
     
     var locatorButton: UIButton = {
         let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "location") {
+        if let myImage = UIImage(named: "locationButton") {
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.SEA_BLUE
-        button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowOffset = CGSize(width: 1, height: 1)
-        button.layer.shadowRadius = 1
-        button.layer.shadowOpacity = 0.8
-        button.imageEdgeInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 0, right: 2.5)
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
         
         return button
+    }()
+    
+    var microphoneButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "microphoneButton") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(microphoneButtonPressed(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var searchBar: UITextField = {
+        let view = UITextField()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.placeholder = "Where are you parking?"
+        view.font = Fonts.SSPLightH3
+        view.clearButtonMode = .whileEditing
+        
+        return view
+    }()
+    
+    var bottomBar: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        //        view.layer.cornerRadius = 15
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.6
+        
+        return view
+    }()
+    
+    var profileButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "hamburgerButton") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var separatorLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        
+        return view
+    }()
+    
+    var searchLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Search"
+        label.textColor = Theme.BLACK
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH1
+        label.alpha = 0
+        
+        return label
+    }()
+    
+    lazy var giftButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "giftIcon")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 25
+        button.clipsToBounds = true
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        background.zPosition = -10
+        button.layer.addSublayer(background)
+        
+        return button
+    }()
+    
+    lazy var locationsSearchResults: MapSearchViewController = {
+        let controller = MapSearchViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var speechSearchResults: SpeechRecognitionViewController = {
+        let controller = SpeechRecognitionViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        controller.delegate = self
+        
+        return controller
     }()
     
     lazy var purchaseViewController: SelectPurchaseViewController = {
@@ -129,8 +213,17 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return controller
     }()
     
-    lazy var fullBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+    var fullBackgroundView: UIView = {
+        let view = UIView()
+        view.alpha = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.BLACK
+        
+        return view
+    }()
+    
+    lazy var darkBlurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -204,6 +297,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.clipsToBounds = true
+        
         searchBar.delegate = self
         
         setupViews()
@@ -223,17 +318,22 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         // Dispose of any resources that can be recreated.
     }
     
-    var textSearchBarFarRightAnchor: NSLayoutConstraint!
-    var textSearchBarCloseRightAnchor: NSLayoutConstraint!
     var mapViewConstraint: NSLayoutConstraint!
     var tabPullWidthShort: NSLayoutConstraint!
     var tabPullWidthLong: NSLayoutConstraint!
     var containerHeightAnchor: NSLayoutConstraint!
     var purchaseStatusWidthAnchor: NSLayoutConstraint!
     var purchaseStatusHeightAnchor: NSLayoutConstraint!
-    var locatorButtonTopAnchor: NSLayoutConstraint!
-    var locatorButtonBottomAnchor: NSLayoutConstraint!
     var navigationLabelHeight: NSLayoutConstraint!
+    
+    var mainBarTopAnchor: NSLayoutConstraint!
+    var mainBarWidthAnchor: NSLayoutConstraint!
+    var mainBarHeightAnchor: NSLayoutConstraint!
+    var separatorLineLeftAnchor: NSLayoutConstraint!
+    var separatorLineWidthAnchor: NSLayoutConstraint!
+    var separatorLineHeightAnchor: NSLayoutConstraint!
+    var profileTopAnchor: NSLayoutConstraint!
+    var microphoneRightAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -243,36 +343,81 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(topSearch)
-        topSearch.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
-        topSearch.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        topSearch.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(mainBar)
+        mainBarWidthAnchor = mainBar.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -36)
+            mainBarWidthAnchor.isActive = true
+        mainBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        mainBarHeightAnchor = mainBar.heightAnchor.constraint(equalToConstant: 54)
+            mainBarHeightAnchor.isActive = true
         switch device {
         case .iphone8:
-            topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70)
+                mainBarTopAnchor.isActive = true
         case .iphoneX:
-            topSearch.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 45).isActive = true
+            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90)
+                mainBarTopAnchor.isActive = true
         }
         
-        self.view.addSubview(searchBar)
-        searchBar.centerYAnchor.constraint(equalTo: topSearch.centerYAnchor).isActive = true
-        searchBar.leftAnchor.constraint(equalTo: topSearch.leftAnchor).isActive = true
-        textSearchBarFarRightAnchor = searchBar.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -10)
-        textSearchBarFarRightAnchor.isActive = false
-        textSearchBarCloseRightAnchor = searchBar.rightAnchor.constraint(equalTo: topSearch.rightAnchor)
-        textSearchBarCloseRightAnchor.isActive = true
-        searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        setupTextField(textField: searchBar)
-        self.view.bringSubviewToFront(topSearch)
+        mainBar.addSubview(profileButton)
+        profileButton.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 12).isActive = true
+        profileButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        profileButton.heightAnchor.constraint(equalTo: profileButton.widthAnchor, constant: 5).isActive = true
+        profileTopAnchor = profileButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor)
+            profileTopAnchor.isActive = true
         
-        self.view.addSubview(locatorButton)
-        locatorButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
-        locatorButtonTopAnchor = locatorButton.topAnchor.constraint(equalTo: topSearch.bottomAnchor, constant: 12)
-            locatorButtonTopAnchor.isActive = true
-        locatorButtonBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
-            locatorButtonBottomAnchor.isActive = false
-        locatorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        locatorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        mainBar.addSubview(separatorLine)
+        separatorLineLeftAnchor = separatorLine.leftAnchor.constraint(equalTo: profileButton.rightAnchor, constant: 12)
+            separatorLineLeftAnchor.isActive = true
+        separatorLineHeightAnchor = separatorLine.heightAnchor.constraint(equalTo: mainBar.heightAnchor, constant: -20)
+            separatorLineHeightAnchor.isActive = true
+        separatorLine.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        separatorLineWidthAnchor = separatorLine.widthAnchor.constraint(equalToConstant: 1)
+            separatorLineWidthAnchor.isActive = true
+        
+        mainBar.addSubview(locatorButton)
+        locatorButton.rightAnchor.constraint(equalTo: mainBar.rightAnchor, constant: -6).isActive = true
+        locatorButton.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        locatorButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
+        
+        mainBar.addSubview(microphoneButton)
+        microphoneRightAnchor = microphoneButton.rightAnchor.constraint(equalTo: locatorButton.leftAnchor, constant: 4)
+            microphoneRightAnchor.isActive = true
+        microphoneButton.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        microphoneButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        microphoneButton.widthAnchor.constraint(equalTo: microphoneButton.heightAnchor).isActive = true
+        
+        mainBar.addSubview(searchBar)
+        searchBar.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        searchBar.leftAnchor.constraint(equalTo: separatorLine.rightAnchor, constant: 8).isActive = true
+        searchBar.rightAnchor.constraint(equalTo: microphoneButton.leftAnchor, constant: -8).isActive = true
+        searchBar.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalTo: mainBar.heightAnchor).isActive = true
+        
+        mainBar.addSubview(searchLabel)
+        searchLabel.leftAnchor.constraint(equalTo: separatorLine.leftAnchor).isActive = true
+        searchLabel.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
+        searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 40).isActive = true
+        searchLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.view.addSubview(giftButton)
+        giftButton.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -12).isActive = true
+        giftButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        giftButton.heightAnchor.constraint(equalTo: giftButton.widthAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            giftButton.bottomAnchor.constraint(lessThanOrEqualTo: mapView.bottomAnchor, constant: -16).isActive = true
+        case .iphoneX:
+            giftButton.bottomAnchor.constraint(lessThanOrEqualTo: mapView.bottomAnchor, constant: -26).isActive = true
+        }
+        
+        self.view.addSubview(locationsSearchResults.view)
+        locationsSearchResults.view.topAnchor.constraint(equalTo: mainBar.bottomAnchor).isActive = true
+        locationsSearchResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        locationsSearchResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        locationsSearchResults.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        createToolbar()
     }
     
     func setupAdditionalViews() {
@@ -316,7 +461,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         reviewsViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         reviewsViewController.setData(parkingID: parkingID)
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.reviewsViewController.view.alpha = 1
         }) { (success) in
             //
@@ -324,7 +469,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func removeLeaveAReview() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.reviewsViewController.view.alpha = 0
         }) { (success) in
             self.willMove(toParent: nil)
@@ -339,11 +484,17 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     func setupViewController() {
         
-        self.view.addSubview(fullBlurView)
-        fullBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        fullBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.view.addSubview(fullBackgroundView)
+        fullBackgroundView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        fullBackgroundView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        fullBackgroundView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        fullBackgroundView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.view.addSubview(darkBlurView)
+        darkBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        darkBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        darkBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        darkBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(purchaseViewController.view)
         self.addChild(purchaseViewController)
@@ -379,13 +530,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         swipeLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 40).isActive = true
         swipeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+        self.view.addSubview(speechSearchResults.view)
+        speechSearchResults.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        speechSearchResults.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        speechSearchResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        speechSearchResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
     }
     
     @objc func purchaseButtonSwiped() {
-        self.delegate?.hideTabController()
+        self.delegate?.lightContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
-            self.fullBlurView.alpha = 1
+            self.mainBarTopAnchor.constant = -80
+            self.fullBackgroundView.alpha = 1
             self.swipeLabel.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -406,9 +564,16 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         purchaseViewController.checkButtonSender()
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
-        UIView.animate(withDuration: 0.3, animations: {
+        switch device {
+        case .iphone8:
+            self.mainBarTopAnchor.constant = 70
+        case .iphoneX:
+            self.mainBarTopAnchor.constant = 90
+        }
+        self.delegate?.defaultContentStatusBar()
+        UIView.animate(withDuration: animationIn, animations: {
             self.purchaseViewAnchor.constant = 240
-            self.fullBlurView.alpha = 0
+            self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
@@ -417,34 +582,34 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     @objc func informationButtonSwiped() {
+        switch device {
+        case .iphone8:
+            self.mainBarTopAnchor.constant = 70
+        case .iphoneX:
+            self.mainBarTopAnchor.constant = 90
+        }
+        self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = 0
-            self.fullBlurView.alpha = 0
+            self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = false
         }
         if isNavigating == false {
-            self.delegate?.showTabController()
-            self.locatorButtonBottomAnchor.isActive = false
-            self.locatorButtonTopAnchor.isActive = true
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.navigationLabel.alpha = 0
-                self.searchBar.alpha = 1
-                self.topSearch.alpha = 1
-                self.delegate?.showTabController()
                 self.view.layoutIfNeeded()
             }
-        } else {
-            self.delegate?.hideTabController()
         }
     }
     
     func currentParkingSender() {
-        self.delegate?.hideTabController()
+        self.delegate?.lightContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
-            self.fullBlurView.alpha = 1
+            self.mainBarTopAnchor.constant = -40
+            self.fullBackgroundView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
             informationScrollView.isScrollEnabled = true
@@ -453,41 +618,45 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     }
     
     func currentParkingDisappear() {
+        switch device {
+        case .iphone8:
+            self.mainBarTopAnchor.constant = 70
+        case .iphoneX:
+            self.mainBarTopAnchor.constant = 90
+        }
         self.purchaseViewController.view.alpha = 0
-        UIView.animate(withDuration: 0.3, animations: {
+        self.delegate?.defaultContentStatusBar()
+        UIView.animate(withDuration: animationIn, animations: {
             self.purchaseViewAnchor.constant = 0
-            self.fullBlurView.alpha = 0
+            self.fullBackgroundView.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.purchaseViewController.view.alpha = 0
         }
         if isNavigating == false {
-            self.delegate?.showTabController()
-            self.locatorButtonBottomAnchor.isActive = false
-            self.locatorButtonTopAnchor.isActive = true
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.navigationLabel.alpha = 0
-                self.searchBar.alpha = 1
-                self.topSearch.alpha = 1
-                self.delegate?.showTabController()
                 self.view.layoutIfNeeded()
             }
-        } else {
-            self.delegate?.hideTabController()
         }
+    }
+    
+    @objc func profileButtonPressed() {
+        self.delegate?.moveToProfile()
     }
     
     func openHoursButton() {
         self.hoursButtonAnchor.constant = 340
-        UIView.animate(withDuration: 0.2) {
-            self.fullBlurView.alpha = 0.6
+        UIView.animate(withDuration: animationIn) {
+            self.fullBackgroundView.alpha = 0.6
             self.view.layoutIfNeeded()
         }
     }
     
     func closeHoursButton() {
         self.hoursButtonAnchor.constant = 220
-        UIView.animate(withDuration: 0.2) {
-            self.fullBlurView.alpha = 0
+        UIView.animate(withDuration: animationIn) {
+            self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }
     }
@@ -522,7 +691,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     func showPurchaseStatus(status: Bool) {
         if status == true {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.purchaseStatusWidthAnchor.constant = 120
                 self.purchaseStatusHeightAnchor.constant = 40
                 self.purchaseStaus.setTitle("Success!", for: .normal)
@@ -530,7 +699,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 self.view.layoutIfNeeded()
             }
         } else {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.purchaseStatusWidthAnchor.constant = 220
                 self.purchaseStatusHeightAnchor.constant = 60
                 self.purchaseStaus.setTitle("The charge could not be made", for: .normal)
@@ -539,7 +708,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.purchaseStatusWidthAnchor.constant = 120
                 self.purchaseStatusHeightAnchor.constant = 40
                 self.purchaseStaus.setTitle("", for: .normal)
@@ -565,7 +734,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 }
             }
         }
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             self.swipeLabel.alpha = 0.8
         }
     }
@@ -626,44 +795,111 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }
         return MKOverlayRenderer()
     }
-
-    @objc func animateSearchBar(sender: UIButton) {
-        if self.textSearchBarCloseRightAnchor.isActive == true {
-            searchBar.attributedPlaceholder = NSAttributedString(string: "Search..",
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
-            UIView.animate(withDuration: 0.3, animations: {
-                self.textSearchBarFarRightAnchor.isActive = true
-                self.textSearchBarCloseRightAnchor.isActive = false
-                self.view.layoutIfNeeded()
+    
+    func createToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.barTintColor = Theme.WHITE
+        toolBar.tintColor = Theme.PRUSSIAN_BLUE
+        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderWidth = 0.5
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        self.searchBar.inputAccessoryView = toolBar
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        self.view.bringSubviewToFront(locationsSearchResults.view)
+        self.view.bringSubviewToFront(mainBar)
+        self.view.bringSubviewToFront(speechSearchResults.view)
+        UIView.animate(withDuration: animationIn, animations: {
+            self.mainBar.layer.cornerRadius = 0
+            self.mainBarTopAnchor.constant = 0
+            self.mainBarWidthAnchor.constant = 0
+            self.separatorLineLeftAnchor.constant = -16
+            self.separatorLineWidthAnchor.constant = 16
+            self.separatorLineHeightAnchor.constant = -180
+            self.profileTopAnchor.constant = 40
+            self.microphoneRightAnchor.constant = 30
+            switch device {
+            case .iphone8:
+                self.mainBarHeightAnchor.constant = 162
+            case .iphoneX:
+                self.mainBarHeightAnchor.constant = 182
+            }
+            self.profileButton.alpha = 0
+            self.locatorButton.alpha = 0
+            self.darkBlurView.alpha = 0.4
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: animationIn, animations: {
+                self.searchLabel.alpha = 1
             })
-        } else {
-            searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: Theme.SEA_BLUE])
-            UIView.animate(withDuration: 0.3, animations: {
-                self.textSearchBarFarRightAnchor.isActive = false
-                self.textSearchBarCloseRightAnchor.isActive = true
+        }
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.searchLabel.alpha = 0
+            self.separatorLine.alpha = 0
+        }) { (success) in
+            UIView.animate(withDuration: animationOut, animations: {
+                self.mainBar.layer.cornerRadius = 15
+                self.mainBarHeightAnchor.constant = 54
+                self.mainBarWidthAnchor.constant = -36
+                self.separatorLineLeftAnchor.constant = 12
+                self.separatorLineWidthAnchor.constant = 1
+                self.separatorLineHeightAnchor.constant = -20
+                self.profileTopAnchor.constant = 0
+                self.microphoneRightAnchor.constant = 4
+                switch device {
+                case .iphone8:
+                    self.mainBarTopAnchor.constant = 70
+                case .iphoneX:
+                    self.mainBarTopAnchor.constant = 90
+                }
+                self.profileButton.alpha = 1
+                self.locatorButton.alpha = 1
+                self.darkBlurView.alpha = 0
+                self.separatorLine.alpha = 1
+                self.locationsSearchResults.view.alpha = 0
                 self.view.layoutIfNeeded()
+            }, completion: { (success) in
+                self.view.bringSubviewToFront(self.darkBlurView)
             })
         }
     }
     
-    func setupTextField(textField: UITextField){
-        textField.leftViewMode = UITextField.ViewMode.always
-        let paddingView = UIView(frame:CGRect(x: 0, y: 0, width: 60, height: 30))
-        textField.leftView = paddingView
+    func zoomToSearchLocation(address: String) {
+        self.searchBar.text = address
+        self.dismissKeyboard()
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let location = placemarks.first?.location
+                else {
+                    print(error?.localizedDescription as Any)
+                    return
+            }
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
+            self.mapView.setRegion(region, animated: true)
+        }
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let autoCompleteController = GMSAutocompleteViewController()
-        autoCompleteController.delegate = self
-        
-        let filter = GMSAutocompleteFilter()
-        autoCompleteController.autocompleteFilter = filter
-        
-        self.locationManager.startUpdatingLocation()
-        self.present(autoCompleteController, animated: true, completion: nil)
-        self.searchedForPlace = true
-        return false
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
@@ -684,10 +920,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let region = MKCoordinateRegion.init(center: coordinate, span: span)
         self.mapView.setRegion(region, animated: true)
 
-        UIView.animate(withDuration: 0.3) {
-            self.textSearchBarFarRightAnchor.constant = self.view.frame.width * 1/4
-            self.view.layoutIfNeeded()
-        }
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -779,6 +1011,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.dismiss(animated: true, completion: nil)
     }
     
+    var canChangeLocatorButtonTint: Bool = true
+    
     @objc func locatorButtonAction(sender: UIButton) {
         let location: CLLocationCoordinate2D = mapView.userLocation.coordinate
         let camera = MKMapCamera()
@@ -786,10 +1020,21 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         camera.centerCoordinate = location
         camera.altitude = 1000
         self.mapView.camera = camera
-//        self.mapView.setCamera(camera, animated: true)
         self.mapView.userTrackingMode = .followWithHeading
+        self.locatorButton.tintColor = Theme.SEA_BLUE
+        self.locatorButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        self.canChangeLocatorButtonTint = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.canChangeLocatorButtonTint = true
+        }
     }
     
+    func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
+        if self.canChangeLocatorButtonTint == true {
+            self.locatorButton.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.locatorButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        }
+    }
     
 //    //////////////////////////CHECK FOR CURRENT PARKING
     
@@ -1046,10 +1291,10 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 }
                 
                 self.purchaseViewController.view.alpha = 1
-                UIView.animate(withDuration: 0.3, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     //
                 }) { (success) in
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.purchaseViewAnchor.constant = 0
                         self.view.layoutIfNeeded()
                     }) { (success) in
@@ -1057,13 +1302,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                     }
                 }
             }
-            searchBar.attributedPlaceholder = NSAttributedString(string: "",
-                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-            UIView.animate(withDuration: 0.3, animations: {
-                self.textSearchBarFarRightAnchor.isActive = false
-                self.textSearchBarCloseRightAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            })
         }
     }
     
@@ -1071,7 +1309,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.purchaseButtonSwipedDown()
         guard view.annotation != nil else { return }
 //        if annotation is ClusterAnnotation {} else {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.swipeLabel.alpha = 0
             }
@@ -1145,13 +1383,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         } else {
             self.navigationLabelHeight.constant = 130
         }
-        self.locatorButtonTopAnchor.isActive = false
-        self.locatorButtonBottomAnchor.isActive = true
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.navigationLabel.alpha = 1
-            self.searchBar.alpha = 0
-            self.topSearch.alpha = 0
-            self.delegate?.hideTabController()
             self.view.layoutIfNeeded()
         }
         self.speechSythensizer.delegate = self
@@ -1176,17 +1409,29 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func hideNavigation() {
         isEditing = false
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
-        self.locatorButtonBottomAnchor.isActive = false
-        self.locatorButtonTopAnchor.isActive = true
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.navigationLabel.alpha = 0
-            self.searchBar.alpha = 1
-            self.topSearch.alpha = 1
-            self.delegate?.showTabController()
             self.view.layoutIfNeeded()
         }
     }
     
+    @objc private func textFieldDidChange(textField: UITextField){
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil, userInfo: ["text":textField.text!])
+        if textField.text == "" {
+            UIView.animate(withDuration: animationOut) {
+                self.locationsSearchResults.view.alpha = 0
+            }
+        }
+    }
+    
+    @objc func microphoneButtonPressed(sender: UIButton) {
+        self.dismissKeyboard()
+        UIView.animate(withDuration: animationIn, animations: {
+            self.speechSearchResults.view.alpha = 1
+        }) { (success) in
+            self.speechSearchResults.recordAndRecognizeSpeech()
+        }
+    }
     
 }
 

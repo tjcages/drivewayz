@@ -32,16 +32,41 @@ class BecomeHostViewController: UIViewController {
         
         return label
     }()
+    
+    lazy var purpleGradient: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        
+        let imageView = UIView()
+        let pattern = UIImage(named: "trianglesGridMain")
+        imageView.backgroundColor = UIColor(patternImage: pattern!)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
+        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor.clear
         
         setupViews()
     }
     
     func setupViews() {
+        
+        self.view.addSubview(purpleGradient)
+        purpleGradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        purpleGradient.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        purpleGradient.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        purpleGradient.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
         self.view.addSubview(drivewayzCar)
         drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -49,26 +74,30 @@ class BecomeHostViewController: UIViewController {
         drivewayzCar.heightAnchor.constraint(equalToConstant: 260).isActive = true
         drivewayzCar.widthAnchor.constraint(equalToConstant: 260).isActive = true
         
-        self.view.addSubview(self.morphingLabel)
-        self.morphingLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true
-        self.morphingLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.morphingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.morphingLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 42).isActive = true
+        self.view.addSubview(morphingLabel)
+        morphingLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true
+        morphingLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        morphingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        morphingLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 42).isActive = true
         
     }
     
     func startAnimations() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.drivewayzCar.alpha = 1
                 self.morphingLabel.alpha = 1
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.alpha = 0
-                }, completion: { (success) in
+                UIView.animate(withDuration: animationIn, animations: {
                     self.drivewayzCar.alpha = 0
                     self.morphingLabel.alpha = 0
+                }, completion: { (success) in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.view.alpha = 0
+                        })
+                    }
                 })
             }
         }

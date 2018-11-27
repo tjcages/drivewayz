@@ -65,7 +65,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     var parkingId: String = ""
     var paymentInProgress: Bool = false {
         didSet {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.paymentInProgress {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1

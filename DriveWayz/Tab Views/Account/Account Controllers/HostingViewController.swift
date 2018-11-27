@@ -35,7 +35,6 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 10
         
         return view
     }()
@@ -46,19 +45,6 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
         view.showsHorizontalScrollIndicator = false
         
         return view
-    }()
-    
-    lazy var exitButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Delete")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
     }()
     
     lazy var userCurrentController: CurrentViewController = {
@@ -121,17 +107,6 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
         informationLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        self.view.addSubview(exitButton)
-        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        case .iphoneX:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
-        }
-        
         scrollView.addSubview(userCurrentController.view)
         userCurrentController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         userCurrentController.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
@@ -176,17 +151,10 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
             scrollView.contentSize = CGSize(width: container.frame.width, height: 1500)
             currentSize = scrollView.contentSize
         }
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.informationLabel.alpha = 0
             self.view.layoutIfNeeded()
         }, completion: nil)
-    }
-    
-    @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.hideHostingController()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.delegate?.closeAccountView()
-        }
     }
     
     func addCurrentParking() {

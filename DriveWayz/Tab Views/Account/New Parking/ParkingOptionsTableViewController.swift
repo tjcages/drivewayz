@@ -674,7 +674,7 @@ extension ParkingOptionsViewController {
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 2)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 1.5)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -1269,14 +1269,14 @@ extension ParkingOptionsViewController {
     }
     
     func checkMarkSwitched(checkAnchor: NSLayoutConstraint) {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.checkmark.alpha = 0
         }) { (success) in
             self.previousCheckAnchor.isActive = false
             self.view.layoutIfNeeded()
             checkAnchor.isActive = true
             self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.checkmark.alpha = 1
             })
             self.previousCheckAnchor = checkAnchor

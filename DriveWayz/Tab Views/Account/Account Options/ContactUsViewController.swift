@@ -101,7 +101,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         input.text = "Enter text here"
         input.backgroundColor = Theme.OFF_WHITE
         input.layer.cornerRadius = 10
-        input.textColor = Theme.BLACK
+        input.textColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
         input.font = Fonts.SSPLightH4
         input.translatesAutoresizingMaskIntoConstraints = false
         
@@ -151,7 +151,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
         viewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
         self.view.addSubview(termsContainer)
-        termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        termsContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -100).isActive = true
         termsContainer.heightAnchor.constraint(equalToConstant: 400).isActive = true
         termsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         termsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -258,7 +258,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                     recipientUserMessagesRef.updateChildValues([messageId!: 1])
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
                             self.view.alpha = 0
                         }) { (success) in
                             UIView.animate(withDuration: 0.1, animations: {

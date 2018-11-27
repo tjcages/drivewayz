@@ -593,7 +593,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
             self.facebookRegisterCenterAnchor.isActive = false
             self.facebookLoginCenterAnchor.isActive = true
             self.loginButton.tag = 1
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationOut, animations: {
                 self.backIcon.alpha = 1
                 self.registerButton.alpha = 0
                 self.orLabel.alpha = 0
@@ -605,7 +605,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 self.label3.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { _ in
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.userEmailTextField.alpha = 1
                     self.userEmailIcon.alpha = 1
                     self.userPasswordTextField.alpha = 1
@@ -615,11 +615,6 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                     self.facebookLogin.alpha = 1
                     self.view.layoutIfNeeded()
                 }, completion: { _ in
-                    UIView.animate(withDuration: 0.3, animations: {
-
-                    }, completion: { _ in
-                        print("Chain Animation Ended")
-                    })
                 })
             })
         } else {
@@ -648,7 +643,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                         return
                     }
                     
-                    UIView.animate(withDuration: 0.2) {
+                    UIView.animate(withDuration: animationIn) {
                         self.userEmailTextField.alpha = 0
                         self.userEmailIcon.alpha = 0
                         self.userPasswordTextField.alpha = 0
@@ -689,7 +684,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
             self.loginButton.tag = 2
             self.backIconTopAnchor.constant = 150
             self.registerTopAnchor.constant = -60
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationOut, animations: {
                 self.driveWayz.alpha = 0
                 self.backIcon.alpha = 1
                 self.loginButton.alpha = 0
@@ -702,7 +697,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 self.label3.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { _ in
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.NewUserFirstNameTextField.alpha = 1
                     self.NewUserLastNameTextField.alpha = 1
                     self.NewUserEmailTextField.alpha = 1
@@ -713,7 +708,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
             })
         } else {
             setupTerms()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsController.view.alpha = 1
             }) { (success) in
                 self.facebook = false
@@ -768,7 +763,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
                 return
             }
             
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.NewUserFirstNameTextField.alpha = 0
                 self.NewUserLastNameTextField.alpha = 0
                 self.NewUserEmailTextField.alpha = 0
@@ -809,7 +804,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     var facebook: Bool = false
     
     func agreeToTerms() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationOut, animations: {
             self.termsController.view.alpha = 0
         }) { (success) in
             self.termsController.willMove(toParent: nil)
@@ -829,7 +824,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         self.registerButtonCenterAnchor.constant = 250
         self.backIconTopAnchor.constant = 300
         self.registerTopAnchor.constant = 25
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationOut, animations: {
             self.driveWayz.alpha = 1
             self.backIcon.alpha = 0
             self.userEmailTextField.alpha = 0
@@ -922,7 +917,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         }
         } else {
             setupTerms()
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.termsController.view.alpha = 1
             }) { (success) in
                 self.facebook = true

@@ -48,6 +48,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.BLACK
+        view.clearButtonMode = .whileEditing
         
         return view
     }()
@@ -109,6 +110,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
         return view
@@ -139,6 +141,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
         return view
@@ -169,6 +172,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.HARMONY_RED
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
         return view
@@ -342,7 +346,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     
     @objc func hideOtherOptions(sender: UITextField) {
         if sender == streetField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.countryLabel.alpha = 0
                 self.countryField.alpha = 0
                 self.countryLine.alpha = 0
@@ -360,7 +364,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
                 self.view.layoutIfNeeded()
             }
         } else if sender == cityField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.countryLabel.alpha = 0
                 self.countryField.alpha = 0
                 self.countryLine.alpha = 0
@@ -378,7 +382,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
                 self.view.layoutIfNeeded()
             }
         } else if sender == stateField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.countryLabel.alpha = 0
                 self.countryField.alpha = 0
                 self.countryLine.alpha = 0
@@ -396,7 +400,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
                 self.view.layoutIfNeeded()
             }
         } else if sender == zipField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.countryLabel.alpha = 0
                 self.countryField.alpha = 0
                 self.countryLine.alpha = 0
@@ -414,12 +418,10 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
                 self.view.layoutIfNeeded()
             }
         }
-        self.scrollView.isScrollEnabled = false
     }
     
     func bringOtherOptions() {
-        self.scrollView.isScrollEnabled = true
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.countryLabel.alpha = 1
             self.countryField.alpha = 1
             self.countryLine.alpha = 1
@@ -462,13 +464,14 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         
         toolBar.setItems([flexibleSpace, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
         countryField.inputAccessoryView = toolBar
-        streetField.inputAccessoryView = toolBar
+//        streetField.inputAccessoryView = toolBar
         cityField.inputAccessoryView = toolBar
         stateField.inputAccessoryView = toolBar
         zipField.inputAccessoryView = toolBar

@@ -33,7 +33,6 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.roundCorners(corners: [.topLeft, .topRight], radius: 10)
         
         return view
     }()
@@ -44,19 +43,6 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
         view.showsHorizontalScrollIndicator = false
         
         return view
-    }()
-    
-    lazy var exitButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Delete")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
     }()
     
     lazy var userUpcomingController: UserUpcomingViewController = {
@@ -112,17 +98,6 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
         informationLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        self.view.addSubview(exitButton)
-        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        case .iphoneX:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
-        }
-        
         scrollView.addSubview(userUpcomingController.view)
         userUpcomingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         userUpcomingController.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
@@ -141,7 +116,7 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
     func bringUpcomingViewController() {
         self.upcomingViewHeightAnchor?.constant = 480
         self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 800)
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             self.userUpcomingController.view.alpha = 1
             self.informationLabel.alpha = 0
             self.view.layoutIfNeeded()
@@ -151,17 +126,10 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
     func hideUpcomingViewController() {
         self.upcomingViewHeightAnchor?.constant = 70
         self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 0)
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             self.userUpcomingController.view.alpha = 0
             self.informationLabel.alpha = 1
             self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.hideUpcomingController()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.delegate?.closeAccountView()
         }
     }
 

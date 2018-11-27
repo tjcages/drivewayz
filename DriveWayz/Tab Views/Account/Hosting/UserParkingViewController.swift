@@ -329,7 +329,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func setupCurrent() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.parkingPageHeightAnchorTall.isActive = true
             self.parkingPageHeightAnchorSmall.isActive = false
             self.parkingTopAnchorTall.isActive = true
@@ -338,7 +338,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
             self.addParkingLabel.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.parkingInfo.alpha = 1
                 self.parkingCost.alpha = 1
                 self.parkingDate.alpha = 1
@@ -375,7 +375,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
         self.availabilityController.view.removeFromSuperview()
         self.availabilityController.removeFromParent()
         
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.parkingPageHeightAnchorTall.isActive = false
             self.parkingPageHeightAnchorSmall.isActive = true
             self.parkingTopAnchorTall.isActive = false
@@ -389,7 +389,7 @@ class UserParkingViewController: UIViewController, UITableViewDelegate, UITableV
             self.line.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.addParkingButton.alpha = 1
                 self.addParkingLabel.alpha = 1
                 self.view.layoutIfNeeded()

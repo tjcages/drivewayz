@@ -21,6 +21,7 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
     var layout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 12
         
         return layout
     }()
@@ -35,12 +36,13 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         reviews.showsVerticalScrollIndicator = false
         reviews.register(ReviewsCell.self, forCellWithReuseIdentifier: identifier)
         
+        
         return reviews
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.clear
+        self.view.backgroundColor = Theme.WHITE
         self.navigationController?.navigationBar.isHidden = true
         
         reviewsPicker.dataSource = self
@@ -118,42 +120,74 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         
     }
     
+    private func indexOfMajorCell() -> Int {
+        let itemWidth = cellWidth
+        let proportionalOffset = layout.collectionView!.contentOffset.x / itemWidth
+        let index = Int(round(proportionalOffset))
+        return index
+    }
+    
+    private var indexOfCellBeforeDragging = 0
+    lazy var cellWidth: CGFloat = self.view.frame.width-100
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        indexOfCellBeforeDragging = indexOfMajorCell()
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        // Stop scrollView sliding:
+        targetContentOffset.pointee = scrollView.contentOffset
+        // Calculate where scrollView should snap to:
+        let indexOfMajorCell = self.indexOfMajorCell()
+        
+        // calculate conditions:
+        let swipeVelocityThreshold: CGFloat = 0.3
+        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.userName.count && velocity.x > swipeVelocityThreshold
+        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
+        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
+        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
+        if didUseSwipeToSkipCell {
+            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+            let toValue = cellWidth * CGFloat(snapToIndex)
+            // Damping equal 1 => no oscillations => decay animation:
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
+                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
+                scrollView.layoutIfNeeded()
+            }, completion: nil)
+        } else {
+            let indexPath = IndexPath(row: indexOfMajorCell, section: 0)
+            self.layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.userName.count == 0 {
-            return 1
+            return 4
         } else {
             return self.userName.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 240, height: 140)
+        return CGSize(width: cellWidth, height: 170)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        return UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! ReviewsCell
         if userName.count != userMessage.count || userName.count != userImage.count || userName.count !=  timestamp.count || userName.count == 0 {
-            cell.userName.text = ""
             cell.reviewLabel.text = "There have not been any reviews for this spot yet."
-            cell.date.text = ""
+            cell.date.text = "Current"
             cell.stars.rating = 5
             return cell
         }
-        cell.userName.text = userName[indexPath.row]
         cell.reviewLabel.text = userMessage[indexPath.row]
         cell.date.text = timestamp[indexPath.row]
         cell.stars.rating = Double(rating[indexPath.row])
-        
-        if self.userImage[indexPath.row] == "" {
-            let image = UIImage(named: "background4")
-            cell.imageView.image = image
-        } else {
-            cell.imageView.loadImageUsingCacheWithUrlString(self.userImage[indexPath.row])
-        }
+
         return cell
     }
 

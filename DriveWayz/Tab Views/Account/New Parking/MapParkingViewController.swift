@@ -14,6 +14,9 @@ class MapParkingViewController: UIViewController {
     var locationManager = CLLocationManager()
     var typeOfParking = "house"
     
+    var lattitude: Double?
+    var longitude: Double?
+    
     var mapView: MKMapView = {
         let view = MKMapView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +79,8 @@ class MapParkingViewController: UIViewController {
             self.mapView.addAnnotation(marker)
             let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
             self.mapView.setRegion(region, animated: true)
+            self.lattitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
         }
     }
     

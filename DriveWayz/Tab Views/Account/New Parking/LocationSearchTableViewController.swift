@@ -8,16 +8,20 @@
 
 import UIKit
 import MapKit
+import GooglePlaces
 
 class LocationSearchTableViewController: UITableViewController {
 
-    var matchingItems:[MKMapItem] = []
+    var matchingItems:[GMSAutocompletePrediction] = []
     let cellId = "cellId"
     var delegate: handleChangingAddress?
+    var placesClient: GMSPlacesClient?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.placesClient = GMSPlacesClient()
+        
         tableView.register(ResultsCell.self, forCellReuseIdentifier: "cellId")
         
         NotificationCenter.default.addObserver(self,
@@ -37,16 +41,19 @@ class LocationSearchTableViewController: UITableViewController {
     @objc func handleTextChange(_ myNot: Notification) {
         if let use = myNot.userInfo {
             if let searchBarText = use["text"] as? String {
-                let request = MKLocalSearch.Request()
-                request.naturalLanguageQuery = searchBarText
-                let search = MKLocalSearch(request: request)
-                search.start { response, _ in
-                    guard let response = response else {
+                
+                let filter = GMSAutocompleteFilter()
+                filter.type = .noFilter
+                placesClient?.autocompleteQuery(searchBarText, bounds: nil, filter: filter, callback: { (results, error) in
+                    if let error = error {
+                        print("Autocomplete error \(error)")
                         return
                     }
-                    self.matchingItems = response.mapItems
-                    self.tableView.reloadData()
-                }
+                    if let results = results {
+                        self.matchingItems = results
+                        self.tableView.reloadData()
+                    }
+                })
             }
         }
     }
@@ -56,17 +63,23 @@ class LocationSearchTableViewController: UITableViewController {
 
 extension LocationSearchTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if matchingItems.count > 1 {
+        if matchingItems.count > 4 {
             DispatchQueue.main.async {
-                self.view.alpha = 1
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.view.alpha = 1
+                })
             }
-            return 1
+            return 4
         } else if matchingItems.count == 0 {
-            self.view.alpha = 0
+            UIView.animate(withDuration: animationOut, animations: {
+                self.view.alpha = 0
+            })
             return 0
         } else {
             DispatchQueue.main.async {
-                self.view.alpha = 1
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.view.alpha = 1
+                })
             }
             return matchingItems.count
         }
@@ -74,17 +87,18 @@ extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ResultsCell
-        let selectedItem = matchingItems[indexPath.row].placemark
-        cell.nameTextView.text = selectedItem.title
-        cell.fullAddress = selectedItem.title
+        let selectedItem = matchingItems[indexPath.row]
+        cell.nameTextView.text = selectedItem.attributedFullText.string
         cell.selectionStyle = .none
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ResultsCell
-        guard let address = cell.fullAddress else { return }
+        guard let address = cell.nameTextView.text else { return }
+        self.matchingItems = []
         let splitAddress = address.split(separator: ",")
         if splitAddress.count == 4 {
             if let street = splitAddress.first {

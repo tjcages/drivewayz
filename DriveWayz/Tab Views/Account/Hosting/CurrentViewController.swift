@@ -361,7 +361,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupCurrentViews(state: UserState) {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.view.alpha = 1
         }
         switch state {
@@ -492,7 +492,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupPreviousViews() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.current.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
             self.current.alpha = 1
             self.alertLabel.alpha = 1
@@ -510,7 +510,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
             self.editingTableView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.containerTopAnchor.constant = 80
                 self.containerHeight.constant = 205
                 self.alertLabel.textAlignment = .center
@@ -521,12 +521,12 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupCurrent() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.containerTopAnchor.constant = 80
             self.containerHeight.constant = 405
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.current.backgroundColor = Theme.PACIFIC_BLUE
                 self.current.alpha = 1
                 self.alertLabel.alpha = 1
@@ -550,7 +550,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupNoView() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.userLabel.alpha = 0
             self.vehicleLabel.alpha = 0
             self.licenseLabel.alpha = 0
@@ -562,7 +562,7 @@ class CurrentViewController: UIViewController, UITableViewDataSource, UITableVie
             self.alertLabel.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.containerHeight.constant = 80
                 self.current.alpha = 0
                 self.containerTopAnchor.constant = 40

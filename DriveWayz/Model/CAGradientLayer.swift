@@ -105,6 +105,22 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
+    @objc func purpleColor() -> CAGradientLayer {
+        
+        let topColor = Theme.SEA_BLUE
+        let bottomColor = Theme.PURPLE
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0)
+        
+        return gradientLayer
+    }
+    
+    
 }
 
 extension UIImageView

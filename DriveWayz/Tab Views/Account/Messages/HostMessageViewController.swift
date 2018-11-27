@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import Alamofire
 
 protocol setTextField {
     func setTextField(message: String)
@@ -190,7 +192,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
     
     func threadButtonPressedSender() {
         userTextView.becomeFirstResponder()
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: animationIn) {
             guard let height = self.keyboardHeight else { return }
             self.userTextViewBottom.constant = -height + self.userTextViewHeight.constant
             self.view.layoutIfNeeded()
@@ -204,7 +206,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         self.sendArrow.isUserInteractionEnabled = true
         let currentPosition = textView.caretRect(for: textView.endOfDocument)
         if currentPosition.origin.y > previousPosition.origin.y && previousPosition != CGRect.zero {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.userTextView.scrollsToTop = true
                 self.userTextViewHeight.constant = self.userTextViewHeight.constant + 19
                 self.newTextViewHeight = self.userTextViewHeight.constant
@@ -212,7 +214,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
                 self.view.layoutIfNeeded()
             }
         } else if currentPosition.origin.y < previousPosition.origin.y && previousPosition != CGRect.zero {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.userTextView.scrollsToTop = true
                 self.userTextViewHeight.constant = self.userTextViewHeight.constant - 19
                 self.newTextViewHeight = self.userTextViewHeight.constant
@@ -238,7 +240,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
             self.newTextViewHeight = 55
         }
         textView.resignFirstResponder()
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             switch device {
             case .iphone8:
                 self.userTextViewBottom.constant = -60
@@ -264,15 +266,36 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         }
     }
     
+    func setTextField(message: String) {
+        self.userTextView.text = message
+        self.userTextViewHeight.constant = 55
+        let currentPosition = self.userTextView.caretRect(for: self.userTextView.endOfDocument)
+        if currentPosition.origin.y > previousPosition.origin.y && previousPosition != CGRect.zero {
+            UIView.animate(withDuration: animationIn) {
+                self.userTextView.scrollsToTop = true
+                self.userTextViewHeight.constant = self.userTextViewHeight.constant + 19
+                self.newTextViewHeight = self.userTextViewHeight.constant
+                self.userTextView.setContentOffset(.zero, animated: true)
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+
+}
+
+
+extension HostMessageViewController {
+    
     @objc func sendButtonPressed(sender: UIButton) {
         guard let message = self.userTextView.text else { return }
         if message != "Enter message" && message != "" {
             let properties = ["text": message] as [String : AnyObject]
-            sendMessageWithProperties(properties: properties)
+            sendMessageWithProperties(properties: properties, message: message)
         }
     }
     
-    private func sendMessageWithProperties(properties: [String: AnyObject]) {
+    private func sendMessageWithProperties(properties: [String: AnyObject], message: String) {
         self.userTextView.text = ""
         self.sendArrow.backgroundColor = Theme.DARK_GRAY
         self.sendArrow.isUserInteractionEnabled = false
@@ -284,23 +307,29 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let timestamp = Int(Date().timeIntervalSince1970)
         
         let childRef = ref.child("messages").childByAutoId()
-        var values = ["toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
+        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp] as [String : Any]
+        
+        let userRef = ref.child("users").child(fromID)
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let userName = dictionary["name"] as? String
+                var fullNameArr = userName?.split(separator: " ")
+                let firstName: String = String(fullNameArr![0])
+                
+                self.fetchNewCurrent(key: self.userID, name: firstName, message: message)
+            }
+        }
+        
         ref.child("messages").child(fromID).removeValue()
         
         properties.forEach({values[$0] = $1})
         childRef.updateChildValues(values) { (error, ralf) in
-            UIView.animate(withDuration: 0.1, animations: {
-                self.sendArrow.backgroundColor = Theme.SEA_BLUE
-                self.sendArrow.isUserInteractionEnabled = true
-                self.userTextView.text = "Enter message"
-                self.userTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-                self.userTextViewHeight.constant = 55
-                self.newTextViewHeight = 55
-            })
             if error != nil {
                 print(error ?? "")
                 return
             }
+            self.sendArrow.backgroundColor = Theme.SEA_BLUE
+            self.sendArrow.isUserInteractionEnabled = true
             if let messageId = childRef.key {
                 let vals = [messageId: 1] as [String: Int]
                 
@@ -313,20 +342,30 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         }
     }
     
-    func setTextField(message: String) {
-        self.userTextView.text = message
-        self.userTextViewHeight.constant = 55
-        let currentPosition = self.userTextView.caretRect(for: self.userTextView.endOfDocument)
-        if currentPosition.origin.y > previousPosition.origin.y && previousPosition != CGRect.zero {
-            UIView.animate(withDuration: 0.2) {
-                self.userTextView.scrollsToTop = true
-                self.userTextViewHeight.constant = self.userTextViewHeight.constant + 19
-                self.newTextViewHeight = self.userTextViewHeight.constant
-                self.userTextView.setContentOffset(.zero, animated: true)
-                self.view.layoutIfNeeded()
+    func fetchNewCurrent(key: String, name: String, message: String) {
+        Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let fromDevice = dictionary["DeviceID"] as? String
+                self.setupPushNotifications(fromDevice: fromDevice!, name: name, message: message)
             }
         }
     }
     
-
+    fileprivate func setupPushNotifications(fromDevice: String, name: String, message: String) {
+        let title = "\(name) has sent you a message:"
+        let body = message
+        let toDevice = fromDevice
+        var headers: HTTPHeaders = HTTPHeaders()
+        
+        headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
+        let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
+        
+        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+            if let error = response.error {
+                print(error)
+            }
+        }
+    }
+    
+    
 }

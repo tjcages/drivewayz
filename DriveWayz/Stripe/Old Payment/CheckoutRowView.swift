@@ -13,7 +13,7 @@ class CheckoutRowView: UIView {
 
     var loading = false {
         didSet {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.loading {
                     self.activityIndicator.startAnimating()
                     self.activityIndicator.alpha = 1

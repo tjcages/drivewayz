@@ -143,5 +143,9 @@
 	<true/>
 	<key>networkAccessAllowed</key>
 	<true/>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speak to search for a location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your speech will be detected after tapping the microphone button</string>
 </dict>
 </plist>

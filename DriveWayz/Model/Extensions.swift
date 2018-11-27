@@ -109,10 +109,6 @@ extension String {
 }
 
 extension UIButton {
-    /*
-     Add right arrow disclosure indicator to the button with normal and
-     highlighted colors for the title text and the image
-     */
     func disclosureButton(baseColor:UIColor) {
         self.setTitleColor(baseColor, for: .normal)
         self.setTitleColor(baseColor.withAlphaComponent(0.3), for: .highlighted)
@@ -162,5 +158,55 @@ extension UIImage {
 class TagLabel: UILabel {
     override func draw(_ rect: CGRect) {
         super.drawText(in: rect.insetBy(dx: 8, dy: 0))
+    }
+}
+
+
+class TriangleView: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        
+        context.beginPath()
+        context.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        context.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        context.addLine(to: CGPoint(x: (rect.maxX / 2.0), y: rect.minY))
+        context.closePath()
+        
+        context.setFillColor(Theme.WHITE.cgColor)
+        context.fillPath()
+    }
+}
+
+
+class SnappingCollectionViewLayout: UICollectionViewFlowLayout {
+    
+    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView else { return super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity) }
+        
+        var offsetAdjustment = CGFloat.greatestFiniteMagnitude
+        let horizontalOffset = proposedContentOffset.x + collectionView.contentInset.left
+        
+        let targetRect = CGRect(x: proposedContentOffset.x, y: 0, width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
+        
+        let layoutAttributesArray = super.layoutAttributesForElements(in: targetRect)
+        
+        layoutAttributesArray?.forEach({ (layoutAttributes) in
+            let itemOffset = layoutAttributes.frame.origin.x
+            if fabsf(Float(itemOffset - horizontalOffset)) < fabsf(Float(offsetAdjustment)) {
+                offsetAdjustment = itemOffset - horizontalOffset
+            }
+        })
+        
+        return CGPoint(x: proposedContentOffset.x + offsetAdjustment, y: proposedContentOffset.y)
     }
 }

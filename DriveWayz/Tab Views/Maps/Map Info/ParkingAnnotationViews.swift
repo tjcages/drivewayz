@@ -194,7 +194,7 @@ class ClusterAnnotationView: MKMarkerAnnotationView {
         super.prepareForDisplay()
         transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         displayPriority = .defaultLow
-        markerTintColor = Theme.SEA_BLUE
+        markerTintColor = Theme.PURPLE
         glyphTintColor = Theme.WHITE
         UIFont.systemFont(ofSize: 60, weight: .bold)
         glyphImage = UIImage(named: "parking")

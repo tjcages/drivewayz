@@ -17,9 +17,7 @@ class OptionsCell: UITableViewCell {
         imageView.setImage(image, for: .normal)
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-        imageView.layer.cornerRadius = 35/2
-        imageView.imageEdgeInsets = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+        imageView.layer.cornerRadius = 20
         
         return imageView
     }()
@@ -27,9 +25,9 @@ class OptionsCell: UITableViewCell {
     var messageTextView: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
-        view.font = Fonts.SSPRegularH5
+        view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -42,14 +40,14 @@ class OptionsCell: UITableViewCell {
         
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         messageTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         messageTextView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 24).isActive = true
         messageTextView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         messageTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        
+    
     }
     
     required init?(coder aDecoder: NSCoder) {

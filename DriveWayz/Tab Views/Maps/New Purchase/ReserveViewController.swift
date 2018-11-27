@@ -478,11 +478,11 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let finalToString = finalFormatter.string(from: toDate)
         
         if hours <= 0 {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.needHours.alpha = 0.9
             }) { (success) in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.needHours.alpha = 0
                     })
                 }
@@ -849,7 +849,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if sender.backgroundColor == UIColor.clear {
             self.reserveButton.backgroundColor = Theme.SEA_BLUE
             self.reserveButton.isUserInteractionEnabled = true
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 sender.backgroundColor = UIColor.black
                 sender.setTitleColor(Theme.WHITE, for: .normal)
             }) { (success) in
@@ -857,7 +857,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 let index = sender.tag
                 if self.daysSelected.count > 1 {
                     self.setTimes(sender: sender, status: true)
-                    UIView.animate(withDuration: 0.2) {
+                    UIView.animate(withDuration: animationIn) {
                         self.selectionLine.alpha = 1
                     }
                     if index > 1 {
@@ -882,7 +882,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     self.selectionLineRight = self.selectionLine.rightAnchor.constraint(equalTo: sender.rightAnchor)
                         self.selectionLineRight.isActive = true
                 }
-                UIView.animate(withDuration: 0.2, animations: {
+                UIView.animate(withDuration: animationIn, animations: {
                     self.infoContainer.alpha = 0.7
                     self.selectionLabel.alpha = 0
                     self.todayLabel.alpha = 0
@@ -907,7 +907,7 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         print(self.daysSelected[nextIndex])
                     }
                 }
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.view.layoutIfNeeded()
                 }
             } else {
@@ -919,19 +919,19 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 self.selectionLine.alpha = 0
                 self.reserveButton.backgroundColor = Theme.DARK_GRAY
                 self.reserveButton.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: animationIn) {
                     self.view.layoutIfNeeded()
                 }
             }
             
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 sender.backgroundColor = UIColor.clear
                 sender.setTitleColor(UIColor.black, for: .normal)
             }) { (success) in
                 self.daysSelected.removeLast()
                 if self.daysSelected.count == 0 {
                     self.delegate?.bringParkNow()
-                    UIView.animate(withDuration: 0.2, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.infoContainer.alpha = 0
                         self.selectionLabel.alpha = 1
                         self.todayLabel.alpha = 1

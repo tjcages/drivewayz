@@ -426,14 +426,14 @@ class ParkingTypeViewController: UIViewController {
     }
     
     func checkMarkSwitched(checkAnchor: NSLayoutConstraint) {
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: animationIn, animations: {
             self.checkmark.alpha = 0
         }) { (success) in
             self.previousCheckAnchor.isActive = false
             self.view.layoutIfNeeded()
             checkAnchor.isActive = true
             self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: animationIn, animations: {
                 self.checkmark.alpha = 1
             })
             self.previousCheckAnchor = checkAnchor

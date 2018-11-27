@@ -259,7 +259,7 @@ class SpotNumberViewController: UIViewController {
     
     @objc func hideOtherOptions(sender: UITextField) {
         if sender == numberField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.spotNumberInformation.alpha = 0
                 self.spotNumberField.alpha = 0
                 self.spotNumberCheckmark.alpha = 0
@@ -270,7 +270,7 @@ class SpotNumberViewController: UIViewController {
                 self.gateCodeLine.alpha = 0
             }
         } else if sender == spotNumberField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.numberInformation.alpha = 0
                 self.numberField.alpha = 0
                 self.numberLine.alpha = 0
@@ -283,7 +283,7 @@ class SpotNumberViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }
         } else if sender == gateCodeField {
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: animationIn) {
                 self.spotNumberInformation.alpha = 0
                 self.spotNumberField.alpha = 0
                 self.spotNumberCheckmark.alpha = 0
@@ -299,7 +299,7 @@ class SpotNumberViewController: UIViewController {
     }
     
     func bringOtherOptions() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: animationIn) {
             self.numberLine.alpha = 1
             self.numberInformation.alpha = 1
             self.numberField.alpha = 1

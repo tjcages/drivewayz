@@ -263,7 +263,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
                 revRef.updateChildValues(["timestamp": timestamp, "fromUser": currentUser!, "review": review, "rating": self.rating])
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.view.alpha = 0
                     }) { (success) in
                         UIView.animate(withDuration: 0.1, animations: {
@@ -283,7 +283,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
                 parkingRef.updateChildValues(["rating": currentRating! + self.rating])
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: animationIn, animations: {
                         self.view.alpha = 0
                     }) { (success) in
                         UIView.animate(withDuration: 0.1, animations: {
