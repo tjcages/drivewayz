@@ -14,7 +14,11 @@ class UserCell: UITableViewCell {
     var message: Message? {
         didSet {
             setUpNameAndProfileImage()
-            detailTextLabel?.text = message?.text
+            if (message?.imageURL) != nil {
+                detailTextLabel?.text = "Image"
+            } else {
+                detailTextLabel?.text = message?.text
+            }
             if let seconds = message?.timestamp?.doubleValue {
                 let stringDate = dayDifference(from: seconds)
                 timeLabel.text = stringDate
@@ -80,7 +84,7 @@ class UserCell: UITableViewCell {
         
         detailTextLabel?.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         detailTextLabel?.font = Fonts.SSPLightH5
-        detailTextLabel?.frame = CGRect(x: 74, y: detailTextLabel!.frame.origin.y + 2, width: self.frame.width - 124, height: detailTextLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: 78, y: detailTextLabel!.frame.origin.y + 2, width: self.frame.width - 124, height: detailTextLabel!.frame.height)
     }
     
     let profileImageView: UIImageView = {
@@ -129,7 +133,7 @@ class UserCell: UITableViewCell {
             let startOfTimeStamp = calendar.startOfDay(for: date)
             let components = calendar.dateComponents([.day], from: startOfNow, to: startOfTimeStamp)
             let day = components.day!
-            if day < 1 { return "\(abs(day)) days" }
+            if day < 1 { return "\(abs(day))d" }
             else { return "In \(day) days" }
         }
     }

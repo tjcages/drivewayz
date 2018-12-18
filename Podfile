@@ -24,10 +24,13 @@ target 'DriveWayz' do
 	pod 'SwiftyJSON'
 	pod 'FacebookLogin'
 	pod 'MapboxStatic.swift', '~> 0.9'
-	pod 'Cosmos', '~> 16.0'
+	pod 'Cosmos'
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.2.0'
 	pod 'NVActivityIndicatorView'
 	pod 'TextFieldEffects'
+	pod 'AFNetworking'
+	pod 'UIImageColors'
+	pod 'MapKitGoogleStyler'
 
 end

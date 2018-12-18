@@ -20,12 +20,15 @@ protocol moveControllers {
     func defaultContentStatusBar()
     func changeMainLabel(text: String)
     func moveMainLabel(percent: CGFloat)
+    func bringExitButton()
+    func hideExitButton()
+    func moveAccount(percent: CGFloat)
+    func animateAccount()
 }
 
 protocol controlsNewParking {
     func setupNewParking(parkingImage: ParkingImage)
     func removeNewParkingView()
-    func bringNewVehicleController(vehicleStatus: VehicleStatus)
     func removeNewVehicleView()
     func moveTopProfile()
     func moveToMap()
@@ -40,11 +43,9 @@ protocol controlsAccountOptions {
     func bringHostingController()
     func bringNewHostingController()
     func bringVehicleController()
-    func bringNewVehicleController(vehicleStatus: VehicleStatus)
     func bringAnalyticsController()
     func bringCouponsController()
     func bringContactUsController()
-    func bringTermsController()
     func bringBankAccountController()
     func bringMessagesController()
     func bringSettingsController(image: UIImage, name: String)
@@ -54,11 +55,9 @@ protocol controlsAccountOptions {
     func hideHostingController()
     func hideNewHostingController()
     func hideVehicleController()
-    func hideNewVehicleController()
     func hideAnalyticsController()
     func hideCouponsController()
     func hideContactUsController()
-    func hideTermsController()
     func hideBankAccountController()
     func hideMessagesController()
     func hideSettingsController()
@@ -102,16 +101,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         background.zPosition = -10
         view.alpha = 0
         view.layer.addSublayer(background)
-        
-        let imageView = UIView()
-        let pattern = UIImage(named: "trianglesGridMain")
-        imageView.backgroundColor = UIColor(patternImage: pattern!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
-        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         return view
     }()
@@ -157,16 +146,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Profile"
         controller.delegate = self
-        return controller
-    }()
-    
-    lazy var walkthroughController: WalkthroughViewController = {
-        let controller = WalkthroughViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Walkthrough"
-        controller.view.alpha = 0
-//        controller.delegate = self
+        controller.moveDelegate = self
         return controller
     }()
     
@@ -183,6 +163,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Save Parking"
         controller.delegate = self
+        controller.moveDelegate = self
         return controller
     }()
     
@@ -194,22 +175,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
-    lazy var vehicleController: VehicleViewController = {
-        let controller = VehicleViewController()
+    lazy var vehicleController: UserVehicleViewController = {
+        let controller = UserVehicleViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Vehicle"
         controller.delegate = self
-        return controller
-    }()
-    
-    lazy var newVehicleController: AddANewVehicleViewController = {
-        let controller = AddANewVehicleViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "New Vehicle"
-        controller.delegate = self
-        
         return controller
     }()
     
@@ -227,15 +198,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.title = "Contact Us!"
         controller.view.alpha = 0
         controller.delegate = self
-        return controller
-    }()
-    
-    lazy var termsController: TermsViewController = {
-        let controller = TermsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Terms"
-        controller.view.alpha = 0
-        controller.delegateOptions = self
         return controller
     }()
     
@@ -272,6 +234,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Messages"
         controller.delegate = self
+        controller.moveDelegate = self
         return controller
     }()
     
@@ -309,12 +272,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.tabBarController?.tabBar.isHidden = true
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(removeAll))
-        swipeGesture.direction = .right
-        view.addGestureRecognizer(swipeGesture)
-        
         setupViews()
-        fetchUser()
         configureOptions()
     }
     
@@ -412,9 +370,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func moveToProfile() {
         self.delegate?.hideStatusBar()
         self.mapController.purchaseButtonSwipedDown()
+        self.mapController.eventsControllerHidden()
+        self.mapController.takeAwayEvents()
         UIView.animate(withDuration: animationIn, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-            self.mapController.view.layer.cornerRadius = 5
+            switch device {
+            case .iphone8:
+                self.mapController.view.layer.cornerRadius = 5
+            case .iphoneX:
+                self.mapController.view.layer.cornerRadius = 18
+            }
             self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
             self.accountControllerAnchor.constant = -self.view.frame.width/3.5
@@ -431,6 +396,34 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             }
             self.view.layoutIfNeeded()
         }) { (success) in
+        }
+    }
+    
+    var lastPanned: CGFloat = 0
+    
+    func moveAccount(percent: CGFloat) {
+        self.accountControllerAnchor.constant = self.accountControllerAnchor.constant + percent*self.view.frame.width/3.5
+        if self.accountControllerAnchor.constant >= -self.view.frame.width/3.5 {
+            self.accountControllerAnchor.constant = -self.view.frame.width/3.5
+        } else if self.accountControllerAnchor.constant <= -self.view.frame.width {
+            self.accountControllerAnchor.constant = -self.view.frame.width
+        }
+        self.lastPanned = self.accountControllerAnchor.constant
+        let percent = 1+self.view.frame.width/3.5/self.lastPanned
+        self.fullBlurView.alpha = 0.4 * (1 - percent)
+        let add = 0.05 * percent
+        self.mapController.view.transform = CGAffineTransform(scaleX: 0.95 + add, y: 0.95 + add)
+        self.view.layoutIfNeeded()
+    }
+    
+    func animateAccount() {
+        UIView.animate(withDuration: animationIn) {
+            if self.lastPanned <= -190 {
+                self.moveToMap()
+            } else {
+                self.moveToProfile()
+            }
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -453,6 +446,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.accountControllerAnchor.constant = -self.view.frame.width
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.mapController.eventsControllerHidden()
         }
     }
 
@@ -470,25 +464,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.rootViewController = myViewController
         appDelegate.window?.makeKeyAndVisible()
-    }
-    
-    func fetchUser() {
-        let isUserSeenWalkthrough: Bool = UserDefaults.standard.bool(forKey: "userSeenWalkthrough")
-        if isUserSeenWalkthrough == false {
-            self.view.addSubview(self.walkthroughController.view)
-            self.walkthroughController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            self.walkthroughController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            self.walkthroughController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.walkthroughController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            
-            UIView.animate(withDuration: animationIn, animations: {
-                self.walkthroughController.view.alpha = 1
-            })
-            UserDefaults.standard.set(true, forKey: "userSeenWalkthrough")
-            UserDefaults.standard.synchronize()
-        } else {
-            return
-        }
     }
 
     var hostingAnchor: NSLayoutConstraint!
@@ -603,6 +578,18 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         }
     }
     
+    func hideExitButton() {
+        UIView.animate(withDuration: animationIn) {
+            self.exitButton.alpha = 0
+        }
+    }
+    
+    func bringExitButton() {
+        UIView.animate(withDuration: animationOut) {
+            self.exitButton.alpha = 1
+        }
+    }
+    
     @objc func analyticsPressed(sender: UIButton) {
         self.openAccountView()
         self.bringAnalyticsController()
@@ -618,23 +605,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
 
 ////// Bring Controllers
 extension TabViewController {
-    
-    func bringTermsController() {
-        self.view.addSubview(self.termsController.view)
-        self.view.bringSubviewToFront(exitButton)
-        self.addChild(termsController)
-        self.termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        self.termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        self.termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.termsController.view.alpha = 0
-        self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.termsController.view.alpha = 1
-            })
-        }
-    }
     
     func bringUpcomingController() {
         self.view.addSubview(upcomingController.view)
@@ -755,32 +725,6 @@ extension TabViewController {
                 self.mainLabel.alpha = 1
                 self.vehicleAnchor.constant = 0
                 self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    func bringNewVehicleController(vehicleStatus: VehicleStatus) {
-        switch vehicleStatus {
-        case .yesVehicle:
-            self.newVehicleController.view.removeFromSuperview()
-        case .noVehicle:
-            self.view.addSubview(newVehicleController.view)
-            self.view.bringSubviewToFront(exitButton)
-            self.addChild(newVehicleController)
-            newVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            newVehicleAnchor = newVehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            newVehicleAnchor.isActive = true
-            newVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-            newVehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-                self.mainLabel.text = "New Vehicle"
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.purpleGradient.alpha = 1
-                    self.exitButton.alpha = 1
-                    self.mainLabel.alpha = 1
-                    self.newVehicleAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                })
             }
         }
     }
@@ -925,9 +869,6 @@ extension TabViewController {
         if newParkingAnchor != nil {
             self.hideNewHostingController()
         }
-        if newVehicleAnchor != nil {
-            self.hideNewVehicleController()
-        }
         if analControllerAnchor != nil {
             self.hideAnalyticsController()
         }
@@ -942,7 +883,6 @@ extension TabViewController {
         }
         hideCouponsController()
         hideContactUsController()
-        hideTermsController()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.moveMainLabel(percent: 0)
         }
@@ -954,6 +894,7 @@ extension TabViewController {
             self.upcomingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.upcomingController.scrollView.setContentOffset(.zero, animated: true)
             self.upcomingController.willMove(toParent: nil)
             self.upcomingController.view.removeFromSuperview()
             self.upcomingController.removeFromParent()
@@ -966,6 +907,7 @@ extension TabViewController {
             self.messagesAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.userMessagesController.scrollView.setContentOffset(.zero, animated: true)
             self.userMessagesController.willMove(toParent: nil)
             self.userMessagesController.view.removeFromSuperview()
             self.userMessagesController.removeFromParent()
@@ -978,6 +920,7 @@ extension TabViewController {
             self.hostingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.hostingController.scrollView.setContentOffset(.zero, animated: true)
             self.hostingController.willMove(toParent: nil)
             self.hostingController.view.removeFromSuperview()
             self.hostingController.removeFromParent()
@@ -1002,20 +945,11 @@ extension TabViewController {
             self.vehicleAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.vehicleController.scrollView.setContentOffset(.zero, animated: true)
             self.vehicleController.willMove(toParent: nil)
             self.vehicleController.view.removeFromSuperview()
             self.vehicleController.removeFromParent()
         }
-    }
-    
-    func hideNewVehicleController() {
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.newVehicleAnchor.constant = self.view.frame.height
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.newVehicleController.view.removeFromSuperview()
-        })
     }
     
     func hideAnalyticsController() {
@@ -1057,19 +991,6 @@ extension TabViewController {
         }
     }
     
-    func hideTermsController() {
-        UIView.animate(withDuration: animationOut, animations: {
-            self.termsController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
-            self.blurView.alpha = 1
-        }) { (success) in
-            self.termsController.willMove(toParent: nil)
-            self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParent()
-            self.closeAccountView()
-        }
-    }
-    
     func hideBankAccountController() {
         UIView.animate(withDuration: animationOut, animations: {
             self.bankAccountCenterAnchor.constant = self.view.frame.width
@@ -1087,6 +1008,7 @@ extension TabViewController {
             self.settingsAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.userSettingsController.scrollView.setContentOffset(.zero, animated: true)
             self.userSettingsController.willMove(toParent: nil)
             self.userSettingsController.view.removeFromSuperview()
             self.userSettingsController.removeFromParent()
@@ -1099,6 +1021,7 @@ extension TabViewController {
             self.helpAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.helpController.scrollView.setContentOffset(.zero, animated: true)
             self.helpController.willMove(toParent: nil)
             self.helpController.view.removeFromSuperview()
             self.helpController.removeFromParent()

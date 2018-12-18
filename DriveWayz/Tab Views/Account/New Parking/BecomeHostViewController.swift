@@ -41,15 +41,15 @@ class BecomeHostViewController: UIViewController {
         background.zPosition = -10
         view.layer.addSublayer(background)
         
-        let imageView = UIView()
-        let pattern = UIImage(named: "trianglesGridMain")
-        imageView.backgroundColor = UIColor(patternImage: pattern!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
-        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//        let imageView = UIView()
+//        let pattern = UIImage(named: "trianglesGridMain")
+//        imageView.backgroundColor = UIColor(patternImage: pattern!)
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(imageView)
+//        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
+//        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+//        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+//        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         return view
     }()

@@ -22,6 +22,7 @@ class MapSearchViewController: UITableViewController {
         
         self.placesClient = GMSPlacesClient()
         
+        tableView.isScrollEnabled = false
         tableView.register(ResultsCell.self, forCellReuseIdentifier: "cellId")
         
         NotificationCenter.default.addObserver(self,
@@ -42,6 +43,7 @@ class MapSearchViewController: UITableViewController {
         if let use = myNot.userInfo {
             if let searchBarText = use["text"] as? String {
                 if searchBarText == "" {
+                    self.delegate?.bringRecentView()
                     UIView.animate(withDuration: animationOut) {
                         self.matchingItems = []
                         self.view.alpha = 0
@@ -52,6 +54,7 @@ class MapSearchViewController: UITableViewController {
                 filter.type = .noFilter
                 placesClient?.autocompleteQuery(searchBarText, bounds: nil, filter: filter, callback: { (results, error) in
                     if error != nil {
+                        self.delegate?.bringRecentView()
                         UIView.animate(withDuration: animationOut) {
                             self.matchingItems = []
                             self.view.alpha = 0
@@ -67,6 +70,31 @@ class MapSearchViewController: UITableViewController {
         }
     }
     
+    func saveNewTerms(address: String) {
+        let userDefaults = UserDefaults.standard
+        if let firstRecent = userDefaults.value(forKey: "firstSavedRecentTerm") {
+            let first = firstRecent as! String
+            if first != address {
+                if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
+                    let second = secondRecent as! String
+                    if second == address {
+                        userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                        userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
+                    } else {
+                        userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                        userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
+                    }
+                } else {
+                    userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                    userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
+                }
+            }
+        } else {
+            userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+        }
+        userDefaults.synchronize()
+    }
+    
 }
 
 
@@ -74,18 +102,21 @@ extension MapSearchViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if matchingItems.count > 6 {
             DispatchQueue.main.async {
+                self.delegate?.hideRecentView()
                 UIView.animate(withDuration: animationIn, animations: {
                     self.view.alpha = 1
                 })
             }
             return 6
         } else if matchingItems.count == 0 {
+            self.delegate?.bringRecentView()
             UIView.animate(withDuration: animationOut, animations: {
                 self.view.alpha = 0
             })
             return 0
         } else {
             DispatchQueue.main.async {
+                self.delegate?.hideRecentView()
                 UIView.animate(withDuration: animationIn, animations: {
                     self.view.alpha = 1
                 })
@@ -108,6 +139,7 @@ extension MapSearchViewController {
         let cell = tableView.cellForRow(at: indexPath) as! ResultsCell
         guard let address = cell.nameTextView.text else { return }
         self.delegate?.zoomToSearchLocation(address: address)
+        self.saveNewTerms(address: address)
         self.matchingItems = []
     }
 }

@@ -12,20 +12,22 @@ import UIKit
 class OptionsCell: UITableViewCell {
     
     var profileImageView: UIButton = {
-        let imageView = UIButton()
+        let button = UIButton()
         let image = UIImage(named: "feed")
-        imageView.setImage(image, for: .normal)
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 20
+        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 20
         
-        return imageView
+        return button
     }()
     
     var messageTextView: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
-        view.font = Fonts.SSPRegularH4
+        view.font = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
         

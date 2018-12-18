@@ -90,6 +90,22 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
+    @objc func mediumBlurColor() -> CAGradientLayer {
+        
+        let topColor = Theme.WHITE.withAlphaComponent(0)
+        let bottomColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        let middleColor = Theme.WHITE.withAlphaComponent(0.6)
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+        
+        return gradientLayer
+    }
+    
     @objc func darkBlurColor() -> CAGradientLayer {
         
         let topColor = Theme.BLACK.withAlphaComponent(0.3)
@@ -115,7 +131,19 @@ extension CAGradientLayer {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        
+        return gradientLayer
+    }
+    
+    @objc func customColor(topColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
         
         return gradientLayer
     }

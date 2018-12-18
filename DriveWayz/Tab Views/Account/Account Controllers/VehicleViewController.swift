@@ -21,6 +21,10 @@ class VehicleViewController: UIViewController, handleNewVehicle {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
+        //        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()
@@ -30,7 +34,7 @@ class VehicleViewController: UIViewController, handleNewVehicle {
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Vehicle"
-        controller.delegate = self
+//        controller.delegate = self
         
         return controller
     }()
@@ -66,11 +70,9 @@ class VehicleViewController: UIViewController, handleNewVehicle {
     
     func bringNewVehicle() {
         self.delegate?.hideVehicleController()
-        self.delegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
     }
     
     func hideNewVehicle() {
-        self.delegate?.hideNewVehicleController()
         self.delegate?.bringVehicleController()
     }
     

@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OldVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     enum UserState {
         case current

@@ -26,7 +26,6 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         return layout
     }()
     
-    
     lazy var reviewsPicker: UICollectionView = {
         let reviews = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         reviews.backgroundColor = UIColor.clear
@@ -35,7 +34,6 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         reviews.showsHorizontalScrollIndicator = false
         reviews.showsVerticalScrollIndicator = false
         reviews.register(ReviewsCell.self, forCellWithReuseIdentifier: identifier)
-        
         
         return reviews
     }()

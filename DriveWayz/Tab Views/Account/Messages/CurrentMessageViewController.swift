@@ -58,7 +58,8 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.OFF_WHITE
-        view.roundCorners(corners: [.topLeft, .topRight], radius: 10)
+        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.layer.borderWidth = 0.5
         
         return view
     }()
@@ -86,19 +87,6 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         return imageView
     }()
     
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Expand")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
-        button.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var bottomContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.OFF_WHITE
@@ -116,13 +104,19 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.SEA_BLUE
+        button.backgroundColor = Theme.PURPLE
         button.layer.cornerRadius = 35/2
+        button.clipsToBounds = true
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         button.addTarget(self, action: #selector(handleSend(sender:)), for: .touchUpInside)
+        
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        background.zPosition = -10
+        button.layer.addSublayer(background)
         
         return button
     }()
@@ -214,12 +208,6 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         currentLabel.rightAnchor.constraint(equalTo: currentView.rightAnchor, constant: -8).isActive = true
         currentLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        currentView.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: currentView.leftAnchor, constant: 12).isActive = true
-        backButton.centerYAnchor.constraint(equalTo: currentView.centerYAnchor).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         self.view.addSubview(bottomContainer)
         bottomContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         bottomContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -253,10 +241,10 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         collectionView.topAnchor.constraint(equalTo: currentView.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: bottomContainer.topAnchor).isActive = true
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(backButtonSwiped))
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(resetOptions))
         swipeGesture.direction = .right
         collectionView.addGestureRecognizer(swipeGesture)
-        let wallGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(backButtonSwiped))
+        let wallGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(resetOptions))
         wallGesture.edges = .left
         collectionView.addGestureRecognizer(wallGesture)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(endEditing))
@@ -284,15 +272,7 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         self.hostMessageOptionsController.cameraButton.addTarget(self, action: #selector(selectImageView(sender:)), for: .touchUpInside)
     }
     
-    @objc func backButtonSwiped() {
-        resetOptions()
-    }
-    
-    @objc func backButtonPressed(sender: UIButton) {
-        resetOptions()
-    }
-    
-    func resetOptions() {
+    @objc func resetOptions() {
         self.messageOptionsController.resetOptions()
         self.messageOptionsController.sendCommunicationsTargetButton.alpha = 1
         self.hideSendButton()
@@ -304,16 +284,19 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
             self.shouldCheckID = ""
             self.speechCheckLabel.text = "Closed"
             self.speechCheck.tintColor = Theme.DARK_GRAY
-            self.speechCheck.alpha = 0
-            self.speechCheckLabel.alpha = 0
-            self.hostMessageOptionsController.view.alpha = 0
-            self.bottomContainer.alpha = 0
-            switch device {
-            case .iphone8:
-                self.bottomContainerHeight.constant = 148
-            case .iphoneX:
-                self.bottomContainerHeight.constant = 148 + 15
-            }
+            UIView.animate(withDuration: animationOut, animations: {
+                self.delegate?.moveMainLabel(percent: 0)
+                self.speechCheck.alpha = 0
+                self.speechCheckLabel.alpha = 0
+                self.hostMessageOptionsController.view.alpha = 0
+                self.bottomContainer.alpha = 0
+                switch device {
+                case .iphone8:
+                    self.bottomContainerHeight.constant = 148
+                case .iphoneX:
+                    self.bottomContainerHeight.constant = 148 + 15
+                }
+            })
         }
     }
     
@@ -721,7 +704,7 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
             blackBackgroundView = UIView(frame: keyWindow.frame)
             blackBackgroundView?.backgroundColor = Theme.BLACK
             blackBackgroundView?.alpha = 0
-            blackBackgroundView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+            zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
             keyWindow.addSubview(blackBackgroundView!)
             keyWindow.addSubview(zoomingImageView)
             
@@ -744,12 +727,9 @@ extension CurrentMessageViewController: UICollectionViewDelegate, UICollectionVi
         if let zoomOutImageView = tapGesture.view {
             zoomOutImageView.layer.cornerRadius = 16
             zoomOutImageView.clipsToBounds = true
-            
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                
                 zoomOutImageView.frame = self.startingFrame!
                 self.blackBackgroundView?.alpha = 0
-                
             }, completion: { (completed) in
                 zoomOutImageView.removeFromSuperview()
                 self.startingImageView?.isHidden = false

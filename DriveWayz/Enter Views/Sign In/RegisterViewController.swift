@@ -385,16 +385,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
         return button
     }()
     
-    lazy var termsController: TermsViewController = {
-        let controller = TermsViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.title = "Terms"
-        controller.view.alpha = 0
-        return controller
-    }()
-    
     var facebookLoginButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -1089,27 +1079,27 @@ class RegisterViewController: UIViewController, UITextFieldDelegate, setupTermsC
     }
     
     func setupTerms() {
-        self.view.addSubview(termsController.view)
-        self.addChild(termsController)
-        termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.view.layoutIfNeeded()
-        self.loadingActivity.startAnimating()
-        UIView.animate(withDuration: animationIn) {
-            self.termsController.view.alpha = 1
-            self.loadingActivity.alpha = 1
-        }
+//        self.view.addSubview(termsController.view)
+//        self.addChild(termsController)
+//        termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//        self.view.layoutIfNeeded()
+//        self.loadingActivity.startAnimating()
+//        UIView.animate(withDuration: animationIn) {
+//            self.termsController.view.alpha = 1
+//            self.loadingActivity.alpha = 1
+//        }
     }
     
     func agreeToTerms() {
         UIView.animate(withDuration: animationIn, animations: {
-            self.termsController.view.alpha = 0
+//            self.termsController.view.alpha = 0
         }) { (success) in
-            self.termsController.willMove(toParent: nil)
-            self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParent()
+//            self.termsController.willMove(toParent: nil)
+//            self.termsController.view.removeFromSuperview()
+//            self.termsController.removeFromParent()
         }
         self.signUp(withEmail: true)
         self.delegate?.defaultStatusBar()

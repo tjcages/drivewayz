@@ -33,12 +33,18 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.SEA_BLUE
+        button.backgroundColor = Theme.PURPLE
         button.layer.cornerRadius = 15
+        button.clipsToBounds = true
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(sendButtonPressed(sender:)), for: .touchUpInside)
+        
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        background.zPosition = -10
+        button.layer.addSublayer(background)
         
         return button
     }()
@@ -74,6 +80,8 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.OFF_WHITE
+        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.layer.borderWidth = 0.5
         
         return view
     }()

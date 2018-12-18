@@ -19,8 +19,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a Spot", "Reservations", "Vehicle", "Payment", "Inbox", "Settings", "Help", "Become a Host"]
-    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "credit_card")!, UIImage(named: "inbox")!, UIImage(named: "gear")!, UIImage(named: "tool")!, UIImage(named: "home-1")!]
+    var options: [String] = ["Book a Spot", "Reservations", "Past Bookings", "Vehicle", "Inbox", "Become a Host", "Help", "Settings"]
+    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "parking_history")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
     let cellId = "cellId"
     
     lazy var container: UIView = {
@@ -58,7 +58,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         imageView.backgroundColor = UIColor.white
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
-        imageView.layer.borderColor = Theme.PURPLE.cgColor
+        imageView.layer.borderColor = Theme.SEA_BLUE.cgColor
         imageView.layer.borderWidth = 0.5
         
         return imageView
@@ -78,7 +78,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -89,6 +89,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
+        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        view.decelerationRate = .fast
         
         return view
     }()
@@ -180,6 +182,12 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.clear
+        
+//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(goBackToMap))
+//        swipeGesture.direction = .left
+//        view.addGestureRecognizer(swipeGesture)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAccount(sender:)))
+        view.addGestureRecognizer(panGesture)
         
         self.optionsTableView.delegate = self
         self.optionsTableView.dataSource = self
@@ -274,6 +282,24 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         hostingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true
         hostingMark.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
+    }
+    
+    @objc func panAccount(sender: UIPanGestureRecognizer) {
+        let velocity = sender.velocity(in: self.view).x
+        if velocity < -1000 {
+            self.delegate?.moveToMap()
+        } else {
+            if sender.state == .changed {
+                let location = sender.location(in: self.view).x - 200
+                if location < self.view.frame.width/7 { return }
+                let percent = (location - self.view.frame.width/2 + 92)/self.view.frame.width
+                if percent < 0 {
+                    self.moveDelegate?.moveAccount(percent: percent)
+                }
+            } else if sender.state == .ended {
+                self.moveDelegate?.animateAccount()
+            }
+        }
     }
     
     func openAccountView() {
@@ -379,13 +405,17 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
         cell.messageTextView.text = options[indexPath.row]
-        cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
+//        cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
+        let image = optionsImages[indexPath.row]
+        let tintedImage = image.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        cell.profileImageView.setImage(tintedImage, for: .normal)
+        cell.profileImageView.tintColor = Theme.BLACK
         cell.selectionStyle = .none
         
         return cell
@@ -430,8 +460,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             } else if options[indexPath.row] == "Contact us!" {
                 self.delegate?.moveToMap()
                 self.delegate?.bringContactUsController()
-            } else if options[indexPath.row] == "Logout" {
-                self.handleLogout()
             } else if options[indexPath.row] == "Settings" {
                 self.settingSelected()
             } else if options[indexPath.row] == "Help" {
@@ -442,8 +470,12 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             }
         } else {
             self.delegate?.moveToMap()
-            self.delegate?.bringTermsController()
+//            self.delegate?.bringTermsController()
         }
+    }
+    
+    @objc func goBackToMap() {
+        self.delegate?.moveToMap()
     }
     
     @objc func settingSelected() {
@@ -451,20 +483,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         if let image = self.profileImageView.image, let name = self.profileName.text {
             self.delegate?.bringSettingsController(image: image, name: name)
         }
-    }
-    
-    func handleLogout() {
-        do {
-            try Auth.auth().signOut()
-            let loginManager = LoginManager()
-            loginManager.logOut()
-        } catch let logoutError {
-            print(logoutError)
-        }
-        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-        UserDefaults.standard.synchronize()
-        let viewController: SignInViewController = SignInViewController()
-        present(viewController, animated: true, completion: nil)
     }
     
     func displayAlertMessage(userMessage: String, title: String) {

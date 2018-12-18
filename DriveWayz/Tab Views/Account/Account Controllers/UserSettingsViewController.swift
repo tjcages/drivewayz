@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Firebase
+import FacebookLogin
 
-class UserSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handleHelpViews {
+class UserSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var delegate: moveControllers?
     
@@ -21,7 +23,10 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.clipsToBounds = true
+//        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()
@@ -36,7 +41,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         imageView.backgroundColor = UIColor.white
         imageView.layer.cornerRadius = 35
         imageView.clipsToBounds = true
-        imageView.layer.borderColor = Theme.PURPLE.cgColor
+        imageView.layer.borderColor = Theme.SEA_BLUE.cgColor
         imageView.layer.borderWidth = 0.5
         
         return imageView
@@ -65,7 +70,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -88,11 +93,40 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         return view
     }()
     
-    lazy var emailController: UserEmailViewController = {
-        let controller = UserEmailViewController()
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
+    lazy var editSettingsController: EditSettingsViewController = {
+        let controller = EditSettingsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
-        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var vehicleController: UserVehicleViewController = {
+        let controller = UserVehicleViewController()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Vehicle"
+        return controller
+    }()
+    
+    lazy var termsController: DrivewayzTermsViewController = {
+        let controller = DrivewayzTermsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
         
         return controller
     }()
@@ -104,13 +138,19 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         optionsTableView.dataSource = self
         scrollView.delegate = self
         
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(bringBackMain))
+        swipeGesture.direction = .right
+        view.addGestureRecognizer(swipeGesture)
+        
         setupViews()
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
     var containerCenterAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
-    var emailAnchor: NSLayoutConstraint!
+    var editAnchor: NSLayoutConstraint!
+    var termsAnchor: NSLayoutConstraint!
+    var vehicleAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -162,23 +202,59 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 60)
             optionsHeight.isActive = true
         
-        self.view.addSubview(emailController.view)
-        emailController.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        emailController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        emailController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        emailAnchor = emailController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-            emailAnchor.isActive = true
+        self.view.addSubview(editSettingsController.view)
+        editSettingsController.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        editSettingsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        editSettingsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        editAnchor = editSettingsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            editAnchor.isActive = true
+        
+        self.view.addSubview(termsController.view)
+        termsController.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        termsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        termsAnchor = termsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            termsAnchor.isActive = true
+        
+        self.view.addSubview(vehicleController.view)
+        vehicleController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        vehicleController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        vehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        vehicleAnchor = vehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            vehicleAnchor.isActive = true
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+        }
         
     }
     
-    func bringBackMain() {
-        UIView.animate(withDuration: animationOut) {
+    @objc func backButtonPressed(sender: UIButton) {
+        self.view.endEditing(true)
+        self.bringBackMain()
+    }
+    
+    @objc func bringBackMain() {
+        UIView.animate(withDuration: animationOut, animations: {
             self.delegate?.changeMainLabel(text: "Settings")
             self.delegate?.moveMainLabel(percent: 0)
+            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
             self.containerHeightAnchor.constant = 120
             self.containerCenterAnchor.constant = 0
-            self.emailAnchor.constant = self.view.frame.width
+            self.editAnchor.constant = self.view.frame.width
+            self.termsAnchor.constant = self.view.frame.width
+            self.vehicleAnchor.constant = self.view.frame.width
+            self.backButton.alpha = 0
             self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.bringExitButton()
         }
     }
     
@@ -202,6 +278,16 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             cell.nextButton.alpha = 0
             cell.backgroundColor = Theme.OFF_WHITE
         }
+        if cell.titleLabel.text == "Logout" {
+            cell.titleLabel.textColor = Theme.HARMONY_RED
+            cell.nextButton.alpha = 0
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        } else if cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Terms" || cell.titleLabel.text == "" {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: self.view.frame.width, bottom: 0, right: self.view.frame.width)
+        } else {
+            cell.titleLabel.textColor = Theme.BLACK
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        }
         if optionsSub[indexPath.row] == "" {
             cell.titleTopAnchor.isActive = false
             cell.titleCenterAnchor.isActive = true
@@ -213,7 +299,6 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         }
         cell.subtitleLabel.text = optionsSub[indexPath.row]
         cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         cell.selectionStyle = .none
         
         return cell
@@ -231,32 +316,80 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        if let title = cell.titleLabel.text {
-            if title != "" {
-                UIView.animate(withDuration: animationIn) {
-                    self.delegate?.changeMainLabel(text: title)
-                    self.delegate?.moveMainLabel(percent: 1)
-                    self.containerHeightAnchor.constant = 70
-                    self.containerCenterAnchor.constant = -self.view.frame.width/2
-                    self.emailAnchor.constant = 0
-                    self.view.layoutIfNeeded()
+        if let title = cell.titleLabel.text, let subtitle = cell.subtitleLabel.text {
+            if title == "Terms" {
+                self.delegate?.changeMainLabel(text: title)
+                self.termsAnchor.constant = 0
+            } else if title == "Logout" {
+                self.handleLogout()
+            } else if title == "Vehicle" {
+                self.vehicleAnchor.constant = 0
+                switch device {
+                case .iphone8:
+                    self.vehicleController.containerHeightAnchor.constant = 70
+                case .iphoneX:
+                    self.vehicleController.containerHeightAnchor.constant = 80
                 }
+            } else if title != "" {
+                self.editSettingsController.setData(title: title, subtitle: subtitle)
+                self.editAnchor.constant = 0
             }
+            self.moveToNext()
         }
+    }
+    
+    func moveToNext() {
+        UIView.animate(withDuration: animationIn) {
+            self.delegate?.moveMainLabel(percent: 1)
+            self.delegate?.hideExitButton()
+            self.backButton.alpha = 1
+            switch device {
+            case .iphone8:
+                self.containerHeightAnchor.constant = 70
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 80
+            }
+            self.containerCenterAnchor.constant = -self.view.frame.width/2
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func handleLogout() {
+        do {
+            try Auth.auth().signOut()
+            let loginManager = LoginManager()
+            loginManager.logOut()
+        } catch let logoutError {
+            print(logoutError)
+        }
+        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+        UserDefaults.standard.synchronize()
+        let viewController: SignInViewController = SignInViewController()
+        present(viewController, animated: true, completion: nil)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
         if translation <= 50 && translation >= 10 {
             let percent = (translation-10)/40
-            self.containerHeightAnchor.constant = 120 - (percent * 50)
+            switch device {
+            case .iphone8:
+                self.containerHeightAnchor.constant = 120 - (percent * 50)
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 120 - (percent * 40)
+            }
             self.delegate?.moveMainLabel(percent: percent)
         } else if translation < 10 {
             self.containerHeightAnchor.constant = 120
             self.delegate?.moveMainLabel(percent: 0)
         } else {
             self.delegate?.moveMainLabel(percent: 1)
-            self.containerHeightAnchor.constant = 70
+            switch device {
+            case .iphone8:
+                self.containerHeightAnchor.constant = 70
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 80
+            }
         }
     }
     
@@ -272,5 +405,6 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
+
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DDD1697F26891D92F2EF140A246C1388"
+               BlueprintIdentifier = "A3C8215121358C2932BACDCE39F388F9"
                BuildableName = "TOMSMorphingLabel.framework"
                BlueprintName = "TOMSMorphingLabel"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DDD1697F26891D92F2EF140A246C1388"
+            BlueprintIdentifier = "A3C8215121358C2932BACDCE39F388F9"
             BuildableName = "TOMSMorphingLabel.framework"
             BlueprintName = "TOMSMorphingLabel"
             ReferencedContainer = "container:Pods.xcodeproj">

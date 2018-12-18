@@ -17,8 +17,11 @@ import GooglePlaces
 import Stripe
 import FacebookCore
 import UserNotifications
+import AFNetworking
 
 var device: Device = .iphone8
+let NetworkReachabilityChanged = NSNotification.Name("NetworkReachabilityChanged")
+var previousNetworkReachabilityStatus: AFNetworkReachabilityStatus = .unknown
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,12 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
     static let SERVERKEY = "AAAAKKQVLOw:APA91bED4Od7cmdQ4f_dNTxAqMGIs65CZnQoU0T36u9MIEjzbjCLTrv6NYuWE-3AoQDiZqt_hSXbgjqPFQDuNbt37KBbnWmCd6FsiVWSJrlIQaIhvcJNflotw9GF0JYpRj-EVtgz6riU"
-    
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         detectDevice()
+        checkNetwork()
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
 //        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
@@ -67,6 +69,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         return true
+    }
+    
+    func checkNetwork() {
+        AFNetworkReachabilityManager.shared().startMonitoring()
+        AFNetworkReachabilityManager.shared().setReachabilityStatusChange { (status) in
+            let reachabilityStatus = AFStringFromNetworkReachabilityStatus(status)
+            var reachableOrNot = ""
+            var networkSummary = ""
+            var reachableStatusBool = false
+            
+            switch (status) {
+            case .reachableViaWWAN, .reachableViaWiFi:
+                // Reachable.
+                reachableOrNot = "Reachable"
+                networkSummary = "Connected to Network"
+                reachableStatusBool = true
+            default:
+                // Not reachable.
+                reachableOrNot = "Not Reachable"
+                networkSummary = "Disconnected from Network"
+                reachableStatusBool = false
+            }
+            
+            // Any class which has observer for this notification will be able to report loss of network connection
+            // successfully.
+            
+            if (previousNetworkReachabilityStatus != .unknown && status != previousNetworkReachabilityStatus) {
+                NotificationCenter.default.post(name: NetworkReachabilityChanged, object: nil, userInfo: [
+                    "reachabilityStatus" : "Connection Status : \(reachabilityStatus)",
+                    "reachableOrNot" : "Network Connection \(reachableOrNot)",
+                    "summary" : networkSummary,
+                    "reachableStatus" : reachableStatusBool
+                    ])
+            }
+            previousNetworkReachabilityStatus = status
+        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

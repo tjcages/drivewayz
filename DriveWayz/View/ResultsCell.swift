@@ -19,9 +19,9 @@ class ResultsCell: UITableViewCell {
         imageView.image = image
         imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = Theme.SEA_BLUE
-        imageView.layer.masksToBounds = true
+//        imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 25
+//        imageView.layer.cornerRadius = 25
         
         return imageView
     }()

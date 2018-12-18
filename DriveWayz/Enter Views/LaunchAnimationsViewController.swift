@@ -46,6 +46,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         view.image = image
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
+        view.contentMode = .scaleAspectFit
         
         return view
     }()
@@ -73,16 +74,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         background.zPosition = -10
         view.layer.addSublayer(background)
-        
-        let imageView = UIView()
-        let pattern = UIImage(named: "trianglesGridMain")
-        imageView.backgroundColor = UIColor(patternImage: pattern!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
-        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         return view
     }()
@@ -113,7 +104,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         blackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         blackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
-        let containerView = UIView(frame: CGRect(x: self.view.frame.width/2-130, y: self.view.frame.height/2-130, width: 260, height: 260))
+        let containerView = UIView(frame: CGRect(x: self.view.frame.width/2-120, y: self.view.frame.height/2-120, width: 240, height: 240))
         view.addSubview(containerView)
         
         gradientMaskLayer.frame = containerView.bounds

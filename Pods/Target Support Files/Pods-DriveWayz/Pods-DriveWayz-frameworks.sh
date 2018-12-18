@@ -143,6 +143,7 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
@@ -156,18 +157,22 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MapKitGoogleStyler/MapKitGoogleStyler.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
@@ -181,14 +186,17 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MapKitGoogleStyler/MapKitGoogleStyler.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi

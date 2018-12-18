@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4073943F1A15F482C6108664B940176"
+               BlueprintIdentifier = "7F4EE1F40F5A2007CE630348987592D1"
                BuildableName = "PushNotifications.framework"
                BlueprintName = "PushNotifications"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F4073943F1A15F482C6108664B940176"
+            BlueprintIdentifier = "7F4EE1F40F5A2007CE630348987592D1"
             BuildableName = "PushNotifications.framework"
             BlueprintName = "PushNotifications"
             ReferencedContainer = "container:Pods.xcodeproj">

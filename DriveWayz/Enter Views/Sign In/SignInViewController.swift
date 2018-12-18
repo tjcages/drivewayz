@@ -51,17 +51,6 @@ class SignInViewController: UIViewController, handleSignInViews {
         return view
     }()
     
-    var drivewayzCar: UIImageView = {
-        let image = UIImage(named: "DrivewayzCar")
-        let flip = UIImage(cgImage: (image?.cgImage)!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.WHITE
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     var drivewayzLabel: UILabel = {
         let label = UILabel()
         label.text = "Drivewayz"
@@ -148,7 +137,6 @@ class SignInViewController: UIViewController, handleSignInViews {
         // Dispose of any resources that can be recreated.
     }
     
-    var drivewayzTopAnchor: NSLayoutConstraint!
     var phoneNumberAnchor: NSLayoutConstraint!
     var separatorLineAnchor: NSLayoutConstraint!
     var phoneLineAnchor: NSLayoutConstraint!
@@ -168,17 +156,10 @@ class SignInViewController: UIViewController, handleSignInViews {
         blurBackground.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         blurBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(drivewayzCar)
-        drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        drivewayzTopAnchor = drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -40)
-            drivewayzTopAnchor.isActive = true
-        drivewayzCar.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        drivewayzCar.widthAnchor.constraint(equalToConstant: 190).isActive = true
-        
         self.view.addSubview(drivewayzLabel)
         drivewayzLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
         drivewayzLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 35).isActive = true
-        drivewayzLabel.topAnchor.constraint(equalTo: drivewayzCar.bottomAnchor, constant: -20).isActive = true
+        drivewayzLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20).isActive = true
         drivewayzLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(whiteView)
@@ -232,7 +213,7 @@ class SignInViewController: UIViewController, handleSignInViews {
     
     func startAnimations() {
         UIView.animate(withDuration: animationIn, animations: {
-            self.drivewayzTopAnchor.constant = -self.view.frame.height/3
+//            self.drivewayzTopAnchor.constant = -self.view.frame.height/3
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {

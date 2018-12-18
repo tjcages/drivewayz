@@ -18,6 +18,7 @@ var informationScrollView: UIScrollView = {
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.showsVerticalScrollIndicator = false
     scrollView.isScrollEnabled = false
+    scrollView.decelerationRate = .fast
     
     return scrollView
 }()

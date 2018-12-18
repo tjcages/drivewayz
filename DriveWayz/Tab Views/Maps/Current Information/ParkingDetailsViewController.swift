@@ -368,7 +368,7 @@ class ParkingDetailsViewController: UIViewController {
         lastButton = sender
     }
     
-    var detailsAnchor: NSLayoutConstraint!
+    var amenitiesAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -379,18 +379,18 @@ class ParkingDetailsViewController: UIViewController {
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        scrollView.addSubview(detailsLabel)
-        detailsAnchor = detailsLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-            detailsAnchor.isActive = true
-        detailsLabel.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        detailsLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
-        detailsLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
         scrollView.addSubview(amenitiesLabel)
-        amenitiesLabel.centerXAnchor.constraint(equalTo: detailsLabel.centerXAnchor, constant: self.view.frame.width/2).isActive = true
+        amenitiesAnchor = amenitiesLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            amenitiesAnchor.isActive = true
         amenitiesLabel.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         amenitiesLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
         amenitiesLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        scrollView.addSubview(detailsLabel)
+        detailsLabel.centerXAnchor.constraint(equalTo: amenitiesLabel.centerXAnchor, constant: self.view.frame.width/2).isActive = true
+        detailsLabel.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        detailsLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        detailsLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         scrollView.addSubview(whiteBlurViewRight)
         whiteBlurViewRight.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 60).isActive = true
@@ -404,14 +404,14 @@ class ParkingDetailsViewController: UIViewController {
         whiteBlurViewLeft.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         whiteBlurViewLeft.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
-        setupDetails()
         setupAmenities()
+        setupDetails()
     }
     
     func setupDetails() {
         
         scrollView.addSubview(detailsView)
-        detailsView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        detailsView.leftAnchor.constraint(equalTo: amenitiesView.rightAnchor).isActive = true
         detailsView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         detailsView.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: 8).isActive = true
         detailsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -447,7 +447,7 @@ class ParkingDetailsViewController: UIViewController {
     func setupAmenities() {
         
         scrollView.addSubview(amenitiesView)
-        amenitiesView.leftAnchor.constraint(equalTo: detailsView.rightAnchor).isActive = true
+        amenitiesView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         amenitiesView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         amenitiesView.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: 8).isActive = true
         amenitiesView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -540,7 +540,7 @@ class ParkingDetailsViewController: UIViewController {
 extension ParkingDetailsViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.x
-        self.detailsAnchor.constant = -translation/2
+        self.amenitiesAnchor.constant = -translation/2
         self.view.layoutIfNeeded()
     }
 }

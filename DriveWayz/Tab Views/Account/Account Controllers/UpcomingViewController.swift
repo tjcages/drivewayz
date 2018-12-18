@@ -33,6 +33,10 @@ class UpcomingViewController: UIViewController, handleUpcomingParking {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
+        //        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()

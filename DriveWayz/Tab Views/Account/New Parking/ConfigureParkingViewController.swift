@@ -16,6 +16,7 @@ protocol handleImageDrawing {
 class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     
     var delegate: controlsAccountOptions?
+    var moveDelegate: moveControllers?
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .whiteLarge)
@@ -28,7 +29,10 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = true
+        //        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()
@@ -63,10 +67,17 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.SEA_BLUE
         button.layer.cornerRadius = 10
+        button.clipsToBounds = true
         button.alpha = 1
         button.addTarget(self, action: #selector(moveToNextController(sender:)), for: .touchUpInside)
         button.disclosureButton(baseColor: Theme.WHITE)
         button.titleLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: 120, height: 50)
+        background.transform = CATransform3DMakeAffineTransform(CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
+        background.zPosition = -10
+        button.layer.addSublayer(background)
         
         return button
     }()
@@ -76,7 +87,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: -90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveBackController(sender:)), for: .touchUpInside)
         button.alpha = 0
@@ -215,7 +226,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         containerView.addSubview(parkingLabel)
         parkingLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 24).isActive = true
         parkingLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -24).isActive = true
-        parkingLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 42).isActive = true
+        parkingLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12).isActive = true
         parkingLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         setupOptions()
@@ -245,14 +256,14 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         startHostingController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         
         containerView.addSubview(parkingTypeController.view)
-        parkingTypeController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 20).isActive = true
+        parkingTypeController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 10).isActive = true
         parkingTypeController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         parkingTypeControllerAnchor = parkingTypeController.view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: self.view.frame.width)
             parkingTypeControllerAnchor.isActive = true
         parkingTypeController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         
         containerView.addSubview(parkingOptionsController.view)
-        parkingOptionsController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 20).isActive = true
+        parkingOptionsController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 10).isActive = true
         parkingOptionsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         parkingOptionsControllerAnchor = parkingOptionsController.view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: self.view.frame.width)
             parkingOptionsControllerAnchor.isActive = true
@@ -266,14 +277,14 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         spotNumberController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         
         containerView.addSubview(amenitiesController.view)
-        amenitiesController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 25).isActive = true
+        amenitiesController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 5).isActive = true
         amenitiesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         amenitiesControllerAnchor = amenitiesController.view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: self.view.frame.width)
             amenitiesControllerAnchor.isActive = true
         amenitiesController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         
         containerView.addSubview(locationController.view)
-        locationController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 20).isActive = true
+        locationController.view.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor, constant: 10).isActive = true
         locationController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         locationControllerAnchor = locationController.view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: self.view.frame.width)
             locationControllerAnchor.isActive = true
@@ -350,10 +361,15 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         }
         
         self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 24).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12).isActive = true
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+        }
         
         self.view.addSubview(imageBackButton)
         imageBackButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 24).isActive = true
@@ -383,6 +399,8 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
                 self.startHostingController.view.alpha = 0
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
+                    self.moveDelegate?.hideExitButton()
+                    self.moveDelegate?.moveMainLabel(percent: 1)
                     self.parkingTypeControllerAnchor.constant = 0
                     self.backButton.alpha = 1
                     switch device {
@@ -528,6 +546,10 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
                     self.messageControllerAnchor.constant = 0
                     self.messageController.view.alpha = 1
                     self.nextButtonWidthAnchor.constant = 200
+                    let background = CAGradientLayer().purpleColor()
+                    background.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
+                    background.zPosition = -10
+                    self.nextButton.layer.addSublayer(background)
                     self.nextButton.setTitle("Save Parking", for: .normal)
                     self.view.layoutIfNeeded()
                 })
@@ -547,10 +569,12 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
             UIView.animate(withDuration: animationIn, animations: {
                 self.backButton.alpha = 0
                 self.containerHeightAnchor.constant = 120
+                self.moveDelegate?.moveMainLabel(percent: 0)
                 self.parkingTypeControllerAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
+                    self.moveDelegate?.bringExitButton()
                     self.startHostingController.view.alpha = 1
                 })
                 self.parkingLabel.text = ""
@@ -668,6 +692,10 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
                     self.costsControllerAnchor.constant = 0
                     self.costsController.view.alpha = 1
                     self.nextButtonWidthAnchor.constant = 120
+                    let background = CAGradientLayer().purpleColor()
+                    background.frame = CGRect(x: 0, y: 0, width: 120, height: 50)
+                    background.zPosition = -10
+                    self.nextButton.layer.addSublayer(background)
                     self.nextButton.setTitle("Next", for: .normal)
                     self.view.layoutIfNeeded()
                 })

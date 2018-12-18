@@ -80,7 +80,7 @@ class SettingsCell: UITableViewCell {
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
         subtitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
-        subtitleLabel.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 30).isActive = true
+        subtitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         

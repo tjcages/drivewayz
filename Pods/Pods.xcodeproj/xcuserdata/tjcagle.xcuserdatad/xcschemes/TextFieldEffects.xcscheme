@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8586B4DDDF884BC8F2A0AFBBFD869722"
+               BlueprintIdentifier = "626DFA751F31E6101BF32D839F93D433"
                BuildableName = "TextFieldEffects.framework"
                BlueprintName = "TextFieldEffects"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8586B4DDDF884BC8F2A0AFBBFD869722"
+            BlueprintIdentifier = "626DFA751F31E6101BF32D839F93D433"
             BuildableName = "TextFieldEffects.framework"
             BlueprintName = "TextFieldEffects"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -331,9 +331,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
                     self.saveVehicleButton.isSelected = false
                 }, completion: nil)
                 self.activityIndicatorVehicleView.stopAnimating()
-                self.delegate?.hideNewVehicleController()
                 self.delegate?.bringVehicleController()
-                UserVehicleViewController().setupVehicleView()
             })
         }
     }
@@ -368,7 +366,6 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     }
     
     @objc func exitAddVehicle() {
-        self.delegate?.hideNewVehicleController()
         self.delegate?.bringVehicleController()
     }
     

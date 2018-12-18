@@ -11,6 +11,7 @@ import UIKit
 protocol handleCurrentMessages {
     func bringBackAllMessages()
     func deselectCells()
+    func moveMainLabel(percent: CGFloat)
 }
 
 class UserMessagesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handleCurrentMessages {
@@ -18,6 +19,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     var PreviousMessages: [String] = []
     let cellId = "cellId"
     var delegate: controlsAccountOptions?
+    var moveDelegate: moveControllers?
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
@@ -26,7 +28,10 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.clipsToBounds = true
+        //        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()
@@ -42,7 +47,8 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.OFF_WHITE
-        view.roundCorners(corners: [.topLeft, .topRight], radius: 10)
+        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.layer.borderWidth = 0.5
         
         let label = UILabel()
         label.text = "Your current messages"
@@ -56,6 +62,20 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         label.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         return view
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
     }()
     
     var currentMessagesTableView: UITableView = {
@@ -115,8 +135,8 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
         scrollView.addSubview(currentView)
-        currentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        currentView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        currentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: -1).isActive = true
+        currentView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: 1).isActive = true
         currentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         currentView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
@@ -127,6 +147,38 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         currentTableHeightAnchor = currentMessagesTableView.heightAnchor.constraint(equalToConstant: 50)
             currentTableHeightAnchor.isActive = true
         
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+        }
+    }
+    
+    @objc func backButtonPressed(sender: UIButton) {
+        currentMessagesController.resetOptions()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.backButton.alpha = 0
+        }) { (success) in
+            UIView.animate(withDuration: animationOut) {
+                self.moveDelegate?.bringExitButton()
+            }
+        }
+    }
+    
+    func moveMainLabel(percent: CGFloat) {
+        UIView.animate(withDuration: animationOut, animations: {
+            self.moveDelegate?.moveMainLabel(percent: percent)
+            self.backButton.alpha = 0
+        }) { (success) in
+            UIView.animate(withDuration: animationOut, animations: {
+                self.moveDelegate?.bringExitButton()
+            })
+        }
     }
     
     func observeUserMessages() {
@@ -148,10 +200,8 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     private func fetchMessages(messageID: String) {
         let messageRef = Database.database().reference().child("messages").child(messageID)
         messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let message = Message(dictionary: dictionary)
-                
                 if let chatPartnerID = message.chatPartnerID() {
                     self.messagesDictionary[chatPartnerID] = message
                 }
@@ -163,7 +213,6 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     private func reloadOfTable() {
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
-        
     }
     
     var timer: Timer?
@@ -173,7 +222,6 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         self.messages.sort(by: { (message1, message2) -> Bool in
             return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
         })
-        
         DispatchQueue.main.async(execute: {
             self.currentMessagesTableView.reloadData()
         })
@@ -225,6 +273,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
             let message = messages[indexPath.row]
             cell.message = message
             cell.selectionStyle = .none
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
             return cell
         }
         return UITableViewCell()
@@ -248,6 +297,16 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
             UIView.animate(withDuration: animationIn, animations: {
                 self.messagesAnchor.constant = -self.view.frame.width/2
                 self.currentMessagesAnchor.constant = 0
+                self.moveDelegate?.moveMainLabel(percent: 1)
+                self.moveDelegate?.hideExitButton()
+                self.backButton.alpha = 1
+                switch device {
+                case .iphone8:
+                    self.containerHeightAnchor.constant = 70
+                case .iphoneX:
+                    self.containerHeightAnchor.constant = 80
+                }
+
                 self.view.layoutIfNeeded()
             }) { (success) in
                 if self.previousCell != nil {
@@ -274,15 +333,6 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                     user.picture = picture
                     self.currentMessagesController.setData(userId: chatPartnerID)
                 }, withCancel: nil)
-                UIView.animate(withDuration: 0.1) {
-                    switch device {
-                    case .iphone8:
-                        self.containerHeightAnchor.constant = 70
-                    case .iphoneX:
-                        self.containerHeightAnchor.constant = 80
-                    }
-                    self.view.layoutIfNeeded()
-                }
             }
         }
     }

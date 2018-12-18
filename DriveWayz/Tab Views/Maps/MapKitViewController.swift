@@ -12,6 +12,8 @@ import CoreLocation
 import AVFoundation
 import GooglePlaces
 import Firebase
+import AFNetworking
+import MapKitGoogleStyler
 
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
@@ -19,9 +21,17 @@ var alreadyLoadedSpots: Bool = false
 protocol controlSaveLocation {
     func zoomToSearchLocation(address: String)
     func saveUserCurrentLocation()
+    func bringRecentView()
+    func hideRecentView()
 }
 
-class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate, UITextViewDelegate, MKMapViewDelegate, removePurchaseView, controlHoursButton, controlNewHosts, controlSaveLocation {
+protocol handleEventSelection {
+    func openSpecificEvent()
+    func closeSpecificEvent()
+    func eventsControllerHidden()
+}
+
+class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate, UITextViewDelegate, MKMapViewDelegate, removePurchaseView, controlHoursButton, controlNewHosts, controlSaveLocation, handleEventSelection {
     
     var delegate: moveControllers?
     var vehicleDelegate: controlsAccountOptions?
@@ -43,6 +53,13 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var mapView: MKMapView = {
         let view = MKMapView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsPointsOfInterest = true
+        view.showsTraffic = true
+        view.showsUserLocation = true
+        view.showsScale = true
+        view.showsBuildings = true
+        view.mapType = .standard
+        view.showsCompass = false
         
         return view
     }()
@@ -51,7 +68,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 3
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
@@ -82,6 +99,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(microphoneButtonPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
         
         return button
     }()
@@ -109,6 +127,63 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return view
     }()
     
+    var hamburgerButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
+        
+        let view1 = UIView()
+        view1.translatesAutoresizingMaskIntoConstraints = false
+        view1.backgroundColor = Theme.BLACK
+        view1.layer.cornerRadius = 0.75
+        button.addSubview(view1)
+        view1.topAnchor.constraint(equalTo: button.topAnchor, constant: 6).isActive = true
+        view1.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
+        view1.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -10).isActive = true
+        view1.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+        
+        let view2 = UIView()
+        view2.translatesAutoresizingMaskIntoConstraints = false
+        view2.backgroundColor = Theme.BLACK
+        view2.layer.cornerRadius = 0.75
+        button.addSubview(view2)
+        view2.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -6).isActive = true
+        view2.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
+        view2.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -10).isActive = true
+        view2.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+        
+        let view3 = UIView()
+        view3.translatesAutoresizingMaskIntoConstraints = false
+        view3.backgroundColor = Theme.BLACK
+        view3.layer.cornerRadius = 0.75
+        button.addSubview(view3)
+        view3.centerYAnchor.constraint(equalTo: button.centerYAnchor, constant: 3).isActive = true
+        view3.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
+        view3.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -14).isActive = true
+        view3.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+        
+        let view4 = UIView()
+        view4.translatesAutoresizingMaskIntoConstraints = false
+        view4.backgroundColor = Theme.BLACK
+        view4.layer.cornerRadius = 0.75
+        button.addSubview(view4)
+        view4.centerYAnchor.constraint(equalTo: button.centerYAnchor, constant: -3).isActive = true
+        view4.leftAnchor.constraint(equalTo: button.leftAnchor).isActive = true
+        view4.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -14).isActive = true
+        view4.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+        
+        return button
+    }()
+    
+    var diamondView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY
+        view.transform = CGAffineTransform(rotationAngle: CGFloat.pi/4)
+        
+        return view
+    }()
+    
     var profileButton: UIButton = {
         let button = UIButton(type: .custom)
         if let myImage = UIImage(named: "hamburgerButton") {
@@ -122,18 +197,10 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return button
     }()
     
-    var separatorLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        
-        return view
-    }()
-    
     var searchLabel: UILabel = {
         let label = UILabel()
         label.text = "Search"
-        label.textColor = Theme.BLACK
+        label.textColor = Theme.PURPLE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPBoldH1
         label.alpha = 0
@@ -150,7 +217,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 25
         button.clipsToBounds = true
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.imageEdgeInsets = UIEdgeInsets(top: 12.5, left: 12.5, bottom: 12.5, right: 12.5)
         
         let background = CAGradientLayer().purpleColor()
         background.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
@@ -160,11 +227,47 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return button
     }()
     
+    lazy var locationRecentResults: MapRecentViewController = {
+        let controller = MapRecentViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        controller.delegate = self
+        controller.view.layer.cornerRadius = 10
+        
+        return controller
+    }()
+    
     lazy var locationsSearchResults: MapSearchViewController = {
         let controller = MapSearchViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
         controller.delegate = self
+        
+        return controller
+    }()
+    
+    var resultsScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        
+        return view
+    }()
+    
+    lazy var eventsController: EventsViewController = {
+        let controller = EventsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Events"
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var checkEventsController: CheckEventsViewController = {
+        let controller = CheckEventsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Check Events"
         
         return controller
     }()
@@ -290,9 +393,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return controller
     }()
     
+    var networkConnection: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.HARMONY_RED
+        button.setTitle("No network connection currently", for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)
+        button.titleLabel?.font = Fonts.SSPRegularH5
+        button.addTarget(self, action: #selector(removeNetworkNotification(sender:)), for: .allTouchEvents)
+
+        return button
+    }()
     
-//    ///////////////////////////////////////////// VIEW DID LOAD
     
+//    ///////////////////////////////////////////// VIEWDIDLOAD
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -304,11 +418,47 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         setupViews()
         setupAdditionalViews()
         setupViewController()
+        configureTileOverlay()
+        checkNetwork()
         if self.currentActive == false {
             checkCurrentParking()
         }
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarSwiped(sender:)))
+        mainBar.addGestureRecognizer(pan)
     }
     
+    @objc func mainBarSwiped(sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: self.view)
+        if sender.state == .changed && abs(translation.x) <= 16 && abs(translation.y) <= 16 {
+            if self.mainBarCenterAnchor.constant < 16 && self.mainBarCenterAnchor.constant > -16 {
+                self.mainBarCenterAnchor.constant = translation.x
+            }
+            var constant: CGFloat = 0
+            switch device {
+            case .iphone8:
+                constant = 100
+            case .iphoneX:
+                constant = 120
+            }
+            if self.mainBarTopAnchor.constant < constant + 16 && self.mainBarTopAnchor.constant > constant - 16 {
+                self.mainBarTopAnchor.constant = self.mainBarTopAnchor.constant + translation.y
+            }
+            self.view.layoutIfNeeded()
+        } else if sender.state == .ended {
+            UIView.animate(withDuration: animationOut, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                    self.mainBarCenterAnchor.constant = 0
+                    switch device {
+                    case .iphone8:
+                        self.mainBarTopAnchor.constant = 100
+                    case .iphoneX:
+                        self.mainBarTopAnchor.constant = 120
+                    }
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+        }
+    }
+        
     override func viewDidAppear(_ animated: Bool) {
         self.setupLocationManager()
     }
@@ -325,15 +475,24 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var purchaseStatusWidthAnchor: NSLayoutConstraint!
     var purchaseStatusHeightAnchor: NSLayoutConstraint!
     var navigationLabelHeight: NSLayoutConstraint!
+    var diamondTopAnchor: NSLayoutConstraint!
+    var locationRecentHeightAnchor: NSLayoutConstraint!
+    var resultsScrollAnchor: NSLayoutConstraint!
     
     var mainBarTopAnchor: NSLayoutConstraint!
     var mainBarWidthAnchor: NSLayoutConstraint!
     var mainBarHeightAnchor: NSLayoutConstraint!
-    var separatorLineLeftAnchor: NSLayoutConstraint!
-    var separatorLineWidthAnchor: NSLayoutConstraint!
-    var separatorLineHeightAnchor: NSLayoutConstraint!
-    var profileTopAnchor: NSLayoutConstraint!
+    var mainBarCenterAnchor: NSLayoutConstraint!
     var microphoneRightAnchor: NSLayoutConstraint!
+    
+    var checkEventsAnchor: NSLayoutConstraint!
+    var checkEventsBottomAnchor: NSLayoutConstraint!
+    var checkEventsWidthAnchor: NSLayoutConstraint!
+    var checkEventsHeightAnchor: NSLayoutConstraint!
+    var eventsControllerAnchor: NSLayoutConstraint!
+    var eventsHeightAnchor: NSLayoutConstraint!
+    var giftBottomAnchor: NSLayoutConstraint!
+    var giftOnlyBottomAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -344,81 +503,224 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(mainBar)
-        mainBarWidthAnchor = mainBar.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -36)
+        mainBarWidthAnchor = mainBar.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -72)
             mainBarWidthAnchor.isActive = true
-        mainBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        mainBarHeightAnchor = mainBar.heightAnchor.constraint(equalToConstant: 54)
+        mainBarCenterAnchor = mainBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            mainBarCenterAnchor.isActive = true
+        mainBarHeightAnchor = mainBar.heightAnchor.constraint(equalToConstant: 60)
             mainBarHeightAnchor.isActive = true
         switch device {
         case .iphone8:
-            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70)
+            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100)
                 mainBarTopAnchor.isActive = true
         case .iphoneX:
-            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90)
+            mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
                 mainBarTopAnchor.isActive = true
         }
         
-        mainBar.addSubview(profileButton)
-        profileButton.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 12).isActive = true
-        profileButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        profileButton.heightAnchor.constraint(equalTo: profileButton.widthAnchor, constant: 5).isActive = true
-        profileTopAnchor = profileButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor)
-            profileTopAnchor.isActive = true
-        
-        mainBar.addSubview(separatorLine)
-        separatorLineLeftAnchor = separatorLine.leftAnchor.constraint(equalTo: profileButton.rightAnchor, constant: 12)
-            separatorLineLeftAnchor.isActive = true
-        separatorLineHeightAnchor = separatorLine.heightAnchor.constraint(equalTo: mainBar.heightAnchor, constant: -20)
-            separatorLineHeightAnchor.isActive = true
-        separatorLine.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
-        separatorLineWidthAnchor = separatorLine.widthAnchor.constraint(equalToConstant: 1)
-            separatorLineWidthAnchor.isActive = true
+        mapView.addSubview(hamburgerButton)
+        hamburgerButton.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 24).isActive = true
+        hamburgerButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        hamburgerButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        switch device {
+        case .iphone8:
+            hamburgerButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 40).isActive = true
+        case .iphoneX:
+            hamburgerButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 50).isActive = true
+        }
         
         mainBar.addSubview(locatorButton)
         locatorButton.rightAnchor.constraint(equalTo: mainBar.rightAnchor, constant: -6).isActive = true
-        locatorButton.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        locatorButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
+        
+        mainBar.addSubview(diamondView)
+        diamondView.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 20).isActive = true
+        diamondTopAnchor = diamondView.centerYAnchor.constraint(equalTo: locatorButton.centerYAnchor)
+            diamondTopAnchor.isActive = true
+        diamondView.widthAnchor.constraint(equalToConstant: 8).isActive = true
+        diamondView.heightAnchor.constraint(equalToConstant: 8).isActive = true
         
         mainBar.addSubview(microphoneButton)
         microphoneRightAnchor = microphoneButton.rightAnchor.constraint(equalTo: locatorButton.leftAnchor, constant: 4)
             microphoneRightAnchor.isActive = true
-        microphoneButton.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        microphoneButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor, constant: 30).isActive = true
         microphoneButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
         microphoneButton.widthAnchor.constraint(equalTo: microphoneButton.heightAnchor).isActive = true
         
         mainBar.addSubview(searchBar)
         searchBar.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        searchBar.leftAnchor.constraint(equalTo: separatorLine.rightAnchor, constant: 8).isActive = true
-        searchBar.rightAnchor.constraint(equalTo: microphoneButton.leftAnchor, constant: -8).isActive = true
-        searchBar.centerYAnchor.constraint(equalTo: profileButton.centerYAnchor).isActive = true
+        searchBar.leftAnchor.constraint(equalTo: diamondView.rightAnchor, constant: 16).isActive = true
+        searchBar.rightAnchor.constraint(equalTo: microphoneButton.leftAnchor, constant: -2).isActive = true
+        searchBar.centerYAnchor.constraint(equalTo: diamondView.centerYAnchor).isActive = true
         searchBar.heightAnchor.constraint(equalTo: mainBar.heightAnchor).isActive = true
         
         mainBar.addSubview(searchLabel)
-        searchLabel.leftAnchor.constraint(equalTo: separatorLine.leftAnchor).isActive = true
+        searchLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         searchLabel.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
-        searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 40).isActive = true
         searchLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        self.view.addSubview(giftButton)
-        giftButton.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -12).isActive = true
-        giftButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        giftButton.heightAnchor.constraint(equalTo: giftButton.widthAnchor).isActive = true
         switch device {
         case .iphone8:
-            giftButton.bottomAnchor.constraint(lessThanOrEqualTo: mapView.bottomAnchor, constant: -16).isActive = true
+            searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 30).isActive = true
         case .iphoneX:
-            giftButton.bottomAnchor.constraint(lessThanOrEqualTo: mapView.bottomAnchor, constant: -26).isActive = true
+            searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 40).isActive = true
         }
         
-        self.view.addSubview(locationsSearchResults.view)
-        locationsSearchResults.view.topAnchor.constraint(equalTo: mainBar.bottomAnchor).isActive = true
+        self.view.addSubview(resultsScrollView)
+        resultsScrollView.contentSize = CGSize.zero
+        resultsScrollView.leftAnchor.constraint(equalTo: mapView.leftAnchor).isActive = true
+        resultsScrollView.rightAnchor.constraint(equalTo: mapView.rightAnchor).isActive = true
+        resultsScrollView.topAnchor.constraint(equalTo: mainBar.bottomAnchor, constant: -10).isActive = true
+        resultsScrollAnchor = resultsScrollView.heightAnchor.constraint(equalToConstant: 0)
+            resultsScrollAnchor.isActive = true
+        
+        resultsScrollView.addSubview(locationRecentResults.view)
+        locationRecentResults.view.topAnchor.constraint(equalTo: resultsScrollView.topAnchor).isActive = true
+        locationRecentResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        locationRecentResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        locationRecentHeightAnchor = locationRecentResults.view.heightAnchor.constraint(equalToConstant: 110)
+            locationRecentHeightAnchor.isActive = true
+        
+        resultsScrollView.addSubview(locationsSearchResults.view)
+        locationsSearchResults.view.topAnchor.constraint(equalTo: locationRecentResults.view.bottomAnchor).isActive = true
         locationsSearchResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         locationsSearchResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         locationsSearchResults.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
+        self.view.addSubview(eventsController.view)
+        eventsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        eventsController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        eventsControllerAnchor = eventsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 150)
+            eventsControllerAnchor.isActive = true
+        eventsHeightAnchor = eventsController.view.heightAnchor.constraint(equalToConstant: 150)
+            eventsHeightAnchor.isActive = true
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(eventsControllerPanned(sender:)))
+        let panGesture2 = UIPanGestureRecognizer(target: self, action: #selector(eventsControllerPanned(sender:)))
+        eventsController.view.addGestureRecognizer(panGesture)
+        checkEventsController.view.addGestureRecognizer(panGesture2)
+        
+        self.view.addSubview(checkEventsController.view)
+        checkEventsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        checkEventsWidthAnchor = checkEventsController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width - 24)
+            checkEventsWidthAnchor.isActive = true
+        checkEventsHeightAnchor = checkEventsController.view.heightAnchor.constraint(equalToConstant: 70)
+            checkEventsHeightAnchor.isActive = true
+        checkEventsBottomAnchor = checkEventsController.view.bottomAnchor.constraint(equalTo: eventsController.view.topAnchor, constant: 4)
+            checkEventsBottomAnchor.isActive = false
+        checkEventsAnchor = checkEventsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 70)
+            checkEventsAnchor.isActive = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(eventsControllerOpenTapped))
+        checkEventsController.view.addGestureRecognizer(tapGesture)
+        
+        self.view.addSubview(giftButton)
+        self.view.bringSubviewToFront(eventsController.view)
+        giftButton.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -16).isActive = true
+        giftButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        giftButton.heightAnchor.constraint(equalTo: giftButton.widthAnchor).isActive = true
+        giftBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: checkEventsController.view.topAnchor, constant: -12)
+            giftBottomAnchor.isActive = false
+        switch device {
+        case .iphone8:
+            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12)
+            giftOnlyBottomAnchor.isActive = true
+        case .iphoneX:
+            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
+            giftOnlyBottomAnchor.isActive = true
+        }
+        
         createToolbar()
     }
+    
+    func openSpecificEvent() {
+        self.checkEventsController.view.alpha = 0
+        UIView.animate(withDuration: animationIn) {
+            self.mainBarTopAnchor.constant = -60
+            self.eventsHeightAnchor.constant = self.view.frame.height
+            self.giftBottomAnchor.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func closeSpecificEvent() {
+        UIView.animate(withDuration: animationOut) {
+            switch device {
+            case .iphone8:
+                self.mainBarTopAnchor.constant = 100
+            case .iphoneX:
+                self.mainBarTopAnchor.constant = 120
+            }
+            self.eventsHeightAnchor.constant = 150
+            self.checkEventsController.view.alpha = 1
+            self.giftBottomAnchor.constant = 40
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func eventsControllerPanned(sender: UIPanGestureRecognizer) {
+        if self.checkEventsWidthAnchor.constant != self.view.frame.width - 24 && self.checkEventsController.view.alpha == 1 {
+            if sender.state == .changed {
+                let location = sender.location(in: self.view).y
+                let difference = self.view.frame.height - location
+                if difference < 50 {
+                    self.eventsControllerHidden()
+                } else {
+                    self.eventsControllerAnchor.constant = 120 - difference
+                    if self.eventsControllerAnchor.constant <= 0 {
+                        self.eventsControllerAnchor.constant = 0
+                    }
+                    self.view.layoutIfNeeded()
+                }
+            } else if sender.state == .ended {
+                if self.eventsControllerAnchor.constant > 40 {
+                    self.eventsControllerHidden()
+                } else {
+                    self.eventsControllerOpenTapped()
+                }
+            }
+        }
+    }
+    
+    @objc func eventsControllerOpenTapped() {
+        self.checkEventsController.changeToCurrentEvents()
+        UIView.animate(withDuration: animationIn) {
+            self.checkEventsAnchor.isActive = false
+            self.checkEventsBottomAnchor.isActive = true
+            self.checkEventsHeightAnchor.constant = 40
+            self.checkEventsWidthAnchor.constant = 205
+            self.eventsControllerAnchor.constant = 0
+            self.giftBottomAnchor.constant = 40
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func eventsControllerHidden() {
+        self.giftOnlyBottomAnchor.isActive = false
+        self.giftBottomAnchor.isActive = true
+        self.checkEventsController.changeToBanner()
+        UIView.animate(withDuration: animationIn) {
+            self.checkEventsAnchor.isActive = true
+            self.checkEventsAnchor.constant = -12
+            self.checkEventsBottomAnchor.isActive = false
+            self.checkEventsHeightAnchor.constant = 70
+            self.checkEventsWidthAnchor.constant = self.view.frame.width - 24
+            self.eventsControllerAnchor.constant = 150
+            self.giftBottomAnchor.constant = -12
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func takeAwayEvents() {
+        self.giftOnlyBottomAnchor.isActive = false
+        self.giftBottomAnchor.isActive = true
+        self.checkEventsAnchor.constant = 70
+        UIView.animate(withDuration: animationOut) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    var networkTopAnchor: NSLayoutConstraint!
     
     func setupAdditionalViews() {
         
@@ -449,7 +751,85 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         navigationLabel.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         navigationLabelHeight = navigationLabel.heightAnchor.constraint(equalToConstant: 90)
             navigationLabelHeight.isActive = true
+        
+        self.view.addSubview(networkConnection)
+        networkConnection.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        networkConnection.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        networkTopAnchor = networkConnection.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -80)
+            networkTopAnchor.isActive = true
+        networkConnection.heightAnchor.constraint(equalToConstant: 60).isActive = true
     
+    }
+    
+    func checkNetwork() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            let status = previousNetworkReachabilityStatus.rawValue
+            if status == 0 {
+                self.networkConnection.setTitle("We can't seem to find a network connection", for: .normal)
+                self.view.layoutIfNeeded()
+                self.networkConnection.backgroundColor = Theme.HARMONY_RED
+                switch device {
+                case .iphone8:
+                    self.networkTopAnchor.constant = -20
+                case .iphoneX:
+                    self.networkTopAnchor.constant = 0
+                }
+                self.takeAwayEvents()
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.view.layoutIfNeeded()
+                })
+            }
+        }
+        NotificationCenter.default.addObserver(forName: NetworkReachabilityChanged, object: nil, queue: nil, using: {
+            (notification) in
+            if let userInfo = notification.userInfo {
+                if let reachableStatus = userInfo["reachabilityStatus"] as? String {
+                    if reachableStatus == "Connection Status : Not Reachable" {
+                        self.networkConnection.setTitle("We can't seem to find a network connection", for: .normal)
+                        self.view.layoutIfNeeded()
+                        self.networkConnection.backgroundColor = Theme.HARMONY_RED
+                        switch device {
+                        case .iphone8:
+                            self.networkTopAnchor.constant = -20
+                        case .iphoneX:
+                            self.networkTopAnchor.constant = 0
+                        }
+                        self.takeAwayEvents()
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.view.layoutIfNeeded()
+                        })
+                    } else {
+                        self.networkConnection.setTitle("Successfully connected", for: .normal)
+                        self.view.layoutIfNeeded()
+                        self.networkConnection.backgroundColor = Theme.GREEN_PIGMENT
+                        switch device {
+                        case .iphone8:
+                            self.networkTopAnchor.constant = -20
+                        case .iphoneX:
+                            self.networkTopAnchor.constant = 0
+                        }
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.view.layoutIfNeeded()
+                        }, completion: { (success) in
+                            self.eventsController.checkEvents()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                UIView.animate(withDuration: animationOut, animations: {
+                                    self.networkTopAnchor.constant = -80
+                                    self.view.layoutIfNeeded()
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }
+    
+    @objc func removeNetworkNotification(sender: UISwipeGestureRecognizer) {
+        UIView.animate(withDuration: animationOut, animations: {
+            self.networkTopAnchor.constant = -80
+            self.view.layoutIfNeeded()
+        })
     }
     
     func setupLeaveAReview(parkingID: String) {
@@ -543,6 +923,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
             self.mainBarTopAnchor.constant = -80
+            self.diamondTopAnchor.constant = 40
             self.fullBackgroundView.alpha = 1
             self.swipeLabel.alpha = 0
             self.view.layoutIfNeeded()
@@ -566,10 +947,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UserDefaults.standard.synchronize()
         switch device {
         case .iphone8:
-            self.mainBarTopAnchor.constant = 70
+            self.mainBarTopAnchor.constant = 100
         case .iphoneX:
-            self.mainBarTopAnchor.constant = 90
+            self.mainBarTopAnchor.constant = 120
         }
+        self.diamondTopAnchor.constant = 0
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: animationIn, animations: {
             self.purchaseViewAnchor.constant = 240
@@ -584,10 +966,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     @objc func informationButtonSwiped() {
         switch device {
         case .iphone8:
-            self.mainBarTopAnchor.constant = 70
+            self.mainBarTopAnchor.constant = 100
         case .iphoneX:
-            self.mainBarTopAnchor.constant = 90
+            self.mainBarTopAnchor.constant = 120
         }
+        self.diamondTopAnchor.constant = 0
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = 0
@@ -609,6 +992,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
             self.mainBarTopAnchor.constant = -40
+            self.diamondTopAnchor.constant = 40
             self.fullBackgroundView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -620,10 +1004,11 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func currentParkingDisappear() {
         switch device {
         case .iphone8:
-            self.mainBarTopAnchor.constant = 70
+            self.mainBarTopAnchor.constant = 100
         case .iphoneX:
-            self.mainBarTopAnchor.constant = 90
+            self.mainBarTopAnchor.constant = 120
         }
+        self.diamondTopAnchor.constant = 0
         self.purchaseViewController.view.alpha = 0
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: animationIn, animations: {
@@ -720,7 +1105,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
 
     func addAVehicleReminder() {
         self.vehicleDelegate?.openAccountView()
-        self.vehicleDelegate?.bringNewVehicleController(vehicleStatus: .noVehicle)
     }
     
     func swipeTutorialCheck() {
@@ -752,13 +1136,6 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     func setupLocationManager() {
         
         mapView.delegate = self
-        mapView.showsPointsOfInterest = true
-        mapView.showsTraffic = true
-        mapView.showsUserLocation = true
-        mapView.showsScale = true
-        mapView.showsBuildings = true
-        mapView.mapType = .standard
-        mapView.showsCompass = false
         
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -771,7 +1148,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                 self.observeUserParkingSpots()
             }
         }
-        
+        self.resultsScrollAnchor.constant = 0
         if self.searchedForPlace == false {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
@@ -786,12 +1163,30 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }
     }
     
+    private func configureTileOverlay() {  //UNCOMMENT FOR GOOGLE MAP OVERLAY
+//        // We first need to have the path of the overlay configuration JSON
+//        guard let overlayFileURLString = Bundle.main.path(forResource: "overlay", ofType: "json") else {
+//            return
+//        }
+//        let overlayFileURL = URL(fileURLWithPath: overlayFileURLString)
+//
+//        // After that, you can create the tile overlay using MapKitGoogleStyler
+//        guard let tileOverlay = try? MapKitGoogleStyler.buildOverlay(with: overlayFileURL) else {
+//            return
+//        }
+//
+//        // And finally add it to your MKMapView
+//        mapView.addOverlay(tileOverlay)
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(overlay: overlay)
             renderer.strokeColor = Theme.PACIFIC_BLUE
             renderer.lineWidth = 5
             return renderer
+        } else if let tileOverlay = overlay as? MKTileOverlay {
+            return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
         return MKOverlayRenderer()
     }
@@ -818,61 +1213,89 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.view.endEditing(true)
     }
     
+    func bringRecentView() {
+        self.resultsScrollView.contentSize = CGSize.zero
+        self.resultsScrollAnchor.constant = 110
+        UIView.animate(withDuration: animationOut) {
+            self.locationRecentHeightAnchor.constant = 110
+            self.locationRecentResults.view.layer.cornerRadius = 10
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func hideRecentView() {
+        self.resultsScrollView.contentSize = CGSize(width: self.view.frame.width, height: 400)
+        switch device {
+        case .iphone8:
+            self.resultsScrollAnchor.constant = 250
+        case .iphoneX:
+            self.resultsScrollAnchor.constant = 300
+        }
+        UIView.animate(withDuration: animationOut) {
+            self.locationRecentHeightAnchor.constant = 120
+            self.locationRecentResults.view.layer.cornerRadius = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        self.view.bringSubviewToFront(locationsSearchResults.view)
+        self.view.bringSubviewToFront(resultsScrollView)
         self.view.bringSubviewToFront(mainBar)
         self.view.bringSubviewToFront(speechSearchResults.view)
+        self.locationRecentResults.checkRecentSearches()
+        self.resultsScrollAnchor.constant = 0
+        self.eventsControllerHidden()
         UIView.animate(withDuration: animationIn, animations: {
+            self.locationRecentResults.view.alpha = 1
+            self.microphoneButton.alpha = 1
             self.mainBar.layer.cornerRadius = 0
+            self.diamondTopAnchor.constant = 30
             self.mainBarTopAnchor.constant = 0
             self.mainBarWidthAnchor.constant = 0
-            self.separatorLineLeftAnchor.constant = -16
-            self.separatorLineWidthAnchor.constant = 16
-            self.separatorLineHeightAnchor.constant = -180
-            self.profileTopAnchor.constant = 40
             self.microphoneRightAnchor.constant = 30
             switch device {
             case .iphone8:
-                self.mainBarHeightAnchor.constant = 162
+                self.mainBarHeightAnchor.constant = 122
             case .iphoneX:
-                self.mainBarHeightAnchor.constant = 182
+                self.mainBarHeightAnchor.constant = 142
             }
-            self.profileButton.alpha = 0
+            self.hamburgerButton.alpha = 0
             self.locatorButton.alpha = 0
             self.darkBlurView.alpha = 0.4
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {
                 self.searchLabel.alpha = 1
+                self.resultsScrollAnchor.constant = 110
+                self.view.layoutIfNeeded()
             })
         }
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        self.bringRecentView()
         UIView.animate(withDuration: 0.1, animations: {
             self.searchLabel.alpha = 0
-            self.separatorLine.alpha = 0
+            self.locationRecentResults.view.alpha = 0
+            self.resultsScrollAnchor.constant = 0
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {
-                self.mainBar.layer.cornerRadius = 15
-                self.mainBarHeightAnchor.constant = 54
-                self.mainBarWidthAnchor.constant = -36
-                self.separatorLineLeftAnchor.constant = 12
-                self.separatorLineWidthAnchor.constant = 1
-                self.separatorLineHeightAnchor.constant = -20
-                self.profileTopAnchor.constant = 0
+                self.microphoneButton.alpha = 0
+                self.mainBar.layer.cornerRadius = 5
+                self.mainBarHeightAnchor.constant = 60
+                self.mainBarWidthAnchor.constant = -72
                 self.microphoneRightAnchor.constant = 4
                 switch device {
                 case .iphone8:
-                    self.mainBarTopAnchor.constant = 70
+                    self.mainBarTopAnchor.constant = 100
                 case .iphoneX:
-                    self.mainBarTopAnchor.constant = 90
+                    self.mainBarTopAnchor.constant = 120
                 }
-                self.profileButton.alpha = 1
+                self.diamondTopAnchor.constant = 0
+                self.hamburgerButton.alpha = 1
                 self.locatorButton.alpha = 1
                 self.darkBlurView.alpha = 0
-                self.separatorLine.alpha = 1
                 self.locationsSearchResults.view.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { (success) in

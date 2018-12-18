@@ -23,7 +23,6 @@ class PanoViewController: UIViewController, GMSMapViewDelegate {
     
     var lastPoint = CGPoint(x: 50, y: -50)
     var screenShotView: UIImageView!
-    var accountViewController: AccountViewController?
     
     lazy var exitButton: UIButton = {
         let exitButton = UIButton()

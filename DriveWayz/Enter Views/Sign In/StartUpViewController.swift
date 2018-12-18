@@ -341,16 +341,6 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         
         return forgot
     }()
-    
-    lazy var termsController: TermsViewController = {
-        let controller = TermsViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.title = "Terms"
-        controller.view.alpha = 0
-        return controller
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -709,7 +699,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         } else {
             setupTerms()
             UIView.animate(withDuration: animationIn, animations: {
-                self.termsController.view.alpha = 1
+//                self.termsController.view.alpha = 1
             }) { (success) in
                 self.facebook = false
             }
@@ -805,11 +795,11 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     
     func agreeToTerms() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.termsController.view.alpha = 0
+//            self.termsController.view.alpha = 0
         }) { (success) in
-            self.termsController.willMove(toParent: nil)
-            self.termsController.view.removeFromSuperview()
-            self.termsController.removeFromParent()
+//            self.termsController.willMove(toParent: nil)
+//            self.termsController.view.removeFromSuperview()
+//            self.termsController.removeFromParent()
         }
         if facebook == true {
             facebookSignUp()
@@ -918,7 +908,7 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
         } else {
             setupTerms()
             UIView.animate(withDuration: animationIn, animations: {
-                self.termsController.view.alpha = 1
+//                self.termsController.view.alpha = 1
             }) { (success) in
                 self.facebook = true
             }
@@ -1015,12 +1005,12 @@ class StartUpViewController: UIViewController, UIScrollViewDelegate, LoginButton
     
     func setupTerms() {
         
-        self.view.addSubview(termsController.view)
-        self.addChild(termsController)
-        termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//        self.view.addSubview(termsController.view)
+//        self.addChild(termsController)
+//        termsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        termsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        termsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
     }
     

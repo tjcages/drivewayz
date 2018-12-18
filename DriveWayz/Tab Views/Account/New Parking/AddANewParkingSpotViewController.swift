@@ -791,34 +791,6 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
 
 }
 
-
-// Handle the user's selection.
-extension AccountViewController: GMSAutocompleteResultsViewControllerDelegate {
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
-        searchController?.isActive = false
-        // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place attributions: \(String(describing: place.attributions))")
-    }
-    
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
-        // TODO: handle the error.
-        print("Error: ", error.localizedDescription)
-    }
-    
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
-}
-
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
 	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})

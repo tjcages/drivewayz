@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import Cosmos
+//import Cosmos
 
 class ParkingInfoViewController: UIViewController {
     
@@ -55,20 +55,20 @@ class ParkingInfoViewController: UIViewController {
         return label
     }()
     
-    var stars: CosmosView = {
-        let view = CosmosView()
-        view.settings.updateOnTouch = false
-        view.settings.fillMode = .precise
-        view.settings.starSize = 17.5
-        view.settings.starMargin = 2
-        view.settings.filledColor = Theme.SEA_BLUE
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        view.settings.filledBorderColor = Theme.SEA_BLUE
-        view.isUserInteractionEnabled = false
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
+//    var stars: CosmosView = {
+//        let view = CosmosView()
+//        view.settings.updateOnTouch = false
+//        view.settings.fillMode = .precise
+//        view.settings.starSize = 17.5
+//        view.settings.starMargin = 2
+//        view.settings.filledColor = Theme.SEA_BLUE
+//        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+//        view.settings.filledBorderColor = Theme.SEA_BLUE
+//        view.isUserInteractionEnabled = false
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//
+//        return view
+//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +81,7 @@ class ParkingInfoViewController: UIViewController {
         labelTitle.text = String(address)
         labelCost.text = parkingCost
         labelDistance.text = "\(parkingDistance) miles away"
-        stars.rating = rating
+//        stars.rating = rating
     }
     
     func setupViews() {
@@ -124,11 +124,11 @@ class ParkingInfoViewController: UIViewController {
         labelDistance.rightAnchor.constraint(equalTo: labelTitle.rightAnchor).isActive = true
         labelDistance.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        parkingView.addSubview(stars)
-        stars.leftAnchor.constraint(greaterThanOrEqualTo: parkingView.centerXAnchor, constant: 0).isActive = true
-        stars.centerYAnchor.constraint(equalTo: labelCost.centerYAnchor).isActive = true
-        stars.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//        parkingView.addSubview(stars)
+//        stars.leftAnchor.constraint(greaterThanOrEqualTo: parkingView.centerXAnchor, constant: 0).isActive = true
+//        stars.centerYAnchor.constraint(equalTo: labelCost.centerYAnchor).isActive = true
+//        stars.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+//        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
         parkingView.bottomAnchor.constraint(equalTo: labelDistance.bottomAnchor, constant: 20).isActive = true
         
     }

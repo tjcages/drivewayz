@@ -8,11 +8,7 @@
 
 import UIKit
 
-protocol handleHelpViews {
-    func bringBackMain()
-}
-
-class HelpViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handleHelpViews {
+class HelpViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var delegate: moveControllers?
 
@@ -25,7 +21,10 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.clipsToBounds = true
+        //        view.clipsToBounds = true
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
         
         return view
     }()
@@ -53,9 +52,22 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         let controller = ContactDrivewayzViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
-        controller.delegate = self
         
         return controller
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
     }()
     
     override func viewDidLoad() {
@@ -64,6 +76,10 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
         scrollView.delegate = self
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(bringBackMain))
+        swipeGesture.direction = .right
+        view.addGestureRecognizer(swipeGesture)
         
         setupViews()
     }
@@ -104,16 +120,35 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         contactDrivewayzAnchor = contactDrivewayzController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
             contactDrivewayzAnchor.isActive = true
         
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+        }
+        
     }
     
-    func bringBackMain() {
-        UIView.animate(withDuration: animationOut) {
+    @objc func backButtonPressed(sender: UIButton) {
+        self.view.endEditing(true)
+        self.bringBackMain()
+    }
+    
+    @objc func bringBackMain() {
+        UIView.animate(withDuration: animationOut, animations: {
             self.delegate?.changeMainLabel(text: "Help")
             self.delegate?.moveMainLabel(percent: 0)
             self.containerHeightAnchor.constant = 120
             self.containerCenterAnchor.constant = 0
             self.contactDrivewayzAnchor.constant = self.view.frame.width
+            self.backButton.alpha = 0
             self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.bringExitButton()
         }
     }
     
@@ -171,7 +206,14 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
                 UIView.animate(withDuration: animationIn) {
                     self.delegate?.changeMainLabel(text: title)
                     self.delegate?.moveMainLabel(percent: 1)
-                    self.containerHeightAnchor.constant = 70
+                    self.delegate?.hideExitButton()
+                    self.backButton.alpha = 1
+                    switch device {
+                    case .iphone8:
+                        self.containerHeightAnchor.constant = 70
+                    case .iphoneX:
+                        self.containerHeightAnchor.constant = 80
+                    }
                     self.containerCenterAnchor.constant = -self.view.frame.width/2
                     self.contactDrivewayzAnchor.constant = 0
                     self.view.layoutIfNeeded()
@@ -184,14 +226,24 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         let translation = scrollView.contentOffset.y
         if translation <= 50 && translation >= 10 {
             let percent = (translation-10)/40
-            self.containerHeightAnchor.constant = 120 - (percent * 50)
+            switch device {
+            case .iphone8:
+                self.containerHeightAnchor.constant = 120 - (percent * 50)
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 120 - (percent * 40)
+            }
             self.delegate?.moveMainLabel(percent: percent)
         } else if translation < 10 {
             self.containerHeightAnchor.constant = 120
             self.delegate?.moveMainLabel(percent: 0)
         } else {
             self.delegate?.moveMainLabel(percent: 1)
-            self.containerHeightAnchor.constant = 70
+            switch device {
+            case .iphone8:
+                self.containerHeightAnchor.constant = 70
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 80
+            }
         }
     }
     
