@@ -60,6 +60,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         view.showsBuildings = true
         view.mapType = .standard
         view.showsCompass = false
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), latitudinalMeters: 22000, longitudinalMeters: 22000)
+        view.setRegion(region, animated: false)
         
         return view
     }()
@@ -232,7 +234,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
         controller.delegate = self
-        controller.view.layer.cornerRadius = 10
+        controller.view.layer.cornerRadius = 3
         
         return controller
     }()
@@ -251,6 +253,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
+        view.clipsToBounds = false
         
         return view
     }()
@@ -405,6 +408,20 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return button
     }()
     
+    var clearView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.6
+        view.layer.cornerRadius = 3
+        view.alpha = 0
+        
+        return view
+    }()
+    
     
 //    ///////////////////////////////////////////// VIEWDIDLOAD
     
@@ -493,6 +510,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var eventsHeightAnchor: NSLayoutConstraint!
     var giftBottomAnchor: NSLayoutConstraint!
     var giftOnlyBottomAnchor: NSLayoutConstraint!
+    var giftRightAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -575,12 +593,18 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         resultsScrollAnchor = resultsScrollView.heightAnchor.constraint(equalToConstant: 0)
             resultsScrollAnchor.isActive = true
         
+        resultsScrollView.addSubview(clearView)
         resultsScrollView.addSubview(locationRecentResults.view)
         locationRecentResults.view.topAnchor.constraint(equalTo: resultsScrollView.topAnchor).isActive = true
         locationRecentResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         locationRecentResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         locationRecentHeightAnchor = locationRecentResults.view.heightAnchor.constraint(equalToConstant: 110)
             locationRecentHeightAnchor.isActive = true
+        
+        clearView.topAnchor.constraint(equalTo: locationRecentResults.view.topAnchor).isActive = true
+        clearView.leftAnchor.constraint(equalTo: locationRecentResults.view.leftAnchor).isActive = true
+        clearView.rightAnchor.constraint(equalTo: locationRecentResults.view.rightAnchor).isActive = true
+        clearView.bottomAnchor.constraint(equalTo: locationRecentResults.view.bottomAnchor).isActive = true
         
         resultsScrollView.addSubview(locationsSearchResults.view)
         locationsSearchResults.view.topAnchor.constraint(equalTo: locationRecentResults.view.bottomAnchor).isActive = true
@@ -616,7 +640,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         self.view.addSubview(giftButton)
         self.view.bringSubviewToFront(eventsController.view)
-        giftButton.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -16).isActive = true
+        giftRightAnchor = giftButton.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -16)
+            giftRightAnchor.isActive = true
         giftButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         giftButton.heightAnchor.constraint(equalTo: giftButton.widthAnchor).isActive = true
         giftBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: checkEventsController.view.topAnchor, constant: -12)
@@ -635,8 +660,16 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     func openSpecificEvent() {
         self.checkEventsController.view.alpha = 0
+        self.view.bringSubviewToFront(fullBackgroundView)
+        self.view.bringSubviewToFront(eventsController.view)
         UIView.animate(withDuration: animationIn) {
-            self.mainBarTopAnchor.constant = -60
+            self.fullBackgroundView.alpha = 0.4
+            switch device {
+            case .iphone8:
+                self.mainBarTopAnchor.constant = 80
+            case .iphoneX:
+                self.mainBarTopAnchor.constant = 100
+            }
             self.eventsHeightAnchor.constant = self.view.frame.height
             self.giftBottomAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
@@ -654,9 +687,12 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
             self.eventsHeightAnchor.constant = 150
             self.checkEventsController.view.alpha = 1
             self.giftBottomAnchor.constant = 40
+            self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }
     }
+    
+    var previousEventLocation: CGFloat = 0
     
     @objc func eventsControllerPanned(sender: UIPanGestureRecognizer) {
         if self.checkEventsWidthAnchor.constant != self.view.frame.width - 24 && self.checkEventsController.view.alpha == 1 {
@@ -679,12 +715,26 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
                     self.eventsControllerOpenTapped()
                 }
             }
+        } else if self.eventsHeightAnchor.constant == self.view.frame.height && self.checkEventsController.view.alpha == 0 {
+            if sender.state == .began {
+                let location = sender.location(in: self.view).y
+                self.previousEventLocation = location
+            } else if sender.state == .changed {
+                let location = sender.location(in: self.view).y
+                let difference = location - self.previousEventLocation
+                if difference > 60 {
+                    self.eventsController.backgroundTouched()
+                }
+            }
         }
     }
     
     @objc func eventsControllerOpenTapped() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(eventsControllerHidden))
+        self.checkEventsController.view.addGestureRecognizer(tapGesture)
         self.checkEventsController.changeToCurrentEvents()
         UIView.animate(withDuration: animationIn) {
+            self.giftRightAnchor.constant = 60
             self.checkEventsAnchor.isActive = false
             self.checkEventsBottomAnchor.isActive = true
             self.checkEventsHeightAnchor.constant = 40
@@ -695,11 +745,14 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         }
     }
     
-    func eventsControllerHidden() {
+    @objc func eventsControllerHidden() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(eventsControllerOpenTapped))
+        checkEventsController.view.addGestureRecognizer(tapGesture)
         self.giftOnlyBottomAnchor.isActive = false
         self.giftBottomAnchor.isActive = true
         self.checkEventsController.changeToBanner()
         UIView.animate(withDuration: animationIn) {
+            self.giftRightAnchor.constant = -16
             self.checkEventsAnchor.isActive = true
             self.checkEventsAnchor.constant = -12
             self.checkEventsBottomAnchor.isActive = false
@@ -1137,19 +1190,22 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         
         mapView.delegate = self
         
-        locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-            if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
-                self.observeUserParkingSpots()
-            }
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
+            self.observeUserParkingSpots()
         }
         self.resultsScrollAnchor.constant = 0
         if self.searchedForPlace == false {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
+                var region = MKCoordinateRegion()
+                region.center = location
+                region.span.latitudeDelta = 0.02
+                region.span.longitudeDelta = 0.02
+                self.mapView.setRegion(region, animated: false)
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 let location: CLLocationCoordinate2D = self.mapView.userLocation.coordinate
                 var region = MKCoordinateRegion()
@@ -1247,6 +1303,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         self.eventsControllerHidden()
         UIView.animate(withDuration: animationIn, animations: {
             self.locationRecentResults.view.alpha = 1
+            self.clearView.alpha = 1
             self.microphoneButton.alpha = 1
             self.mainBar.layer.cornerRadius = 0
             self.diamondTopAnchor.constant = 30
@@ -1278,6 +1335,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         UIView.animate(withDuration: 0.1, animations: {
             self.searchLabel.alpha = 0
             self.locationRecentResults.view.alpha = 0
+            self.clearView.alpha = 0
             self.resultsScrollAnchor.constant = 0
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {

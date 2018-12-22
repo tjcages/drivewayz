@@ -42,9 +42,6 @@ class EventCell: UICollectionViewCell {
     }
     
     func gradientColor(topColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
-        
-//        let bottomColor = topColor.withAlphaComponent(0.4)
-        
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()

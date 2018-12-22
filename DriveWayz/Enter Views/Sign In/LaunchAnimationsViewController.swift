@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TOMSMorphingLabel
 
 protocol handleStatusBarHide {
     func hideStatusBar()
@@ -16,28 +15,26 @@ protocol handleStatusBarHide {
     func defaultStatusBar()
 }
 
-class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
+protocol handleSignIn {
+    func moveToMainController()
+}
+
+class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, handleSignIn {
     
-    var blackView: UIView = {
+    lazy var blackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
-        return view
-    }()
-    
-    var morphingLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Drivewayz"
+        let label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height/2 - 60, width: self.view.frame.width, height: 60))
         label.textAlignment = .center
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPBoldH0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.alpha = 0
-        label.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        label.font = Fonts.SSPLightH0
+        label.text = "Welcome"
+        view.addSubview(label)
         
-        return label
+        return view
     }()
     
     var drivewayzCar: UIImageView = {
@@ -51,22 +48,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         return view
     }()
     
-    lazy var startupController: SignInViewController = {
-        let controller = SignInViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Startup"
-        controller.delegate = self
-        return controller
-    }()
-    
-    lazy var tabController: TabViewController = {
-        let controller = TabViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Tab"
-        controller.delegate = self
-        return controller
-    }()
-    
     lazy var purpleGradient: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +59,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         return view
     }()
     
-    let gradientMaskLayer:CAGradientLayer = CAGradientLayer()
+    var containerView: UIView!
+    let gradientMaskLayer: CAGradientLayer = CAGradientLayer()
     
     var drivewayzCarAnchor: NSLayoutConstraint!
     var startupAnchor: NSLayoutConstraint!
@@ -92,19 +74,13 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
         purpleGradient.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         purpleGradient.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        self.view.addSubview(self.morphingLabel)
-        self.morphingLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true
-        self.morphingLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.morphingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.morphingLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 42).isActive = true
-        
         self.view.addSubview(blackView)
         blackView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         blackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         blackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         blackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
-        let containerView = UIView(frame: CGRect(x: self.view.frame.width/2-120, y: self.view.frame.height/2-120, width: 240, height: 240))
+        containerView = UIView(frame: CGRect(x: self.view.frame.width/2-110, y: self.view.frame.height/2-110, width: 220, height: 220))
         view.addSubview(containerView)
         
         gradientMaskLayer.frame = containerView.bounds
@@ -146,47 +122,91 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide {
             self.gradientMaskLayer.endPoint = CGPoint(x: 1.2, y: 0.0)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.drivewayzCar.alpha = 0
-                self.tabController.view.alpha = 1
-                self.startupController.view.alpha = 1
+            UIView.animate(withDuration: animationIn, animations: {
+                if self.controller == false {
+                    self.containerView.frame = CGRect(x: self.view.frame.width/2-110, y: (self.view.frame.height-260)/2-110, width: 220, height: 220)
+                }
+                self.startupAnchor.constant = 0
+                if self.tabController != nil {
+                    self.tabController!.view.alpha = 1
+                }
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.blackView.alpha = 1
-                })
+                if self.controller == true {
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.blackView.alpha = 1
+                    })
+                }
             })
         }
     }
     
+    var tabController: TabViewController?
+    var controller: Bool = false
+    
     func checkViews() {
         let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if isUserLoggedIn == true {
-            self.view.addSubview(self.tabController.view)
-            self.addChild(self.tabController)
-            self.tabController.willMove(toParent: self)
-            self.tabController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = self.tabController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            self.startupAnchor.isActive = true
-            self.tabController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            self.tabController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            self.tabController.view.alpha = 0
+            self.tabController = TabViewController()
+            self.tabController!.view.translatesAutoresizingMaskIntoConstraints = false
+            self.tabController!.delegate = self
+            
+            self.controller = true
+            self.view.addSubview(self.tabController!.view)
+            self.addChild(self.tabController!)
+            self.tabController!.willMove(toParent: self)
+            self.tabController!.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.startupAnchor = self.tabController!.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+                self.startupAnchor.isActive = true
+            self.tabController!.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+            self.tabController!.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            self.tabController!.view.alpha = 0
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.defaultStatusBar()
             }
         } else {
-            self.view.addSubview(self.startupController.view)
-            self.addChild(self.startupController)
-            self.startupController.willMove(toParent: self)
-            self.startupController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = self.startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            self.startupAnchor.isActive = true
-            self.startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            self.startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            self.startupController.view.alpha = 0
+            let startupController: PhoneVerificationViewController = PhoneVerificationViewController()
+            startupController.view.translatesAutoresizingMaskIntoConstraints = false
+            startupController.delegate = self
+            
+            self.controller = false
+            self.view.addSubview(startupController.view)
+            self.addChild(startupController)
+            startupController.willMove(toParent: self)
+            startupController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.startupAnchor = startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+                self.startupAnchor.isActive = true
+            startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+            startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            startupController.view.alpha = 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.defaultStatusBar()
+                self.hideStatusBar()
             }
+        }
+    }
+    
+    func moveToMainController() {
+        self.tabController = TabViewController()
+        self.tabController!.view.translatesAutoresizingMaskIntoConstraints = false
+        self.tabController!.delegate = self
+        
+        self.controller = true
+        self.view.addSubview(self.tabController!.view)
+        self.addChild(self.tabController!)
+        self.tabController!.willMove(toParent: self)
+        self.tabController!.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.tabController!.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        self.tabController!.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        self.tabController!.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        self.tabController!.view.alpha = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+            UIView.animate(withDuration: animationIn, animations: {
+                self.tabController!.view.alpha = 1
+                self.blackView.alpha = 1
+            }, completion: { (success) in
+                self.bringStatusBar()
+                self.defaultStatusBar()
+            })
         }
     }
     

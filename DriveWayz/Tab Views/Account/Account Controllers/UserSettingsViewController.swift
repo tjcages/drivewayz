@@ -354,6 +354,8 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
+    var startupAnchor: NSLayoutConstraint!
+    
     func handleLogout() {
         do {
             try Auth.auth().signOut()
@@ -364,8 +366,21 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         }
         UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
         UserDefaults.standard.synchronize()
-        let viewController: SignInViewController = SignInViewController()
-        present(viewController, animated: true, completion: nil)
+        
+        let launchController = LaunchAnimationsViewController()
+        launchController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(launchController.view)
+        self.addChild(launchController)
+        launchController.willMove(toParent: self)
+        launchController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.startupAnchor = launchController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            self.startupAnchor.isActive = true
+        launchController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        launchController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        UIView.animate(withDuration: animationOut) {
+            self.startupAnchor.constant = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

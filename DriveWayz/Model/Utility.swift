@@ -158,6 +158,15 @@ class Fonts {
     static let SSPLightH5 = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
     static let SSPLightH6 = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
+    //Extra Light
+    static let SSPExtraLightH0 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
+    static let SSPExtraLightH1 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
+    static let SSPExtraLightH2 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
+    static let SSPExtraLightH3 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
+    static let SSPExtraLightH4 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h4)).instance
+    static let SSPExtraLightH5 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
+    static let SSPExtraLightH6 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
+    
     //Black
     static let SSPBlackH0 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
     static let SSPBlackH1 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h1)).instance

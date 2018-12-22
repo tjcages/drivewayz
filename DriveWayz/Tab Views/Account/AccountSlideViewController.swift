@@ -324,13 +324,14 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                 if let email = dictionary["email"] as? String {
                     userEmail = email
                 }
-                let userPicture = dictionary["picture"] as? String
-                if userPicture == "" {
-                    self.profileImageView.image = UIImage(named: "background4")
-                    self.addShouldShow = true
-                } else {
-                    self.profileImageView.loadImageUsingCacheWithUrlString(userPicture!)
-                    self.addShouldShow = false
+                if let userPicture = dictionary["picture"] as? String {
+                    if userPicture == "" {
+                        self.profileImageView.image = UIImage(named: "background4")
+                        self.addShouldShow = true
+                    } else {
+                        self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
+                        self.addShouldShow = false
+                    }
                 }
                 if (dictionary["upcomingParking"] as? [String:AnyObject]) != nil {
                     self.upcomingMark.alpha = 1

@@ -29,7 +29,6 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        //        view.clipsToBounds = true
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4
@@ -72,12 +71,6 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.addTarget(self, action: #selector(moveToNextController(sender:)), for: .touchUpInside)
         button.disclosureButton(baseColor: Theme.WHITE)
         button.titleLabel?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-        
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: 120, height: 50)
-        background.transform = CATransform3DMakeAffineTransform(CGAffineTransform(rotationAngle: CGFloat(Double.pi)))
-        background.zPosition = -10
-        button.layer.addSublayer(background)
         
         return button
     }()

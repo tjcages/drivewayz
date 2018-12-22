@@ -61,10 +61,6 @@ class EditSettingsViewController: UIViewController {
         subDetailLabel.becomeFirstResponder()
         updateButton.setTitle("Update \(title.lowercased())", for: .normal)
         updateButtonAnchor.constant = (updateButton.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH2))! + 40
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: updateButtonAnchor.constant+20, height: 50)
-        background.zPosition = -10
-        updateButton.layer.addSublayer(background)
     }
     
     override func viewDidLoad() {

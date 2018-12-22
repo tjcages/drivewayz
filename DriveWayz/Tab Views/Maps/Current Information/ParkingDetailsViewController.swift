@@ -136,7 +136,7 @@ class ParkingDetailsViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
         button.addTarget(self, action: #selector(amenityPressed(sender:)), for: .touchUpInside)
-        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
+        button.layer.borderColor = Theme.PURPLE.cgColor
         button.layer.borderWidth = 2
         button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         
@@ -360,7 +360,7 @@ class ParkingDetailsViewController: UIViewController {
         UIView.animate(withDuration: 0.1) {
             self.lastButton?.layer.borderColor = UIColor.clear.cgColor
             self.lastButton?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            sender.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
+            sender.layer.borderColor = Theme.PURPLE.cgColor
             sender.layer.borderWidth = 2
             sender.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.amenitiesTriangle.center.x = sender.center.x-12

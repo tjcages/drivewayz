@@ -17,6 +17,7 @@ class BecomeHostViewController: UIViewController {
         view.tintColor = Theme.WHITE
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
         
         return view
     }()
@@ -41,16 +42,6 @@ class BecomeHostViewController: UIViewController {
         background.zPosition = -10
         view.layer.addSublayer(background)
         
-//        let imageView = UIView()
-//        let pattern = UIImage(named: "trianglesGridMain")
-//        imageView.backgroundColor = UIColor(patternImage: pattern!)
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(imageView)
-//        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -40).isActive = true
-//        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-//        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-//        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
         return view
     }()
 
@@ -70,9 +61,9 @@ class BecomeHostViewController: UIViewController {
         
         self.view.addSubview(drivewayzCar)
         drivewayzCar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -40).isActive = true
-        drivewayzCar.heightAnchor.constraint(equalToConstant: 260).isActive = true
-        drivewayzCar.widthAnchor.constraint(equalToConstant: 260).isActive = true
+        drivewayzCar.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -20).isActive = true
+        drivewayzCar.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        drivewayzCar.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         self.view.addSubview(morphingLabel)
         morphingLabel.topAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true

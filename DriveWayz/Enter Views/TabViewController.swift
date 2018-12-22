@@ -446,7 +446,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.accountControllerAnchor.constant = -self.view.frame.width
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.mapController.eventsControllerHidden()
+            if eventsAreAllowed == true {
+                self.mapController.eventsControllerHidden()
+            }
         }
     }
 

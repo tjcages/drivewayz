@@ -18,7 +18,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var verificationCode: String?
     
     var loadingActivity: NVActivityIndicatorView = {
-        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballTrianglePath, color: Theme.HARMONY_RED, padding: 0)
+        let loading = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40), type: .ballPulse, color: Theme.HARMONY_RED, padding: 0)
         loading.translatesAutoresizingMaskIntoConstraints = false
         loading.alpha = 0
         

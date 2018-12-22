@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2C4E18E47BB057095B773F26 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4B79697BBED8523C777701 /* Pods_DriveWayz.framework */; };
 		4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */; };
+		4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */; };
+		4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */; };
+		4D02C64E21CD83D700748BA3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64D21CD83D700748BA3 /* OnboardingViewController.swift */; };
+		4D02C65021CD94D500748BA3 /* LocationServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */; };
 		4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4721476BB100A380B8 /* PickCostViewController.swift */; };
 		4D035F4A21477DB500A380B8 /* SpotsMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */; };
 		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
@@ -172,6 +176,10 @@
 
 /* Begin PBXFileReference section */
 		4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMessageViewController.swift; sourceTree = "<group>"; };
+		4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
+		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
+		4D02C64D21CD83D700748BA3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServicesViewController.swift; sourceTree = "<group>"; };
 		4D035F4721476BB100A380B8 /* PickCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickCostViewController.swift; sourceTree = "<group>"; };
 		4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsMessageViewController.swift; sourceTree = "<group>"; };
 		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
@@ -341,6 +349,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D02C64A21CC534A00748BA3 /* Old Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
+				4D2B28F92155B1960083F588 /* SignInViewController.swift */,
+				4D8CFF342158433400FE22A5 /* RegisterViewController.swift */,
+				4D8CFF362158854E00FE22A5 /* LoginViewController.swift */,
+			);
+			path = "Old Sign Up";
+			sourceTree = "<group>";
+		};
 		4D0F0BA121AD19790022D1B4 /* Help */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,7 +445,6 @@
 			isa = PBXGroup;
 			children = (
 				4D2B28FD2156D1E60083F588 /* Sign In */,
-				4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */,
 				4D37436120DC989900923BC4 /* TabViewController.swift */,
 			);
 			path = "Enter Views";
@@ -444,7 +462,6 @@
 				4DA91E0C217445DC0010C32D /* Messages */,
 				4D79A6F32152F9DD003D1711 /* Upcoming */,
 				4DB8F1332150B0BA00FC11BD /* Hosting */,
-				4DC261B2214710A900D6DCD3 /* New Parking */,
 				4DB8F12E21509F7600FC11BD /* Vehicle */,
 				4DFFC260210C9A1D006D6062 /* Notifications-Banner Ads */,
 				4D2EB5CB210686E9004AEA54 /* Account Options */,
@@ -487,10 +504,12 @@
 		4D2B28FD2156D1E60083F588 /* Sign In */ = {
 			isa = PBXGroup;
 			children = (
-				4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */,
-				4D2B28F92155B1960083F588 /* SignInViewController.swift */,
-				4D8CFF342158433400FE22A5 /* RegisterViewController.swift */,
-				4D8CFF362158854E00FE22A5 /* LoginViewController.swift */,
+				4D02C64A21CC534A00748BA3 /* Old Sign Up */,
+				4DCC6C0021134D3200AEEF35 /* LaunchAnimationsViewController.swift */,
+				4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */,
+				4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */,
+				4D02C64D21CD83D700748BA3 /* OnboardingViewController.swift */,
+				4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */,
 			);
 			path = "Sign In";
 			sourceTree = "<group>";
@@ -632,11 +651,12 @@
 				4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */,
 				4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */,
 				4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */,
+				4DC261B2214710A900D6DCD3 /* New Hosting */,
 			);
 			path = Hosting;
 			sourceTree = "<group>";
 		};
-		4DC261B2214710A900D6DCD3 /* New Parking */ = {
+		4DC261B2214710A900D6DCD3 /* New Hosting */ = {
 			isa = PBXGroup;
 			children = (
 				4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */,
@@ -660,7 +680,7 @@
 				4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */,
 				4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */,
 			);
-			path = "New Parking";
+			path = "New Hosting";
 			sourceTree = "<group>";
 		};
 		4DCA492520F0186700F00B3B /* Stripe */ = {
@@ -1032,12 +1052,14 @@
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
+				4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */,
 				4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */,
 				4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */,
 				4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */,
 				4D2EB5C421038F34004AEA54 /* InformationViewController.swift in Sources */,
 				4DBD6D1221C4BC7D00C52991 /* EventsViewController.swift in Sources */,
 				4D30466F21AF7A9300AF31F9 /* CurrentVehicleViewController.swift in Sources */,
+				4D02C65021CD94D500748BA3 /* LocationServicesViewController.swift in Sources */,
 				4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */,
 				4DCA493020F018D500F00B3B /* SettingsViewController.swift in Sources */,
 				4DD01055217934AA000C0ADD /* HostMessageOptionsViewController.swift in Sources */,
@@ -1062,8 +1084,10 @@
 				4DCDCD162173CE5C00E9E704 /* ChatMessageCell.swift in Sources */,
 				4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */,
 				4DFC29112134989200013FC3 /* UserUpcomingViewController.swift in Sources */,
+				4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */,
 				4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */,
 				4DBD6D0A21C46A0200C52991 /* MapRecentViewController.swift in Sources */,
+				4D02C64E21CD83D700748BA3 /* OnboardingViewController.swift in Sources */,
 				4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
 				4DC261B12145E05B00D6DCD3 /* ConfigureParkingViewController.swift in Sources */,
