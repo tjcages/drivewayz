@@ -433,7 +433,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     }
     
     func setupLeaveAReview() {
-        self.delegate?.setupLeaveAReview(parkingID: self.parkingID!)
+//        self.delegate?.setupLeaveAReview(parkingID: self.parkingID!)
     }
     
     func sendNewHost() {

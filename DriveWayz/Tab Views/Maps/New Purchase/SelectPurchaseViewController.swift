@@ -1335,7 +1335,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     func sendHelp(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (success) in
-            self.removeDelegate?.addAVehicleReminder()
+//            self.removeDelegate?.addAVehicleReminder()
         }))
         self.present(alert, animated: true)
     }

@@ -13,6 +13,18 @@
 		4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */; };
 		4D02C64E21CD83D700748BA3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64D21CD83D700748BA3 /* OnboardingViewController.swift */; };
 		4D02C65021CD94D500748BA3 /* LocationServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */; };
+		4D02C65221CDD89A00748BA3 /* MapKitMainBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */; };
+		4D02C65421CDD9E900748BA3 /* MapKitEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */; };
+		4D02C65621CDDA7900748BA3 /* MapKitNetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */; };
+		4D02C65821CDDADE00748BA3 /* MapKitParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65721CDDADE00748BA3 /* MapKitParking.swift */; };
+		4D02C65A21CDDB3E00748BA3 /* MapKitPurchaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */; };
+		4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */; };
+		4D02C65E21CDDC4D00748BA3 /* MapKitLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */; };
+		4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */; };
+		4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */; };
+		4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66321CDDD6800748BA3 /* MapKitMap.swift */; };
+		4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */; };
+		4D02C66921CDE9AE00748BA3 /* MapKitDrawPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */; };
 		4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4721476BB100A380B8 /* PickCostViewController.swift */; };
 		4D035F4A21477DB500A380B8 /* SpotsMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */; };
 		4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */; };
@@ -180,6 +192,18 @@
 		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
 		4D02C64D21CD83D700748BA3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServicesViewController.swift; sourceTree = "<group>"; };
+		4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMainBar.swift; sourceTree = "<group>"; };
+		4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitEvents.swift; sourceTree = "<group>"; };
+		4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitNetworkConnection.swift; sourceTree = "<group>"; };
+		4D02C65721CDDADE00748BA3 /* MapKitParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParking.swift; sourceTree = "<group>"; };
+		4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitPurchaseStatus.swift; sourceTree = "<group>"; };
+		4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitTextField.swift; sourceTree = "<group>"; };
+		4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitLocator.swift; sourceTree = "<group>"; };
+		4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingSpots.swift; sourceTree = "<group>"; };
+		4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitCurrentParking.swift; sourceTree = "<group>"; };
+		4D02C66321CDDD6800748BA3 /* MapKitMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMap.swift; sourceTree = "<group>"; };
+		4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingAvailability.swift; sourceTree = "<group>"; };
+		4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitDrawPath.swift; sourceTree = "<group>"; };
 		4D035F4721476BB100A380B8 /* PickCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickCostViewController.swift; sourceTree = "<group>"; };
 		4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsMessageViewController.swift; sourceTree = "<group>"; };
 		4D057AF12115E4F6003F9EED /* ParkingReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingReserveViewController.swift; sourceTree = "<group>"; };
@@ -358,6 +382,25 @@
 				4D8CFF362158854E00FE22A5 /* LoginViewController.swift */,
 			);
 			path = "Old Sign Up";
+			sourceTree = "<group>";
+		};
+		4D02C66721CDE1E500748BA3 /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */,
+				4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */,
+				4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */,
+				4D02C65721CDDADE00748BA3 /* MapKitParking.swift */,
+				4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */,
+				4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */,
+				4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */,
+				4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */,
+				4D02C66321CDDD6800748BA3 /* MapKitMap.swift */,
+				4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */,
+				4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */,
+				4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */,
+			);
+			path = MapKit;
 			sourceTree = "<group>";
 		};
 		4D0F0BA121AD19790022D1B4 /* Help */ = {
@@ -569,6 +612,7 @@
 			children = (
 				4D8CE1E821406CDE00C6C61E /* Map Info */,
 				4D9FB806213EF70400899829 /* MapKitViewController.swift */,
+				4D02C66721CDE1E500748BA3 /* MapKit */,
 				4D353C2221C9BE2600AE07B4 /* Events */,
 				4D353C2321C9BE3200AE07B4 /* Search */,
 				4D2EB5C321038F34004AEA54 /* InformationViewController.swift */,
@@ -1048,9 +1092,11 @@
 				4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */,
 				4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */,
 				4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */,
+				4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */,
 				4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */,
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
+				4D02C65E21CDDC4D00748BA3 /* MapKitLocator.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
 				4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */,
 				4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */,
@@ -1076,6 +1122,7 @@
 				4D74C3CD217F9EC4008DC0F9 /* SpotNumberViewController.swift in Sources */,
 				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
 				4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */,
+				4D02C65421CDD9E900748BA3 /* MapKitEvents.swift in Sources */,
 				4D21D32420CC9FF9002D7005 /* FeedNavViewController.swift in Sources */,
 				4D21D32B20CC9FF9002D7005 /* NotificationsNavViewController.swift in Sources */,
 				4D0F0B98219E648A0022D1B4 /* ParkingDetailsViewController.swift in Sources */,
@@ -1090,6 +1137,7 @@
 				4D02C64E21CD83D700748BA3 /* OnboardingViewController.swift in Sources */,
 				4D057AF42115F690003F9EED /* ExtendTimeViewController.swift in Sources */,
 				4D26EE6020E5C5DB00E369EF /* ParkingTableViewCell.swift in Sources */,
+				4D02C65A21CDDB3E00748BA3 /* MapKitPurchaseStatus.swift in Sources */,
 				4DC261B12145E05B00D6DCD3 /* ConfigureParkingViewController.swift in Sources */,
 				4D30466B21AF72C100AF31F9 /* UserVehicleViewController.swift in Sources */,
 				4D4E6936218B566A00E5D18A /* StartHostingViewController.swift in Sources */,
@@ -1098,6 +1146,7 @@
 				4DFB44A220F59395007A54B1 /* BankAccountViewController.swift in Sources */,
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
 				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
+				4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */,
 				4DB79B5D2187DDC800928C7F /* MapParkingViewController.swift in Sources */,
 				4DBD6D1021C4BC3700C52991 /* LocalEvents.swift in Sources */,
 				4D79A6F52152FA56003D1711 /* UpcomingViewController.swift in Sources */,
@@ -1105,6 +1154,7 @@
 				4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */,
 				4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */,
 				4D45073721370E85005CD8D7 /* RetentionViewController.swift in Sources */,
+				4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */,
 				4DB79B5F2188091800928C7F /* SpotPicturesViewController.swift in Sources */,
 				4D21D31F20CC9FF9002D7005 /* Extensions.swift in Sources */,
 				4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */,
@@ -1124,12 +1174,15 @@
 				4DB79B5B2187CCB200928C7F /* ResultsCell.swift in Sources */,
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
+				4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */,
 				4D2DDEAC21095F02005AB485 /* ParkingCurrentViewController.swift in Sources */,
 				4D21D32E20CC9FF9002D7005 /* AccountViewController.swift in Sources */,
 				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
 				4D2B28FA2155B1960083F588 /* SignInViewController.swift in Sources */,
 				4D4D728F217945FF00D936DB /* ParkingMessageOptionsViewController.swift in Sources */,
+				4D02C65821CDDADE00748BA3 /* MapKitParking.swift in Sources */,
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
+				4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */,
 				4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */,
 				4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */,
 				4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */,
@@ -1144,13 +1197,16 @@
 				4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */,
 				4DB8F1322150AE4200FC11BD /* HostingViewController.swift in Sources */,
 				4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */,
+				4D02C66921CDE9AE00748BA3 /* MapKitDrawPath.swift in Sources */,
 				4D4E6934218B4D6500E5D18A /* BecomeHostViewController.swift in Sources */,
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
 				4DD3B6342194CF4E008B1417 /* Global.swift in Sources */,
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */,
 				4DD3B63821961C26008B1417 /* SpeechRecognitionViewController.swift in Sources */,
+				4D02C65621CDDA7900748BA3 /* MapKitNetworkConnection.swift in Sources */,
 				4D0F0BA021AD0CF80022D1B4 /* ContactDrivewayzViewController.swift in Sources */,
+				4D02C65221CDD89A00748BA3 /* MapKitMainBar.swift in Sources */,
 				4DB06D0B2138CD26008A30ED /* HeatMapViewController.swift in Sources */,
 				4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */,
 				4D45073521363B5E005CD8D7 /* AnalyticsViewController.swift in Sources */,

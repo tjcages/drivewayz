@@ -270,7 +270,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
                             self.accept.alpha = 1
                             self.accept.isUserInteractionEnabled = true
                         }, completion: nil)
-                        self.delegate?.removeLeaveAReview()
+//                        self.delegate?.removeLeaveAReview()
                     }
                 }
             }
@@ -290,7 +290,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
                             self.accept.alpha = 1
                             self.accept.isUserInteractionEnabled = true
                         }, completion: nil)
-                        self.delegate?.removeLeaveAReview()
+//                        self.delegate?.removeLeaveAReview()
                     }
                 }
             }
@@ -305,7 +305,7 @@ class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func backPressed(sender: UIButton) {
-        self.delegate?.removeLeaveAReview()
+//        self.delegate?.removeLeaveAReview()
     }
 
 }
