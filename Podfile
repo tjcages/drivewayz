@@ -24,6 +24,7 @@ target 'DriveWayz' do
 	pod 'SwiftyJSON'
 	pod 'FacebookLogin'
 	pod 'MapboxStatic.swift', '~> 0.9'
+	pod 'Mapbox-iOS-SDK'
 	pod 'Cosmos'
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.2.0'

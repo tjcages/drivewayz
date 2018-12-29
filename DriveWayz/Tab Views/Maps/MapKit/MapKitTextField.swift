@@ -32,7 +32,7 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
             self.resultsScrollAnchor.constant = 300
         }
         UIView.animate(withDuration: animationOut) {
-            self.locationRecentHeightAnchor.constant = 120
+            self.locationRecentHeightAnchor.constant = 10
             self.locationRecentResults.view.layer.cornerRadius = 0
             self.view.layoutIfNeeded()
         }
@@ -66,6 +66,7 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         self.locationRecentResults.checkRecentSearches()
         self.resultsScrollAnchor.constant = 0
         self.eventsControllerHidden()
+        self.searchBar.text = ""
         UIView.animate(withDuration: animationIn, animations: {
             self.locationRecentResults.view.alpha = 1
             self.clearView.alpha = 1
@@ -109,11 +110,13 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
                 self.mainBarHeightAnchor.constant = 60
                 self.mainBarWidthAnchor.constant = -72
                 self.microphoneRightAnchor.constant = 4
-                switch device {
-                case .iphone8:
-                    self.mainBarTopAnchor.constant = 100
-                case .iphoneX:
-                    self.mainBarTopAnchor.constant = 120
+                if self.mainBarTopAnchor.constant != -100 {
+                    switch device {
+                    case .iphone8:
+                        self.mainBarTopAnchor.constant = 100
+                    case .iphoneX:
+                        self.mainBarTopAnchor.constant = 120
+                    }
                 }
                 self.diamondTopAnchor.constant = 0
                 self.hamburgerButton.alpha = 1
@@ -122,25 +125,9 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
                 self.locationsSearchResults.view.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
+                self.searchBar.text = "Where are you parking?"
                 self.view.bringSubviewToFront(self.darkBlurView)
             })
-        }
-    }
-    
-    func zoomToSearchLocation(address: String) {
-        self.searchBar.text = address
-        self.dismissKeyboard()
-        let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(address) { (placemarks, error) in
-            guard
-                let placemarks = placemarks,
-                let location = placemarks.first?.location
-                else {
-                    print(error?.localizedDescription as Any)
-                    return
-            }
-            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
-            self.mapView.setRegion(region, animated: true)
         }
     }
     

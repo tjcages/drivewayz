@@ -94,12 +94,12 @@ extension MapKitViewController {
         purchaseViewController.checkButtonSender()
         UserDefaults.standard.set(true, forKey: "swipeTutorialCompleted")
         UserDefaults.standard.synchronize()
-        switch device {
-        case .iphone8:
-            self.mainBarTopAnchor.constant = 100
-        case .iphoneX:
-            self.mainBarTopAnchor.constant = 120
-        }
+//        switch device {
+//        case .iphone8:
+//            self.mainBarTopAnchor.constant = 100
+//        case .iphoneX:
+//            self.mainBarTopAnchor.constant = 120
+//        }
         self.diamondTopAnchor.constant = 0
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: animationIn, animations: {

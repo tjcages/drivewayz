@@ -53,7 +53,7 @@ protocol removePurchaseView {
 protocol controlHoursButton {
     func openHoursButton()
     func closeHoursButton()
-    func drawCurrentPath(dest: CLLocation, navigation: Bool)
+//    func drawCurrentPath(dest: CLLocation, start: CLLocation, type: String, completion: Bool)
     func currentParkingDisappear()
     func hideNavigation()
 }

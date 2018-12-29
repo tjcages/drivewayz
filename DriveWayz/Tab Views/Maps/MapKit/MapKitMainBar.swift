@@ -50,8 +50,8 @@ extension MapKitViewController {
         diamondView.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 20).isActive = true
         diamondTopAnchor = diamondView.centerYAnchor.constraint(equalTo: locatorButton.centerYAnchor)
         diamondTopAnchor.isActive = true
-        diamondView.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        diamondView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        diamondView.widthAnchor.constraint(equalToConstant: 6).isActive = true
+        diamondView.heightAnchor.constraint(equalToConstant: 6).isActive = true
         
         mainBar.addSubview(microphoneButton)
         microphoneRightAnchor = microphoneButton.rightAnchor.constraint(equalTo: locatorButton.leftAnchor, constant: 4)
@@ -62,7 +62,7 @@ extension MapKitViewController {
         
         mainBar.addSubview(searchBar)
         searchBar.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        searchBar.leftAnchor.constraint(equalTo: diamondView.rightAnchor, constant: 16).isActive = true
+        searchBar.leftAnchor.constraint(equalTo: diamondView.rightAnchor, constant: 12).isActive = true
         searchBar.rightAnchor.constraint(equalTo: microphoneButton.leftAnchor, constant: -2).isActive = true
         searchBar.centerYAnchor.constraint(equalTo: diamondView.centerYAnchor).isActive = true
         searchBar.heightAnchor.constraint(equalTo: mainBar.heightAnchor).isActive = true

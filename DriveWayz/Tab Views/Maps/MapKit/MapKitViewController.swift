@@ -18,8 +18,8 @@ import AVFoundation
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
 
-class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate, removePurchaseView, controlHoursButton, controlNewHosts, controlSaveLocation, handleEventSelection {
-    
+class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate, removePurchaseView, controlHoursButton, controlNewHosts, controlSaveLocation, handleEventSelection {
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +31,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         setupViews()
         setupMainBar()
         setupEvents()
+        setupParking()
         setupNetworkConnection()
         setupAdditionalViews()
         setupViewController()
@@ -44,6 +45,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     override func viewDidAppear(_ animated: Bool) {
         self.setupLocationManager()
     }
+    
+    //Prime location, Best price, Reserve spot
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -63,8 +66,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         view.showsBuildings = true
         view.mapType = .standard
         view.showsCompass = false
-        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), latitudinalMeters: 22000, longitudinalMeters: 22000)
-        view.setRegion(region, animated: false)
+        view.isRotateEnabled = false
+        view.userTrackingMode = .followWithHeading
         
         return view
     }()
@@ -95,6 +98,26 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return button
     }()
     
+    var parkingLocatorButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "locationButton") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 23
+        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 4, bottom: 5, right: 6)
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var microphoneButton: UIButton = {
         let button = UIButton(type: .custom)
         if let myImage = UIImage(named: "microphoneButton") {
@@ -112,7 +135,8 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var searchBar: UITextField = {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.placeholder = "Where are you parking?"
+        view.text = "Where are you parking?"
+        view.textColor = Theme.DARK_GRAY
         view.font = Fonts.SSPLightH3
         view.clearButtonMode = .whileEditing
         
@@ -184,7 +208,7 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY
-        view.transform = CGAffineTransform(rotationAngle: CGFloat.pi/4)
+        view.layer.cornerRadius = 3
         
         return view
     }()
@@ -274,6 +298,15 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         let controller = CheckEventsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Check Events"
+        
+        return controller
+    }()
+    
+    lazy var parkingController: ParkingViewController = {
+        let controller = ParkingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Parking"
+        controller.delegate = self
         
         return controller
     }()
@@ -425,6 +458,18 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
         return view
     }()
     
+    var parkingBackButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(parkingHidden), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var searchedForPlace: Bool = false
     var timer: Timer?
     var canChangeLocatorButtonTint: Bool = true
@@ -442,9 +487,23 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     let locationManager = CLLocationManager()
     let delta = 0.1
+    var mapChangedFromUserInteraction = true
+    var changeUserInteractionTimer = Timer()
+    var changeLocationCounter: Int = 0
+    
+    /////////////////////////////////////////
+    var polyline = MKPolyline()
+    var animationPolyline = MKPolyline()
+    var path = CGMutablePath()
+    var animationPath = CGMutablePath()
+    var polylinei: Int = 0
+    var polylineTimer: Timer!
+    /////////////////////////////////////////
     
     var parkingSpots = [ParkingSpots]()
     var parkingSpotsDictionary = [String: ParkingSpots]()
+    var visibleAnnotationsDistance: [Double] = []
+    var visibleAnnotations: [MKAnnotation] = []
     var destination: CLLocation?
     
     var mapViewConstraint: NSLayoutConstraint!
@@ -473,6 +532,12 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     var giftBottomAnchor: NSLayoutConstraint!
     var giftOnlyBottomAnchor: NSLayoutConstraint!
     var giftRightAnchor: NSLayoutConstraint!
+    
+    var mapViewBottomAnchor: NSLayoutConstraint!
+    var parkingControllerBottomAnchor: NSLayoutConstraint!
+    var parkingControllerHeightAnchor: NSLayoutConstraint!
+    var shouldDrawOverlay: Bool = true
+    var shouldFlipGradient: Bool = false
 
     var networkTopAnchor: NSLayoutConstraint!
     var purchaseViewAnchor: NSLayoutConstraint!
@@ -482,11 +547,26 @@ class MapKitViewController: UIViewController, CLLocationManagerDelegate, UISearc
     
     func setupViews() {
         
-        self.view.addSubview(mapView)
-        mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        self.view.addSubview(mapView)
+//        mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+//        mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        mapViewBottomAnchor = mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+//            mapViewBottomAnchor.isActive = true
+        
+//        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), latitudinalMeters: 22000, longitudinalMeters: 22000)
+//        mapView.setRegion(region, animated: false)
+        
+        let styleURL = URL(string: "mapbox://styles/mapbox/outdoors-v9")
+        let mapView = MGLMapView(frame: view.bounds,
+                                 styleURL: styleURL)
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        // Set the map’s center coordinate and zoom level.
+        mapView.setCenter(CLLocationCoordinate2D(latitude: 45.52954,
+                                                 longitude: -122.72317),
+                          zoomLevel: 14, animated: false)
+        view.addSubview(mapView)
         
         createToolbar()
     }
@@ -548,6 +628,8 @@ protocol handleEventSelection {
     func openSpecificEvent()
     func closeSpecificEvent()
     func eventsControllerHidden()
+    func zoomToSearchLocation(address: String)
+    func searchForParking()
 }
 
 

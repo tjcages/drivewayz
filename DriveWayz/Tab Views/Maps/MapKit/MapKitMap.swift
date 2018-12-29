@@ -22,7 +22,7 @@ extension MapKitViewController: MKMapViewDelegate {
             guard let annotation = annotation as? MKPointAnnotation else { return nil }
             var parkingType: String = "house"
             var currentAvailable: Bool = true
-            if annotation.title == "Destination" {
+            if annotation.subtitle == "Destination" {
                 return DestinationAnnotationView(annotation: annotation, reuseIdentifier: DestinationAnnotationView.ReuseID)
             }
             if let subtitle = annotation.subtitle {
@@ -66,64 +66,62 @@ extension MapKitViewController: MKMapViewDelegate {
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let annotation = view.annotation else { return }
-        self.annotationSelected = annotation
-        if let cluster = annotation as? MKClusterAnnotation {
-            var zoomRect = MKMapRect.null
-            for annotation in cluster.memberAnnotations {
-                let annotationPoint = MKMapPoint(annotation.coordinate)
-                let pointRect = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0, height: 0)
-                if MKMapRectEqualToRect(zoomRect, MKMapRect.null) {
-                    zoomRect = pointRect
-                } else {
-                    zoomRect = zoomRect.union(pointRect)
-                }
-            }
-            mapView.setVisibleMapRect(zoomRect, animated: true)
-        } else if let annotation = annotation as? MKPointAnnotation {
-            let location: CLLocationCoordinate2D = annotation.coordinate
-            var region = MKCoordinateRegion()
-            region.center = location
-            region.span.latitudeDelta = 0.001
-            region.span.longitudeDelta = 0.001
-            self.mapView.setRegion(region, animated: true)
-            if annotation.title == "Destination" { return }
-            if annotation.subtitle! != "" {
-                if let string = view.annotation!.subtitle, string != nil {
-                    if let intFromString = Int(string!) {
-                        if parkingSpots.count >= intFromString {
-                            let parking = parkingSpots[intFromString]
-                            self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
-                            self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
-                            self.purchaseViewController.resetReservationButton()
-                        }
-                    }
-                }
-                
-                self.purchaseViewController.view.alpha = 1
-                UIView.animate(withDuration: animationIn, animations: {
-                    //
-                }) { (success) in
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.purchaseViewAnchor.constant = 0
-                        self.view.layoutIfNeeded()
-                    }) { (success) in
-                        //
-                    }
-                }
-            }
-        }
+//        guard let annotation = view.annotation else { return }
+//        self.annotationSelected = annotation
+//        if let cluster = annotation as? MKClusterAnnotation {
+//            var zoomRect = MKMapRect.null
+//            for annotation in cluster.memberAnnotations {
+//                let annotationPoint = MKMapPoint(annotation.coordinate)
+//                let pointRect = MKMapRect(x: annotationPoint.x, y: annotationPoint.y, width: 0, height: 0)
+//                if MKMapRectEqualToRect(zoomRect, MKMapRect.null) {
+//                    zoomRect = pointRect
+//                } else {
+//                    zoomRect = zoomRect.union(pointRect)
+//                }
+//            }
+//            mapView.setVisibleMapRect(zoomRect, animated: true)
+//        } else if let annotation = annotation as? MKPointAnnotation {
+//            let location: CLLocationCoordinate2D = annotation.coordinate
+//            var region = MKCoordinateRegion()
+//            region.center = location
+//            region.span.latitudeDelta = 0.001
+//            region.span.longitudeDelta = 0.001
+//            self.mapView.setRegion(region, animated: true)
+//            if annotation.title == "Destination" { return }
+//            if annotation.subtitle! != "" {
+//                if let string = view.annotation!.subtitle, string != nil {
+//                    if let intFromString = Int(string!) {
+//                        if parkingSpots.count >= intFromString {
+//                            let parking = parkingSpots[intFromString]
+//                            self.informationViewController.setData(cityAddress: parking.parkingCity!, imageURL: parking.parkingImageURL!, parkingCost: parking.parkingCost!, formattedAddress: parking.parkingAddress!, timestamp: parking.timestamp!, id: parking.id!, parkingID: parking.parkingID!, parkingDistance: parking.parkingDistance!, rating: parking.rating!, message: parking.message!)
+//                            self.purchaseViewController.setData(parkingCost: parking.parkingCost!, parkingID: parking.parkingID!, id: parking.id!)
+//                            self.purchaseViewController.resetReservationButton()
+//                        }
+//                    }
+//                }
+//
+//                self.purchaseViewController.view.alpha = 1
+//                UIView.animate(withDuration: animationIn, animations: {
+//                    //
+//                }) { (success) in
+//                    UIView.animate(withDuration: animationIn, animations: {
+//                        self.purchaseViewAnchor.constant = 0
+//                        self.view.layoutIfNeeded()
+//                    }) { (success) in
+//                        //
+//                    }
+//                }
+//            }
+//        }
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         self.purchaseButtonSwipedDown()
         guard view.annotation != nil else { return }
-        //        if annotation is ClusterAnnotation {} else {
         UIView.animate(withDuration: animationIn) {
-            view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//            view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
             self.swipeLabel.alpha = 0
         }
-        //        }
     }
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
@@ -131,29 +129,6 @@ extension MapKitViewController: MKMapViewDelegate {
         UIView.animate(withDuration: 0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
             views.forEach { $0.alpha = 1 }
         }, completion: nil)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if self.currentActive == true {
-            locationManager.stopUpdatingLocation()
-            guard let currentLocation = locations.first else { return }
-            self.currentCoordinate = currentLocation.coordinate
-            self.mapView.userTrackingMode = .followWithHeading
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        self.stepCounter += 1
-        if self.stepCounter < self.navigationSteps.count {
-            let currentStep = self.navigationSteps[stepCounter]
-            let nextMessage = "In \(currentStep.distance) meters \(currentStep.instructions)."
-            self.speakDirections(message: nextMessage)
-        } else {
-            let message = self.destinationString
-            self.speakDirections(message: message)
-            self.stepCounter = 0
-            self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
-        }
     }
     
 }

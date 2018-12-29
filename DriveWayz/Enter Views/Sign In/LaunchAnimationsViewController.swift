@@ -162,7 +162,11 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             self.tabController!.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
             self.tabController!.view.alpha = 0
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.hideStatusBar()
                 self.defaultStatusBar()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.bringStatusBar()
             }
         } else {
             let startupController: PhoneVerificationViewController = PhoneVerificationViewController()
@@ -243,7 +247,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         // Dispose of any resources that can be recreated.
     }
     
-    var statusBarShouldBeHidden = false
+    var statusBarShouldBeHidden = true
     var statusBarColor = true
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

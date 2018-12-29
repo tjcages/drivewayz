@@ -19,6 +19,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     lazy var cellWidth: CGFloat = 240
     lazy var cellHeight: CGFloat = 140
     var costParking: String = "$4.50"
+    var hrefEvent: String = ""
     var delegate: handleEventSelection?
     
     var eventsLayout: UICollectionViewLayout = {
@@ -170,6 +171,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
         button.layer.cornerRadius = 6
+        button.addTarget(self, action: #selector(findEventParking), for: .touchUpInside)
         
         return button
     }()
@@ -189,6 +191,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         button.setTitle("Purchase on Ticketmaster", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(openTicketMasterSite), for: .touchUpInside)
         
         return button
     }()
@@ -363,18 +366,23 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     
     func checkEvents() {
         guard let location: CLLocationCoordinate2D = locationManager.location?.coordinate else { return }
+        var localEvents: [LocalEvents] = []
+        var testEvents: [String] = []
+        var dateEvents: [Double] = []
         let latlong = "\(location.latitude),\(location.longitude)"
         LocalEvents.eventLookup(withLocation: latlong) { (results: [LocalEvents]) in
-            var localEvents: [LocalEvents] = []
-            var testEvents: [String] = []
             for result in results {
                 let date = self.formattDate(date: result.date, time: result.time, type: "dotDate")
+                let timestamp = self.getTimestamp(date: result.date, time: result.time)
                 if !testEvents.contains(result.name) && date != "" {
                     testEvents.append(result.name)
                     localEvents.append(result)
+                    dateEvents.append(timestamp)
                 }
             }
-            self.localEvents = localEvents
+            let combined = zip(dateEvents, localEvents).sorted {$0.0 < $1.0}
+            let sortedEvents = combined.map {$0.1}
+            self.localEvents = sortedEvents
             if localEvents.count > 0 {
                 DispatchQueue.main.async {
                     self.eventsPicker.reloadData()
@@ -520,8 +528,8 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath) as! EventCell
         self.delegate?.openSpecificEvent()
+        self.hrefEvent = self.localEvents[indexPath.row].hrefEvent
         self.specificImageView.loadImageUsingCacheWithUrlString(self.localEvents[indexPath.row].imageURL)
         self.specificEventDate.text = self.formattDate(date: self.localEvents[indexPath.row].date, time: self.localEvents[indexPath.row].time, type: "regularDate")
         self.specificEventVenue.text = self.localEvents[indexPath.row].venueName.replacingOccurrences(of: "\\s?\\([\\w\\s]*\\)", with: "", options: .regularExpression)
@@ -587,6 +595,35 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.SEA_BLUE , range: hourlyRange)
         attributedString.addAttribute(NSAttributedString.Key.font, value: Fonts.SSPRegularH3 , range: hourlyRange)
         self.specificParking.attributedText = attributedString
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self.eventsPicker {
+            self.smallEventsPicker.contentOffset.x = scrollView.contentOffset.x / (self.cellWidth + 12) * 74
+        }
+    }
+    
+    @objc func findEventParking() {
+        guard let location = self.specificEventVenue.text else { return }
+        self.backgroundTouched()
+        self.delegate?.eventsControllerHidden()
+        self.delegate?.searchForParking()
+        self.delegate?.zoomToSearchLocation(address: location)
+    }
+    
+    @objc func openTicketMasterSite() {
+        guard let url = URL(string: self.hrefEvent) else { return }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
+    func getTimestamp(date: String, time: String) -> Double {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        if let date = formatter.date(from: "\(date) \(time)") {
+            return date.timeIntervalSince1970
+        } else {
+            return 0
+        }
     }
     
     func formattDate(date: String, time: String, type: String) -> String {

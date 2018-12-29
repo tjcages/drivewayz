@@ -136,6 +136,21 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
+    @objc func purpleStraightColor() -> CAGradientLayer {
+        
+        let topColor = Theme.PURPLE
+        let bottomColor = Theme.SEA_BLUE
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        
+        return gradientLayer
+    }
+    
     @objc func customColor(topColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]

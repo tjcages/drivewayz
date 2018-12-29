@@ -407,7 +407,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     func openNavigation() {
         isNavigating = true
         self.currentParkingDisappear()
-        self.navigationDelegate?.drawCurrentPath(dest: self.parkingLocation!, navigation: true)
+//        self.navigationDelegate?.drawCurrentPath(dest: self.parkingLocation!, navigation: true)
     }
     
     func closeNavigation() {
@@ -449,7 +449,7 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         // Dispose of any resources that can be recreated.
     }
     
-    func drawCurrentPath(dest: CLLocation, navigation: Bool) {}
+    func drawCurrentPath(dest: CLLocation, start: CLLocation, type: String) {}
     func hideNavigation() {}
     
 

@@ -50,7 +50,7 @@ extension MapKitViewController {
                                         
                                         self.destination = location
                                         self.currentData = .yesReserved
-                                        self.drawCurrentPath(dest: location, navigation: false)
+//                                        self.drawCurrentPath(dest: location, start: <#CLLocation#>, type: <#String#>)
                                         
                                         if let rating = pullRef["rating"] as? Double {
                                             let reviewsRef = parkingRef.child("Reviews")

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 let imageCache = NSCache<NSString, AnyObject>()
 
@@ -218,5 +219,12 @@ class SnappingCollectionViewLayout: UICollectionViewFlowLayout {
         })
         
         return CGPoint(x: proposedContentOffset.x + offsetAdjustment, y: proposedContentOffset.y)
+    }
+}
+
+
+extension MKMapView {
+    func visibleAnnotations() -> [MKAnnotation] {
+        return self.annotations(in: self.visibleMapRect).map { obj -> MKAnnotation in return obj as! MKAnnotation }
     }
 }

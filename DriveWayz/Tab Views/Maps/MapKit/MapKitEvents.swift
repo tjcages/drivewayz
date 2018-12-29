@@ -121,6 +121,7 @@ extension MapKitViewController {
                 let difference = location - self.previousEventLocation
                 if difference > 60 {
                     self.eventsController.backgroundTouched()
+                    self.eventsControllerOpenTapped()
                 }
             }
         }
