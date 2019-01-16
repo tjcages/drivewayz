@@ -12,8 +12,6 @@ import GooglePlaces
 
 class UserUpcomingViewController: UIViewController {
     
-    var delegate: handleUpcomingParking?
-    
     var notificationController: NotifyUpcomingViewController = {
         let controller = NotifyUpcomingViewController()
         controller.view.alpha = 0
@@ -189,7 +187,6 @@ class UserUpcomingViewController: UIViewController {
                             })
                         }
                         self.infoController.setData(cityAddress: name!, parkingCost: price!, formattedAddress: address!, rating: officialRating)
-                        self.delegate?.bringUpcomingViewController()
                         self.bringUpcomingParking()
                         if parkingImageURL == nil {
                             self.upcomingParkingImageView.image = UIImage(named: "profileprofile")
@@ -202,11 +199,9 @@ class UserUpcomingViewController: UIViewController {
             }
         }
         ref.observe(.childRemoved) { (snapshot) in
-            self.delegate?.hideUpcomingViewController()
             self.hideUpcomingParking()
             return
         }
-        self.delegate?.hideUpcomingViewController()
         self.hideUpcomingParking()
     }
     

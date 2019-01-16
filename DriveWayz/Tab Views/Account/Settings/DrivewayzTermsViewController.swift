@@ -71,13 +71,13 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
         agreement.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         agreement.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         agreement.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10).isActive = true
-        agreement.heightAnchor.constraint(equalToConstant: agreementHeight!)
+        agreement.heightAnchor.constraint(equalToConstant: agreementHeight!).isActive = true
         
         scrollView.addSubview(agreement2)
         agreement2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         agreement2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         agreement2.topAnchor.constraint(equalTo: agreement.bottomAnchor).isActive = true
-        agreement2.heightAnchor.constraint(equalToConstant: agreement2Height!)
+        agreement2.heightAnchor.constraint(equalToConstant: agreement2Height!).isActive = true
         
     }
     

@@ -1,0 +1,292 @@
+//
+//  MainHostViewController.swift
+//  DriveWayz
+//
+//  Created by Tyler Jordan Cagle on 1/13/19.
+//  Copyright © 2019 COAD. All rights reserved.
+//
+
+import UIKit
+
+protocol handleHostingScroll {
+    func handleScroll(height: CGFloat, y: CGFloat)
+}
+
+class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHostingScroll {
+    
+    var delegate: moveControllers?
+    
+    lazy var container: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.OFF_WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.4
+        
+        return view
+    }()
+    
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.decelerationRate = .fast
+        view.showsHorizontalScrollIndicator = false
+        view.scrollsToTop = true
+        
+        return view
+    }()
+    
+    lazy var firstParkingController: HostingsController = {
+        let controller = HostingsController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var secondParkingController: SecondHostingsController = {
+        let controller = SecondHostingsController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var thirdParkingController: ThirdHostingsController = {
+        let controller = ThirdHostingsController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    var analyticsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Analytics"
+        label.textColor = Theme.BLACK
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPSemiBoldH2
+        
+        return label
+    }()
+    
+    lazy var mainProfitsView: HostingProfitsViewController = {
+        let controller = HostingProfitsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    lazy var mainDestinationView: HostingDestinationViewController = {
+        let controller = HostingDestinationViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    lazy var mainHoursView: HostingHoursViewController = {
+        let controller = HostingHoursViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    lazy var mainGuestsView: HostingUsersViewController = {
+        let controller = HostingUsersViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    lazy var mainGraphView: HostingGraphsViewController = {
+        let controller = HostingGraphsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    var informationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Information"
+        label.textColor = Theme.BLACK
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPSemiBoldH2
+        
+        return label
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.view.backgroundColor = UIColor.clear
+        
+        scrollView.delegate = self
+        
+        setupViews()
+        setupAnalytics()
+        setupControllers()
+    }
+    
+    var containerHeightAnchor: NSLayoutConstraint!
+    
+    func setupViews() {
+        
+        self.view.addSubview(container)
+        container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
+            containerHeightAnchor.isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        
+        container.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1180)
+        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+    }
+    
+    func setupAnalytics() {
+        
+        scrollView.addSubview(analyticsLabel)
+        analyticsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        analyticsLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
+        analyticsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        analyticsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        scrollView.addSubview(mainGraphView.view)
+        mainGraphView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        mainGraphView.view.topAnchor.constraint(equalTo: analyticsLabel.bottomAnchor, constant: 12).isActive = true
+        mainGraphView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        mainGraphView.view.heightAnchor.constraint(equalToConstant: 260).isActive = true
+        
+        scrollView.addSubview(mainProfitsView.view)
+        mainProfitsView.view.topAnchor.constraint(equalTo: mainGraphView.view.bottomAnchor, constant: 12).isActive = true
+        mainProfitsView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        mainProfitsView.view.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -6).isActive = true
+        mainProfitsView.view.heightAnchor.constraint(equalToConstant: 155).isActive = true
+        
+        scrollView.addSubview(mainGuestsView.view)
+        mainGuestsView.view.topAnchor.constraint(equalTo: mainGraphView.view.bottomAnchor, constant: 12).isActive = true
+        mainGuestsView.view.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 6).isActive = true
+        mainGuestsView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        mainGuestsView.view.heightAnchor.constraint(equalToConstant: 95).isActive = true
+        
+        scrollView.addSubview(mainDestinationView.view)
+        mainDestinationView.view.topAnchor.constraint(equalTo: mainGuestsView.view.bottomAnchor, constant: 12).isActive = true
+        mainDestinationView.view.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 6).isActive = true
+        mainDestinationView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        mainDestinationView.view.heightAnchor.constraint(equalToConstant: 155).isActive = true
+        
+        scrollView.addSubview(mainHoursView.view)
+        mainHoursView.view.topAnchor.constraint(equalTo: mainProfitsView.view.bottomAnchor, constant: 12).isActive = true
+        mainHoursView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        mainHoursView.view.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -6).isActive = true
+        mainHoursView.view.heightAnchor.constraint(equalToConstant: 95).isActive = true
+        
+        scrollView.addSubview(informationLabel)
+        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        informationLabel.topAnchor.constraint(equalTo: mainHoursView.view.bottomAnchor, constant: 24).isActive = true
+        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        informationLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+    }
+    
+    var mainParkingAnchor: NSLayoutConstraint!
+    
+    func setupControllers() {
+        
+        scrollView.addSubview(firstParkingController.view)
+        
+        firstParkingController.view.topAnchor.constraint(equalTo: informationLabel.bottomAnchor).isActive = true
+        mainParkingAnchor = firstParkingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            mainParkingAnchor.isActive = true
+        firstParkingController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        firstParkingController.view.heightAnchor.constraint(equalToConstant: 3000).isActive = true
+        
+        scrollView.addSubview(secondParkingController.view)
+        secondParkingController.view.topAnchor.constraint(equalTo: informationLabel.bottomAnchor).isActive = true
+        secondParkingController.view.leftAnchor.constraint(equalTo: firstParkingController.view.rightAnchor).isActive = true
+        secondParkingController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        secondParkingController.view.heightAnchor.constraint(equalToConstant: 3000).isActive = true
+        
+        scrollView.addSubview(thirdParkingController.view)
+        thirdParkingController.view.topAnchor.constraint(equalTo: informationLabel.bottomAnchor).isActive = true
+        thirdParkingController.view.leftAnchor.constraint(equalTo: secondParkingController.view.rightAnchor).isActive = true
+        thirdParkingController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        thirdParkingController.view.heightAnchor.constraint(equalToConstant: 3000).isActive = true
+        
+        let left = UISwipeGestureRecognizer(target: self, action: #selector(parkingSpotSwiped(sender:)))
+        left.direction = .left
+        let right = UISwipeGestureRecognizer(target: self, action: #selector(parkingSpotSwiped(sender:)))
+        right.direction = .right
+        self.view.addGestureRecognizer(left)
+        self.view.addGestureRecognizer(right)
+    }
+    
+    @objc func parkingSpotSwiped(sender: UISwipeGestureRecognizer) {
+        UIView.animate(withDuration: animationOut) {
+            if sender.direction == .left && self.mainParkingAnchor.constant == 0 {
+                self.mainParkingAnchor.constant = -self.view.frame.width
+            } else if sender.direction == .left && self.mainParkingAnchor.constant == -self.view.frame.width {
+                self.mainParkingAnchor.constant = -self.view.frame.width * 2
+            } else if sender.direction == .right && self.mainParkingAnchor.constant == -self.view.frame.width * 2 {
+                self.mainParkingAnchor.constant = -self.view.frame.width
+            } else if sender.direction == .right && self.mainParkingAnchor.constant == -self.view.frame.width {
+                self.mainParkingAnchor.constant = 0
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentSize.height > self.view.frame.height {
+            let translation = scrollView.contentOffset.y
+            if translation <= 50 && translation >= 10 {
+                let percent = (translation-10)/40
+                switch device {
+                case .iphone8:
+                    self.containerHeightAnchor.constant = 120 - (percent * 50)
+                case .iphoneX:
+                    self.containerHeightAnchor.constant = 120 - (percent * 40)
+                }
+                self.delegate?.moveMainLabel(percent: percent)
+            } else if translation < 10 {
+                self.containerHeightAnchor.constant = 120
+                self.delegate?.moveMainLabel(percent: 0)
+            } else {
+                self.delegate?.moveMainLabel(percent: 1)
+                switch device {
+                case .iphone8:
+                    self.containerHeightAnchor.constant = 70
+                case .iphoneX:
+                    self.containerHeightAnchor.constant = 80
+                }
+            }
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation < 30 {
+            UIView.animate(withDuration: 0.2) {
+                scrollView.contentOffset.y = 0
+            }
+        } else if translation >= 30 && translation <= 50 {
+            UIView.animate(withDuration: 0.2) {
+                scrollView.contentOffset.y = 50
+            }
+        }
+    }
+    
+    func handleScroll(height: CGFloat, y: CGFloat) {
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: height)
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: true)
+    }
+    
+}
+
+
+

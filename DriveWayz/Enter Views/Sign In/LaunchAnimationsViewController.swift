@@ -128,6 +128,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                 }
                 self.startupAnchor.constant = 0
                 if self.tabController != nil {
+                    self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                     self.tabController!.view.alpha = 1
                 }
                 self.view.layoutIfNeeded()
@@ -167,6 +168,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.bringStatusBar()
+                self.checkDayTimeStatus()
             }
         } else {
             let startupController: PhoneVerificationViewController = PhoneVerificationViewController()
@@ -185,6 +187,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             startupController.view.alpha = 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.hideStatusBar()
+                self.checkDayTimeStatus()
             }
         }
     }
@@ -266,5 +269,14 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return .slide
     }
     
+    func checkDayTimeStatus() {
+        switch solar {
+        case .day:
+            self.defaultStatusBar()
+        case .night:
+            self.lightContentStatusBar()
+        }
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
 
 }

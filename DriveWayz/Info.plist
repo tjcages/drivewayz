@@ -88,8 +88,6 @@
 	<string>Use your camera to take a photo of your parking space.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>To send an invite to friends.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Use your location to track parking spots near you and direct you to those spots.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Use your location to track parking spots near you and direct you to those spots.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -146,6 +144,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>networkAccessAllowed</key>
+	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ</string>
+	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
 </dict>
 </plist>

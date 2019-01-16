@@ -9,11 +9,21 @@
 import UIKit
 
 class StartHostingViewController: UIViewController {
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Become a host"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPSemiBoldH0
+        
+        return label
+    }()
 
     var parkingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Follow these easy steps to list your parking space and start making money"
-        label.textColor = Theme.DARK_GRAY
+        label.text = "Follow these easy steps to list your parking space"
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPBoldH2
         label.numberOfLines = 4
@@ -24,7 +34,7 @@ class StartHostingViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.text = "Make up to an extra $100 a week while helping to improve your parking community"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 4
@@ -35,12 +45,23 @@ class StartHostingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = UIColor.clear
         
         setupViews()
     }
     
     func setupViews() {
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 82 - 120).isActive = true
+        case .iphoneX:
+            mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 92 - 120).isActive = true
+        }
         
         self.view.addSubview(parkingLabel)
         parkingLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 29).isActive = true

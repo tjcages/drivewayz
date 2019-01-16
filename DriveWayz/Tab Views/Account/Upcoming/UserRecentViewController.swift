@@ -208,20 +208,20 @@ class UserRecentViewController: UIViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! RecentParkingCell
-        let parking = parkingSpots[indexPath.row]
-        cell.imageView.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
-        cell.reviewLabel.text = parking.parkingCity
-        cell.priceLabel.text = " - \(String(describing: parking.parkingCost!))"
-        if parking.rating != nil {
-            cell.rating.rating = (parking.rating!)/Double(self.count)
-        }
-        let stringCost = String(format: "%.2f", parking.payment!)
-        cell.costLabel.text = "Total: $\(stringCost)"
-        if parking.hours! > 1 {
-            cell.hoursLabel.text = "For \(String(describing: parking.hours!)) hours"
-        } else {
-            cell.hoursLabel.text = "For \(String(describing: parking.hours!)) hour"
-        }
+//        let parking = parkingSpots[indexPath.row]
+//        cell.imageView.loadImageUsingCacheWithUrlString(parking.parkingImageURL!)
+//        cell.reviewLabel.text = parking.parkingCity
+//        cell.priceLabel.text = " - \(String(describing: parking.parkingCost!))"
+//        if parking.rating != nil {
+//            cell.rating.rating = (parking.rating!)/Double(self.count)
+//        }
+//        let stringCost = String(format: "%.2f", parking.payment!)
+//        cell.costLabel.text = "Total: $\(stringCost)"
+//        if parking.hours! > 1 {
+//            cell.hoursLabel.text = "For \(String(describing: parking.hours!)) hours"
+//        } else {
+//            cell.hoursLabel.text = "For \(String(describing: parking.hours!)) hour"
+//        }
         
         return cell
     }

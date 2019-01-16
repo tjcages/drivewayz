@@ -215,6 +215,7 @@ class VerificationCodeViewController: UIViewController {
         button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .left
+        button.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
         
         return button
     }()
@@ -273,8 +274,8 @@ class VerificationCodeViewController: UIViewController {
         viewContainer.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
         backButton.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 24).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         setupVerificationField()
         createToolbar()
@@ -563,6 +564,9 @@ extension VerificationCodeViewController {
                 self.uid = userID
                 let ref = Database.database().reference().child("users").child(userID)
                 ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let userName = UserDefaults.standard.value(forKey: "userName") {
+                        print(userName)
+                    }
                     if (snapshot.value as? [String:AnyObject]) != nil {
                         self.login(uid: userID)
                     } else {

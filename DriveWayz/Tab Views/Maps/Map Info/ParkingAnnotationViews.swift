@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import Mapbox
 
 //AVAILABLE PARKING
 class AvailableHouseAnnotationView: MKMarkerAnnotationView {
@@ -201,57 +202,135 @@ class ClusterAnnotationView: MKMarkerAnnotationView {
     }
 }
 
-class DestinationAnnotationView : MKAnnotationView {
+class DestinationAnnotationView : MGLAnnotationView, CAAnimationDelegate {
     
     static let ReuseID = "availableAnnotation"
     
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
-        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-//        self.canShowCallout = true
-        self.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-        self.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        self.layer.shadowOffset = CGSize.zero
-        self.layer.shadowRadius = 1
-        self.layer.shadowOpacity = 0.6
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        let view = UIView(frame: self.frame)
-        view.backgroundColor = Theme.PURPLE
-        view.layer.cornerRadius = 7.5
-        self.addSubview(view)
-        
-        let whiteView = UIView(frame: CGRect(x: 7.5/2, y: 7.5/2, width: 7.5, height: 7.5))
-        whiteView.backgroundColor = Theme.WHITE
-        whiteView.layer.cornerRadius = 7.5/2
-        self.addSubview(whiteView)
-        
-        DispatchQueue.main.async {
-            self.swell(view: view, whiteView: whiteView)
+        // Use CALayer’s corner radius to turn this view into a circle.
+        layer.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+        layer.backgroundColor = Theme.WHITE.cgColor
+        layer.cornerRadius = bounds.width / 2
+        layer.borderWidth = 5
+        layer.borderColor = Theme.PURPLE.cgColor
+        layer.removeAllAnimations()
+
+//        swell()
+    }
+    
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if let animation = anim as? CABasicAnimation {
+            if let value = animation.toValue as? Int {
+                if value == 2 {
+                    layer.removeAllAnimations()
+                    self.shrink()
+                } else if value == 5 {
+                    self.swell()
+                }
+            }
         }
     }
     
-    func swell(view: UIView, whiteView: UIView) {
-        UIView.animate(withDuration: 4, delay: 0, options: .curveEaseIn, animations: {
-            view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            whiteView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        }) { (finished) -> Void in
-            self.shrink(view: view, whiteView: whiteView)
-        }
+    func swell() {
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.fromValue = 5
+        animation.toValue = 2
+        animation.duration = 4
+        animation.delegate = self
+        layer.add(animation, forKey: "borderWidth")
     }
     
-    func shrink(view: UIView, whiteView: UIView) {
-        UIView.animate(withDuration: 6, delay: 0, options: .curveEaseOut, animations: {
-            view.transform = CGAffineTransform(scaleX: 1, y: 1)
-            whiteView.transform = CGAffineTransform(scaleX: 1, y: 1)
-        }) { (finished) -> Void in
-            self.swell(view: view, whiteView: whiteView)
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    func shrink() {
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.fromValue = 2
+        animation.toValue = 5
+        animation.duration = 6
+        animation.delegate = self
+        layer.add(animation, forKey: "borderWidth")
     }
     
 }
+
+class MBDrivewayAnnotationView : MGLAnnotationView {
+    
+    static let ReuseID = "availableAnnotation"
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Use CALayer’s corner radius to turn this view into a circle.
+        layer.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        layer.backgroundColor = Theme.BLACK.cgColor
+//        layer.cornerRadius = bounds.width / 2
+        layer.borderWidth = 2
+        layer.borderColor = Theme.PURPLE.cgColor
+        addPikeOnView(side: .Bottom, size: 20)
+        
+    }
+    
+}
+
+
+
+class MBXAnnotationView: MGLAnnotationView {
+    
+    var imageView: UIImageView!
+    
+    override init(annotation: MGLAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        let image = UIImage(named: "marker")
+        imageView = UIImageView(image: image)
+        addSubview(imageView)
+        frame = imageView.frame
+        
+        isDraggable = true
+        centerOffset = CGVector(dx: 0.5, dy: 1)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Not implemented")
+    }
+    
+    override func setDragState(_ dragState: MGLAnnotationViewDragState, animated: Bool) {
+        super.setDragState(dragState, animated: animated)
+        
+        switch dragState {
+        case .starting:
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: [.curveLinear], animations: {
+                self.transform = self.transform.scaledBy(x: 2, y: 2)
+            })
+        case .ending:
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.5, options: [.curveLinear], animations: {
+                self.transform = CGAffineTransform.identity
+            })
+        default:
+            break
+        }
+    }
+}
+
+class MBXClusterView: MGLAnnotationView {
+    
+    var imageView: UIImageView!
+    
+    override init(annotation: MGLAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        let image = UIImage(named: "cluster")
+        imageView = UIImageView(image: image)
+        addSubview(imageView)
+        frame = imageView.frame
+        
+        centerOffset = CGVector(dx: 0.5, dy: 1)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Not implemented")
+    }
+    
+}
+
 
 
 

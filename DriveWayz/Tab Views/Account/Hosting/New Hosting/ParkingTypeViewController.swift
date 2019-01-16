@@ -13,41 +13,35 @@ class ParkingTypeViewController: UIViewController {
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
         
         return view
     }()
     
-    var checkmark: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+    var houseButton: UIButton = {
         let button = UIButton()
+        let origImage = UIImage(named: "home-1")
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
-        button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
-        button.layer.borderWidth = 1
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 5
+        button.layer.shadowOpacity = 1
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
         return button
-    }()
-    
-    var houseImageView: UIImageView = {
-        let image = UIImage(named: "Home")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        
-        return view
     }()
     
     var houseIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Residential", for: .normal)
-        label.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH4
+        label.setTitleColor(Theme.WHITE, for: .normal)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -58,26 +52,35 @@ class ParkingTypeViewController: UIViewController {
     var houseLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var apartmentImageView: UIImageView = {
-        let image = UIImage(named: "apartmentIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var apartmentButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "apartmentIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var apartmentIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Apartment", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -88,26 +91,35 @@ class ParkingTypeViewController: UIViewController {
     var apartmentLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var lotImageView: UIImageView = {
-        let image = UIImage(named: "parkinglotIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var lotButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "parkinglotIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var lotIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Business/Parking lot", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -118,26 +130,35 @@ class ParkingTypeViewController: UIViewController {
     var lotLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var otherImageView: UIImageView = {
-        let image = UIImage(named: "otherParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var otherButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "otherParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var otherIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Other", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -145,10 +166,10 @@ class ParkingTypeViewController: UIViewController {
         return label
     }()
     
-    var alleyLine: UIView = {
+    var otherLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -156,10 +177,10 @@ class ParkingTypeViewController: UIViewController {
     var houseInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "Our most common parking space. The spot is usually owned or leased by the host and can be a driveway or shared parking lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.font = Fonts.SSPLightH5
         
         return label
     }()
@@ -167,10 +188,10 @@ class ParkingTypeViewController: UIViewController {
     var apartmentInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "A parking space that is owned by the property owner and leased by then tennant. Usually associated with one spot number in a lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -179,22 +200,22 @@ class ParkingTypeViewController: UIViewController {
     var lotInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
     }()
     
-    var alleyInformation: UILabel = {
+    var otherInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "None of the above options. Drivewayz will contact you before the spot will become live."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -217,87 +238,87 @@ class ParkingTypeViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 2)
+//        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 2)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        scrollView.addSubview(houseImageView)
-        houseImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
-        houseImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        houseImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        houseImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        scrollView.addSubview(houseButton)
+        houseButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15).isActive = true
+        houseButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        houseButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        houseButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(houseIconLabel)
-        houseIconLabel.leftAnchor.constraint(equalTo: houseImageView.rightAnchor, constant: 24).isActive = true
-        houseIconLabel.centerYAnchor.constraint(equalTo: houseImageView.centerYAnchor).isActive = true
+        houseIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        houseIconLabel.topAnchor.constraint(equalTo: houseButton.topAnchor).isActive = true
         houseIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        houseIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        houseIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(houseLine)
         houseLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         houseLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        houseAnchor = houseLine.topAnchor.constraint(equalTo: houseIconLabel.bottomAnchor, constant: 100)
+        houseAnchor = houseLine.topAnchor.constraint(equalTo: houseIconLabel.bottomAnchor, constant: 95)
         houseAnchor.isActive = true
         houseLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        scrollView.addSubview(apartmentImageView)
-        apartmentImageView.topAnchor.constraint(equalTo: houseLine.bottomAnchor, constant: 10).isActive = true
-        apartmentImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        apartmentImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        apartmentImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        scrollView.addSubview(apartmentButton)
+        apartmentButton.topAnchor.constraint(equalTo: houseLine.bottomAnchor, constant: 15).isActive = true
+        apartmentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        apartmentButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        apartmentButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(apartmentIconLabel)
-        apartmentIconLabel.leftAnchor.constraint(equalTo: apartmentImageView.rightAnchor, constant: 24).isActive = true
-        apartmentIconLabel.centerYAnchor.constraint(equalTo: apartmentImageView.centerYAnchor).isActive = true
+        apartmentIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        apartmentIconLabel.topAnchor.constraint(equalTo: apartmentButton.topAnchor).isActive = true
         apartmentIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        apartmentIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        apartmentIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(apartmentLine)
         apartmentLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         apartmentLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        apartmentAnchor = apartmentLine.topAnchor.constraint(equalTo: apartmentIconLabel.bottomAnchor, constant: 5)
+        apartmentAnchor = apartmentLine.topAnchor.constraint(equalTo: apartmentIconLabel.bottomAnchor, constant: 35)
         apartmentAnchor.isActive = true
         apartmentLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        scrollView.addSubview(lotImageView)
-        lotImageView.topAnchor.constraint(equalTo: apartmentLine.bottomAnchor, constant: 5).isActive = true
-        lotImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        lotImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        lotImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        scrollView.addSubview(lotButton)
+        lotButton.topAnchor.constraint(equalTo: apartmentLine.bottomAnchor, constant: 15).isActive = true
+        lotButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        lotButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        lotButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(lotIconLabel)
-        lotIconLabel.leftAnchor.constraint(equalTo: lotImageView.rightAnchor, constant: 24).isActive = true
-        lotIconLabel.centerYAnchor.constraint(equalTo: lotImageView.centerYAnchor).isActive = true
+        lotIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        lotIconLabel.topAnchor.constraint(equalTo: lotButton.topAnchor).isActive = true
         lotIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        lotIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        lotIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(lotLine)
         lotLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         lotLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        parkingLotAnchor = lotLine.topAnchor.constraint(equalTo: lotIconLabel.bottomAnchor, constant: 5)
+        parkingLotAnchor = lotLine.topAnchor.constraint(equalTo: lotIconLabel.bottomAnchor, constant: 35)
         parkingLotAnchor.isActive = true
         lotLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        scrollView.addSubview(otherImageView)
-        otherImageView.topAnchor.constraint(equalTo: lotLine.bottomAnchor, constant: 5).isActive = true
-        otherImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        otherImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        otherImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        scrollView.addSubview(otherButton)
+        otherButton.topAnchor.constraint(equalTo: lotLine.bottomAnchor, constant: 15).isActive = true
+        otherButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        otherButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        otherButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(otherIconLabel)
-        otherIconLabel.leftAnchor.constraint(equalTo: otherImageView.rightAnchor, constant: 24).isActive = true
-        otherIconLabel.centerYAnchor.constraint(equalTo: otherImageView.centerYAnchor).isActive = true
+        otherIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        otherIconLabel.topAnchor.constraint(equalTo: otherButton.topAnchor).isActive = true
         otherIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        otherIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        otherIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        scrollView.addSubview(alleyLine)
-        alleyLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        alleyLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        alleyAnchor = alleyLine.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor, constant: 5)
+        scrollView.addSubview(otherLine)
+        otherLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        otherLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
+        alleyAnchor = otherLine.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor, constant: 35)
         alleyAnchor.isActive = true
-        alleyLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        otherLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         setupExtraInformation()
     }
@@ -306,147 +327,108 @@ class ParkingTypeViewController: UIViewController {
         
         scrollView.addSubview(houseInformation)
         houseInformation.leftAnchor.constraint(equalTo: houseIconLabel.leftAnchor).isActive = true
-        houseInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        houseInformation.topAnchor.constraint(equalTo: houseIconLabel.bottomAnchor, constant: -10).isActive = true
+        houseInformation.rightAnchor.constraint(equalTo: houseButton.leftAnchor, constant: -10).isActive = true
+        houseInformation.topAnchor.constraint(equalTo: houseIconLabel.bottomAnchor).isActive = true
         houseInformation.bottomAnchor.constraint(equalTo: houseLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(apartmentInformation)
         apartmentInformation.leftAnchor.constraint(equalTo: apartmentIconLabel.leftAnchor).isActive = true
-        apartmentInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        apartmentInformation.topAnchor.constraint(equalTo: apartmentIconLabel.bottomAnchor, constant: -10).isActive = true
+        apartmentInformation.rightAnchor.constraint(equalTo: apartmentButton.leftAnchor, constant: -10).isActive = true
+        apartmentInformation.topAnchor.constraint(equalTo: apartmentIconLabel.bottomAnchor).isActive = true
         apartmentInformation.bottomAnchor.constraint(equalTo: apartmentLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(lotInformation)
         lotInformation.leftAnchor.constraint(equalTo: lotIconLabel.leftAnchor).isActive = true
-        lotInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        lotInformation.topAnchor.constraint(equalTo: lotIconLabel.bottomAnchor, constant: -10).isActive = true
+        lotInformation.rightAnchor.constraint(equalTo: lotButton.leftAnchor, constant: -10).isActive = true
+        lotInformation.topAnchor.constraint(equalTo: lotIconLabel.bottomAnchor).isActive = true
         lotInformation.bottomAnchor.constraint(equalTo: lotLine.topAnchor, constant: -12).isActive = true
         
-        scrollView.addSubview(alleyInformation)
-        alleyInformation.leftAnchor.constraint(equalTo: otherIconLabel.leftAnchor).isActive = true
-        alleyInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        alleyInformation.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor, constant: -10).isActive = true
-        alleyInformation.bottomAnchor.constraint(equalTo: alleyLine.topAnchor, constant: -12).isActive = true
+        scrollView.addSubview(otherInformation)
+        otherInformation.leftAnchor.constraint(equalTo: otherIconLabel.leftAnchor).isActive = true
+        otherInformation.rightAnchor.constraint(equalTo: otherButton.leftAnchor, constant: -10).isActive = true
+        otherInformation.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor).isActive = true
+        otherInformation.bottomAnchor.constraint(equalTo: otherLine.topAnchor, constant: -12).isActive = true
         
-        setupCheckmark()
-    }
-    
-    var checkHouseAnchor: NSLayoutConstraint!
-    var checkApartmentAnchor: NSLayoutConstraint!
-    var checkLotAnchor: NSLayoutConstraint!
-    var checkOtherAnchor: NSLayoutConstraint!
-    var previousCheckAnchor: NSLayoutConstraint!
-    
-    func setupCheckmark() {
-        
-        scrollView.addSubview(checkmark)
-        checkmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        checkmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
-        checkHouseAnchor = checkmark.centerYAnchor.constraint(equalTo: houseIconLabel.centerYAnchor)
-            checkHouseAnchor.isActive = true
-        checkApartmentAnchor = checkmark.centerYAnchor.constraint(equalTo: apartmentIconLabel.centerYAnchor)
-            checkApartmentAnchor.isActive = false
-        checkLotAnchor = checkmark.centerYAnchor.constraint(equalTo: lotIconLabel.centerYAnchor)
-            checkLotAnchor.isActive = false
-        checkOtherAnchor = checkmark.centerYAnchor.constraint(equalTo: otherIconLabel.centerYAnchor)
-            checkOtherAnchor.isActive = false
-        
-        self.previousCheckAnchor = checkHouseAnchor
     }
     
     var parkingType: String = "house"
     
     @objc func optionTapped(sender: UIButton) {
-        if sender == houseIconLabel {
+        if sender == houseIconLabel || sender == houseButton {
             self.parkingType = "house"
             UIView.animate(withDuration: 0.1) {
-                self.houseIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.houseIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.houseImageView.tintColor = Theme.PACIFIC_BLUE
-                self.houseImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.houseAnchor.constant = 100
+                self.houseIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.houseIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.houseButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.houseButton.tintColor = Theme.WHITE
+                self.houseButton.layer.shadowOpacity = 1
+                self.houseAnchor.constant = 95
                 self.houseInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
                 self.resetApartment()
                 self.resetLot()
                 self.resetAlley()
-                self.checkMarkSwitched(checkAnchor: self.checkHouseAnchor)
             }
-        } else if sender == apartmentIconLabel {
+        } else if sender == apartmentIconLabel || sender == apartmentButton {
             self.parkingType = "apartment"
             UIView.animate(withDuration: 0.1) {
-                self.apartmentIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.apartmentIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.apartmentImageView.tintColor = Theme.PACIFIC_BLUE
-                self.apartmentImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.apartmentAnchor.constant = 100
+                self.apartmentIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.apartmentIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.apartmentButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.apartmentButton.tintColor = Theme.WHITE
+                self.apartmentButton.layer.shadowOpacity = 1
+                self.apartmentAnchor.constant = 95
                 self.apartmentInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
                 self.resetHouse()
                 self.resetLot()
                 self.resetAlley()
-                self.checkMarkSwitched(checkAnchor: self.checkApartmentAnchor)
             }
-        } else if sender == lotIconLabel {
+        } else if sender == lotIconLabel || sender == lotButton {
             self.parkingType = "parkingLot"
             UIView.animate(withDuration: 0.1) {
-                self.lotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.lotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.lotImageView.tintColor = Theme.PACIFIC_BLUE
-                self.lotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.parkingLotAnchor.constant = 100
+                self.lotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.lotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.lotButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.lotButton.tintColor = Theme.WHITE
+                self.lotButton.layer.shadowOpacity = 1
+                self.parkingLotAnchor.constant = 80
                 self.lotInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
                 self.resetHouse()
                 self.resetApartment()
                 self.resetAlley()
-                self.checkMarkSwitched(checkAnchor: self.checkLotAnchor)
             }
-        } else if sender == otherIconLabel {
+        } else if sender == otherIconLabel || sender == otherButton {
             self.parkingType = "other"
             UIView.animate(withDuration: 0.1) {
-                self.otherIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.otherIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.otherImageView.tintColor = Theme.PACIFIC_BLUE
-                self.otherImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.alleyAnchor.constant = 100
-                self.alleyInformation.alpha = 1
+                self.otherIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.otherIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.otherButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.otherButton.tintColor = Theme.WHITE
+                self.otherButton.layer.shadowOpacity = 1
+                self.alleyAnchor.constant = 80
+                self.otherInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
                 self.resetHouse()
                 self.resetApartment()
                 self.resetLot()
-                self.checkMarkSwitched(checkAnchor: self.checkOtherAnchor)
             }
-        }
-    }
-    
-    func checkMarkSwitched(checkAnchor: NSLayoutConstraint) {
-        UIView.animate(withDuration: animationIn, animations: {
-            self.checkmark.alpha = 0
-        }) { (success) in
-            self.previousCheckAnchor.isActive = false
-            self.view.layoutIfNeeded()
-            checkAnchor.isActive = true
-            self.view.layoutIfNeeded()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.checkmark.alpha = 1
-            })
-            self.previousCheckAnchor = checkAnchor
         }
     }
     
     func resetHouse() {
         UIView.animate(withDuration: 0.1) {
-            self.houseIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.houseIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.houseImageView.tintColor = Theme.DARK_GRAY
-            self.houseImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.houseAnchor.constant = 5
+            self.houseIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.houseIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.houseButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.houseButton.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.houseButton.layer.shadowOpacity = 0
+            self.houseAnchor.constant = 35
             self.houseInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -454,11 +436,12 @@ class ParkingTypeViewController: UIViewController {
     
     func resetApartment() {
         UIView.animate(withDuration: 0.1) {
-            self.apartmentIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.apartmentIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.apartmentImageView.tintColor = Theme.DARK_GRAY
-            self.apartmentImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.apartmentAnchor.constant = 5
+            self.apartmentIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.apartmentIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.apartmentButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.apartmentButton.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.apartmentButton.layer.shadowOpacity = 0
+            self.apartmentAnchor.constant = 35
             self.apartmentInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -466,11 +449,12 @@ class ParkingTypeViewController: UIViewController {
     
     func resetLot() {
         UIView.animate(withDuration: 0.1) {
-            self.lotIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.lotIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.lotImageView.tintColor = Theme.DARK_GRAY
-            self.lotImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.parkingLotAnchor.constant = 5
+            self.lotIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.lotIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.lotButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.lotButton.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.lotButton.layer.shadowOpacity = 0
+            self.parkingLotAnchor.constant = 35
             self.lotInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -478,12 +462,13 @@ class ParkingTypeViewController: UIViewController {
     
     func resetAlley() {
         UIView.animate(withDuration: 0.1) {
-            self.otherIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.otherIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.otherImageView.tintColor = Theme.DARK_GRAY
-            self.otherImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.alleyAnchor.constant = 5
-            self.alleyInformation.alpha = 0
+            self.otherIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.otherIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.otherButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.otherButton.tintColor = Theme.WHITE.withAlphaComponent(0.6)
+            self.otherButton.layer.shadowOpacity = 0
+            self.alleyAnchor.constant = 35
+            self.otherInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
     }

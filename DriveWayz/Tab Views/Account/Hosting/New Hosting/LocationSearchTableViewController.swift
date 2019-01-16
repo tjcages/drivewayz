@@ -19,6 +19,9 @@ class LocationSearchTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.clear
+        tableView.backgroundColor = UIColor.clear
 
         self.placesClient = GMSPlacesClient()
         
@@ -87,8 +90,12 @@ extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ResultsCell
-        let selectedItem = matchingItems[indexPath.row]
-        cell.nameTextView.text = selectedItem.attributedFullText.string
+        if matchingItems.count > indexPath.row {
+            let selectedItem = matchingItems[indexPath.row]
+            cell.nameTextView.text = selectedItem.attributedFullText.string
+        }
+        cell.nameTextView.textColor = Theme.WHITE
+        cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         

@@ -13,43 +13,37 @@ class ParkingOptionsViewController: UIViewController {
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
         
         return view
-    }()
-    
-    var checkmark: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
-        button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
-        button.layer.borderWidth = 1
-        button.backgroundColor = Theme.GREEN_PIGMENT
-        
-        return button
     }()
     
     //RESIDENTIAL/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    var drivewayImageView: UIImageView = {
-        let image = UIImage(named: "drivewayParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+    var drivewayImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "drivewayParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 5
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var drivewayIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Driveway", for: .normal)
-        label.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -60,10 +54,10 @@ class ParkingOptionsViewController: UIViewController {
     var drivewayInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Our most common parking space. The spot is usually owned or leased by the host and can be a driveway or shared parking lot."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         
         return label
     }()
@@ -71,26 +65,35 @@ class ParkingOptionsViewController: UIViewController {
     var drivewayLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var sharedlotImageView: UIImageView = {
-        let image = UIImage(named: "parkinglotIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var sharedlotImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "parkinglotIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var sharedlotIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Shared parking lot", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -101,10 +104,10 @@ class ParkingOptionsViewController: UIViewController {
     var sharedlotInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A parking space that is owned by the property owner and leased by then tennant. Usually associated with one spot number in a lot."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "A parking space that is owned by the property owner and leased by then tenant. Usually associated with one spot number in a lot."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -113,26 +116,35 @@ class ParkingOptionsViewController: UIViewController {
     var sharedlotLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var sharedCoverImageView: UIImageView = {
-        let image = UIImage(named: "coveredParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var sharedCoverImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "coveredParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var sharedCoverIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Shared parking garage", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -143,10 +155,10 @@ class ParkingOptionsViewController: UIViewController {
     var sharedCoverInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Parking outside a residential home or apartment complex and on the main street, susceptible to other traffic."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -155,26 +167,35 @@ class ParkingOptionsViewController: UIViewController {
     var sharedCoverLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var alleyImageView: UIImageView = {
-        let image = UIImage(named: "alleyParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var alleyImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "alleyParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var alleyIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Alley", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -185,10 +206,10 @@ class ParkingOptionsViewController: UIViewController {
     var alleyInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Only select this option if your parking spot is in between two buildings or behind a residential home and it is generally described as in an alley."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -197,26 +218,35 @@ class ParkingOptionsViewController: UIViewController {
     var alleyLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var gatedImageView: UIImageView = {
-        let image = UIImage(named: "gatedParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var gatedImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "gatedParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var gatedIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Gated", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -227,10 +257,10 @@ class ParkingOptionsViewController: UIViewController {
     var gatedInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -239,26 +269,35 @@ class ParkingOptionsViewController: UIViewController {
     var gatedLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var streetImageView: UIImageView = {
-        let image = UIImage(named: "streetParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var streetImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "streetParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var streetIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Street", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -269,10 +308,10 @@ class ParkingOptionsViewController: UIViewController {
     var streetInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Only select this option if your parking spot is in between two buildings or behind a residential home and it is generally described as in an alley."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -281,28 +320,37 @@ class ParkingOptionsViewController: UIViewController {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
     //BUSINESS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    var parkinglotImageView: UIImageView = {
-        let image = UIImage(named: "parkinglotIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var parkinglotImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "parkinglotIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var parkinglotIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Parking lot", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -313,11 +361,10 @@ class ParkingOptionsViewController: UIViewController {
     var parkinglotInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
-        label.alpha = 0
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         
         return label
     }()
@@ -325,26 +372,35 @@ class ParkingOptionsViewController: UIViewController {
     var parkinglotLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var garageImageView: UIImageView = {
-        let image = UIImage(named: "coveredParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var garageImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "coveredParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var garageIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Garage/Structure lot", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -355,10 +411,10 @@ class ParkingOptionsViewController: UIViewController {
     var garageInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -367,26 +423,35 @@ class ParkingOptionsViewController: UIViewController {
     var garageLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var undergroundImageView: UIImageView = {
-        let image = UIImage(named: "undergroundParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var undergroundImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "undergroundParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var undergroundIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Underground", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -397,10 +462,10 @@ class ParkingOptionsViewController: UIViewController {
     var undergroundInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -409,26 +474,35 @@ class ParkingOptionsViewController: UIViewController {
     var undergroundLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var condoImageView: UIImageView = {
-        let image = UIImage(named: "condoParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var condoImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "condoParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var condoIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Condo parking", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -439,10 +513,10 @@ class ParkingOptionsViewController: UIViewController {
     var condoInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -451,26 +525,35 @@ class ParkingOptionsViewController: UIViewController {
     var condoLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
     
-    var circularImageView: UIImageView = {
-        let image = UIImage(named: "circularParkingIcon")
-        let view = UIImageView(image: image)
-        view.image = view.image!.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY
-        view.translatesAutoresizingMaskIntoConstraints = false
+    var circularImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "circularParkingIcon");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.layer.cornerRadius = 3
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
-        return view
+        return button
     }()
     
     var circularIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Circular loop", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPLightH3
+        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         label.contentHorizontalAlignment = .left
@@ -481,10 +564,10 @@ class ParkingOptionsViewController: UIViewController {
     var circularInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 4
-        label.font = Fonts.SSPLightH6
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
+        label.numberOfLines = 3
+        label.font = Fonts.SSPLightH5
         label.alpha = 0
         
         return label
@@ -493,7 +576,7 @@ class ParkingOptionsViewController: UIViewController {
     var circularLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -518,19 +601,6 @@ class ParkingOptionsViewController: UIViewController {
     var condoAnchor: NSLayoutConstraint!
     var circularAnchor: NSLayoutConstraint!
     
-    var checkDrivewayAnchor: NSLayoutConstraint!
-    var checkSharedLotAnchor: NSLayoutConstraint!
-    var checkSharedGarageAnchor: NSLayoutConstraint!
-    var checkAlleyAnchor: NSLayoutConstraint!
-    var checkGatedAnchor: NSLayoutConstraint!
-    var checkStreetAnchor: NSLayoutConstraint!
-    var checkParkingLotAnchor: NSLayoutConstraint!
-    var checkGarageAnchor: NSLayoutConstraint!
-    var checkUndergroundAnchor: NSLayoutConstraint!
-    var checkCondoAnchor: NSLayoutConstraint!
-    var checkCircularAnchor: NSLayoutConstraint!
-    var previousCheckAnchor: NSLayoutConstraint!
-    
     var parkingType: String = "driveway"
     
     func onlyShowRegularOptions() {
@@ -546,15 +616,13 @@ class ParkingOptionsViewController: UIViewController {
         self.resetUnderground()
         self.resetCondo()
         self.resetCircular()
-        self.drivewayIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-        self.drivewayImageView.tintColor = Theme.PACIFIC_BLUE
-        self.drivewayImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        self.drivewayAnchor.constant = 100
+        self.drivewayIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+        self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+        self.drivewayImageView.tintColor = Theme.WHITE
+        self.drivewayImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+        self.drivewayImageView.layer.shadowOpacity = 1
+        self.drivewayAnchor.constant = 80
         self.drivewayInformation.alpha = 1
-        self.previousCheckAnchor.isActive = false
-        self.checkDrivewayAnchor.isActive = true
-        self.previousCheckAnchor = self.checkDrivewayAnchor
         self.view.layoutIfNeeded()
         self.parkingType = "driveway"
         self.drivewayImageView.alpha = 1
@@ -612,15 +680,13 @@ class ParkingOptionsViewController: UIViewController {
         self.resetUnderground()
         self.resetCondo()
         self.resetCircular()
-        self.parkinglotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-        self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-        self.parkinglotImageView.tintColor = Theme.PACIFIC_BLUE
-        self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        self.parkinglotAnchor.constant = 100
+        self.parkinglotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+        self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+        self.parkinglotImageView.tintColor = Theme.WHITE
+        self.parkinglotImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+        self.parkinglotImageView.layer.shadowOpacity = 1
+        self.parkinglotAnchor.constant = 80
         self.parkinglotInformation.alpha = 1
-        self.previousCheckAnchor.isActive = false
-        self.checkParkingLotAnchor.isActive = true
-        self.previousCheckAnchor = self.checkParkingLotAnchor
         self.view.layoutIfNeeded()
         self.parkingType = "parkingLot"
         self.drivewayImageView.alpha = 0
@@ -681,116 +747,116 @@ extension ParkingOptionsViewController {
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(drivewayImageView)
-        drivewayImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
-        drivewayImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        drivewayImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        drivewayImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        drivewayImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15).isActive = true
+        drivewayImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        drivewayImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        drivewayImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(drivewayIconLabel)
-        drivewayIconLabel.leftAnchor.constraint(equalTo: drivewayImageView.rightAnchor, constant: 24).isActive = true
-        drivewayIconLabel.centerYAnchor.constraint(equalTo: drivewayImageView.centerYAnchor).isActive = true
+        drivewayIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        drivewayIconLabel.topAnchor.constraint(equalTo: drivewayImageView.topAnchor).isActive = true
         drivewayIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        drivewayIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        drivewayIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(drivewayLine)
         drivewayLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         drivewayLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        drivewayAnchor = drivewayLine.topAnchor.constraint(equalTo: drivewayIconLabel.bottomAnchor, constant: 100)
+        drivewayAnchor = drivewayLine.topAnchor.constraint(equalTo: drivewayIconLabel.bottomAnchor, constant: 90)
         drivewayAnchor.isActive = true
         drivewayLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(sharedlotImageView)
         sharedlotImageView.topAnchor.constraint(equalTo: drivewayLine.bottomAnchor, constant: 10).isActive = true
-        sharedlotImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        sharedlotImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        sharedlotImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        sharedlotImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        sharedlotImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        sharedlotImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(sharedlotIconLabel)
-        sharedlotIconLabel.leftAnchor.constraint(equalTo: sharedlotImageView.rightAnchor, constant: 24).isActive = true
-        sharedlotIconLabel.centerYAnchor.constraint(equalTo: sharedlotImageView.centerYAnchor).isActive = true
+        sharedlotIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        sharedlotIconLabel.topAnchor.constraint(equalTo: sharedlotImageView.topAnchor).isActive = true
         sharedlotIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        sharedlotIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        sharedlotIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(sharedlotLine)
         sharedlotLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         sharedlotLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        sharedlotAnchor = sharedlotLine.topAnchor.constraint(equalTo: sharedlotIconLabel.bottomAnchor, constant: 5)
+        sharedlotAnchor = sharedlotLine.topAnchor.constraint(equalTo: sharedlotIconLabel.bottomAnchor, constant: 35)
         sharedlotAnchor.isActive = true
         sharedlotLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(sharedCoverImageView)
-        sharedCoverImageView.topAnchor.constraint(equalTo: sharedlotLine.bottomAnchor, constant: 5).isActive = true
-        sharedCoverImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        sharedCoverImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        sharedCoverImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        sharedCoverImageView.topAnchor.constraint(equalTo: sharedlotLine.bottomAnchor, constant: 10).isActive = true
+        sharedCoverImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        sharedCoverImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        sharedCoverImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(sharedCoverIconLabel)
-        sharedCoverIconLabel.leftAnchor.constraint(equalTo: sharedCoverImageView.rightAnchor, constant: 24).isActive = true
-        sharedCoverIconLabel.centerYAnchor.constraint(equalTo: sharedCoverImageView.centerYAnchor).isActive = true
+        sharedCoverIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        sharedCoverIconLabel.topAnchor.constraint(equalTo: sharedCoverImageView.topAnchor).isActive = true
         sharedCoverIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        sharedCoverIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        sharedCoverIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(sharedCoverLine)
         sharedCoverLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         sharedCoverLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        sharedGarageAnchor = sharedCoverLine.topAnchor.constraint(equalTo: sharedCoverIconLabel.bottomAnchor, constant: 5)
+        sharedGarageAnchor = sharedCoverLine.topAnchor.constraint(equalTo: sharedCoverIconLabel.bottomAnchor, constant: 35)
         sharedGarageAnchor.isActive = true
         sharedCoverLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(alleyImageView)
-        alleyImageView.topAnchor.constraint(equalTo: sharedCoverLine.bottomAnchor, constant: 5).isActive = true
-        alleyImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        alleyImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        alleyImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        alleyImageView.topAnchor.constraint(equalTo: sharedCoverLine.bottomAnchor, constant: 10).isActive = true
+        alleyImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        alleyImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        alleyImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(alleyIconLabel)
-        alleyIconLabel.leftAnchor.constraint(equalTo: alleyImageView.rightAnchor, constant: 24).isActive = true
-        alleyIconLabel.centerYAnchor.constraint(equalTo: alleyImageView.centerYAnchor).isActive = true
+        alleyIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        alleyIconLabel.topAnchor.constraint(equalTo: alleyImageView.topAnchor).isActive = true
         alleyIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        alleyIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        alleyIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(alleyLine)
         alleyLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         alleyLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        alleyAnchor = alleyLine.topAnchor.constraint(equalTo: alleyIconLabel.bottomAnchor, constant: 5)
+        alleyAnchor = alleyLine.topAnchor.constraint(equalTo: alleyIconLabel.bottomAnchor, constant: 35)
         alleyAnchor.isActive = true
         alleyLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(gatedImageView)
-        gatedImageView.topAnchor.constraint(equalTo: alleyLine.bottomAnchor, constant: 5).isActive = true
-        gatedImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        gatedImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        gatedImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        gatedImageView.topAnchor.constraint(equalTo: alleyLine.bottomAnchor, constant: 10).isActive = true
+        gatedImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        gatedImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        gatedImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(gatedIconLabel)
-        gatedIconLabel.leftAnchor.constraint(equalTo: gatedImageView.rightAnchor, constant: 24).isActive = true
-        gatedIconLabel.centerYAnchor.constraint(equalTo: gatedImageView.centerYAnchor).isActive = true
+        gatedIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        gatedIconLabel.topAnchor.constraint(equalTo: gatedImageView.topAnchor).isActive = true
         gatedIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        gatedIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        gatedIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(gatedLine)
         gatedLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         gatedLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        gatedAnchor = gatedLine.topAnchor.constraint(equalTo: gatedIconLabel.bottomAnchor, constant: 5)
+        gatedAnchor = gatedLine.topAnchor.constraint(equalTo: gatedIconLabel.bottomAnchor, constant: 35)
         gatedAnchor.isActive = true
         gatedLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(streetImageView)
-        streetImageView.topAnchor.constraint(equalTo: gatedLine.bottomAnchor, constant: 5).isActive = true
-        streetImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        streetImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        streetImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        streetImageView.topAnchor.constraint(equalTo: gatedLine.bottomAnchor, constant: 10).isActive = true
+        streetImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        streetImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        streetImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(streetIconLabel)
-        streetIconLabel.leftAnchor.constraint(equalTo: streetImageView.rightAnchor, constant: 24).isActive = true
-        streetIconLabel.centerYAnchor.constraint(equalTo: streetImageView.centerYAnchor).isActive = true
+        streetIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        streetIconLabel.topAnchor.constraint(equalTo: streetImageView.topAnchor).isActive = true
         streetIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        streetIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        streetIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(streetLine)
         streetLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         streetLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        streetAnchor = streetLine.topAnchor.constraint(equalTo: streetIconLabel.bottomAnchor, constant: 5)
+        streetAnchor = streetLine.topAnchor.constraint(equalTo: streetIconLabel.bottomAnchor, constant: 35)
         streetAnchor.isActive = true
         streetLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
@@ -801,96 +867,96 @@ extension ParkingOptionsViewController {
         
         scrollView.addSubview(parkinglotImageView)
         parkinglotImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
-        parkinglotImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        parkinglotImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        parkinglotImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        parkinglotImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        parkinglotImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        parkinglotImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(parkinglotIconLabel)
-        parkinglotIconLabel.leftAnchor.constraint(equalTo: parkinglotImageView.rightAnchor, constant: 24).isActive = true
-        parkinglotIconLabel.centerYAnchor.constraint(equalTo: parkinglotImageView.centerYAnchor).isActive = true
+        parkinglotIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        parkinglotIconLabel.topAnchor.constraint(equalTo: parkinglotImageView.topAnchor).isActive = true
         parkinglotIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        parkinglotIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkinglotIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(parkinglotLine)
         parkinglotLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         parkinglotLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        parkinglotAnchor = parkinglotLine.topAnchor.constraint(equalTo: parkinglotIconLabel.bottomAnchor, constant: 100)
+        parkinglotAnchor = parkinglotLine.topAnchor.constraint(equalTo: parkinglotIconLabel.bottomAnchor, constant: 80)
         parkinglotAnchor.isActive = true
         parkinglotLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(garageImageView)
-        garageImageView.topAnchor.constraint(equalTo: parkinglotLine.bottomAnchor, constant: 5).isActive = true
-        garageImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        garageImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        garageImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        garageImageView.topAnchor.constraint(equalTo: parkinglotLine.bottomAnchor, constant: 10).isActive = true
+        garageImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        garageImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        garageImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(garageIconLabel)
-        garageIconLabel.leftAnchor.constraint(equalTo: garageImageView.rightAnchor, constant: 24).isActive = true
-        garageIconLabel.centerYAnchor.constraint(equalTo: garageImageView.centerYAnchor).isActive = true
+        garageIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        garageIconLabel.topAnchor.constraint(equalTo: garageImageView.topAnchor).isActive = true
         garageIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        garageIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        garageIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(garageLine)
         garageLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         garageLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        garageAnchor = garageLine.topAnchor.constraint(equalTo: garageIconLabel.bottomAnchor, constant: 5)
+        garageAnchor = garageLine.topAnchor.constraint(equalTo: garageIconLabel.bottomAnchor, constant: 35)
         garageAnchor.isActive = true
         garageLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(undergroundImageView)
-        undergroundImageView.topAnchor.constraint(equalTo: garageLine.bottomAnchor, constant: 5).isActive = true
-        undergroundImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        undergroundImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        undergroundImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        undergroundImageView.topAnchor.constraint(equalTo: garageLine.bottomAnchor, constant: 10).isActive = true
+        undergroundImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        undergroundImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        undergroundImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(undergroundIconLabel)
-        undergroundIconLabel.leftAnchor.constraint(equalTo: undergroundImageView.rightAnchor, constant: 24).isActive = true
-        undergroundIconLabel.centerYAnchor.constraint(equalTo: undergroundImageView.centerYAnchor).isActive = true
+        undergroundIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        undergroundIconLabel.topAnchor.constraint(equalTo: undergroundImageView.topAnchor).isActive = true
         undergroundIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        undergroundIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        undergroundIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(undergroundLine)
         undergroundLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         undergroundLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        undergroundAnchor = undergroundLine.topAnchor.constraint(equalTo: undergroundIconLabel.bottomAnchor, constant: 5)
+        undergroundAnchor = undergroundLine.topAnchor.constraint(equalTo: undergroundIconLabel.bottomAnchor, constant: 35)
         undergroundAnchor.isActive = true
         undergroundLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(condoImageView)
-        condoImageView.topAnchor.constraint(equalTo: undergroundLine.bottomAnchor, constant: 5).isActive = true
-        condoImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        condoImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        condoImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        condoImageView.topAnchor.constraint(equalTo: undergroundLine.bottomAnchor, constant: 10).isActive = true
+        condoImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        condoImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        condoImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(condoIconLabel)
-        condoIconLabel.leftAnchor.constraint(equalTo: condoImageView.rightAnchor, constant: 24).isActive = true
-        condoIconLabel.centerYAnchor.constraint(equalTo: condoImageView.centerYAnchor).isActive = true
+        condoIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        condoIconLabel.topAnchor.constraint(equalTo: condoImageView.topAnchor).isActive = true
         condoIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        condoIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        condoIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(condoLine)
         condoLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         condoLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        condoAnchor = condoLine.topAnchor.constraint(equalTo: condoIconLabel.bottomAnchor, constant: 5)
+        condoAnchor = condoLine.topAnchor.constraint(equalTo: condoIconLabel.bottomAnchor, constant: 35)
         condoAnchor.isActive = true
         condoLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(circularImageView)
-        circularImageView.topAnchor.constraint(equalTo: condoLine.bottomAnchor, constant: 5).isActive = true
-        circularImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        circularImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        circularImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        circularImageView.topAnchor.constraint(equalTo: condoLine.bottomAnchor, constant: 10).isActive = true
+        circularImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        circularImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        circularImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(circularIconLabel)
-        circularIconLabel.leftAnchor.constraint(equalTo: circularImageView.rightAnchor, constant: 24).isActive = true
-        circularIconLabel.centerYAnchor.constraint(equalTo: circularImageView.centerYAnchor).isActive = true
+        circularIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        circularIconLabel.topAnchor.constraint(equalTo: circularImageView.topAnchor).isActive = true
         circularIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        circularIconLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        circularIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(circularLine)
         circularLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         circularLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        circularAnchor = circularLine.topAnchor.constraint(equalTo: circularIconLabel.bottomAnchor, constant: 5)
+        circularAnchor = circularLine.topAnchor.constraint(equalTo: circularIconLabel.bottomAnchor, constant: 35)
         circularAnchor.isActive = true
         circularLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
@@ -901,120 +967,87 @@ extension ParkingOptionsViewController {
         
         scrollView.addSubview(drivewayInformation)
         drivewayInformation.leftAnchor.constraint(equalTo: drivewayIconLabel.leftAnchor).isActive = true
-        drivewayInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        drivewayInformation.topAnchor.constraint(equalTo: drivewayIconLabel.bottomAnchor, constant: -10).isActive = true
+        drivewayInformation.rightAnchor.constraint(equalTo: drivewayImageView.leftAnchor, constant: -10).isActive = true
+        drivewayInformation.topAnchor.constraint(equalTo: drivewayIconLabel.bottomAnchor).isActive = true
         drivewayInformation.bottomAnchor.constraint(equalTo: drivewayLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(sharedlotInformation)
         sharedlotInformation.leftAnchor.constraint(equalTo: sharedlotIconLabel.leftAnchor).isActive = true
-        sharedlotInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        sharedlotInformation.topAnchor.constraint(equalTo: sharedlotIconLabel.bottomAnchor, constant: -10).isActive = true
+        sharedlotInformation.rightAnchor.constraint(equalTo: sharedlotImageView.leftAnchor, constant: -10).isActive = true
+        sharedlotInformation.topAnchor.constraint(equalTo: sharedlotIconLabel.bottomAnchor).isActive = true
         sharedlotInformation.bottomAnchor.constraint(equalTo: sharedlotLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(sharedCoverInformation)
         sharedCoverInformation.leftAnchor.constraint(equalTo: sharedCoverIconLabel.leftAnchor).isActive = true
-        sharedCoverInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        sharedCoverInformation.topAnchor.constraint(equalTo: sharedCoverIconLabel.bottomAnchor, constant: -10).isActive = true
+        sharedCoverInformation.rightAnchor.constraint(equalTo: sharedCoverImageView.leftAnchor, constant: -10).isActive = true
+        sharedCoverInformation.topAnchor.constraint(equalTo: sharedCoverIconLabel.bottomAnchor).isActive = true
         sharedCoverInformation.bottomAnchor.constraint(equalTo: sharedCoverLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(alleyInformation)
         alleyInformation.leftAnchor.constraint(equalTo: alleyIconLabel.leftAnchor).isActive = true
-        alleyInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        alleyInformation.topAnchor.constraint(equalTo: alleyIconLabel.bottomAnchor, constant: -10).isActive = true
+        alleyInformation.rightAnchor.constraint(equalTo: alleyImageView.leftAnchor, constant: -10).isActive = true
+        alleyInformation.topAnchor.constraint(equalTo: alleyIconLabel.bottomAnchor).isActive = true
         alleyInformation.bottomAnchor.constraint(equalTo: alleyLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(gatedInformation)
         gatedInformation.leftAnchor.constraint(equalTo: gatedIconLabel.leftAnchor).isActive = true
-        gatedInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        gatedInformation.topAnchor.constraint(equalTo: gatedIconLabel.bottomAnchor, constant: -10).isActive = true
+        gatedInformation.rightAnchor.constraint(equalTo: gatedImageView.leftAnchor, constant: -10).isActive = true
+        gatedInformation.topAnchor.constraint(equalTo: gatedIconLabel.bottomAnchor).isActive = true
         gatedInformation.bottomAnchor.constraint(equalTo: gatedLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(streetInformation)
         streetInformation.leftAnchor.constraint(equalTo: streetIconLabel.leftAnchor).isActive = true
-        streetInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        streetInformation.topAnchor.constraint(equalTo: streetIconLabel.bottomAnchor, constant: -10).isActive = true
+        streetInformation.rightAnchor.constraint(equalTo: streetImageView.leftAnchor, constant: -10).isActive = true
+        streetInformation.topAnchor.constraint(equalTo: streetIconLabel.bottomAnchor).isActive = true
         streetInformation.bottomAnchor.constraint(equalTo: streetLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(parkinglotInformation)
         parkinglotInformation.leftAnchor.constraint(equalTo: parkinglotIconLabel.leftAnchor).isActive = true
-        parkinglotInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        parkinglotInformation.topAnchor.constraint(equalTo: parkinglotIconLabel.bottomAnchor, constant: -10).isActive = true
+        parkinglotInformation.rightAnchor.constraint(equalTo: parkinglotImageView.leftAnchor, constant: -10).isActive = true
+        parkinglotInformation.topAnchor.constraint(equalTo: parkinglotIconLabel.bottomAnchor).isActive = true
         parkinglotInformation.bottomAnchor.constraint(equalTo: parkinglotLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(garageInformation)
         garageInformation.leftAnchor.constraint(equalTo: garageIconLabel.leftAnchor).isActive = true
-        garageInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        garageInformation.topAnchor.constraint(equalTo: garageIconLabel.bottomAnchor, constant: -10).isActive = true
+        garageInformation.rightAnchor.constraint(equalTo: garageImageView.leftAnchor, constant: -10).isActive = true
+        garageInformation.topAnchor.constraint(equalTo: garageIconLabel.bottomAnchor).isActive = true
         garageInformation.bottomAnchor.constraint(equalTo: garageLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(undergroundInformation)
         undergroundInformation.leftAnchor.constraint(equalTo: undergroundIconLabel.leftAnchor).isActive = true
-        undergroundInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        undergroundInformation.topAnchor.constraint(equalTo: undergroundIconLabel.bottomAnchor, constant: -10).isActive = true
+        undergroundInformation.rightAnchor.constraint(equalTo: undergroundImageView.leftAnchor, constant: -10).isActive = true
+        undergroundInformation.topAnchor.constraint(equalTo: undergroundIconLabel.bottomAnchor).isActive = true
         undergroundInformation.bottomAnchor.constraint(equalTo: undergroundLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(condoInformation)
         condoInformation.leftAnchor.constraint(equalTo: condoIconLabel.leftAnchor).isActive = true
-        condoInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        condoInformation.topAnchor.constraint(equalTo: condoIconLabel.bottomAnchor, constant: -10).isActive = true
+        condoInformation.rightAnchor.constraint(equalTo: condoImageView.leftAnchor, constant: -10).isActive = true
+        condoInformation.topAnchor.constraint(equalTo: condoIconLabel.bottomAnchor).isActive = true
         condoInformation.bottomAnchor.constraint(equalTo: condoLine.topAnchor, constant: -12).isActive = true
         
         scrollView.addSubview(circularInformation)
         circularInformation.leftAnchor.constraint(equalTo: circularIconLabel.leftAnchor).isActive = true
-        circularInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        circularInformation.topAnchor.constraint(equalTo: circularIconLabel.bottomAnchor, constant: -10).isActive = true
+        circularInformation.rightAnchor.constraint(equalTo: circularImageView.leftAnchor, constant: -10).isActive = true
+        circularInformation.topAnchor.constraint(equalTo: circularIconLabel.bottomAnchor).isActive = true
         circularInformation.bottomAnchor.constraint(equalTo: circularLine.topAnchor, constant: -12).isActive = true
         
-        setupCheckmark()
     }
-    
-    func setupCheckmark() {
-        
-        scrollView.addSubview(checkmark)
-        checkmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        checkmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
-        checkDrivewayAnchor = checkmark.centerYAnchor.constraint(equalTo: drivewayIconLabel.centerYAnchor)
-        checkDrivewayAnchor.isActive = true
-        
-        checkSharedLotAnchor = checkmark.centerYAnchor.constraint(equalTo: sharedlotIconLabel.centerYAnchor)
-        checkSharedLotAnchor.isActive = false
-        checkSharedGarageAnchor = checkmark.centerYAnchor.constraint(equalTo: sharedCoverIconLabel.centerYAnchor)
-        checkSharedGarageAnchor.isActive = false
-        checkAlleyAnchor = checkmark.centerYAnchor.constraint(equalTo: alleyIconLabel.centerYAnchor)
-        checkAlleyAnchor.isActive = false
-        checkGatedAnchor = checkmark.centerYAnchor.constraint(equalTo: gatedIconLabel.centerYAnchor)
-        checkGatedAnchor.isActive = false
-        checkStreetAnchor = checkmark.centerYAnchor.constraint(equalTo: streetIconLabel.centerYAnchor)
-        checkStreetAnchor.isActive = false
-        
-        checkParkingLotAnchor = checkmark.centerYAnchor.constraint(equalTo: parkinglotIconLabel.centerYAnchor)
-        checkParkingLotAnchor.isActive = false
-        checkGarageAnchor = checkmark.centerYAnchor.constraint(equalTo: garageIconLabel.centerYAnchor)
-        checkGarageAnchor.isActive = false
-        checkUndergroundAnchor = checkmark.centerYAnchor.constraint(equalTo: undergroundIconLabel.centerYAnchor)
-        checkUndergroundAnchor.isActive = false
-        checkCondoAnchor = checkmark.centerYAnchor.constraint(equalTo: condoIconLabel.centerYAnchor)
-        checkCondoAnchor.isActive = false
-        checkCircularAnchor = checkmark.centerYAnchor.constraint(equalTo: circularIconLabel.centerYAnchor)
-        checkCircularAnchor.isActive = false
 
-        self.previousCheckAnchor = checkDrivewayAnchor
-    }
 }
 
 
 ///////HANDLE SELECTION////////////////////////////////////////////////////////////////////////////////////
 extension ParkingOptionsViewController {
     @objc func optionTapped(sender: UIButton) {
-        if sender == drivewayIconLabel {
+        if sender == drivewayIconLabel || sender == drivewayImageView {
             self.parkingType = "driveway"
             UIView.animate(withDuration: 0.1) {
-                self.drivewayIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.drivewayImageView.tintColor = Theme.PACIFIC_BLUE
-                self.drivewayImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.drivewayAnchor.constant = 100
+                self.drivewayIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.drivewayIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.drivewayImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.drivewayImageView.tintColor = Theme.WHITE
+                self.drivewayImageView.layer.shadowOpacity = 1
+                self.drivewayAnchor.constant = 95
                 self.drivewayInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1029,16 +1062,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkDrivewayAnchor)
             }
-        } else if sender == sharedlotIconLabel {
+        } else if sender == sharedlotIconLabel || sender == sharedlotImageView {
             self.parkingType = "sharedLot"
             UIView.animate(withDuration: 0.1) {
-                self.sharedlotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.sharedlotImageView.tintColor = Theme.PACIFIC_BLUE
-                self.sharedlotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.sharedlotAnchor.constant = 100
+                self.sharedlotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.sharedlotImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.sharedlotImageView.tintColor = Theme.WHITE
+                self.sharedlotImageView.layer.shadowOpacity = 1
+                self.sharedlotAnchor.constant = 80
                 self.sharedlotInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1053,16 +1086,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkSharedLotAnchor)
             }
-        } else if sender == alleyIconLabel {
+        } else if sender == alleyIconLabel || sender == alleyImageView {
             self.parkingType = "alley"
             UIView.animate(withDuration: 0.1) {
-                self.alleyIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.alleyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.alleyImageView.tintColor = Theme.PACIFIC_BLUE
-                self.alleyImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.alleyAnchor.constant = 100
+                self.alleyIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.alleyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.alleyImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.alleyImageView.tintColor = Theme.WHITE
+                self.alleyImageView.layer.shadowOpacity = 1
+                self.alleyAnchor.constant = 80
                 self.alleyInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1077,16 +1110,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkAlleyAnchor)
             }
-        } else if sender == sharedCoverIconLabel {
+        } else if sender == sharedCoverIconLabel || sender == sharedCoverImageView {
             self.parkingType = "sharedCover"
             UIView.animate(withDuration: 0.1) {
-                self.sharedCoverIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.sharedCoverImageView.tintColor = Theme.PACIFIC_BLUE
-                self.sharedCoverImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.sharedGarageAnchor.constant = 100
+                self.sharedCoverIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.sharedCoverImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.sharedCoverImageView.tintColor = Theme.WHITE
+                self.sharedCoverImageView.layer.shadowOpacity = 1
+                self.sharedGarageAnchor.constant = 80
                 self.sharedCoverInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1100,16 +1133,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkSharedGarageAnchor)
             }
-        } else if sender == gatedIconLabel {
+        } else if sender == gatedIconLabel || sender == gatedImageView {
             self.parkingType = "gated"
             UIView.animate(withDuration: 0.1) {
-                self.gatedIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.gatedImageView.tintColor = Theme.PACIFIC_BLUE
-                self.gatedImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.gatedAnchor.constant = 100
+                self.gatedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.gatedImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.gatedImageView.tintColor = Theme.WHITE
+                self.gatedImageView.layer.shadowOpacity = 1
+                self.gatedAnchor.constant = 80
                 self.gatedInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1124,16 +1157,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkGatedAnchor)
             }
-        } else if sender == streetIconLabel {
+        } else if sender == streetIconLabel || sender == streetImageView {
             self.parkingType = "street"
             UIView.animate(withDuration: 0.1) {
-                self.streetIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.streetIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.streetImageView.tintColor = Theme.PACIFIC_BLUE
-                self.streetImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.streetAnchor.constant = 100
+                self.streetIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.streetIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.streetImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.streetImageView.tintColor = Theme.WHITE
+                self.streetImageView.layer.shadowOpacity = 1
+                self.streetAnchor.constant = 80
                 self.streetInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1147,16 +1180,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkStreetAnchor)
             }
-        } else if sender == parkinglotIconLabel {
+        } else if sender == parkinglotIconLabel || sender == parkinglotImageView {
             self.parkingType = "parkingLot"
             UIView.animate(withDuration: 0.1) {
-                self.parkinglotIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.parkinglotImageView.tintColor = Theme.PACIFIC_BLUE
-                self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.parkinglotAnchor.constant = 100
+                self.parkinglotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.parkinglotImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.parkinglotImageView.tintColor = Theme.WHITE
+                self.parkinglotImageView.layer.shadowOpacity = 1
+                self.parkinglotAnchor.constant = 80
                 self.parkinglotInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1171,16 +1204,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkParkingLotAnchor)
             }
-        } else if sender == garageIconLabel {
+        } else if sender == garageIconLabel || sender == garageImageView {
             self.parkingType = "garage"
             UIView.animate(withDuration: 0.1) {
-                self.garageIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.garageIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.garageImageView.tintColor = Theme.PACIFIC_BLUE
-                self.garageImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.garageAnchor.constant = 100
+                self.garageIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.garageIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.garageImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.garageImageView.tintColor = Theme.WHITE
+                self.garageImageView.layer.shadowOpacity = 1
+                self.garageAnchor.constant = 80
                 self.garageInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1194,16 +1227,16 @@ extension ParkingOptionsViewController {
                 self.resetUnderground()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkGarageAnchor)
             }
-        } else if sender == undergroundIconLabel {
+        } else if sender == undergroundIconLabel || sender == undergroundImageView {
             self.parkingType = "underground"
             UIView.animate(withDuration: 0.1) {
-                self.undergroundIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.undergroundIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.undergroundImageView.tintColor = Theme.PACIFIC_BLUE
-                self.undergroundImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.undergroundAnchor.constant = 100
+                self.undergroundIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.undergroundIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.undergroundImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.undergroundImageView.tintColor = Theme.WHITE
+                self.undergroundImageView.layer.shadowOpacity = 1
+                self.undergroundAnchor.constant = 80
                 self.undergroundInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1217,16 +1250,16 @@ extension ParkingOptionsViewController {
                 self.resetGarage()
                 self.resetCondo()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkUndergroundAnchor)
             }
-        } else if sender == condoIconLabel {
+        } else if sender == condoIconLabel || sender == condoImageView {
             self.parkingType = "condo"
             UIView.animate(withDuration: 0.1) {
-                self.condoIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.condoIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.condoImageView.tintColor = Theme.PACIFIC_BLUE
-                self.condoImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.condoAnchor.constant = 100
+                self.condoIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.condoIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.condoImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.condoImageView.tintColor = Theme.WHITE
+                self.condoImageView.layer.shadowOpacity = 1
+                self.condoAnchor.constant = 80
                 self.condoInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1240,16 +1273,16 @@ extension ParkingOptionsViewController {
                 self.resetGarage()
                 self.resetUnderground()
                 self.resetCircular()
-                self.checkMarkSwitched(checkAnchor: self.checkCondoAnchor)
             }
-        } else if sender == circularIconLabel {
+        } else if sender == circularIconLabel || sender == circularImageView {
             self.parkingType = "circular"
             UIView.animate(withDuration: 0.1) {
-                self.circularIconLabel.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-                self.circularIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH3
-                self.circularImageView.tintColor = Theme.PACIFIC_BLUE
-                self.circularImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                self.circularAnchor.constant = 100
+                self.circularIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.circularIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.circularImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.circularImageView.tintColor = Theme.WHITE
+                self.circularImageView.layer.shadowOpacity = 1
+                self.circularAnchor.constant = 80
                 self.circularInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1263,25 +1296,10 @@ extension ParkingOptionsViewController {
                 self.resetGarage()
                 self.resetUnderground()
                 self.resetCondo()
-                self.checkMarkSwitched(checkAnchor: self.checkCircularAnchor)
             }
         }
     }
     
-    func checkMarkSwitched(checkAnchor: NSLayoutConstraint) {
-        UIView.animate(withDuration: animationIn, animations: {
-            self.checkmark.alpha = 0
-        }) { (success) in
-            self.previousCheckAnchor.isActive = false
-            self.view.layoutIfNeeded()
-            checkAnchor.isActive = true
-            self.view.layoutIfNeeded()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.checkmark.alpha = 1
-            })
-            self.previousCheckAnchor = checkAnchor
-        }
-    }
 }
 
 
@@ -1289,11 +1307,12 @@ extension ParkingOptionsViewController {
 extension ParkingOptionsViewController {
     func resetDriveway() {
         UIView.animate(withDuration: 0.1) {
-            self.drivewayIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.drivewayIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.drivewayImageView.tintColor = Theme.DARK_GRAY
-            self.drivewayImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.drivewayAnchor.constant = 5
+            self.drivewayIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.drivewayIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.drivewayImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.drivewayImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.drivewayImageView.layer.shadowOpacity = 0
+            self.drivewayAnchor.constant = 35
             self.drivewayInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1301,11 +1320,12 @@ extension ParkingOptionsViewController {
     
     func resetSharedLot() {
         UIView.animate(withDuration: 0.1) {
-            self.sharedlotIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.sharedlotImageView.tintColor = Theme.DARK_GRAY
-            self.sharedlotImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.sharedlotAnchor.constant = 5
+            self.sharedlotIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.sharedlotImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.sharedlotImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.sharedlotImageView.layer.shadowOpacity = 0
+            self.sharedlotAnchor.constant = 35
             self.sharedlotInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1313,11 +1333,12 @@ extension ParkingOptionsViewController {
     
     func resetSharedCover() {
         UIView.animate(withDuration: 0.1) {
-            self.sharedCoverIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.sharedCoverImageView.tintColor = Theme.DARK_GRAY
-            self.sharedCoverImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.sharedGarageAnchor.constant = 5
+            self.sharedCoverIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.sharedCoverImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.sharedCoverImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.sharedCoverImageView.layer.shadowOpacity = 0
+            self.sharedGarageAnchor.constant = 35
             self.sharedCoverInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1325,11 +1346,12 @@ extension ParkingOptionsViewController {
     
     func resetAlley() {
         UIView.animate(withDuration: 0.1) {
-            self.alleyIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.alleyIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.alleyImageView.tintColor = Theme.DARK_GRAY
-            self.alleyImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.alleyAnchor.constant = 5
+            self.alleyIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.alleyIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.alleyImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.alleyImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.alleyImageView.layer.shadowOpacity = 0
+            self.alleyAnchor.constant = 35
             self.alleyInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1337,11 +1359,12 @@ extension ParkingOptionsViewController {
     
     func resetGated() {
         UIView.animate(withDuration: 0.1) {
-            self.gatedIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.gatedIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.gatedImageView.tintColor = Theme.DARK_GRAY
-            self.gatedImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.gatedAnchor.constant = 5
+            self.gatedIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.gatedIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.gatedImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.gatedImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.gatedImageView.layer.shadowOpacity = 0
+            self.gatedAnchor.constant = 35
             self.gatedInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1349,11 +1372,12 @@ extension ParkingOptionsViewController {
     
     func resetStreet() {
         UIView.animate(withDuration: 0.1) {
-            self.streetIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.streetIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.streetImageView.tintColor = Theme.DARK_GRAY
-            self.streetImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.streetAnchor.constant = 5
+            self.streetIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.streetIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.streetImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.streetImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.streetImageView.layer.shadowOpacity = 0
+            self.streetAnchor.constant = 35
             self.streetInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1361,11 +1385,12 @@ extension ParkingOptionsViewController {
     
     func resetParkingLot() {
         UIView.animate(withDuration: 0.1) {
-            self.parkinglotIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.parkinglotImageView.tintColor = Theme.DARK_GRAY
-            self.parkinglotImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.parkinglotAnchor.constant = 5
+            self.parkinglotIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.parkinglotImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.parkinglotImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.parkinglotImageView.layer.shadowOpacity = 0
+            self.parkinglotAnchor.constant =  35
             self.parkinglotInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1373,11 +1398,12 @@ extension ParkingOptionsViewController {
     
     func resetGarage() {
         UIView.animate(withDuration: 0.1) {
-            self.garageIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.garageIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.garageImageView.tintColor = Theme.DARK_GRAY
-            self.garageImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.garageAnchor.constant = 5
+            self.garageIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.garageIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.garageImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.garageImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.garageImageView.layer.shadowOpacity = 0
+            self.garageAnchor.constant = 35
             self.garageInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1385,11 +1411,12 @@ extension ParkingOptionsViewController {
     
     func resetUnderground() {
         UIView.animate(withDuration: 0.1) {
-            self.undergroundIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.undergroundIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.undergroundImageView.tintColor = Theme.DARK_GRAY
-            self.undergroundImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.undergroundAnchor.constant = 5
+            self.undergroundIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.undergroundIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.undergroundImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.undergroundImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.undergroundImageView.layer.shadowOpacity = 0
+            self.undergroundAnchor.constant = 35
             self.undergroundInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1397,11 +1424,12 @@ extension ParkingOptionsViewController {
     
     func resetCondo() {
         UIView.animate(withDuration: 0.1) {
-            self.condoIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.condoIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.condoImageView.tintColor = Theme.DARK_GRAY
-            self.condoImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.condoAnchor.constant = 5
+            self.condoIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.condoIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.condoImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.condoImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.condoImageView.layer.shadowOpacity = 0
+            self.condoAnchor.constant = 35
             self.condoInformation.alpha = 0
             self.view.layoutIfNeeded()
         }
@@ -1409,11 +1437,12 @@ extension ParkingOptionsViewController {
     
     func resetCircular() {
         UIView.animate(withDuration: 0.1) {
-            self.circularIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.circularIconLabel.titleLabel?.font = Fonts.SSPLightH3
-            self.circularImageView.tintColor = Theme.DARK_GRAY
-            self.circularImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.circularAnchor.constant = 5
+            self.circularIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.circularIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.circularImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.circularImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.circularImageView.layer.shadowOpacity = 0
+            self.circularAnchor.constant = 35
             self.circularInformation.alpha = 0
             self.view.layoutIfNeeded()
         }

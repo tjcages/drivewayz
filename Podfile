@@ -25,6 +25,11 @@ target 'DriveWayz' do
 	pod 'FacebookLogin'
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Mapbox-iOS-SDK'
+	pod 'MapboxDirections.swift'
+	pod 'MapboxSpeech'
+	#pod 'MapboxCoreNavigation'
+	pod 'MapboxNavigation'
+	pod 'ClusterKit/Mapbox'
 	pod 'Cosmos'
 	pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.2.0'
@@ -32,6 +37,6 @@ target 'DriveWayz' do
 	pod 'TextFieldEffects'
 	pod 'AFNetworking'
 	pod 'UIImageColors'
-	pod 'MapKitGoogleStyler'
+	pod 'Solar'
 
 end

@@ -16,11 +16,11 @@ class ReviewsCell: UICollectionViewCell {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: 235, height: 160)
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 2, height: 1)
-        view.layer.shadowRadius = 5
-        view.layer.shadowOpacity = 0.4
-        view.layer.cornerRadius = 5
+        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 1
+        view.layer.cornerRadius = 3
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -42,7 +42,7 @@ class ReviewsCell: UICollectionViewCell {
     var date: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH4
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
@@ -58,12 +58,25 @@ class ReviewsCell: UICollectionViewCell {
         view.settings.starSize = 20
         view.settings.starMargin = 2
         view.settings.filledColor = Theme.SEA_BLUE
-        view.settings.emptyBorderColor = Theme.OFF_WHITE
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
         view.settings.filledBorderColor = Theme.SEA_BLUE
+        view.settings.emptyColor = Theme.OFF_WHITE
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
+    }()
+    
+    var name: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.font = Fonts.SSPLightH3
+        label.textColor = Theme.BLACK
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isUserInteractionEnabled = false
+        label.textAlignment = .right
+        
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -75,14 +88,15 @@ class ReviewsCell: UICollectionViewCell {
     func setupViews() {
         
         self.addSubview(cellView)
-        cellView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        cellView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        cellView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        cellView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4).isActive = true
+        cellView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4).isActive = true
+        cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
         
         cellView.addSubview(reviewLabel)
         cellView.addSubview(stars)
         cellView.addSubview(date)
+        cellView.addSubview(name)
         
         reviewLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 20).isActive = true
         reviewLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -20).isActive = true
@@ -94,10 +108,15 @@ class ReviewsCell: UICollectionViewCell {
         date.heightAnchor.constraint(equalToConstant: 20).isActive = true
         date.widthAnchor.constraint(equalToConstant: 120).isActive = true
         
-        stars.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -20).isActive = true
+        stars.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -12).isActive = true
         stars.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10).isActive = true
-        stars.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        stars.widthAnchor.constraint(equalToConstant: 108).isActive = true
         stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        name.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -16).isActive = true
+        name.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 12).isActive = true
+        name.bottomAnchor.constraint(equalTo: stars.topAnchor, constant: -4).isActive = true
+        name.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
     }
     

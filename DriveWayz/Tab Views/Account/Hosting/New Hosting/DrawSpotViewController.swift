@@ -23,15 +23,19 @@ class DrawSpotViewController: UIViewController {
         return view
     }()
     
-    var confirmButton: UIButton = {
+    lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Confirm image", for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH2
+        button.setTitle("CONFIRM IMAGE", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.SEA_BLUE
-        button.layer.cornerRadius = 10
-        button.alpha = 1
+        button.backgroundColor = Theme.WHITE
+        button.titleLabel?.font = Fonts.SSPSemiBoldH2
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
+        background.zPosition = -10
+        button.layer.addSublayer(background)
+        button.layer.cornerRadius = 3
+        button.clipsToBounds = true
         button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -40,13 +44,13 @@ class DrawSpotViewController: UIViewController {
     lazy var hideDotsButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Hide dots", for: .normal)
+        button.setTitle("Hide square", for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 3
         button.alpha = 1
         button.addTarget(self, action: #selector(hideButtons(sender:)), for: .touchUpInside)
+        button.contentHorizontalAlignment = .left
         
         return button
     }()
@@ -61,7 +65,7 @@ class DrawSpotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.BLACK
         
         setupViews()
         addOverlay()
@@ -87,16 +91,16 @@ class DrawSpotViewController: UIViewController {
         panoView.rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
         
         self.view.addSubview(confirmButton)
-        confirmButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 106/2).isActive = true
-        confirmButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        confirmButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        confirmButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        confirmButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        confirmButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -4).isActive = true
+        confirmButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
+        confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.view.addSubview(hideDotsButton)
-        hideDotsButton.rightAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: -12).isActive = true
-        hideDotsButton.topAnchor.constraint(equalTo: confirmButton.topAnchor).isActive = true
-        hideDotsButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        hideDotsButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        hideDotsButton.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -15).isActive = true
+        hideDotsButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
+        hideDotsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
@@ -240,7 +244,7 @@ class DrawSpotViewController: UIViewController {
                 self.shapeLayer.fillColor = UIColor.clear.cgColor
             }
             self.toColor = false
-            self.hideDotsButton.setTitle("Bring dots", for: .normal)
+            self.hideDotsButton.setTitle("Bring square", for: .normal)
             self.panView.isUserInteractionEnabled = false
         } else {
             UIView.animate(withDuration: animationIn) {
@@ -252,7 +256,7 @@ class DrawSpotViewController: UIViewController {
             }
             self.startPan()
             self.toColor = true
-            self.hideDotsButton.setTitle("Hide dots", for: .normal)
+            self.hideDotsButton.setTitle("Hide square", for: .normal)
             self.panView.isUserInteractionEnabled = true
         }
         self.moveOverlay()
@@ -315,7 +319,7 @@ class DrawSpotViewController: UIViewController {
             self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
         }
         self.toColor = true
-        self.hideDotsButton.setTitle("Hide dots", for: .normal)
+        self.hideDotsButton.setTitle("Hide square", for: .normal)
         self.panView.isUserInteractionEnabled = true
     }
     

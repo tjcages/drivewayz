@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C4E18E47BB057095B773F26 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4B79697BBED8523C777701 /* Pods_DriveWayz.framework */; };
 		4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */; };
 		4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */; };
 		4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */; };
@@ -25,7 +24,6 @@
 		4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66321CDDD6800748BA3 /* MapKitMap.swift */; };
 		4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */; };
 		4D02C66921CDE9AE00748BA3 /* MapKitDrawPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */; };
-		4D02C66B21CE198500748BA3 /* JLTGradientPathRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66A21CE198500748BA3 /* JLTGradientPathRenderer.swift */; };
 		4D02C66D21D0815F00748BA3 /* ParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66C21D0815F00748BA3 /* ParkingViewController.swift */; };
 		4D02C66F21D0850E00748BA3 /* MKParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66E21D0850D00748BA3 /* MKParking.swift */; };
 		4D02C67221D1935800748BA3 /* PrimeSpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C67121D1935800748BA3 /* PrimeSpotViewController.swift */; };
@@ -46,6 +44,26 @@
 		4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */; };
 		4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD4352106B8EF0024612A /* CouponsViewController.swift */; };
 		4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */; };
+		4D202C8521E4263C00F68F13 /* ConfigureDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8421E4263C00F68F13 /* ConfigureDatabase.swift */; };
+		4D202C8921E5E12E00F68F13 /* ParkingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8821E5E12E00F68F13 /* ParkingTableViewController.swift */; };
+		4D202C8B21E6D25A00F68F13 /* MBAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */; };
+		4D202C8D21EC273800F68F13 /* MainHostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8C21EC273800F68F13 /* MainHostViewController.swift */; };
+		4D202C9021EC2CEC00F68F13 /* HostingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8F21EC2CEC00F68F13 /* HostingsController.swift */; };
+		4D202C9321ED136200F68F13 /* HostingInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */; };
+		4D202C9721ED1F2900F68F13 /* HostingProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9621ED1F2900F68F13 /* HostingProfitsViewController.swift */; };
+		4D202C9921ED247800F68F13 /* HostingDestinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9821ED247800F68F13 /* HostingDestinationViewController.swift */; };
+		4D202C9B21ED27D100F68F13 /* HostingHoursViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9A21ED27D100F68F13 /* HostingHoursViewController.swift */; };
+		4D202C9D21ED297C00F68F13 /* HostingUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9C21ED297C00F68F13 /* HostingUsersViewController.swift */; };
+		4D202CA321ED4F9100F68F13 /* HostingExpandedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CA221ED4F9100F68F13 /* HostingExpandedViewController.swift */; };
+		4D202CA521ED519600F68F13 /* ExpandedInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CA421ED519600F68F13 /* ExpandedInformationViewController.swift */; };
+		4D202CA721ED569B00F68F13 /* ExpandedCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CA621ED569B00F68F13 /* ExpandedCostViewController.swift */; };
+		4D202CA921ED59C800F68F13 /* ExpandedSpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CA821ED59C800F68F13 /* ExpandedSpotsViewController.swift */; };
+		4D202CAB21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CAA21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift */; };
+		4D202CAF21ED6E1F00F68F13 /* HostingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CAE21ED6E1F00F68F13 /* HostingReviewsViewController.swift */; };
+		4D202CB121ED8A9400F68F13 /* HostingOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CB021ED8A9400F68F13 /* HostingOptionsViewController.swift */; };
+		4D202CB321EE87AB00F68F13 /* HostingGraphsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CB221EE87AB00F68F13 /* HostingGraphsViewController.swift */; };
+		4D202CB521EE97B900F68F13 /* SecondHostingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CB421EE97B900F68F13 /* SecondHostingsController.swift */; };
+		4D202CB721EEA08500F68F13 /* ThirdHostingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CB621EEA08500F68F13 /* ThirdHostingsController.swift */; };
 		4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */; };
 		4D21D2DD20CC9FC3002D7005 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D21D2DB20CC9FC3002D7005 /* Main.storyboard */; };
 		4D21D2E220CC9FC4002D7005 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D21D2E020CC9FC4002D7005 /* LaunchScreen.storyboard */; };
@@ -92,10 +110,17 @@
 		4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */; };
 		4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */; };
 		4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */; };
+		4D5A0EF121E0009700EB38A1 /* MBNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */; };
+		4D5A0EF321E03D1C00EB38A1 /* CustomDayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5A0EF221E03D1C00EB38A1 /* CustomDayStyle.swift */; };
 		4D5F126C2176DFF800D9E38E /* HostMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5F126B2176DFF800D9E38E /* HostMessageViewController.swift */; };
 		4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */; };
 		4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */; };
 		4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6A5A7320CD976C00F404A7 /* Theme.swift */; };
+		4D70E5AA21E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70E5A921E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift */; };
+		4D70E5AC21E1CE7D00DDC4D0 /* InteractiveModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70E5AB21E1CE7D00DDC4D0 /* InteractiveModalPresentationController.swift */; };
+		4D70E5AE21E1D4D400DDC4D0 /* OldNavigationMapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70E5AD21E1D4D400DDC4D0 /* OldNavigationMapKit.swift */; };
+		4D70E5B021E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70E5AF21E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift */; };
+		4D70E5B221E2F7AC00DDC4D0 /* RegisterEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70E5B121E2F7AC00DDC4D0 /* RegisterEmailViewController.swift */; };
 		4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D74C3CA217F9A96008DC0F9 /* ParkingTypeViewController.swift */; };
 		4D74C3CD217F9EC4008DC0F9 /* SpotNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D74C3CC217F9EC4008DC0F9 /* SpotNumberViewController.swift */; };
 		4D78BDFA214EE8E100631801 /* AccountSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D78BDF9214EE8E100631801 /* AccountSlideViewController.swift */; };
@@ -140,6 +165,10 @@
 		4DCCF9EA20CCA65300B70577 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */; };
 		4DCDCD162173CE5C00E9E704 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCDCD152173CE5C00E9E704 /* ChatMessageCell.swift */; };
 		4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */; };
+		4DCFB9F521D83C7D00E910FF /* MBPolylineRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCFB9F421D83C7D00E910FF /* MBPolylineRoute.swift */; };
+		4DCFB9F721D8510800E910FF /* MBGetRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCFB9F621D8510800E910FF /* MBGetRoute.swift */; };
+		4DCFB9FF21DB376B00E910FF /* QuickDestinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCFB9FE21DB376B00E910FF /* QuickDestinationViewController.swift */; };
+		4DCFBA0A21DB785500E910FF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCFBA0921DB785500E910FF /* CalendarViewController.swift */; };
 		4DD01055217934AA000C0ADD /* HostMessageOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD01054217934AA000C0ADD /* HostMessageOptionsViewController.swift */; };
 		4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD06253216DC0510026B600 /* UserMessagesViewController.swift */; };
 		4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */; };
@@ -178,6 +207,7 @@
 		4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */; };
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
+		A0C6785314A4684C3798A61A /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AD27D9449C7C8136F52A31 /* Pods_DriveWayz.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -194,6 +224,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		05C6F213702326F1C23C9BB2 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
+		3E3B61C0F44BA705F65DF46E /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
 		4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMessageViewController.swift; sourceTree = "<group>"; };
 		4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
@@ -211,7 +243,6 @@
 		4D02C66321CDDD6800748BA3 /* MapKitMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMap.swift; sourceTree = "<group>"; };
 		4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingAvailability.swift; sourceTree = "<group>"; };
 		4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitDrawPath.swift; sourceTree = "<group>"; };
-		4D02C66A21CE198500748BA3 /* JLTGradientPathRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JLTGradientPathRenderer.swift; sourceTree = "<group>"; };
 		4D02C66C21D0815F00748BA3 /* ParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingViewController.swift; sourceTree = "<group>"; };
 		4D02C66E21D0850D00748BA3 /* MKParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKParking.swift; sourceTree = "<group>"; };
 		4D02C67121D1935800748BA3 /* PrimeSpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimeSpotViewController.swift; sourceTree = "<group>"; };
@@ -232,6 +263,26 @@
 		4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBannerAdsViewController.swift; sourceTree = "<group>"; };
 		4D1AD4352106B8EF0024612A /* CouponsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponsViewController.swift; sourceTree = "<group>"; };
 		4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAvailabilityViewController.swift; sourceTree = "<group>"; };
+		4D202C8421E4263C00F68F13 /* ConfigureDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDatabase.swift; sourceTree = "<group>"; };
+		4D202C8821E5E12E00F68F13 /* ParkingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTableViewController.swift; sourceTree = "<group>"; };
+		4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBAnnotations.swift; sourceTree = "<group>"; };
+		4D202C8C21EC273800F68F13 /* MainHostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHostViewController.swift; sourceTree = "<group>"; };
+		4D202C8F21EC2CEC00F68F13 /* HostingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingsController.swift; sourceTree = "<group>"; };
+		4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingInformationViewController.swift; sourceTree = "<group>"; };
+		4D202C9621ED1F2900F68F13 /* HostingProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingProfitsViewController.swift; sourceTree = "<group>"; };
+		4D202C9821ED247800F68F13 /* HostingDestinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingDestinationViewController.swift; sourceTree = "<group>"; };
+		4D202C9A21ED27D100F68F13 /* HostingHoursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingHoursViewController.swift; sourceTree = "<group>"; };
+		4D202C9C21ED297C00F68F13 /* HostingUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingUsersViewController.swift; sourceTree = "<group>"; };
+		4D202CA221ED4F9100F68F13 /* HostingExpandedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingExpandedViewController.swift; sourceTree = "<group>"; };
+		4D202CA421ED519600F68F13 /* ExpandedInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedInformationViewController.swift; sourceTree = "<group>"; };
+		4D202CA621ED569B00F68F13 /* ExpandedCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedCostViewController.swift; sourceTree = "<group>"; };
+		4D202CA821ED59C800F68F13 /* ExpandedSpotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedSpotsViewController.swift; sourceTree = "<group>"; };
+		4D202CAA21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedAmenitiesViewController.swift; sourceTree = "<group>"; };
+		4D202CAE21ED6E1F00F68F13 /* HostingReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingReviewsViewController.swift; sourceTree = "<group>"; };
+		4D202CB021ED8A9400F68F13 /* HostingOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingOptionsViewController.swift; sourceTree = "<group>"; };
+		4D202CB221EE87AB00F68F13 /* HostingGraphsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingGraphsViewController.swift; sourceTree = "<group>"; };
+		4D202CB421EE97B900F68F13 /* SecondHostingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHostingsController.swift; sourceTree = "<group>"; };
+		4D202CB621EEA08500F68F13 /* ThirdHostingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdHostingsController.swift; sourceTree = "<group>"; };
 		4D21D2D420CC9FC3002D7005 /* DriveWayz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveWayz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D21D2DC20CC9FC3002D7005 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -279,10 +330,17 @@
 		4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
 		4D53F9AB20D9837400A1C1FA /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBNavigation.swift; sourceTree = "<group>"; };
+		4D5A0EF221E03D1C00EB38A1 /* CustomDayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDayStyle.swift; sourceTree = "<group>"; };
 		4D5F126B2176DFF800D9E38E /* HostMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostMessageViewController.swift; sourceTree = "<group>"; };
 		4D665AF32117E6BB00CBA19A /* BannerAdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdViewController.swift; sourceTree = "<group>"; };
 		4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAGradientLayer.swift; sourceTree = "<group>"; };
 		4D6A5A7320CD976C00F404A7 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		4D70E5A921E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveModalTransitioningDelegate.swift; sourceTree = "<group>"; };
+		4D70E5AB21E1CE7D00DDC4D0 /* InteractiveModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveModalPresentationController.swift; sourceTree = "<group>"; };
+		4D70E5AD21E1D4D400DDC4D0 /* OldNavigationMapKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldNavigationMapKit.swift; sourceTree = "<group>"; };
+		4D70E5AF21E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmParkingViewController.swift; sourceTree = "<group>"; };
+		4D70E5B121E2F7AC00DDC4D0 /* RegisterEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterEmailViewController.swift; sourceTree = "<group>"; };
 		4D745B1620FB9CAD00F82BDF /* DriveWayz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveWayz.entitlements; sourceTree = "<group>"; };
 		4D74C3CA217F9A96008DC0F9 /* ParkingTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTypeViewController.swift; sourceTree = "<group>"; };
 		4D74C3CC217F9EC4008DC0F9 /* SpotNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotNumberViewController.swift; sourceTree = "<group>"; };
@@ -328,6 +386,10 @@
 		4DCCF9E920CCA65300B70577 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4DCDCD152173CE5C00E9E704 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatMessageCell.swift; path = ../../../CollegeFeed/CollegeFeed/ChatMessageCell.swift; sourceTree = "<group>"; };
 		4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicles.swift; sourceTree = "<group>"; };
+		4DCFB9F421D83C7D00E910FF /* MBPolylineRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBPolylineRoute.swift; sourceTree = "<group>"; };
+		4DCFB9F621D8510800E910FF /* MBGetRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBGetRoute.swift; sourceTree = "<group>"; };
+		4DCFB9FE21DB376B00E910FF /* QuickDestinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDestinationViewController.swift; sourceTree = "<group>"; };
+		4DCFBA0921DB785500E910FF /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		4DD01054217934AA000C0ADD /* HostMessageOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostMessageOptionsViewController.swift; sourceTree = "<group>"; };
 		4DD06253216DC0510026B600 /* UserMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessagesViewController.swift; sourceTree = "<group>"; };
 		4DD370AE20F198DB005154C2 /* ParkingInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingInfoViewController.swift; sourceTree = "<group>"; };
@@ -368,9 +430,7 @@
 		4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecentViewController.swift; sourceTree = "<group>"; };
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
-		8879E2175750127E208ECC2A /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
-		A72E08D5EE4F08B0DFAD2F0C /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
-		AC4B79697BBED8523C777701 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97AD27D9449C7C8136F52A31 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -380,7 +440,7 @@
 			files = (
 				4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */,
 				4D8A3E3121667D6F00540905 /* MapKit.framework in Frameworks */,
-				2C4E18E47BB057095B773F26 /* Pods_DriveWayz.framework in Frameworks */,
+				A0C6785314A4684C3798A61A /* Pods_DriveWayz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,19 +462,12 @@
 			isa = PBXGroup;
 			children = (
 				4D9FB806213EF70400899829 /* MapKitViewController.swift */,
-				4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */,
-				4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */,
-				4D02C66E21D0850D00748BA3 /* MKParking.swift */,
-				4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */,
-				4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */,
-				4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */,
-				4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */,
-				4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */,
-				4D02C66321CDDD6800748BA3 /* MapKitMap.swift */,
-				4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */,
-				4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */,
-				4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */,
-				4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */,
+				4DCFB9F421D83C7D00E910FF /* MBPolylineRoute.swift */,
+				4DCFB9F621D8510800E910FF /* MBGetRoute.swift */,
+				4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */,
+				4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */,
+				4DCFB9F321D83C4600E910FF /* MapKit */,
+				4D70E5A821E1CDFD00DDC4D0 /* Transitions */,
 			);
 			path = MapKit;
 			sourceTree = "<group>";
@@ -427,6 +480,7 @@
 				4D02C67921D1952800748BA3 /* StandardSpotViewController.swift */,
 				4D02C67521D1938100748BA3 /* BestPriceViewController.swift */,
 				4D02C67721D193BB00748BA3 /* ReservationsViewController.swift */,
+				4DCFB9FE21DB376B00E910FF /* QuickDestinationViewController.swift */,
 			);
 			path = "Parking Options";
 			sourceTree = "<group>";
@@ -439,13 +493,72 @@
 			path = Help;
 			sourceTree = "<group>";
 		};
+		4D202C8621E4264900F68F13 /* Old Hosting */ = {
+			isa = PBXGroup;
+			children = (
+				4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */,
+				4DC261B3214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift */,
+				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
+				4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */,
+			);
+			path = "Old Hosting";
+			sourceTree = "<group>";
+		};
+		4D202C8721E5E0BE00F68F13 /* Past_Previous Parking */ = {
+			isa = PBXGroup;
+			children = (
+				4D202C8821E5E12E00F68F13 /* ParkingTableViewController.swift */,
+			);
+			path = "Past_Previous Parking";
+			sourceTree = "<group>";
+		};
+		4D202C8E21EC279100F68F13 /* Old Hosting */ = {
+			isa = PBXGroup;
+			children = (
+				4DFFC258210B4F09006D6062 /* CurrentViewController.swift */,
+				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
+				4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */,
+				4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */,
+				4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */,
+			);
+			path = "Old Hosting";
+			sourceTree = "<group>";
+		};
+		4D202C9121ED134000F68F13 /* Hosting Controls */ = {
+			isa = PBXGroup;
+			children = (
+				4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */,
+				4D202C9621ED1F2900F68F13 /* HostingProfitsViewController.swift */,
+				4D202C9821ED247800F68F13 /* HostingDestinationViewController.swift */,
+				4D202C9A21ED27D100F68F13 /* HostingHoursViewController.swift */,
+				4D202C9C21ED297C00F68F13 /* HostingUsersViewController.swift */,
+				4D202CB221EE87AB00F68F13 /* HostingGraphsViewController.swift */,
+				4D202CA221ED4F9100F68F13 /* HostingExpandedViewController.swift */,
+				4D202CA121ED4F7400F68F13 /* Expanded Information */,
+				4D202CAE21ED6E1F00F68F13 /* HostingReviewsViewController.swift */,
+				4D202CB021ED8A9400F68F13 /* HostingOptionsViewController.swift */,
+			);
+			path = "Hosting Controls";
+			sourceTree = "<group>";
+		};
+		4D202CA121ED4F7400F68F13 /* Expanded Information */ = {
+			isa = PBXGroup;
+			children = (
+				4D202CA421ED519600F68F13 /* ExpandedInformationViewController.swift */,
+				4D202CA621ED569B00F68F13 /* ExpandedCostViewController.swift */,
+				4D202CA821ED59C800F68F13 /* ExpandedSpotsViewController.swift */,
+				4D202CAA21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift */,
+			);
+			path = "Expanded Information";
+			sourceTree = "<group>";
+		};
 		4D21D2CB20CC9FC3002D7005 = {
 			isa = PBXGroup;
 			children = (
 				4D21D2D620CC9FC3002D7005 /* DriveWayz */,
-				4D21D2D520CC9FC3002D7005 /* Products */,
 				90AD91F4ABE5AAC0BB7393D9 /* Frameworks */,
-				C9C49E0726D06EDFB827E636 /* Pods */,
+				4D21D2D520CC9FC3002D7005 /* Products */,
+				BDFC09A07FFF32478DF4E8E8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -490,7 +603,7 @@
 				4D2EB5C121016EED004AEA54 /* ParkingStatus.swift */,
 				4DBD6D0F21C4BC3700C52991 /* LocalEvents.swift */,
 				4DBD6D1721C8840900C52991 /* Reachability.swift */,
-				4D02C66A21CE198500748BA3 /* JLTGradientPathRenderer.swift */,
+				4D5A0EF221E03D1C00EB38A1 /* CustomDayStyle.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -528,6 +641,7 @@
 				4D21D30B20CC9FF9002D7005 /* AccountViewController.swift */,
 				4D78BDF9214EE8E100631801 /* AccountSlideViewController.swift */,
 				4DB8F12D21509C6E00FC11BD /* Account Controllers */,
+				4D202C8721E5E0BE00F68F13 /* Past_Previous Parking */,
 				4D9066E721AF2E4F0007EA52 /* Settings */,
 				4D0F0BA121AD19790022D1B4 /* Help */,
 				4D45073821370E8B005CD8D7 /* Analytics */,
@@ -651,6 +765,16 @@
 			path = Maps;
 			sourceTree = "<group>";
 		};
+		4D70E5A821E1CDFD00DDC4D0 /* Transitions */ = {
+			isa = PBXGroup;
+			children = (
+				4D70E5A921E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift */,
+				4D70E5AB21E1CE7D00DDC4D0 /* InteractiveModalPresentationController.swift */,
+			);
+			name = Transitions;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		4D79A6F32152F9DD003D1711 /* Upcoming */ = {
 			isa = PBXGroup;
 			children = (
@@ -666,6 +790,7 @@
 			children = (
 				4D53F9A520D97BFB00A1C1FA /* MapViewController.swift */,
 				4D8CE1E4213FA51E00C6C61E /* ParkingAnnotationViews.swift */,
+				4D70E5AD21E1D4D400DDC4D0 /* OldNavigationMapKit.swift */,
 			);
 			path = "Map Info";
 			sourceTree = "<group>";
@@ -719,11 +844,12 @@
 		4DB8F1332150B0BA00FC11BD /* Hosting */ = {
 			isa = PBXGroup;
 			children = (
-				4DFFC258210B4F09006D6062 /* CurrentViewController.swift */,
-				4DFB449920F407D6007A54B1 /* UserParkingViewController.swift */,
-				4DD370B720F2D42A005154C2 /* DataChartsViewController.swift */,
-				4DFB44A120F59395007A54B1 /* BankAccountViewController.swift */,
-				4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */,
+				4D202C8E21EC279100F68F13 /* Old Hosting */,
+				4D202C8C21EC273800F68F13 /* MainHostViewController.swift */,
+				4D202C8F21EC2CEC00F68F13 /* HostingsController.swift */,
+				4D202CB421EE97B900F68F13 /* SecondHostingsController.swift */,
+				4D202CB621EEA08500F68F13 /* ThirdHostingsController.swift */,
+				4D202C9121ED134000F68F13 /* Hosting Controls */,
 				4DC261B2214710A900D6DCD3 /* New Hosting */,
 			);
 			path = Hosting;
@@ -732,10 +858,8 @@
 		4DC261B2214710A900D6DCD3 /* New Hosting */ = {
 			isa = PBXGroup;
 			children = (
-				4DFB449D20F419D0007A54B1 /* AddANewParkingSpotViewController.swift */,
-				4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */,
-				4D4E6933218B4D6500E5D18A /* BecomeHostViewController.swift */,
 				4DC261B02145E05B00D6DCD3 /* ConfigureParkingViewController.swift */,
+				4D4E6933218B4D6500E5D18A /* BecomeHostViewController.swift */,
 				4D4E6935218B566A00E5D18A /* StartHostingViewController.swift */,
 				4D74C3CA217F9A96008DC0F9 /* ParkingTypeViewController.swift */,
 				4D8EA26721816AE800F6469C /* ParkingOptionsTableViewController.swift */,
@@ -747,11 +871,14 @@
 				4DB79B5E2188091800928C7F /* SpotPicturesViewController.swift */,
 				4D4E6931218A75C200E5D18A /* BusinessPicturesViewController.swift */,
 				4DC7219C2191290800E5E2B3 /* DrawSpotViewController.swift */,
-				4DC261B3214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift */,
+				4DCFBA0921DB785500E910FF /* CalendarViewController.swift */,
 				4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */,
 				4D035F4721476BB100A380B8 /* PickCostViewController.swift */,
 				4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */,
-				4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */,
+				4D70E5B121E2F7AC00DDC4D0 /* RegisterEmailViewController.swift */,
+				4D70E5AF21E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift */,
+				4D202C8421E4263C00F68F13 /* ConfigureDatabase.swift */,
+				4D202C8621E4264900F68F13 /* Old Hosting */,
 			);
 			path = "New Hosting";
 			sourceTree = "<group>";
@@ -775,6 +902,26 @@
 				4D353C2021C99FD000AE07B4 /* overlay.json */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		4DCFB9F321D83C4600E910FF /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */,
+				4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */,
+				4D02C66E21D0850D00748BA3 /* MKParking.swift */,
+				4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */,
+				4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */,
+				4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */,
+				4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */,
+				4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */,
+				4D02C66321CDDD6800748BA3 /* MapKitMap.swift */,
+				4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */,
+				4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */,
+				4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */,
+				4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */,
+			);
+			path = MapKit;
 			sourceTree = "<group>";
 		};
 		4DD9768320FE5433002C71BF /* Payment */ = {
@@ -860,16 +1007,16 @@
 			children = (
 				4D8A3E3021667D6F00540905 /* MapKit.framework */,
 				4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */,
-				AC4B79697BBED8523C777701 /* Pods_DriveWayz.framework */,
+				97AD27D9449C7C8136F52A31 /* Pods_DriveWayz.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C9C49E0726D06EDFB827E636 /* Pods */ = {
+		BDFC09A07FFF32478DF4E8E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A72E08D5EE4F08B0DFAD2F0C /* Pods-DriveWayz.debug.xcconfig */,
-				8879E2175750127E208ECC2A /* Pods-DriveWayz.release.xcconfig */,
+				3E3B61C0F44BA705F65DF46E /* Pods-DriveWayz.debug.xcconfig */,
+				05C6F213702326F1C23C9BB2 /* Pods-DriveWayz.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -881,13 +1028,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4D21D2E620CC9FC4002D7005 /* Build configuration list for PBXNativeTarget "DriveWayz" */;
 			buildPhases = (
-				3699B46E2ECAEC90D8AE4F8A /* [CP] Check Pods Manifest.lock */,
+				7027E7CFEAD7E62A84FD11A9 /* [CP] Check Pods Manifest.lock */,
 				4D21D2D020CC9FC3002D7005 /* Sources */,
 				4D21D2D120CC9FC3002D7005 /* Frameworks */,
 				4D21D2D220CC9FC3002D7005 /* Resources */,
 				4DCFE79020FC2A6F00073677 /* Embed App Extensions */,
-				AA26FDB9D24854F4AD05636F /* [CP] Embed Pods Frameworks */,
-				EC6A1B2D1499A8B727DDB30F /* [CP] Copy Pods Resources */,
+				D175E2255A88D0D255C51CF6 /* [CP] Embed Pods Frameworks */,
+				1D049F2691D57582D587D559 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -935,6 +1082,29 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				he,
+				ar,
+				"zh-Hans",
+				fa,
+				uk,
+				es,
+				sl,
+				da,
+				it,
+				bg,
+				sv,
+				ko,
+				"zh-Hant",
+				hu,
+				"pt-BR",
+				vi,
+				lt,
+				ru,
+				fr,
+				nl,
+				"pt-PT",
+				ca,
 			);
 			mainGroup = 4D21D2CB20CC9FC3002D7005;
 			productRefGroup = 4D21D2D520CC9FC3002D7005 /* Products */;
@@ -977,99 +1147,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3699B46E2ECAEC90D8AE4F8A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AA26FDB9D24854F4AD05636F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MapKitGoogleStyler/MapKitGoogleStyler.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
-				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
-				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
-				"${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
-				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
-				"${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapKitGoogleStyler.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polyline.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOMSMorphingLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageColors.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EC6A1B2D1499A8B727DDB30F /* [CP] Copy Pods Resources */ = {
+		1D049F2691D57582D587D559 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1097,6 +1175,116 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7027E7CFEAD7E62A84FD11A9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D175E2255A88D0D255C51CF6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/ClusterKit/ClusterKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/MapboxCoreNavigation/MapboxCoreNavigation.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxDirections.swift/MapboxDirections.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxNavigation/MapboxNavigation.framework",
+				"${PODS_ROOT}/MapboxNavigationNative/MapboxNavigationNative.framework",
+				"${PODS_ROOT}/MapboxNavigationNative/MapboxNavigationNative.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/MapboxSpeech/MapboxSpeech.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxStatic.swift/MapboxStatic.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/PushNotifications/PushNotifications.framework",
+				"${BUILT_PRODUCTS_DIR}/Solar/Solar.framework",
+				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TOMSMorphingLabel/TOMSMorphingLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
+				"${BUILT_PRODUCTS_DIR}/Turf/Turf.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ClusterKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxCoreNavigation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxDirections.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxNavigation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxNavigationNative.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/MapboxNavigationNative.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxSpeech.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxStatic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polyline.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PushNotifications.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Solar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOMSMorphingLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Turf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageColors.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1104,6 +1292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D70E5AE21E1D4D400DDC4D0 /* OldNavigationMapKit.swift in Sources */,
 				4D8CE1E5213FA51E00C6C61E /* ParkingAnnotationViews.swift in Sources */,
 				4DB8F13021509F9900FC11BD /* VehicleViewController.swift in Sources */,
 				4DFFC259210B4F09006D6062 /* CurrentViewController.swift in Sources */,
@@ -1114,9 +1303,12 @@
 				4D45074021379932005CD8D7 /* ProfitsViewController.swift in Sources */,
 				4DD3B63621960CC7008B1417 /* MapSearchViewController.swift in Sources */,
 				4D8CE1EA2140C97D00C6C61E /* UpcomingInfoViewController.swift in Sources */,
+				4D70E5AC21E1CE7D00DDC4D0 /* InteractiveModalPresentationController.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
+				4D202C9B21ED27D100F68F13 /* HostingHoursViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
+				4D202C9321ED136200F68F13 /* HostingInformationViewController.swift in Sources */,
 				4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */,
 				4DFB449820F407CA007A54B1 /* OldVehicleViewController.swift in Sources */,
 				4D0F0B9C21ACCFE50022D1B4 /* SettingsCell.swift in Sources */,
@@ -1132,13 +1324,19 @@
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
 				4D02C65E21CDDC4D00748BA3 /* MapKitLocator.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
+				4D5A0EF121E0009700EB38A1 /* MBNavigation.swift in Sources */,
 				4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */,
 				4DD370B320F19909005154C2 /* ParkingReviewsViewController.swift in Sources */,
 				4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */,
+				4D202CB321EE87AB00F68F13 /* HostingGraphsViewController.swift in Sources */,
 				4D02C66F21D0850E00748BA3 /* MKParking.swift in Sources */,
 				4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */,
 				4D2EB5C421038F34004AEA54 /* InformationViewController.swift in Sources */,
 				4DBD6D1221C4BC7D00C52991 /* EventsViewController.swift in Sources */,
+				4D70E5B021E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift in Sources */,
+				4D5A0EF321E03D1C00EB38A1 /* CustomDayStyle.swift in Sources */,
+				4D202CA721ED569B00F68F13 /* ExpandedCostViewController.swift in Sources */,
+				4D202CB721EEA08500F68F13 /* ThirdHostingsController.swift in Sources */,
 				4D30466F21AF7A9300AF31F9 /* CurrentVehicleViewController.swift in Sources */,
 				4D02C65021CD94D500748BA3 /* LocationServicesViewController.swift in Sources */,
 				4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */,
@@ -1155,6 +1353,7 @@
 				4DE49013218BF1AD00171BB8 /* Utility.swift in Sources */,
 				4D057AF22115E4F6003F9EED /* ParkingReserveViewController.swift in Sources */,
 				4DCA492D20F018D500F00B3B /* Buttons.swift in Sources */,
+				4D70E5AA21E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift in Sources */,
 				4D74C3CD217F9EC4008DC0F9 /* SpotNumberViewController.swift in Sources */,
 				4DD370B820F2D42A005154C2 /* DataChartsViewController.swift in Sources */,
 				4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */,
@@ -1168,6 +1367,9 @@
 				4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */,
 				4DFC29112134989200013FC3 /* UserUpcomingViewController.swift in Sources */,
 				4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */,
+				4D202CAB21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift in Sources */,
+				4D202CB121ED8A9400F68F13 /* HostingOptionsViewController.swift in Sources */,
+				4D202C9D21ED297C00F68F13 /* HostingUsersViewController.swift in Sources */,
 				4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */,
 				4DBD6D0A21C46A0200C52991 /* MapRecentViewController.swift in Sources */,
 				4D02C64E21CD83D700748BA3 /* OnboardingViewController.swift in Sources */,
@@ -1184,15 +1386,21 @@
 				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
 				4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */,
 				4DB79B5D2187DDC800928C7F /* MapParkingViewController.swift in Sources */,
+				4D202CA321ED4F9100F68F13 /* HostingExpandedViewController.swift in Sources */,
 				4DBD6D1021C4BC3700C52991 /* LocalEvents.swift in Sources */,
 				4D79A6F52152FA56003D1711 /* UpcomingViewController.swift in Sources */,
 				4D0F0B9A21ACC6BC0022D1B4 /* UserSettingsViewController.swift in Sources */,
 				4D6A5A7720CD976C00F404A7 /* Theme.swift in Sources */,
 				4DFB449C20F419BC007A54B1 /* AddANewVehicleViewController.swift in Sources */,
+				4D202C8D21EC273800F68F13 /* MainHostViewController.swift in Sources */,
 				4D45073721370E85005CD8D7 /* RetentionViewController.swift in Sources */,
+				4DCFBA0A21DB785500E910FF /* CalendarViewController.swift in Sources */,
 				4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */,
 				4DB79B5F2188091800928C7F /* SpotPicturesViewController.swift in Sources */,
 				4D21D31F20CC9FF9002D7005 /* Extensions.swift in Sources */,
+				4DCFB9F721D8510800E910FF /* MBGetRoute.swift in Sources */,
+				4D202CA921ED59C800F68F13 /* ExpandedSpotsViewController.swift in Sources */,
+				4D202C9021EC2CEC00F68F13 /* HostingsController.swift in Sources */,
 				4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */,
 				4DD95238218024C10036BB28 /* AmenitiesParkingViewController.swift in Sources */,
 				4D21D31720CC9FF9002D7005 /* Message.swift in Sources */,
@@ -1200,6 +1408,7 @@
 				4D5F126C2176DFF800D9E38E /* HostMessageViewController.swift in Sources */,
 				4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */,
 				4D0F0BA321AD19AA0022D1B4 /* EditSettingsViewController.swift in Sources */,
+				4D202C9721ED1F2900F68F13 /* HostingProfitsViewController.swift in Sources */,
 				4D30466D21AF781E00AF31F9 /* VehicleCell.swift in Sources */,
 				4D8CFF352158433400FE22A5 /* RegisterViewController.swift in Sources */,
 				4D1AD456210800C50024612A /* PersonalAvailabilityViewController.swift in Sources */,
@@ -1208,6 +1417,7 @@
 				4D02C67621D1938100748BA3 /* BestPriceViewController.swift in Sources */,
 				4D78BDFA214EE8E100631801 /* AccountSlideViewController.swift in Sources */,
 				4DCC6C0121134D3200AEEF35 /* LaunchAnimationsViewController.swift in Sources */,
+				4D202C9921ED247800F68F13 /* HostingDestinationViewController.swift in Sources */,
 				4DB79B5B2187CCB200928C7F /* ResultsCell.swift in Sources */,
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
@@ -1218,19 +1428,26 @@
 				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
 				4D2B28FA2155B1960083F588 /* SignInViewController.swift in Sources */,
 				4D4D728F217945FF00D936DB /* ParkingMessageOptionsViewController.swift in Sources */,
+				4D202CA521ED519600F68F13 /* ExpandedInformationViewController.swift in Sources */,
+				4D202C8521E4263C00F68F13 /* ConfigureDatabase.swift in Sources */,
 				4D02C65821CDDADE00748BA3 /* MapKitHostingSpots.swift in Sources */,
+				4D202C8921E5E12E00F68F13 /* ParkingTableViewController.swift in Sources */,
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
 				4D02C66D21D0815F00748BA3 /* ParkingViewController.swift in Sources */,
 				4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */,
 				4DD9768520FE5446002C71BF /* PurchaseViewController.swift in Sources */,
+				4DCFB9F521D83C7D00E910FF /* MBPolylineRoute.swift in Sources */,
 				4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */,
 				4D665AF42117E6BB00CBA19A /* BannerAdViewController.swift in Sources */,
+				4D202CB521EE97B900F68F13 /* SecondHostingsController.swift in Sources */,
 				4D2C5F8A211938D100364CB6 /* ReserveViewController.swift in Sources */,
-				4D02C66B21CE198500748BA3 /* JLTGradientPathRenderer.swift in Sources */,
+				4DCFB9FF21DB376B00E910FF /* QuickDestinationViewController.swift in Sources */,
 				4D45073C21377F34005CD8D7 /* NewUsersViewController.swift in Sources */,
 				4DE78F58216C5D8D00B99835 /* SendNotificationsViewController.swift in Sources */,
 				4D8CFF372158854E00FE22A5 /* LoginViewController.swift in Sources */,
 				4D30467121AF9AA700AF31F9 /* DrivewayzTermsViewController.swift in Sources */,
+				4D70E5B221E2F7AC00DDC4D0 /* RegisterEmailViewController.swift in Sources */,
+				4D202C8B21E6D25A00F68F13 /* MBAnnotations.swift in Sources */,
 				4DBD6D1421C4CD0700C52991 /* EventCell.swift in Sources */,
 				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
 				4DCA492C20F018D500F00B3B /* CheckoutRowView.swift in Sources */,
@@ -1244,6 +1461,7 @@
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */,
 				4DD3B63821961C26008B1417 /* SpeechRecognitionViewController.swift in Sources */,
+				4D202CAF21ED6E1F00F68F13 /* HostingReviewsViewController.swift in Sources */,
 				4D02C65621CDDA7900748BA3 /* MapKitNetworkConnection.swift in Sources */,
 				4D0F0BA021AD0CF80022D1B4 /* ContactDrivewayzViewController.swift in Sources */,
 				4D02C65221CDD89A00748BA3 /* MapKitMainBar.swift in Sources */,
@@ -1393,7 +1611,7 @@
 		};
 		4D21D2E720CC9FC4002D7005 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A72E08D5EE4F08B0DFAD2F0C /* Pods-DriveWayz.debug.xcconfig */;
+			baseConfigurationReference = 3E3B61C0F44BA705F65DF46E /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -1416,7 +1634,7 @@
 		};
 		4D21D2E820CC9FC4002D7005 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8879E2175750127E208ECC2A /* Pods-DriveWayz.release.xcconfig */;
+			baseConfigurationReference = 05C6F213702326F1C23C9BB2 /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;

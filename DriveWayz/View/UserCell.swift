@@ -29,7 +29,7 @@ class UserCell: UITableViewCell {
     var parking: ParkingSpots? {
         didSet {
             setUpParkingSpot()
-            detailTextLabel?.text = parking?.parkingCost
+//            detailTextLabel?.text = parking?.parkingCost
             if let seconds = parking?.timestamp?.doubleValue {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
                 let dateFormatter = DateFormatter()
@@ -66,7 +66,7 @@ class UserCell: UITableViewCell {
     }
     
     private func setUpParkingSpot() {
-        textLabel?.text = parking?.parkingCost
+//        textLabel?.text = parking?.parkingCost
     }
     
     override func layoutSubviews() {

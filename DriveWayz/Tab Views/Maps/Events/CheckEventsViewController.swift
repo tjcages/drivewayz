@@ -69,7 +69,7 @@ class CheckEventsViewController: UIViewController {
         
         view.backgroundColor = Theme.DARK_GRAY
         view.layer.cornerRadius = 3
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.6

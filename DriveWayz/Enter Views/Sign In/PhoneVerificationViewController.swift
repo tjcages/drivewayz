@@ -256,8 +256,8 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         viewContainer.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
         backButton.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 24).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.view.addSubview(verificationController.view)
         verificationController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -364,6 +364,8 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         }) { (success) in
         }
     }
+    
+    
     
     func createToolbar() {
         

@@ -21,7 +21,7 @@ class SpotNumberViewController: UIViewController {
     var numberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "Number of spots"
         label.font = Fonts.SSPRegularH5
         
@@ -32,6 +32,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "1"
+        view.textColor = Theme.WHITE
         view.font = Fonts.SSPLightH3
         view.tintColor = .clear
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -50,7 +51,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "Does the spot have a number?"
         label.font = Fonts.SSPRegularH5
         
@@ -78,7 +79,8 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.HARMONY_RED
+        view.textColor = Theme.WHITE
+        view.tintColor = Theme.SEA_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
@@ -96,7 +98,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "Gate code?"
         label.font = Fonts.SSPRegularH5
         
@@ -124,7 +126,8 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.HARMONY_RED
+        view.textColor = Theme.WHITE
+        view.tintColor = Theme.SEA_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         
@@ -141,6 +144,8 @@ class SpotNumberViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.clear
         
         numberField.delegate = self
         spotNumberField.delegate = self

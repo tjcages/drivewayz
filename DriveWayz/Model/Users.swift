@@ -16,8 +16,12 @@ class Users: NSObject {
     var picture: String?
 }
 
-
 enum Device {
     case iphone8
     case iphoneX
+}
+
+enum SolarTime {
+    case day
+    case night
 }

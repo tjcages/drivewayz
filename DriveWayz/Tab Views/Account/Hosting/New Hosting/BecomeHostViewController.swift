@@ -37,8 +37,9 @@ class BecomeHostViewController: UIViewController {
     lazy var purpleGradient: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        view.backgroundColor = Theme.WHITE
+        let background = CAGradientLayer().customColor(topColor: Theme.BLACK, bottomColor: Theme.BLACK.withAlphaComponent(0.9))
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width + 10, height: self.view.frame.height)
         background.zPosition = -10
         view.layer.addSublayer(background)
         
@@ -76,15 +77,15 @@ class BecomeHostViewController: UIViewController {
     func startAnimations() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             UIView.animate(withDuration: animationIn, animations: {
-                self.drivewayzCar.alpha = 1
+//                self.drivewayzCar.alpha = 1
                 self.morphingLabel.alpha = 1
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 UIView.animate(withDuration: animationIn, animations: {
-                    self.drivewayzCar.alpha = 0
+//                    self.drivewayzCar.alpha = 0
                     self.morphingLabel.alpha = 0
                 }, completion: { (success) in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         UIView.animate(withDuration: animationIn, animations: {
                             self.view.alpha = 0
                         })

@@ -25,6 +25,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
         
         return view
     }()
@@ -401,7 +402,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Additional images (optional)"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH3
         
         return label
@@ -725,10 +726,9 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         }
     }
     
-    var drawController: DrawSpotViewController!
+    var drawController = DrawSpotViewController()
     
     func sendDraw(image: UIImage) {
-        drawController = DrawSpotViewController()
         drawController.view.translatesAutoresizingMaskIntoConstraints = false
         drawController.delegate = self
         drawController.view.alpha = 0

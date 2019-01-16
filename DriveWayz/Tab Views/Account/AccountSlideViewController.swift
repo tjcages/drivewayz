@@ -19,8 +19,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a Spot", "Reservations", "Past Bookings", "Vehicle", "Inbox", "Become a Host", "Help", "Settings"]
-    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "parking_history")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
+    var options: [String] = ["Book a Spot", "Your Bookings", "Vehicle", "Inbox", "My Parking Spots", "Help", "Settings"]
+    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
     let cellId = "cellId"
     
     lazy var container: UIView = {
@@ -425,11 +425,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
         cell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        cell.profileImageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
     }
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
         cell.messageTextView.textColor = Theme.BLACK
+        cell.profileImageView.tintColor = Theme.BLACK
     }
     
     var analControllerAnchor: NSLayoutConstraint!
@@ -440,10 +442,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             self.upcomingMark.alpha = 0
         }
         if tableView == optionsTableView {
-            if options[indexPath.row] == "Reservations" {
+            if options[indexPath.row] == "Your Bookings" {
                 self.openAccountView()
                 self.delegate?.bringUpcomingController()
-            } else if options[indexPath.row] == "Hosting" {
+            } else if options[indexPath.row] == "My Parking Spots" {
                 self.openAccountView()
                 self.delegate?.bringHostingController()
             } else if options[indexPath.row] == "Become a Host" {

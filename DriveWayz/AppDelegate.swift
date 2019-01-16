@@ -18,8 +18,10 @@ import Stripe
 import FacebookCore
 import UserNotifications
 import AFNetworking
+import Solar
 
 var device: Device = .iphone8
+var solar: SolarTime = .day
 let NetworkReachabilityChanged = NSNotification.Name("NetworkReachabilityChanged")
 var previousNetworkReachabilityStatus: AFNetworkReachabilityStatus = .unknown
 
@@ -151,13 +153,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
 //        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        CurrentParkingViewController().stopTimerTest()
+//        CurrentParkingViewController().stopTimerTest()
+        let date = Date()
+        UserDefaults.standard.setValue(date, forKey: "lastDateOpened")
+        UserDefaults.standard.synchronize()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        timerStarted = false
-        CurrentParkingViewController().restartDatabaseTimer()
-        startTimer()
+//        timerStarted = false
+//        CurrentParkingViewController().restartDatabaseTimer()
+//        startTimer()
+        if let date = UserDefaults.standard.object(forKey: "lastDateOpened") as? Date {
+            let currentDate = Date()
+            let time = currentDate.minutes(from: date)
+            if time > 30 {
+                self.restartApplication()
+            }
+        }
     }
     
     func startTimer() {
@@ -201,6 +213,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 device = .iphone8
             }
         }
+        let locationManager = CLLocationManager()
+        if CLLocationManager.locationServicesEnabled(), let currentLocation = locationManager.location?.coordinate {
+            let date = Date()
+            let calendar = Calendar.current
+            if let solarTime = Solar(coordinate: currentLocation) {
+                if let sunrise = solarTime.civilSunrise?.addingTimeInterval(-1 * 3600), let sunset = solarTime.civilSunset?.addingTimeInterval(1 * 3600) {
+                    let sunriseHour = calendar.component(.hour, from: sunrise.nearestHour()!)
+                    let sunsetHour = calendar.component(.hour, from: sunset.nearestHour()!)
+                    let dateHour = calendar.component(.hour, from: date.nearestHour()!)
+                    if dateHour <= sunsetHour && dateHour >= sunriseHour {
+                        solar = .day
+                    } else {
+                        solar = .night
+                    }
+                }
+            }
+        }
+    }
+    
+    func restartApplication () {
+        let viewController = LaunchAnimationsViewController()
+        let navCtrl = UINavigationController(rootViewController: viewController)
+        
+        guard
+            let window = UIApplication.shared.keyWindow,
+            let rootViewController = window.rootViewController
+            else {
+                return
+        }
+        navCtrl.view.frame = rootViewController.view.frame
+        navCtrl.setNavigationBarHidden(true, animated: false)
+        navCtrl.view.layoutIfNeeded()
+        
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            window.rootViewController = navCtrl
+        })
+        
     }
 }
 

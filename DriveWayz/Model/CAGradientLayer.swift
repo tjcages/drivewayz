@@ -163,6 +163,17 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
+    @objc func customVerticalColor(topColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        
+        return gradientLayer
+    }
     
 }
 

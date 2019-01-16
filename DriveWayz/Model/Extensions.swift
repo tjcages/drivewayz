@@ -142,6 +142,47 @@ extension UIImage {
     }
 }
 
+extension UIImage {
+    
+    func isEqualToImage(image: UIImage) -> Bool {
+        let data1: NSData = self.pngData()! as NSData
+        let data2: NSData = image.pngData()! as NSData
+        return data1.isEqual(data2)
+    }
+
+}
+
+func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    let size = image.size
+    
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+    
+    // Figure out what our orientation is, and use that to form the rectangle
+    var newSize: CGSize
+    if(widthRatio > heightRatio) {
+        newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+    } else {
+        newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+    }
+    
+    // This is the rect that we've calculated out and this is what is actually used below
+    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+    
+    // Actually do the resizing to the rect using the ImageContext stuff
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    if let newImage = UIGraphicsGetImageFromCurrentImageContext() {
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    } else {
+        UIGraphicsEndImageContext()
+        
+        return UIImage()
+    }
+}
+
 extension UIColor {
     
     func rgb() -> Int? {
@@ -198,6 +239,77 @@ class TriangleView: UIView {
     }
 }
 
+var hamburgerButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    
+    return button
+}()
+
+var hamburgerView1: UIView = {
+    let view1 = UIView()
+    view1.translatesAutoresizingMaskIntoConstraints = false
+    view1.backgroundColor = Theme.BLACK
+    view1.layer.cornerRadius = 0.75
+    
+    return view1
+}()
+
+var hamburgerView2: UIView = {
+    let view2 = UIView()
+    view2.translatesAutoresizingMaskIntoConstraints = false
+    view2.backgroundColor = Theme.BLACK
+    view2.layer.cornerRadius = 0.75
+    
+    return view2
+}()
+
+var hamburgerView3: UIView = {
+    let view3 = UIView()
+    view3.translatesAutoresizingMaskIntoConstraints = false
+    view3.backgroundColor = Theme.BLACK
+    view3.layer.cornerRadius = 0.75
+    
+    return view3
+}()
+
+var hamburgerView4: UIView = {
+    let view4 = UIView()
+    view4.translatesAutoresizingMaskIntoConstraints = false
+    view4.backgroundColor = Theme.BLACK
+    view4.layer.cornerRadius = 0.75
+    
+    return view4
+}()
+
+func createHamburgerButton() {
+    
+    hamburgerButton.addSubview(hamburgerView1)
+    hamburgerView1.topAnchor.constraint(equalTo: hamburgerButton.topAnchor, constant: 6).isActive = true
+    hamburgerView1.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
+    hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -10).isActive = true
+    hamburgerView1.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    
+    hamburgerButton.addSubview(hamburgerView2)
+    hamburgerView2.bottomAnchor.constraint(equalTo: hamburgerButton.bottomAnchor, constant: -6).isActive = true
+    hamburgerView2.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
+    hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -10).isActive = true
+    hamburgerView2.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    
+    hamburgerButton.addSubview(hamburgerView3)
+    hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor, constant: 3).isActive = true
+    hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
+    hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -14).isActive = true
+    hamburgerView3.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    
+    hamburgerButton.addSubview(hamburgerView4)
+    hamburgerView4.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor, constant: -3).isActive = true
+    hamburgerView4.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
+    hamburgerView4.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -14).isActive = true
+    hamburgerView4.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    
+}
+
 
 class SnappingCollectionViewLayout: UICollectionViewFlowLayout {
     
@@ -226,5 +338,248 @@ class SnappingCollectionViewLayout: UICollectionViewFlowLayout {
 extension MKMapView {
     func visibleAnnotations() -> [MKAnnotation] {
         return self.annotations(in: self.visibleMapRect).map { obj -> MKAnnotation in return obj as! MKAnnotation }
+    }
+}
+
+extension Date {
+    func dateAt(hours: Int, minutes: Int) -> Date {
+        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        
+        //get the month/day/year componentsfor today's date.
+        var date_components = calendar.components(
+            [NSCalendar.Unit.year,
+             NSCalendar.Unit.month,
+             NSCalendar.Unit.day],
+            from: self)
+        
+        //Create an NSDate for the specified time today.
+        date_components.hour = hours
+        date_components.minute = minutes
+        date_components.second = 0
+        
+        let newDate = calendar.date(from: date_components)!
+        return newDate
+    }
+}
+
+extension Date {
+    /// Returns the amount of years from another date
+    func years(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.year], from: date, to: self).year ?? 0
+    }
+    /// Returns the amount of months from another date
+    func months(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: date, to: self).month ?? 0
+    }
+    /// Returns the amount of weeks from another date
+    func weeks(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.weekOfMonth], from: date, to: self).weekOfMonth ?? 0
+    }
+    /// Returns the amount of days from another date
+    func days(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: self).day ?? 0
+    }
+    /// Returns the amount of minutes from another date
+    func minutes(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.minute], from: date, to: self).minute ?? 0
+    }
+    /// Returns the amount of seconds from another date
+    func seconds(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
+    }
+    /// Returns the a custom time interval description from another date
+    func offset(from date: Date) -> String {
+        if years(from: date)   > 0 { return "\(years(from: date))y"   }
+        if months(from: date)  > 0 { return "\(months(from: date))M"  }
+        if weeks(from: date)   > 0 { return "\(weeks(from: date))w"   }
+        if days(from: date)    > 0 { return "\(days(from: date))d"    }
+        if hours(from: date)   > 0 { return "\(hours(from: date))h"   }
+        if minutes(from: date) > 0 { return "\(minutes(from: date))m" }
+        if seconds(from: date) > 0 { return "\(seconds(from: date))s" }
+        return ""
+    }
+}
+
+class ViewWithDiagonalLine: UIView {
+    
+    private let line: UIView
+    
+    private var lengthConstraint: NSLayoutConstraint!
+    
+    init() {
+        // Initialize line view
+        line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = UIColor.red
+        
+        super.init(frame: CGRect.zero)
+        
+        clipsToBounds = true // Cut off everything outside the view
+        
+        // Add and layout the line view
+        
+        addSubview(line)
+        
+        // Define line width
+        line.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10))
+        
+        // Set up line length constraint
+        lengthConstraint = NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        addConstraint(lengthConstraint)
+        
+        // Center line in view
+        addConstraint(NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: line, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Update length constraint and rotation angle
+        lengthConstraint.constant = sqrt(pow(frame.size.width, 2) + pow(frame.size.height, 2))
+        line.transform = CGAffineTransform(rotationAngle: atan2(frame.size.height, frame.size.width) * 3)
+    }
+    
+}
+
+let SCREEN_WIDTH = UIScreen.main.bounds.size.width
+
+extension UIViewController {
+    func addStatusBarBackgroundView(viewController: UIViewController, color: UIColor) -> Void {
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size:CGSize(width: SCREEN_WIDTH, height:20))
+        let view : UIView = UIView.init(frame: rect)
+        view.backgroundColor = color
+        viewController.view?.addSubview(view)
+    }
+}
+
+public extension UIView {
+    
+    public enum PeakSide: Int {
+        case Top
+        case Left
+        case Right
+        case Bottom
+    }
+    
+    public func addPikeOnView( side: PeakSide, size: CGFloat = 10.0) {
+        self.layoutIfNeeded()
+        let peakLayer = CAShapeLayer()
+        var path: CGPath?
+        switch side {
+        case .Top:
+            path = self.makePeakPathWithRect(rect: self.bounds, topSize: size, rightSize: 0.0, bottomSize: 0.0, leftSize: 0.0)
+        case .Left:
+            path = self.makePeakPathWithRect(rect: self.bounds, topSize: 0.0, rightSize: 0.0, bottomSize: 0.0, leftSize: size)
+        case .Right:
+            path = self.makePeakPathWithRect(rect: self.bounds, topSize: 0.0, rightSize: size, bottomSize: 0.0, leftSize: 0.0)
+        case .Bottom:
+            path = self.makePeakPathWithRect(rect: self.bounds, topSize: 0.0, rightSize: 0.0, bottomSize: size, leftSize: 0.0)
+        }
+        peakLayer.path = path
+        let color = (self.backgroundColor?.cgColor)
+        peakLayer.fillColor = color
+        peakLayer.strokeColor = color
+        peakLayer.lineWidth = 1
+        peakLayer.position = CGPoint.zero
+        self.layer.insertSublayer(peakLayer, at: 0)
+    }
+    
+    
+    func makePeakPathWithRect(rect: CGRect, topSize ts: CGFloat, rightSize rs: CGFloat, bottomSize bs: CGFloat, leftSize ls: CGFloat) -> CGPath {
+        //                      P3
+        //                    /    \
+        //      P1 -------- P2     P4 -------- P5
+        //      |                               |
+        //      |                               |
+        //      P16                            P6
+        //     /                                 \
+        //  P15                                   P7
+        //     \                                 /
+        //      P14                            P8
+        //      |                               |
+        //      |                               |
+        //      P13 ------ P12    P10 -------- P9
+        //                    \   /
+        //                     P11
+        
+        let centerX = rect.width / 2
+        let centerY = rect.height / 2
+        var h: CGFloat = 0
+        let path = CGMutablePath()
+        var points: [CGPoint] = []
+        // P1
+        points.append(CGPoint(x:rect.origin.x,y: rect.origin.y))
+        // Points for top side
+        if ts > 0 {
+            h = ts * sqrt(3.0) / 2
+            let x = rect.origin.x + centerX
+            let y = rect.origin.y
+            points.append(CGPoint(x:x - ts,y: y))
+            points.append(CGPoint(x:x,y: y - h))
+            points.append(CGPoint(x:x + ts,y: y))
+        }
+        
+        // P5
+        points.append(CGPoint(x:rect.origin.x + rect.width,y: rect.origin.y))
+        // Points for right side
+        if rs > 0 {
+            h = rs * sqrt(3.0) / 2
+            let x = rect.origin.x + rect.width
+            let y = rect.origin.y + centerY
+            points.append(CGPoint(x:x,y: y - rs))
+            points.append(CGPoint(x:x + h,y: y))
+            points.append(CGPoint(x:x,y: y + rs))
+        }
+        
+        // P9
+        points.append(CGPoint(x:rect.origin.x + rect.width,y: rect.origin.y + rect.height))
+        // Point for bottom side
+        if bs > 0 {
+            h = bs * sqrt(3.0) / 2
+            let x = rect.origin.x + centerX
+            let y = rect.origin.y + rect.height
+            points.append(CGPoint(x:x + bs,y: y))
+            points.append(CGPoint(x:x,y: y + h))
+            points.append(CGPoint(x:x - bs,y: y))
+        }
+        
+        // P13
+        points.append(CGPoint(x:rect.origin.x, y: rect.origin.y + rect.height))
+        // Point for left sidey:
+        if ls > 0 {
+            h = ls * sqrt(3.0) / 2
+            let x = rect.origin.x
+            let y = rect.origin.y + centerY
+            points.append(CGPoint(x:x,y: y + ls))
+            points.append(CGPoint(x:x - h,y: y))
+            points.append(CGPoint(x:x,y: y - ls))
+        }
+        
+        let startPoint = points.removeFirst()
+        self.startPath(path: path, onPoint: startPoint)
+        for point in points {
+            self.addPoint(point: point, toPath: path)
+        }
+        self.addPoint(point: startPoint, toPath: path)
+        return path
+    }
+    
+    private func startPath( path: CGMutablePath, onPoint point: CGPoint) {
+        path.move(to: CGPoint(x: point.x, y: point.y))
+    }
+    
+    private func addPoint(point: CGPoint, toPath path: CGMutablePath) {
+        path.addLine(to: CGPoint(x: point.x, y: point.y))
+    }
+}
+
+func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        completion()
     }
 }

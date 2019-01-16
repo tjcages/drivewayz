@@ -27,7 +27,7 @@ class LocationServicesViewController: UIViewController {
     var viewContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.85)
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4

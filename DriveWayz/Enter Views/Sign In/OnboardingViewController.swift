@@ -140,8 +140,8 @@ class OnboardingViewController: UIViewController {
         viewContainer.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 12).isActive = true
         backButton.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 24).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         viewContainer.addSubview(nameTextField)
         viewContainer.addSubview(nameLine)

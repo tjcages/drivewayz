@@ -150,8 +150,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
-    lazy var hostingController: HostingViewController = {
-        let controller = HostingViewController()
+    lazy var hostingController: MainHostViewController = {
+        let controller = MainHostViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Hosting"
         controller.delegate = self
@@ -188,7 +188,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let controller = UpcomingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
-        controller.delegate = self
+        
         return controller
     }()
     
@@ -437,6 +437,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     func moveToMap() {
         self.delegate?.bringStatusBar()
+        switch solar {
+        case .day:
+            self.defaultContentStatusBar()
+        case .night:
+            self.lightContentStatusBar()
+        }
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.mapController.view.layer.cornerRadius = 0
@@ -618,7 +624,7 @@ extension TabViewController {
         upcomingAnchor.isActive = true
         self.view.layoutIfNeeded()
         DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Reservations"
+            self.mainLabel.text = "Your Bookings"
             UIView.animate(withDuration: animationIn) {
                 self.purpleGradient.alpha = 1
                 self.exitButton.alpha = 1
@@ -660,7 +666,7 @@ extension TabViewController {
         hostingAnchor.isActive = true
         self.view.layoutIfNeeded()
         DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Hosting"
+            self.mainLabel.text = "My Parking Spots"
             UIView.animate(withDuration: animationIn) {
                 self.purpleGradient.alpha = 1
                 self.exitButton.alpha = 1
@@ -693,13 +699,14 @@ extension TabViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.mainLabel.alpha = 0
             self.mainLabel.text = "Become a host"
+            self.view.bringSubviewToFront(self.exitButton)
             self.becomeHostController.startAnimations()
             UIView.animate(withDuration: animationIn, animations: {
                 self.becomeHostController.view.alpha = 1
             }, completion: { (success) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     UIView.animate(withDuration: animationIn, animations: {
-                        self.purpleGradient.alpha = 1
+                        self.purpleGradient.alpha = 0
                         self.exitButton.alpha = 1
                         self.newParkingAnchor.constant = 0
                         self.mainLabel.alpha = 1
@@ -896,7 +903,6 @@ extension TabViewController {
             self.upcomingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.upcomingController.scrollView.setContentOffset(.zero, animated: true)
             self.upcomingController.willMove(toParent: nil)
             self.upcomingController.view.removeFromSuperview()
             self.upcomingController.removeFromParent()
@@ -922,7 +928,7 @@ extension TabViewController {
             self.hostingAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.hostingController.scrollView.setContentOffset(.zero, animated: true)
+//            self.hostingController.scrollView.setContentOffset(.zero, animated: true)
             self.hostingController.willMove(toParent: nil)
             self.hostingController.view.removeFromSuperview()
             self.hostingController.removeFromParent()

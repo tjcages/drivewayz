@@ -53,6 +53,7 @@ struct Font {
     }
     
     enum StandardSize: Double {
+        case extraLarge = 46.0
         case h0 = 32.0
         case h1 = 28.0
         case h2 = 24.0
@@ -166,6 +167,9 @@ class Fonts {
     static let SSPExtraLightH4 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h4)).instance
     static let SSPExtraLightH5 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
     static let SSPExtraLightH6 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
+    
+    //Extra Large
+    static let SSPExtraLarge = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.extraLarge)).instance
     
     //Black
     static let SSPBlackH0 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
