@@ -95,14 +95,6 @@ class ExpandedAmenitiesViewController: UIViewController {
         return label
     }()
     
-    var lineView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        
-        return view
-    }()
-    
     var editInformation: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -169,12 +161,6 @@ class ExpandedAmenitiesViewController: UIViewController {
         gatedLabel.centerXAnchor.constraint(equalTo: gatedView.centerXAnchor).isActive = true
         gatedLabel.widthAnchor.constraint(equalTo: gatedView.widthAnchor).isActive = true
         gatedLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-//        self.view.addSubview(lineView)
-//        lineView.topAnchor.constraint(equalTo: coveredView.bottomAnchor, constant: 48).isActive = true
-//        lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//        lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-//        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
     }
 

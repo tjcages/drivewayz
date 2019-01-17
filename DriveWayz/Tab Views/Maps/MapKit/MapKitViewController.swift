@@ -440,7 +440,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         let controller = QuickDestinationViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Destination"
-//        controller.delegate = self
         
         return controller
     }()

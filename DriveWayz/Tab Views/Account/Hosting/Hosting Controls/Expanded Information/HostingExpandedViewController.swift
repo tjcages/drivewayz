@@ -10,6 +10,8 @@ import UIKit
 
 class HostingExpandedViewController: UIViewController {
     
+    var hostDelegate: handleHostEditing?
+    
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +71,7 @@ class HostingExpandedViewController: UIViewController {
         expandedInformation.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         expandedInformation.view.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         expandedInformation.view.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 120).isActive = true
+        expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 148).isActive = true
         
         container.addSubview(expandedCost.view)
         expandedCost.view.topAnchor.constraint(equalTo: expandedInformation.view.bottomAnchor).isActive = true
@@ -89,6 +91,27 @@ class HostingExpandedViewController: UIViewController {
         expandedAmenities.view.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         expandedAmenities.view.heightAnchor.constraint(equalToConstant: 180).isActive = true
         
+        expandedInformation.editInformation.addTarget(self, action: #selector(editInformationPressed), for: .touchUpInside)
+        expandedCost.editInformation.addTarget(self, action: #selector(editCostPressed), for: .touchUpInside)
+        expandedNumber.editInformation.addTarget(self, action: #selector(editSpotsPressed), for: .touchUpInside)
+        expandedAmenities.editInformation.addTarget(self, action: #selector(editAmenitiesPressed), for: .touchUpInside)
+        
+    }
+    
+    @objc func editInformationPressed() {
+        self.hostDelegate?.setupEditingInformation()
+    }
+    
+    @objc func editCostPressed() {
+        self.hostDelegate?.setupEditingCost()
+    }
+    
+    @objc func editSpotsPressed() {
+        self.hostDelegate?.setupEditingSpots()
+    }
+    
+    @objc func editAmenitiesPressed() {
+        self.hostDelegate?.setupEditingAmenities()
     }
     
 }

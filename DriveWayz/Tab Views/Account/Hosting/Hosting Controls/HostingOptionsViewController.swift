@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 class HostingOptionsViewController: UIViewController {
+    
+    var delegate: handleNewHosting?
+    var hostDelegate: handleHostEditing?
 
     var container: UIView = {
         let view = UIView()
@@ -26,9 +30,10 @@ class HostingOptionsViewController: UIViewController {
     var seeAvailability: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("See availability", for: .normal)
+        button.setTitle("Edit availability", for: .normal)
         button.setTitleColor(Theme.SEA_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
+        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)
         
         return button
     }()
@@ -36,7 +41,7 @@ class HostingOptionsViewController: UIViewController {
     var lineView1: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -54,25 +59,7 @@ class HostingOptionsViewController: UIViewController {
     var lineView2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        
-        return view
-    }()
-    
-    var previousGuests: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Previous guests", for: .normal)
-        button.setTitleColor(Theme.BLACK, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
-        
-        return button
-    }()
-    
-    var lineView3: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -80,9 +67,10 @@ class HostingOptionsViewController: UIViewController {
     var addSpot: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add a new listing", for: .normal)
+        button.setTitle("Add a new parking spot", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
+        button.addTarget(self, action: #selector(bringNewHostingController), for: .touchUpInside)
         
         return button
     }()
@@ -90,7 +78,7 @@ class HostingOptionsViewController: UIViewController {
     var lineView4: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -98,7 +86,7 @@ class HostingOptionsViewController: UIViewController {
     var deleteSpot: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Delete listing", for: .normal)
+        button.setTitle("Delete parking spot", for: .normal)
         button.setTitleColor(Theme.HARMONY_RED, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         
@@ -129,7 +117,7 @@ class HostingOptionsViewController: UIViewController {
         lineView1.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
         lineView1.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         lineView1.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        lineView1.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        lineView1.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         container.addSubview(markUnavailable)
         markUnavailable.topAnchor.constraint(equalTo: lineView1.bottomAnchor).isActive = true
@@ -141,22 +129,10 @@ class HostingOptionsViewController: UIViewController {
         lineView2.topAnchor.constraint(equalTo: markUnavailable.bottomAnchor).isActive = true
         lineView2.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         lineView2.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        lineView2.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        
-        container.addSubview(previousGuests)
-        previousGuests.topAnchor.constraint(equalTo: lineView2.bottomAnchor).isActive = true
-        previousGuests.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        previousGuests.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        previousGuests.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        container.addSubview(lineView3)
-        lineView3.topAnchor.constraint(equalTo: previousGuests.bottomAnchor).isActive = true
-        lineView3.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        lineView3.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        lineView3.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        lineView2.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         container.addSubview(addSpot)
-        addSpot.topAnchor.constraint(equalTo: lineView3.bottomAnchor).isActive = true
+        addSpot.topAnchor.constraint(equalTo: lineView2.bottomAnchor).isActive = true
         addSpot.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         addSpot.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         addSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -165,7 +141,7 @@ class HostingOptionsViewController: UIViewController {
         lineView4.topAnchor.constraint(equalTo: addSpot.bottomAnchor).isActive = true
         lineView4.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         lineView4.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        lineView4.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        lineView4.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         container.addSubview(deleteSpot)
         deleteSpot.topAnchor.constraint(equalTo: lineView4.bottomAnchor).isActive = true
@@ -174,5 +150,20 @@ class HostingOptionsViewController: UIViewController {
         deleteSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
-
+    
+    @objc func editAvailabilityPressed() {
+        self.hostDelegate?.setupEditingCalendar()
+    }
+    
+    @objc func makeSpotUnavailable() {
+        if markUnavailable.titleLabel?.text == "Make spot unavailable" {
+            let ref = Database.database().reference().child("ParkingUnavailability")
+//            ref.updateChildValues([""])
+        }
+    }
+    
+    @objc func bringNewHostingController() {
+        self.delegate?.bringNewHostingController()
+    }
+    
 }

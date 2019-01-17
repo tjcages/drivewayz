@@ -155,6 +155,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Hosting"
         controller.delegate = self
+        controller.moveDelegate = self
         return controller
     }()
     
@@ -624,7 +625,7 @@ extension TabViewController {
         upcomingAnchor.isActive = true
         self.view.layoutIfNeeded()
         DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Your Bookings"
+            self.mainLabel.text = "Your bookings"
             UIView.animate(withDuration: animationIn) {
                 self.purpleGradient.alpha = 1
                 self.exitButton.alpha = 1
@@ -666,7 +667,7 @@ extension TabViewController {
         hostingAnchor.isActive = true
         self.view.layoutIfNeeded()
         DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "My Parking Spots"
+            self.mainLabel.text = "My parking spots"
             UIView.animate(withDuration: animationIn) {
                 self.purpleGradient.alpha = 1
                 self.exitButton.alpha = 1

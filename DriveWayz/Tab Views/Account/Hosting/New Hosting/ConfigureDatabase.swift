@@ -132,9 +132,34 @@ extension ConfigureParkingViewController {
                         availableSaturday.updateChildValues(["From": saturdayFromTimes, "To": saturdayToTimes])
                         availableSunday.updateChildValues(["From": sundayFromTimes, "To": sundayToTimes])
                         
+                        let parkAvailRef = Database.database().reference().child("ParkingAvailability")
+                        let monAvailRef = parkAvailRef.child("Monday").child(childKey)
+                        let tuesAvailRef = parkAvailRef.child("Tuesday").child(childKey)
+                        let wedAvailRef = parkAvailRef.child("Wednesday").child(childKey)
+                        let thursAvailRef = parkAvailRef.child("Thursday").child(childKey)
+                        let friAvailRef = parkAvailRef.child("Friday").child(childKey)
+                        let satAvailRef = parkAvailRef.child("Saturday").child(childKey)
+                        let sunAvailRef = parkAvailRef.child("Sunday").child(childKey)
+                        
+                        monAvailRef.setValue(mondayUnavailable)
+                        tuesAvailRef.setValue(tuesdayUnavailable)
+                        wedAvailRef.setValue(wednesdayUnavailable)
+                        thursAvailRef.setValue(thursdayUnavailable)
+                        friAvailRef.setValue(fridayUnavailable)
+                        satAvailRef.setValue(saturdayToTimes)
+                        sunAvailRef.setValue(sundayUnavailable)
+                        
                         self.loadImageDatabase(parkingID: childKey)
+                        
+                        let userRef = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+                        userRef.updateChildValues(["\(childKey)": childKey])
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.confirmController.endLoading()
+                            self.delegate?.hideNewHostingController()
+                            self.delegate?.bringHostingController()
+                            self.containerHeightAnchor.constant = 120
+                            self.moveDelegate?.moveMainLabel(percent: 0)
                         }
                     }
                 }

@@ -45,10 +45,22 @@ class ExpandedInformationViewController: UIViewController {
         return label
     }()
     
+    var dateLabel: UITextView = {
+        let label = UITextView()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.BLACK
+        label.text = "Listed on 1/19/2019"
+        label.font = Fonts.SSPRegularH3
+        label.isScrollEnabled = false
+        label.isUserInteractionEnabled = false
+        
+        return label
+    }()
+    
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -96,11 +108,17 @@ class ExpandedInformationViewController: UIViewController {
         messageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24).isActive = true
         
+        self.view.addSubview(dateLabel)
+        dateLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: -10).isActive = true
+        dateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        dateLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         self.view.addSubview(lineView)
-        lineView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 12).isActive = true
+        lineView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 24).isActive = true
         lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
     }
 

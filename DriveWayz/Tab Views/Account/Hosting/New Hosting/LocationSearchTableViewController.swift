@@ -135,9 +135,10 @@ extension LocationSearchTableViewController {
                 if let state = splitAddress.dropFirst().dropFirst().first {
                     self.delegate?.handleStateAddress(text: String(state))
                 }
-                if let zip = splitAddress.dropFirst().dropFirst().dropFirst().first {
-                    self.delegate?.handleZipAddress(text: String(zip))
-                }
+//                if let zip = splitAddress.dropFirst().dropFirst().first {
+//                    print(splitAddress)
+//                    self.delegate?.handleZipAddress(text: String(zip))
+//                }
             }
             if let country = splitAddress.dropFirst().dropFirst().dropFirst().first {
                 self.delegate?.handleCountryAddress(text: String(country.dropFirst()))

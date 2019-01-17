@@ -37,7 +37,7 @@ class ExpandedSpotsViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -83,7 +83,7 @@ class ExpandedSpotsViewController: UIViewController {
         lineView.topAnchor.constraint(equalTo: numberLabel.bottomAnchor, constant: 24).isActive = true
         lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
     }
 

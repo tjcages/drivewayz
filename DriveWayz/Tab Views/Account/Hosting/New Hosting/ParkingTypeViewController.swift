@@ -26,7 +26,7 @@ class ParkingTypeViewController: UIViewController {
         button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.layer.cornerRadius = 3
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
@@ -359,7 +359,7 @@ class ParkingTypeViewController: UIViewController {
             UIView.animate(withDuration: 0.1) {
                 self.houseIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.houseIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.houseButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.houseButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.houseButton.tintColor = Theme.WHITE
                 self.houseButton.layer.shadowOpacity = 1
                 self.houseAnchor.constant = 95
@@ -375,7 +375,7 @@ class ParkingTypeViewController: UIViewController {
             UIView.animate(withDuration: 0.1) {
                 self.apartmentIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.apartmentIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.apartmentButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.apartmentButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.apartmentButton.tintColor = Theme.WHITE
                 self.apartmentButton.layer.shadowOpacity = 1
                 self.apartmentAnchor.constant = 95
@@ -391,7 +391,7 @@ class ParkingTypeViewController: UIViewController {
             UIView.animate(withDuration: 0.1) {
                 self.lotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.lotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.lotButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.lotButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.lotButton.tintColor = Theme.WHITE
                 self.lotButton.layer.shadowOpacity = 1
                 self.parkingLotAnchor.constant = 80
@@ -407,7 +407,7 @@ class ParkingTypeViewController: UIViewController {
             UIView.animate(withDuration: 0.1) {
                 self.otherIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.otherIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.otherButton.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.otherButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.otherButton.tintColor = Theme.WHITE
                 self.otherButton.layer.shadowOpacity = 1
                 self.alleyAnchor.constant = 80

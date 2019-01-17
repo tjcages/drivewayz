@@ -831,7 +831,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.coveredIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.coveredIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.coveredImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.coveredImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.coveredImageView.tintColor = Theme.WHITE
                 self.coveredImageView.layer.shadowOpacity = 1
                 self.coveredAnchor.constant = 95
@@ -849,7 +849,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.chargingIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.chargingIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.chargingImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.chargingImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.chargingImageView.tintColor = Theme.WHITE
                 self.chargingImageView.layer.shadowOpacity = 1
                 self.chargingAnchor.constant = 95
@@ -867,7 +867,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.stadiumIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.stadiumIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.stadiumImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.stadiumImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.stadiumImageView.tintColor = Theme.WHITE
                 self.stadiumImageView.layer.shadowOpacity = 1
                 self.stadiumAnchor.constant = 95
@@ -885,7 +885,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.gatedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.gatedImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.gatedImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.gatedImageView.tintColor = Theme.WHITE
                 self.gatedImageView.layer.shadowOpacity = 1
                 self.gatedAnchor.constant = 115
@@ -903,7 +903,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.nightIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.nightIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.nightImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.nightImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.nightImageView.tintColor = Theme.WHITE
                 self.nightImageView.layer.shadowOpacity = 1
                 self.nightAnchor.constant = 95
@@ -921,7 +921,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.airportIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.airportIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.airportImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.airportImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.airportImageView.tintColor = Theme.WHITE
                 self.airportImageView.layer.shadowOpacity = 1
                 self.airportAnchor.constant = 95
@@ -939,7 +939,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.lightedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.lightedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.lightedImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.lightedImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.lightedImageView.tintColor = Theme.WHITE
                 self.lightedImageView.layer.shadowOpacity = 1
                 self.lightingAnchor.constant = 95
@@ -958,7 +958,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.largeIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.largeIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.largeImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.largeImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.largeImageView.tintColor = Theme.WHITE
                 self.largeImageView.layer.shadowOpacity = 1
                 self.largeAnchor.constant = 95
@@ -977,7 +977,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.smallIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.smallIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.smallImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.smallImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.smallImageView.tintColor = Theme.WHITE
                 self.smallImageView.layer.shadowOpacity = 1
                 self.smallAnchor.constant = 95
@@ -995,7 +995,7 @@ extension AmenitiesParkingViewController {
             UIView.animate(withDuration: 0.1) {
                 self.easyIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.easyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
-                self.easyImageView.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.8)
+                self.easyImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.easyImageView.tintColor = Theme.WHITE
                 self.easyImageView.layer.shadowOpacity = 1
                 self.easyAnchor.constant = 95

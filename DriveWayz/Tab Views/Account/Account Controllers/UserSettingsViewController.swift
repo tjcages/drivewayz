@@ -95,14 +95,13 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Expand")
+        let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
         button.alpha = 0
+        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
         
         return button
     }()
@@ -226,12 +225,12 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
         switch device {
         case .iphone8:
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
         }
         
     }

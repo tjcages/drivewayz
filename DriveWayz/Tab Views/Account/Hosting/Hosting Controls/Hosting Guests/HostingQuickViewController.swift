@@ -1,14 +1,14 @@
 //
-//  QuickDestinationViewController.swift
+//  HostingQuickViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler Jordan Cagle on 12/31/18.
-//  Copyright © 2018 COAD. All rights reserved.
+//  Created by Tyler Jordan Cagle on 1/15/19.
+//  Copyright © 2019 COAD. All rights reserved.
 //
 
 import UIKit
 
-class QuickDestinationViewController: UIViewController {
+class HostingQuickViewController: UIViewController {
 
     var container: UIView = {
         let view = UIView()
@@ -77,9 +77,8 @@ class QuickDestinationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor.clear
-        view.alpha = 0
         
         setupViews()
         setupData()
@@ -113,7 +112,7 @@ class QuickDestinationViewController: UIViewController {
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         containerWidthAnchor = container.heightAnchor.constraint(equalToConstant: 200)
-            containerWidthAnchor.isActive = true
+        containerWidthAnchor.isActive = true
         
         container.addSubview(darkContainer)
         darkContainer.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
@@ -146,5 +145,4 @@ class QuickDestinationViewController: UIViewController {
         destinationSecondaryLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
     }
-
 }

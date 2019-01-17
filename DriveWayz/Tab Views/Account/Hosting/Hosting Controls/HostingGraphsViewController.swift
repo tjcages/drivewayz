@@ -122,7 +122,7 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
     
     var chartLine: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 0.5, height: 120)
+        view.frame = CGRect(x: 0, y: 0, width: 1, height: 120)
         view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
@@ -231,17 +231,17 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
             UIView.animate(withDuration: animationIn) {
                 self.chartLine.alpha = 1
                 self.chartDate.alpha = 1
-                self.chartDate.center.x = highlight.xPx - 48
+                self.chartDate.center.x = highlight.xPx - 35
                 self.chartDate.center.y = highlight.yPx + 117
-                self.chartLine.frame = CGRect(x: highlight.xPx, y: highlight.yPx - 22, width: 0.5, height: 112 - highlight.yPx + 10)
+                self.chartLine.frame = CGRect(x: highlight.xPx, y: highlight.yPx - 22, width: 1, height: 112 - highlight.yPx + 10)
             }
         } else {
             UIView.animate(withDuration: animationIn) {
                 self.chartLine.alpha = 1
                 self.chartDate.alpha = 1
-                self.chartDate.center.x = highlight.xPx + 50
+                self.chartDate.center.x = highlight.xPx + 35
                 self.chartDate.center.y = highlight.yPx + 102
-                self.chartLine.frame = CGRect(x: highlight.xPx, y: highlight.yPx - 34, width: 0.5, height: 112 - highlight.yPx + 12 + 10)
+                self.chartLine.frame = CGRect(x: highlight.xPx, y: highlight.yPx - 34, width: 1, height: 112 - highlight.yPx + 12 + 10)
             }
         }
         chartTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(hideChartSelector), userInfo: nil, repeats: false)

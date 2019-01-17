@@ -19,7 +19,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a Spot", "Your Bookings", "Vehicle", "Inbox", "My Parking Spots", "Help", "Settings"]
+    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help", "Settings"]
     var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
     let cellId = "cellId"
     
@@ -442,13 +442,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             self.upcomingMark.alpha = 0
         }
         if tableView == optionsTableView {
-            if options[indexPath.row] == "Your Bookings" {
+            if options[indexPath.row] == "My bookings" {
                 self.openAccountView()
                 self.delegate?.bringUpcomingController()
-            } else if options[indexPath.row] == "My Parking Spots" {
+            } else if options[indexPath.row] == "My parking" {
                 self.openAccountView()
                 self.delegate?.bringHostingController()
-            } else if options[indexPath.row] == "Become a Host" {
+            } else if options[indexPath.row] == "Become a host" {
                 self.openAccountView()
                 self.delegate?.bringNewHostingController()
             } else if options[indexPath.row] == "Vehicle" {
@@ -468,7 +468,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             } else if options[indexPath.row] == "Help" {
                 self.openAccountView()
                 self.delegate?.bringHelpController()
-            } else if options[indexPath.row] == "Book a Spot" {
+            } else if options[indexPath.row] == "Book a spot" {
                 self.delegate?.moveToMap()
             }
         } else {
@@ -497,13 +497,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func configureHosts() {
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(currentUser).child("Parking")
+        let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
         ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Home", "Reservations", "Hosting", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "My parking", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
         ref.observe(.childRemoved) { (snapshot) in
-            self.options = ["Home", "Reservations", "Become a host", "Vehicle", "Analytics", "Coupons", "Contact us!", "Logout"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
     }
