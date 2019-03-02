@@ -104,6 +104,7 @@ class EditInformationViewController: UIViewController {
         self.optionsController.view.alpha = 0
         self.messageController.view.alpha = 0
         self.nextButton.setTitle("NEXT", for: .normal)
+        self.parkingLabel.text = "Edit the parking type"
     }
     
     func setupViews() {
@@ -180,6 +181,7 @@ class EditInformationViewController: UIViewController {
                     self.messageController.view.alpha = 1
                 })
                 self.nextButton.setTitle("SAVE", for: .normal)
+                self.parkingLabel.text = "Edit the message"
                 self.view.layoutIfNeeded()
             }
         } else if messageController.view.alpha == 1 {

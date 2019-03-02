@@ -75,7 +75,7 @@ class LocationServicesViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkLocationServices), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 50)
         background.zPosition = -10
         button.layer.addSublayer(background)
         
@@ -148,10 +148,10 @@ class LocationServicesViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        nextButton.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.topAnchor.constraint(equalTo: thirdLabel.bottomAnchor, constant: 72).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
         
     }
 

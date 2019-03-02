@@ -55,7 +55,7 @@ class EditCostViewController: UIViewController {
     
     var parkingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit the parking cost"
+        label.text = "Edit the hourly cost"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH1

@@ -918,7 +918,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     
     // Controllers
-    var removeDelegate: removePurchaseView?
     var hoursDelegate: controlHoursButton?
     
     let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
@@ -1139,10 +1138,8 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
             self.sendNotifications()
             UIView.animate(withDuration: animationIn) {
                 self.resetReservationButton()
-                currentButton.alpha = 1
             }
         }
-        self.notify(status: true)
         
         self.paymentInProgress = true
 //        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
@@ -1289,29 +1286,19 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         switch status {
         case .error:
             print(error?.localizedDescription as Any)
-            self.notify(status: false)
         case .success:
             self.addCurrentParking()
             if reserveSegmentAnchor.isActive == true {
                 self.reserveParking()
             } else if currentSegmentAnchor.isActive == true {
                 self.updateUserProfileCurrent()
-                UIView.animate(withDuration: animationIn) {
-                    currentButton.alpha = 1
-                }
             }
-            self.notify(status: true)
             UIView.animate(withDuration: animationIn) {
                 self.view.layoutIfNeeded()
             }
         case .userCancellation:
-            self.notify(status: false)
             return
         }
-    }
-    
-    func notify(status: Bool) {
-        self.removeDelegate?.showPurchaseStatus(status: status)
     }
     
     func changeReserveButton() {
@@ -1344,7 +1331,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         UIView.animate(withDuration: animationIn, animations: {
             self.reserveButton.alpha = 0.6
         }) { (success) in
-            self.removeDelegate?.purchaseButtonSwipedDown()
             UIView.animate(withDuration: animationIn, animations: {
                 self.view.alpha = 0
             })

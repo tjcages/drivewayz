@@ -19,7 +19,6 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
     var id: String?
     
     var delegate: controlCurrentParkingOptions?
-    var extendDelegate: removePurchaseView?
     
     let parkingView: UIView = {
         let view = UIView()

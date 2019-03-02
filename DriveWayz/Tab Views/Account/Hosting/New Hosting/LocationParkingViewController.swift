@@ -160,7 +160,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Zipcode"
+        label.text = "Zipcode (optional)"
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -169,7 +169,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipField: UITextField = {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "19146"
+        view.text = ""
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.SEA_BLUE
         view.textColor = Theme.WHITE.withAlphaComponent(0.4)
@@ -543,7 +543,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
             }
         } else if textField == zipField {
             if textField.text == "" {
-                textField.text = "19146"
+                textField.text = ""
                 textField.textColor = Theme.WHITE.withAlphaComponent(0.4)
             }
         }
@@ -579,7 +579,11 @@ extension LocationParkingViewController: UITextFieldDelegate {
     
     func combineAddress() {
         guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let zip = zipField.text, let country = countryField.text else { return }
-        self.newHostAddress = "\(street), \(city), \(state) \(zip), \(country)"
+        if zipField.textColor != Theme.WHITE {
+            self.newHostAddress = "\(street), \(city), \(state), \(country)"
+        } else {
+            self.newHostAddress = "\(street), \(city), \(state) \(zip), \(country)"
+        }
     }
 
 }

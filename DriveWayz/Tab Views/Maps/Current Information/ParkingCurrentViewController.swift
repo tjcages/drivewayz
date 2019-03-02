@@ -23,7 +23,6 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
     var message: String?
     var parkingID: String?
     var delegate: controlCurrentParkingOptions?
-    var extendDelegate: removePurchaseView?
     var navigationDelegate: extendTimeController?
     
     let parkingView: UIView = {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 protocol handleStatusBarHide {
     func hideStatusBar()
@@ -19,12 +20,15 @@ protocol handleSignIn {
     func moveToMainController()
 }
 
+var phoneHeight: CGFloat = 0
+var phoneWidth: CGFloat = 0
+
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, handleSignIn {
     
     lazy var blackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
+        view.backgroundColor = Theme.WHITE
         view.alpha = 0
         
         let label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height/2 - 60, width: self.view.frame.width, height: 60))
@@ -37,36 +41,46 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return view
     }()
     
+    var logoView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
     var drivewayzCar: UIImageView = {
         let view = UIImageView()
         let image = UIImage(named: "drivewayzLogo")
         view.image = image
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
-        view.contentMode = .scaleAspectFit
-        
-        return view
-    }()
-    
-    lazy var purpleGradient: UIView = {
-        let view = UIView()
+        view.contentMode = .scaleAspectFill
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        background.zPosition = -10
-        view.layer.addSublayer(background)
+        view.clipsToBounds = true
         
         return view
     }()
     
-    var containerView: UIView!
-    let gradientMaskLayer: CAGradientLayer = CAGradientLayer()
-    
+    lazy var purpleGradient: UIImageView = {
+        let view = UIImageView()
+        let image = UIImage(named: "purpleGradient")
+        view.image = image
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+
     var drivewayzCarAnchor: NSLayoutConstraint!
+    var drivewayzCarTopAnchor: NSLayoutConstraint!
     var startupAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        phoneHeight = self.view.frame.height
+        phoneWidth = self.view.frame.width
 
         self.view.addSubview(purpleGradient)
         purpleGradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -80,65 +94,54 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         blackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         blackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
-        containerView = UIView(frame: CGRect(x: self.view.frame.width/2-110, y: self.view.frame.height/2-110, width: 220, height: 220))
-        view.addSubview(containerView)
+        self.view.addSubview(logoView)
+        logoView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        drivewayzCarTopAnchor = logoView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            drivewayzCarTopAnchor.isActive = true
+        logoView.heightAnchor.constraint(equalToConstant: 65).isActive = true
+        drivewayzCarAnchor = logoView.widthAnchor.constraint(equalToConstant: 65)
+            drivewayzCarAnchor.isActive = true
         
-        gradientMaskLayer.frame = containerView.bounds
-        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.red.cgColor, UIColor.red.cgColor, UIColor.clear.cgColor ]
-        gradientMaskLayer.startPoint = CGPoint(x: -0.2, y: 0.0)
-        gradientMaskLayer.endPoint = CGPoint(x: 0.0, y: 0.0)
-        
-        drivewayzCar.frame = containerView.bounds
-        containerView.addSubview(drivewayzCar)
-        drivewayzCar.layer.mask = gradientMaskLayer
+        logoView.addSubview(drivewayzCar)
+        drivewayzCar.leftAnchor.constraint(equalTo: logoView.leftAnchor).isActive = true
+        drivewayzCar.topAnchor.constraint(equalTo: logoView.topAnchor).isActive = true
+        drivewayzCar.bottomAnchor.constraint(equalTo: logoView.bottomAnchor).isActive = true
+        drivewayzCar.widthAnchor.constraint(equalToConstant: 250).isActive = true
         
         self.checkViews()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            self.animatee()
+        delayWithSeconds(0.6) {
+            self.animate()
         }
     }
     
-    func animatee() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 0.0, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 0.2, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 0.4, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 0.6, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 0.8, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            self.gradientMaskLayer.endPoint = CGPoint(x: 1.2, y: 0.0)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-            UIView.animate(withDuration: animationIn, animations: {
-                if self.controller == false {
-                    self.containerView.frame = CGRect(x: self.view.frame.width/2-110, y: (self.view.frame.height-260)/2-110, width: 220, height: 220)
-                }
-                self.startupAnchor.constant = 0
-                if self.tabController != nil {
-                    self.drivewayzCar.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                    self.tabController!.view.alpha = 1
-                }
-                self.view.layoutIfNeeded()
-            }, completion: { (success) in
-                if self.controller == true {
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.blackView.alpha = 1
-                    })
-                }
-            })
+    func animate() {
+        UIView.animate(withDuration: animationOut, animations: {
+            self.drivewayzCarAnchor.constant = 250
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.startupAnchor.constant = 0
+                    if self.tabController != nil {
+                        self.logoView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                        self.tabController!.view.alpha = 1
+                    } else {
+                        switch device {
+                        case .iphone8:
+                            self.drivewayzCarTopAnchor.constant = -120
+                        case .iphoneX:
+                            self.drivewayzCarTopAnchor.constant = -160
+                        }
+                    }
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    if self.controller == true {
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.blackView.alpha = 1
+                        })
+                    }
+                })
+            }
         }
     }
     
@@ -274,7 +277,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         case .day:
             self.defaultStatusBar()
         case .night:
-            self.lightContentStatusBar()
+//            self.lightContentStatusBar()
+            self.defaultStatusBar()
         }
         self.setNeedsStatusBarAppearanceUpdate()
     }

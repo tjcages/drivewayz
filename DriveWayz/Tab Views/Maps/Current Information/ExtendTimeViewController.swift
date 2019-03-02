@@ -15,7 +15,6 @@ import Alamofire
 class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, controlHourButton {
 
     // Controllers
-    var delegate: removePurchaseView?
     var hoursDelegate: controlHoursButton?
     var extendDelegate: extendTimeController?
     
@@ -503,9 +502,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         UIView.animate(withDuration: animationIn, animations: {
             self.reserveButton.alpha = 0.6
         }) { (success) in
-            self.delegate?.purchaseButtonSwipedDown()
             UIView.animate(withDuration: animationIn, animations: {
-                currentButton.alpha = 1
                 self.view.alpha = 0
             })
         }

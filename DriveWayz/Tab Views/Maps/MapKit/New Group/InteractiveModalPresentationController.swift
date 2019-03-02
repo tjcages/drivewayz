@@ -27,7 +27,8 @@ final class InteractiveModalPresentationController: UIPresentationController {
         case .day:
             view.backgroundColor = Theme.BLACK
         case .night:
-            view.backgroundColor = Theme.OFF_WHITE
+            view.backgroundColor = Theme.BLACK
+//            view.backgroundColor = Theme.OFF_WHITE
         }
 //        view.addGestureRecognizer(
 //            UITapGestureRecognizer(target: self, action: #selector(didTap(tap:)))

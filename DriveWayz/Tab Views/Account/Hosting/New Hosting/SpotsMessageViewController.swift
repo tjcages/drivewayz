@@ -27,7 +27,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 2
-        label.text = "Add any useful information so the user can better find your spot."
+        label.text = "Promote your spot or give any information so the user can better find it."
         
         return label
     }()

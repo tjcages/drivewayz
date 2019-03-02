@@ -36,7 +36,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         button.backgroundColor = Theme.PURPLE
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 2, bottom: 4, right: 2)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(sendButtonPressed(sender:)), for: .touchUpInside)

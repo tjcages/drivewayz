@@ -10,87 +10,19 @@ import UIKit
 
 class ExpandedAmenitiesViewController: UIViewController {
 
+    var amenitiesName: [String] = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help"]
+    var amenities: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!]
+    let iconHeight: CGFloat = 135
+    private let itemsPerRow: CGFloat = 3
+    var sections: CGFloat = 1
+    var height: CGFloat = 0
+    
     var residentialLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.text = "AMENITIES"
-        
-        return label
-    }()
-    
-    var coveredView: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "home-1")
-        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.89)
-        button.layer.cornerRadius = 3
-        
-        return button
-    }()
-    
-    var coveredLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH6
-        label.text = "Covered Parking"
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var chargingView: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "home-1")
-        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.9)
-        button.layer.cornerRadius = 3
-        
-        return button
-    }()
-    
-    var chargingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH6
-        label.text = "Charging Station"
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var gatedView: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "home-1")
-        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.SEA_BLUE.withAlphaComponent(0.9)
-        button.layer.cornerRadius = 3
-        
-        return button
-    }()
-    
-    var gatedLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH6
-        label.text = "Gated Spot"
-        label.textAlignment = .center
         
         return label
     }()
@@ -106,10 +38,76 @@ class ExpandedAmenitiesViewController: UIViewController {
         return button
     }()
     
+    var layout: UICollectionViewLayout = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 12
+        
+        return layout
+    }()
+    
+    lazy var amenitiesPicker: UICollectionView = {
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
+        view.clipsToBounds = false
+        view.register(AmenitiesCell.self, forCellWithReuseIdentifier: "Cell")
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        amenitiesPicker.delegate = self
+        amenitiesPicker.dataSource = self
+    }
+    
+    func setData(hosting: ParkingSpots) {
+        if let amenities = hosting.parkingAmenities {
+            self.amenities = []
+            self.amenitiesName = []
+            for i in 0..<amenities.count {
+                if amenities[i] == "covered" {
+                    self.amenities.append(UIImage(named: "coveredParkingIcon-1")!)
+                    self.amenitiesName.append("Covered parking")
+                } else if amenities[i] == "charging" {
+                    self.amenities.append(UIImage(named: "chargingParkingIcon")!)
+                    self.amenitiesName.append("Charging station")
+                } else if amenities[i] == "stadium" {
+                    self.amenities.append(UIImage(named: "stadiumParkingIcon")!)
+                    self.amenitiesName.append("Stadium parking")
+                } else if amenities[i] == "gated" {
+                    self.amenities.append(UIImage(named: "gateParkingIcon")!)
+                    self.amenitiesName.append("Gated spot")
+                } else if amenities[i] == "night" {
+                    self.amenities.append(UIImage(named: "nightParkingIcon")!)
+                    self.amenitiesName.append("Nighttime parking")
+                } else if amenities[i] == "airport" {
+                    self.amenities.append(UIImage(named: "airportParkingIcon")!)
+                    self.amenitiesName.append("Near Airport")
+                } else if amenities[i] == "lighted" {
+                    self.amenities.append(UIImage(named: "lightingParkingIcon")!)
+                    self.amenitiesName.append("Lit space")
+                } else if amenities[i] == "large" {
+                    self.amenities.append(UIImage(named: "largeParkingIcon")!)
+                    self.amenitiesName.append("Large space")
+                } else if amenities[i] == "small" {
+                    self.amenities.append(UIImage(named: "smallParkingIcon")!)
+                    self.amenitiesName.append("Compact space")
+                } else if amenities[i] == "easy" {
+                    self.amenities.append(UIImage(named: "easyParkingIcon")!)
+                    self.amenitiesName.append("Easy to find")
+                }
+            }
+            self.amenitiesPicker.reloadData()
+            sections = CGFloat(CGFloat(self.amenities.count)/3)
+            sections.round(.up)
+            setupViews()
+        }
     }
     
     func setupViews() {
@@ -126,42 +124,42 @@ class ExpandedAmenitiesViewController: UIViewController {
         editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.view.addSubview(coveredView)
-        coveredView.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 14).isActive = true
-        coveredView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        coveredView.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 24 * 4 + 16)/3).isActive = true
-        coveredView.heightAnchor.constraint(equalTo: coveredView.widthAnchor).isActive = true
+        self.view.addSubview(amenitiesPicker)
+        amenitiesPicker.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 14).isActive = true
+        amenitiesPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        amenitiesPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        amenitiesPicker.heightAnchor.constraint(equalToConstant: iconHeight * sections).isActive = true
         
-        self.view.addSubview(coveredLabel)
-        coveredLabel.topAnchor.constraint(equalTo: coveredView.bottomAnchor, constant: 4).isActive = true
-        coveredLabel.centerXAnchor.constraint(equalTo: coveredView.centerXAnchor).isActive = true
-        coveredLabel.widthAnchor.constraint(equalTo: coveredView.widthAnchor).isActive = true
-        coveredLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        self.view.addSubview(chargingView)
-        chargingView.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 14).isActive = true
-        chargingView.leftAnchor.constraint(equalTo: coveredView.rightAnchor, constant: 12).isActive = true
-        chargingView.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 24 * 4 + 16)/3).isActive = true
-        chargingView.heightAnchor.constraint(equalTo: coveredView.widthAnchor).isActive = true
-        
-        self.view.addSubview(chargingLabel)
-        chargingLabel.topAnchor.constraint(equalTo: chargingView.bottomAnchor, constant: 4).isActive = true
-        chargingLabel.centerXAnchor.constraint(equalTo: chargingView.centerXAnchor).isActive = true
-        chargingLabel.widthAnchor.constraint(equalTo: chargingView.widthAnchor).isActive = true
-        chargingLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        self.view.addSubview(gatedView)
-        gatedView.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 14).isActive = true
-        gatedView.leftAnchor.constraint(equalTo: chargingView.rightAnchor, constant: 12).isActive = true
-        gatedView.widthAnchor.constraint(equalToConstant: (self.view.frame.width - 24 * 4 + 16)/3).isActive = true
-        gatedView.heightAnchor.constraint(equalTo: coveredView.widthAnchor).isActive = true
-        
-        self.view.addSubview(gatedLabel)
-        gatedLabel.topAnchor.constraint(equalTo: gatedView.bottomAnchor, constant: 4).isActive = true
-        gatedLabel.centerXAnchor.constraint(equalTo: gatedView.centerXAnchor).isActive = true
-        gatedLabel.widthAnchor.constraint(equalTo: gatedView.widthAnchor).isActive = true
-        gatedLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
+        height = 54 + iconHeight * sections + 36
+    }
+    
+}
+
+
+extension ExpandedAmenitiesViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return amenities.count
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let paddingSpace = 12 * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        
+        return CGSize(width: widthPerItem, height: widthPerItem + 24)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! AmenitiesCell
+        cell.image = amenities[indexPath.row]
+        cell.iconLabel.text = amenitiesName[indexPath.row]
+        
+        return cell
+    }
+    
 }

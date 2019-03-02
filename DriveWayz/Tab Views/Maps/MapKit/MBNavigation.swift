@@ -14,6 +14,7 @@ import MapboxCoreNavigation
 
 protocol handleRouteNavigation {
     func beginRouteNavigation()
+    func userHasCurrentParking()
     func checkDismissStatusBar()
 }
 
@@ -34,7 +35,8 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
             case .day:
                 self.delegate?.lightContentStatusBar()
             case .night:
-                self.delegate?.defaultContentStatusBar()
+                self.delegate?.lightContentStatusBar()
+//                self.delegate?.defaultContentStatusBar()
             }
         }
     }
@@ -44,7 +46,8 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         case .day:
             self.delegate?.defaultContentStatusBar()
         case .night:
-            self.delegate?.lightContentStatusBar()
+            self.delegate?.defaultContentStatusBar()
+//            self.delegate?.lightContentStatusBar()
         }
     }
     

@@ -27,16 +27,17 @@ class ReviewsCell: UICollectionViewCell {
     }()
     
     let reviewLabel: UITextView = {
-        let reviewLabel = UITextView()
-        reviewLabel.textAlignment = .left
-        reviewLabel.isScrollEnabled = false
-        reviewLabel.textColor = Theme.BLACK
-        reviewLabel.font = Fonts.SSPLightH3
-        reviewLabel.text = "There have not been any reviews for this spot yet."
-        reviewLabel.isEditable = false
-        reviewLabel.translatesAutoresizingMaskIntoConstraints = false
+        let label = UITextView()
+        label.textAlignment = .left
+        label.isScrollEnabled = false
+        label.textColor = Theme.BLACK
+        label.font = Fonts.SSPLightH3
+        label.text = "There have not been any reviews for this spot yet."
+        label.isEditable = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = UIColor.clear
         
-        return reviewLabel
+        return label
     }()
     
     var date: UILabel = {
@@ -75,6 +76,7 @@ class ReviewsCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
         label.textAlignment = .right
+        label.alpha = 0
         
         return label
     }()

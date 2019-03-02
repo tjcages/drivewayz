@@ -107,7 +107,8 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
         button.backgroundColor = Theme.PURPLE
         button.layer.cornerRadius = 35/2
         button.clipsToBounds = true
-//        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 2, bottom: 4, right: 2)
+//        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0

@@ -9,6 +9,8 @@
 import UIKit
 
 class ExpandedInformationViewController: UIViewController {
+    
+    var height: CGFloat = 0
 
     var residentialLabel: UILabel = {
         let label = UILabel()
@@ -79,19 +81,33 @@ class ExpandedInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    func setData(hosting: ParkingSpots) {
+        if let primaryType = hosting.mainType, let secondaryType = hosting.secondaryType, let overallAddress = hosting.overallAddress, let hostMessage = hosting.hostMessage, let timestamp = hosting.timestamp {
+            self.residentialLabel.text = "\(primaryType.uppercased())  |  \(secondaryType.capitalizingFirstLetter())"
+            self.spotLocatingLabel.text = overallAddress
+            self.messageLabel.text = hostMessage
+            let date = Date(timeIntervalSince1970: Double(truncating: timestamp))
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = NSLocale.current
+            dateFormatter.dateFormat = "M/dd/yyyy"
+            let stringDate = dateFormatter.string(from: date)
+            self.dateLabel.text = "Listed on \(stringDate)"
+        }
         setupViews()
     }
     
     func setupViews() {
         
         self.view.addSubview(residentialLabel)
-        residentialLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12).isActive = true
+        residentialLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
         residentialLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         residentialLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         residentialLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(editInformation)
-        editInformation.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12).isActive = true
+        editInformation.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
         editInformation.widthAnchor.constraint(equalToConstant: 100).isActive = true
         editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -119,6 +135,8 @@ class ExpandedInformationViewController: UIViewController {
         lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        height = 54 + 40 + messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24 + 20 + 25
         
     }
 

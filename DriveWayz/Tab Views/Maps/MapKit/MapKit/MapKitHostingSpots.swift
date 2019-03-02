@@ -131,49 +131,6 @@ extension MapKitViewController {
         }
     }
     
-    func currentParkingSender() {
-        self.delegate?.lightContentStatusBar()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.purchaseViewAnchor.constant = -self.view.frame.height
-            self.mainBarTopAnchor.constant = -40
-//            self.diamondTopAnchor.constant = 40
-            self.fullBackgroundView.alpha = 1
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            informationScrollView.isScrollEnabled = true
-            self.purchaseViewController.view.alpha = 0
-        }
-    }
-    
-    func currentParkingDisappear() {
-        switch device {
-        case .iphone8:
-            self.mainBarTopAnchor.constant = 100
-        case .iphoneX:
-            self.mainBarTopAnchor.constant = 120
-        }
-//        self.diamondTopAnchor.constant = 0
-        self.purchaseViewController.view.alpha = 0
-        self.delegate?.defaultContentStatusBar()
-        UIView.animate(withDuration: animationIn, animations: {
-            self.purchaseViewAnchor.constant = 0
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.purchaseViewController.view.alpha = 0
-        }
-        if isNavigating == false {
-            UIView.animate(withDuration: animationIn) {
-                self.navigationLabel.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @objc func profileButtonPressed() {
-        self.delegate?.moveToProfile()
-    }
-    
     func openHoursButton() {
         self.hoursButtonAnchor.constant = 340
         UIView.animate(withDuration: animationIn) {
@@ -192,10 +149,6 @@ extension MapKitViewController {
     
     func sendAvailability(availability: Bool) {
         purchaseViewController.setAvailability(available: availability)
-    }
-    
-    @objc func currentParkingPressed(sender: UIButton) {
-        currentParkingSender()
     }
     
 }

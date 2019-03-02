@@ -607,7 +607,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         guard let location = self.specificEventVenue.text else { return }
         self.backgroundTouched()
         self.delegate?.eventsControllerHidden()
-        self.delegate?.searchForParking()
+//        self.delegate?.searchForParking()
         self.delegate?.zoomToSearchLocation(address: location)
     }
     

@@ -54,7 +54,6 @@ extension UIImageView {
 
 
 extension String {
-    
     static func random(length: Int = 20) -> String {
         let base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         var randomString: String = ""
@@ -64,6 +63,14 @@ extension String {
             randomString += "\(base[base.index(base.startIndex, offsetBy: Int(randomValue))])"
         }
         return randomString
+    }
+    
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).uppercased() + self.lowercased().dropFirst()
+    }
+    
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
     }
 }
 
@@ -76,6 +83,15 @@ extension UIView{
         maskLayer1.frame = bounds
         maskLayer1.path = maskPath1.cgPath
         layer.mask = maskLayer1
+    }
+}
+
+extension Int {
+    public var asWord: String {
+        let numberValue = NSNumber(value: self)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .spellOut
+        return formatter.string(from: numberValue)!
     }
 }
 
@@ -246,11 +262,13 @@ var hamburgerButton: UIButton = {
     return button
 }()
 
+var hamburgerWidthAnchor: NSLayoutConstraint!
+
 var hamburgerView1: UIView = {
     let view1 = UIView()
     view1.translatesAutoresizingMaskIntoConstraints = false
     view1.backgroundColor = Theme.BLACK
-    view1.layer.cornerRadius = 0.75
+    view1.layer.cornerRadius = 1.25
     
     return view1
 }()
@@ -259,7 +277,7 @@ var hamburgerView2: UIView = {
     let view2 = UIView()
     view2.translatesAutoresizingMaskIntoConstraints = false
     view2.backgroundColor = Theme.BLACK
-    view2.layer.cornerRadius = 0.75
+    view2.layer.cornerRadius = 1.25
     
     return view2
 }()
@@ -268,18 +286,9 @@ var hamburgerView3: UIView = {
     let view3 = UIView()
     view3.translatesAutoresizingMaskIntoConstraints = false
     view3.backgroundColor = Theme.BLACK
-    view3.layer.cornerRadius = 0.75
+    view3.layer.cornerRadius = 1.25
     
     return view3
-}()
-
-var hamburgerView4: UIView = {
-    let view4 = UIView()
-    view4.translatesAutoresizingMaskIntoConstraints = false
-    view4.backgroundColor = Theme.BLACK
-    view4.layer.cornerRadius = 0.75
-    
-    return view4
 }()
 
 func createHamburgerButton() {
@@ -287,26 +296,21 @@ func createHamburgerButton() {
     hamburgerButton.addSubview(hamburgerView1)
     hamburgerView1.topAnchor.constraint(equalTo: hamburgerButton.topAnchor, constant: 6).isActive = true
     hamburgerView1.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -10).isActive = true
-    hamburgerView1.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
+    hamburgerView1.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView2)
     hamburgerView2.bottomAnchor.constraint(equalTo: hamburgerButton.bottomAnchor, constant: -6).isActive = true
     hamburgerView2.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -10).isActive = true
-    hamburgerView2.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
+    hamburgerView2.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView3)
-    hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor, constant: 3).isActive = true
+    hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor).isActive = true
     hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -14).isActive = true
-    hamburgerView3.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
-    
-    hamburgerButton.addSubview(hamburgerView4)
-    hamburgerView4.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor, constant: -3).isActive = true
-    hamburgerView4.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView4.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -14).isActive = true
-    hamburgerView4.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+    hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -16)
+        hamburgerWidthAnchor.isActive = true
+    hamburgerView3.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
     
 }
 
@@ -360,6 +364,24 @@ extension Date {
         let newDate = calendar.date(from: date_components)!
         return newDate
     }
+    
+    public func round(precision: TimeInterval) -> Date {
+        return round(precision: precision, rule: .toNearestOrAwayFromZero)
+    }
+    
+    public func ceil(precision: TimeInterval) -> Date {
+        return round(precision: precision, rule: .up)
+    }
+    
+    public func flooor(precision: TimeInterval) -> Date {
+        return round(precision: precision, rule: .down)
+    }
+    
+    private func round(precision: TimeInterval, rule: FloatingPointRoundingRule) -> Date {
+        let seconds = (self.timeIntervalSinceReferenceDate / precision).rounded(rule) *  precision;
+        return Date(timeIntervalSinceReferenceDate: seconds)
+    }
+    
 }
 
 extension Date {
@@ -398,6 +420,13 @@ extension Date {
         if seconds(from: date) > 0 { return "\(seconds(from: date))s" }
         return ""
     }
+}
+
+func weekdayNameFrom(weekdayNumber: Int) -> String {
+    let calendar = Calendar.current
+    let weekdaySymbols = calendar.weekdaySymbols
+    let index = (weekdayNumber + calendar.firstWeekday - 1) % 7
+    return weekdaySymbols[index]
 }
 
 class ViewWithDiagonalLine: UIView {

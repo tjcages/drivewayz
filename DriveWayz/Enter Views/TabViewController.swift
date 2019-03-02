@@ -22,8 +22,9 @@ protocol moveControllers {
     func moveMainLabel(percent: CGFloat)
     func bringExitButton()
     func hideExitButton()
-    func moveAccount(percent: CGFloat)
-    func animateAccount()
+    func bringNewHostingController()
+    func hideHamburger()
+    func bringHamburger()
 }
 
 protocol controlsNewParking {
@@ -75,15 +76,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     var emailConfirmed: emailConfirmation = .unconfirmed
     
-    lazy var fullBlurView: UIView = {
-        let view = UIView()
-        view.alpha = 0
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
-        
-        return view
-    }()
-    
     var blurView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
@@ -128,6 +120,19 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         button.alpha = 0
         
         return button
+    }()
+    
+    var shadowView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 3
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize.zero
+        view.layer.shadowRadius = 5
+        view.layer.shadowOpacity = 0.6
+        
+        return view
     }()
     
     lazy var mapController: MapKitViewController = {
@@ -257,11 +262,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
-    var mapControllerAnchor: NSLayoutConstraint!
-    var accountControllerAnchor: NSLayoutConstraint!
     var mapCenterAnchor: NSLayoutConstraint!
-    var profileCenterAnchor: NSLayoutConstraint!
-    
     var containerLeftAnchor: NSLayoutConstraint!
     var containerRightAnchor: NSLayoutConstraint!
     
@@ -282,41 +283,50 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
-    var accountControllerWidthAnchor: NSLayoutConstraint!
-    var accountControllerHeightAnchor: NSLayoutConstraint!
     var mainTopAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
+        self.view.addSubview(accountSlideController.view)
+        accountSlideController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        accountSlideController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        accountSlideController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        accountSlideController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        
         self.view.addSubview(mapController.view)
-        mapControllerAnchor = mapController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-        mapControllerAnchor.isActive = true
+        mapCenterAnchor = mapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            mapCenterAnchor.isActive = true
         mapController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         mapController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         mapController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        self.view.addSubview(fullBlurView)
-        fullBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        fullBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        fullBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        fullBlurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.view.addSubview(shadowView)
+        self.view.bringSubviewToFront(mapController.view)
+        shadowView.leftAnchor.constraint(equalTo: mapController.view.leftAnchor).isActive = true
+        shadowView.rightAnchor.constraint(equalTo: mapController.view.rightAnchor).isActive = true
+        shadowView.topAnchor.constraint(equalTo: mapController.view.topAnchor).isActive = true
+        shadowView.bottomAnchor.constraint(equalTo: mapController.view.bottomAnchor).isActive = true
         
         self.view.addSubview(blurView)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(moveToMapSwipe(sender:)))
         blurView.addGestureRecognizer(gesture)
-        blurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        blurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        blurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        blurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        blurView.topAnchor.constraint(equalTo: mapController.view.topAnchor).isActive = true
+        blurView.bottomAnchor.constraint(equalTo: mapController.view.bottomAnchor).isActive = true
+        blurView.leftAnchor.constraint(equalTo: mapController.view.leftAnchor).isActive = true
+        blurView.rightAnchor.constraint(equalTo: mapController.view.rightAnchor).isActive = true
         
-        self.view.addSubview(accountSlideController.view)
-        accountControllerAnchor = accountSlideController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -self.view.frame.width)
-            accountControllerAnchor.isActive = true
-        accountControllerWidthAnchor = accountSlideController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-            accountControllerWidthAnchor.isActive = true
-        accountSlideController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        accountControllerHeightAnchor = accountSlideController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor)
-            accountControllerHeightAnchor.isActive = true
+        createHamburgerButton()
+        hamburgerButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
+        self.view.addSubview(hamburgerButton)
+        hamburgerButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        hamburgerButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        hamburgerButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        switch device {
+        case .iphone8:
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        case .iphoneX:
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        }
         
         self.view.addSubview(purpleGradient)
         purpleGradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -327,13 +337,13 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
         switch device {
         case .iphone8:
-            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 62)
+            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 102)
                 mainTopAnchor.isActive = true
         case .iphoneX:
-            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 72)
+            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 112)
                 mainTopAnchor.isActive = true
         }
         
@@ -348,6 +358,27 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
         }
         
+    }
+    
+    func hideHamburger() {
+        UIView.animate(withDuration: animationIn) {
+            hamburgerButton.alpha = 0
+        }
+    }
+    
+    func bringHamburger() {
+        UIView.animate(withDuration: animationIn) {
+            hamburgerButton.alpha = 1
+        }
+    }
+    
+    @objc func profileButtonPressed() {
+        self.view.endEditing(true)
+        if mapCenterAnchor.constant != 0 {
+            self.moveToMap()
+        } else {
+            self.moveToProfile()
+        }
     }
     
     func removeTabView() {
@@ -371,20 +402,18 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func moveToProfile() {
         self.delegate?.hideStatusBar()
         self.mapController.purchaseButtonSwipedDown()
-        self.mapController.eventsControllerHidden()
-        self.mapController.takeAwayEvents()
+//        self.mapController.eventsControllerHidden()
+//        self.mapController.takeAwayEvents()
         UIView.animate(withDuration: animationIn, animations: {
-            self.mapController.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-            switch device {
-            case .iphone8:
-                self.mapController.view.layer.cornerRadius = 5
-            case .iphoneX:
-                self.mapController.view.layer.cornerRadius = 18
-            }
-            self.fullBlurView.alpha = 0.4
+            self.mapController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            self.shadowView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            self.mapController.view.layer.cornerRadius = 5
+            hamburgerView1.backgroundColor = Theme.BLACK
+            hamburgerView2.backgroundColor = Theme.BLACK
+            hamburgerView3.backgroundColor = Theme.BLACK
             self.blurView.alpha = 1
-            self.accountControllerAnchor.constant = -self.view.frame.width/3.5
-            self.mapControllerAnchor.constant = 0
+            self.mapCenterAnchor.constant = self.view.frame.width/2 + 60
+            hamburgerWidthAnchor.constant = -8
             if self.accountSlideController.hostMarkShouldShow == true {
                 self.accountSlideController.hostingMark.alpha = 1
             } else {
@@ -400,34 +429,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         }
     }
     
-    var lastPanned: CGFloat = 0
-    
-    func moveAccount(percent: CGFloat) {
-        self.accountControllerAnchor.constant = self.accountControllerAnchor.constant + percent*self.view.frame.width/3.5
-        if self.accountControllerAnchor.constant >= -self.view.frame.width/3.5 {
-            self.accountControllerAnchor.constant = -self.view.frame.width/3.5
-        } else if self.accountControllerAnchor.constant <= -self.view.frame.width {
-            self.accountControllerAnchor.constant = -self.view.frame.width
-        }
-        self.lastPanned = self.accountControllerAnchor.constant
-        let percent = 1+self.view.frame.width/3.5/self.lastPanned
-        self.fullBlurView.alpha = 0.4 * (1 - percent)
-        let add = 0.05 * percent
-        self.mapController.view.transform = CGAffineTransform(scaleX: 0.95 + add, y: 0.95 + add)
-        self.view.layoutIfNeeded()
-    }
-    
-    func animateAccount() {
-        UIView.animate(withDuration: animationIn) {
-            if self.lastPanned <= -190 {
-                self.moveToMap()
-            } else {
-                self.moveToProfile()
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     @objc func moveToMapTap(sender: UIButton) {
         moveToMap()
     }
@@ -440,22 +441,46 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         self.delegate?.bringStatusBar()
         switch solar {
         case .day:
+            hamburgerView1.backgroundColor = Theme.BLACK
+            hamburgerView2.backgroundColor = Theme.BLACK
+            hamburgerView3.backgroundColor = Theme.BLACK
             self.defaultContentStatusBar()
         case .night:
-            self.lightContentStatusBar()
+            hamburgerView1.backgroundColor = Theme.BLACK
+            hamburgerView2.backgroundColor = Theme.BLACK
+            hamburgerView3.backgroundColor = Theme.BLACK
+            self.defaultContentStatusBar()
+//            hamburgerView1.backgroundColor = Theme.OFF_WHITE
+//            hamburgerView2.backgroundColor = Theme.OFF_WHITE
+//            hamburgerView3.backgroundColor = Theme.OFF_WHITE
+//            self.lightContentStatusBar()
         }
+        self.mapCenterAnchor.constant = 0
+        hamburgerWidthAnchor.constant = -16
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.mapController.view.layer.cornerRadius = 0
-            self.fullBlurView.alpha = 0
             self.blurView.alpha = 0
-            self.mapControllerAnchor.constant = 0
-            self.accountControllerAnchor.constant = -self.view.frame.width
             self.view.layoutIfNeeded()
         }) { (success) in
             if eventsAreAllowed == true {
                 self.mapController.eventsControllerHidden()
             }
+        }
+    }
+    
+    func openProfileOptions() {
+        self.mapCenterAnchor.constant = self.view.frame.width * 1.3
+        UIView.animate(withDuration: animationIn) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func closeProfileOptions() {
+        self.mapCenterAnchor.constant = self.view.frame.width/2 + 60
+        UIView.animate(withDuration: animationIn) {
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -491,12 +516,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     
     func openAccountView() {
+        openProfileOptions()
         UIView.animate(withDuration: 0.1, animations: {
-            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.accountControllerAnchor.constant = 0
             UIView.animate(withDuration: animationIn, animations: {
                 self.accountSlideController.profileImageView.alpha = 0
                 self.accountSlideController.profileName.alpha = 0
@@ -513,8 +537,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     
     func closeAccountView() {
+        closeProfileOptions()
         self.delegate?.hideStatusBar()
-        self.accountControllerAnchor.constant = -self.view.frame.width/3.5
         UIView.animate(withDuration: animationIn, animations: {
             self.purpleGradient.alpha = 0
             self.exitButton.alpha = 0
@@ -546,9 +570,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.mainLabel.transform = CGAffineTransform(scaleX: scale, y: scale)
             switch device {
             case .iphone8:
-                mainTopAnchor.constant = 62 - (percent * 38)
+                mainTopAnchor.constant = 98 - (percent * 76)
             case .iphoneX:
-                mainTopAnchor.constant = 72 - (percent * 36)
+                mainTopAnchor.constant = 108 - (percent * 76)
             }
             self.view.layoutIfNeeded()
         }
@@ -667,7 +691,7 @@ extension TabViewController {
         hostingAnchor.isActive = true
         self.view.layoutIfNeeded()
         DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "My parking spots"
+            self.mainLabel.text = "Hosted spaces"
             UIView.animate(withDuration: animationIn) {
                 self.purpleGradient.alpha = 1
                 self.exitButton.alpha = 1
@@ -977,7 +1001,6 @@ extension TabViewController {
     func hideCouponsController() {
         UIView.animate(withDuration: animationOut, animations: {
             self.couponController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.couponController.willMove(toParent: nil)
@@ -990,7 +1013,6 @@ extension TabViewController {
     func hideContactUsController() {
         UIView.animate(withDuration: animationOut, animations: {
             self.contactController.view.alpha = 0
-            self.fullBlurView.alpha = 0.4
             self.blurView.alpha = 1
         }) { (success) in
             self.contactController.willMove(toParent: nil)

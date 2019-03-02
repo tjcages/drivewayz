@@ -121,7 +121,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         
         self.view.addSubview(container)
         container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
+        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160)
             containerHeightAnchor.isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 50).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
@@ -301,9 +301,9 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                 self.backButton.alpha = 1
                 switch device {
                 case .iphone8:
-                    self.containerHeightAnchor.constant = 70
-                case .iphoneX:
                     self.containerHeightAnchor.constant = 80
+                case .iphoneX:
+                    self.containerHeightAnchor.constant = 90
                 }
 
                 self.view.layoutIfNeeded()
@@ -371,7 +371,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     
     func bringBackAllMessages() {
         UIView.animate(withDuration: 0.1, animations: {
-            self.containerHeightAnchor.constant = 120
+            self.containerHeightAnchor.constant = 160
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {

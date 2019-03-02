@@ -111,13 +111,13 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.view.addSubview(container)
         container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
+        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160)
         containerHeightAnchor.isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 50).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height - 120)
+        scrollView.contentSize = .zero
         containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         containerCenterAnchor.isActive = true
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
@@ -167,7 +167,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         UIView.animate(withDuration: animationOut, animations: {
             self.delegate?.changeMainLabel(text: "Vehicle")
             self.delegate?.moveMainLabel(percent: 0)
-            self.containerHeightAnchor.constant = 120
+            self.containerHeightAnchor.constant = 160
             self.containerCenterAnchor.constant = 0
             self.currentAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
@@ -203,8 +203,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         cell.selectionStyle = .none
         if cell.titleLabel.text == "Add a vehicle" {
             cell.titleLabel.textColor = Theme.SEA_BLUE
+            cell.plusButton.alpha = 1
         } else {
             cell.titleLabel.textColor = Theme.BLACK
+            cell.plusButton.alpha = 0
         }
         
         return cell
@@ -271,21 +273,21 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
             let percent = (translation-10)/40
             switch device {
             case .iphone8:
-                self.containerHeightAnchor.constant = 120 - (percent * 50)
+                self.containerHeightAnchor.constant = 160 - (percent * 80)
             case .iphoneX:
-                self.containerHeightAnchor.constant = 120 - (percent * 40)
+                self.containerHeightAnchor.constant = 160 - (percent * 90)
             }
             self.delegate?.moveMainLabel(percent: percent)
         } else if translation < 10 {
-            self.containerHeightAnchor.constant = 120
+            self.containerHeightAnchor.constant = 160
             self.delegate?.moveMainLabel(percent: 0)
         } else {
             self.delegate?.moveMainLabel(percent: 1)
             switch device {
             case .iphone8:
-                self.containerHeightAnchor.constant = 70
-            case .iphoneX:
                 self.containerHeightAnchor.constant = 80
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 90
             }
         }
     }

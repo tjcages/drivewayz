@@ -21,6 +21,8 @@ class RegisterEmailViewController: UIViewController {
         field.textColor = Theme.WHITE
         field.autocapitalizationType = .none
         field.clearButtonMode = .whileEditing
+        field.keyboardType = .emailAddress
+        field.spellCheckingType = .no
         
         return field
     }()

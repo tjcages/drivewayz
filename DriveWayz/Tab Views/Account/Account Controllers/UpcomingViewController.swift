@@ -46,7 +46,7 @@ class UpcomingViewController: UIViewController {
         
         self.view.addSubview(container)
         container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
+        container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160).isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         

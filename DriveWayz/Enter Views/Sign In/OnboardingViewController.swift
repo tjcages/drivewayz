@@ -76,7 +76,7 @@ class OnboardingViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(createNewUser), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 50)
         background.zPosition = -10
         button.layer.addSublayer(background)
         button.alpha = 0
@@ -103,25 +103,8 @@ class OnboardingViewController: UIViewController {
         
         nameTextField.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         setupViews()
     }
-    
-    @objc func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight = keyboardFrame.cgRectValue.height
-            self.keyboardHeightAnchor.constant = -keyboardHeight
-            UIView.animate(withDuration: animationIn) {
-                if self.nameTextField.text == "Enter your full name" || self.nameTextField.text == "" {
-                    self.hideButton.alpha = 1
-                }
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    var keyboardHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -166,8 +149,6 @@ class OnboardingViewController: UIViewController {
     }
     
     func selectFirstField() {
-        self.keyboardHeightAnchor.constant = 0
-        self.view.layoutIfNeeded()
         UIView.animate(withDuration: animationIn) {
             self.viewContainer.alpha = 1
         }
@@ -184,17 +165,16 @@ class OnboardingViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        keyboardHeightAnchor = nextButton.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor)
-            keyboardHeightAnchor.isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.topAnchor.constraint(equalTo: nameLine.bottomAnchor, constant: 72).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
         
         self.view.addSubview(hideButton)
-        hideButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        hideButton.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor).isActive = true
-        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor).isActive = true
-        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor).isActive = true
+        hideButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        hideButton.topAnchor.constraint(equalTo: nameLine.bottomAnchor, constant: 72).isActive = true
+        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
+        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
         
     }
     
@@ -210,7 +190,6 @@ extension OnboardingViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         UIView.animate(withDuration: animationIn, animations: {
-            self.keyboardHeightAnchor.constant = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             if textField.text == "" {

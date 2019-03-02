@@ -42,6 +42,17 @@ class StartHostingViewController: UIViewController {
         return label
     }()
     
+    var noParkingGraphic: UIImageView = {
+        let view = UIImageView()
+        let image = UIImage(named: "noParkingGraphic")
+        view.image = image
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        view.alpha = 0.9
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -74,6 +85,17 @@ class StartHostingViewController: UIViewController {
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationLabel.topAnchor.constraint(equalTo: parkingLabel.bottomAnchor).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        self.view.addSubview(noParkingGraphic)
+        noParkingGraphic.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        noParkingGraphic.heightAnchor.constraint(equalToConstant: 260).isActive = true
+        noParkingGraphic.widthAnchor.constraint(equalToConstant: 260).isActive = true
+        switch device {
+        case .iphone8:
+            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 0).isActive = true
+        case .iphoneX:
+            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 100).isActive = true
+        }
         
     }
     

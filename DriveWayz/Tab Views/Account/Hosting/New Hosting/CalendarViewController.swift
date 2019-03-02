@@ -415,7 +415,7 @@ class CalendarCell: UICollectionViewCell {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.5))
         //        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
-        
+
         return view
     }()
     
@@ -469,9 +469,9 @@ class CalendarCell: UICollectionViewCell {
         angleView.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
         angleView.widthAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.addSubview(topView)
-        self.addSubview(leftView)
-        self.addSubview(rightView)
+//        self.addSubview(topView)
+//        self.addSubview(leftView)
+//        self.addSubview(rightView)
         self.addSubview(bottomView)
         
     }

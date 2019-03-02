@@ -138,7 +138,7 @@ class HostingPreviousViewController: UIViewController {
     var userLicense: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "317-ZFA"
+        label.text = "312-ZRA"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -196,7 +196,7 @@ class HostingPreviousViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4:30 PM"
-        label.textColor = Theme.PURPLE
+        label.textColor = Theme.SEA_BLUE
         label.font = Fonts.SSPRegularH0
         label.textAlignment = .right
         

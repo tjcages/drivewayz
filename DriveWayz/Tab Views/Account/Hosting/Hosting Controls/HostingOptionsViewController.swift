@@ -18,11 +18,8 @@ class HostingOptionsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 1
-        view.layer.cornerRadius = 3
+        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.layer.borderWidth = 0.5
         
         return view
     }()

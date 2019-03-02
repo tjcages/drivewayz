@@ -43,10 +43,9 @@ protocol sendNewHostControl {
 
 var isNavigating: Bool = false
 
-class InformationViewController: UIViewController, UIScrollViewDelegate, controlCurrentParkingOptions, controlHoursButton, extendTimeController, sendNewHostControl {
+class InformationViewController: UIViewController, UIScrollViewDelegate, controlHoursButton, extendTimeController, sendNewHostControl {
     
     
-    var delegate: removePurchaseView?
     var hostDelegate: controlNewHosts?
     var navigationDelegate: controlHoursButton?
     var parkingID: String?
@@ -75,7 +74,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Current"
         controller.view.clipsToBounds = true
-        controller.delegate = self
         controller.navigationDelegate = self
         controller.view.alpha = 0
         
@@ -207,11 +205,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
         reviewsController.setData(parkingID: parkingID)
         currentController.setData(formattedAddress: formattedAddress, message: message, parkingID: parkingID)
         purchaseController.setData(parkingCost: parkingCost, parkingID: parkingID, id: id)
-    }
-    
-    func sendAvailability(availability: Bool) {
-        self.delegate?.sendAvailability(availability: availability)
-//        self.reserveController.setAvailability(available: availability)
     }
     
     var pictureHeightAnchor: NSLayoutConstraint!
@@ -438,10 +431,6 @@ class InformationViewController: UIViewController, UIScrollViewDelegate, control
     
     func sendNewHost() {
         self.hostDelegate?.sendNewHost()
-    }
-    
-    func openMessages() {
-        self.delegate?.openMessages()
     }
 
     override func didReceiveMemoryWarning() {

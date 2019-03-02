@@ -55,6 +55,12 @@ class ExpandedCostViewController: UIViewController {
         setupViews()
     }
     
+    func setData(hosting: ParkingSpots) {
+        if let parkingCost = hosting.parkingCost {
+            self.hourlyRate.text = "$ \(parkingCost)"
+        }
+    }
+    
     func setupViews() {
         
         self.view.addSubview(residentialLabel)

@@ -25,25 +25,9 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     lazy var container: UIView = {
         let view = UIView()
-        view.layer.shadowRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: -1, height: 1)
-        view.layer.shadowOpacity = 0.8
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.clipsToBounds = true
-        
-        return view
-    }()
-    
-    lazy var shadowContainer: UIView = {
-        let view = UIView()
-        view.layer.shadowRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: -1, height: 1)
-        view.layer.shadowOpacity = 0.8
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
         
         return view
     }()
@@ -78,7 +62,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         
         return view
     }()
@@ -89,8 +73,21 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
-        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        view.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 110, right: 0)
+        view.contentOffset = CGPoint.zero
         view.decelerationRate = .fast
+        view.showsVerticalScrollIndicator = false
+        
+        return view
+    }()
+    
+    lazy var whiteBlurView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().lightBlurColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 72)
+        background.zPosition = -10
+        view.layer.insertSublayer(background, at: 0)
         
         return view
     }()
@@ -183,12 +180,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         
         view.backgroundColor = UIColor.clear
         
-//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(goBackToMap))
-//        swipeGesture.direction = .left
-//        view.addGestureRecognizer(swipeGesture)
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAccount(sender:)))
-        view.addGestureRecognizer(panGesture)
-        
         self.optionsTableView.delegate = self
         self.optionsTableView.dataSource = self
 
@@ -211,31 +202,25 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func setupMainView() {
         
-        self.view.addSubview(shadowContainer)
-        shadowContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -5).isActive = true
-        shadowContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        shadowContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5).isActive = true
-        shadowContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        
-        shadowContainer.addSubview(container)
-        container.leftAnchor.constraint(equalTo: shadowContainer.leftAnchor).isActive = true
-        container.bottomAnchor.constraint(equalTo: shadowContainer.bottomAnchor).isActive = true
-        container.rightAnchor.constraint(equalTo: shadowContainer.rightAnchor).isActive = true
-        container.topAnchor.constraint(equalTo: shadowContainer.topAnchor).isActive = true
+        self.view.addSubview(container)
+        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.widthAnchor.constraint(equalToConstant: self.view.frame.width/2 + 80).isActive = true
+        container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
     }
     
     func setupTopView() {
         
         container.addSubview(profileImageView)
-        profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: self.view.frame.width/7).isActive = true
+        profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 20).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 70).isActive = true
         case .iphoneX:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 20).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 70).isActive = true
         }
         
         container.addSubview(profileName)
@@ -245,10 +230,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         container.addSubview(profileLine)
-        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/3.5 + 12).isActive = true
+        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         profileLine.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
         profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 10).isActive = true
-        profileLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        profileLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         container.addSubview(settingsSelect)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingSelected))
@@ -259,16 +244,22 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         settingsSelect.bottomAnchor.constraint(equalTo: profileLine.topAnchor).isActive = true
         
         container.addSubview(optionsTableView)
-        optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: self.view.frame.width/3.5).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         optionsTableView.topAnchor.constraint(equalTo: profileLine.bottomAnchor).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        optionsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
-        container.addSubview(purpleGradient)
-        purpleGradient.leftAnchor.constraint(equalTo: container.leftAnchor, constant: self.view.frame.width/3.5).isActive = true
-        purpleGradient.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        purpleGradient.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        purpleGradient.heightAnchor.constraint(equalToConstant: 90).isActive = true
-        optionsTableView.bottomAnchor.constraint(equalTo: purpleGradient.topAnchor).isActive = true
+        container.addSubview(whiteBlurView)
+        whiteBlurView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        whiteBlurView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        whiteBlurView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        whiteBlurView.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        
+//        optionsTableView.addSubview(purpleGradient)
+//        purpleGradient.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+//        purpleGradient.bottomAnchor.constraint(equalTo: optionsTableView.bottomAnchor).isActive = true
+//        purpleGradient.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+//        purpleGradient.heightAnchor.constraint(equalToConstant: 90).isActive = true
         
         container.addSubview(upcomingMark)
         upcomingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 57.5).isActive = true
@@ -282,24 +273,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         hostingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true
         hostingMark.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-    }
-    
-    @objc func panAccount(sender: UIPanGestureRecognizer) {
-        let velocity = sender.velocity(in: self.view).x
-        if velocity < -1000 {
-            self.delegate?.moveToMap()
-        } else {
-            if sender.state == .changed {
-                let location = sender.location(in: self.view).x - 200
-                if location < self.view.frame.width/7 { return }
-                let percent = (location - self.view.frame.width/2 + 92)/self.view.frame.width
-                if percent < 0 {
-                    self.moveDelegate?.moveAccount(percent: percent)
-                }
-            } else if sender.state == .ended {
-                self.moveDelegate?.animateAccount()
-            }
-        }
     }
     
     func openAccountView() {
@@ -445,7 +418,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             if options[indexPath.row] == "My bookings" {
                 self.openAccountView()
                 self.delegate?.bringUpcomingController()
-            } else if options[indexPath.row] == "My parking" {
+            } else if options[indexPath.row] == "Hosted spaces" {
                 self.openAccountView()
                 self.delegate?.bringHostingController()
             } else if options[indexPath.row] == "Become a host" {
@@ -499,7 +472,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
         ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "My parking", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Hosted spaces", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
         ref.observe(.childRemoved) { (snapshot) in

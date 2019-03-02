@@ -12,135 +12,143 @@ import AVFoundation
 extension MapKitViewController {
     
     func setupMainBar() {
-        
-        createHamburgerButton()
-        hamburgerButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
     
         self.view.addSubview(mainBar)
-        mainBarWidthAnchor = mainBar.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -80)
-        mainBarWidthAnchor.isActive = true
-        mainBarCenterAnchor = mainBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        mainBarCenterAnchor.isActive = true
+        mainBarWidthAnchor = mainBar.widthAnchor.constraint(equalToConstant: 300)
+            mainBarWidthAnchor.isActive = true
         mainBarHeightAnchor = mainBar.heightAnchor.constraint(equalToConstant: 60)
-        mainBarHeightAnchor.isActive = true
+            mainBarHeightAnchor.isActive = true
+        mainBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         switch device {
         case .iphone8:
             mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100)
-            mainBarTopAnchor.isActive = true
+                mainBarTopAnchor.isActive = true
         case .iphoneX:
             mainBarTopAnchor = mainBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
-            mainBarTopAnchor.isActive = true
+                mainBarTopAnchor.isActive = true
         }
         
-        self.view.addSubview(hamburgerButton)
-        hamburgerButton.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 24).isActive = true
-        hamburgerButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        hamburgerButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
-        switch device {
-        case .iphone8:
-            hamburgerButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 40).isActive = true
-        case .iphoneX:
-            hamburgerButton.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 50).isActive = true
-        }
+        mainBar.addSubview(mainBarView)
+        mainBarView.topAnchor.constraint(equalTo: mainBar.topAnchor, constant: 4).isActive = true
+        mainBarView.leftAnchor.constraint(equalTo: mainBar.leftAnchor).isActive = true
+        mainBarView.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
+        mainBarView.bottomAnchor.constraint(equalTo: mainBar.bottomAnchor).isActive = true
         
-        mainBar.addSubview(locatorButton)
-        locatorButton.rightAnchor.constraint(equalTo: mainBar.rightAnchor, constant: -16).isActive = true
-        locatorButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor).isActive = true
-        locatorButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
-        
-//        mainBar.addSubview(diamondView)
-//        diamondView.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 20).isActive = true
-//        diamondTopAnchor = diamondView.centerYAnchor.constraint(equalTo: locatorButton.centerYAnchor)
-//        diamondTopAnchor.isActive = true
-//        diamondView.widthAnchor.constraint(equalToConstant: 6).isActive = true
-//        diamondView.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        mainBar.addSubview(couponView.view)
+        mainBar.sendSubviewToBack(couponView.view)
+        couponView.view.topAnchor.constraint(equalTo: mainBar.bottomAnchor, constant: -16).isActive = true
+        couponView.view.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        couponView.view.leftAnchor.constraint(equalTo: mainBar.leftAnchor).isActive = true
+        couponView.view.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
+    
+        setupFirstSearch()
+        setupSecondSearch()
+        setupResults()
+        setupEvents()
+    }
+    
+    func setupFirstSearch() {
         
         mainBar.addSubview(microphoneButton)
-        microphoneRightAnchor = microphoneButton.rightAnchor.constraint(equalTo: locatorButton.leftAnchor, constant: 4)
+        microphoneRightAnchor = microphoneButton.rightAnchor.constraint(equalTo: mainBarView.rightAnchor, constant: -14)
         microphoneRightAnchor.isActive = true
         microphoneButton.centerYAnchor.constraint(equalTo: mainBar.centerYAnchor, constant: 30).isActive = true
         microphoneButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
         microphoneButton.widthAnchor.constraint(equalTo: microphoneButton.heightAnchor).isActive = true
         
         mainBar.addSubview(searchBar)
+        mainBar.addSubview(locatorArrow)
+        mainBar.addSubview(searchLocation)
         searchBar.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        searchBar.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 24).isActive = true
-        searchBar.rightAnchor.constraint(equalTo: microphoneButton.leftAnchor, constant: -2).isActive = true
-        searchBar.centerYAnchor.constraint(equalTo: locatorButton.centerYAnchor).isActive = true
-        searchBar.heightAnchor.constraint(equalTo: mainBar.heightAnchor).isActive = true
         
-        mainBar.addSubview(searchLabel)
-        searchLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        searchLabel.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
-        searchLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        switch device {
-        case .iphone8:
-            searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 30).isActive = true
-        case .iphoneX:
-            searchLabel.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: 40).isActive = true
-        }
+        searchBar.leftAnchor.constraint(equalTo: locatorArrow.leftAnchor, constant: 36).isActive = true
+        searchBar.rightAnchor.constraint(equalTo: searchLocation.leftAnchor, constant: -4).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        searchBarBottomAnchor = searchBar.centerYAnchor.constraint(equalTo: mainBarView.bottomAnchor, constant: -30)
+        searchBarBottomAnchor.isActive = true
         
-        self.view.addSubview(resultsScrollView)
-        resultsScrollView.contentSize = CGSize.zero
-        resultsScrollView.leftAnchor.constraint(equalTo: mapView.leftAnchor).isActive = true
-        resultsScrollView.rightAnchor.constraint(equalTo: mapView.rightAnchor).isActive = true
-        resultsScrollView.topAnchor.constraint(equalTo: mainBar.bottomAnchor, constant: -10).isActive = true
-        resultsScrollAnchor = resultsScrollView.heightAnchor.constraint(equalToConstant: 0)
-        resultsScrollAnchor.isActive = true
+        searchBarLeftAnchor = locatorArrow.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 16)
+        searchBarLeftAnchor.isActive = true
+        locatorArrow.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
+        locatorArrow.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        locatorArrow.heightAnchor.constraint(equalTo: locatorArrow.widthAnchor).isActive = true
         
-        resultsScrollView.addSubview(clearView)
-        resultsScrollView.addSubview(locationRecentResults.view)
-        locationRecentResults.view.topAnchor.constraint(equalTo: resultsScrollView.topAnchor).isActive = true
-        locationRecentResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        locationRecentResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        locationRecentHeightAnchor = locationRecentResults.view.heightAnchor.constraint(equalToConstant: 110)
-        locationRecentHeightAnchor.isActive = true
+        let width: CGFloat = (self.view.frame.width - 300)/2
+        searchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -width).isActive = true
+        searchLocation.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
+        searchLocation.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        searchLocation.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
-        clearView.topAnchor.constraint(equalTo: locationRecentResults.view.topAnchor).isActive = true
-        clearView.leftAnchor.constraint(equalTo: locationRecentResults.view.leftAnchor).isActive = true
-        clearView.rightAnchor.constraint(equalTo: locationRecentResults.view.rightAnchor).isActive = true
-        clearView.bottomAnchor.constraint(equalTo: locationRecentResults.view.bottomAnchor).isActive = true
-        
-        resultsScrollView.addSubview(locationsSearchResults.view)
-        locationsSearchResults.view.topAnchor.constraint(equalTo: locationRecentResults.view.bottomAnchor).isActive = true
-        locationsSearchResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        locationsSearchResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        locationsSearchResults.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-    
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarSwiped(sender:)))
-        mainBar.addGestureRecognizer(pan)
     }
     
-    @objc func mainBarSwiped(sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: self.view)
-        if sender.state == .changed && abs(translation.x) <= 16 && abs(translation.y) <= 16 {
-            if self.mainBarCenterAnchor.constant < 16 && self.mainBarCenterAnchor.constant > -16 {
-                self.mainBarCenterAnchor.constant = translation.x
-            }
-            var constant: CGFloat = 0
-            switch device {
-            case .iphone8:
-                constant = 100
-            case .iphoneX:
-                constant = 120
-            }
-            if self.mainBarTopAnchor.constant < constant + 16 && self.mainBarTopAnchor.constant > constant - 16 {
-                self.mainBarTopAnchor.constant = self.mainBarTopAnchor.constant + translation.y
-            }
-            self.view.layoutIfNeeded()
-        } else if sender.state == .ended {
-            UIView.animate(withDuration: animationOut, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseOut, animations: {
-                self.mainBarCenterAnchor.constant = 0
-                switch device {
-                case .iphone8:
-                    self.mainBarTopAnchor.constant = 100
-                case .iphoneX:
-                    self.mainBarTopAnchor.constant = 120
-                }
-                self.view.layoutIfNeeded()
-            }, completion: nil)
+    func setupSecondSearch() {
+        
+        mainBar.addSubview(fromSearchBar)
+        mainBar.addSubview(fromSearchLocation)
+        fromSearchBar.leftAnchor.constraint(equalTo: searchBar.leftAnchor).isActive = true
+        fromSearchBar.rightAnchor.constraint(equalTo: fromSearchLocation.leftAnchor, constant: -4).isActive = true
+        fromSeachTopAnchor = fromSearchBar.bottomAnchor.constraint(equalTo: searchBar.topAnchor, constant: -10)
+            fromSeachTopAnchor.isActive = true
+        fromSearchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        fromSearchBar.addSubview(fromSearchIcon)
+        fromSearchIcon.centerXAnchor.constraint(equalTo: locatorArrow.centerXAnchor).isActive = true
+        fromSearchIcon.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
+        fromSearchIcon.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        fromSearchIcon.widthAnchor.constraint(equalTo: fromSearchIcon.heightAnchor).isActive = true
+        
+        fromSearchBar.addSubview(fromSearchLine)
+        fromSearchBar.bringSubviewToFront(fromSearchIcon)
+        mainBar.bringSubviewToFront(locatorArrow)
+        fromSearchLine.centerXAnchor.constraint(equalTo: locatorArrow.centerXAnchor).isActive = true
+        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.centerYAnchor).isActive = true
+        fromSearchLine.widthAnchor.constraint(equalToConstant: 2).isActive = true
+        fromSearchLine.bottomAnchor.constraint(equalTo: searchLocation.centerYAnchor).isActive = true
+        
+        fromSearchLocation.centerXAnchor.constraint(equalTo: searchLocation.centerXAnchor).isActive = true
+        fromSearchLocation.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
+        fromSearchLocation.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        fromSearchLocation.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+    }
+    
+    func setupResults() {
+        
+        self.view.addSubview(locationsSearchResults.view)
+        self.view.bringSubviewToFront(mainBar)
+        locationsSearchResults.view.topAnchor.constraint(equalTo: mainBar.bottomAnchor, constant: -10).isActive = true
+        locationsSearchResults.view.leftAnchor.constraint(equalTo: mainBar.leftAnchor).isActive = true
+        locationsSearchResults.view.rightAnchor.constraint(equalTo: mainBar.rightAnchor).isActive = true
+        locationResultsHeightAnchor = locationsSearchResults.view.heightAnchor.constraint(equalToConstant: 0)
+            locationResultsHeightAnchor.isActive = true
+        
+        self.view.addSubview(loadingParkingLine)
+        loadingParkingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        loadingParkingLine.bottomAnchor.constraint(equalTo: mainBarView.bottomAnchor).isActive = true
+        loadingParkingLeftAnchor = loadingParkingLine.leftAnchor.constraint(equalTo: mainBar.leftAnchor)
+            loadingParkingLeftAnchor.isActive = true
+        loadingParkingRightAnchor = loadingParkingLine.rightAnchor.constraint(equalTo: mainBar.rightAnchor)
+            loadingParkingRightAnchor.isActive = false
+        loadingParkingWidthAnchor = loadingParkingLine.widthAnchor.constraint(equalToConstant: 0)
+            loadingParkingWidthAnchor.isActive = true
+        
+        mainBar.addSubview(searchBackButton)
+        searchBackButton.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 24).isActive = true
+        searchBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        searchBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            searchBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
+        case .iphoneX:
+            searchBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
         }
+        
+    }
+    
+    @objc func searchLocationPressed() {
+        self.view.endEditing(true)
+        self.fromSearchBar.text = "Current location"
+        self.fromSearchBar.textColor = Theme.PACIFIC_BLUE
     }
     
     @objc func microphoneButtonPressed(sender: UIButton) {
@@ -172,13 +180,7 @@ extension MapKitViewController {
     
     @objc func textFieldDidChange(textField: UITextField) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil, userInfo: ["text":textField.text!])
-        if textField.text == "" {
-            UIView.animate(withDuration: animationOut) {
-                self.locationsSearchResults.view.alpha = 0
-            }
-        }
     }
-    
 }
 
 

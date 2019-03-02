@@ -17,6 +17,7 @@ extension MapKitViewController: MGLMapViewDelegate {
     }
     
     func addPolyline(to style: MGLStyle, type: String) {
+        self.shouldShowOverlay = true
         if type == "Destination" {
             let stamp = Date().timeIntervalSince1970
             let source = MGLShapeSource(identifier: "\(stamp)", shape: nil, options: nil)
@@ -25,14 +26,14 @@ extension MapKitViewController: MGLMapViewDelegate {
             
             // Add a layer to style our polyline.
             let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
-            layer.lineJoin = NSExpression(forConstantValue: "round")
-            layer.lineCap = NSExpression(forConstantValue: "round")
+            layer.lineJoin = NSExpression(forConstantValue: "rounded")
+            layer.lineCap = NSExpression(forConstantValue: "rounded")
             layer.lineColor = NSExpression(forConstantValue: Theme.BLACK)
             layer.lineOpacity = NSExpression(forConstantValue: 0.9)
-            layer.lineDashPattern = NSExpression(forConstantValue: [0, 1.5])
+            layer.lineDashPattern = NSExpression(forConstantValue: [1.5, 2])
             
             // The line width should gradually increase based on the zoom level.
-            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
+            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 5: 7])
             
             style.addLayer(layer)
             self.polylineLayer = layer
@@ -54,31 +55,36 @@ extension MapKitViewController: MGLMapViewDelegate {
             
             style.addLayer(layer)
             self.polylineSecondLayer = layer
-        } else if type == "Circle" {
+        } else if type == "NextPolyline" {
             let stamp = Date().timeIntervalSince1970
             let source = MGLShapeSource(identifier: "\(stamp)", shape: nil, options: nil)
             style.addSource(source)
-            navigationRegionSource = source
+            polylineSecondSource = source
             
-            let circle = MGLCircleStyleLayer(identifier: "\(stamp)", source: source)
-            circle.circleColor = NSExpression(forConstantValue: Theme.HARMONY_RED)
-            circle.circleRadius = NSExpression(forConstantValue: 25)
-            circle.circleStrokeColor = NSExpression(forConstantValue: Theme.PURPLE)
+            // Add a layer to style our polyline.
+            let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
+            layer.lineJoin = NSExpression(forConstantValue: "round")
+            layer.lineCap = NSExpression(forConstantValue: "round")
+            layer.lineColor = NSExpression(forConstantValue: Theme.SEA_BLUE)
+            layer.lineOpacity = NSExpression(forConstantValue: 0.9)
             
-            style.addLayer(circle)
-            self.polylineCircleLayer = circle
-            let coordinates = Array(self.destinationCoordinates)
-            let polyline = MGLPolygonFeature(coordinates: coordinates, count: UInt(coordinates.count))
-            navigationRegionSource?.shape = polyline
+            // The line width should gradually increase based on the zoom level.
+            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
+            
+            style.addLayer(layer)
+            self.polylineSecondLayer = layer
         }
     }
     
     func animateFirstPolyline() {
-        currentFirstIndex = 1
-        let timestep = Double(Double(2.0) / Double(self.parkingCoordinates.count))
-        
-        // Start a timer that will simulate adding points to our polyline. This could also represent coordinates being added to our polyline from another source, such as a CLLocationManagerDelegate.
-        polylineFirstTimer = Timer.scheduledTimer(timeInterval: timestep, target: self, selector: #selector(firstTick), userInfo: nil, repeats: true)
+        if self.polylineFirstTimer != nil { self.polylineFirstTimer!.invalidate() }
+        if self.shouldShowOverlay == true {
+            currentFirstIndex = 1
+            let timestep = Double(Double(2.0) / Double(self.parkingCoordinates.count))
+            
+            // Start a timer that will simulate adding points to our polyline. This could also represent coordinates being added to our polyline from another source, such as a CLLocationManagerDelegate.
+            polylineFirstTimer = Timer.scheduledTimer(timeInterval: timestep, target: self, selector: #selector(firstTick), userInfo: nil, repeats: true)
+        }
     }
     
     @objc func firstTick() {
@@ -99,21 +105,26 @@ extension MapKitViewController: MGLMapViewDelegate {
     }
     
     func updateFirstPolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
-        var mutableCoordinates = coordinates
-        
-        let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
-        
-        // Updating the MGLShapeSource’s shape will have the map redraw our polyline with the current coordinates.
-        polylineSource?.shape = polyline
-//        polylineSecondSource?.shape = polyline
+        if self.shouldShowOverlay == true {
+            var mutableCoordinates = coordinates
+            
+            let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
+            
+            // Updating the MGLShapeSource’s shape will have the map redraw our polyline with the current coordinates.
+            polylineSource?.shape = polyline
+    //        polylineSecondSource?.shape = polyline
+        }
     }
     
     func animateSecondPolyline() {
-        currentSecondIndex = 1
-        let timestep = Double(Double(1.0) / Double(self.destinationCoordinates.count))
-        
-        // Start a timer that will simulate adding points to our polyline. This could also represent coordinates being added to our polyline from another source, such as a CLLocationManagerDelegate.
-        polylineSecondTimer = Timer.scheduledTimer(timeInterval: timestep, target: self, selector: #selector(secondTick), userInfo: nil, repeats: true)
+        if self.polylineSecondTimer != nil { self.polylineSecondTimer!.invalidate() }
+        if self.shouldShowOverlay == true {
+            currentSecondIndex = 1
+            let timestep = Double(Double(1.0) / Double(self.destinationCoordinates.count))
+            
+            // Start a timer that will simulate adding points to our polyline. This could also represent coordinates being added to our polyline from another source, such as a CLLocationManagerDelegate.
+            polylineSecondTimer = Timer.scheduledTimer(timeInterval: timestep, target: self, selector: #selector(secondTick), userInfo: nil, repeats: true)
+        }
     }
     
     @objc func secondTick() {
@@ -138,12 +149,14 @@ extension MapKitViewController: MGLMapViewDelegate {
     }
     
     func updateSecondPolylineWithCoordinates(coordinates: [CLLocationCoordinate2D]) {
-        var mutableCoordinates = coordinates
-        
-        let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
-        
-        // Updating the MGLShapeSource’s shape will have the map redraw our polyline with the current coordinates.
-        polylineSecondSource?.shape = polyline
+        if self.shouldShowOverlay == true {
+            var mutableCoordinates = coordinates
+            
+            let polyline = MGLPolylineFeature(coordinates: &mutableCoordinates, count: UInt(mutableCoordinates.count))
+            
+            // Updating the MGLShapeSource’s shape will have the map redraw our polyline with the current coordinates.
+            polylineSecondSource?.shape = polyline
+        }
     }
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -153,7 +166,7 @@ extension MapKitViewController: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 5
+        return 8
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {

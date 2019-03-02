@@ -14,6 +14,7 @@ var ParkingRoutePolyLine: [MKOverlay] = []
 var DestinationRoutePolyLine = MKPolyline()
 var DestinationAnnotation: MKAnnotation?
 var ZoomMapView: MGLCoordinateBounds?
+var ZoomPurchaseMapView: MGLCoordinateBounds?
 var IncreasedZoomMapView: CLLocationCoordinate2D?
 var CurrentDestinationLocation: CLLocation?
 var ClosestParkingLocation: CLLocation?

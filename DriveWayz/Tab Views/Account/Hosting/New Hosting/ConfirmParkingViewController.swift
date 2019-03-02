@@ -105,12 +105,12 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.addTarget(self, action: #selector(showTerms), for: .touchUpInside)
         
         let main_string = "By registering your host parking space, you confirm that you own all rights and privileges to the property and you agree to our Services Agreement."
-        let string_to_color = "Services Agreement"
+        let string_to_color = "Services Agreement."
         let string_to_notColor = "By registering your host parking space, you confirm that you own all rights and privileges to the property and you agree to our "
         let range = (main_string as NSString).range(of: string_to_color)
         let attribute = NSMutableAttributedString.init(string: main_string)
         let notRange = (main_string as NSString).range(of: string_to_notColor)
-        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.SEA_BLUE , range: range)
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.PACIFIC_BLUE , range: range)
         attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.WHITE , range: notRange)
         attribute.addAttribute(NSAttributedString.Key.font, value: Fonts.SSPSemiBoldH3 , range: range)
         button.setAttributedTitle(attribute, for: .normal)

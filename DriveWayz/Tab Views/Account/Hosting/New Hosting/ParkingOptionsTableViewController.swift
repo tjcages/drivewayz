@@ -688,7 +688,7 @@ class ParkingOptionsViewController: UIViewController {
         self.parkinglotAnchor.constant = 80
         self.parkinglotInformation.alpha = 1
         self.view.layoutIfNeeded()
-        self.parkingType = "parkingLot"
+        self.parkingType = "parking lot"
         self.drivewayImageView.alpha = 0
         self.drivewayIconLabel.alpha = 0
         self.drivewayInformation.alpha = 0
@@ -1064,7 +1064,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == sharedlotIconLabel || sender == sharedlotImageView {
-            self.parkingType = "sharedLot"
+            self.parkingType = "lot"
             UIView.animate(withDuration: 0.1) {
                 self.sharedlotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -1112,7 +1112,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == sharedCoverIconLabel || sender == sharedCoverImageView {
-            self.parkingType = "sharedCover"
+            self.parkingType = "garage"
             UIView.animate(withDuration: 0.1) {
                 self.sharedCoverIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.sharedCoverIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -1182,7 +1182,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == parkinglotIconLabel || sender == parkinglotImageView {
-            self.parkingType = "parkingLot"
+            self.parkingType = "lot"
             UIView.animate(withDuration: 0.1) {
                 self.parkinglotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.parkinglotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2

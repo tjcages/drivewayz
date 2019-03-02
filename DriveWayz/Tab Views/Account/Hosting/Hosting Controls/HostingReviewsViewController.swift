@@ -25,16 +25,21 @@ class HostingReviewsViewController: UIViewController, UICollectionViewDelegateFl
     }()
     
     lazy var reviewsPicker: UICollectionView = {
-        let reviews = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        reviews.backgroundColor = UIColor.clear
-        reviews.tintColor = Theme.WHITE
-        reviews.translatesAutoresizingMaskIntoConstraints = false
-        reviews.showsHorizontalScrollIndicator = false
-        reviews.showsVerticalScrollIndicator = false
-        reviews.register(ReviewsCell.self, forCellWithReuseIdentifier: identifier)
-        reviews.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        view.backgroundColor = Theme.WHITE
+        view.tintColor = Theme.WHITE
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.register(ReviewsCell.self, forCellWithReuseIdentifier: identifier)
+        view.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 1
+        view.clipsToBounds = false
         
-        return reviews
+        return view
     }()
     
     override func viewDidLoad() {
@@ -58,45 +63,45 @@ class HostingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         
     }
     
-    private func indexOfMajorCell() -> Int {
-        let itemWidth = cellWidth
-        let proportionalOffset = layout.collectionView!.contentOffset.x / itemWidth
-        let index = Int(round(proportionalOffset))
-        return index
-    }
-    
-    private var indexOfCellBeforeDragging = 0
+//    private func indexOfMajorCell() -> Int {
+//        let itemWidth = cellWidth
+//        let proportionalOffset = layout.collectionView!.contentOffset.x / itemWidth
+//        let index = Int(round(proportionalOffset))
+//        return index
+//    }
+//
+//    private var indexOfCellBeforeDragging = 0
     lazy var cellWidth: CGFloat = self.view.frame.width-100
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        indexOfCellBeforeDragging = indexOfMajorCell()
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        // Stop scrollView sliding:
-        targetContentOffset.pointee = scrollView.contentOffset
-        // Calculate where scrollView should snap to:
-        let indexOfMajorCell = self.indexOfMajorCell()
-        
-        // calculate conditions:
-        let swipeVelocityThreshold: CGFloat = 0.3
-        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.userName.count && velocity.x > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
-        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
-        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-        if didUseSwipeToSkipCell {
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            let toValue = cellWidth * CGFloat(snapToIndex)
-            // Damping equal 1 => no oscillations => decay animation:
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
-                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
-                scrollView.layoutIfNeeded()
-            }, completion: nil)
-        } else {
-            let indexPath = IndexPath(row: indexOfMajorCell, section: 0)
-            self.layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        }
-    }
+//
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        indexOfCellBeforeDragging = indexOfMajorCell()
+//    }
+//
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        // Stop scrollView sliding:
+//        targetContentOffset.pointee = scrollView.contentOffset
+//        // Calculate where scrollView should snap to:
+//        let indexOfMajorCell = self.indexOfMajorCell()
+//
+//        // calculate conditions:
+//        let swipeVelocityThreshold: CGFloat = 0.3
+//        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.userName.count && velocity.x > swipeVelocityThreshold
+//        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
+//        let majorCellIsTheCellBeforeDragging = indexOfMajorCell == indexOfCellBeforeDragging
+//        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
+//        if didUseSwipeToSkipCell {
+//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+//            let toValue = cellWidth * CGFloat(snapToIndex)
+//            // Damping equal 1 => no oscillations => decay animation:
+//            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
+//                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
+//                scrollView.layoutIfNeeded()
+//            }, completion: nil)
+//        } else {
+//            let indexPath = IndexPath(row: indexOfMajorCell, section: 0)
+//            self.layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//        }
+//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.userName.count == 0 {

@@ -63,11 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         InstanceID.instanceID().instanceID(handler: { (result, error) in
             if error == nil {
-                AppDelegate.DEVICEID = (result?.token)!
-                self.connectToFCM()
-                guard let currentUser = Auth.auth().currentUser?.uid else { return }
-                let ref = Database.database().reference().child("users").child(currentUser)
-                ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+                if let token = result?.token {
+                    AppDelegate.DEVICEID = token
+                    self.connectToFCM()
+                    guard let currentUser = Auth.auth().currentUser?.uid else { return }
+                    let ref = Database.database().reference().child("users").child(currentUser)
+                    ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+                }
             }
         })
         return true

@@ -238,7 +238,7 @@ class ParkingTypeViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(scrollView)
-//        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 2)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 1.2)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -351,11 +351,11 @@ class ParkingTypeViewController: UIViewController {
         
     }
     
-    var parkingType: String = "house"
+    var parkingType: String = "residential"
     
     @objc func optionTapped(sender: UIButton) {
         if sender == houseIconLabel || sender == houseButton {
-            self.parkingType = "house"
+            self.parkingType = "residential"
             UIView.animate(withDuration: 0.1) {
                 self.houseIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.houseIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -387,7 +387,7 @@ class ParkingTypeViewController: UIViewController {
                 self.resetAlley()
             }
         } else if sender == lotIconLabel || sender == lotButton {
-            self.parkingType = "parkingLot"
+            self.parkingType = "parking lot"
             UIView.animate(withDuration: 0.1) {
                 self.lotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.lotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2

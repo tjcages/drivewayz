@@ -210,10 +210,10 @@ class DestinationAnnotationView : MGLAnnotationView, CAAnimationDelegate {
         super.layoutSubviews()
         
         // Use CALayer’s corner radius to turn this view into a circle.
-        layer.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+        layer.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
         layer.backgroundColor = Theme.WHITE.cgColor
         layer.cornerRadius = bounds.width / 2
-        layer.borderWidth = 5
+        layer.borderWidth = 6
         layer.borderColor = Theme.PURPLE.cgColor
         layer.removeAllAnimations()
 

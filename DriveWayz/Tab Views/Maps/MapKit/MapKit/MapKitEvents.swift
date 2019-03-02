@@ -55,6 +55,12 @@ extension MapKitViewController {
             giftOnlyBottomAnchor.isActive = true
         }
         
+        self.view.addSubview(locatorButton)
+        locatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
+        locatorButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
+        locatorButton.bottomAnchor.constraint(equalTo: giftButton.topAnchor, constant: -12).isActive = true
+        
     }
     
     func openSpecificEvent() {
@@ -67,7 +73,7 @@ extension MapKitViewController {
             case .iphone8:
                 self.mainBarTopAnchor.constant = 80
             case .iphoneX:
-                self.mainBarTopAnchor.constant = 100
+                self.mainBarTopAnchor.constant = 80
             }
             self.eventsHeightAnchor.constant = self.view.frame.height
             self.giftBottomAnchor.constant = self.view.frame.height
@@ -99,9 +105,16 @@ extension MapKitViewController {
                 if difference < 50 {
                     self.eventsControllerHidden()
                 } else {
+                    var total: CGFloat = 0
+                    switch device {
+                    case .iphone8:
+                        total = 0
+                    case .iphoneX:
+                        total = -30
+                    }
                     self.eventsControllerAnchor.constant = 120 - difference
-                    if self.eventsControllerAnchor.constant <= 0 {
-                        self.eventsControllerAnchor.constant = 0
+                    if self.eventsControllerAnchor.constant <= total {
+                        self.eventsControllerAnchor.constant = total
                     }
                     self.view.layoutIfNeeded()
                 }
@@ -152,12 +165,17 @@ extension MapKitViewController {
         UIView.animate(withDuration: animationIn) {
             self.giftRightAnchor.constant = -16
             self.checkEventsAnchor.isActive = true
-            self.checkEventsAnchor.constant = -12
             self.checkEventsBottomAnchor.isActive = false
             self.checkEventsHeightAnchor.constant = 70
             self.checkEventsWidthAnchor.constant = self.view.frame.width - 24
             self.eventsControllerAnchor.constant = 150
             self.giftBottomAnchor.constant = -12
+            switch device {
+            case .iphone8:
+                self.checkEventsAnchor.constant = -12
+            case .iphoneX:
+                self.checkEventsAnchor.constant = -32
+            }
             self.view.layoutIfNeeded()
         }
     }

@@ -151,8 +151,9 @@ extension ConfigureParkingViewController {
                         
                         self.loadImageDatabase(parkingID: childKey)
                         
-                        let userRef = Database.database().reference().child("users").child(userID).child("Hosting Spots")
-                        userRef.updateChildValues(["\(childKey)": childKey])
+                        let userRef = Database.database().reference().child("users").child(userID)
+                        userRef.updateChildValues(["email": hostEmail as Any])
+                        userRef.child("Hosting Spots").updateChildValues(["\(childKey)": childKey])
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.confirmController.endLoading()

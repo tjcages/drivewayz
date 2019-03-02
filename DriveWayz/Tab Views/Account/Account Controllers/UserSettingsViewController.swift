@@ -155,13 +155,13 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         
         self.view.addSubview(container)
         container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
+        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160)
             containerHeightAnchor.isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 50).isActive = true
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 700)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 760)
         containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
             containerCenterAnchor.isActive = true
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
@@ -245,7 +245,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             self.delegate?.changeMainLabel(text: "Settings")
             self.delegate?.moveMainLabel(percent: 0)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-            self.containerHeightAnchor.constant = 120
+            self.containerHeightAnchor.constant = 160
             self.containerCenterAnchor.constant = 0
             self.editAnchor.constant = self.view.frame.width
             self.termsAnchor.constant = self.view.frame.width
@@ -325,9 +325,9 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
                 self.vehicleAnchor.constant = 0
                 switch device {
                 case .iphone8:
-                    self.vehicleController.containerHeightAnchor.constant = 70
-                case .iphoneX:
                     self.vehicleController.containerHeightAnchor.constant = 80
+                case .iphoneX:
+                    self.vehicleController.containerHeightAnchor.constant = 90
                 }
             } else if title != "" {
                 self.editSettingsController.setData(title: title, subtitle: subtitle)
@@ -344,9 +344,9 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             self.backButton.alpha = 1
             switch device {
             case .iphone8:
-                self.containerHeightAnchor.constant = 70
-            case .iphoneX:
                 self.containerHeightAnchor.constant = 80
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 90
             }
             self.containerCenterAnchor.constant = -self.view.frame.width/2
             self.view.layoutIfNeeded()
@@ -388,21 +388,21 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             let percent = (translation-10)/40
             switch device {
             case .iphone8:
-                self.containerHeightAnchor.constant = 120 - (percent * 50)
+                self.containerHeightAnchor.constant = 160 - (percent * 80)
             case .iphoneX:
-                self.containerHeightAnchor.constant = 120 - (percent * 40)
+                self.containerHeightAnchor.constant = 160 - (percent * 90)
             }
             self.delegate?.moveMainLabel(percent: percent)
         } else if translation < 10 {
-            self.containerHeightAnchor.constant = 120
+            self.containerHeightAnchor.constant = 160
             self.delegate?.moveMainLabel(percent: 0)
         } else {
             self.delegate?.moveMainLabel(percent: 1)
             switch device {
             case .iphone8:
-                self.containerHeightAnchor.constant = 70
-            case .iphoneX:
                 self.containerHeightAnchor.constant = 80
+            case .iphoneX:
+                self.containerHeightAnchor.constant = 90
             }
         }
     }

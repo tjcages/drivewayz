@@ -59,6 +59,12 @@ class ExpandedSpotsViewController: UIViewController {
         setupViews()
     }
     
+    func setData(hosting: ParkingSpots) {
+        if let numberSpots = hosting.numberSpots {
+            self.numberLabel.text = numberSpots
+        }
+    }
+    
     func setupViews() {
         
         self.view.addSubview(residentialLabel)

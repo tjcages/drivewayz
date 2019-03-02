@@ -13,7 +13,6 @@ import Cosmos
 
 class LeaveReviewViewController: UIViewController, UITextViewDelegate {
     
-    var delegate: removePurchaseView?
     var parkingID: String?
     var rating: Int = 0
     

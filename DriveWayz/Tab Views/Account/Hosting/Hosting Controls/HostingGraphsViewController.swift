@@ -11,19 +11,14 @@ import Charts
 
 class HostingGraphsViewController: UIViewController, ChartViewDelegate {
     
-    var timeArray: [Double] = [2,3,5,6,8,10,11,12,13]
-    var costArray: [Double] = [1,3,4,6,7,8,9,11,13]
+    var timeArray: [Double] = [2,3,5,6,8,10,11,12,13,14,15,15.5,16]
+    var costArray: [Double] = [1,3,4,6,7,8,9,11,13,14,15,15.5,16]
     var chartTimer: Timer?
     
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 1
-        view.layer.cornerRadius = 3
         
         return view
     }()

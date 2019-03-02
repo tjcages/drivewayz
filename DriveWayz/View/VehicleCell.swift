@@ -42,6 +42,17 @@ class VehicleCell: UITableViewCell {
         return view
     }()
     
+    var plusButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "Add")
+        button.setImage(image, for: .normal)
+        button.isUserInteractionEnabled = false
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var titleTopAnchor: NSLayoutConstraint!
     var titleCenterAnchor: NSLayoutConstraint!
     var titleLeftAnchor: NSLayoutConstraint!
@@ -52,6 +63,7 @@ class VehicleCell: UITableViewCell {
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
+        addSubview(plusButton)
         
         iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
         iconView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -71,6 +83,11 @@ class VehicleCell: UITableViewCell {
         subtitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+     
+        plusButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        plusButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -38.5).isActive = true
+        plusButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor).isActive = true
         
     }
     

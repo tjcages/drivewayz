@@ -69,9 +69,12 @@ class VerificationCodeViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkVerificationCode), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
         background.zPosition = -10
         button.layer.addSublayer(background)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 3
         
         return button
     }()
@@ -374,18 +377,24 @@ class VerificationCodeViewController: UIViewController {
     }
     
     func createToolbar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        toolBar.isUserInteractionEnabled = true
-        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+//        let toolBar = UIToolbar()
+//        toolBar.sizeToFit()
+//        toolBar.isUserInteractionEnabled = true
+//        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+//        
+//        nextButton.frame = toolBar.frame
+//        firstVerificationField.inputAccessoryView = nextButton
+//        secondVerificationField.inputAccessoryView = nextButton
+//        thirdVerificationField.inputAccessoryView = nextButton
+//        fourthVerificationField.inputAccessoryView = nextButton
+//        fifthVerificationField.inputAccessoryView = nextButton
+//        sixthVerificationField.inputAccessoryView = nextButton
         
-        nextButton.frame = toolBar.frame
-        firstVerificationField.inputAccessoryView = nextButton
-        secondVerificationField.inputAccessoryView = nextButton
-        thirdVerificationField.inputAccessoryView = nextButton
-        fourthVerificationField.inputAccessoryView = nextButton
-        fifthVerificationField.inputAccessoryView = nextButton
-        sixthVerificationField.inputAccessoryView = nextButton
+        self.view.addSubview(nextButton)
+        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.topAnchor.constraint(equalTo: passwordSignin.bottomAnchor, constant: 72).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
         
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true

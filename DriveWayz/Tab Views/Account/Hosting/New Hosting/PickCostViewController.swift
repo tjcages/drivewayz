@@ -11,7 +11,7 @@ import CoreLocation
 
 class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var costParking: String = "$3.00"
+    var costParking: String = "3.00"
     
     private var costValues: [String] = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00"]
     
