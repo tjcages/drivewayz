@@ -27,6 +27,19 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var backgroundProfile: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        view.layer.cornerRadius = 50
         view.clipsToBounds = true
         
         return view
@@ -34,16 +47,18 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "background4")
-        imageView.image = image
+        let origImage = UIImage(named: "background4")
+        imageView.image = origImage
+        imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = Theme.OFF_WHITE
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor.white
+        imageView.backgroundColor = UIColor.clear
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
-        imageView.layer.borderColor = Theme.SEA_BLUE.cgColor
-        imageView.layer.borderWidth = 0.5
+//        imageView.layer.borderColor = Theme.BLACK.cgColor
+//        imageView.layer.borderWidth = 1
         
         return imageView
     }()
@@ -53,7 +68,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileName.translatesAutoresizingMaskIntoConstraints = false
         profileName.textColor = Theme.BLACK
         profileName.textAlignment = .center
-        profileName.font = Fonts.SSPRegularH2
+        profileName.font = Fonts.SSPSemiBoldH2
         profileName.text = ""
         
         return profileName
@@ -62,7 +77,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return view
     }()
@@ -77,6 +92,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.contentOffset = CGPoint.zero
         view.decelerationRate = .fast
         view.showsVerticalScrollIndicator = false
+        view.clipsToBounds = false
         
         return view
     }()
@@ -170,7 +186,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var settingsSelect: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
+        view.backgroundColor = Theme.WHITE
         
         return view
     }()
@@ -212,36 +228,42 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func setupTopView() {
         
-        container.addSubview(profileImageView)
-        profileImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        switch device {
-        case .iphone8:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: 70).isActive = true
-        case .iphoneX:
-            profileImageView.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 70).isActive = true
-        }
-        
-        container.addSubview(profileName)
-        profileName.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
-        profileName.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 5).isActive = true
-        profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
-        profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        container.addSubview(profileLine)
-        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        profileLine.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
-        profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 10).isActive = true
-        profileLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        container.addSubview(settingsSelect)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingSelected))
-        settingsSelect.addGestureRecognizer(tapGesture)
+        self.view.addSubview(profileLine)
+        self.view.addSubview(settingsSelect)
+        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingSelected))
+        //        settingsSelect.addGestureRecognizer(tapGesture)
         settingsSelect.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         settingsSelect.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         settingsSelect.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         settingsSelect.bottomAnchor.constraint(equalTo: profileLine.topAnchor).isActive = true
+        
+        self.view.addSubview(backgroundProfile)
+        backgroundProfile.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        backgroundProfile.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        backgroundProfile.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        switch device {
+        case .iphone8:
+            backgroundProfile.topAnchor.constraint(equalTo: container.topAnchor, constant: 110).isActive = true
+        case .iphoneX:
+            backgroundProfile.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 110).isActive = true
+        }
+        
+        self.view.addSubview(profileImageView)
+        profileImageView.topAnchor.constraint(equalTo: backgroundProfile.topAnchor).isActive = true
+        profileImageView.leftAnchor.constraint(equalTo: backgroundProfile.leftAnchor).isActive = true
+        profileImageView.rightAnchor.constraint(equalTo: backgroundProfile.rightAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: backgroundProfile.bottomAnchor).isActive = true
+        
+        self.view.addSubview(profileName)
+        profileName.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        profileName.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 12).isActive = true
+        profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
+        profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        profileLine.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 24).isActive = true
+        profileLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         container.addSubview(optionsTableView)
         optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
@@ -384,30 +406,51 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
-        cell.messageTextView.text = options[indexPath.row]
+        cell.message = options[indexPath.row]
 //        cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
         let image = optionsImages[indexPath.row]
         let tintedImage = image.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         cell.profileImageView.setImage(tintedImage, for: .normal)
         cell.profileImageView.tintColor = Theme.BLACK
         cell.selectionStyle = .none
+        if self.selectedIndex == indexPath.row {
+            cell.animate()
+            cell.clipsToBounds = false
+        } else {
+            cell.clipsToBounds = true
+        }
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
-        cell.messageTextView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        cell.profileImageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+    func forceSelectBook() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.selectedIndex = indexPath.row
+        self.optionsTableView.reloadData()
+        delayWithSeconds(animationOut) {
+            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
+        }
     }
     
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
-        cell.messageTextView.textColor = Theme.BLACK
-        cell.profileImageView.tintColor = Theme.BLACK
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.selectedIndex = indexPath.row
+        tableView.reloadData()
+        delayWithSeconds(animationOut) {
+            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
+        }
+//        cell.profileImageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
     }
+    
+//    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+//        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
+//        cell.messageTextView.textColor = Theme.BLACK
+//        cell.profileImageView.tintColor = Theme.BLACK
+//    }
     
     var analControllerAnchor: NSLayoutConstraint!
+    var selectedIndex: Int = 0
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: animationIn) {

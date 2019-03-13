@@ -115,7 +115,7 @@ class PurchaseSpotViewController: UIViewController, handleDurationSet {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("CONFIRM PURCHASE", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.BLACK
+        button.backgroundColor = Theme.DARK_GRAY
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(confirmPurchasePressed(sender:)), for: .touchUpInside)
 //        button.layer.cornerRadius = 3
@@ -243,47 +243,47 @@ class PurchaseSpotViewController: UIViewController, handleDurationSet {
     }
     
     func bookingPressed() {
-        if self.fullDatesLabel.text == "Set duration" {
-            let price = String(format: "%.2f", self.parkingCost)
-            self.totalCostLabel.text = "$\(price) per hour"
-            self.confirmPurchaseButton.setTitle("SET DURATION", for: .normal)
-            self.confirmPurchaseButton.backgroundColor = Theme.BLACK
-            self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.confirmPurchaseButton.layer.borderWidth = 0
-            self.totalCostLabel.textColor = Theme.BLACK
-        } else {
-            self.confirmPurchaseButton.setTitle("CONFIRM PURCHASE", for: .normal)
-            self.confirmPurchaseButton.backgroundColor = Theme.PACIFIC_BLUE
-            self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.confirmPurchaseButton.layer.borderWidth = 0
-        }
+//        if self.fullDatesLabel.text == "Set duration" {
+//            let price = String(format: "%.2f", self.parkingCost)
+//            self.totalCostLabel.text = "$\(price) per hour"
+//            self.confirmPurchaseButton.setTitle("SET DURATION", for: .normal)
+//            self.confirmPurchaseButton.backgroundColor = Theme.DARK_GRAY
+//            self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
+//            self.confirmPurchaseButton.layer.borderWidth = 0
+//            self.totalCostLabel.textColor = Theme.BLACK
+//        } else {
+//            self.confirmPurchaseButton.setTitle("CONFIRM PURCHASE", for: .normal)
+//            self.confirmPurchaseButton.backgroundColor = Theme.PACIFIC_BLUE
+//            self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
+//            self.confirmPurchaseButton.layer.borderWidth = 0
+//        }
     }
     
     @objc func confirmPurchasePressed(sender: UIButton) {
-        if sender.titleLabel?.text == "SET DURATION" && self.durationController.view.alpha == 1 {
-            self.delegate?.durationSet()
-            self.durationController.timeDurationSet()
-            self.confirmPurchaseButton.setTitle("CONFIRM PURCHASE", for: .normal)
-            UIView.animate(withDuration: animationIn, animations: {
-                self.durationController.view.alpha = 0
-                self.locatorArrow.alpha = 0.8
-                self.totalCostLabel.alpha = 1
-                self.fullDatesLabel.alpha = 1
-                self.setTimeIcon.alpha = 1
-                self.cardView.alpha = 1
-            }) { (success) in
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.confirmPurchaseButton.backgroundColor = Theme.PACIFIC_BLUE
-                    self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
-                    self.confirmPurchaseButton.layer.borderWidth = 0
-                })
-            }
-        } else if sender.titleLabel?.text == "SET DURATION" && self.durationController.view.alpha == 0 {
-            self.durationController.didSetTimes()
-            self.durationPressed()
-        } else {
-            self.delegate?.confirmPurchasePressed()
-        }
+//        if sender.titleLabel?.text == "SET DURATION" && self.durationController.view.alpha == 1 {
+//            self.delegate?.durationSet()
+//            self.durationController.timeDurationSet()
+//            self.confirmPurchaseButton.setTitle("CONFIRM PURCHASE", for: .normal)
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.durationController.view.alpha = 0
+//                self.locatorArrow.alpha = 0.8
+//                self.totalCostLabel.alpha = 1
+//                self.fullDatesLabel.alpha = 1
+//                self.setTimeIcon.alpha = 1
+//                self.cardView.alpha = 1
+//            }) { (success) in
+//                UIView.animate(withDuration: animationIn, animations: {
+//                    self.confirmPurchaseButton.backgroundColor = Theme.PACIFIC_BLUE
+//                    self.confirmPurchaseButton.setTitleColor(Theme.WHITE, for: .normal)
+//                    self.confirmPurchaseButton.layer.borderWidth = 0
+//                })
+//            }
+//        } else if sender.titleLabel?.text == "SET DURATION" && self.durationController.view.alpha == 0 {
+//            self.durationController.didSetTimes()
+//            self.durationPressed()
+//        } else {
+//            self.delegate?.confirmPurchasePressed()
+//        }
     }
     
     @objc func durationPressed() {
@@ -295,7 +295,7 @@ class PurchaseSpotViewController: UIViewController, handleDurationSet {
             self.fullDatesLabel.alpha = 0
             self.setTimeIcon.alpha = 0
             self.cardView.alpha = 0
-            self.confirmPurchaseButton.backgroundColor = Theme.BLACK
+            self.confirmPurchaseButton.backgroundColor = Theme.DARK_GRAY
         }) { (success) in
             self.confirmPurchaseButton.setTitle("SET DURATION", for: .normal)
             UIView.animate(withDuration: animationIn, animations: {

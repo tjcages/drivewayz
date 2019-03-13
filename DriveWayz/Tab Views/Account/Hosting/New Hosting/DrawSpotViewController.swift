@@ -34,7 +34,7 @@ class DrawSpotViewController: UIViewController {
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
         background.zPosition = -10
         button.layer.addSublayer(background)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
         
@@ -47,7 +47,7 @@ class DrawSpotViewController: UIViewController {
         button.setTitle("Hide square", for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.alpha = 1
         button.addTarget(self, action: #selector(hideButtons(sender:)), for: .touchUpInside)
         button.contentHorizontalAlignment = .left

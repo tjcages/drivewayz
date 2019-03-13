@@ -22,7 +22,7 @@ class AmenitiesCell: UICollectionViewCell {
     let cellView: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.PACIFIC_BLUE
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         

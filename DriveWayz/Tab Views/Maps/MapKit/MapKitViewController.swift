@@ -41,6 +41,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         setupViewController()
         setupPurchaseStatus()
         setupCurrent()
+        setupNavigationButton()
         checkDayTimeStatus()
         checkNetwork()
         if self.currentActive == false {
@@ -82,7 +83,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
@@ -186,6 +187,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         view.font = Fonts.SSPRegularH3
         view.clearButtonMode = .never
         view.alpha = 0
+        view.isUserInteractionEnabled = false ////////////////////////////NEED TO FIX
         
         return view
     }()
@@ -204,9 +206,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var fromSearchIcon: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
-        view.alpha = 0.7
-        view.layer.cornerRadius = 5
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.BLUE.cgColor
+        view.layer.borderWidth = 5
+        view.layer.cornerRadius = 8
         
         return view
     }()
@@ -214,7 +217,22 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var fromSearchLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = UIColor.clear
+        
+        let dot1 = UIView(frame: CGRect(x: 0, y: 8.2, width: 4, height: 4))
+        dot1.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        dot1.layer.cornerRadius = 2
+        view.addSubview(dot1)
+        
+        let dot2 = UIView(frame: CGRect(x: 0, y: 20.4, width: 4, height: 4))
+        dot2.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        dot2.layer.cornerRadius = 2
+        view.addSubview(dot2)
+        
+        let dot3 = UIView(frame: CGRect(x: 0, y: 32.6, width: 4, height: 4))
+        dot3.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        dot3.layer.cornerRadius = 2
+        view.addSubview(dot3)
         
         return view
     }()
@@ -233,9 +251,20 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     lazy var currentSpotController: CurrentSpotViewController = {
         let controller = CurrentSpotViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
         return controller
     }()
+    
+    lazy var expandedSpotController: ExpandedSpotViewController = {
+        let controller = ExpandedSpotViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    var expandedSpotBottomAnchor: NSLayoutConstraint!
     
     var currentTopAnchor: NSLayoutConstraint!
     var currentHeightAnchor: NSLayoutConstraint!
@@ -328,8 +357,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    lazy var parkingController: ParkingViewController = {
-        let controller = ParkingViewController()
+    lazy var parkingController: TestParkingTestViewController = {
+        let controller = TestParkingTestViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Parking"
         controller.delegate = self
@@ -340,11 +369,18 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    lazy var purchaseController: PurchaseSpotViewController = {
-        let controller = PurchaseSpotViewController()
+    lazy var purchaseController: TestPurchaseViewController = {
+        let controller = TestPurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Purchase"
         controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var confirmPaymentController: ConfirmTestPurchaseViewController = {
+        let controller = ConfirmTestPurchaseViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
         
         return controller
     }()
@@ -502,6 +538,53 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
+    var navigationIcon: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let origImage = UIImage(named: "navigationIcon")
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.isUserInteractionEnabled = false
+        
+        return button
+    }()
+    
+    var navigationButtonLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.WHITE
+        label.text = "GO"
+        label.font = Fonts.SSPSemiBoldH2
+        
+        return label
+    }()
+    
+    var navigationView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.PACIFIC_BLUE
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = true
+        view.alpha = 0
+        //        view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        return view
+    }()
+    
+    var navigationShadowView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.6
+        
+        return view
+    }()
+    
     var navigationRouteController: NavigationViewController?
     
     var searchedForPlace: Bool = false
@@ -564,12 +647,13 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     
     var parkingBackButtonBookAnchor: NSLayoutConstraint!
     var parkingBackButtonPurchaseAnchor: NSLayoutConstraint!
+    var parkingBackButtonConfirmAnchor: NSLayoutConstraint!
     
     var mapViewBottomAnchor: NSLayoutConstraint!
     var mapViewTopAnchor: NSLayoutConstraint!
     var parkingControllerBottomAnchor: NSLayoutConstraint!
     var purchaseControllerBottomAnchor: NSLayoutConstraint!
-    var purchaseControllerHeightAnchor: NSLayoutConstraint!
+    var confirmControllerBottomAnchor: NSLayoutConstraint!
     var shouldFlipGradient: Bool = false
 
     var networkTopAnchor: NSLayoutConstraint!

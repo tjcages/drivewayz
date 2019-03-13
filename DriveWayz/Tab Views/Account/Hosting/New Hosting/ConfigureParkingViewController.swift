@@ -79,15 +79,11 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.WHITE
-        button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 50)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        button.layer.cornerRadius = 3
+        button.backgroundColor = Theme.BLUE
+        button.titleLabel?.font = Fonts.SSPRegularH2
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
         
@@ -415,7 +411,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     func setupCountButtons() {
         
         nextButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
         switch device {
         case .iphone8:
@@ -522,7 +518,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.backgroundColor = Theme.OFF_WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.alpha = 0
         

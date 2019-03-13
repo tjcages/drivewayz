@@ -27,7 +27,7 @@ class ParkingTypeViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.PACIFIC_BLUE
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         button.layer.shadowRadius = 5
@@ -66,7 +66,7 @@ class ParkingTypeViewController: UIViewController {
         button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         button.layer.shadowRadius = 3
@@ -105,7 +105,7 @@ class ParkingTypeViewController: UIViewController {
         button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         button.layer.shadowRadius = 3
@@ -144,7 +144,7 @@ class ParkingTypeViewController: UIViewController {
         button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
         button.layer.shadowRadius = 3

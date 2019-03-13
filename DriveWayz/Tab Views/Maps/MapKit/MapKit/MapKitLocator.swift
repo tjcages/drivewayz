@@ -19,7 +19,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     @objc func locatorButtonAction(sender: UIButton) {
         if let region = ZoomMapView {
             self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 480, right: 66), animated: true)
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
             if let location = DestinationAnnotationLocation {
                 delayWithSeconds(0.5) {
                     self.checkQuickDestination(annotationLocation: location)
@@ -62,17 +62,17 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         }
         if self.searchedForPlace == false {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                if let location: CLLocationCoordinate2D = self.mapView.userLocation?.coordinate {
-                    self.mapView.setCenter(location, zoomLevel: 12, animated: false)
-                }
+                guard let userLocation = self.mapView.userLocation else { return }
+                let location: CLLocationCoordinate2D = userLocation.coordinate
+                self.mapView.setCenter(location, zoomLevel: 12, animated: false)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.9) {
-                if let location: CLLocationCoordinate2D = self.mapView.userLocation?.coordinate {
-                    self.mapView.setCenter(location, zoomLevel: 14, animated: true)
-                    delayWithSeconds(1, completion: {
-                        self.mapView.userTrackingMode = .follow
-                    })
-                }
+                guard let userLocation = self.mapView.userLocation else { return }
+                let location: CLLocationCoordinate2D = userLocation.coordinate
+                self.mapView.setCenter(location, zoomLevel: 14, animated: true)
+                delayWithSeconds(1, completion: {
+                    self.mapView.userTrackingMode = .follow
+                })
             }
         } else {
             return
@@ -124,7 +124,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                 self.view.layoutIfNeeded()
             }
         }
-        if yDisplacement > self.mapView.frame.height/4 {
+        if yDisplacement > self.mapView.frame.height/2 {
             self.quickDestinationTopAnchor.constant = yDisplacement - 20
         } else {
             self.quickDestinationTopAnchor.constant = yDisplacement + 60
@@ -164,7 +164,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                             self.view.layoutIfNeeded()
                         }
                     }
-                    if yDisplacement > self.mapView.frame.height/4 {
+                    if yDisplacement > self.mapView.frame.height/2 {
                         self.quickDestinationTopAnchor.constant = yDisplacement - 20
                     } else {
                         self.quickDestinationTopAnchor.constant = yDisplacement + 60
@@ -174,13 +174,13 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                             self.view.layoutIfNeeded()
                         }
                     }
-                    if DestinationAnnotationLocation != nil {
-                        delayWithSeconds(0.5) {
-                            UIView.animate(withDuration: animationIn, animations: {
-                                self.quickDestinationController.view.alpha = 1
-                            })
-                        }
-                    }
+//                    if DestinationAnnotationLocation != nil {
+//                        delayWithSeconds(0.5) {
+//                            UIView.animate(withDuration: animationIn, animations: {
+//                                self.quickDestinationController.view.alpha = 1
+//                            })
+//                        }
+//                    }
                     self.view.layoutIfNeeded()
                 }
             }

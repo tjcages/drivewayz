@@ -46,8 +46,8 @@ class EditSettingsViewController: UIViewController {
         button.setTitle("Update", for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH2
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PURPLE
-        button.layer.cornerRadius = 10
+        button.backgroundColor = Theme.BLUE
+        button.layer.cornerRadius = 30
         button.clipsToBounds = true
         button.alpha = 1
         
@@ -60,7 +60,6 @@ class EditSettingsViewController: UIViewController {
         subDetailLabel.text = subtitle
         subDetailLabel.becomeFirstResponder()
         updateButton.setTitle("Update \(title.lowercased())", for: .normal)
-        updateButtonAnchor.constant = (updateButton.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH2))! + 40
     }
     
     override func viewDidLoad() {
@@ -70,8 +69,6 @@ class EditSettingsViewController: UIViewController {
         
         setupViews()
     }
-    
-    var updateButtonAnchor: NSLayoutConstraint!
     
     func setupViews() {
      
@@ -94,10 +91,9 @@ class EditSettingsViewController: UIViewController {
         subLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         self.view.addSubview(updateButton)
-        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        updateButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        updateButtonAnchor = updateButton.widthAnchor.constraint(equalToConstant: 120)
-            updateButtonAnchor.isActive = true
+        updateButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        updateButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        updateButton.widthAnchor.constraint(equalToConstant: phoneWidth - 72).isActive = true
         updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 80).isActive = true
         
     }

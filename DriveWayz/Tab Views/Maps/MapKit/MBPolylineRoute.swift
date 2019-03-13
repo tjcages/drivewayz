@@ -47,7 +47,7 @@ extension MapKitViewController: MGLMapViewDelegate {
             let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
             layer.lineJoin = NSExpression(forConstantValue: "round")
             layer.lineCap = NSExpression(forConstantValue: "round")
-            layer.lineColor = NSExpression(forConstantValue: Theme.SEA_BLUE)
+            layer.lineColor = NSExpression(forConstantValue: Theme.BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.9)
             
             // The line width should gradually increase based on the zoom level.
@@ -65,7 +65,7 @@ extension MapKitViewController: MGLMapViewDelegate {
             let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
             layer.lineJoin = NSExpression(forConstantValue: "round")
             layer.lineCap = NSExpression(forConstantValue: "round")
-            layer.lineColor = NSExpression(forConstantValue: Theme.SEA_BLUE)
+            layer.lineColor = NSExpression(forConstantValue: Theme.BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.9)
             
             // The line width should gradually increase based on the zoom level.
@@ -170,7 +170,7 @@ extension MapKitViewController: MGLMapViewDelegate {
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        return Theme.PURPLE
+        return Theme.STRAWBERRY_PINK
     }
     
 }

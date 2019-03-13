@@ -95,7 +95,7 @@ class ParkingTableCell: UITableViewCell {
         view.contentMode = .scaleAspectFill
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return view

@@ -25,7 +25,7 @@ class HostingGuestsViewController: UIViewController {
     var tableView: UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.register(GuestsTableCell.self, forCellReuseIdentifier: "Cell")
         view.register(GuestsHeaderCell.self, forCellReuseIdentifier: "HeaderCell")
         view.separatorStyle = .none
@@ -38,7 +38,7 @@ class HostingGuestsViewController: UIViewController {
     var showMoreButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.setTitle("Show all", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3

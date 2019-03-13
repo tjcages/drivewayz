@@ -308,7 +308,7 @@ func createHamburgerButton() {
     hamburgerButton.addSubview(hamburgerView3)
     hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor).isActive = true
     hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -16)
+    hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -12)
         hamburgerWidthAnchor.isActive = true
     hamburgerView3.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
     
@@ -610,5 +610,29 @@ public extension UIView {
 func delayWithSeconds(_ seconds: Double, completion: @escaping () -> ()) {
     DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
         completion()
+    }
+}
+
+
+extension UIColor {
+    
+    func lighter(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: abs(percentage) )
+    }
+    
+    func darker(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: -1 * abs(percentage) )
+    }
+    
+    func adjust(by percentage: CGFloat = 30.0) -> UIColor? {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return UIColor(red: min(red + percentage/100, 1.0),
+                           green: min(green + percentage/100, 1.0),
+                           blue: min(blue + percentage/100, 1.0),
+                           alpha: alpha)
+        } else {
+            return nil
+        }
     }
 }

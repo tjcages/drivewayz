@@ -218,10 +218,15 @@ extension MapSearchViewController: UITableViewDelegate, UITableViewDataSource {
             self.recentItems = [:]
         } else if let cell = tableView.cellForRow(at: indexPath) as? LocationRecentsCell {
             guard let address = cell.nameTextView.text else { return }
-            self.delegate?.zoomToSearchLocation(address: address)
-            self.saveNewTerms(address: address)
-            self.matchingItems = []
-            self.recentItems = [:]
+            if cell.titleTextView.text == "Home" {
+                cell.backgroundColor = Theme.BLUE.withAlphaComponent(0.4)
+            } else {
+                cell.backgroundColor = UIColor.clear
+                self.delegate?.zoomToSearchLocation(address: address)
+                self.saveNewTerms(address: address)
+                self.matchingItems = []
+                self.recentItems = [:]
+            }
         }
     }
     
@@ -248,7 +253,7 @@ class LocationResultsCell: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.BLACK.withAlphaComponent(0.3)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.5)
         
         return view
     }()
@@ -323,7 +328,7 @@ class LocationRecentsCell: UITableViewCell {
         view.text = "Set home"
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.BLACK.withAlphaComponent(0.3)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.5)
         
         return view
     }()

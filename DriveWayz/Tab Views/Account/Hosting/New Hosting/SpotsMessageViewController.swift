@@ -39,7 +39,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         field.textColor = Theme.BLACK
         field.font = Fonts.SSPRegularH4
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.layer.cornerRadius = 3
+        field.layer.cornerRadius = 4
         field.tintColor = Theme.SEA_BLUE
         field.isScrollEnabled = false
         field.contentInset = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
@@ -98,7 +98,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.SEA_BLUE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

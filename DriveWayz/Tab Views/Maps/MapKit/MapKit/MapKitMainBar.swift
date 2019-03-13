@@ -65,10 +65,10 @@ extension MapKitViewController {
         searchBar.rightAnchor.constraint(equalTo: searchLocation.leftAnchor, constant: -4).isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         searchBarBottomAnchor = searchBar.centerYAnchor.constraint(equalTo: mainBarView.bottomAnchor, constant: -30)
-        searchBarBottomAnchor.isActive = true
+            searchBarBottomAnchor.isActive = true
         
         searchBarLeftAnchor = locatorArrow.leftAnchor.constraint(equalTo: mainBar.leftAnchor, constant: 16)
-        searchBarLeftAnchor.isActive = true
+            searchBarLeftAnchor.isActive = true
         locatorArrow.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
         locatorArrow.widthAnchor.constraint(equalToConstant: 26).isActive = true
         locatorArrow.heightAnchor.constraint(equalTo: locatorArrow.widthAnchor).isActive = true
@@ -77,7 +77,7 @@ extension MapKitViewController {
         searchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -width).isActive = true
         searchLocation.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
         searchLocation.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        searchLocation.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        searchLocation.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
     
@@ -94,16 +94,16 @@ extension MapKitViewController {
         fromSearchBar.addSubview(fromSearchIcon)
         fromSearchIcon.centerXAnchor.constraint(equalTo: locatorArrow.centerXAnchor).isActive = true
         fromSearchIcon.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
-        fromSearchIcon.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        fromSearchIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
         fromSearchIcon.widthAnchor.constraint(equalTo: fromSearchIcon.heightAnchor).isActive = true
         
         fromSearchBar.addSubview(fromSearchLine)
         fromSearchBar.bringSubviewToFront(fromSearchIcon)
         mainBar.bringSubviewToFront(locatorArrow)
         fromSearchLine.centerXAnchor.constraint(equalTo: locatorArrow.centerXAnchor).isActive = true
-        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.centerYAnchor).isActive = true
-        fromSearchLine.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        fromSearchLine.bottomAnchor.constraint(equalTo: searchLocation.centerYAnchor).isActive = true
+        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.bottomAnchor).isActive = true
+        fromSearchLine.widthAnchor.constraint(equalToConstant: 4).isActive = true
+        fromSearchLine.heightAnchor.constraint(equalToConstant: 31).isActive = true
         
         fromSearchLocation.centerXAnchor.constraint(equalTo: searchLocation.centerXAnchor).isActive = true
         fromSearchLocation.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
@@ -164,7 +164,7 @@ extension MapKitViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.PRUSSIAN_BLUE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

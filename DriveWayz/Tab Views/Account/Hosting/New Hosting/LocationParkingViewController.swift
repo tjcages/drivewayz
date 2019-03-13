@@ -460,7 +460,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.PRUSSIAN_BLUE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

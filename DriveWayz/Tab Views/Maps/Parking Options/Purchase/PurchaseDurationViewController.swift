@@ -17,12 +17,22 @@ class PurchaseDurationViewController: UIViewController {
     var selectedMinute: Int = 15
     var delegate: handleDurationSet?
     
+    var reservationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Reservation"
+        label.textColor = Theme.WHITE
+        label.font = Fonts.SSPSemiBoldH3
+        
+        return label
+    }()
+    
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Sat, Jan 12"
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         
         return label
     }()
@@ -32,7 +42,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "2:15 PM"
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPRegularH0
+        label.font = Fonts.SSPRegularH1
         label.isUserInteractionEnabled = true
         
         return label
@@ -43,7 +53,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4:30 PM"
         label.textColor = Theme.PACIFIC_BLUE
-        label.font = Fonts.SSPRegularH0
+        label.font = Fonts.SSPRegularH1
         label.textAlignment = .right
         label.isUserInteractionEnabled = true
         
@@ -64,7 +74,7 @@ class PurchaseDurationViewController: UIViewController {
     var monthLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "DEC"
+        label.text = "Dec"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH4
         
@@ -82,7 +92,7 @@ class PurchaseDurationViewController: UIViewController {
     var durationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "DURATION"
+        label.text = "Duration"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
@@ -134,9 +144,9 @@ class PurchaseDurationViewController: UIViewController {
     lazy var darkView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
+        view.backgroundColor = Theme.DARK_GRAY
         let background = CAGradientLayer().customColor(topColor: Theme.DARK_GRAY.withAlphaComponent(0.5), bottomColor: Theme.DARK_GRAY)
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 127)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 164)
         background.zPosition = -10
         view.layer.addSublayer(background)
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -173,7 +183,7 @@ class PurchaseDurationViewController: UIViewController {
         let currentDate = "\(dayOfWeek), \(nameOfMonth) \(dayOfMonth)"
         
         self.dateLabel.text = currentDate
-        self.monthLabel.text = nameOfMonth.uppercased()
+        self.monthLabel.text = nameOfMonth
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
         timeFormatter.calendar = calendar
@@ -212,9 +222,9 @@ class PurchaseDurationViewController: UIViewController {
         self.seventhNumber.setTitle("\(seventhNumber)", for: .normal)
         
         if self.blueSelectionLineRight.isActive == true {
-            self.blueSelectionWidth.constant = (self.toTimeLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH0))!
+            self.blueSelectionWidth.constant = (self.toTimeLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH1))!
         } else {
-            self.blueSelectionWidth.constant = (self.fromTimeLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH0))!
+            self.blueSelectionWidth.constant = (self.fromTimeLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH1))!
         }
         self.resetTimes()
     }
@@ -225,21 +235,27 @@ class PurchaseDurationViewController: UIViewController {
     
     func setupViews() {
         
+        self.view.addSubview(reservationLabel)
+        reservationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        reservationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+        reservationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        reservationLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
         self.view.addSubview(dateLabel)
-        dateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        dateLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        dateLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+        dateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: reservationLabel.bottomAnchor, constant: 12).isActive = true
         dateLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         self.view.addSubview(fromTimeLabel)
-        fromTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        fromTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         fromTimeLabel.rightAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         fromTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
         fromTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(toTimeLabel)
         toTimeLabel.leftAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        toTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        toTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         toTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
         toTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
@@ -250,19 +266,19 @@ class PurchaseDurationViewController: UIViewController {
         toLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         self.view.addSubview(monthLabel)
-        monthLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        monthLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        monthLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        monthLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         monthLabel.topAnchor.constraint(equalTo: toLabel.bottomAnchor, constant: 48).isActive = true
         monthLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(blueSelectionLine)
-        blueSelectionLineLeft = blueSelectionLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24)
+        blueSelectionLineLeft = blueSelectionLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36)
             blueSelectionLineLeft.isActive = false
-        blueSelectionLineRight = blueSelectionLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24)
+        blueSelectionLineRight = blueSelectionLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36)
             blueSelectionLineRight.isActive = true
         blueSelectionLine.topAnchor.constraint(equalTo: fromTimeLabel.bottomAnchor, constant: 8).isActive = true
         blueSelectionLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
-        blueSelectionWidth = blueSelectionLine.widthAnchor.constraint(equalToConstant: 120)
+        blueSelectionWidth = blueSelectionLine.widthAnchor.constraint(equalToConstant: (self.toTimeLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH3))!)
             blueSelectionWidth.isActive = true
         let tapFromSelection = UITapGestureRecognizer(target: self, action: #selector(timedLabelSelected(sender:)))
         fromTimeLabel.addGestureRecognizer(tapFromSelection)
@@ -274,14 +290,14 @@ class PurchaseDurationViewController: UIViewController {
     func setupDuration() {
         
         self.view.addSubview(durationLabel)
-        durationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        durationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         durationLabel.topAnchor.constraint(equalTo: firstNumber.bottomAnchor, constant: 24).isActive = true
-        durationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        durationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         durationLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         self.view.addSubview(hourPicker)
         hourPicker.selectRow(2, inComponent: 0, animated: false)
-        hourPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        hourPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         hourPicker.widthAnchor.constraint(equalToConstant: self.view.frame.width/2).isActive = true
         hourPicker.topAnchor.constraint(equalTo: durationLabel.bottomAnchor, constant: 4).isActive = true
         hourPicker.heightAnchor.constraint(equalToConstant: 80).isActive = true
@@ -311,6 +327,12 @@ class PurchaseDurationViewController: UIViewController {
         darkView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         darkView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         darkView.bottomAnchor.constraint(equalTo: monthLabel.topAnchor, constant: -12).isActive = true
+    }
+    
+    func startTiming() {
+        self.didSetTimes()
+        self.resetTimes()
+        self.didSetTimes()
     }
     
     func timeDurationSet() {
@@ -442,7 +464,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "S"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -453,7 +475,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "M"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -464,7 +486,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "T"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -475,7 +497,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "W"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -486,7 +508,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "T"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -497,7 +519,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "F"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -508,7 +530,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "S"
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
         return label
@@ -527,7 +549,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("23", for: .normal)
         label.setTitleColor(Theme.WHITE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.backgroundColor = Theme.PACIFIC_BLUE
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
@@ -541,7 +563,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("24", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 2
@@ -554,7 +576,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("25", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 3
@@ -567,7 +589,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("26", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 4
@@ -580,7 +602,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("27", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 5
@@ -593,7 +615,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("28", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 6
@@ -606,7 +628,7 @@ class PurchaseDurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("29", for: .normal)
         label.setTitleColor(Theme.BLACK, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.titleLabel?.font = Fonts.SSPRegularH3
         label.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
         label.addTarget(self, action: #selector(daySelected(sender:)), for: .touchUpInside)
         label.tag = 7
@@ -675,7 +697,7 @@ extension PurchaseDurationViewController {
     
     func setupWeekdays() {
         
-        let width = (self.view.frame.width - 24)/7
+        let width = (self.view.frame.width - 72)/7
         firstNumber.layer.cornerRadius = width/2
         secondNumber.layer.cornerRadius = width/2
         thirdNumber.layer.cornerRadius = width/2
@@ -686,7 +708,7 @@ extension PurchaseDurationViewController {
         
         self.view.addSubview(firstDay)
         self.selectedDays.append(firstNumber)
-        firstDay.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        firstDay.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         firstDay.widthAnchor.constraint(equalToConstant: width).isActive = true
         firstDay.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 12).isActive = true
         firstDay.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -734,7 +756,7 @@ extension PurchaseDurationViewController {
         lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         self.view.addSubview(firstNumber)
-        firstNumber.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        firstNumber.leftAnchor.constraint(equalTo: firstDay.leftAnchor).isActive = true
         firstNumber.widthAnchor.constraint(equalToConstant: width).isActive = true
         firstNumber.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 12).isActive = true
         firstNumber.heightAnchor.constraint(equalTo: firstNumber.widthAnchor).isActive = true
@@ -867,7 +889,7 @@ extension PurchaseDurationViewController: UIPickerViewDelegate, UIPickerViewData
         label.frame = CGRect(x: -40, y: 0, width: 90, height: 80)
         label.textAlignment = .center
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPSemiBoldH1
+        label.font = Fonts.SSPSemiBoldH2
         
         if pickerView == hourPicker && self.hourArray.count > row {
             label.text = "\(self.hourArray[row])"

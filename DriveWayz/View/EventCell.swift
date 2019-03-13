@@ -55,7 +55,7 @@ class EventCell: UICollectionViewCell {
     let cellView: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -65,7 +65,7 @@ class EventCell: UICollectionViewCell {
     let shadowView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 1, height: 1)

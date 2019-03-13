@@ -64,17 +64,14 @@ class VerificationCodeViewController: UIViewController {
     
     lazy var nextButton: UIButton = {
         let button = UIButton()
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkVerificationCode), for: .touchUpInside)
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
+        button.backgroundColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 30
         
         return button
     }()
@@ -215,7 +212,7 @@ class VerificationCodeViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("I did not recieve code", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(backToMain), for: .touchUpInside)
@@ -227,7 +224,7 @@ class VerificationCodeViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Sign in with email and password", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .left
         
@@ -391,10 +388,10 @@ class VerificationCodeViewController: UIViewController {
 //        sixthVerificationField.inputAccessoryView = nextButton
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         nextButton.topAnchor.constraint(equalTo: passwordSignin.bottomAnchor, constant: 72).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true

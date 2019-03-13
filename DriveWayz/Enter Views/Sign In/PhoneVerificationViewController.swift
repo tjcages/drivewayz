@@ -40,7 +40,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH1
-        label.text = "Smarter parking."
+        label.text = "Smarter parking"
         
         return label
     }()
@@ -81,7 +81,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
     var phoneLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return view
     }()
@@ -90,7 +90,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Or connect with a social network", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .left
         
@@ -113,16 +113,13 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
     lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(sendVerificationCode(sender:)), for: .touchUpInside)
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
+        button.backgroundColor = Theme.DARK_GRAY
         button.alpha = 0
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 30
         button.clipsToBounds = true
         
         return button
@@ -131,12 +128,12 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
     var hideButton: UIView = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         button.alpha = 0
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 30
         
         return button
     }()
@@ -245,7 +242,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         phoneNumberWidthAnchor = phoneLine.widthAnchor.constraint(equalToConstant: 343)
             phoneNumberWidthAnchor.isActive = true
         phoneLine.topAnchor.constraint(equalTo: phoneNumberTextField.bottomAnchor).isActive = true
-        phoneLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        phoneLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         viewContainer.addSubview(socialAccount)
         socialAccount.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
@@ -325,7 +322,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
             }) { (success) in
                 self.mainLabel.textColor = Theme.BLACK
                 self.phoneNumberTextField.font = Fonts.SSPExtraLightH2
-                self.mainLabel.text = "Smarter parking."
+                self.mainLabel.text = "Smarter parking"
                 self.phoneNumberTextField.text = "Enter your mobile number"
             }
         }
@@ -373,16 +370,16 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         nextButton.topAnchor.constraint(equalTo: phoneLine.bottomAnchor, constant: 96).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
         self.view.addSubview(hideButton)
-        hideButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        hideButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         hideButton.topAnchor.constraint(equalTo: phoneLine.bottomAnchor, constant: 96).isActive = true
-        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: nextButton.centerXAnchor).isActive = true

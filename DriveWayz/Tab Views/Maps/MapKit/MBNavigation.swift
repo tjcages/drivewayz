@@ -20,6 +20,34 @@ protocol handleRouteNavigation {
 
 extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNavigation {
     
+    func setupNavigationButton() {
+        
+        self.view.addSubview(navigationShadowView)
+        navigationShadowView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
+        navigationShadowView.bottomAnchor.constraint(equalTo: currentSpotController.parkingImageView.topAnchor, constant: -12).isActive = true
+        navigationShadowView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        navigationShadowView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        
+        navigationShadowView.addSubview(navigationView)
+        navigationView.topAnchor.constraint(equalTo: navigationShadowView.topAnchor).isActive = true
+        navigationView.leftAnchor.constraint(equalTo: navigationShadowView.leftAnchor).isActive = true
+        navigationView.rightAnchor.constraint(equalTo: navigationShadowView.rightAnchor).isActive = true
+        navigationView.bottomAnchor.constraint(equalTo: navigationShadowView.bottomAnchor).isActive = true
+        
+        navigationView.addSubview(navigationIcon)
+        navigationIcon.leftAnchor.constraint(equalTo: navigationView.leftAnchor, constant: 4).isActive = true
+        navigationIcon.topAnchor.constraint(equalTo: navigationView.topAnchor).isActive = true
+        navigationIcon.bottomAnchor.constraint(equalTo: navigationView.bottomAnchor).isActive = true
+        navigationIcon.widthAnchor.constraint(equalTo: navigationIcon.heightAnchor).isActive = true
+        
+        navigationView.addSubview(navigationButtonLabel)
+        navigationButtonLabel.leftAnchor.constraint(equalTo: navigationIcon.rightAnchor, constant: 2).isActive = true
+        navigationButtonLabel.rightAnchor.constraint(equalTo: navigationView.rightAnchor).isActive = true
+        navigationButtonLabel.topAnchor.constraint(equalTo: navigationView.topAnchor).isActive = true
+        navigationButtonLabel.bottomAnchor.constraint(equalTo: navigationView.bottomAnchor).isActive = true
+        
+    }
+    
     func beginRouteNavigation() {
         if let route = self.firstParkingRoute {
             let controller = HoldNavViewController()

@@ -23,7 +23,7 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 1
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         
         return view
     }()
@@ -95,7 +95,7 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.GREEN_PIGMENT
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.setTitle("Transfer", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3

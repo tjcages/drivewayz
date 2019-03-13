@@ -18,7 +18,7 @@ class HostingDestinationViewController: UIViewController {
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 1
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         
         return view
     }()

@@ -27,7 +27,7 @@ class ExpandedSpotsViewController: UIViewController {
         label.text = "1"
         label.font = Fonts.SSPRegularH0
         label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        label.layer.cornerRadius = 3
+        label.layer.cornerRadius = 4
         label.textAlignment = .center
         label.clipsToBounds = true
         

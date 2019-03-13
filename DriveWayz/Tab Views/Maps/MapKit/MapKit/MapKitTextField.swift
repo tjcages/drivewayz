@@ -146,16 +146,16 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         self.shouldBeLoading = true
         self.locationResultsHeightAnchor.constant = 0
         self.mainBarWidthAnchor.constant = 300
-        self.mainBarHeightAnchor.constant = 113
+        self.mainBarHeightAnchor.constant = 120
         switch device {
         case .iphone8:
-            self.mainBarTopAnchor.constant = 100
+            self.mainBarTopAnchor.constant = 80
         case .iphoneX:
-            self.mainBarTopAnchor.constant = 120
+            self.mainBarTopAnchor.constant = 100
         }
         self.searchBarBottomAnchor.constant = -30
         self.searchBarLeftAnchor.constant = 16
-        self.fromSeachTopAnchor.constant = 0
+        self.fromSeachTopAnchor.constant = -10
 //        self.searchBar.font = Fonts.SSPRegularH3
         UIView.animate(withDuration: animationIn, animations: {
             self.fromSearchBar.alpha = 1

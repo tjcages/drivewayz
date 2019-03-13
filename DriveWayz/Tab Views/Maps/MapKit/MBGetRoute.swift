@@ -21,13 +21,20 @@ protocol handleParkingOptions {
 var DestinationAnnotationLocation: CLLocationCoordinate2D?
 var LocationAnnotationLocation: CLLocationCoordinate2D?
 
+var firstDriveTime: Double?
+var secondDriveTime: Double?
+var thirdDriveTime: Double?
+
+var pickupCoordinate: CLLocationCoordinate2D?
+var destinationCoordinate: CLLocationCoordinate2D?
+
 extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
         self.dismissKeyboard()
         self.searchBar.isUserInteractionEnabled = false
         self.fromSearchBar.isUserInteractionEnabled = false
-        delayWithSeconds(1) {
+        delayWithSeconds(animationOut) {
             self.beginSearchingForParking()
         }
         let geoCoder = CLGeocoder()
@@ -45,6 +52,7 @@ extension MapKitViewController: handleParkingOptions {
                     })
                     return
             }
+            eventsAreAllowed = false
             self.mapView.setCenter(location.coordinate, animated: true)
             self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
             let addressArray = address.split(separator: ",")
@@ -61,6 +69,8 @@ extension MapKitViewController: handleParkingOptions {
     }
     
     func findBestParking(location: CLLocation, sourceLocation: CLLocation, searchLocation: CLLocation, address: String) {
+        pickupCoordinate = sourceLocation.coordinate
+        destinationCoordinate = location.coordinate
         parkingController.setData(closestParking: self.closeParkingSpots, cheapestParking: self.cheapestParkingSpots, overallDestination: searchLocation.coordinate)
         self.drawCurrentPath(dest: location, start: sourceLocation, type: "Parking", address: address) { (results: CLLocationCoordinate2D) in
             if sourceLocation != searchLocation {
@@ -68,19 +78,19 @@ extension MapKitViewController: handleParkingOptions {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.findBestLatLong(first: location, second: sourceLocation, third: searchLocation, type: "First")
                         self.findBestLatLong(first: location, second: location, third: searchLocation, type: "FirstPurchase")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                             self.parkingSelected()
                             UIView.animate(withDuration: animationIn, animations: {
                                 self.checkQuickDestination(annotationLocation: result)
                             })
-                        }
+//                        }
                     }
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.findBestLatLong(first: location, second: location, third: searchLocation, type: "First")
                     self.parkingSelected()
-                    self.parkingController.selectedAnnotation()
+                    self.parkingController.bookingFound()
                 }
             }
         }
@@ -97,17 +107,17 @@ extension MapKitViewController: handleParkingOptions {
             if type == "First" {
                 ZoomMapView = region
                 self.firstMapView = region
-                delayWithSeconds(1.2) {
+//                delayWithSeconds(1.2) {
                     if let region = ZoomMapView {
                         self.mapView.userTrackingMode = .none
-                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 480, right: 66), animated: true)
+                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 36, bottom: 420, right: 36), animated: true)
                         if let location = DestinationAnnotationLocation {
                             delayWithSeconds(0.5) {
                                 self.checkQuickDestination(annotationLocation: location)
                             }
                         }
                     }
-                }
+//                }
             } else if type == "FirstPurchase" {
                 ZoomPurchaseMapView = region
                 self.firstPurchaseMapView = region
@@ -181,6 +191,9 @@ extension MapKitViewController: handleParkingOptions {
                     return
                 }
                 if let route = routes?.first {
+                    let minute = route.expectedTravelTime / 60
+                    self.currentSpotController.driveTime = minute
+                    firstDriveTime = minute
                     if route.coordinateCount > 0 {
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!
@@ -235,6 +248,8 @@ extension MapKitViewController: handleParkingOptions {
                     return
                 }
                 if let route = routes?.first {
+                    let minute = route.expectedTravelTime / 60
+                    secondDriveTime = minute
                     if route.coordinateCount > 0 {
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!
@@ -277,6 +292,8 @@ extension MapKitViewController: handleParkingOptions {
                     return
                 }
                 if let route = routes?.first {
+                    let minute = route.expectedTravelTime / 60
+                    thirdDriveTime = minute
                     if route.coordinateCount > 0 {
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!

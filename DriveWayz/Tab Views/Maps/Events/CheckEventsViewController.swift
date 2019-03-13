@@ -14,7 +14,7 @@ class CheckEventsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         
         return view
     }()
@@ -41,13 +41,13 @@ class CheckEventsViewController: UIViewController {
     
     var calendarButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "calendar")
+        let image = UIImage(named: "calendarIcon")
         button.setImage(image, for: .normal)
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 26
-        button.backgroundColor = Theme.WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: -5, left: -5, bottom: -5, right: -5)
+//        button.backgroundColor = Theme.WHITE
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return button
     }()
@@ -68,7 +68,7 @@ class CheckEventsViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.DARK_GRAY
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3

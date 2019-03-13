@@ -36,21 +36,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-ND-wym">
-                                <rect key="frame" x="155" y="301" width="65" height="65"/>
+                                <rect key="frame" x="156.5" y="301" width="62" height="65"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drivewayzLogo" translatesAutoresizingMaskIntoConstraints="NO" id="LKt-dT-oy1">
-                                        <rect key="frame" x="0.0" y="0.0" width="250" height="65"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="276" height="65"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="250" id="vQb-lu-A4T"/>
+                                            <constraint firstAttribute="height" constant="65" id="TYe-LH-9n1"/>
+                                            <constraint firstAttribute="width" constant="276" id="vQb-lu-A4T"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="LKt-dT-oy1" firstAttribute="leading" secondItem="9Mh-ND-wym" secondAttribute="leading" id="13q-OW-rKy"/>
-                                    <constraint firstAttribute="bottom" secondItem="LKt-dT-oy1" secondAttribute="bottom" id="Oft-ty-nvc"/>
+                                    <constraint firstItem="LKt-dT-oy1" firstAttribute="centerY" secondItem="9Mh-ND-wym" secondAttribute="centerY" id="Lm6-Ni-LNf"/>
                                     <constraint firstAttribute="height" constant="65" id="fOl-Rm-pPL"/>
-                                    <constraint firstAttribute="width" constant="65" id="g7H-1V-Jxa"/>
-                                    <constraint firstItem="LKt-dT-oy1" firstAttribute="top" secondItem="9Mh-ND-wym" secondAttribute="top" id="qrR-PA-DU7"/>
+                                    <constraint firstAttribute="width" constant="62" id="g7H-1V-Jxa"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -60,7 +60,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zzb-hL-Ofc" secondAttribute="trailing" constant="20" id="6tK-Nj-iAt"/>
                             <constraint firstItem="9Mh-ND-wym" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AeD-5z-fE3"/>
                             <constraint firstItem="xy4-13-aPY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Okg-vl-Tbg"/>
-                            <constraint firstItem="9Mh-ND-wym" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VOm-2E-tY2"/>
+                            <constraint firstItem="9Mh-ND-wym" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ao2-4E-DFr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xy4-13-aPY" secondAttribute="trailing" id="cxE-0W-zBZ"/>
                             <constraint firstItem="zzb-hL-Ofc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="fGp-bh-7bv"/>
                             <constraint firstAttribute="bottom" secondItem="zzb-hL-Ofc" secondAttribute="bottom" constant="40" id="k8D-VJ-FXJ"/>
@@ -75,7 +75,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="drivewayzLogo" width="1600" height="416"/>
+        <image name="drivewayzLogo" width="384" height="95"/>
         <image name="purpleGradient" width="506" height="900"/>
     </resources>
 </document>

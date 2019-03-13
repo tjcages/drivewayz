@@ -14,7 +14,7 @@ class ActiveCouponViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE
-        label.text = "Park today and recieve 10% off!"
+        label.text = "Park today and receive 10% off!"
         label.font = Fonts.SSPRegularH6
         
         return label
@@ -37,8 +37,8 @@ class ActiveCouponViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.GREEN_PIGMENT
-        view.layer.cornerRadius = 3
+        view.backgroundColor = Theme.LIGHT_BLUE
+        view.layer.cornerRadius = 4
         
         setupViews()
     }

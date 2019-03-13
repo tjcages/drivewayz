@@ -58,7 +58,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.setTitle("ALLOW", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(registerForPushNotifications), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 120, height: 60)
@@ -76,7 +76,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.setTitle("ALLOW", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.alpha = 0
         
         return button
@@ -125,7 +125,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.setTitle("CONFIRM", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         let background = CAGradientLayer().purpleColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 120, height: 60)
         background.zPosition = -10

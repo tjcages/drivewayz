@@ -41,8 +41,6 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         imageView.backgroundColor = UIColor.white
         imageView.layer.cornerRadius = 35
         imageView.clipsToBounds = true
-        imageView.layer.borderColor = Theme.SEA_BLUE.cgColor
-        imageView.layer.borderWidth = 0.5
         
         return imageView
     }()

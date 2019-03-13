@@ -214,7 +214,13 @@ class DestinationAnnotationView : MGLAnnotationView, CAAnimationDelegate {
         layer.backgroundColor = Theme.WHITE.cgColor
         layer.cornerRadius = bounds.width / 2
         layer.borderWidth = 6
-        layer.borderColor = Theme.PURPLE.cgColor
+        layer.borderColor = Theme.BLUE.darker(by: 5)!.cgColor
+        
+        layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        layer.shadowRadius = 3
+        layer.shadowOpacity = 0.6
+        layer.shadowOffset = .zero
+        
         layer.removeAllAnimations()
 
 //        swell()

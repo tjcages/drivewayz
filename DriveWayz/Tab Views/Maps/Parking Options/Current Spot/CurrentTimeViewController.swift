@@ -14,7 +14,7 @@ class CurrentTimeViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.clipsToBounds = true
         
         return view
@@ -134,7 +134,7 @@ class CurrentTimeViewController: UIViewController {
         label.textAlignment = .center
         label.isUserInteractionEnabled = false
         label.clipsToBounds = false
-        label.layer.cornerRadius = 3
+        label.layer.cornerRadius = 4
         
         return label
     }()
@@ -154,7 +154,7 @@ class CurrentTimeViewController: UIViewController {
         label.textAlignment = .center
         label.isUserInteractionEnabled = false
         label.clipsToBounds = false
-        label.layer.cornerRadius = 3
+        label.layer.cornerRadius = 4
         
         return label
     }()

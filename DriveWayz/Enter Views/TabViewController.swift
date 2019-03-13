@@ -88,8 +88,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     lazy var purpleGradient: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        let background = CAGradientLayer().purpleStraightColor()
+        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
         background.zPosition = -10
         view.alpha = 0
         view.layer.addSublayer(background)
@@ -126,7 +126,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 4
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize.zero
         view.layer.shadowRadius = 5
@@ -338,14 +338,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        switch device {
-        case .iphone8:
-            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 102)
-                mainTopAnchor.isActive = true
-        case .iphoneX:
-            mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 112)
-                mainTopAnchor.isActive = true
-        }
+        mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 102)
+            mainTopAnchor.isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -435,6 +429,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     @objc func moveToMapSwipe(sender: UITapGestureRecognizer) {
         moveToMap()
+        self.accountSlideController.forceSelectBook()
     }
     
     func moveToMap() {
@@ -456,7 +451,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
 //            self.lightContentStatusBar()
         }
         self.mapCenterAnchor.constant = 0
-        hamburgerWidthAnchor.constant = -16
+        hamburgerWidthAnchor.constant = -12
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)

@@ -56,18 +56,20 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         view.image = image
         view.image = view.image!.withRenderingMode(.alwaysTemplate)
         view.tintColor = Theme.WHITE
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
         
         return view
     }()
     
-    lazy var purpleGradient: UIImageView = {
-        let view = UIImageView()
-        let image = UIImage(named: "purpleGradient")
-        view.image = image
+    lazy var purpleGradient: UIView = {
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().purpleColor()
+        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
         
         return view
     }()
@@ -99,14 +101,14 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         drivewayzCarTopAnchor = logoView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             drivewayzCarTopAnchor.isActive = true
         logoView.heightAnchor.constraint(equalToConstant: 65).isActive = true
-        drivewayzCarAnchor = logoView.widthAnchor.constraint(equalToConstant: 65)
+        drivewayzCarAnchor = logoView.widthAnchor.constraint(equalToConstant: 62)
             drivewayzCarAnchor.isActive = true
         
         logoView.addSubview(drivewayzCar)
         drivewayzCar.leftAnchor.constraint(equalTo: logoView.leftAnchor).isActive = true
-        drivewayzCar.topAnchor.constraint(equalTo: logoView.topAnchor).isActive = true
-        drivewayzCar.bottomAnchor.constraint(equalTo: logoView.bottomAnchor).isActive = true
-        drivewayzCar.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        drivewayzCar.heightAnchor.constraint(equalToConstant: 65).isActive = true
+        drivewayzCar.centerYAnchor.constraint(equalTo: logoView.centerYAnchor).isActive = true
+        drivewayzCar.widthAnchor.constraint(equalToConstant: 276).isActive = true
         
         self.checkViews()
         delayWithSeconds(0.6) {
@@ -116,7 +118,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     
     func animate() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.drivewayzCarAnchor.constant = 250
+            self.drivewayzCarAnchor.constant = 280
             self.view.layoutIfNeeded()
         }) { (success) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
@@ -178,7 +180,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             startupController.view.translatesAutoresizingMaskIntoConstraints = false
             startupController.delegate = self
             
-            self.controller = false
             self.view.addSubview(startupController.view)
             self.addChild(startupController)
             startupController.willMove(toParent: self)

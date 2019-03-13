@@ -275,7 +275,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         specificEventView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         specificEventView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         specificEventView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        specificEventView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 180).isActive = true
+        specificEventView.heightAnchor.constraint(equalToConstant: 600).isActive = true
         
         specificEventView.addSubview(scrollView)
         specificEventView.addSubview(checkoutDrivewayz)
@@ -287,9 +287,14 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         
         specificEventView.addSubview(smallEventsPicker)
         smallEventsPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        smallEventsPicker.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         smallEventsPicker.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         smallEventsPicker.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        switch device {
+        case .iphone8:
+            smallEventsPicker.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        case .iphoneX:
+            smallEventsPicker.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20).isActive = true
+        }
         
         scrollView.addSubview(specificImageView)
         specificImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 8).isActive = true

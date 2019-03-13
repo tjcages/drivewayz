@@ -17,7 +17,7 @@ class CircularView: CALayer {
     var fromValue: CGFloat = 0.0
     var array = [[CGFloat:CGFloat]]()
     
-    convenience init(bounds:CGRect, position:CGPoint, fromColor:UIColor, toColor:UIColor, linewidth:CGFloat, toValue:CGFloat) {
+    convenience init(bounds:CGRect, position:CGPoint, fromColor:UIColor, toColor:UIColor, linewidth:CGFloat, toValue:CGFloat, radius: CGFloat) {
         self.init()
         self.bounds = bounds
         self.position = position
@@ -49,7 +49,7 @@ class CircularView: CALayer {
             shapelayer.position = CGPoint(x:self.bounds.width/2,y: self.bounds.height/2)
             shapelayer.strokeColor = UIColor.blue.cgColor
             shapelayer.fillColor = UIColor.clear.cgColor
-            shapelayer.path = UIBezierPath(roundedRect: rect, cornerRadius: rect.width/2).cgPath
+            shapelayer.path = UIBezierPath(roundedRect: rect, cornerRadius: radius).cgPath
             shapelayer.lineWidth = linewidth
             shapelayer.lineCap = CAShapeLayerLineCap.butt
             shapelayer.strokeStart = 0.0
@@ -64,8 +64,8 @@ class CircularView: CALayer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func layerWithWithBounds(bounds:CGRect, position:CGPoint, fromColor:UIColor, toColor:UIColor, linewidth : CGFloat,toValue:CGFloat) -> CircularView {
-        let layer = CircularView(bounds: bounds,position: position,fromColor:fromColor, toColor: toColor,linewidth: linewidth,toValue:toValue )
+    func layerWithWithBounds(bounds: CGRect, position: CGPoint, fromColor: UIColor, toColor: UIColor, linewidth: CGFloat, toValue: CGFloat, radius: CGFloat) -> CircularView {
+        let layer = CircularView(bounds: bounds, position: position, fromColor: fromColor, toColor: toColor, linewidth: linewidth, toValue: toValue, radius: radius)
         return layer
     }
     

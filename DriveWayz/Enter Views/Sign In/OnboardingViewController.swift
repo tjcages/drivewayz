@@ -63,7 +63,7 @@ class OnboardingViewController: UIViewController {
     var nameLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
         
         return view
     }()
@@ -71,14 +71,12 @@ class OnboardingViewController: UIViewController {
     lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(createNewUser), for: .touchUpInside)
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 50)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
+        button.backgroundColor = Theme.BLUE
+        button.layer.cornerRadius = 30
         button.alpha = 0
         
         return button
@@ -87,10 +85,11 @@ class OnboardingViewController: UIViewController {
     var hideButton: UIView = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("NEXT", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.backgroundColor = Theme.OFF_WHITE
+        button.layer.cornerRadius = 30
         button.alpha = 0
         
         return button
@@ -136,7 +135,7 @@ class OnboardingViewController: UIViewController {
         nameLine.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         nameLine.widthAnchor.constraint(equalToConstant: 311).isActive = true
         nameLine.topAnchor.constraint(equalTo: nameTextField.bottomAnchor).isActive = true
-        nameLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        nameLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         createToolbar()
     }
@@ -165,16 +164,16 @@ class OnboardingViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         nextButton.topAnchor.constraint(equalTo: nameLine.bottomAnchor, constant: 72).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
         self.view.addSubview(hideButton)
-        hideButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        hideButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         hideButton.topAnchor.constraint(equalTo: nameLine.bottomAnchor, constant: 72).isActive = true
-        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        hideButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        hideButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
     }
     

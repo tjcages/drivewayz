@@ -193,36 +193,36 @@ class SpeechRecognitionViewController: UIViewController {
     }
     
     func recordAndRecognizeSpeech() {
-        audioEngine = AVAudioEngine()
-        requestSpeechAuthorization()
-        
-        if !isOnPhoneCall() {
-            let node = audioEngine?.inputNode
-            let recordingFormat = node?.outputFormat(forBus: 0)
-            node?.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, _) in
-                self.request.append(buffer)
-            }
-            audioEngine?.prepare()
-            do {
-                try audioEngine?.start()
-                self.beginAnimating()
-            } catch {
-                return print(error)
-            }
-            guard let recognizer = SFSpeechRecognizer() else { return }
-            if !recognizer.isAvailable {
-                return
-            }
-            recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, error) in
-                if let result = result {
-                    let bestString = result.bestTranscription.formattedString
-                    self.detectedLabel.text = bestString
-                    self.restartSpeechTimer()
-                } else if let error = error {
-                    print(error)
-                }
-            })
-        }
+//        audioEngine = AVAudioEngine()
+//        requestSpeechAuthorization()
+//
+//        if !isOnPhoneCall() {
+//            let node = audioEngine?.inputNode
+//            let recordingFormat = node?.outputFormat(forBus: 0)
+//            node?.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, _) in
+//                self.request.append(buffer)
+//            }
+//            audioEngine?.prepare()
+//            do {
+//                try audioEngine?.start()
+//                self.beginAnimating()
+//            } catch {
+//                return print(error)
+//            }
+//            guard let recognizer = SFSpeechRecognizer() else { return }
+//            if !recognizer.isAvailable {
+//                return
+//            }
+//            recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, error) in
+//                if let result = result {
+//                    let bestString = result.bestTranscription.formattedString
+//                    self.detectedLabel.text = bestString
+//                    self.restartSpeechTimer()
+//                } else if let error = error {
+//                    print(error)
+//                }
+//            })
+//        }
     }
     
     func beginAnimating() {
@@ -255,50 +255,50 @@ class SpeechRecognitionViewController: UIViewController {
 
     
     func endSpeechRecognition() {
-        audioEngine?.stop()
-        request.endAudio()
-        speechTimer?.invalidate()
-        self.microphoneBackground.layer.removeAllAnimations()
-        self.microphoneBackground.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        self.hiddenGradient.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        if let address = self.detectedLabel.text {
-            if self.detectedLabel.text != "Begin speaking" {
-                self.delegate?.zoomToSearchLocation(address: address)
-            }
-            UIView.animate(withDuration: animationOut, animations: {
-                self.view.alpha = 0
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.detectedLabel.text = "Begin speaking"
-            }
-        }
+//        audioEngine?.stop()
+//        request.endAudio()
+//        speechTimer?.invalidate()
+//        self.microphoneBackground.layer.removeAllAnimations()
+//        self.microphoneBackground.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+//        self.hiddenGradient.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+//        if let address = self.detectedLabel.text {
+//            if self.detectedLabel.text != "Begin speaking" {
+//                self.delegate?.zoomToSearchLocation(address: address)
+//            }
+//            UIView.animate(withDuration: animationOut, animations: {
+//                self.view.alpha = 0
+//                self.view.layoutIfNeeded()
+//            }) { (success) in
+//                self.detectedLabel.text = "Begin speaking"
+//            }
+//        }
     }
     
     func restartSpeechTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { (timer) in
-            self.endSpeechRecognition()
-        })
+//        timer?.invalidate()
+//        timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { (timer) in
+//            self.endSpeechRecognition()
+//        })
     }
     
     func requestSpeechAuthorization() {
-        SFSpeechRecognizer.requestAuthorization { (authStatus) in
-            OperationQueue.main.addOperation {
-                switch authStatus {
-                case .authorized:
-                    self.microphoneButton.alpha = 1
-                case .denied:
-                    self.microphoneButton.alpha = 0.5
-                    self.detectedLabel.text = "User denied access to the microphone"
-                case .restricted:
-                    self.microphoneButton.alpha = 0.5
-                    self.detectedLabel.text = "Speech recognition restricted on this device"
-                case .notDetermined:
-                    self.microphoneButton.alpha = 0.5
-                    self.detectedLabel.text = "Speech recognition not yet authorized"
-                }
-            }
-        }
+//        SFSpeechRecognizer.requestAuthorization { (authStatus) in
+//            OperationQueue.main.addOperation {
+//                switch authStatus {
+//                case .authorized:
+//                    self.microphoneButton.alpha = 1
+//                case .denied:
+//                    self.microphoneButton.alpha = 0.5
+//                    self.detectedLabel.text = "User denied access to the microphone"
+//                case .restricted:
+//                    self.microphoneButton.alpha = 0.5
+//                    self.detectedLabel.text = "Speech recognition restricted on this device"
+//                case .notDetermined:
+//                    self.microphoneButton.alpha = 0.5
+//                    self.detectedLabel.text = "Speech recognition not yet authorized"
+//                }
+//            }
+//        }
     }
     
 }

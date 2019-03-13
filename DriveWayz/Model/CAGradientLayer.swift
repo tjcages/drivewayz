@@ -108,7 +108,7 @@ extension CAGradientLayer {
     
     @objc func darkBlurColor() -> CAGradientLayer {
         
-        let topColor = Theme.BLACK.withAlphaComponent(0.3)
+        let topColor = Theme.BLACK.withAlphaComponent(0.5)
         let bottomColor = Theme.BLACK.withAlphaComponent(0)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
@@ -123,23 +123,23 @@ extension CAGradientLayer {
     
     @objc func purpleColor() -> CAGradientLayer {
         
-        let topColor = Theme.PACIFIC_BLUE
-        let bottomColor = Theme.PURPLE
+        let topColor = Theme.LIGHT_ORANGE
+        let bottomColor = Theme.STRAWBERRY_PINK
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         
         return gradientLayer
     }
     
     @objc func purpleStraightColor() -> CAGradientLayer {
         
-        let topColor = Theme.PURPLE
-        let bottomColor = Theme.SEA_BLUE
+        let topColor = Theme.STRAWBERRY_PINK
+        let bottomColor = Theme.LIGHT_ORANGE
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         

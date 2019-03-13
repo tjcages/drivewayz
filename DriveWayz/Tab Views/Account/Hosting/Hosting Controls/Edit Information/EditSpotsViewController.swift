@@ -36,7 +36,7 @@ class EditSpotsViewController: UIViewController {
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
         background.zPosition = -10
         button.layer.addSublayer(background)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
         
         return button

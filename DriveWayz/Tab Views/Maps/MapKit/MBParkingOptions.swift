@@ -17,7 +17,9 @@ extension MapKitViewController {
             if let route = self.firstParkingRoute, let underPolyline = self.firstPolyline {
                 let minute = route.expectedTravelTime / 60
                 self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
-                
+                if let minute = firstDriveTime {
+                    self.currentSpotController.driveTime = minute
+                }
                 let routeCoordinates = route.coordinates!
                 self.parkingCoordinates = routeCoordinates
                 
@@ -30,7 +32,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = self.firstMapView, let purchaseRegion = self.firstPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 480, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {
@@ -51,6 +53,9 @@ extension MapKitViewController {
             if let route = self.secondParkingRoute, let underPolyline = self.secondPolyline {
                 let minute = route.expectedTravelTime / 60
                 self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
+                if let minute = secondDriveTime {
+                    self.currentSpotController.driveTime = minute
+                }
                 
                 let routeCoordinates = route.coordinates!
                 self.parkingCoordinates = routeCoordinates
@@ -64,7 +69,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = self.secondMapView, let purchaseRegion = self.secondPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 480, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {
@@ -85,6 +90,9 @@ extension MapKitViewController {
             if let route = self.thirdParkingRoute, let underPolyline = self.thirdPolyline {
                 let minute = route.expectedTravelTime / 60
                 self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
+                if let minute = thirdDriveTime {
+                    self.currentSpotController.driveTime = minute
+                }
                 
                 let routeCoordinates = route.coordinates!
                 self.parkingCoordinates = routeCoordinates
@@ -98,7 +106,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = self.thirdMapView, let purchaseRegion = self.thirdPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 480, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {

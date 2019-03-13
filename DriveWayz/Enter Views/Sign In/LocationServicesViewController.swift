@@ -70,14 +70,16 @@ class LocationServicesViewController: UIViewController {
     lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("ALLOW", for: .normal)
+        button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkLocationServices), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 50)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
         background.zPosition = -10
         button.layer.addSublayer(background)
+        button.layer.cornerRadius = 30
+        button.clipsToBounds = true
         
         return button
     }()
@@ -138,7 +140,7 @@ class LocationServicesViewController: UIViewController {
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         loadingActivity.bottomAnchor.constraint(equalTo: viewContainer.centerYAnchor, constant: -20).isActive = true
-        loadingActivity.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        loadingActivity.widthAnchor.constraint(equalToConstant: 120).isActive = true
         loadingActivity.heightAnchor.constraint(equalTo: loadingActivity.widthAnchor).isActive = true
         
         createToolbar()
@@ -148,10 +150,10 @@ class LocationServicesViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         nextButton.topAnchor.constraint(equalTo: thirdLabel.bottomAnchor, constant: 72).isActive = true
-        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
     }
 
@@ -166,6 +168,7 @@ extension LocationServicesViewController: CLLocationManagerDelegate {
             self.mainLabel.alpha = 0
             self.secondaryLabel.alpha = 0
             self.thirdLabel.alpha = 0
+            self.nextButton.alpha = 0
         }
         self.loadingActivity.startAnimating()
         locationManager.requestWhenInUseAuthorization()
