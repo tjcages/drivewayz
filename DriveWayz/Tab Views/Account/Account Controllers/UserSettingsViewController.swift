@@ -327,7 +327,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
                 case .iphoneX:
                     self.vehicleController.containerHeightAnchor.constant = 90
                 }
-            } else if title != "" {
+            } else if title != "" && title != "Notifications" && title != "Accessibility" && title != "Vehicle" && title != "Payment" {
                 self.editSettingsController.setData(title: title, subtitle: subtitle)
                 self.editAnchor.constant = 0
             }

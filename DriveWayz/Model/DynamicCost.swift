@@ -113,7 +113,8 @@ struct dynamicPricing {
                     let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
                     completion(dynamicPrice)
                 } else {
-                    completion(averagePrice)
+                    let nonDynamicPrice = 0.45 * averagePrice
+                    completion(nonDynamicPrice)
                 }
             }
         } else {
@@ -124,7 +125,8 @@ struct dynamicPricing {
                     let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
                     completion(dynamicPrice)
                 } else {
-                    completion(averagePrice)
+                    let nonDynamicPrice = 0.45 * averagePrice
+                    completion(nonDynamicPrice)
                 }
             }
         }

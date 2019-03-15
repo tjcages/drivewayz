@@ -357,8 +357,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    lazy var parkingController: TestParkingTestViewController = {
-        let controller = TestParkingTestViewController()
+    lazy var parkingController: ParkingViewController = {
+        let controller = ParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Parking"
         controller.delegate = self
@@ -369,8 +369,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    lazy var purchaseController: TestPurchaseViewController = {
-        let controller = TestPurchaseViewController()
+    lazy var purchaseController: PurchaseViewController = {
+        let controller = PurchaseViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Purchase"
         controller.delegate = self
@@ -378,9 +378,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    lazy var confirmPaymentController: ConfirmTestPurchaseViewController = {
-        let controller = ConfirmTestPurchaseViewController()
+    lazy var confirmPaymentController: ConfirmViewController = {
+        let controller = ConfirmViewController()
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
         return controller
     }()

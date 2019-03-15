@@ -145,6 +145,43 @@ class FirstHostingViewController: UIViewController, handleNewHosting {
         return loading
     }()
     
+    var imageScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
+        view.backgroundColor = UIColor.clear
+        view.alwaysBounceVertical = false
+        view.alwaysBounceHorizontal = false
+        view.showsVerticalScrollIndicator = true
+        view.flashScrollIndicators()
+        view.minimumZoomScale = 1.0
+        view.maximumZoomScale = 6.0
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var dimmedView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.BLACK
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var dimmedImageView: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.clipsToBounds = true
+        let image = UIImage(named: "background1")
+        view.image = image
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,6 +208,7 @@ class FirstHostingViewController: UIViewController, handleNewHosting {
         setupInformation()
         setupAnalytics()
         setupGuests()
+        addDimmedView()
         
         loadingActivity.stopAnimating()
     }
@@ -235,6 +273,8 @@ class FirstHostingViewController: UIViewController, handleNewHosting {
         mainExpandedInformationView.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         mainExpandedInformationView.view.heightAnchor.constraint(equalToConstant: mainExpandedInformationView.height).isActive = true
         self.handleScroll(height: mainExpandedInformationView.height + 266)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedImage(sender:)))
+        mainExpandedInformationView.expandedImages.view.addGestureRecognizer(tapGesture)
         
         self.view.addSubview(mainOptionsView.view)
         mainOptionsView.view.topAnchor.constraint(equalTo: mainExpandedInformationView.view.bottomAnchor, constant: 12).isActive = true
@@ -299,6 +339,43 @@ class FirstHostingViewController: UIViewController, handleNewHosting {
         mainReviewsView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         mainReviewsView.view.heightAnchor.constraint(equalToConstant: 204).isActive = true
         
+    }
+    
+    func addDimmedView() {
+        
+        self.view.addSubview(dimmedView)
+        dimmedView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        dimmedView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        dimmedView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        dimmedView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedImage(sender:)))
+        imageScrollView.addGestureRecognizer(tapGesture)
+        
+        imageScrollView.delegate = self
+        
+        self.view.addSubview(imageScrollView)
+        imageScrollView.addSubview(dimmedImageView)
+        dimmedImageView.centerXAnchor.constraint(equalTo: imageScrollView.centerXAnchor).isActive = true
+        dimmedImageView.centerYAnchor.constraint(equalTo: imageScrollView.centerYAnchor).isActive = true
+        dimmedImageView.widthAnchor.constraint(equalTo: dimmedView.widthAnchor).isActive = true
+        dimmedImageView.heightAnchor.constraint(equalTo: dimmedImageView.widthAnchor).isActive = true
+        
+    }
+    
+    @objc func tappedImage(sender: UITapGestureRecognizer) {
+        self.dimmedImageView.image = self.mainExpandedInformationView.expandedImages.firstImageView.image
+        UIView.animate(withDuration: animationIn) {
+            if self.dimmedView.alpha == 0 {
+                self.dimmedView.alpha = 0.9
+                self.dimmedImageView.alpha = 1
+                self.imageScrollView.alpha = 1
+            } else {
+                self.dimmedView.alpha = 0
+                self.dimmedImageView.alpha = 0
+                self.imageScrollView.alpha = 0
+            }
+        }
     }
     
     @objc func allGuestsPressed() {
@@ -371,6 +448,10 @@ extension FirstHostingViewController: UIScrollViewDelegate {
     @objc func guestsLabelTapped() {
         self.handleScroll(height: 520)
         UIView.animate(withDuration: animationIn) { self.scrollView.contentOffset.x = 0 }
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.dimmedImageView
     }
     
 }

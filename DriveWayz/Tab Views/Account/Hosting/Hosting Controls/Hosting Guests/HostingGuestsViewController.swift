@@ -12,7 +12,7 @@ class HostingGuestsViewController: UIViewController {
     
     var delegate: handleHostingScroll?
     var allGuestsBool: Bool = false
-    var sections = 3
+    var sections = 0
     
     var container: UIView = {
         let view = UIView()
@@ -39,7 +39,8 @@ class HostingGuestsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 4
-        button.setTitle("Show all", for: .normal)
+//        button.setTitle("Show all", for: .normal)
+        button.setTitle("You have not had any guests yet", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.isUserInteractionEnabled = false
@@ -64,14 +65,14 @@ class HostingGuestsViewController: UIViewController {
         container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         container.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        container.addSubview(tableView)
-        tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        tableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        tableView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 24).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: 310).isActive = true
+//        container.addSubview(tableView)
+//        tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        tableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        tableView.widthAnchor.constraint(equalToConstant: self.view.frame.width - 24).isActive = true
+//        tableView.heightAnchor.constraint(equalToConstant: 310).isActive = true
         
         container.addSubview(showMoreButton)
-        showMoreButton.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        showMoreButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -120).isActive = true
         showMoreButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         showMoreButton.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         showMoreButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -84,10 +85,10 @@ extension HostingGuestsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if allGuestsBool == true {
-            sections = 6
+            sections = 0
             return self.sections
         } else {
-            sections = 3
+            sections = 0
             return self.sections
         }
     }
@@ -96,9 +97,9 @@ extension HostingGuestsViewController: UITableViewDelegate, UITableViewDataSourc
         if section == 0 {
             return 0
         } else if section == 1 {
-            return 1
+            return 0
         } else {
-            return 2
+            return 0
         }
     }
     

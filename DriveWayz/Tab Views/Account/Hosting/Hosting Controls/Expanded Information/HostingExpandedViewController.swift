@@ -26,6 +26,43 @@ class HostingExpandedViewController: UIViewController {
         return view
     }()
     
+    var darkView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.01)
+        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowRadius = 5
+        view.layer.shadowOpacity = 0.2
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var imageContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 4
+        
+        return view
+    }()
+    
+    var spotLocatingLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.BLACK
+        label.text = "1065 University Ave. Boulder, CO"
+        label.font = Fonts.SSPSemiBoldH3
+        label.isUserInteractionEnabled = false
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     lazy var expandedImages: ExpandedImageViewController = {
         let controller = ExpandedImageViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -72,6 +109,9 @@ class HostingExpandedViewController: UIViewController {
         expandedNumber.setData(hosting: hosting)
         expandedAmenities.setData(hosting: hosting)
         expandedImages.setData(hosting: hosting)
+        if let overallAddress = hosting.overallAddress {
+            self.spotLocatingLabel.text = overallAddress
+        }
         setupViews()
     }
     
@@ -83,14 +123,32 @@ class HostingExpandedViewController: UIViewController {
         container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         container.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
         
-        container.addSubview(expandedImages.view)
-        expandedImages.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        expandedImages.view.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        expandedImages.view.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        expandedImages.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        container.addSubview(darkView)
+        darkView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        darkView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        darkView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
+        darkView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        
+        darkView.addSubview(imageContainer)
+        imageContainer.topAnchor.constraint(equalTo: darkView.topAnchor).isActive = true
+        imageContainer.leftAnchor.constraint(equalTo: darkView.leftAnchor).isActive = true
+        imageContainer.rightAnchor.constraint(equalTo: darkView.rightAnchor).isActive = true
+        imageContainer.bottomAnchor.constraint(equalTo: darkView.bottomAnchor).isActive = true
+        
+        imageContainer.addSubview(expandedImages.view)
+        expandedImages.view.topAnchor.constraint(equalTo: darkView.topAnchor).isActive = true
+        expandedImages.view.leftAnchor.constraint(equalTo: darkView.leftAnchor).isActive = true
+        expandedImages.view.rightAnchor.constraint(equalTo: darkView.rightAnchor).isActive = true
+        expandedImages.view.bottomAnchor.constraint(equalTo: darkView.bottomAnchor, constant: -90).isActive = true
+        
+        darkView.addSubview(spotLocatingLabel)
+        spotLocatingLabel.topAnchor.constraint(equalTo: expandedImages.view.bottomAnchor, constant: 20).isActive = true
+        spotLocatingLabel.leftAnchor.constraint(equalTo: darkView.leftAnchor, constant: 12).isActive = true
+        spotLocatingLabel.rightAnchor.constraint(equalTo: darkView.rightAnchor, constant: -12).isActive = true
+        spotLocatingLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         container.addSubview(expandedInformation.view)
-        expandedInformation.view.topAnchor.constraint(equalTo: expandedImages.view.bottomAnchor).isActive = true
+        expandedInformation.view.topAnchor.constraint(equalTo: darkView.bottomAnchor, constant: 12).isActive = true
         expandedInformation.view.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
         expandedInformation.view.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
         expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.height).isActive = true
@@ -118,7 +176,7 @@ class HostingExpandedViewController: UIViewController {
         expandedNumber.editInformation.addTarget(self, action: #selector(editSpotsPressed), for: .touchUpInside)
         expandedAmenities.editInformation.addTarget(self, action: #selector(editAmenitiesPressed), for: .touchUpInside)
         
-        height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 200
+        height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 280
     }
     
     @objc func editInformationPressed() {

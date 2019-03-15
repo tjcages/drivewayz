@@ -21,6 +21,19 @@ class UpcomingViewController: UIViewController {
         return view
     }()
     
+    var showMoreButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 4
+        //        button.setTitle("Show all", for: .normal)
+        button.setTitle("You have not had any bookings yet", for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.isUserInteractionEnabled = false
+        
+        return button
+    }()
+    
     lazy var parkingTableController: ParkingTableViewController = {
         let controller = ParkingTableViewController()
         self.addChild(controller)
@@ -56,6 +69,11 @@ class UpcomingViewController: UIViewController {
         parkingTableController.view.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         parkingTableController.view.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         
+        container.addSubview(showMoreButton)
+        showMoreButton.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -120).isActive = true
+        showMoreButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        showMoreButton.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        showMoreButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
 }

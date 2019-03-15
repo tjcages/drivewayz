@@ -168,6 +168,43 @@ class ExpandedSpotViewController: UIViewController {
         
         return controller
     }()
+    
+    var imageScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
+        view.backgroundColor = UIColor.clear
+        view.alwaysBounceVertical = false
+        view.alwaysBounceHorizontal = false
+        view.showsVerticalScrollIndicator = true
+        view.flashScrollIndicators()
+        view.minimumZoomScale = 1.0
+        view.maximumZoomScale = 6.0
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var dimmedView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.BLACK
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var dimmedImageView: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.clipsToBounds = true
+        let image = UIImage(named: "background1")
+        view.image = image
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0
+        
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,6 +213,7 @@ class ExpandedSpotViewController: UIViewController {
         view.backgroundColor = UIColor.clear
 
         setupViews()
+        addDimmedView()
         setupInfo()
         setupInformation()
         setupPurchase()
@@ -225,6 +263,28 @@ class ExpandedSpotViewController: UIViewController {
         
     }
     
+    func addDimmedView() {
+        
+        self.view.addSubview(dimmedView)
+        dimmedView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        dimmedView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        dimmedView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        dimmedView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedImage(sender:)))
+        imageScrollView.addGestureRecognizer(tapGesture)
+        
+        imageScrollView.delegate = self
+        
+        self.view.addSubview(imageScrollView)
+        imageScrollView.addSubview(dimmedImageView)
+        dimmedImageView.centerXAnchor.constraint(equalTo: imageScrollView.centerXAnchor).isActive = true
+        dimmedImageView.centerYAnchor.constraint(equalTo: imageScrollView.centerYAnchor).isActive = true
+        dimmedImageView.widthAnchor.constraint(equalTo: dimmedView.widthAnchor).isActive = true
+        dimmedImageView.heightAnchor.constraint(equalTo: dimmedImageView.widthAnchor).isActive = true
+        
+    }
+    
     func setupInfo() {
         
         scrollView.addSubview(darkView)
@@ -232,6 +292,8 @@ class ExpandedSpotViewController: UIViewController {
         darkView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 180).isActive = true
         darkView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
         darkView.heightAnchor.constraint(equalToConstant: 260).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedImage(sender:)))
+        darkView.addGestureRecognizer(tapGesture)
         
         darkView.addSubview(imageContainer)
         imageContainer.topAnchor.constraint(equalTo: darkView.topAnchor).isActive = true
@@ -277,7 +339,7 @@ class ExpandedSpotViewController: UIViewController {
         purchaseController.view.topAnchor.constraint(equalTo: infoController.view.bottomAnchor).isActive = true
         purchaseController.view.heightAnchor.constraint(equalToConstant: 478).isActive = true
         
-        self.view.addSubview(confirmDurationButton)
+        scrollView.addSubview(confirmDurationButton)
         confirmDurationButton.topAnchor.constraint(equalTo: purchaseController.view.bottomAnchor, constant: 12).isActive = true
         confirmDurationButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         confirmDurationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
@@ -291,12 +353,68 @@ class ExpandedSpotViewController: UIViewController {
         
     }
     
-    @objc func confirmPurchasePressed(sender: UIButton) {
-        
+    @objc func tappedImage(sender: UITapGestureRecognizer) {
+        self.dimmedImageView.image = self.parkingImageView.image
+        UIView.animate(withDuration: animationIn) {
+            if self.dimmedView.alpha == 0 {
+                self.dimmedView.alpha = 0.9
+                self.dimmedImageView.alpha = 1
+                self.imageScrollView.alpha = 1
+            } else {
+                self.dimmedView.alpha = 0
+                self.dimmedImageView.alpha = 0
+                self.imageScrollView.alpha = 0
+            }
+        }
     }
     
-    func openExpand(parking: ParkingSpots) {
-        print(parking)
+    @objc func confirmPurchasePressed(sender: UIButton) {
+        self.view.endEditing(true)
+        scrollView.setContentOffset(CGPoint(x: 0, y: -46.0), animated: true)
+        delayWithSeconds(animationOut) {
+            delayWithSeconds(1) {
+                self.scrollView.setContentOffset(.zero, animated: true)
+            }
+            if let purchaseString = self.infoController.priceLabel.text {
+                let amount = purchaseString.replacingOccurrences(of: " per hour", with: "")
+                if let price = Double(amount.replacingOccurrences(of: "$", with: "")) {
+                    self.delegate?.bookSpotPressed(amount: price)
+                    self.delegate?.setDurationPressed()
+                }
+            }
+        }
+    }
+    
+    func openExpand(parking: ParkingSpots, price: String) {
+        self.infoController.priceLabel.text = price
+        if var streetAddress = parking.streetAddress, let numberSpots = parking.numberSpots, let secondaryType = parking.secondaryType, let hostMessage = parking.hostMessage {
+            if let spaceRange = streetAddress.range(of: " ") {
+                streetAddress.removeSubrange(streetAddress.startIndex..<spaceRange.upperBound)
+                if let number = Int(numberSpots) {
+                    let wordString = number.asWord
+                    let publicAddress = "\(streetAddress)"
+                    let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
+                    self.spotLocatingLabel.text = descriptionAddress
+                    self.locationLabel.text = publicAddress
+                    self.spotLocatingLabel2.text = publicAddress
+                    self.locationLabel.text = publicAddress
+//                    self.infoController.hostMessage.text = hostMessage
+                    if let numberRatings = parking.numberRatings, let totalRating = parking.totalRating {
+                        if let ratings = Double(numberRatings), let total = Double(totalRating) {
+                            let averageRating: Double = total/ratings
+                            self.infoController.stars.rating = averageRating
+                            self.infoController.starsLabel.text = numberRatings
+                        }
+                    } else {
+                        self.infoController.stars.rating = 5
+                        self.infoController.starsLabel.text = ""
+                    }
+                    if let firstPhoto = parking.firstImage {
+                        self.parkingImageView.loadImageUsingCacheWithUrlString(firstPhoto)
+                    }
+                }
+            }
+        }
         self.purchaseController.startTiming()
         delayWithSeconds(animationOut) {
             UIView.animate(withDuration: animationOut) {
@@ -309,6 +427,7 @@ class ExpandedSpotViewController: UIViewController {
         self.view.endEditing(true)
         scrollView.setContentOffset(CGPoint(x: 0, y: -46.0), animated: true)
         delayWithSeconds(1) {
+            self.imageScrollView.alpha = 0
             self.scrollView.setContentOffset(.zero, animated: true)
         }
     }
@@ -319,45 +438,54 @@ class ExpandedSpotViewController: UIViewController {
 extension ExpandedSpotViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let translation = scrollView.contentOffset.y
-        if translation <= -46.0 && self.scrollView.isScrollEnabled == true && self.parkingBackButton.alpha == 1 {
-            self.delegate?.didHideExpandedParking()
-            UIView.animate(withDuration: animationOut) {
-                self.parkingBackButton.alpha = 0
+        if scrollView == self.scrollView {
+            let translation = scrollView.contentOffset.y
+            if translation <= -46.0 && self.scrollView.isScrollEnabled == true && self.parkingBackButton.alpha == 1 {
+                self.delegate?.didHideExpandedParking()
+                UIView.animate(withDuration: animationOut) {
+                    self.parkingBackButton.alpha = 0
+                }
+            } else if translation > 0 && translation <= 80 {
+                self.mainViewTopAnchor.constant = 260 - translation
+                UIView.animate(withDuration: animationIn) {
+                    self.blackView.alpha = 0
+                    self.spotLocatingLabel2.alpha = 0
+                }
+            } else if translation > 80 {
+                self.mainViewTopAnchor.constant = 180
+                UIView.animate(withDuration: animationIn) {
+                    self.blackView.alpha = 1
+                    self.spotLocatingLabel2.alpha = 1
+                }
+            } else {
+                self.mainViewTopAnchor.constant = 260
+                UIView.animate(withDuration: animationIn) {
+                    self.blackView.alpha = 0
+                    self.spotLocatingLabel2.alpha = 0
+                }
             }
-        } else if translation > 0 && translation <= 80 {
-            self.mainViewTopAnchor.constant = 260 - translation
-            UIView.animate(withDuration: animationIn) {
-                self.blackView.alpha = 0
-                self.spotLocatingLabel2.alpha = 0
-            }
-        } else if translation > 80 {
-            self.mainViewTopAnchor.constant = 180
-            UIView.animate(withDuration: animationIn) {
-                self.blackView.alpha = 1
-                self.spotLocatingLabel2.alpha = 1
-            }
-        } else {
-            self.mainViewTopAnchor.constant = 260
-            UIView.animate(withDuration: animationIn) {
-                self.blackView.alpha = 0
-                self.spotLocatingLabel2.alpha = 0
-            }
+            self.view.layoutIfNeeded()
         }
-        self.view.layoutIfNeeded()
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let translation = self.mainViewTopAnchor.constant
-        UIView.animate(withDuration: animationIn) {
-            if translation == 180 {
-                self.blackView.alpha = 1
-                self.spotLocatingLabel2.alpha = 1
-            } else {
-                self.blackView.alpha = 0
-                self.spotLocatingLabel2.alpha = 0
+        if scrollView == self.scrollView {
+            let translation = self.mainViewTopAnchor.constant
+            UIView.animate(withDuration: animationIn) {
+                if translation == 180 {
+                    self.blackView.alpha = 1
+                    self.spotLocatingLabel2.alpha = 1
+                } else {
+                    self.blackView.alpha = 0
+                    self.spotLocatingLabel2.alpha = 0
+                }
             }
         }
     }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.dimmedImageView
+    }
+
     
 }

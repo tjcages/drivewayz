@@ -16,8 +16,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     var delegate: moveControllers?
     
-    var options: [String] = ["2001 Toyota 4Runner", "2007 Honda Pilot", "2018 Audi R4", "Add a vehicle"]
-    var optionsSub: [String] = ["123-ZFA", "345-IBA", "567-GLA", ""]
+    var options: [String] = ["Add a vehicle"]
+    var optionsSub: [String] = [""]
     var optionsImages: [UIImage] = [UIImage(), UIImage(), UIImage(), UIImage()]
     let cellId = "cellId"
     
@@ -84,6 +84,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.GREEN_PIGMENT
+        button.alpha = 0
         
         return button
     }()

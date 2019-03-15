@@ -715,6 +715,7 @@ extension TabViewController {
         becomeHostController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         becomeHostController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         becomeHostController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        self.view.layoutIfNeeded()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.mainLabel.alpha = 0

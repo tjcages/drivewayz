@@ -1,5 +1,5 @@
 //
-//  TestOneOptionViewController.swift
+//  ParkingOptionViewController.swift
 //  DriveWayz
 //
 //  Created by Tyler Jordan Cagle on 3/8/19.
@@ -10,7 +10,7 @@ import UIKit
 import Cosmos
 import CoreLocation
 
-class TestOneOptionViewController: UIViewController {
+class ParkingOptionViewController: UIViewController {
     
     var delegate: handleTestParking?
     

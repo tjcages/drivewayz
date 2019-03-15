@@ -597,6 +597,8 @@ extension VerificationCodeViewController {
                 UserDefaults.standard.synchronize()
                 self.delegate?.moveToMainController()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                    self.mainLabel.alpha = 0
+                    self.nextButton.alpha = 0
                     self.loadingActivity.alpha = 0
                     self.loadingActivity.stopAnimating()
                     let ref = Database.database().reference().child("users").child(uid)

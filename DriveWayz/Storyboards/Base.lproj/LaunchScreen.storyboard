@@ -38,7 +38,7 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-ND-wym">
                                 <rect key="frame" x="156.5" y="301" width="62" height="65"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drivewayzLogo" translatesAutoresizingMaskIntoConstraints="NO" id="LKt-dT-oy1">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drivewayzLogo" translatesAutoresizingMaskIntoConstraints="NO" id="LKt-dT-oy1">
                                         <rect key="frame" x="0.0" y="0.0" width="276" height="65"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="TYe-LH-9n1"/>

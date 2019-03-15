@@ -18,7 +18,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     var localEvents: [LocalEvents] = []
     lazy var cellWidth: CGFloat = 240
     lazy var cellHeight: CGFloat = 140
-    var costParking: String = "$4.50"
+    var costParking: String = "$1.30"
     var hrefEvent: String = ""
     var delegate: handleEventSelection?
     
@@ -275,7 +275,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         specificEventView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         specificEventView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         specificEventView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        specificEventView.heightAnchor.constraint(equalToConstant: 600).isActive = true
+        specificEventView.heightAnchor.constraint(equalToConstant: 550).isActive = true
         
         specificEventView.addSubview(scrollView)
         specificEventView.addSubview(checkoutDrivewayz)
@@ -590,7 +590,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         } else if text.contains("price varies") {
             fullText = "Parking prices vary for this venue. You can park in a residential spot through Drivewayz for only \(self.costParking)/hour."
         } else {
-            fullText = "This venue doens't have any parking price info. You can park in a residential spot through Drivewayz for only \(self.costParking)/hour."
+            fullText = "This venue doesn't have any parking price info. You can park in a residential spot through Drivewayz for only \(self.costParking)/hour."
             self.seeMoreLabel.alpha = 0
         }
         let hourlyRange = (NSString(string: fullText)).range(of: String(self.costParking))

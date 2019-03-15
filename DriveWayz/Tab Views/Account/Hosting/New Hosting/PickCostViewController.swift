@@ -32,20 +32,28 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 8
         label.text = """
-        There currently aren't enough parking spaces in your location to accurately give an average price. Please select one that you believe is cheap and fair.
+        To take the guesswork out of hourly rates, we utilize a flexible, optimized pricing algorithm influenced by proximity to events, time of day, and surge demand.
         
-        You can always adjust the price later.
+        This will maximize your profitability while giving consumers more options for easy, reasonably priced parking.
         """
         
         return label
     }()
+    
+    var dynamicPrice: Double = 1.5 {
+        didSet {
+            let cost = String(format:"%.02f", dynamicPrice.rounded(toPlaces: 2))
+            self.hourLabel.text = "$\(cost) per hour"
+        }
+    }
 
     var hourLabel: UILabel = {
         let label = UILabel()
-        label.text = "/hour"
+        label.text = "$1.50 per hour"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
+        label.textAlignment = .center
         
         return label
     }()
@@ -72,20 +80,20 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
-        informationHeightAnchor = informationLabel.heightAnchor.constraint(equalToConstant: 160)
+        informationHeightAnchor = informationLabel.heightAnchor.constraint(equalToConstant: 200)
             informationHeightAnchor.isActive = true
         
-        self.view.addSubview(costPicker)
-        costPicker.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
-        costPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30).isActive = true
-        costPicker.widthAnchor.constraint(equalToConstant: 160).isActive = true
-        costPicker.heightAnchor.constraint(equalToConstant: 120).isActive = true
+//        self.view.addSubview(costPicker)
+//        costPicker.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
+//        costPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30).isActive = true
+//        costPicker.widthAnchor.constraint(equalToConstant: 160).isActive = true
+//        costPicker.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
         self.view.addSubview(hourLabel)
-        hourLabel.leftAnchor.constraint(equalTo: costPicker.rightAnchor, constant: -35).isActive = true
-        hourLabel.centerYAnchor.constraint(equalTo: costPicker.centerYAnchor, constant: 4).isActive = true
+        hourLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        hourLabel.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
         hourLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        hourLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        hourLabel.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         
     }
     
@@ -101,12 +109,6 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                         if key == city {
                             if let cost = cit.value as? Double {
                                 let costValue = NSString(format: "%.2f", cost) as String
-                                self.informationLabel.text = """
-                                The average price for parking in \(city), \(stateAbrv) is $\(costValue)/hour. Staying close to this price will increase your likelyhood of earning money.
-                                
-                                You can always adjust the price later.
-                                """
-                                self.informationHeightAnchor.constant = (self.informationLabel.text?.height(withConstrainedWidth: self.view.frame.width - 48, font: Fonts.SSPLightH4))!
                                 self.costValues = []
                                 var i = cost - 1
                                 while i <= cost + 1 {
@@ -115,13 +117,6 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                                     i = i + 0.25
                                 }
                                 self.costPicker.reloadAllComponents()
-                            } else {
-                                self.informationLabel.text = """
-                                There currently aren't enough parking spaces in your location to accurately give an average price. Please select one that you believe is cheap and fair.
-                                
-                                You can always adjust the price later.
-                                """
-                                self.informationHeightAnchor.constant = (self.informationLabel.text?.height(withConstrainedWidth: self.view.frame.width - 48, font: Fonts.SSPLightH4))!
                             }
                         }
                     }

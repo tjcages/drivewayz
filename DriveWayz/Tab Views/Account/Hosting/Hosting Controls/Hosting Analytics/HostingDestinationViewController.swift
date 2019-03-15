@@ -28,7 +28,7 @@ class HostingDestinationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "GUEST DESTINATION"
+        label.text = "Guest Destination"
         
         return label
     }()
@@ -38,7 +38,7 @@ class HostingDestinationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
-        label.text = ".35"
+        label.text = ".0"
         label.textAlignment = .center
         
         return label

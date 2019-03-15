@@ -11,8 +11,8 @@ import Charts
 
 class HostingGraphsViewController: UIViewController, ChartViewDelegate {
     
-    var timeArray: [Double] = [2,3,5,6,8,10,11,12,13,14,15,15.5,16]
-    var costArray: [Double] = [1,3,4,6,7,8,9,11,13,14,15,15.5,16]
+    var timeArray: [Double] = []
+    var costArray: [Double] = []
     var chartTimer: Timer?
     
     var container: UIView = {
@@ -59,7 +59,7 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "ACCOUNT BALANCE"
+        label.text = "Account Balance"
         
         return label
     }()
@@ -69,7 +69,7 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
-        label.text = "$43.75"
+        label.text = "$0.00"
         
         return label
     }()
@@ -80,8 +80,8 @@ class HostingGraphsViewController: UIViewController, ChartViewDelegate {
         label.textColor = Theme.BLACK.withAlphaComponent(0.5)
         label.font = Fonts.SSPRegularH5
         
-        var main_string = "+12.3% from last week"
-        var string_to_color = "+12.3%"
+        var main_string = "+0.0% from last week"
+        var string_to_color = "+0.0%"
         var range = (main_string as NSString).range(of: string_to_color)
         var attributedString = NSMutableAttributedString(string:main_string)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN_PIGMENT , range: range)

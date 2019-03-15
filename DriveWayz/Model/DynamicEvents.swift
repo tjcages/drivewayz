@@ -109,6 +109,10 @@ struct DynamicEvents {
                                                                                         }
                                                                                     }
                                                                                 }
+                                                                            } else {
+                                                                                checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
+                                                                                    completion(numberOfEvents)
+                                                                                })
                                                                             }
                                                                         }
                                                                     } else {
@@ -118,6 +122,10 @@ struct DynamicEvents {
                                                                     }
                                                                 }
                                                             }
+                                                        } else {
+                                                            checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
+                                                                completion(numberOfEvents)
+                                                            })
                                                         }
                                                     }
                                                 }

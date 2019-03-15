@@ -83,7 +83,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPRegularH2
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 30
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
         
@@ -653,7 +653,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             }
         } else if self.locationControllerAnchor.constant == 0 && self.locationController.view.alpha == 1 {
             if let address = self.locationController.newHostAddress, let title = self.locationController.streetField.text, let state = self.locationController.stateField.text, let city = self.locationController.cityField.text {
-                self.mapController.setupAddressMarker(address: address, title: title)
+                self.mapController.setupAddressMarker(address: address, title: title, city: city, state: state)
                 self.costsController.configureCustomPricing(state: state, city: city)
             }
             UIView.animate(withDuration: animationIn, animations: {
@@ -679,6 +679,8 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.businessPicturesController.lattitude = lattitude
                 self.picturesController.longitude = longitude
                 self.businessPicturesController.longitude = longitude
+                let price = self.mapController.dynamicPrice
+                self.costsController.dynamicPrice = Double(price)
             }
             UIView.animate(withDuration: animationIn, animations: {
                 self.mapController.view.alpha = 0

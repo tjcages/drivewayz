@@ -49,7 +49,8 @@ extension MapKitViewController {
                     if let address = parking.overallAddress {
                         self.mapView.setCenter(location.coordinate, animated: true)
                         if let userLocation = locationManager.location {
-                            self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: userLocation, address: address)
+                            self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
+//                            self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: userLocation, address: address)
                             delayWithSeconds(1.6) {
                                 self.hideSearchBar(regular: false)
                             }

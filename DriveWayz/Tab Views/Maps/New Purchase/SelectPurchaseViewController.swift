@@ -1004,7 +1004,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.none
+        config.requiredBillingAddressFields = STPBillingAddressFields.full
         config.additionalPaymentMethods = .all
         
         // Create card sources instead of card tokens

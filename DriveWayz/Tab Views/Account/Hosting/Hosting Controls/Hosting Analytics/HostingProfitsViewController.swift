@@ -28,7 +28,7 @@ class HostingProfitsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "AVERAGE PROFITS"
+        label.text = "Average Profits"
 
         return label
     }()
@@ -38,7 +38,7 @@ class HostingProfitsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
-        label.text = "$357.50"
+        label.text = "$0.00"
         label.textAlignment = .center
         
         return label

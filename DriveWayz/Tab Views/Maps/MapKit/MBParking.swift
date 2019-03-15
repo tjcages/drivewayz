@@ -15,7 +15,7 @@ protocol handleCheckoutParking {
     func becomeAHost()
     func confirmPurchasePressed()
     func setDurationPressed()
-    func didTapParking(parking: ParkingSpots)
+    func didTapParking(parking: ParkingSpots, price: String)
     func didHideExpandedParking()
 }
 
@@ -49,7 +49,7 @@ extension MapKitViewController: handleCheckoutParking {
         confirmPaymentController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         confirmControllerBottomAnchor = confirmPaymentController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 380)
             confirmControllerBottomAnchor.isActive = true
-        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 304).isActive = true
+        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 308).isActive = true
         
         self.view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
@@ -78,11 +78,11 @@ extension MapKitViewController: handleCheckoutParking {
         
     }
     
-    func didTapParking(parking: ParkingSpots) {
+    func didTapParking(parking: ParkingSpots, price: String) {
         self.delegate?.hideHamburger()
         self.delegate?.lightContentStatusBar()
         self.view.bringSubviewToFront(expandedSpotController.view)
-        self.expandedSpotController.openExpand(parking: parking)
+        self.expandedSpotController.openExpand(parking: parking, price: price)
         UIView.animate(withDuration: animationOut) {
             self.fullBackgroundView.alpha = 0.4
             self.parkingControllerBottomAnchor.constant = 420
@@ -109,6 +109,8 @@ extension MapKitViewController: handleCheckoutParking {
     }
     
     func setDurationPressed() {
+        self.confirmPaymentController.setData(price: self.parkingController.selectedPrice * self.purchaseController.totalSelectedTime,
+                                              fromDate: self.purchaseController.fromDate, toDate: self.purchaseController.toDate)
         self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
         self.parkingBackButton.addTarget(self, action: #selector(backToSetDuration), for: .touchUpInside)
         UIView.animate(withDuration: animationIn) {
@@ -149,11 +151,13 @@ extension MapKitViewController: handleCheckoutParking {
             self.view.layoutIfNeeded()
         }
         if let region = ZoomPurchaseMapView {
-            self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 520, right: 66), animated: true)
-            if let location = DestinationAnnotationLocation {
-                delayWithSeconds(0.5) {
-                    self.checkQuickDestination(annotationLocation: location)
+            if self.quickDestinationController.distanceLabel.text != "0 min" {
+                self.mapView.userTrackingMode = .none
+                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 520, right: 66), animated: true)
+                if let location = DestinationAnnotationLocation {
+                    delayWithSeconds(0.5) {
+                        self.checkQuickDestination(annotationLocation: location)
+                    }
                 }
             }
         }

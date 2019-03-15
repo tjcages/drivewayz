@@ -1,5 +1,5 @@
 //
-//  TestPurchaseViewController.swift
+//  PurchaseViewController.swift
 //  DriveWayz
 //
 //  Created by Tyler Jordan Cagle on 3/9/19.
@@ -13,12 +13,14 @@ protocol handleHoursSelected {
     func changeStartDate(date: Date)
 }
 
-class TestPurchaseViewController: UIViewController, handleHoursSelected {
+class PurchaseViewController: UIViewController, handleHoursSelected {
     
     var delegate: handleCheckoutParking?
     var fromDate = Date()
+    var toDate = Date()
     var selectedHours: Int = 2
     var selectedMinutes: Int = 15
+    var totalSelectedTime: Double = 2.25
     
     var timeView: UIView = {
         let view = UIView()
@@ -434,6 +436,8 @@ class TestPurchaseViewController: UIViewController, handleHoursSelected {
                 let nextDiff = toHour.roundedUp(toMultipleOf: 5) - toHour
                 if let nextDate = calendar.date(byAdding: .minute, value: nextDiff, to: toDate) {
                     let toTime = formatter.string(from: nextDate)
+                    self.toDate = nextDate
+                    self.totalSelectedTime = Double(Double(self.selectedHours) + Double(self.selectedMinutes) / 60.0)
                     self.toTimeLabel.text = toTime
                 }
             }

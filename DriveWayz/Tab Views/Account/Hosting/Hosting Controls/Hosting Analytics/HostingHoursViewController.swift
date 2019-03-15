@@ -28,7 +28,7 @@ class HostingHoursViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "HOSTING HOURS"
+        label.text = "Hosting Hours"
         
         return label
     }()
@@ -38,7 +38,7 @@ class HostingHoursViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
-        label.text = "138"
+        label.text = "0"
         label.textAlignment = .center
         
         return label
@@ -48,7 +48,7 @@ class HostingHoursViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK.withAlphaComponent(0.6)
-        label.font = Fonts.SSPLightH2
+        label.font = Fonts.SSPLightH3
         label.text = "HOURS"
         
         return label

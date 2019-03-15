@@ -28,7 +28,7 @@ class HostingUsersViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "TOTAL GUESTS"
+        label.text = "Total Guests"
         
         return label
     }()
@@ -38,7 +38,7 @@ class HostingUsersViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
-        label.text = "92"
+        label.text = "0"
         label.textAlignment = .center
         
         return label

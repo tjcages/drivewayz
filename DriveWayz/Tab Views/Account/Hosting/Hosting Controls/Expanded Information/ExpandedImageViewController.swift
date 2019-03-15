@@ -183,7 +183,7 @@ class ExpandedImageViewController: UIViewController {
         self.view.addSubview(editInformation)
         editInformation.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
         editInformation.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 

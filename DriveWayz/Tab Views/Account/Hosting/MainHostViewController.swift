@@ -353,7 +353,7 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
                 case .iphone8:
                     self.containerHeightAnchor.constant = 160 - (percent * 80)
                 case .iphoneX:
-                    self.containerHeightAnchor.constant = 160 - (percent * 90)
+                    self.containerHeightAnchor.constant = 160 - (percent * 70)
                 }
                 self.moveDelegate?.moveMainLabel(percent: percent)
             } else if translation < 10 {

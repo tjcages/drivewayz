@@ -42,6 +42,7 @@ extension MapKitViewController: handleMinimizingFullController {
             UIView.animate(withDuration: animationOut, animations: {
                 self.parkingControllerBottomAnchor.constant = 420
                 self.purchaseControllerBottomAnchor.constant = 500
+                self.confirmControllerBottomAnchor.constant = 380
                 self.currentTopAnchor.constant = 0
                 self.parkingBackButton.alpha = 0
                 self.navigationView.alpha = 1

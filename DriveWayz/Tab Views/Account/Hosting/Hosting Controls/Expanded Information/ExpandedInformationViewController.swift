@@ -22,18 +22,6 @@ class ExpandedInformationViewController: UIViewController {
         return label
     }()
     
-    var spotLocatingLabel: UITextView = {
-        let label = UITextView()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.text = "1065 University Ave. Boulder, CO"
-        label.font = Fonts.SSPRegularH2
-        label.isScrollEnabled = false
-        label.isUserInteractionEnabled = false
-        
-        return label
-    }()
-    
     var messageLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -84,9 +72,8 @@ class ExpandedInformationViewController: UIViewController {
     }
     
     func setData(hosting: ParkingSpots) {
-        if let primaryType = hosting.mainType, let secondaryType = hosting.secondaryType, let overallAddress = hosting.overallAddress, let hostMessage = hosting.hostMessage, let timestamp = hosting.timestamp {
+        if let primaryType = hosting.mainType, let secondaryType = hosting.secondaryType, let hostMessage = hosting.hostMessage, let timestamp = hosting.timestamp {
             self.residentialLabel.text = "\(primaryType.uppercased())  |  \(secondaryType.capitalizingFirstLetter())"
-            self.spotLocatingLabel.text = overallAddress
             self.messageLabel.text = hostMessage
             let date = Date(timeIntervalSince1970: Double(truncating: timestamp))
             let dateFormatter = DateFormatter()
@@ -112,14 +99,8 @@ class ExpandedInformationViewController: UIViewController {
         editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.view.addSubview(spotLocatingLabel)
-        spotLocatingLabel.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 4).isActive = true
-        spotLocatingLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        spotLocatingLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        spotLocatingLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         self.view.addSubview(messageLabel)
-        messageLabel.topAnchor.constraint(equalTo: spotLocatingLabel.bottomAnchor, constant: -4).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: -4).isActive = true
         messageLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         messageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24).isActive = true
