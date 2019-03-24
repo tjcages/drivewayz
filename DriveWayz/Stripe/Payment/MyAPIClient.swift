@@ -11,7 +11,7 @@ import Stripe
 import Alamofire
 import Firebase
 
-class MyAPIClient: NSObject, STPEphemeralKeyProvider {
+class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
     
     var account: String?
     var email: String?

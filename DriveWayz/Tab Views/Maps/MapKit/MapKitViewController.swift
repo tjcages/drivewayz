@@ -589,6 +589,27 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
+    var currentSearchLocation: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "locator") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.BLACK
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 20
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(currentLocatorButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var currentBottomHeightAnchor: NSLayoutConstraint!
     var currentTopHeightAnchor: NSLayoutConstraint!
     var currentBottomBottomAnchor: NSLayoutConstraint!

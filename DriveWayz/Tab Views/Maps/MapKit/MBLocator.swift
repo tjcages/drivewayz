@@ -16,6 +16,14 @@ protocol handleLocatorButton {
 
 extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDelegate, handleLocatorButton {
     
+    func mapView(_ mapView: MGLMapView, regionWillChangeWith reason: MGLCameraChangeReason, animated: Bool) {
+        print(reason)
+    }
+    
+    func mapView(_ mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+        return Theme.LIGHT_PURPLE
+    }
+    
     @objc func locatorButtonAction(sender: UIButton) {
         if let region = ZoomMapView {
             self.mapView.userTrackingMode = .none

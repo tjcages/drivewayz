@@ -37,6 +37,7 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     
     func setupNavigationControllers() {
         
+        self.view.addSubview(currentSearchLocation)
         self.view.addSubview(currentBottomController.view)
         currentBottomBottomAnchor = currentBottomController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 200)
             currentBottomBottomAnchor.isActive = true
@@ -54,6 +55,11 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         currentTopController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         currentTopHeightAnchor = currentTopController.view.heightAnchor.constraint(equalToConstant: 136)
             currentTopHeightAnchor.isActive = true
+        
+        currentSearchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
+        currentSearchLocation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        currentSearchLocation.widthAnchor.constraint(equalTo: currentSearchLocation.heightAnchor).isActive = true
+        currentSearchLocation.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16).isActive = true
         
     }
     
@@ -106,6 +112,7 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {
+                self.currentSearchLocation.alpha = 1
                 self.currentBottomBottomAnchor.constant = 0
                 self.currentTopTopAnchor.constant = 0
                 self.previousAnchor = 170
@@ -138,14 +145,15 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
             holdNavController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
             holdNavController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
             holdNavController.setupNavigation(route: route)
-//            switch solar {
-//            case .day:
-                self.delegate?.lightContentStatusBar()
-//            case .night:
-//                self.delegate?.lightContentStatusBar()
-////                self.delegate?.defaultContentStatusBar()
-//            }
+            self.delegate?.lightContentStatusBar()
         }
+    }
+    
+    @objc func currentLocatorButtonPressed() {
+        self.mapView.userTrackingMode = .followWithCourse
+        delayWithSeconds(animationOut * 2, completion: {
+            self.mapView.setZoomLevel(15, animated: true)
+        })
     }
     
     func checkDismissStatusBar() {
@@ -154,7 +162,6 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
             self.delegate?.defaultContentStatusBar()
         case .night:
             self.delegate?.defaultContentStatusBar()
-//            self.delegate?.lightContentStatusBar()
         }
     }
     

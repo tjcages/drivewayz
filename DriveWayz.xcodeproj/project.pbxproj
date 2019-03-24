@@ -18,7 +18,7 @@
 		4D02C65821CDDADE00748BA3 /* MapKitHostingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */; };
 		4D02C65A21CDDB3E00748BA3 /* MapKitPurchaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */; };
 		4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */; };
-		4D02C65E21CDDC4D00748BA3 /* MapKitLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */; };
+		4D02C65E21CDDC4D00748BA3 /* MBLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */; };
 		4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */; };
 		4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */; };
 		4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66321CDDD6800748BA3 /* MapKitMap.swift */; };
@@ -272,7 +272,7 @@
 		4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitHostingSpots.swift; sourceTree = "<group>"; };
 		4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitPurchaseStatus.swift; sourceTree = "<group>"; };
 		4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitTextField.swift; sourceTree = "<group>"; };
-		4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitLocator.swift; sourceTree = "<group>"; };
+		4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBLocator.swift; sourceTree = "<group>"; };
 		4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingSpots.swift; sourceTree = "<group>"; };
 		4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitCurrentParking.swift; sourceTree = "<group>"; };
 		4D02C66321CDDD6800748BA3 /* MapKitMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMap.swift; sourceTree = "<group>"; };
@@ -546,12 +546,13 @@
 				4DCFB9F421D83C7D00E910FF /* MBPolylineRoute.swift */,
 				4DC676F2222E451F00A75123 /* MBCurvedPolyline.swift */,
 				4DCFB9F621D8510800E910FF /* MBGetRoute.swift */,
-				4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */,
 				4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */,
 				4D0AD44D22040C5E00A3911D /* MBSelectAnnotation.swift */,
 				4DDC010A220934AC007CDBD6 /* MBParkingOptions.swift */,
 				4D02C66E21D0850D00748BA3 /* MBParking.swift */,
+				4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */,
 				4DB5CA7B221A73B600A4C6FD /* MBCurrentParking.swift */,
+				4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */,
 				4DCFB9F321D83C4600E910FF /* MapKit */,
 				4D70E5A821E1CDFD00DDC4D0 /* Current Route Guidance */,
 			);
@@ -1099,7 +1100,6 @@
 				4D02C66321CDDD6800748BA3 /* MapKitMap.swift */,
 				4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */,
 				4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */,
-				4D02C65D21CDDC4D00748BA3 /* MapKitLocator.swift */,
 				4D02C66821CDE9AE00748BA3 /* MapKitDrawPath.swift */,
 			);
 			path = MapKit;
@@ -1501,7 +1501,7 @@
 				4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */,
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
-				4D02C65E21CDDC4D00748BA3 /* MapKitLocator.swift in Sources */,
+				4D02C65E21CDDC4D00748BA3 /* MBLocator.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
 				4D5A0EF121E0009700EB38A1 /* MBNavigation.swift in Sources */,
 				4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */,
