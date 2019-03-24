@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3770B3FBB32D6BA75D295885BE16993A"
+               BlueprintIdentifier = "F4B91948B1C8583570D092B054B9CD31"
                BuildableName = "FirebaseDynamicLinks.framework"
                BlueprintName = "FirebaseDynamicLinks"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3770B3FBB32D6BA75D295885BE16993A"
+            BlueprintIdentifier = "F4B91948B1C8583570D092B054B9CD31"
             BuildableName = "FirebaseDynamicLinks.framework"
             BlueprintName = "FirebaseDynamicLinks"
             ReferencedContainer = "container:Pods.xcodeproj">

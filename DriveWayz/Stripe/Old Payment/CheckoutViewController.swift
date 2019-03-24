@@ -112,7 +112,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         config.appleMerchantIdentifier = self.appleMerchantID
         config.companyName = self.companyName
         config.requiredBillingAddressFields = STPBillingAddressFields.full
-        config.additionalPaymentMethods = .all
+        config.additionalPaymentOptions = .all
 
         // Create card sources instead of card tokens
         config.createCardSources = true;
@@ -176,7 +176,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         self.buyButton.addTarget(self, action: #selector(didTapBuy), for: .touchUpInside)
         self.totalRow.detail = self.numberFormatter.string(from: NSNumber(value: Float(self.paymentContext.paymentAmount)/100))!
         self.paymentRow.onTap = { [weak self] in
-            self?.paymentContext.pushPaymentMethodsViewController()
+            self?.paymentContext.pushPaymentOptionsViewController()
         }
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: exitButton, style: .plain, target: self, action: #selector(dismissDetails(sender:)))
         self.navigationController?.navigationBar.tintColor = Theme.PACIFIC_BLUE
@@ -302,7 +302,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
 
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         self.paymentRow.loading = paymentContext.loading
-        if let paymentMethod = paymentContext.selectedPaymentMethod {
+        if let paymentMethod = paymentContext.selectedPaymentOption {
             self.paymentRow.detail = paymentMethod.label
         }
         else {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Mapbox
 
 protocol handleMinimizingFullController {
     func minimizeFullController()
@@ -32,35 +33,39 @@ extension MapKitViewController: handleMinimizingFullController {
     }
     
     func confirmPurchasePressed() {
-//        self.beginRouteNavigation()
         self.userHasCurrentParking()
     }
     
     func userHasCurrentParking() {
-        if let region = ZoomMapView {
-            self.takeAwayEvents()
-            UIView.animate(withDuration: animationOut, animations: {
-                self.parkingControllerBottomAnchor.constant = 420
-                self.purchaseControllerBottomAnchor.constant = 500
-                self.confirmControllerBottomAnchor.constant = 380
-                self.currentTopAnchor.constant = 0
-                self.parkingBackButton.alpha = 0
-                self.navigationView.alpha = 1
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.mapView.userTrackingMode = .none
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
-                if let location = DestinationAnnotationLocation {
-                    delayWithSeconds(0.5) {
-                        self.checkQuickDestination(annotationLocation: location)
-                        UIView.animate(withDuration: animationIn, animations: {
-                            self.currentTopAnchor.constant = 0
-                            self.view.layoutIfNeeded()
-                        })
-                    }
+        self.removeAllMapOverlays(shouldRefresh: false)
+        DispatchQueue.main.async {
+            if let route = finalWalkingRoute, let underPolyline = finalPolyline, let destinationAnnotation = FinalAnnotationLocation {
+                let minute = route.expectedTravelTime / 60
+                self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
+                if let minute = finalDriveTime {
+                    self.currentSpotController.driveTime = minute
                 }
+                let routeCoordinates = route.coordinates!
+                self.parkingCoordinates = routeCoordinates
+                
+                self.mapView.addAnnotation(underPolyline)
+                self.destinationCoordinates = destinationFinalCoordinates
+                
+                self.shouldShowOverlay = true
+                self.addPolyline(to: self.mapView.style!, type: "Parking")
+                self.animateFirstPolyline()
+            
+                let marker = MGLPointAnnotation()
+                marker.coordinate = destinationAnnotation
+                self.mapView.addAnnotation(marker)
+                self.mapView.userTrackingMode = .followWithCourse
+                
+                delayWithSeconds(animationOut * 2, completion: {
+                    self.mapView.setZoomLevel(15, animated: true)
+                })
             }
         }
+        self.openCurrentInformation()
     }
     
     func hideCurrentParking() {
@@ -75,7 +80,6 @@ extension MapKitViewController: handleMinimizingFullController {
                 self.currentSpotController.topController()
                 let percent = translation / 260
                 UIView.animate(withDuration: animationOut) {
-                    self.navigationView.alpha = 1 - 1 * percent
                     self.fullBackgroundView.alpha = 0.3 * percent
                     self.currentHeightAnchor.constant = self.view.frame.height
                     self.view.layoutIfNeeded()
@@ -91,7 +95,6 @@ extension MapKitViewController: handleMinimizingFullController {
             } else if translation > 120 {
                 self.currentSpotController.middleController()
                 UIView.animate(withDuration: animationOut) {
-                    self.navigationView.alpha = 1
                     self.currentHeightAnchor.constant = 320
                     self.view.layoutIfNeeded()
                 }
@@ -109,12 +112,11 @@ extension MapKitViewController: handleMinimizingFullController {
                 UIView.animate(withDuration: animationOut, animations: {
                     self.currentHeightAnchor.constant = self.view.frame.height
                     self.previousHeightAnchor = self.view.frame.height
-                    self.navigationView.alpha = 0
                     self.fullBackgroundView.alpha = 0.1
                     self.quickDestinationController.view.alpha = 0
                     self.view.layoutIfNeeded()
                 }) { (success) in
-                    if let pickup = pickupCoordinate, let destination = destinationCoordinate {
+                    if let pickup = finalPickupCoordinate, let destination = finalDestinationCoordinate {
                         self.quickDestinationController.view.alpha = 0
                         self.zoomToCurve(first: pickup, second: destination)
                         delayWithSeconds(animationOut, completion: {
@@ -138,7 +140,6 @@ extension MapKitViewController: handleMinimizingFullController {
                 UIView.animate(withDuration: animationOut, animations: {
                     self.currentHeightAnchor.constant = 320
                     self.previousHeightAnchor = 320
-                    self.navigationView.alpha = 1
                     self.fullBackgroundView.alpha = 0
                     self.view.layoutIfNeeded()
                 }) { (success) in
@@ -146,11 +147,10 @@ extension MapKitViewController: handleMinimizingFullController {
                         line.removeFromSuperlayer()
                         shadowLine.removeFromSuperlayer()
                     }
-                    self.applyFirstPolyline()
+                    self.applyFinalPolyline()
                     self.delegate?.defaultContentStatusBar()
                     delayWithSeconds(animationIn, completion: {
                         UIView.animate(withDuration: animationOut, animations: {
-                            self.navigationView.alpha = 1
                         })
                     })
                 }
@@ -164,7 +164,6 @@ extension MapKitViewController: handleMinimizingFullController {
         UIView.animate(withDuration: animationOut, animations: {
             self.currentHeightAnchor.constant = 320
             self.previousHeightAnchor = 320
-            self.navigationView.alpha = 1
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -172,11 +171,10 @@ extension MapKitViewController: handleMinimizingFullController {
                 line.removeFromSuperlayer()
                 shadowLine.removeFromSuperlayer()
             }
-            self.applyFirstPolyline()
+            self.applyFinalPolyline()
             self.delegate?.defaultContentStatusBar()
             delayWithSeconds(animationIn, completion: {
                 UIView.animate(withDuration: animationOut, animations: {
-                    self.navigationView.alpha = 1
                 })
             })
         }

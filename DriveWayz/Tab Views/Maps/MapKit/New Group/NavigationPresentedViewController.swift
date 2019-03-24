@@ -14,7 +14,7 @@ enum ModalScaleState {
     case interaction
 }
 
-final class InteractiveModalPresentationController: UIPresentationController {
+final class NavigationPresentedViewController: UIPresentationController {
     
     private let presentedYOffset: CGFloat = 20
     private var direction: CGFloat = 0
@@ -23,16 +23,7 @@ final class InteractiveModalPresentationController: UIPresentationController {
         guard let container = containerView else { return nil }
         
         let view = UIView(frame: container.bounds)
-        switch solar {
-        case .day:
-            view.backgroundColor = Theme.BLACK
-        case .night:
-            view.backgroundColor = Theme.BLACK
-//            view.backgroundColor = Theme.OFF_WHITE
-        }
-//        view.addGestureRecognizer(
-//            UITapGestureRecognizer(target: self, action: #selector(didTap(tap:)))
-//        )
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -40,15 +31,13 @@ final class InteractiveModalPresentationController: UIPresentationController {
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
-//        presentedViewController.view.addGestureRecognizer(
-//            UIPanGestureRecognizer(target: self, action: #selector(didPan(pan:)))
-//        )
-        
-//        let statusView = UIView()
-//        statusView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: UIApplication.shared.statusBarFrame.height)
-//        statusView.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
-//        presentedViewController.view.addSubview(statusView)
+        presentedViewController.view.clipsToBounds = false
     }
+    
+}
+
+
+extension NavigationPresentedViewController {
     
     @objc func didPan(pan: UIPanGestureRecognizer) {
         guard let view = pan.view, let superView = view.superview,

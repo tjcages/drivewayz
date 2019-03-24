@@ -113,18 +113,6 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
         return label
     }()
     
-    var totalCostLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLUE
-        label.text = "$9.10"
-        label.font = Fonts.SSPSemiBoldH1
-        label.textAlignment = .right
-        label.alpha = 0
-        
-        return label
-    }()
-    
     var fromTimeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -308,12 +296,6 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
         reservationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         reservationLabel.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -240).isActive = true
         reservationLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        self.view.addSubview(totalCostLabel)
-        totalCostLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        totalCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        totalCostLabel.topAnchor.constraint(equalTo: reservationLabel.topAnchor).isActive = true
-        totalCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         self.view.addSubview(fromTimeLabel)
         fromTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true

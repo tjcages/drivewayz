@@ -15,7 +15,7 @@ class ExpandedCostViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "HOURLY RATE"
+        label.text = "Hourly Rate"
         
         return label
     }()
@@ -24,7 +24,7 @@ class ExpandedCostViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
-        label.text = "$ 4.50"
+        label.text = "$2.40 per hour"
         label.font = Fonts.SSPRegularH2
         
         return label
@@ -33,7 +33,7 @@ class ExpandedCostViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return view
     }()
@@ -83,8 +83,8 @@ class ExpandedCostViewController: UIViewController {
         
         self.view.addSubview(lineView)
         lineView.topAnchor.constraint(equalTo: hourlyRate.bottomAnchor, constant: 24).isActive = true
-        lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -12).isActive = true
+        lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 12).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
     }

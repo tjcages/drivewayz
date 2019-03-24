@@ -19,14 +19,24 @@ protocol handleParkingOptions {
 }
 
 var DestinationAnnotationLocation: CLLocationCoordinate2D?
-var LocationAnnotationLocation: CLLocationCoordinate2D?
+var FinalAnnotationLocation: CLLocationCoordinate2D?
+var FirstAnnotationLocation: CLLocationCoordinate2D?
+var SecondAnnotationLocation: CLLocationCoordinate2D?
+var ThirdAnnotationLocation: CLLocationCoordinate2D?
 
+var finalDriveTime: Double?
 var firstDriveTime: Double?
 var secondDriveTime: Double?
 var thirdDriveTime: Double?
 
-var pickupCoordinate: CLLocationCoordinate2D?
-var destinationCoordinate: CLLocationCoordinate2D?
+var finalPickupCoordinate: CLLocationCoordinate2D?
+var finalDestinationCoordinate: CLLocationCoordinate2D?
+var firstPickupCoordinate: CLLocationCoordinate2D?
+var firstDestinationCoordinate: CLLocationCoordinate2D?
+var secondPickupCoordinate: CLLocationCoordinate2D?
+var secondDestinationCoordinate: CLLocationCoordinate2D?
+var thirdPickupCoordinate: CLLocationCoordinate2D?
+var thirdDestinationCoordinate: CLLocationCoordinate2D?
 
 extension MapKitViewController: handleParkingOptions {
     
@@ -69,8 +79,6 @@ extension MapKitViewController: handleParkingOptions {
     }
     
     func findBestParking(location: CLLocation, sourceLocation: CLLocation, searchLocation: CLLocation, address: String) {
-        pickupCoordinate = sourceLocation.coordinate
-        destinationCoordinate = location.coordinate
         parkingController.setData(closestParking: self.closeParkingSpots, cheapestParking: self.cheapestParkingSpots, overallDestination: searchLocation.coordinate)
         self.drawCurrentPath(dest: location, start: sourceLocation, type: "Parking", address: address) { (results: CLLocationCoordinate2D) in
             if sourceLocation != searchLocation {
@@ -105,8 +113,10 @@ extension MapKitViewController: handleParkingOptions {
             
             let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
             if type == "First" {
+                firstPickupCoordinate = second.coordinate
+                firstDestinationCoordinate = first.coordinate
                 ZoomMapView = region
-                self.firstMapView = region
+                firstMapView = region
 //                delayWithSeconds(1.2) {
                     if let region = ZoomMapView {
                         self.mapView.userTrackingMode = .none
@@ -120,15 +130,19 @@ extension MapKitViewController: handleParkingOptions {
 //                }
             } else if type == "FirstPurchase" {
                 ZoomPurchaseMapView = region
-                self.firstPurchaseMapView = region
+                firstPurchaseMapView = region
             } else if type == "Second" {
-                self.secondMapView = region
+                secondPickupCoordinate = second.coordinate
+                secondDestinationCoordinate = first.coordinate
+                secondMapView = region
             } else if type == "SecondPurchase" {
-                self.secondPurchaseMapView = region
+                secondPurchaseMapView = region
             } else if type == "Third" {
-                self.thirdMapView = region
+                thirdPickupCoordinate = second.coordinate
+                thirdDestinationCoordinate = first.coordinate
+                thirdMapView = region
             } else if type == "ThirdPurchase" {
-                self.thirdPurchaseMapView = region
+                thirdPurchaseMapView = region
             }
         }
         if abs(first.coordinate.longitude) > abs(second.coordinate.longitude) {
@@ -163,7 +177,7 @@ extension MapKitViewController: handleParkingOptions {
                     self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
                     self.quickDestinationController.setupData()
                     if route.coordinateCount > 0 {
-                        self.firstParkingRoute = route
+                        firstWalkingRoute = route
                         // Convert the route’s coordinates into a polyline.
                         let marker = MGLPointAnnotation()
                         marker.coordinate = dest.coordinate
@@ -195,21 +209,22 @@ extension MapKitViewController: handleParkingOptions {
                     self.currentSpotController.driveTime = minute
                     firstDriveTime = minute
                     if route.coordinateCount > 0 {
+                        firstParkingRoute = route
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!
                         let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
                         routeLine.title = "ParkingUnder"
                         
                         self.mapView.addAnnotation(routeLine)
-                        self.firstPolyline = routeLine
+                        firstPolyline = routeLine
                         
                         let parking = MGLPointAnnotation()
                         parking.coordinate = dest.coordinate
                         parking.title = "Parking spot"
                         self.mapView.addAnnotation(parking)
-                        LocationAnnotationLocation = dest.coordinate
+                        FirstAnnotationLocation = dest.coordinate
                         
-                        self.destinationFirstCoordinates = route.coordinates!
+                        destinationFirstCoordinates = route.coordinates!
                         self.destinationCoordinates = route.coordinates!
                         self.addPolyline(to: self.mapView.style!, type: type)
                         
@@ -229,7 +244,7 @@ extension MapKitViewController: handleParkingOptions {
                 if let route = routes?.first {
                     if route.coordinateCount > 0 {
                         // Convert the route’s coordinates into a polyline.
-                        self.secondParkingRoute = route
+                        secondWalkingRoute = route
                         
                         let parking = MGLPointAnnotation()
                         parking.coordinate = dest.coordinate
@@ -251,13 +266,15 @@ extension MapKitViewController: handleParkingOptions {
                     let minute = route.expectedTravelTime / 60
                     secondDriveTime = minute
                     if route.coordinateCount > 0 {
+                        secondParkingRoute = route
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!
                         let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
                         routeLine.title = "ParkingUnder"
-                        self.secondPolyline = routeLine
+                        secondPolyline = routeLine
+                        SecondAnnotationLocation = dest.coordinate
                         
-                        self.destinationSecondCoordinates = route.coordinates!
+                        destinationSecondCoordinates = route.coordinates!
                         completion(dest.coordinate)
                     }
                 }
@@ -274,7 +291,7 @@ extension MapKitViewController: handleParkingOptions {
                 if let route = routes?.first {
                     if route.coordinateCount > 0 {
                         // Convert the route’s coordinates into a polyline.
-                        self.thirdParkingRoute = route
+                        thirdWalkingRoute = route
                         
                         let parking = MGLPointAnnotation()
                         parking.coordinate = dest.coordinate
@@ -295,13 +312,15 @@ extension MapKitViewController: handleParkingOptions {
                     let minute = route.expectedTravelTime / 60
                     thirdDriveTime = minute
                     if route.coordinateCount > 0 {
+                        thirdParkingRoute = route
                         // Convert the route’s coordinates into a polyline.
                         var routeCoordinates = route.coordinates!
                         let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
                         routeLine.title = "ParkingUnder"
-                        self.thirdPolyline = routeLine
+                        thirdPolyline = routeLine
+                        ThirdAnnotationLocation = dest.coordinate
                         
-                        self.destinationThirdCoordinates = route.coordinates!
+                        destinationThirdCoordinates = route.coordinates!
                         completion(dest.coordinate)
                     }
                 }

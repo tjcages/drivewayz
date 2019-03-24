@@ -8,6 +8,9 @@
 
 import UIKit
 import NVActivityIndicatorView
+import FacebookLogin
+import FacebookCore
+import SwiftyJSON
 
 protocol handleVerificationCode {
     func bringBackPhoneNumber()
@@ -93,6 +96,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         button.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .left
+        button.addTarget(self, action: #selector(socialAccountPressed(sender:)), for: .touchUpInside)
         
         return button
     }()
@@ -169,10 +173,20 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         
         return controller
     }()
+    
+    var facebookButton: LoginButton = {
+        let button = LoginButton(readPermissions: [.publicProfile, .email])
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 4
+        button.alpha = 0
+        
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        facebookButton.delegate = self
         view.backgroundColor = UIColor.clear
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -213,8 +227,8 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         self.view.addSubview(mainLabel)
         mainLabelTopAnchor = mainLabel.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 36)
             mainLabelTopAnchor.isActive = true
-        mainLabel.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        mainLabel.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         viewContainer.addSubview(phoneLine)
@@ -245,8 +259,8 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         phoneLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         viewContainer.addSubview(socialAccount)
-        socialAccount.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 24).isActive = true
-        socialAccount.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -24).isActive = true
+        socialAccount.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
+        socialAccount.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         socialAccount.heightAnchor.constraint(equalToConstant: 20).isActive = true
         socialAccount.topAnchor.constraint(equalTo: phoneLine.bottomAnchor, constant: 24).isActive = true
         
@@ -277,10 +291,36 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         locationServicesCenterAnchor.isActive = true
         locationServicesController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         
+        viewContainer.addSubview(facebookButton)
+        facebookButton.bottomAnchor.constraint(equalTo: phoneLine.topAnchor).isActive = true
+        facebookButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        facebookButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        facebookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(enterPhoneNumber(sender:)))
         phoneNumberTextField.addGestureRecognizer(tapGesture)
         
         createToolbar()
+    }
+    
+    @objc func socialAccountPressed(sender: UIButton) {
+        UIView.animate(withDuration: animationIn) {
+            if self.phoneNumberTextField.alpha == 1 {
+                self.socialAccount.setTitle("Login with a phone number", for: .normal)
+                self.phoneLine.alpha = 0
+                self.phoneNumberTextField.alpha = 0
+                self.USAButton.alpha = 0
+                self.areaCodeLabel.alpha = 0
+                self.facebookButton.alpha = 1
+            } else {
+                self.socialAccount.setTitle("Or connect with a social network", for: .normal)
+                self.phoneLine.alpha = 1
+                self.phoneNumberTextField.alpha = 1
+                self.USAButton.alpha = 1
+                self.areaCodeLabel.alpha = 1
+                self.facebookButton.alpha = 0
+            }
+        }
     }
 
     @objc func enterPhoneNumber(sender: UITapGestureRecognizer) {
@@ -495,4 +535,70 @@ extension PhoneVerificationViewController {
     func moveToMainController() {
         self.delegate?.moveToMainController()
     }
+}
+
+
+extension PhoneVerificationViewController: LoginButtonDelegate {
+    
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        print(result)
+        print(AccessToken.self)
+        let access = AccessToken.current
+        guard let accessTok = access?.authenticationToken else {return}
+        
+        let credentials = FacebookAuthProvider.credential(withAccessToken: accessTok)
+        Auth.auth().signInAndRetrieveData(with: credentials) { (user, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            let userID = user?.user.uid
+            GraphRequest.init(graphPath: "/me", parameters: ["fields": "id, name, email, picture.width(1000).height(1000)"]).start { (connection, results) in
+                switch results {
+                case .failed(let error):
+                    print(error)
+                case .success(response: let graphResponse):
+                    if let dictionary = graphResponse.dictionaryValue {
+                        let json = JSON(dictionary)
+                        let email = json["email"].string!
+                        let name = json["name"].string!
+                        let pictureObject = json["picture"].dictionary!
+                        let pictureData = pictureObject["data"]?.dictionary!
+                        let pictureUrl = pictureData!["url"]?.string!
+                        
+                        let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
+                        let usersReference = ref.child("users").child(userID!)
+                        let values = ["name": name,
+                                      "email": email,
+                                      "picture": pictureUrl!,
+                                      "DeviceID": AppDelegate.DEVICEID]
+                        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                            if err != nil {
+                                print(err!)
+                                return
+                            }
+                            print("Successfully logged in!")
+                            UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                            UserDefaults.standard.synchronize()
+                            
+                            let myViewController: TabViewController = TabViewController()
+                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                            appDelegate.window?.rootViewController = myViewController
+                            appDelegate.window?.makeKeyAndVisible()
+                            
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                    }
+                }
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
+        print("Logged out of Facebook")
+    }
+    
+    
+    
+    
 }

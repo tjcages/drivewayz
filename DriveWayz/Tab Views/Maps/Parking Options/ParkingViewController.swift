@@ -353,6 +353,40 @@ class ParkingViewController: UIViewController, handleTestParking {
     func bookSpotPressed(amount: Double) {
         self.selectedPrice = amount
         self.delegate?.bookSpotPressed(amount: amount)
+        if self.primeLabel.alpha == 1 {
+            finalWalkingRoute = firstWalkingRoute
+            finalParkingRoute = firstParkingRoute
+            finalPolyline = firstPolyline
+            finalPickupCoordinate = firstPickupCoordinate
+            finalDestinationCoordinate = firstDestinationCoordinate
+            finalDriveTime = firstDriveTime
+            destinationFinalCoordinates = destinationFirstCoordinates
+            finalPurchaseMapView = firstPurchaseMapView
+            finalMapView = firstMapView
+            FinalAnnotationLocation = FirstAnnotationLocation
+        } else if self.bestPriceLabel.alpha == 1 {
+            finalWalkingRoute = secondWalkingRoute
+            finalParkingRoute = secondParkingRoute
+            finalPolyline = secondPolyline
+            finalPickupCoordinate = secondPickupCoordinate
+            finalDestinationCoordinate = secondDestinationCoordinate
+            finalDriveTime = secondDriveTime
+            destinationFinalCoordinates = destinationSecondCoordinates
+            finalPurchaseMapView = secondPurchaseMapView
+            finalMapView = secondMapView
+            FinalAnnotationLocation = SecondAnnotationLocation
+        } else if self.standardLabel.alpha == 1 {
+            finalWalkingRoute = thirdWalkingRoute
+            finalParkingRoute = thirdParkingRoute
+            finalPolyline = thirdPolyline
+            finalPickupCoordinate = thirdPickupCoordinate
+            finalDestinationCoordinate = thirdDestinationCoordinate
+            finalDriveTime = thirdDriveTime
+            destinationFinalCoordinates = destinationThirdCoordinates
+            finalPurchaseMapView = thirdPurchaseMapView
+            finalMapView = thirdMapView
+            FinalAnnotationLocation = ThirdAnnotationLocation
+        }
     }
     
     func noBookingFound() {

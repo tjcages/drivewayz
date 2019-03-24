@@ -32,6 +32,18 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         return view
     }()
     
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.decelerationRate = .fast
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
     var backgroundProfile: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -93,6 +105,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.decelerationRate = .fast
         view.showsVerticalScrollIndicator = false
         view.clipsToBounds = false
+        view.isScrollEnabled = false
         
         return view
     }()
@@ -104,6 +117,18 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 72)
         background.zPosition = -10
         view.layer.insertSublayer(background, at: 0)
+        
+        return view
+    }()
+    
+    lazy var whiteBlurView2: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().lightBlurColor()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 120)
+        background.zPosition = -10
+        view.layer.insertSublayer(background, at: 0)
+        view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         
         return view
     }()
@@ -136,51 +161,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         mark.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 0, bottom: 2, right: 0)
         
         return mark
-    }()
-    
-    lazy var purpleGradient: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90)
-        background.zPosition = -10
-        view.layer.addSublayer(background)
-        
-        let imageView = UIView()
-        let pattern = UIImage(named: "trianglesGridAd")
-        imageView.backgroundColor = UIColor(patternImage: pattern!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        imageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        let title = UILabel()
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.font = Fonts.SSPSemiBoldH2
-        title.textColor = Theme.WHITE
-        title.textAlignment = .center
-        title.text = "INVITE A FRIEND"
-        view.addSubview(title)
-        title.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        title.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        title.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        title.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        let subtitle = UILabel()
-        subtitle.translatesAutoresizingMaskIntoConstraints = false
-        subtitle.font = Fonts.SSPRegularH6
-        subtitle.textColor = Theme.WHITE
-        subtitle.textAlignment = .center
-        subtitle.text = "for 10% off your next booking"
-        view.addSubview(subtitle)
-        subtitle.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        subtitle.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        subtitle.topAnchor.constraint(equalTo: title.bottomAnchor).isActive = true
-        subtitle.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        return view
     }()
     
     var settingsSelect: UIView = {
@@ -224,37 +204,42 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         container.widthAnchor.constraint(equalToConstant: self.view.frame.width/2 + 80).isActive = true
         container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
+        self.view.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 900)
+        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        
     }
     
     func setupTopView() {
         
-        self.view.addSubview(profileLine)
-        self.view.addSubview(settingsSelect)
-        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingSelected))
-        //        settingsSelect.addGestureRecognizer(tapGesture)
-        settingsSelect.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.addSubview(profileLine)
+        scrollView.addSubview(settingsSelect)
+        settingsSelect.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         settingsSelect.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         settingsSelect.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         settingsSelect.bottomAnchor.constraint(equalTo: profileLine.topAnchor).isActive = true
         
-        self.view.addSubview(backgroundProfile)
+        scrollView.addSubview(backgroundProfile)
         backgroundProfile.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         backgroundProfile.widthAnchor.constraint(equalToConstant: 100).isActive = true
         backgroundProfile.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
-            backgroundProfile.topAnchor.constraint(equalTo: container.topAnchor, constant: 110).isActive = true
+            backgroundProfile.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 70).isActive = true
         case .iphoneX:
-            backgroundProfile.topAnchor.constraint(equalTo: container.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 110).isActive = true
+            backgroundProfile.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 70).isActive = true
         }
         
-        self.view.addSubview(profileImageView)
+        scrollView.addSubview(profileImageView)
         profileImageView.topAnchor.constraint(equalTo: backgroundProfile.topAnchor).isActive = true
         profileImageView.leftAnchor.constraint(equalTo: backgroundProfile.leftAnchor).isActive = true
         profileImageView.rightAnchor.constraint(equalTo: backgroundProfile.rightAnchor).isActive = true
         profileImageView.bottomAnchor.constraint(equalTo: backgroundProfile.bottomAnchor).isActive = true
         
-        self.view.addSubview(profileName)
+        scrollView.addSubview(profileName)
         profileName.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         profileName.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 12).isActive = true
         profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
@@ -265,31 +250,31 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileLine.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 24).isActive = true
         profileLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        container.addSubview(optionsTableView)
+        scrollView.addSubview(optionsTableView)
         optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         optionsTableView.topAnchor.constraint(equalTo: profileLine.bottomAnchor).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         optionsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
-        container.addSubview(whiteBlurView)
+        scrollView.addSubview(whiteBlurView)
         whiteBlurView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         whiteBlurView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         whiteBlurView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         whiteBlurView.heightAnchor.constraint(equalToConstant: 72).isActive = true
         
-//        optionsTableView.addSubview(purpleGradient)
-//        purpleGradient.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-//        purpleGradient.bottomAnchor.constraint(equalTo: optionsTableView.bottomAnchor).isActive = true
-//        purpleGradient.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-//        purpleGradient.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        scrollView.addSubview(whiteBlurView2)
+        whiteBlurView2.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        whiteBlurView2.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        whiteBlurView2.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        whiteBlurView2.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
-        container.addSubview(upcomingMark)
+        scrollView.addSubview(upcomingMark)
         upcomingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 57.5).isActive = true
         upcomingMark.rightAnchor.constraint(equalTo: optionsTableView.rightAnchor, constant: -20).isActive = true
         upcomingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true
         upcomingMark.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        container.addSubview(hostingMark)
+        scrollView.addSubview(hostingMark)
         hostingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 102.5).isActive = true
         hostingMark.rightAnchor.constraint(equalTo: optionsTableView.rightAnchor, constant: -20).isActive = true
         hostingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true

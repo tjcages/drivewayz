@@ -132,7 +132,7 @@ class FirstHostingViewController: UIViewController, handleNewHosting {
     var optionsLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.alpha = 0
         
         return view

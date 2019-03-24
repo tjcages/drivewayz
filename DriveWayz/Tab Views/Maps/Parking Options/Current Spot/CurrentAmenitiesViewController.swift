@@ -10,7 +10,7 @@ import UIKit
 
 class CurrentAmenitiesViewController: UIViewController {
     
-    var amenitiesName: [String] = ["Covered parking", "Charging station", "Stadium parking", "Large space", "Easy to find"]
+    var amenitiesName: [String] = ["Covered parking", "Stadium parking", "Large space", "Easy to find"]
     
     var layout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()

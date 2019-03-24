@@ -18,54 +18,133 @@ protocol handleRouteNavigation {
     func checkDismissStatusBar()
 }
 
-extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNavigation {
+protocol handleCurrentNavigationViews {
+    func minimizeBottomView()
+    func beginRouteNavigation()
+}
+
+var currentSpotController: CurrentSpotViewController = {
+    let controller = CurrentSpotViewController()
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    //        controller.delegate = self
     
-    func setupNavigationButton() {
+    return controller
+}()
+
+var navigationControllerView: NavigationViewController?
+
+extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNavigation, handleCurrentNavigationViews {
+    
+    func setupNavigationControllers() {
         
-        self.view.addSubview(navigationShadowView)
-        navigationShadowView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        navigationShadowView.bottomAnchor.constraint(equalTo: currentSpotController.parkingImageView.topAnchor, constant: -12).isActive = true
-        navigationShadowView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        navigationShadowView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        self.view.addSubview(currentBottomController.view)
+        currentBottomBottomAnchor = currentBottomController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 200)
+            currentBottomBottomAnchor.isActive = true
+        currentBottomController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        currentBottomController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        currentBottomHeightAnchor = currentBottomController.view.heightAnchor.constraint(equalToConstant: 170)
+            currentBottomHeightAnchor.isActive = true
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(bottomPanned(sender:)))
+        currentBottomController.view.addGestureRecognizer(pan)
         
-        navigationShadowView.addSubview(navigationView)
-        navigationView.topAnchor.constraint(equalTo: navigationShadowView.topAnchor).isActive = true
-        navigationView.leftAnchor.constraint(equalTo: navigationShadowView.leftAnchor).isActive = true
-        navigationView.rightAnchor.constraint(equalTo: navigationShadowView.rightAnchor).isActive = true
-        navigationView.bottomAnchor.constraint(equalTo: navigationShadowView.bottomAnchor).isActive = true
-        
-        navigationView.addSubview(navigationIcon)
-        navigationIcon.leftAnchor.constraint(equalTo: navigationView.leftAnchor, constant: 4).isActive = true
-        navigationIcon.topAnchor.constraint(equalTo: navigationView.topAnchor).isActive = true
-        navigationIcon.bottomAnchor.constraint(equalTo: navigationView.bottomAnchor).isActive = true
-        navigationIcon.widthAnchor.constraint(equalTo: navigationIcon.heightAnchor).isActive = true
-        
-        navigationView.addSubview(navigationButtonLabel)
-        navigationButtonLabel.leftAnchor.constraint(equalTo: navigationIcon.rightAnchor, constant: 2).isActive = true
-        navigationButtonLabel.rightAnchor.constraint(equalTo: navigationView.rightAnchor).isActive = true
-        navigationButtonLabel.topAnchor.constraint(equalTo: navigationView.topAnchor).isActive = true
-        navigationButtonLabel.bottomAnchor.constraint(equalTo: navigationView.bottomAnchor).isActive = true
+        self.view.addSubview(currentTopController.view)
+        currentTopTopAnchor = currentTopController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -200)
+            currentTopTopAnchor.isActive = true
+        currentTopController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        currentTopController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        currentTopHeightAnchor = currentTopController.view.heightAnchor.constraint(equalToConstant: 136)
+            currentTopHeightAnchor.isActive = true
         
     }
     
-    func beginRouteNavigation() {
-        if let route = self.firstParkingRoute {
-            let controller = HoldNavViewController()
-            controller.delegate = self
-            controller.view.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(controller.view)
-            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            controller.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-            controller.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-            controller.setupNavigation(route: route)
-            switch solar {
-            case .day:
-                self.delegate?.lightContentStatusBar()
-            case .night:
-                self.delegate?.lightContentStatusBar()
-//                self.delegate?.defaultContentStatusBar()
+    @objc func bottomPanned(sender: UIPanGestureRecognizer) {
+        let position = -sender.translation(in: self.view).y
+        let highestPosition = phoneHeight - 140
+        if sender.state == .changed {
+            if (self.currentBottomHeightAnchor.constant < (phoneHeight - 120) || position < 0) && self.currentBottomHeightAnchor.constant >= 150 {
+                if position >= -(highestPosition - 200) && position <= (highestPosition - 300) {
+                    if self.currentBottomHeightAnchor.constant > 150 && self.currentBottomHeightAnchor.constant <= phoneHeight - 120 {
+                        let percent = position/(highestPosition - 200)
+                        UIView.animate(withDuration: 0.05) {
+                            self.currentBottomHeightAnchor.constant = self.previousAnchor + highestPosition * percent
+                            self.view.layoutIfNeeded()
+                        }
+                    } else {
+                        self.previousAnchor = 170
+                        UIView.animate(withDuration: animationIn) {
+                            self.currentBottomHeightAnchor.constant = 170
+                            self.view.layoutIfNeeded()
+                        }
+                        return
+                    }
+                }
             }
+        } else if sender.state == .ended {
+            UIView.animate(withDuration: animationOut) {
+                if self.currentBottomHeightAnchor.constant >= highestPosition - 240 && self.currentBottomHeightAnchor.constant <= phoneHeight - 120 {
+                    self.previousAnchor = highestPosition
+                    self.currentBottomHeightAnchor.constant = highestPosition
+                    self.currentTopHeightAnchor.constant = 216
+                    self.currentBottomController.scrollView.isScrollEnabled = true
+                } else if self.currentBottomHeightAnchor.constant >= phoneHeight - 200 {
+                    
+                } else {
+                    self.previousAnchor = 170
+                    self.currentBottomHeightAnchor.constant = 170
+                    self.currentTopHeightAnchor.constant = 136
+                }
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func openCurrentInformation() {
+        self.delegate?.hideHamburger()
+        self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.confirmControllerBottomAnchor.constant = 380
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: animationOut, animations: {
+                self.currentBottomBottomAnchor.constant = 0
+                self.currentTopTopAnchor.constant = 0
+                self.previousAnchor = 170
+                self.currentBottomHeightAnchor.constant = 170
+                self.currentTopHeightAnchor.constant = 136
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.currentBottomController.scrollView.isScrollEnabled = false
+            }
+        }
+    }
+    
+    func minimizeBottomView() {
+        UIView.animate(withDuration: animationOut, animations: {
+            self.previousAnchor = 170
+            self.currentBottomHeightAnchor.constant = 170
+            self.currentTopHeightAnchor.constant = 136
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.currentBottomController.scrollView.isScrollEnabled = false
+        }
+    }
+    
+    func beginRouteNavigation() {
+        if let route = finalParkingRoute {
+            holdNavController.delegate = self
+            self.view.addSubview(holdNavController.view)
+            holdNavController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            holdNavController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+            holdNavController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+            holdNavController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            holdNavController.setupNavigation(route: route)
+//            switch solar {
+//            case .day:
+                self.delegate?.lightContentStatusBar()
+//            case .night:
+//                self.delegate?.lightContentStatusBar()
+////                self.delegate?.defaultContentStatusBar()
+//            }
         }
     }
     
@@ -87,13 +166,22 @@ class HoldNavViewController: UIViewController {
     var delegate: handleRouteNavigation?
     
     func setupNavigation(route: Route) {
-        let controller = NavigationViewController(for: route, styles: [CustomDayStyle(), CustomNightStyle()])
+//        let controller = NavigationViewController(for: route, styles: [CustomDayStyle(), CustomNightStyle()])
+        let controller = NavigationViewController(for: route, styles: [CustomDayStyle()])
+        controller.showsReportFeedback = false
+        controller.showsEndOfRouteFeedback = false
         detailsTransitioningDelegate = InteractiveModalTransitioningDelegate(from: self, to: controller)
         controller.automaticallyAdjustsStyleForTimeOfDay = false
         controller.modalPresentationStyle = .custom
         controller.transitioningDelegate = detailsTransitioningDelegate
         controller.delegate = self
-        present(controller, animated: true, completion: nil)
+//        controller.voiceController = nil
+        navigationControllerView = controller
+        present(controller, animated: true) {
+//            delayWithSeconds(2, completion: {
+//                navigationSpeechController = speech
+//            })
+        }
     }
     
 }

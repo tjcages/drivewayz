@@ -22,7 +22,7 @@ class ExpandedAmenitiesViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "AMENITIES"
+        label.text = "Amenities"
         
         return label
     }()

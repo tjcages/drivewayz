@@ -176,7 +176,7 @@ class HostingExpandedViewController: UIViewController {
         expandedNumber.editInformation.addTarget(self, action: #selector(editSpotsPressed), for: .touchUpInside)
         expandedAmenities.editInformation.addTarget(self, action: #selector(editAmenitiesPressed), for: .touchUpInside)
         
-        height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 280
+        height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 250
     }
     
     @objc func editInformationPressed() {

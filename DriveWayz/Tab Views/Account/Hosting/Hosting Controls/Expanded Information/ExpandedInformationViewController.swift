@@ -17,7 +17,7 @@ class ExpandedInformationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
-        label.text = "RESIDENTIAL  |  Driveway"
+        label.text = "Residential  |  Driveway"
         
         return label
     }()
@@ -50,7 +50,7 @@ class ExpandedInformationViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return view
     }()
@@ -113,11 +113,11 @@ class ExpandedInformationViewController: UIViewController {
         
         self.view.addSubview(lineView)
         lineView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 24).isActive = true
-        lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        lineView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -12).isActive = true
+        lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 12).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        height = 54 + 40 + messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24 + 20 + 25
+        height = 54 + 40 + messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 34
         
     }
 

@@ -142,7 +142,7 @@ class CurrentSpotViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "4 minute walk to Folsom Field"
+        label.text = "8 minute walk to Folsom Field"
         label.font = Fonts.SSPRegularH4
         
         return label

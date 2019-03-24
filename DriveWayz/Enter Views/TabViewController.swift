@@ -271,6 +271,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.WHITE
+        
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.tabBarController?.tabBar.isHidden = true
         
@@ -370,6 +372,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         self.view.endEditing(true)
         if mapCenterAnchor.constant != 0 {
             self.moveToMap()
+            self.accountSlideController.forceSelectBook() 
         } else {
             self.moveToProfile()
         }
@@ -425,6 +428,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     @objc func moveToMapTap(sender: UIButton) {
         moveToMap()
+        self.accountSlideController.forceSelectBook() 
     }
     
     @objc func moveToMapSwipe(sender: UITapGestureRecognizer) {
@@ -521,7 +525,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
                 self.accountSlideController.profileName.alpha = 0
                 self.accountSlideController.profileLine.alpha = 0
                 self.accountSlideController.optionsTableView.alpha = 0
-                self.accountSlideController.purpleGradient.alpha = 0
+                self.accountSlideController.backgroundProfile.alpha = 0
                 self.accountSlideController.settingsSelect.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -541,7 +545,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.accountSlideController.profileName.alpha = 1
             self.accountSlideController.profileLine.alpha = 1
             self.accountSlideController.optionsTableView.alpha = 1
-            self.accountSlideController.purpleGradient.alpha = 1
+            self.accountSlideController.backgroundProfile.alpha = 1
             self.accountSlideController.settingsSelect.alpha = 1
             if self.accountSlideController.hostMarkShouldShow == true {
                 self.accountSlideController.hostingMark.alpha = 1

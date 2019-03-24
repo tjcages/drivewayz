@@ -186,7 +186,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
         config.requiredBillingAddressFields = STPBillingAddressFields.full
-        config.additionalPaymentMethods = .all
+        config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
         config.createCardSources = true;
@@ -337,7 +337,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     }
     
     @objc private func handlePaymentButtonTapped() {
-        self.paymentContext.presentPaymentMethodsViewController()
+        self.paymentContext.presentPaymentOptionsViewController()
         
     }
     
@@ -365,7 +365,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
     
     private func reloadPaymentButtonContent() {
         
-        guard let selectedPaymentMethod = paymentContext.selectedPaymentMethod else {
+        guard let selectedPaymentMethod = paymentContext.selectedPaymentOption else {
             // Show default image, text, and color
             //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
             paymentButton.setTitle("Payment", for: .normal)

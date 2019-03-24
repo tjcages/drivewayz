@@ -33,7 +33,7 @@ class FullInfoViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
-        label.text = "$3.15 per hour"
+        label.text = "$1.30 per hour"
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -44,11 +44,11 @@ class FullInfoViewController: UIViewController {
         view.rating = 5
         view.settings.updateOnTouch = false
         view.settings.fillMode = .full
-        view.settings.starSize = 15
-        view.settings.starMargin = 2
-        view.settings.filledColor = Theme.LIGHT_BLUE
+        view.settings.starSize = 20
+        view.settings.starMargin = 4
+        view.settings.filledColor = Theme.BLUE
         view.settings.emptyBorderColor = Theme.OFF_WHITE
-        view.settings.filledBorderColor = Theme.LIGHT_BLUE
+        view.settings.filledBorderColor = Theme.BLUE
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -60,7 +60,7 @@ class FullInfoViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.text = "10"
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPSemiBoldH4
         
         return label
     }()
@@ -122,26 +122,26 @@ class FullInfoViewController: UIViewController {
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
+        scrollView.addSubview(stars)
+        stars.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 18).isActive = true
+        stars.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        stars.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        scrollView.addSubview(starsLabel)
+        starsLabel.leftAnchor.constraint(equalTo: stars.rightAnchor, constant: 4).isActive = true
+        starsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        starsLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
+        starsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         scrollView.addSubview(priceLabel)
-        priceLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 18).isActive = true
+        priceLabel.topAnchor.constraint(equalTo: stars.bottomAnchor, constant: 8).isActive = true
         priceLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         priceLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         priceLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        scrollView.addSubview(stars)
-        stars.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 6).isActive = true
-        stars.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        stars.widthAnchor.constraint(equalToConstant: 88).isActive = true
-        stars.heightAnchor.constraint(equalToConstant: 15).isActive = true
-        
-        scrollView.addSubview(starsLabel)
-        starsLabel.leftAnchor.constraint(equalTo: stars.rightAnchor).isActive = true
-        starsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        starsLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
-        starsLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
         scrollView.addSubview(hostMessage)
-        hostMessage.topAnchor.constraint(equalTo: starsLabel.bottomAnchor, constant:
+        hostMessage.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant:
             8).isActive = true
         hostMessage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
         hostMessage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true

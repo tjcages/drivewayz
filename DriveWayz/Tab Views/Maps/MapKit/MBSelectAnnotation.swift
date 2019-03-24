@@ -36,7 +36,7 @@ extension MapKitViewController {
                 }
             }
         } else {
-            self.removeAllMapOverlays()
+            self.removeAllMapOverlays(shouldRefresh: true)
             for i in 0..<parkingSpots.count {
                 let parking = self.parkingSpots[i]
                 if annotation.subtitle == "\(i)" {
@@ -46,13 +46,20 @@ extension MapKitViewController {
                     let latitude = parking.latitude
                     let longitude = parking.longitude
                     let location = CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees)
-                    if let address = parking.overallAddress {
-                        self.mapView.setCenter(location.coordinate, animated: true)
-                        if let userLocation = locationManager.location {
-                            self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
-//                            self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: userLocation, address: address)
-                            delayWithSeconds(1.6) {
-                                self.hideSearchBar(regular: false)
+                    if var streetAddress = parking.streetAddress, let numberSpots = parking.numberSpots, let secondaryType = parking.secondaryType {
+                        if let spaceRange = streetAddress.range(of: " ") {
+                            streetAddress.removeSubrange(streetAddress.startIndex..<spaceRange.upperBound)
+                            if let number = Int(numberSpots) {
+                                let wordString = number.asWord
+                                let publicAddress = "\(streetAddress)"
+                                let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
+                                self.quickDestinationController.destinationLabel.text = descriptionAddress
+                                self.quickDestinationController.destinationSecondaryLabel.text = publicAddress
+                                self.mapView.setCenter(location.coordinate, animated: true)
+                                self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
+                                delayWithSeconds(animationOut) {
+                                    self.hideSearchBar(regular: false)
+                                }
                             }
                         }
                     }

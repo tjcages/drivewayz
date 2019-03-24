@@ -282,12 +282,12 @@ class ConfirmViewController: UIViewController {
 //        self.paymentInProgress = true
 //        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
         
-        let alert = UIAlertController(title: "We apologize!", message: "Drivewayz is currently under some minor restorations and the ability to purchase spots is currently disabled. Functionality should be back by April, 2019.", preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-
-        self.present(alert, animated: true)
-//        self.delegate?.confirmPurchasePressed()
+//        let alert = UIAlertController(title: "We apologize!", message: "Drivewayz is currently under some minor restorations and the ability to purchase spots is currently disabled. Functionality should be back by April, 2019.", preferredStyle: .alert)
+//
+//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+//
+//        self.present(alert, animated: true)
+        self.delegate?.confirmPurchasePressed()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -302,7 +302,7 @@ class ConfirmViewController: UIViewController {
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
         config.requiredBillingAddressFields = STPBillingAddressFields.full
-        config.additionalPaymentMethods = .all
+        config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
         config.createCardSources = true
@@ -397,11 +397,11 @@ extension ConfirmViewController: STPPaymentContextDelegate {
     }
     
     @objc private func handlePaymentButtonTapped() {
-        self.paymentContext.presentPaymentMethodsViewController()
+        self.paymentContext.presentPaymentOptionsViewController()
     }
     
     private func reloadPaymentButtonContent() {
-        guard let selectedPaymentMethod = paymentContext.selectedPaymentMethod else {
+        guard let selectedPaymentMethod = paymentContext.selectedPaymentOption else {
             // Show default image, text, and color
             //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
             paymentButton.setTitle("Payment", for: .normal)

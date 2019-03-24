@@ -22,7 +22,7 @@ final class InteractiveModalTransitioningDelegate: NSObject, UIViewControllerTra
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return InteractiveModalPresentationController(presentedViewController: presented, presenting: presenting)
+        return NavigationPresentedViewController(presentedViewController: presented, presenting: presenting)
     }
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {

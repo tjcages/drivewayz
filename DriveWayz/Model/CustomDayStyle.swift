@@ -72,8 +72,8 @@ open class CustomDayStyle: Style, InstructionsBannerViewDelegate {
         ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
         ArrivalTimeLabel.appearance().normalTextColor = Theme.WHITE
         
-        BottomBannerContentView.appearance().backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
-        BottomBannerView.appearance().backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
+        BottomBannerContainerView.appearance().backgroundColor = Theme.BLACK
+        BottomBannerView.appearance().backgroundColor = Theme.BLACK
         Button.appearance().textColor = Theme.WHITE
         CancelButton.appearance().tintColor = Theme.WHITE
         
@@ -171,7 +171,7 @@ open class CustomDayStyle: Style, InstructionsBannerViewDelegate {
         TimeRemainingLabel.appearance().trafficSevereColor = #colorLiteral(red: 0.7705719471, green: 0.1753477752, blue: 0.1177056804, alpha: 1)
         TimeRemainingLabel.appearance().trafficUnknownColor = Theme.WHITE
         
-        UserPuckCourseView.appearance().puckColor = Theme.SEA_BLUE
+        UserPuckCourseView.appearance().puckColor = Theme.BLUE
         WayNameLabel.appearance().normalFont = UIFont.systemFont(ofSize:20, weight: .medium).adjustedFont
         WayNameLabel.appearance().normalTextColor = Theme.WHITE
         WayNameView.appearance().backgroundColor = UIColor.defaultRouteLayer.withAlphaComponent(0.85)
@@ -197,8 +197,8 @@ open class CustomNightStyle: CustomDayStyle {
         ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
         ArrivalTimeLabel.appearance().normalTextColor = Theme.BLACK
         
-        BottomBannerContentView.appearance().backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.9)
-        BottomBannerView.appearance().backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.9)
+        BottomBannerContainerView.appearance().backgroundColor = Theme.OFF_WHITE
+        BottomBannerView.appearance().backgroundColor = Theme.OFF_WHITE
         Button.appearance().textColor = Theme.BLACK.withAlphaComponent(0.9)
         CancelButton.appearance().tintColor = Theme.BLACK
         
@@ -301,5 +301,136 @@ open class CustomNightStyle: CustomDayStyle {
         WayNameLabel.appearance().normalTextColor = Theme.WHITE
         WayNameView.appearance().backgroundColor = UIColor.defaultRouteLayer.withAlphaComponent(0.85)
         WayNameView.appearance().borderColor = UIColor.defaultRouteCasing.withAlphaComponent(0.8)
+    }
+}
+
+
+@objc(MBDayStyle)
+open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
+    
+    public required init() {
+        super.init()
+        mapStyleURL = URL(string: "mapbox://styles/tcagle717/cjqiqnvzj2m8p2spmrdqhw82m")!
+        styleType = .day
+        statusBarStyle = .lightContent
+    }
+    
+    open override func apply() {
+        super.apply()
+        
+        // General styling
+        if let color = UIApplication.shared.delegate?.window??.tintColor {
+            tintColor = color
+        } else {
+            tintColor = .defaultTint
+        }
+        
+        ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
+        ArrivalTimeLabel.appearance().normalTextColor = UIColor.clear
+        
+        BottomBannerContainerView.appearance().backgroundColor = UIColor.clear
+        BottomBannerView.appearance().backgroundColor = UIColor.clear
+        Button.appearance().textColor = UIColor.clear
+        CancelButton.appearance().tintColor = UIColor.clear
+        
+        DismissButton.appearance().backgroundColor = UIColor.clear
+        DismissButton.appearance().textColor = UIColor.clear
+        DismissButton.appearance().textFont = UIFont.systemFont(ofSize: 20, weight: .medium).adjustedFont
+        
+        DistanceLabel.appearance().unitFont = UIFont.systemFont(ofSize: 14, weight: .medium).adjustedFont
+        DistanceLabel.appearance().valueFont = UIFont.systemFont(ofSize: 22, weight: .medium).adjustedFont
+        DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).unitTextColor = UIColor.clear
+        DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).valueTextColor = UIColor.clear
+        DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).unitTextColor = UIColor.clear
+        DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).valueTextColor = UIColor.clear
+        DistanceRemainingLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
+        DistanceRemainingLabel.appearance().normalTextColor = UIColor.clear
+        
+        EndOfRouteButton.appearance().textColor = UIColor.clear
+        EndOfRouteButton.appearance().textFont = .systemFont(ofSize: 15)
+        EndOfRouteContentView.appearance().backgroundColor = UIColor.clear
+        EndOfRouteStaticLabel.appearance().normalFont = .systemFont(ofSize: 14.0)
+        EndOfRouteStaticLabel.appearance().normalTextColor = UIColor.clear
+        EndOfRouteTitleLabel.appearance().normalFont = .systemFont(ofSize: 36.0)
+        EndOfRouteTitleLabel.appearance().normalTextColor = UIColor.clear
+        ExitView.appearance().backgroundColor = .clear
+        
+        ExitView.appearance().layer.borderWidth = 1.0
+        ExitView.appearance().layer.cornerRadius = 5.0
+        ExitView.appearance().foregroundColor = UIColor.clear
+        ExitView.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = UIColor.clear
+        FloatingButton.appearance().backgroundColor = UIColor.clear
+        FloatingButton.appearance().tintColor = tintColor
+        GenericRouteShield.appearance().backgroundColor = UIColor.clear
+        GenericRouteShield.appearance().layer.borderWidth = 1.0
+        GenericRouteShield.appearance().layer.cornerRadius = 5.0
+        GenericRouteShield.appearance().foregroundColor = UIColor.clear
+        GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = UIColor.clear
+        
+        InstructionsBannerContentView.appearance().backgroundColor = UIColor.clear
+        InstructionsBannerView.appearance().backgroundColor = UIColor.clear
+        
+        LaneView.appearance().primaryColor = .defaultLaneArrowPrimary
+        LaneView.appearance().secondaryColor = .defaultLaneArrowSecondary
+        LanesView.appearance().backgroundColor = UIColor.clear
+        LineView.appearance().lineColor = UIColor.clear
+        
+        ManeuverView.appearance().backgroundColor = .clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).primaryColor = UIColor.clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).secondaryColor = UIColor.clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).primaryColor = UIColor.clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).secondaryColor = UIColor.clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).primaryColor = UIColor.clear
+        ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).secondaryColor = UIColor.clear
+        
+        NavigationMapView.appearance().maneuverArrowColor       = .defaultManeuverArrow
+        NavigationMapView.appearance().maneuverArrowStrokeColor = .defaultManeuverArrowStroke
+        NavigationMapView.appearance().routeAlternateColor      = .defaultAlternateLine
+        NavigationMapView.appearance().routeCasingColor         = .defaultRouteCasing
+        NavigationMapView.appearance().trafficHeavyColor        = .trafficHeavy
+        NavigationMapView.appearance().trafficLowColor          = .trafficLow
+        NavigationMapView.appearance().trafficModerateColor     = .trafficModerate
+        NavigationMapView.appearance().trafficSevereColor       = .trafficSevere
+        NavigationMapView.appearance().trafficUnknownColor      = .trafficUnknown
+        
+        NavigationView.appearance().backgroundColor = UIColor.clear
+        NextBannerView.appearance().backgroundColor = UIColor.clear
+        NextInstructionLabel.appearance().font = UIFont.systemFont(ofSize: 20, weight: .medium).adjustedFont
+        NextInstructionLabel.appearance().normalTextColor = UIColor.clear
+        PrimaryLabel.appearance().normalFont = UIFont.systemFont(ofSize: 30, weight: .medium).adjustedFont
+        PrimaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = UIColor.clear
+        PrimaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = UIColor.clear
+        ProgressBar.appearance().barColor = UIColor.clear
+        
+        ReportButton.appearance().alpha = 1
+        ReportButton.appearance().backgroundColor = UIColor.clear
+        ReportButton.appearance().textColor = UIColor.clear
+        
+        ResumeButton.appearance().backgroundColor = UIColor.clear
+        ResumeButton.appearance().tintColor = UIColor.clear
+        
+        SecondaryLabel.appearance().normalFont = UIFont.systemFont(ofSize: 26, weight: .medium).adjustedFont
+        SecondaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = UIColor.clear
+        SecondaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = UIColor.clear
+        SeparatorView.appearance().backgroundColor = UIColor.clear
+        StatusView.appearance().backgroundColor = UIColor.clear
+        StepInstructionsView.appearance().backgroundColor = UIColor.clear
+        StepListIndicatorView.appearance().gradientColors = [#colorLiteral(red: 0.431372549, green: 0.431372549, blue: 0.431372549, alpha: 1), #colorLiteral(red: 0.6274509804, green: 0.6274509804, blue: 0.6274509804, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.431372549, blue: 0.431372549, alpha: 1)]
+        StepTableViewCell.appearance().backgroundColor = UIColor.clear
+        StepsBackgroundView.appearance().backgroundColor = UIColor.clear
+        
+        TimeRemainingLabel.appearance().font = UIFont.systemFont(ofSize: 28, weight: .medium).adjustedFont
+        TimeRemainingLabel.appearance().normalTextColor = UIColor.clear
+        TimeRemainingLabel.appearance().trafficHeavyColor = UIColor.clear
+        TimeRemainingLabel.appearance().trafficLowColor = UIColor.clear
+        TimeRemainingLabel.appearance().trafficModerateColor = UIColor.clear
+        TimeRemainingLabel.appearance().trafficSevereColor = UIColor.clear
+        TimeRemainingLabel.appearance().trafficUnknownColor = UIColor.clear
+        
+        UserPuckCourseView.appearance().puckColor = Theme.BLUE
+        WayNameLabel.appearance().normalFont = UIFont.systemFont(ofSize:20, weight: .medium).adjustedFont
+        WayNameLabel.appearance().normalTextColor = UIColor.clear
+        WayNameView.appearance().backgroundColor = UIColor.clear
+        WayNameView.appearance().borderColor = UIColor.clear
     }
 }

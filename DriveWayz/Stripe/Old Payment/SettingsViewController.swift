@@ -20,7 +20,7 @@ struct Settings {
 class SettingsViewController: UITableViewController {
     var settings: Settings {
         return Settings(theme: self.theme.stpTheme,
-                        additionalPaymentMethods: self.applePay.enabled ? .all : STPPaymentMethodType(),
+                        additionalPaymentMethods: STPPaymentMethodType.typeCard,
                         requiredBillingAddressFields: self.requiredBillingAddressFields.stpBillingAddressFields,
                         requiredShippingAddressFields: self.requiredShippingAddressFields.stpContactFields,
                         shippingType: self.shippingType.stpShippingType)

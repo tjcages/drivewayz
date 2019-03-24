@@ -15,7 +15,7 @@ class EventCell: UICollectionViewCell {
     var image: UIImage? {
         didSet {
             image?.getColors({ (colors) in
-                let primaryString = "\(String(describing: colors.primary))"
+                let primaryString = "\(String(describing: colors?.primary))"
                 let values = primaryString.replacingOccurrences(of: "Optional(UIExtendedSRGBColorSpace ", with: "", options: .literal, range: nil)
                 let rgbValues = values.replacingOccurrences(of: " 1)", with: "", options: .literal, range: nil)
                 let rgb = rgbValues.split(separator: " ")
@@ -23,7 +23,7 @@ class EventCell: UICollectionViewCell {
                 if let r = rgb.first, let g = rgb.dropFirst().first, let b = rgb.dropFirst().dropFirst().first {
                     if let rDouble = formatter.number(from: String(r)), let gDouble = formatter.number(from: String(g)), let bDouble = formatter.number(from: String(b)) {
                         if Double(truncating: rDouble) < 0.9 && Double(truncating: gDouble) < 0.7 && Double(truncating: bDouble) < 0.7 {
-                            let background = self.gradientColor(topColor: colors.primary, bottomColor: colors.secondary)
+                            let background = self.gradientColor(topColor: colors?.primary ?? Theme.DARK_GRAY, bottomColor: colors?.secondary ?? Theme.OFF_WHITE)
                             background.frame = CGRect(x: 0, y: 0, width: 240, height: 140)
                             background.zPosition = -10
                             self.darkView.layer.addSublayer(background)

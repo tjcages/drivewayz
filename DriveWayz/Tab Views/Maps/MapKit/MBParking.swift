@@ -212,14 +212,14 @@ extension MapKitViewController: handleCheckoutParking {
     @objc func parkingHidden() {
         eventsAreAllowed = true
         self.removePolylineAnnotations()
-        self.removeAllMapOverlays()
+        self.removeAllMapOverlays(shouldRefresh: true)
         self.mainBar.isUserInteractionEnabled = true
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, animated: false)
         }
-        self.removeAllMapOverlays()
+        self.removeAllMapOverlays(shouldRefresh: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.removeAllMapOverlays()
+            self.removeAllMapOverlays(shouldRefresh: true)
         }
         UIView.animate(withDuration: animationOut, animations: {
             self.quickDestinationController.view.alpha = 0
@@ -235,19 +235,19 @@ extension MapKitViewController: handleCheckoutParking {
             self.parkingBackButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.removeAllMapOverlays()
+            self.removeAllMapOverlays(shouldRefresh: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.quickDestinationController.view.alpha = 0
-                self.removeAllMapOverlays()
+                self.removeAllMapOverlays(shouldRefresh: true)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 self.quickDestinationController.view.alpha = 0
                 self.mapView.userTrackingMode = .follow
-                self.removeAllMapOverlays()
+                self.removeAllMapOverlays(shouldRefresh: true)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                 self.quickDestinationController.view.alpha = 0
-                self.removeAllMapOverlays()
+                self.removeAllMapOverlays(shouldRefresh: true)
                 self.showPartyMarkers()
             }
             if eventsAreAllowed == true {
@@ -256,7 +256,7 @@ extension MapKitViewController: handleCheckoutParking {
         }
     }
     
-    func removeAllMapOverlays() {
+    func removeAllMapOverlays(shouldRefresh: Bool) {
         ParkingRoutePolyLine = []
         ZoomMapView = nil
         CurrentDestinationLocation = nil
@@ -271,11 +271,17 @@ extension MapKitViewController: handleCheckoutParking {
             self.mapView.userTrackingMode = .follow
         }
         self.removePolylineAnnotations()
-        if let annotations = self.mapView.annotations {
-            self.mapView.removeAnnotations(annotations)
-            self.findParkingNearUserLocation()
+        if shouldRefresh == true {
+            if let annotations = self.mapView.annotations {
+                self.mapView.removeAnnotations(annotations)
+                self.findParkingNearUserLocation()
+            } else {
+                self.findParkingNearUserLocation()
+            }
         } else {
-            self.findParkingNearUserLocation()
+            if let annotations = self.mapView.annotations {
+                self.mapView.removeAnnotations(annotations)
+            }
         }
     }
     

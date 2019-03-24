@@ -21,6 +21,33 @@ import MapboxCoreNavigation
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
 
+var finalWalkingRoute: Route?
+var firstWalkingRoute: Route?
+var secondWalkingRoute: Route?
+var thirdWalkingRoute: Route?
+var finalParkingRoute: Route?
+var firstParkingRoute: Route?
+var secondParkingRoute: Route?
+var thirdParkingRoute: Route?
+var finalPolyline: MGLPolyline?
+var firstPolyline: MGLPolyline?
+var secondPolyline: MGLPolyline?
+var thirdPolyline: MGLPolyline?
+
+var destinationFinalCoordinates: [CLLocationCoordinate2D] = []
+var destinationFirstCoordinates: [CLLocationCoordinate2D] = []
+var destinationSecondCoordinates: [CLLocationCoordinate2D] = []
+var destinationThirdCoordinates: [CLLocationCoordinate2D] = []
+
+var finalMapView: MGLCoordinateBounds?
+var firstMapView: MGLCoordinateBounds?
+var secondMapView: MGLCoordinateBounds?
+var thirdMapView: MGLCoordinateBounds?
+var finalPurchaseMapView: MGLCoordinateBounds?
+var firstPurchaseMapView: MGLCoordinateBounds?
+var secondPurchaseMapView: MGLCoordinateBounds?
+var thirdPurchaseMapView: MGLCoordinateBounds?
+
 class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
     
 
@@ -41,7 +68,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         setupViewController()
         setupPurchaseStatus()
         setupCurrent()
-        setupNavigationButton()
+        setupNavigationControllers()
         checkDayTimeStatus()
         checkNetwork()
         if self.currentActive == false {
@@ -540,52 +567,33 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return controller
     }()
     
-    var navigationIcon: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "navigationIcon")
-        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        button.isUserInteractionEnabled = false
+    var holdNavController: HoldNavViewController = {
+        let controller = HoldNavViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
         
-        return button
+        return controller
     }()
     
-    var navigationButtonLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
-        label.text = "GO"
-        label.font = Fonts.SSPSemiBoldH2
+    lazy var currentBottomController: NavigationBottomViewController = {
+        let controller = NavigationBottomViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
-        return label
+        return controller
     }()
     
-    var navigationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PACIFIC_BLUE
-        view.layer.cornerRadius = 4
-        view.clipsToBounds = true
-        view.alpha = 0
-        //        view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    var currentTopController: NavigationTopViewController = {
+        let controller = NavigationTopViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
         
-        return view
+        return controller
     }()
     
-    var navigationShadowView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.6
-        
-        return view
-    }()
+    var currentBottomHeightAnchor: NSLayoutConstraint!
+    var currentTopHeightAnchor: NSLayoutConstraint!
+    var currentBottomBottomAnchor: NSLayoutConstraint!
+    var currentTopTopAnchor: NSLayoutConstraint!
+    var previousAnchor: CGFloat = 170.0
     
     var navigationRouteController: NavigationViewController?
     
@@ -676,22 +684,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var currentSecondIndex = 1
     var destinationCoordinates: [CLLocationCoordinate2D] = []
     var parkingCoordinates: [CLLocationCoordinate2D] = []
-    
-    var firstParkingRoute: Route?
-    var secondParkingRoute: Route?
-    var thirdParkingRoute: Route?
-    var firstPolyline: MGLPolyline?
-    var secondPolyline: MGLPolyline?
-    var thirdPolyline: MGLPolyline?
-    var destinationFirstCoordinates: [CLLocationCoordinate2D] = []
-    var destinationSecondCoordinates: [CLLocationCoordinate2D] = []
-    var destinationThirdCoordinates: [CLLocationCoordinate2D] = []
-    var firstMapView: MGLCoordinateBounds?
-    var secondMapView: MGLCoordinateBounds?
-    var thirdMapView: MGLCoordinateBounds?
-    var firstPurchaseMapView: MGLCoordinateBounds?
-    var secondPurchaseMapView: MGLCoordinateBounds?
-    var thirdPurchaseMapView: MGLCoordinateBounds?
     
     var quickDestinationRightAnchor: NSLayoutConstraint!
     var quickDestinationTopAnchor: NSLayoutConstraint!
