@@ -76,7 +76,7 @@ class OnboardingViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(createNewUser), for: .touchUpInside)
         button.backgroundColor = Theme.BLUE
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.alpha = 0
         
         return button
@@ -89,7 +89,7 @@ class OnboardingViewController: UIViewController {
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.backgroundColor = Theme.OFF_WHITE
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.alpha = 0
         
         return button

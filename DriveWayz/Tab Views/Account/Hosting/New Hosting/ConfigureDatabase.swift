@@ -189,7 +189,8 @@ extension ConfigureParkingViewController {
         let businessSpot3 = self.businessPicturesController.addAnImageButton3.imageView?.image
         let businessSpot4 = self.businessPicturesController.addAnImageButton4.imageView?.image
         
-        let storageRef = Storage.storage().reference().child("ParkingSpotImages").child(overallAddress!)
+        guard let addy = overallAddress else { return }
+        let storageRef = Storage.storage().reference().child("ParkingSpotImages").child(addy)
         let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
         let compareImage = UIImage(named: "addImageIcon")
         

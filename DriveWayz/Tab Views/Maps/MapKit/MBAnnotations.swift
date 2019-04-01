@@ -61,7 +61,7 @@ extension MapKitViewController {
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 let distance = self.distanceBetweenCoordinates(from: searchLocation, to: location)
-                if distance < 3218 {
+                if distance < 6436 {
                     parking.parkingDistance = distance
                     self.closeParkingSpots.append(parking)
                     let marker = MGLPointAnnotation()
@@ -118,6 +118,10 @@ extension MapKitViewController {
                     self.hideSearchBar(regular: false)
                     self.parkingController.noBookingFound()
                 }
+            }
+        } else {
+            if self.closeParkingSpots.count <= 0 {
+                self.annotationStatusController.noAvailableParking()
             }
         }
     }

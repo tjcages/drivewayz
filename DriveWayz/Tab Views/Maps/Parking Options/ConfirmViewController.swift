@@ -163,7 +163,7 @@ class ConfirmViewController: UIViewController {
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(confirmPurchasePressed(sender:)), for: .touchUpInside)
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         
         return button
     }()

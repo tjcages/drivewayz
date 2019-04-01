@@ -83,7 +83,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPRegularH2
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
         
@@ -1048,7 +1048,7 @@ extension ConfigureParkingViewController: handlePopupTerms {
         self.view.addSubview(popupContainer)
         popupContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         popupContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        popupContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
+        popupContainer.bottomAnchor.constraint(equalTo: self.nextButton.bottomAnchor, constant: 12).isActive = true
         popupContainer.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         popupContainer.addSubview(popupLabel)

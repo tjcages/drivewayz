@@ -578,10 +578,11 @@ extension LocationParkingViewController: UITextFieldDelegate {
     }
     
     func combineAddress() {
-        guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let zip = zipField.text, let country = countryField.text else { return }
+        guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let country = countryField.text else { return }
         if zipField.textColor != Theme.WHITE {
             self.newHostAddress = "\(street), \(city), \(state), \(country)"
         } else {
+            guard let zip = zipField.text else { return }
             self.newHostAddress = "\(street), \(city), \(state) \(zip), \(country)"
         }
     }

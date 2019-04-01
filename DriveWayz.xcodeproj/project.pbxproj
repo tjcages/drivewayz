@@ -225,6 +225,7 @@
 		4DE49010218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49003218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf */; };
 		4DE49011218BF09000171BB8 /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE49004218BF09000171BB8 /* SourceSansPro-Italic.ttf */; };
 		4DE49013218BF1AD00171BB8 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE49012218BF1AD00171BB8 /* Utility.swift */; };
+		4DE6443F224857E2004EEAE7 /* AnnotationsStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */; };
 		4DE78F58216C5D8D00B99835 /* SendNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */; };
 		4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */; };
 		4DF1EFD82234B15200210E6B /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1EFD72234B15200210E6B /* PurchaseViewController.swift */; };
@@ -483,6 +484,7 @@
 		4DE49003218BF09000171BB8 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		4DE49004218BF09000171BB8 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
 		4DE49012218BF1AD00171BB8 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsStatusViewController.swift; sourceTree = "<group>"; };
 		4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNotificationsViewController.swift; sourceTree = "<group>"; };
 		4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHostingViewController.swift; sourceTree = "<group>"; };
 		4DF1EFD72234B15200210E6B /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
@@ -870,6 +872,7 @@
 			children = (
 				4DD3B63521960CC7008B1417 /* MapSearchViewController.swift */,
 				4DD3B63721961C26008B1417 /* SpeechRecognitionViewController.swift */,
+				4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1584,6 +1587,7 @@
 				4DCFBA0A21DB785500E910FF /* CalendarViewController.swift in Sources */,
 				4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */,
 				4DB79B5F2188091800928C7F /* SpotPicturesViewController.swift in Sources */,
+				4DE6443F224857E2004EEAE7 /* AnnotationsStatusViewController.swift in Sources */,
 				4D21D31F20CC9FF9002D7005 /* Extensions.swift in Sources */,
 				4DCFB9F721D8510800E910FF /* MBGetRoute.swift in Sources */,
 				4D202CA921ED59C800F68F13 /* ExpandedSpotsViewController.swift in Sources */,

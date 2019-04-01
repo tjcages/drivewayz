@@ -123,7 +123,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         button.addTarget(self, action: #selector(sendVerificationCode(sender:)), for: .touchUpInside)
         button.backgroundColor = Theme.DARK_GRAY
         button.alpha = 0
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.clipsToBounds = true
         
         return button
@@ -137,7 +137,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         button.alpha = 0
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         
         return button
     }()

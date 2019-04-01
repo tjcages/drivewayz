@@ -47,7 +47,7 @@ class EditSettingsViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPRegularH2
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.clipsToBounds = true
         button.alpha = 1
         

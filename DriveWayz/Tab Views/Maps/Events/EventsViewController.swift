@@ -227,7 +227,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE.withAlphaComponent(0.7)
         view.alpha = 0.9
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 12
         
         return view
     }()

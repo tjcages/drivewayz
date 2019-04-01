@@ -985,7 +985,7 @@ class SaveParkingViewController: UIViewController, UIPickerViewDelegate, UIPicke
         saveParkingButton.titleLabel?.font = Fonts.SSPBoldH0
         saveParkingButton.translatesAutoresizingMaskIntoConstraints = false
         saveParkingButton.titleLabel?.textColor = Theme.WHITE
-        saveParkingButton.layer.cornerRadius = 30
+        saveParkingButton.layer.cornerRadius = 12
         saveParkingButton.layer.borderColor = UIColor.white.cgColor
         saveParkingButton.layer.borderWidth = 2
         saveParkingButton.addTarget(self, action: #selector(saveParkingButtonPressed(sender:)), for: .touchUpInside)

@@ -14,7 +14,7 @@ class CheckEventsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 12
         
         return view
     }()
@@ -68,7 +68,7 @@ class CheckEventsViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.DARK_GRAY
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 12
         view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3

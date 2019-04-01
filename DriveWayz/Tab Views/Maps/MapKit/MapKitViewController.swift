@@ -597,8 +597,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         }
         button.tintColor = Theme.BLACK
         button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.layer.cornerRadius = 25
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
         button.layer.shadowRadius = 3
@@ -610,6 +610,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return button
     }()
     
+    var annotationStatusController: AnnotationsStatusViewController = {
+        let controller = AnnotationsStatusViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
     var currentBottomHeightAnchor: NSLayoutConstraint!
     var currentTopHeightAnchor: NSLayoutConstraint!
     var currentBottomBottomAnchor: NSLayoutConstraint!
@@ -617,6 +625,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var previousAnchor: CGFloat = 170.0
     
     var navigationRouteController: NavigationViewController?
+    var shouldBeSearchingForAnnotations: Bool = true
     
     var searchedForPlace: Bool = false
     var timer: Timer?

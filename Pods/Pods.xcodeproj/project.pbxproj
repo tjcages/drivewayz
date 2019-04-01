@@ -12205,7 +12205,38 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
+				ar,
+				Base,
+				bg,
+				ca,
+				da,
+				de,
+				es,
+				fr,
+				he,
+				hu,
+				ja,
+				ko,
+				nl,
+				"pt-BR",
+				"pt-PT",
+				ru,
+				sv,
+				uk,
+				vi,
+				"zh-Hans",
+				fa,
+				it,
+				lt,
+				sl,
+				"zh-Hant",
+				"es-AR",
+				fi,
+				"fr-CA",
+				nb,
+				"nn-NO",
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
 			productRefGroup = 85A23DA14BA5B9EC70E9107D7E6149FE /* Products */;

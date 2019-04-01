@@ -211,6 +211,7 @@ extension MapKitViewController: handleCheckoutParking {
     
     @objc func parkingHidden() {
         eventsAreAllowed = true
+        self.shouldBeSearchingForAnnotations = true
         self.removePolylineAnnotations()
         self.removeAllMapOverlays(shouldRefresh: true)
         self.mainBar.isUserInteractionEnabled = true

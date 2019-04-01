@@ -16,14 +16,6 @@ protocol handleLocatorButton {
 
 extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDelegate, handleLocatorButton {
     
-    func mapView(_ mapView: MGLMapView, regionWillChangeWith reason: MGLCameraChangeReason, animated: Bool) {
-        print(reason)
-    }
-    
-    func mapView(_ mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
-        return Theme.LIGHT_PURPLE
-    }
-    
     @objc func locatorButtonAction(sender: UIButton) {
         if let region = ZoomMapView {
             self.mapView.userTrackingMode = .none
@@ -35,8 +27,10 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             }
         } else {
             if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-                self.mapView.setCenter(location, zoomLevel: 14, animated: true)
                 self.mapView.userTrackingMode = .follow
+                delayWithSeconds(animationOut * 2) {
+                    self.mapView.setCenter(location, zoomLevel: 14, animated: true)
+                }
             }
         }
         UIView.animate(withDuration: animationIn) {
@@ -90,6 +84,23 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     func mapView(_ mapView: MGLMapView, regionIsChangingWith reason: MGLCameraChangeReason) {
         self.view.layoutIfNeeded()
         let value = reason.rawValue
+        self.userInteractionChange(value: value)
+        let zoomLevel = self.mapView.zoomLevel
+        if zoomLevel >= 10.0 && self.shouldBeSearchingForAnnotations == true {
+            let centerCoordinate = self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView)
+            let location = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
+            self.organizeParkingLocation(searchLocation: location, shouldDraw: false)
+            if self.closeParkingSpots.count > 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.annotationStatusController.view.alpha = 0
+                }
+            }
+        } else if self.shouldBeSearchingForAnnotations == true {
+            self.annotationStatusController.needToZoom()
+        }
+    }
+    
+    func userInteractionChange(value: UInt) {
         if value == 4 {
             self.mapChangedFromUserInteraction = true
             self.changeUserInteractionTimer.invalidate()

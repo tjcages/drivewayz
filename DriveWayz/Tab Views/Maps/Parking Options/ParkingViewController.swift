@@ -108,7 +108,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPRegularH2
         button.clipsToBounds = true
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         button.addTarget(self, action: #selector(becomeAHost(sender:)), for: .touchUpInside)
         
         return button

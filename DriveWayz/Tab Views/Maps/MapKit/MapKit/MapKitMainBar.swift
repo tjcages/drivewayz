@@ -45,6 +45,17 @@ extension MapKitViewController {
         setupSecondSearch()
         setupResults()
         setupEvents()
+        
+        self.view.addSubview(annotationStatusController.view)
+        annotationStatusController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 80).isActive = true
+        annotationStatusController.view.centerXAnchor.constraint(equalTo: mainBar.centerXAnchor).isActive = true
+        annotationStatusController.view.bottomAnchor.constraint(equalTo: mainBar.topAnchor, constant: -16).isActive = true
+        switch device {
+        case .iphone8:
+            annotationStatusController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        case .iphoneX:
+            annotationStatusController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        }
     }
     
     func setupFirstSearch() {

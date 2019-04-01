@@ -63,6 +63,7 @@ extension MapKitViewController: handleParkingOptions {
                     return
             }
             eventsAreAllowed = false
+            self.shouldBeSearchingForAnnotations = false
             self.mapView.setCenter(location.coordinate, animated: true)
             self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
             let addressArray = address.split(separator: ",")

@@ -82,6 +82,7 @@ class MapSearchViewController: UIViewController {
                 placesClient?.autocompleteQuery(searchBarText, bounds: nil, filter: filter, callback: { (results, error) in
                     if error != nil {
                         self.matchingItems = []
+                        print(error?.localizedDescription as Any)
                         return
                     }
                     if let results = results {

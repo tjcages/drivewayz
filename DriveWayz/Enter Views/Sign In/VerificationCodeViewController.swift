@@ -71,7 +71,7 @@ class VerificationCodeViewController: UIViewController {
         button.backgroundColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
-        button.layer.cornerRadius = 30
+        button.layer.cornerRadius = 12
         
         return button
     }()
