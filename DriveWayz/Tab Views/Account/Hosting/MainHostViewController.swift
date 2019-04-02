@@ -192,10 +192,10 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
                                 self.firstParkingController.setData(hosting: hosting)
                             } else if i == 2 {
                                 self.setupSecondController()
-                                self.secondParkingController.setData(hosting: hosting)
+//                                self.secondParkingController.setData(hosting: hosting)
                             } else if i == 3 {
                                 self.setupThirdController()
-                                self.thirdParkingController.setData(hosting: hosting)
+//                                self.thirdParkingController.setData(hosting: hosting)
                             }
                         })
                     }

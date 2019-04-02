@@ -44,8 +44,6 @@
 		4D202C8921E5E12E00F68F13 /* ParkingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8821E5E12E00F68F13 /* ParkingTableViewController.swift */; };
 		4D202C8B21E6D25A00F68F13 /* MBAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */; };
 		4D202C8D21EC273800F68F13 /* MainHostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8C21EC273800F68F13 /* MainHostViewController.swift */; };
-		4D202C9021EC2CEC00F68F13 /* FirstHostingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C8F21EC2CEC00F68F13 /* FirstHostingsController.swift */; };
-		4D202C9321ED136200F68F13 /* HostingInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */; };
 		4D202C9721ED1F2900F68F13 /* HostingProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9621ED1F2900F68F13 /* HostingProfitsViewController.swift */; };
 		4D202C9921ED247800F68F13 /* HostingDestinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9821ED247800F68F13 /* HostingDestinationViewController.swift */; };
 		4D202C9B21ED27D100F68F13 /* HostingHoursViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202C9A21ED27D100F68F13 /* HostingHoursViewController.swift */; };
@@ -69,7 +67,6 @@
 		4D202CC721F026B100F68F13 /* EditCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CC621F026B100F68F13 /* EditCostViewController.swift */; };
 		4D202CC921F0285C00F68F13 /* EditSpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CC821F0285C00F68F13 /* EditSpotsViewController.swift */; };
 		4D202CCB21F02A0200F68F13 /* EditAmenitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CCA21F02A0200F68F13 /* EditAmenitiesViewController.swift */; };
-		4D202CCE21F1222F00F68F13 /* ActiveCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D202CCD21F1222F00F68F13 /* ActiveCouponViewController.swift */; };
 		4D219C46222A40F8006ED717 /* CurrentTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D219C45222A40F8006ED717 /* CurrentTimeViewController.swift */; };
 		4D219C48222A4211006ED717 /* FullInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D219C47222A4211006ED717 /* FullInfoViewController.swift */; };
 		4D219C4A222A548C006ED717 /* FullDistanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D219C49222A548C006ED717 /* FullDistanceViewController.swift */; };
@@ -112,6 +109,7 @@
 		4D30467121AF9AA700AF31F9 /* DrivewayzTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D30467021AF9AA700AF31F9 /* DrivewayzTermsViewController.swift */; };
 		4D353C2121C99FD000AE07B4 /* overlay.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D353C2021C99FD000AE07B4 /* overlay.json */; };
 		4D37436220DC989900923BC4 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D37436120DC989900923BC4 /* TabViewController.swift */; };
+		4D3B9DA72253257A00E88396 /* SearchSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3B9DA62253257A00E88396 /* SearchSummaryViewController.swift */; };
 		4D42F8C920CCA6AA005A95BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */; };
 		4D45073521363B5E005CD8D7 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45073421363B5E005CD8D7 /* AnalyticsViewController.swift */; };
 		4D45073721370E85005CD8D7 /* RetentionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45073621370E85005CD8D7 /* RetentionViewController.swift */; };
@@ -154,6 +152,7 @@
 		4D8EA26821816AE800F6469C /* ParkingOptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8EA26721816AE800F6469C /* ParkingOptionsTableViewController.swift */; };
 		4D8F3AD420DD7C6100B0AA67 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */; };
 		4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */; };
+		4D9363FF2251D0F400EEAC61 /* MainBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9363FE2251D0F400EEAC61 /* MainBarViewController.swift */; };
 		4D9FB807213EF70400899829 /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9FB806213EF70400899829 /* MapKitViewController.swift */; };
 		4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA1FFF2216ED1F6004312F2 /* UserMessages.swift */; };
 		4DA99317223785EB0085D859 /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA99316223785EB0085D859 /* ConfirmViewController.swift */; };
@@ -244,7 +243,7 @@
 		4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */; };
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
-		D74AA2AD52CC7B79BA5773A9 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2243F512C48393BFFC9E891 /* Pods_DriveWayz.framework */; };
+		CE2A46E9325292F8F1560191 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB1DD67C79EECBB79C16E48 /* Pods_DriveWayz.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -261,7 +260,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		19EC9D9F903DA0D2B1317A80 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
 		4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMessageViewController.swift; sourceTree = "<group>"; };
 		4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
@@ -299,8 +297,6 @@
 		4D202C8821E5E12E00F68F13 /* ParkingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTableViewController.swift; sourceTree = "<group>"; };
 		4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBAnnotations.swift; sourceTree = "<group>"; };
 		4D202C8C21EC273800F68F13 /* MainHostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHostViewController.swift; sourceTree = "<group>"; };
-		4D202C8F21EC2CEC00F68F13 /* FirstHostingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstHostingsController.swift; sourceTree = "<group>"; };
-		4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingInformationViewController.swift; sourceTree = "<group>"; };
 		4D202C9621ED1F2900F68F13 /* HostingProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingProfitsViewController.swift; sourceTree = "<group>"; };
 		4D202C9821ED247800F68F13 /* HostingDestinationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingDestinationViewController.swift; sourceTree = "<group>"; };
 		4D202C9A21ED27D100F68F13 /* HostingHoursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingHoursViewController.swift; sourceTree = "<group>"; };
@@ -324,7 +320,6 @@
 		4D202CC621F026B100F68F13 /* EditCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCostViewController.swift; sourceTree = "<group>"; };
 		4D202CC821F0285C00F68F13 /* EditSpotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSpotsViewController.swift; sourceTree = "<group>"; };
 		4D202CCA21F02A0200F68F13 /* EditAmenitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAmenitiesViewController.swift; sourceTree = "<group>"; };
-		4D202CCD21F1222F00F68F13 /* ActiveCouponViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveCouponViewController.swift; sourceTree = "<group>"; };
 		4D219C45222A40F8006ED717 /* CurrentTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimeViewController.swift; sourceTree = "<group>"; };
 		4D219C47222A4211006ED717 /* FullInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullInfoViewController.swift; sourceTree = "<group>"; };
 		4D219C49222A548C006ED717 /* FullDistanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullDistanceViewController.swift; sourceTree = "<group>"; };
@@ -368,6 +363,7 @@
 		4D30467021AF9AA700AF31F9 /* DrivewayzTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivewayzTermsViewController.swift; sourceTree = "<group>"; };
 		4D353C2021C99FD000AE07B4 /* overlay.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = overlay.json; sourceTree = "<group>"; };
 		4D37436120DC989900923BC4 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		4D3B9DA62253257A00E88396 /* SearchSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSummaryViewController.swift; sourceTree = "<group>"; };
 		4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		4D45073421363B5E005CD8D7 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
 		4D45073621370E85005CD8D7 /* RetentionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionViewController.swift; sourceTree = "<group>"; };
@@ -411,6 +407,7 @@
 		4D8EA26721816AE800F6469C /* ParkingOptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingOptionsTableViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD320DD7C6100B0AA67 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
 		4D8F3AD920DEF89900B0AA67 /* PanoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoViewController.swift; sourceTree = "<group>"; };
+		4D9363FE2251D0F400EEAC61 /* MainBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBarViewController.swift; sourceTree = "<group>"; };
 		4D9FB806213EF70400899829 /* MapKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewController.swift; sourceTree = "<group>"; };
 		4DA1FFF2216ED1F6004312F2 /* UserMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessages.swift; sourceTree = "<group>"; };
 		4DA99316223785EB0085D859 /* ConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
@@ -503,8 +500,9 @@
 		4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecentViewController.swift; sourceTree = "<group>"; };
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
-		F11ABC8344A093EF2E5257D7 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
-		F2243F512C48393BFFC9E891 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BB1DD67C79EECBB79C16E48 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D850F67D91739192347A657E /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
+		F1A654C700F76A19AAF5386F /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -514,22 +512,13 @@
 			files = (
 				4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */,
 				4D8A3E3121667D6F00540905 /* MapKit.framework in Frameworks */,
-				D74AA2AD52CC7B79BA5773A9 /* Pods_DriveWayz.framework in Frameworks */,
+				CE2A46E9325292F8F1560191 /* Pods_DriveWayz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0DB9E86940C9A141014A2C88 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				19EC9D9F903DA0D2B1317A80 /* Pods-DriveWayz.debug.xcconfig */,
-				F11ABC8344A093EF2E5257D7 /* Pods-DriveWayz.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		4D02C64A21CC534A00748BA3 /* Old Sign Up */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,7 +619,6 @@
 		4D202CA121ED4F7400F68F13 /* Expanded Information */ = {
 			isa = PBXGroup;
 			children = (
-				4D202C9221ED136200F68F13 /* HostingInformationViewController.swift */,
 				4D202CA221ED4F9100F68F13 /* HostingExpandedViewController.swift */,
 				4D202CA421ED519600F68F13 /* ExpandedInformationViewController.swift */,
 				4D202CA621ED569B00F68F13 /* ExpandedCostViewController.swift */,
@@ -664,21 +652,13 @@
 			path = "Edit Information";
 			sourceTree = "<group>";
 		};
-		4D202CCC21F1221D00F68F13 /* Coupons */ = {
-			isa = PBXGroup;
-			children = (
-				4D202CCD21F1222F00F68F13 /* ActiveCouponViewController.swift */,
-			);
-			path = Coupons;
-			sourceTree = "<group>";
-		};
 		4D21D2CB20CC9FC3002D7005 = {
 			isa = PBXGroup;
 			children = (
 				4D21D2D620CC9FC3002D7005 /* DriveWayz */,
 				90AD91F4ABE5AAC0BB7393D9 /* Frameworks */,
 				4D21D2D520CC9FC3002D7005 /* Products */,
-				0DB9E86940C9A141014A2C88 /* Pods */,
+				795834DD0AA1D73A28C5F74D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -870,6 +850,8 @@
 		4D353C2321C9BE3200AE07B4 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				4D9363FE2251D0F400EEAC61 /* MainBarViewController.swift */,
+				4D3B9DA62253257A00E88396 /* SearchSummaryViewController.swift */,
 				4DD3B63521960CC7008B1417 /* MapSearchViewController.swift */,
 				4DD3B63721961C26008B1417 /* SpeechRecognitionViewController.swift */,
 				4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */,
@@ -894,7 +876,6 @@
 				4D8CE1E821406CDE00C6C61E /* Map Info */,
 				4D02C66721CDE1E500748BA3 /* MapKit */,
 				4D02C67021D1926500748BA3 /* Parking Options */,
-				4D202CCC21F1221D00F68F13 /* Coupons */,
 				4D353C2221C9BE2600AE07B4 /* Events */,
 				4D353C2321C9BE3200AE07B4 /* Search */,
 				4D2EB5C321038F34004AEA54 /* InformationViewController.swift */,
@@ -1018,7 +999,6 @@
 			children = (
 				4D202C8E21EC279100F68F13 /* Old Hosting */,
 				4D202C8C21EC273800F68F13 /* MainHostViewController.swift */,
-				4D202C8F21EC2CEC00F68F13 /* FirstHostingsController.swift */,
 				4DC9847421F7F222006744F4 /* FirstHostingViewController.swift */,
 				4D202CB421EE97B900F68F13 /* SecondHostingsController.swift */,
 				4D202CB621EEA08500F68F13 /* ThirdHostingsController.swift */,
@@ -1186,12 +1166,21 @@
 			path = "Notifications-Banner Ads";
 			sourceTree = "<group>";
 		};
+		795834DD0AA1D73A28C5F74D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F1A654C700F76A19AAF5386F /* Pods-DriveWayz.debug.xcconfig */,
+				D850F67D91739192347A657E /* Pods-DriveWayz.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		90AD91F4ABE5AAC0BB7393D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				4D8A3E3021667D6F00540905 /* MapKit.framework */,
 				4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */,
-				F2243F512C48393BFFC9E891 /* Pods_DriveWayz.framework */,
+				7BB1DD67C79EECBB79C16E48 /* Pods_DriveWayz.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1203,13 +1192,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4D21D2E620CC9FC4002D7005 /* Build configuration list for PBXNativeTarget "DriveWayz" */;
 			buildPhases = (
-				3EFEA2E28D17E71801ED8D06 /* [CP] Check Pods Manifest.lock */,
+				E0821557F72D488016892514 /* [CP] Check Pods Manifest.lock */,
 				4D21D2D020CC9FC3002D7005 /* Sources */,
 				4D21D2D120CC9FC3002D7005 /* Frameworks */,
 				4D21D2D220CC9FC3002D7005 /* Resources */,
 				4DCFE79020FC2A6F00073677 /* Embed App Extensions */,
-				2717D2A5EE15A304B036E35E /* [CP] Embed Pods Frameworks */,
-				7C1B2647D057D52060D89F4C /* [CP] Copy Pods Resources */,
+				02213E126B6BA9A08BA966CB /* [CP] Embed Pods Frameworks */,
+				91F6978BFDE2F796DD502645 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1323,7 +1312,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2717D2A5EE15A304B036E35E /* [CP] Embed Pods Frameworks */ = {
+		02213E126B6BA9A08BA966CB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1415,25 +1404,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3EFEA2E28D17E71801ED8D06 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7C1B2647D057D52060D89F4C /* [CP] Copy Pods Resources */ = {
+		91F6978BFDE2F796DD502645 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1461,6 +1432,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E0821557F72D488016892514 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DriveWayz-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1480,14 +1469,12 @@
 				4DD3B63621960CC7008B1417 /* MapSearchViewController.swift in Sources */,
 				4D8CE1EA2140C97D00C6C61E /* UpcomingInfoViewController.swift in Sources */,
 				4D70E5AC21E1CE7D00DDC4D0 /* NavigationPresentedViewController.swift in Sources */,
-				4D202CCE21F1222F00F68F13 /* ActiveCouponViewController.swift in Sources */,
 				4D6672CF21F2B107002434F8 /* AmenitiesCell.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
 				4D202C9B21ED27D100F68F13 /* HostingHoursViewController.swift in Sources */,
 				4D8F3ADA20DEF89900B0AA67 /* PanoViewController.swift in Sources */,
 				4D219C4A222A548C006ED717 /* FullDistanceViewController.swift in Sources */,
-				4D202C9321ED136200F68F13 /* HostingInformationViewController.swift in Sources */,
 				4D202CC521F01FF400F68F13 /* EditInformationViewController.swift in Sources */,
 				4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */,
 				4DFB449820F407CA007A54B1 /* OldVehicleViewController.swift in Sources */,
@@ -1496,6 +1483,7 @@
 				4D6A5A5D20CD8C0F00F404A7 /* CAGradientLayer.swift in Sources */,
 				4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */,
 				4D219C48222A4211006ED717 /* FullInfoViewController.swift in Sources */,
+				4D9363FF2251D0F400EEAC61 /* MainBarViewController.swift in Sources */,
 				4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */,
 				4DDE160A220F80CF00462047 /* DynamicHolidays.swift in Sources */,
 				4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */,
@@ -1504,6 +1492,7 @@
 				4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */,
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
+				4D3B9DA72253257A00E88396 /* SearchSummaryViewController.swift in Sources */,
 				4D02C65E21CDDC4D00748BA3 /* MBLocator.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
 				4D5A0EF121E0009700EB38A1 /* MBNavigation.swift in Sources */,
@@ -1591,7 +1580,6 @@
 				4D21D31F20CC9FF9002D7005 /* Extensions.swift in Sources */,
 				4DCFB9F721D8510800E910FF /* MBGetRoute.swift in Sources */,
 				4D202CA921ED59C800F68F13 /* ExpandedSpotsViewController.swift in Sources */,
-				4D202C9021EC2CEC00F68F13 /* FirstHostingsController.swift in Sources */,
 				4D2A2E39221B4ABE0031791A /* CircularView.swift in Sources */,
 				4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */,
 				4DA99317223785EB0085D859 /* ConfirmViewController.swift in Sources */,
@@ -1823,7 +1811,7 @@
 		};
 		4D21D2E720CC9FC4002D7005 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19EC9D9F903DA0D2B1317A80 /* Pods-DriveWayz.debug.xcconfig */;
+			baseConfigurationReference = F1A654C700F76A19AAF5386F /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -1846,7 +1834,7 @@
 		};
 		4D21D2E820CC9FC4002D7005 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F11ABC8344A093EF2E5257D7 /* Pods-DriveWayz.release.xcconfig */;
+			baseConfigurationReference = D850F67D91739192347A657E /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;

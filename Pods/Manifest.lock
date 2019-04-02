@@ -41,26 +41,26 @@ PODS:
     - Bolts (~> 1.9)
   - FBSDKLoginKit (4.38.1):
     - FBSDKCoreKit
-  - Firebase/Analytics (5.19.0):
+  - Firebase/Analytics (5.20.1):
     - Firebase/Core
-  - Firebase/Auth (5.19.0):
+  - Firebase/Auth (5.20.1):
     - Firebase/CoreOnly
-    - FirebaseAuth (= 5.4.1)
-  - Firebase/Core (5.19.0):
+    - FirebaseAuth (= 5.4.2)
+  - Firebase/Core (5.20.1):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.8.0)
-  - Firebase/CoreOnly (5.19.0):
-    - FirebaseCore (= 5.4.0)
-  - Firebase/Database (5.19.0):
+  - Firebase/CoreOnly (5.20.1):
+    - FirebaseCore (= 5.4.1)
+  - Firebase/Database (5.20.1):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.1.1)
-  - Firebase/Invites (5.19.0):
+  - Firebase/Invites (5.20.1):
     - Firebase/CoreOnly
     - FirebaseInvites (= 3.0.1)
-  - Firebase/Messaging (5.19.0):
+  - Firebase/Messaging (5.20.1):
     - Firebase/CoreOnly
-    - FirebaseMessaging (= 3.4.0)
-  - Firebase/Storage (5.19.0):
+    - FirebaseMessaging (= 3.5.0)
+  - Firebase/Storage (5.20.1):
     - Firebase/CoreOnly
     - FirebaseStorage (= 3.1.1)
   - FirebaseAnalytics (5.8.0):
@@ -73,24 +73,24 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
   - FirebaseAnalyticsInterop (1.2.0)
-  - FirebaseAuth (5.4.1):
+  - FirebaseAuth (5.4.2):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.2)
     - GoogleUtilities/Environment (~> 5.2)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseAuthInterop (1.0.0)
-  - FirebaseCore (5.4.0):
+  - FirebaseCore (5.4.1):
     - GoogleUtilities/Environment (~> 5.2)
     - GoogleUtilities/Logger (~> 5.2)
   - FirebaseDatabase (5.1.1):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.2)
     - leveldb-library (~> 1.18)
-  - FirebaseDynamicLinks (3.4.2):
+  - FirebaseDynamicLinks (3.4.3):
     - FirebaseAnalytics (~> 5.1)
     - FirebaseAnalyticsInterop (~> 1.0)
     - FirebaseCore (~> 5.2)
-  - FirebaseInstanceID (3.8.0):
+  - FirebaseInstanceID (3.8.1):
     - FirebaseCore (~> 5.2)
     - GoogleUtilities/Environment (~> 5.2)
     - GoogleUtilities/UserDefaults (~> 5.2)
@@ -108,7 +108,7 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.1)
     - GTMSessionFetcher/Full (~> 1.1)
     - Protobuf (~> 3.5)
-  - FirebaseMessaging (3.4.0):
+  - FirebaseMessaging (3.5.0):
     - FirebaseAnalyticsInterop (~> 1.1)
     - FirebaseCore (~> 5.2)
     - FirebaseInstanceID (~> 3.6)
@@ -220,7 +220,7 @@ PODS:
   - NVActivityIndicatorView/Presenter (4.6.1)
   - Polyline (4.2.0)
   - Protobuf (3.7.0)
-  - PushNotifications (1.2.1)
+  - PushNotifications (1.3.0)
   - Solar (2.1.0)
   - Stripe (15.0.0)
   - SwiftyJSON (4.2.0)
@@ -341,17 +341,17 @@ SPEC CHECKSUMS:
   FacebookLogin: ebcf34714a1cb9f0759d9f071cfb01ed500996cf
   FBSDKCoreKit: 8d47857400e2f5bdea697a80daff882e91c84ef6
   FBSDKLoginKit: 4621c690d9dd8628031a4791497062183ea34b0d
-  Firebase: c60d49e9c2630875a96207d15e2affb8364996d1
+  Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
   FirebaseAnalytics: fd72a26bf8dac84cefba2f0864366f718555a5b0
   FirebaseAnalyticsInterop: efbe45c8385ec626e29f9525e5ebd38520dfb6c1
-  FirebaseAuth: cbb892a66baed025efc179372598941252acf853
+  FirebaseAuth: dd7bbf03a5aee0eafb3a1aee4d2812bd74bac890
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
-  FirebaseCore: 22a79a961c3951ef2f77b67bfbc99e454247b319
+  FirebaseCore: f1a9a8be1aee4bf71a2fc0f4096df6788bdfda61
   FirebaseDatabase: 2c15b0ea6f2c6eb5e57413f9d6340f1e50b81ae3
-  FirebaseDynamicLinks: 29dd0deb458bfb8f845349f8b0b7e90af20758c6
-  FirebaseInstanceID: cf488df2f4b79782f0e430b04a0e17c0aa7979b2
+  FirebaseDynamicLinks: f7a8717e2c7ea652923882a2d60b0045d6fd99d5
+  FirebaseInstanceID: a122b0c258720cf250551bb2bedf48c699f80d90
   FirebaseInvites: f13ed69fae140e705baec1a59ff127334b841a8a
-  FirebaseMessaging: 2d53d08d752fbe63ce0820428d70be5ab87c11fb
+  FirebaseMessaging: 4235f949ce1c4e827aeb19705ba5c53f9b85aa10
   FirebaseStorage: 6162ef4322502b818d9de0ec552f5226d283de43
   GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
   GoogleAPIClientForREST: 5447a194eae517986cafe6421a5330b80b820591
@@ -366,10 +366,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Mapbox-iOS-SDK: 225036950837cbe408e6b333e51cd6001c122499
-  MapboxCoreNavigation: c93f28cdd77da659585e200bf55c5f7a19a37b58
+  MapboxCoreNavigation: f446c90e4324157e76a224c233e3daa2042f181e
   MapboxDirections.swift: b67d0b0bd0ac46906642baba38f4be777c50d68e
   MapboxMobileEvents: 0f30fe39687f26fd8f255335053023ba039a0392
-  MapboxNavigation: c8cd586f3ac4e650b2f4f003083bdc033d44114b
+  MapboxNavigation: 785961459d7b59ee442a2a80b7b8bcfc88a9383b
   MapboxNavigationNative: bb220f45f93123adae2c05dfb74080773af128f3
   MapboxSpeech: 59b3984d3f433a443d24acf53097f918c5cc70f9
   MapboxStatic.swift: 129b93eaadacf71b81387e6fb2809d66a0ef210f
@@ -377,7 +377,7 @@ SPEC CHECKSUMS:
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
   Polyline: 3d69f75bb136357e27291d439d0436c6ebda57a4
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
-  PushNotifications: b251b6243148e30039481cbb6e140fe7769d08d4
+  PushNotifications: 88b6aedf3433d97ebeefa7336a5a797729c887a7
   Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   Stripe: 312b22a67af9fa55c246d26148b3f3a9636a0ff2
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
@@ -386,6 +386,6 @@ SPEC CHECKSUMS:
   Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
   UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: 84dc8b7d7ed1852472ef4f1690dc4ef618c79c6f
+PODFILE CHECKSUM: 9a977a8467f37fd680a2bdf639bf04035a688b84
 
 COCOAPODS: 1.5.3

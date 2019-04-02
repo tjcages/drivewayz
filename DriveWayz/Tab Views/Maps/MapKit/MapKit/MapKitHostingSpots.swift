@@ -72,7 +72,6 @@ extension MapKitViewController {
         self.delegate?.lightContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {
             self.purchaseViewAnchor.constant = -self.view.frame.height
-            self.mainBarTopAnchor.constant = -80
 //            self.diamondTopAnchor.constant = 40
             self.fullBackgroundView.alpha = 1
             self.swipeLabel.alpha = 0
@@ -108,12 +107,6 @@ extension MapKitViewController {
     }
     
     @objc func informationButtonSwiped() {
-        switch device {
-        case .iphone8:
-            self.mainBarTopAnchor.constant = 100
-        case .iphoneX:
-            self.mainBarTopAnchor.constant = 120
-        }
 //        self.diamondTopAnchor.constant = 0
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: 0.5, animations: {

@@ -34,10 +34,10 @@ class Theme {
 //    static let PURPLE = UIColor(red: 58/255, green: 193/255, blue: 142/255, alpha: 1)
 //    static let PURPLE = UIColor(red: 98/255, green: 51/255, blue: 215/255, alpha: 1)
     
-    static let WHITE = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    static let WHITE = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
     static let OFF_WHITE = UIColor(red: 236/255, green: 236/255, blue: 236/255, alpha: 1)
     static let DARK_GRAY = UIColor(red: 31/255, green: 33/255, blue: 36/255, alpha: 1)
     static let ASH_GRAY = UIColor(red: 42/255, green: 42/255, blue: 42/255, alpha: 1)
-    static let BLACK = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+    static let BLACK = UIColor(red: 25/255, green: 25/255, blue: 25/255, alpha: 1)
     
 }

@@ -62,6 +62,7 @@ class OptionsCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.clipsToBounds = false
+        self.backgroundColor = Theme.WHITE
         
 //        addSubview(profileImageView)
         addSubview(messageTextView)

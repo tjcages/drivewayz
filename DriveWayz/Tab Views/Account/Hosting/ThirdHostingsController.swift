@@ -31,12 +31,12 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
         return label
     }()
     
-    lazy var mainInformationView: HostingInformationViewController = {
-        let controller = HostingInformationViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
+//    lazy var mainInformationView: HostingInformationViewController = {
+//        let controller = HostingInformationViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//
+//        return controller
+//    }()
     
     var pageControl: UIPageControl = {
         let page = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
@@ -119,17 +119,17 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.view.addSubview(mainInformationView.view)
-        mainInformationView.view.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 12).isActive = true
-        mainInformationView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        mainInformationView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        mainInformationView.view.heightAnchor.constraint(equalToConstant: 165).isActive = true
+//        self.view.addSubview(mainInformationView.view)
+//        mainInformationView.view.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 12).isActive = true
+//        mainInformationView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+//        mainInformationView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+//        mainInformationView.view.heightAnchor.constraint(equalToConstant: 165).isActive = true
         
         self.view.addSubview(pageControl)
         pageControl.widthAnchor.constraint(equalToConstant: 200).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        pageControl.topAnchor.constraint(equalTo: mainInformationView.view.bottomAnchor, constant: 12).isActive = true
+//        pageControl.topAnchor.constraint(equalTo: mainInformationView.view.bottomAnchor, constant: 12).isActive = true
         
         self.view.addSubview(mainExpandedInformationView.view)
         mainExpandedInformationView.view.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 12).isActive = true
@@ -164,7 +164,7 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
         mainOptionsView.view.heightAnchor.constraint(equalToConstant: 207).isActive = true
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandInformationPressed))
-        mainInformationView.view.addGestureRecognizer(tapGesture)
+//        mainInformationView.view.addGestureRecognizer(tapGesture)
         let tap = UITapGestureRecognizer(target: self, action: #selector(allGuestsPressed))
         mainGuestsView.view.addGestureRecognizer(tap)
         
@@ -189,7 +189,7 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
                 self.mainExpandedInformationView.view.alpha = 0
                 self.reviewsLabel.alpha = 0
                 self.mainReviewsView.view.alpha = 0
-                self.mainInformationView.editInformation.setTitle("Edit information", for: .normal)
+//                self.mainInformationView.editInformation.setTitle("Edit information", for: .normal)
                 self.handleScroll(height: 1696, y: 1022)
             } else if self.informationHeightAnchor.constant == 0 {
                 self.informationHeightAnchor.constant = 710
@@ -197,7 +197,7 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
                 self.mainExpandedInformationView.view.alpha = 1
                 self.reviewsLabel.alpha = 1
                 self.mainReviewsView.view.alpha = 1
-                self.mainInformationView.editInformation.setTitle("Minimize information", for: .normal)
+//                self.mainInformationView.editInformation.setTitle("Minimize information", for: .normal)
                 self.handleScroll(height: 2576, y: 1022)
             }
             self.view.layoutIfNeeded()
@@ -210,12 +210,12 @@ class ThirdHostingsController: UIViewController, handleNewHosting {
         self.mainExpandedInformationView.view.alpha = 0
         self.reviewsLabel.alpha = 0
         self.mainReviewsView.view.alpha = 0
-        self.mainInformationView.editInformation.setTitle("Edit information", for: .normal)
+//        self.mainInformationView.editInformation.setTitle("Edit information", for: .normal)
         self.handleScroll(height: 1696, y: 0)
     }
     
     func handleScroll(height: CGFloat, y: CGFloat) {
-        self.delegate?.handleScroll(height: height, y: y)
+//        self.delegate?.handleScroll(height: height, y: y)
     }
     
     func bringNewHostingController() {

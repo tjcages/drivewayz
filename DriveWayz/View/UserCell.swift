@@ -108,6 +108,8 @@ class UserCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
+        self.backgroundColor = Theme.WHITE
+        
         addSubview(profileImageView)
         addSubview(timeLabel)
         

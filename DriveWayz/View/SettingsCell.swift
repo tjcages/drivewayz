@@ -60,6 +60,8 @@ class SettingsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.backgroundColor = Theme.WHITE
+        
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)

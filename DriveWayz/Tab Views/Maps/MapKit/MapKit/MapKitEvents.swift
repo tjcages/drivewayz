@@ -44,22 +44,32 @@ extension MapKitViewController {
         giftRightAnchor.isActive = true
         giftButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         giftButton.heightAnchor.constraint(equalTo: giftButton.widthAnchor).isActive = true
-        giftBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: checkEventsController.view.topAnchor, constant: -12)
-        giftBottomAnchor.isActive = false
-        switch device {
-        case .iphone8:
-            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12)
-            giftOnlyBottomAnchor.isActive = true
-        case .iphoneX:
-            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
-            giftOnlyBottomAnchor.isActive = true
-        }
+//        giftBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: checkEventsController.view.topAnchor, constant: -12)
+//        giftBottomAnchor.isActive = false
+//        switch device {
+//        case .iphone8:
+//            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12)
+//            giftOnlyBottomAnchor.isActive = true
+//        case .iphoneX:
+//            giftOnlyBottomAnchor = giftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
+//            giftOnlyBottomAnchor.isActive = true
+//        }
         
         self.view.addSubview(locatorButton)
         locatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
-        locatorButton.bottomAnchor.constraint(equalTo: giftButton.topAnchor, constant: -12).isActive = true
+//        locatorButton.bottomAnchor.constraint(equalTo: giftButton.topAnchor, constant: -12).isActive = true
+        giftBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: checkEventsController.view.topAnchor, constant: -12)
+            giftBottomAnchor.isActive = false
+        switch device {
+        case .iphone8:
+            giftOnlyBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12)
+                giftOnlyBottomAnchor.isActive = true
+        case .iphoneX:
+            giftOnlyBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24)
+                giftOnlyBottomAnchor.isActive = true
+        }
         
     }
     
@@ -69,12 +79,6 @@ extension MapKitViewController {
         self.view.bringSubviewToFront(eventsController.view)
         UIView.animate(withDuration: animationIn) {
             self.fullBackgroundView.alpha = 0.4
-            switch device {
-            case .iphone8:
-                self.mainBarTopAnchor.constant = 80
-            case .iphoneX:
-                self.mainBarTopAnchor.constant = 80
-            }
             self.eventsHeightAnchor.constant = self.view.frame.height
             self.giftBottomAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
@@ -83,12 +87,6 @@ extension MapKitViewController {
     
     func closeSpecificEvent() {
         UIView.animate(withDuration: animationOut) {
-            switch device {
-            case .iphone8:
-                self.mainBarTopAnchor.constant = 100
-            case .iphoneX:
-                self.mainBarTopAnchor.constant = 120
-            }
             self.eventsHeightAnchor.constant = 150
             self.checkEventsController.view.alpha = 1
             self.giftBottomAnchor.constant = 40

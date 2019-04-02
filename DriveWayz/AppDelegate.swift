@@ -42,8 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
 //        GIDSignIn.sharedInstance().delegate = self
         
-        GMSServices.provideAPIKey("AIzaSyDJBs7C6PBdy4DZe0Og7q4EE4oqaa3ymDo")
-        GMSPlacesClient.provideAPIKey("AIzaSyDJBs7C6PBdy4DZe0Og7q4EE4oqaa3ymDo")
+        GMSServices.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
+        GMSPlacesClient.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
         STPPaymentConfiguration.shared().publishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
         

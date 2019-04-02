@@ -42,10 +42,21 @@ extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
         self.dismissKeyboard()
-        self.searchBar.isUserInteractionEnabled = false
-        self.fromSearchBar.isUserInteractionEnabled = false
+        self.mainBarController.closeSearchBar()
+        self.mainBarController.shouldBeLoading = true
+        self.mainBarController.loadingParking()
         delayWithSeconds(animationOut) {
+            self.delegate?.hideHamburger()
             self.beginSearchingForParking()
+            self.mainBarTopAnchor.constant = -100
+            UIView.animate(withDuration: animationOut) {
+                self.summaryController.view.alpha = 1
+                self.summaryController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                self.view.layoutIfNeeded()
+            }
+            delayWithSeconds(3, completion: {
+                self.mainBarController.shouldBeLoading = false
+            })
         }
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address) { (placemarks, error) in
@@ -56,7 +67,7 @@ extension MapKitViewController: handleParkingOptions {
                     print("error searching for location: \(error?.localizedDescription as Any)")
                     delayWithSeconds(2, completion: {
                         DispatchQueue.main.async {
-                            self.hideSearchBar(regular: true)
+//                            self.hideSearchBar(regular: true)
                             self.parkingHidden()
                         }
                     })

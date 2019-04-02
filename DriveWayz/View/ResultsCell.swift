@@ -39,6 +39,8 @@ class ResultsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.backgroundColor = Theme.WHITE
+        
         addSubview(pinImageView)
         addSubview(nameTextView)
         

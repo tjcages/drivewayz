@@ -59,7 +59,6 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         locationManager.startUpdatingLocation()
         
         if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
-//            self.observeUserParkingSpots()
             self.observeAllParking()
         }
         if self.searchedForPlace == false {
@@ -90,13 +89,8 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             let centerCoordinate = self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView)
             let location = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
             self.organizeParkingLocation(searchLocation: location, shouldDraw: false)
-            if self.closeParkingSpots.count > 0 {
-                UIView.animate(withDuration: animationIn) {
-                    self.annotationStatusController.view.alpha = 0
-                }
-            }
         } else if self.shouldBeSearchingForAnnotations == true {
-            self.annotationStatusController.needToZoom()
+            self.mainBarController.parkingState = .zoomIn
         }
     }
     

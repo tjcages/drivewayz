@@ -16,6 +16,11 @@ extension MapKitViewController {
 
     func observeAllParking() {
         let ref = Database.database().reference().child("ParkingSpots")
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot)
+        }) { (err) in
+            print(err.localizedDescription)
+        }
         ref.observeSingleEvent(of: .value) { (snapshot) in
             numberOfTotalParkingSpots = Int(snapshot.childrenCount)
             ref.observe(.childAdded, with: { (snapshot) in
@@ -37,6 +42,7 @@ extension MapKitViewController {
                 if var dictionary = snapshot.value as? [String:AnyObject] {
                     let parking = ParkingSpots(dictionary: dictionary)
                     let parkingID = dictionary["parkingID"] as! String
+                    print(parkingID)
                     self.parkingSpotsDictionary[parkingID] = parking
                     self.parkingSpots = Array(self.parkingSpotsDictionary.values)
                     
@@ -57,6 +63,7 @@ extension MapKitViewController {
             self.mapView.removeAnnotations(annotations)
         }
         for i in 0..<parkingSpots.count {
+            print(i)
             let parking = self.parkingSpots[i]
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
@@ -70,6 +77,17 @@ extension MapKitViewController {
                     marker.subtitle = "\(i)"
                     self.mapView.addAnnotation(marker)
                 }
+            }
+        }
+        delayWithSeconds(0.1) {
+            if self.closeParkingSpots.count > 0 && self.closeParkingSpots.count != self.visibleParkingSpots {
+                self.visibleParkingSpots = self.closeParkingSpots.count
+                self.mainBarController.parkingState = .foundParking
+            } else if self.closeParkingSpots.count == 0 {
+                self.visibleParkingSpots = self.closeParkingSpots.count
+                self.mainBarController.parkingState = .noParking
+            } else if self.closeParkingSpots.count > 0 {
+                self.mainBarController.parkingState = .foundParking
             }
         }
         self.closeParkingSpots = self.closeParkingSpots.sorted(by: { $0.parkingDistance! > $1.parkingDistance! })
@@ -113,15 +131,11 @@ extension MapKitViewController {
                     }
                 }
             } else {
-                delayWithSeconds(4) {
+                delayWithSeconds(2.4) {
                     self.parkingSelected()
                     self.hideSearchBar(regular: false)
                     self.parkingController.noBookingFound()
                 }
-            }
-        } else {
-            if self.closeParkingSpots.count <= 0 {
-                self.annotationStatusController.noAvailableParking()
             }
         }
     }

@@ -214,9 +214,20 @@ extension MapKitViewController: handleCheckoutParking {
         self.shouldBeSearchingForAnnotations = true
         self.removePolylineAnnotations()
         self.removeAllMapOverlays(shouldRefresh: true)
-        self.mainBar.isUserInteractionEnabled = true
+        self.delegate?.bringHamburger()
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, animated: false)
+        }
+        switch device {
+        case .iphone8:
+            self.mainBarTopAnchor.constant = 100
+        case .iphoneX:
+            self.mainBarTopAnchor.constant = 120
+        }
+        UIView.animate(withDuration: animationOut) {
+            self.summaryController.view.alpha = 0
+            self.summaryController.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            self.view.layoutIfNeeded()
         }
         self.removeAllMapOverlays(shouldRefresh: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -224,15 +235,7 @@ extension MapKitViewController: handleCheckoutParking {
         }
         UIView.animate(withDuration: animationOut, animations: {
             self.quickDestinationController.view.alpha = 0
-            switch device {
-            case .iphone8:
-                self.mainBarTopAnchor.constant = 100
-            case .iphoneX:
-                self.mainBarTopAnchor.constant = 120
-            }
             self.parkingControllerBottomAnchor.constant = 420
-            self.mapViewBottomAnchor.constant = 0
-            self.mapViewTopAnchor.constant = 0
             self.parkingBackButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -264,8 +267,6 @@ extension MapKitViewController: handleCheckoutParking {
         ClosestParkingLocation = nil
         DestinationAnnotationLocation = nil
         self.shouldShowOverlay = false
-        self.searchBar.isUserInteractionEnabled = true
-        self.fromSearchBar.isUserInteractionEnabled = true
         self.quickDestinationController.view.alpha = 0
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, zoomLevel: 14, animated: true)

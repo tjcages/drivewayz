@@ -51,6 +51,8 @@ class AmenitiesCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = Theme.WHITE
+        
         setupViews()
     }
     

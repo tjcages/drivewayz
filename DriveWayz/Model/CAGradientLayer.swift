@@ -13,15 +13,15 @@ extension CAGradientLayer {
     
     @objc func blueColor() -> CAGradientLayer {
         
-        let topColor = Theme.SEA_BLUE
-        let bottomColor = Theme.WHITE
+        let topColor = Theme.LIGHT_BLUE
+        let bottomColor = Theme.BLUE
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
         
         return gradientLayer
     }
