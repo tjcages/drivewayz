@@ -106,7 +106,7 @@ class ParkingOptionsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "A parking space that is owned by the property owner and leased by then tenant. Usually associated with one spot number in a lot."
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -157,7 +157,7 @@ class ParkingOptionsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -259,7 +259,7 @@ class ParkingOptionsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -309,8 +309,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "Parking is on the street near a residential home. You must own this spot to list it through Drivewayz."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -362,8 +362,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "Only select this option if you are the business owner of a parking lot. Drivewayz will reach out to you to confirm the information is correct."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         
         return label
@@ -412,8 +412,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "Only select this option if you are the business owner of a parking garage structure. Drivewayz will reach out to you to confirm the information is correct."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -463,8 +463,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "Only select this option if you are the business owner of a parking garage structure. Drivewayz will reach out to you to confirm the information is correct."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -514,8 +514,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "A condo parking space is similar to a residential space but generally is shared with another unit and requires the driver to pull off on one side of the driveway."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -565,8 +565,8 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
-        label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
-        label.numberOfLines = 3
+        label.text = "A circular loop parking spot is one that requires someone to park in a roundabout and pull up as far forward as possible."
+        label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
         
@@ -1071,7 +1071,7 @@ extension ParkingOptionsViewController {
                 self.sharedlotImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.sharedlotImageView.tintColor = Theme.WHITE
                 self.sharedlotImageView.layer.shadowOpacity = 1
-                self.sharedlotAnchor.constant = 80
+                self.sharedlotAnchor.constant = 110
                 self.sharedlotInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1095,7 +1095,7 @@ extension ParkingOptionsViewController {
                 self.alleyImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.alleyImageView.tintColor = Theme.WHITE
                 self.alleyImageView.layer.shadowOpacity = 1
-                self.alleyAnchor.constant = 80
+                self.alleyAnchor.constant = 110
                 self.alleyInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1119,7 +1119,7 @@ extension ParkingOptionsViewController {
                 self.sharedCoverImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.sharedCoverImageView.tintColor = Theme.WHITE
                 self.sharedCoverImageView.layer.shadowOpacity = 1
-                self.sharedGarageAnchor.constant = 80
+                self.sharedGarageAnchor.constant = 110
                 self.sharedCoverInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1142,7 +1142,7 @@ extension ParkingOptionsViewController {
                 self.gatedImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.gatedImageView.tintColor = Theme.WHITE
                 self.gatedImageView.layer.shadowOpacity = 1
-                self.gatedAnchor.constant = 80
+                self.gatedAnchor.constant = 110
                 self.gatedInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1166,7 +1166,7 @@ extension ParkingOptionsViewController {
                 self.streetImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.streetImageView.tintColor = Theme.WHITE
                 self.streetImageView.layer.shadowOpacity = 1
-                self.streetAnchor.constant = 80
+                self.streetAnchor.constant = 110
                 self.streetInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1189,7 +1189,7 @@ extension ParkingOptionsViewController {
                 self.parkinglotImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.parkinglotImageView.tintColor = Theme.WHITE
                 self.parkinglotImageView.layer.shadowOpacity = 1
-                self.parkinglotAnchor.constant = 80
+                self.parkinglotAnchor.constant = 110
                 self.parkinglotInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1213,7 +1213,7 @@ extension ParkingOptionsViewController {
                 self.garageImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.garageImageView.tintColor = Theme.WHITE
                 self.garageImageView.layer.shadowOpacity = 1
-                self.garageAnchor.constant = 80
+                self.garageAnchor.constant = 110
                 self.garageInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1236,7 +1236,7 @@ extension ParkingOptionsViewController {
                 self.undergroundImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.undergroundImageView.tintColor = Theme.WHITE
                 self.undergroundImageView.layer.shadowOpacity = 1
-                self.undergroundAnchor.constant = 80
+                self.undergroundAnchor.constant = 110
                 self.undergroundInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1259,7 +1259,7 @@ extension ParkingOptionsViewController {
                 self.condoImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.condoImageView.tintColor = Theme.WHITE
                 self.condoImageView.layer.shadowOpacity = 1
-                self.condoAnchor.constant = 80
+                self.condoAnchor.constant = 110
                 self.condoInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -1282,7 +1282,7 @@ extension ParkingOptionsViewController {
                 self.circularImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.circularImageView.tintColor = Theme.WHITE
                 self.circularImageView.layer.shadowOpacity = 1
-                self.circularAnchor.constant = 80
+                self.circularAnchor.constant = 110
                 self.circularInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 

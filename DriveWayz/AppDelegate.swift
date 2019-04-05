@@ -206,12 +206,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 device = .iphone8
             case 1920, 2208:
                 print("iPhone 6+/6S+/7+/8+")
+//                device = .iphonePlus
                 device = .iphone8
             case 2436:
                 print("iPhone X")
                 device = .iphoneX
             default:
                 print("unknown")
+//                device = .iPad
                 device = .iphone8
             }
         }

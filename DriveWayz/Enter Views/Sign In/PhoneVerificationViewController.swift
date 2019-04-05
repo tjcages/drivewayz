@@ -55,7 +55,7 @@ class PhoneVerificationViewController: UIViewController, handleVerificationCode 
         field.text = "Enter your mobile number"
         field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.SEA_BLUE
+        field.tintColor = Theme.PACIFIC_BLUE
         field.textColor = Theme.BLACK
         field.keyboardType = .numberPad
         
@@ -502,11 +502,12 @@ extension PhoneVerificationViewController {
         self.loadingActivity.alpha = 1
         self.loadingActivity.startAnimating()
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
-            self.nextButton.setTitle("NEXT", for: .normal)
+            self.nextButton.setTitle("Next", for: .normal)
             self.loadingActivity.alpha = 0
             self.loadingActivity.stopAnimating()
             if let error = error {
                 UIView.animate(withDuration: animationIn) {
+                    self.nextButton.alpha = 0
                     self.hideButton.alpha = 1
                 }
                 print(error.localizedDescription)

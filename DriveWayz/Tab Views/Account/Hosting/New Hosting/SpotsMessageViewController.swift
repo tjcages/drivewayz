@@ -40,9 +40,10 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         field.font = Fonts.SSPRegularH4
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 4
-        field.tintColor = Theme.SEA_BLUE
+        field.tintColor = Theme.PACIFIC_BLUE
         field.isScrollEnabled = false
         field.contentInset = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -50,10 +51,25 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var characterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.SEA_BLUE
+        label.textColor = Theme.PACIFIC_BLUE
         label.font = Fonts.SSPRegularH5
         label.text = "0/160"
         label.textAlignment = .right
+        
+        return label
+    }()
+    
+    var exampleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.font = Fonts.SSPRegularH6
+        label.numberOfLines = 6
+        label.text =
+        """
+        Example:
+        A secure and affordable parking spot in the heart of downtown Boulder. A quick 5 minute walk to Pearl St. makes this a great location whether you are shopping for the day or have a meeting in the busy area.
+        """
         
         return label
     }()
@@ -91,14 +107,20 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         characterLabel.bottomAnchor.constraint(equalTo: message.topAnchor, constant: -2).isActive = true
         characterLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
+        self.view.addSubview(exampleLabel)
+        exampleLabel.topAnchor.constraint(equalTo: message.bottomAnchor, constant: 20).isActive = true
+        exampleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        exampleLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 60).isActive = true
+        exampleLabel.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
         createToolbar()
     }
     
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.PURPLE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -138,7 +160,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newLength = (textView.text?.count)! + text.count - range.length
         if (newLength <= 160) {
-            self.characterLabel.textColor = Theme.SEA_BLUE
+            self.characterLabel.textColor = Theme.PACIFIC_BLUE
             self.characterLabel.text = "\(newLength)/160"
             return true
         } else {

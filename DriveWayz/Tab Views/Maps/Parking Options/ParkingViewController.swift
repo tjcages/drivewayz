@@ -270,7 +270,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         becomeAHostButton.leftAnchor.constraint(equalTo: blankView.leftAnchor, constant: 24).isActive = true
         becomeAHostButton.rightAnchor.constraint(equalTo: blankView.rightAnchor, constant: -24).isActive = true
         becomeAHostButton.bottomAnchor.constraint(equalTo: blankView.bottomAnchor, constant: -36).isActive = true
-        becomeAHostButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        becomeAHostButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
     

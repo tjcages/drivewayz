@@ -62,7 +62,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
         let image = UIImage(named: "Expand")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         exitButton.setImage(tintedImage, for: .normal)
-        exitButton.tintColor = Theme.SEA_BLUE
+        exitButton.tintColor = Theme.BLACK
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.addTarget(self, action: #selector(dismissDetails(sender:)), for: .touchUpInside)
         exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
@@ -346,7 +346,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = Theme.OFF_WHITE
+        self.view.backgroundColor = Theme.WHITE
         self.scrollView.delegate = self
         
         self.name.delegate = self

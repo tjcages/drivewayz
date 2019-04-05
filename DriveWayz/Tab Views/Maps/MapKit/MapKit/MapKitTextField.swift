@@ -31,23 +31,30 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     }
     
     func expandSearchBar() {
-        self.mainBarController.searchLabel.text = ""
-        self.mainBarController.searchLabel.font = Fonts.SSPRegularH4
-        UIView.animate(withDuration: animationIn, animations: {
-            self.locationsSearchResults.checkRecentSearches()
-            self.locationResultsHeightAnchor.constant = self.view.frame.height - self.mainBarHeightAnchor.constant + 80
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.mainBarController.searchLabel.becomeFirstResponder()
+        self.mainBarController.searchTextField.text = ""
+        self.mainBarController.searchTextField.font = Fonts.SSPRegularH4
+        delayWithSeconds(animationIn) {
+            UIView.animate(withDuration: animationIn, animations: {
+                self.locationsSearchResults.checkRecentSearches()
+                self.locationResultsHeightAnchor.constant = self.view.frame.height - self.mainBarHeightAnchor.constant + 80
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.mainBarController.searchTextField.becomeFirstResponder()
+            }
         }
     }
     
     func hideSearchBar(regular: Bool) {
+        if regular == false {
+            self.delegate?.hideHamburger()
+            self.beginSearchingForParking()
+            self.mainBarTopAnchor.constant = -100
+        }
         if eventsAreAllowed == true {
             self.eventsControllerHidden()
         }
         self.locationResultsHeightAnchor.constant = 0
-        self.mainBarController.searchLabel.font = Fonts.SSPRegularH3
+        self.mainBarController.searchTextField.font = Fonts.SSPRegularH3
         UIView.animate(withDuration: animationIn, animations: {
             self.view.layoutIfNeeded()
         }) { (success) in

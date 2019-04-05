@@ -23,6 +23,7 @@ protocol handleChangingAddress {
 class LocationParkingViewController: UIViewController, handleChangingAddress {
     
     var newHostAddress: String?
+    var goodToGo: Bool = false
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -50,6 +51,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.tintColor = Theme.SEA_BLUE
         view.textColor = Theme.WHITE
         view.clearButtonMode = .whileEditing
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -77,11 +79,12 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "123 Kennedy Ave."
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.textColor = Theme.WHITE.withAlphaComponent(0.4)
         view.returnKeyType = .done
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -109,10 +112,11 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Philadelphia"
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.textColor = Theme.WHITE.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -140,10 +144,11 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Pennsylvania"
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.textColor = Theme.WHITE.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -171,10 +176,11 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = ""
         view.font = Fonts.SSPLightH3
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.textColor = Theme.WHITE.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -196,6 +202,20 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         return controller
     }()
 
+    var validAddressError: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.HARMONY_RED
+        button.setTitle("Please enter a valid address", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.layer.cornerRadius = 15
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.font = Fonts.SSPRegularH5
+        button.alpha = 0
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -342,6 +362,12 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         locationsSearchResults.view.topAnchor.constraint(equalTo: streetLine.bottomAnchor).isActive = true
         locationsSearchResults.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
+        self.view.addSubview(validAddressError)
+        validAddressError.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -120).isActive = true
+        validAddressError.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        validAddressError.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        validAddressError.widthAnchor.constraint(equalToConstant: (validAddressError.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH5))! + 24).isActive = true
+        
         createToolbar()
     }
     
@@ -459,8 +485,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.PURPLE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -487,11 +513,101 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         self.view.endEditing(true)
         self.bringOtherOptions()
     }
+    
+    func notGoodToGo() {
+        UIView.animate(withDuration: animationIn, animations: {
+            self.validAddressError.alpha = 1
+        }) { (success) in
+            delayWithSeconds(2, completion: {
+                UIView.animate(withDuration: animationIn) {
+                    self.validAddressError.alpha = 0
+                }
+            })
+        }
+    }
+    
+    func checkIfGood() {
+        if self.streetField.text == "" || self.streetField.text == "123 Kennedy Ave." {
+            self.streetLabel.textColor = Theme.HARMONY_RED
+            self.goodToGo = false
+        } else {
+            self.streetLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.goodToGo = true
+        }
+        if self.cityField.text == "" || self.cityField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+            self.cityLabel.textColor = Theme.HARMONY_RED
+            self.goodToGo = false
+        } else {
+            self.cityLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.goodToGo = true
+        }
+        if self.stateField.text == "" || self.stateField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+            self.stateLabel.textColor = Theme.HARMONY_RED
+            self.goodToGo = false
+        } else {
+            self.stateLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.goodToGo = true
+        }
+        if self.countryField.text == "" {
+            self.countryLabel.textColor = Theme.HARMONY_RED
+            self.goodToGo = false
+        } else {
+            self.countryLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.goodToGo = true
+        }
+    }
+    
+    func goodTogo() {
+        UIView.animate(withDuration: animationIn) {
+            self.validAddressError.alpha = 0
+        }
+    }
 
 }
 
 
 extension LocationParkingViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.streetField {
+            if self.streetField.text == "" || self.streetField.text == "123 Kennedy Ave." {
+                self.streetLabel.textColor = Theme.HARMONY_RED
+                self.goodToGo = false
+            } else {
+                self.streetLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.goodToGo = true
+            }
+        }
+        if textField == self.cityField {
+            if self.cityField.text == "" || self.cityField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+                self.cityLabel.textColor = Theme.HARMONY_RED
+                self.goodToGo = false
+            } else {
+                self.cityLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.goodToGo = true
+            }
+        }
+        if textField == self.stateField {
+            if self.stateField.text == "" || self.stateField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+                self.stateLabel.textColor = Theme.HARMONY_RED
+                self.goodToGo = false
+            } else {
+                self.stateLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.goodToGo = true
+            }
+        }
+        if textField == self.countryField {
+            if self.countryField.text == "" {
+                self.countryLabel.textColor = Theme.HARMONY_RED
+                self.goodToGo = false
+            } else {
+                self.countryLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.goodToGo = true
+            }
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == countryField {
             if textField.text == "United States" {
@@ -552,6 +668,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
     func handleStreetAddress(text: String) {
         self.streetField.text = text
         self.streetField.textColor = Theme.WHITE
+        self.checkIfGood()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.combineAddress()
         }

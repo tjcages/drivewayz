@@ -69,24 +69,23 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         setupNavigationControllers()
         checkDayTimeStatus()
         checkNetwork()
-        if self.currentActive == false {
-//            checkCurrentParking()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.setupLocationManager()
+        if self.hasLoaded == false {
+            self.hasLoaded = true
+            self.setupLocationManager()
+        }
     }
     
-    //Prime location, Best price, Reserve spot
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     enum CurrentData {
         case notReserved
         case yesReserved
     }
     var currentData: CurrentData = CurrentData.notReserved
+    var hasLoaded: Bool = false
     
     lazy var mapView: MGLMapView = {
         let view = MGLMapView(frame: self.view.bounds)
@@ -519,6 +518,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var mainBarTopAnchor: NSLayoutConstraint!
     var mainBarWidthAnchor: NSLayoutConstraint!
     var mainBarHeightAnchor: NSLayoutConstraint!
+    var summaryBarTopAnchor: NSLayoutConstraint!
     
     var checkEventsAnchor: NSLayoutConstraint!
     var checkEventsBottomAnchor: NSLayoutConstraint!

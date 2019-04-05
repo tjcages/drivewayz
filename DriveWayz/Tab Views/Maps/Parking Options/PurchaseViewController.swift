@@ -347,7 +347,7 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
         confirmDurationButton.topAnchor.constraint(equalTo: leaveLabel.bottomAnchor, constant: 36).isActive = true
         confirmDurationButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         confirmDurationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        confirmDurationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        confirmDurationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func initializeTime() {
@@ -409,7 +409,21 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
     func updateTimes(hours: Int, minutes: Int) {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm"
+        let apFormatter = DateFormatter()
+        apFormatter.dateFormat = "a"
         let startString = formatter.string(from: self.fromDate)
+        let APm = apFormatter.string(from: self.fromDate)
+        if APm == "AM" {
+            self.amButton.backgroundColor = Theme.BLUE
+            self.pmButton.backgroundColor = UIColor.clear
+            self.amButton.setTitleColor(Theme.WHITE, for: .normal)
+            self.pmButton.setTitleColor(Theme.BLACK, for: .normal)
+        } else {
+            self.amButton.backgroundColor = UIColor.clear
+            self.pmButton.backgroundColor = Theme.BLUE
+            self.amButton.setTitleColor(Theme.BLACK, for: .normal)
+            self.pmButton.setTitleColor(Theme.WHITE, for: .normal)
+        }
         self.fromTimeLabel.text = startString
         let calendar = Calendar.current
         if let toDateHour = calendar.date(byAdding: .hour, value: hours, to: self.fromDate) {

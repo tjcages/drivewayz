@@ -17,12 +17,13 @@ class RegisterEmailViewController: UIViewController {
         field.backgroundColor = UIColor.clear
         field.font = Fonts.SSPLightH2
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.SEA_BLUE
+        field.tintColor = Theme.PACIFIC_BLUE
         field.textColor = Theme.WHITE
         field.autocapitalizationType = .none
         field.clearButtonMode = .whileEditing
         field.keyboardType = .emailAddress
         field.spellCheckingType = .no
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -78,8 +79,8 @@ class RegisterEmailViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.PURPLE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

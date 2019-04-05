@@ -816,6 +816,7 @@
 		55E034D491629684786E6734B7E20416 /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F63EB5A0A92907D6239D911F8752F2E /* DataCache.swift */; };
 		56044AA6F653CE2E27FEB0B0BFE801F5 /* BFAppLinkTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C9C0CF7F7A8E711C050268C92621AFE /* BFAppLinkTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		562DE4744CD2E1EC9B16A8FE2C6191EF /* STPPaymentMethodAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = B7EEF642308F26011FA7C0AA831683FD /* STPPaymentMethodAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56608E7C243E4FE733D75A629868EACF /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3EE53A094A016A838D280AA24E0297 /* SwiftyJSON.swift */; };
 		566334E7812BEDA4154727A0F19648DA /* FEventGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = B21742AEA9514BE684D1805D4DF42CFE /* FEventGenerator.m */; };
 		569250601966DB507EE4F01B432328D2 /* Api.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A10A478D0DA900AB7BA6FDE70B0A7E5 /* Api.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		56A923421638ACE767A9D6E39D309D8C /* filter_policy.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5140F0A3EA8BA68945F13321094ECD36 /* filter_policy.cc */; settings = {COMPILER_FLAGS = "-DOS_MACOSX -DLEVELDB_PLATFORM_POSIX -fno-objc-arc"; }; };
@@ -883,7 +884,6 @@
 		5DDB399AF7ACE94149C841C1E22CE2A9 /* RadarChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5AB625C2048B8878FE6F137BD9DE7 /* RadarChartDataSet.swift */; };
 		5DDCC5691765FB93E2A14742CA3A6EB8 /* STPAddressFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2C50B14B4F20D436CC24533606D286 /* STPAddressFieldTableViewCell.m */; };
 		5DDE3F469E57AB976F81684B74674470 /* MapboxSpeech-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 540FC7BCD78562DA6E2899C575D38CD9 /* MapboxSpeech-dummy.m */; };
-		5DEB5D02CD366A10E7B6F5794BBF53B9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01924EF7A45AA7C68C1BC2C2CA90432B /* SwiftyJSON.swift */; };
 		5E286497B24827B4FB72DA8774D06683 /* MMEUniqueIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B99408D5B420553D0A15AC51C6FF605 /* MMEUniqueIdentifier.m */; };
 		5E35BA450F70B4C441A34DBB535A3441 /* GINInvocation.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBD1CD1914E2438D48D49B1451771C0 /* GINInvocation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5E79B3F47FA5798CD00519073482D260 /* stp_card_unionpay_zh.png in Resources */ = {isa = PBXBuildFile; fileRef = D9CB1D65581FD60A1ADE9F9877045116 /* stp_card_unionpay_zh.png */; };
@@ -1710,7 +1710,7 @@
 		B43FD53F9BA163177E022C4827FE5A55 /* DefaultAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1716CCDA836DF7828CC4996F98B0110C /* DefaultAxisValueFormatter.swift */; };
 		B44C6FA106439B07DAFD4506EF7FD184 /* STPCoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56512681616D59BFA92194B1F5A84806 /* STPCoreTableViewController.m */; };
 		B457AE0ADB177768F54242C20A7E23AC /* FBSDKAppLinkNavigation.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7C6C85E0520288F0C111F24820C17B /* FBSDKAppLinkNavigation.m */; };
-		B45C9E18EC674741B8E733BA3C22F186 /* SwiftyJSON-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EEAA994D1E602B37522BD0B9860CA4C /* SwiftyJSON-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B45C9E18EC674741B8E733BA3C22F186 /* SwiftyJSON-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D1F63DA24B99AD1B61387559A263160 /* SwiftyJSON-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B46FE8C00C2CDDE0B4790FFD3DC961A4 /* AFImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C4106561CA59BADF2E670504BEB45A1C /* AFImageDownloader.m */; };
 		B4915366392AD8FF539F23D472CF4FB8 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9311CC6027DCFFAE17E5CAB07197A /* Route.swift */; };
 		B4E40BDECF1CB49B6EAD6A6FFA5EC75E /* FConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 809A92372CE92AE0B5637D4A04F53F32 /* FConnection.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1760,7 +1760,7 @@
 		B8FD165188B37CE25EAC184D020DF5A8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9E7B86CD31B74A1DFEB00205D9CAEE /* UIStackView.swift */; };
 		B940EF4F46CC07B7ED511214BA646714 /* KaedeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABC21D09AB3ACA8A466FB5A33B3F13 /* KaedeTextField.swift */; };
 		B96D3356A377C50F9ABF88C9AD3B929B /* STPSourcePoller.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E90FBD17AC1AC110230604D40E77EC4 /* STPSourcePoller.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B9A4B577ADC976789E123E357D52840E /* SwiftyJSON-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 72241EFF2A7599C9AE2893707A1F8C94 /* SwiftyJSON-dummy.m */; };
+		B9A4B577ADC976789E123E357D52840E /* SwiftyJSON-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F32CCF7C69357D86627C61B53CA164 /* SwiftyJSON-dummy.m */; };
 		B9BE7E7D5D9A3C82F44D770A112AAF99 /* FirebaseStorage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C244BB6CABAF26C4F2EED239A93C93 /* FirebaseStorage-dummy.m */; };
 		B9BED840118620B079C394293CF4DA6F /* STPPaymentConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EBA9363A01F799A0095458BD34B37C8 /* STPPaymentConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B9C8E0591F7ED6732FAF560F46CAB7D0 /* FBSDKEventBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC01180318F09D6464D9A6494F2BD58 /* FBSDKEventBinding.m */; };
@@ -3091,7 +3091,6 @@
 		0135733E97D1D1156376BD2783C30D39 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0167754A6400F9F3A8DF494A390070D5 /* NVActivityIndicatorAnimationBallPulseRise.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorAnimationBallPulseRise.swift; path = Source/NVActivityIndicatorView/Animations/NVActivityIndicatorAnimationBallPulseRise.swift; sourceTree = "<group>"; };
 		0186C8C4BA317111C8462A2E10CDBF6A /* GFQuery+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GFQuery+Private.h"; path = "GeoFire/Implementation/GFQuery+Private.h"; sourceTree = "<group>"; };
-		01924EF7A45AA7C68C1BC2C2CA90432B /* SwiftyJSON.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Source/SwiftyJSON.swift; sourceTree = "<group>"; };
 		019872C35CAE238C66AEA9D47AA47B9D /* OfflineDirections.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OfflineDirections.swift; path = MapboxCoreNavigation/OfflineDirections.swift; sourceTree = "<group>"; };
 		01A4F7F0DF333C82CB232A6E9AFACF37 /* FBSDKDeviceLoginCodeInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKDeviceLoginCodeInfo.h; path = FBSDKLoginKit/FBSDKLoginKit/FBSDKDeviceLoginCodeInfo.h; sourceTree = "<group>"; };
 		01ACABD5BB117E19B7C9E1CFB4BC84A6 /* LineRadarRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LineRadarRenderer.swift; path = Source/Charts/Renderers/LineRadarRenderer.swift; sourceTree = "<group>"; };
@@ -3141,6 +3140,7 @@
 		051BB7E9E94FD1B0747298F928BDBEC1 /* STPFormEncodable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPFormEncodable.h; path = Stripe/PublicHeaders/STPFormEncodable.h; sourceTree = "<group>"; };
 		051DE198C3EF2FC02C827C963C7E61B7 /* LineScatterCandleRadarChartDataSet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LineScatterCandleRadarChartDataSet.swift; path = Source/Charts/Data/Implementations/Standard/LineScatterCandleRadarChartDataSet.swift; sourceTree = "<group>"; };
 		0556BFA53B2C9373A35E9261BF6A134E /* FListenProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FListenProvider.m; path = Firebase/Database/Core/FListenProvider.m; sourceTree = "<group>"; };
+		05603E02E7E9170717A6F53143F19D10 /* SwiftyJSON-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-prefix.pch"; sourceTree = "<group>"; };
 		057CBC824B78A914F3464A0395E05894 /* GTLRRuntimeCommon.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GTLRRuntimeCommon.m; path = Source/Objects/GTLRRuntimeCommon.m; sourceTree = "<group>"; };
 		05E8703FC3D5CB1E4B11E918CC534748 /* GULNSData+zlib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GULNSData+zlib.h"; path = "GoogleUtilities/NSData+zlib/GULNSData+zlib.h"; sourceTree = "<group>"; };
 		05F4EDEDF798DA65C9DF5B7BE33F6F26 /* NVActivityIndicatorAnimationBallGridPulse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NVActivityIndicatorAnimationBallGridPulse.swift; path = Source/NVActivityIndicatorView/Animations/NVActivityIndicatorAnimationBallGridPulse.swift; sourceTree = "<group>"; };
@@ -3307,6 +3307,7 @@
 		1389A802813083A609274EF4A8F01DB1 /* stp_card_visa.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = stp_card_visa.png; path = Stripe/Resources/Images/stp_card_visa.png; sourceTree = "<group>"; };
 		1392A75EFF04287EFC8B64F7A597B387 /* FBSDKBridgeAPIProtocolWebV2.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKBridgeAPIProtocolWebV2.h; path = FBSDKCoreKit/FBSDKCoreKit/Internal/BridgeAPI/ProtocolVersions/FBSDKBridgeAPIProtocolWebV2.h; sourceTree = "<group>"; };
 		13AE251BEF3FCB73034564B0A95CE77E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		13D380268CE137CC4731579063B4DBE7 /* SwiftyJSON.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyJSON.xcconfig; sourceTree = "<group>"; };
 		13E418A20FFBB9B1BD5C9FE9C0A73916 /* TSKSPKIHashCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TSKSPKIHashCache.h; path = vendor/TrustKit/Pinning/TSKSPKIHashCache.h; sourceTree = "<group>"; };
 		13FE9C351FFE44F7E40DCE33A6CA9CC1 /* GTLRBatchQuery.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GTLRBatchQuery.h; path = Source/Objects/GTLRBatchQuery.h; sourceTree = "<group>"; };
 		142FE17550516DC60D9F30D6B81505A1 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
@@ -3695,6 +3696,7 @@
 		3A9320D9823045145CC744DB28ED1796 /* FBSDKApplicationDelegate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKApplicationDelegate.m; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKApplicationDelegate.m; sourceTree = "<group>"; };
 		3ACD5F1FFC6CD2C0716D976E9C0A7207 /* MarkerOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MarkerOptions.swift; path = MapboxStatic/MarkerOptions.swift; sourceTree = "<group>"; };
 		3B373CB2FE63FC64ED7DAF39A680CB22 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
+		3B3EE53A094A016A838D280AA24E0297 /* SwiftyJSON.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Source/SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
 		3B72F7F942A85C4BF4D47C53C29DCB4F /* FLLRBEmptyNode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLLRBEmptyNode.h; path = Firebase/Database/third_party/FImmutableSortedDictionary/FImmutableSortedDictionary/FLLRBEmptyNode.h; sourceTree = "<group>"; };
 		3BF7F1D2324376B8B0A62F0120967789 /* FIRDataSnapshot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRDataSnapshot.h; path = Firebase/Database/Public/FIRDataSnapshot.h; sourceTree = "<group>"; };
 		3BF9311CC6027DCFFAE17E5CAB07197A /* Route.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Route.swift; path = MapboxCoreNavigation/Route.swift; sourceTree = "<group>"; };
@@ -3733,6 +3735,7 @@
 		3F4F2288FEB39668138C3D1E312C4A12 /* stp_card_applepay.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = stp_card_applepay.png; path = Stripe/Resources/Images/stp_card_applepay.png; sourceTree = "<group>"; };
 		3F548B98F72EA24C7C412FE42C2DFB13 /* FirebaseAuthVersion.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FirebaseAuthVersion.m; path = Firebase/Auth/Source/FirebaseAuthVersion.m; sourceTree = "<group>"; };
 		3F5753C9813912432B7F0364927001B0 /* FIRMessagingConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingConnection.h; path = Firebase/Messaging/FIRMessagingConnection.h; sourceTree = "<group>"; };
+		3F6899F94D4965645B577D842F045020 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F93F2B7D200AB86E5A3576E6AADE6DF /* stp_card_unionpay_template_zh.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = stp_card_unionpay_template_zh.png; path = Stripe/Resources/Images/stp_card_unionpay_template_zh.png; sourceTree = "<group>"; };
 		3FDA7434E6142FED7CF8C3C8697DC761 /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_common.c; sourceTree = "<group>"; };
 		3FFC17C9804C425B2B5BD063AFAC1D0D /* filter_block.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = filter_block.h; path = table/filter_block.h; sourceTree = "<group>"; };
@@ -3931,7 +3934,6 @@
 		53A671DD3DA9E0A8892ADDFBA8E28F57 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Frameworks/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		53AAE4A95A402B61EFC7250452751B3B /* pb_encode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pb_encode.h; sourceTree = "<group>"; };
 		53B45BC96648910CA8E8E10DD2350833 /* MapboxMobileEvents.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MapboxMobileEvents.h; path = MapboxMobileEvents/MapboxMobileEvents.h; sourceTree = "<group>"; };
-		53C5E07EE24FC197F2EE7FB94DCF5991 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53F55C050A3598CFFBC2FC6C71F4609F /* FBSDKCoreKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKCoreKit.h; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKCoreKit.h; sourceTree = "<group>"; };
 		53FBD251F24301F4B3952E3D472AF3EA /* UserProfile.FetchResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserProfile.FetchResult.swift; path = Sources/Core/UserProfile/UserProfile.FetchResult.swift; sourceTree = "<group>"; };
 		540FC7BCD78562DA6E2899C575D38CD9 /* MapboxSpeech-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MapboxSpeech-dummy.m"; sourceTree = "<group>"; };
@@ -3957,6 +3959,7 @@
 		55B26A59002D26D52DCA5A994F92F671 /* STPPaymentIntent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPPaymentIntent.h; path = Stripe/PublicHeaders/STPPaymentIntent.h; sourceTree = "<group>"; };
 		55C5001F92C75434555A4FC991F100B5 /* FValueEventRegistration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FValueEventRegistration.h; path = Firebase/Database/Core/View/FValueEventRegistration.h; sourceTree = "<group>"; };
 		55CE1CF3B5CF026FC3005A47507C5AAA /* FIRInstanceIDTokenInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstanceIDTokenInfo.m; path = Firebase/InstanceID/FIRInstanceIDTokenInfo.m; sourceTree = "<group>"; };
+		55F32CCF7C69357D86627C61B53CA164 /* SwiftyJSON-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyJSON-dummy.m"; sourceTree = "<group>"; };
 		56315A93343EA8611AFD052D96CFE85D /* FBSDKCodelessParameterComponent.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKCodelessParameterComponent.m; path = FBSDKCoreKit/FBSDKCoreKit/Internal/AppEvents/Codeless/FBSDKCodelessParameterComponent.m; sourceTree = "<group>"; };
 		56512681616D59BFA92194B1F5A84806 /* STPCoreTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPCoreTableViewController.m; path = Stripe/STPCoreTableViewController.m; sourceTree = "<group>"; };
 		566BA5AC5002DB21870F1C973A16FEBF /* FIRInstanceIDBackupExcludedPlist.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceIDBackupExcludedPlist.h; path = Firebase/InstanceID/FIRInstanceIDBackupExcludedPlist.h; sourceTree = "<group>"; };
@@ -4066,6 +4069,7 @@
 		6033D3CFDEA200E86B3BEC3BD721647A /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		60435286C8604F697E2F1E8736C7CDC3 /* UIViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIViewController.swift; path = MapboxNavigation/UIViewController.swift; sourceTree = "<group>"; };
 		60497161516B82B33E70EB04DC1CF088 /* MMEMetricsManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMEMetricsManager.m; path = MapboxMobileEvents/MMEMetricsManager.m; sourceTree = "<group>"; };
+		60847FF90DC6ECB6A53410FC9DF3A7EB /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
 		609FCE9D3B883968436A96CF266E7D27 /* FIRInstanceIDKeyPairStore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstanceIDKeyPairStore.m; path = Firebase/InstanceID/FIRInstanceIDKeyPairStore.m; sourceTree = "<group>"; };
 		60A6FC30CBD878D6EB7C397DBFF40826 /* FTreeSortedDictionaryEnumerator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FTreeSortedDictionaryEnumerator.m; path = Firebase/Database/third_party/FImmutableSortedDictionary/FImmutableSortedDictionary/FTreeSortedDictionaryEnumerator.m; sourceTree = "<group>"; };
 		60CCA7367ACE1DC3B479B5FD33C5A715 /* FIRInstanceIDTokenDeleteOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceIDTokenDeleteOperation.h; path = Firebase/InstanceID/FIRInstanceIDTokenDeleteOperation.h; sourceTree = "<group>"; };
@@ -4203,7 +4207,6 @@
 		6EA1F1EAD6BA8D70A8BB345027AE501F /* BFCancellationTokenSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BFCancellationTokenSource.m; path = Bolts/Common/BFCancellationTokenSource.m; sourceTree = "<group>"; };
 		6EAFAD8A5343E3D7778469582BC76485 /* crc32c.cc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = crc32c.cc; path = util/crc32c.cc; sourceTree = "<group>"; };
 		6ED7F22FB7C4A7148D2D76385FB527EE /* Localizable.stringsdict */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.stringsdict; name = Localizable.stringsdict; path = ja.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		6EEAA994D1E602B37522BD0B9860CA4C /* SwiftyJSON-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-umbrella.h"; sourceTree = "<group>"; };
 		6EF2F26D7B78EE5D49B81353549926EF /* STPPaymentContext.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPPaymentContext.m; path = Stripe/STPPaymentContext.m; sourceTree = "<group>"; };
 		6EF7E9ABF3564815BC4DFF4DED65BC3F /* FIRStorageErrors.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRStorageErrors.m; path = Firebase/Storage/FIRStorageErrors.m; sourceTree = "<group>"; };
 		6F0EE4373FB65DBE72449208DCC8E7AC /* FeedbackViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FeedbackViewController.swift; path = MapboxNavigation/FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -4250,7 +4253,6 @@
 		71C1DFD8ED533DF568CA5EA595FB9067 /* RadarChartDataEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RadarChartDataEntry.swift; path = Source/Charts/Data/Implementations/Standard/RadarChartDataEntry.swift; sourceTree = "<group>"; };
 		71E4F7C1F12056CCA02C28F1D9EC8880 /* FIRInstanceIDKeyPair.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstanceIDKeyPair.m; path = Firebase/InstanceID/FIRInstanceIDKeyPair.m; sourceTree = "<group>"; };
 		7217B36C1E6427831FF7DB56B9D28FFC /* GTMURLBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GTMURLBuilder.m; path = Foundation/GTMURLBuilder.m; sourceTree = "<group>"; };
-		72241EFF2A7599C9AE2893707A1F8C94 /* SwiftyJSON-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyJSON-dummy.m"; sourceTree = "<group>"; };
 		7226D636BDCEE6CFB8C3572B7147CFBB /* FViewCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FViewCache.m; path = Firebase/Database/Core/View/FViewCache.m; sourceTree = "<group>"; };
 		7229981CA1DC30434B68E6919E3E51A1 /* FIRInstanceIDURLQueryItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceIDURLQueryItem.h; path = Firebase/InstanceID/FIRInstanceIDURLQueryItem.h; sourceTree = "<group>"; };
 		7237AC7602EF1221C5B56DC4CA937917 /* FIRInstanceIDCheckinService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstanceIDCheckinService.m; path = Firebase/InstanceID/FIRInstanceIDCheckinService.m; sourceTree = "<group>"; };
@@ -4452,7 +4454,6 @@
 		85648F2782975CE10C2595FE9AF57A90 /* Solar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Solar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85A55F5D41C0AEC321D8185F53E48E9C /* MapboxSpeech-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MapboxSpeech-prefix.pch"; sourceTree = "<group>"; };
 		85BCB47CC8615577A7BE45C9E9F2FB41 /* FacebookLogin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FacebookLogin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		85BCC6992AF5557D9AEFBA9C329CC506 /* SwiftyJSON-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-prefix.pch"; sourceTree = "<group>"; };
 		85BD4A5F6D74B24EE703041BEBAD5F72 /* Color.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Color.swift; path = MapboxStatic/Color.swift; sourceTree = "<group>"; };
 		85E165227AB863437C8B87DE2C33734A /* StarLayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StarLayer.swift; path = Cosmos/StarLayer.swift; sourceTree = "<group>"; };
 		860AF0173216EB609063F302D576CFE2 /* nanopb.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4547,6 +4548,7 @@
 		8D01D3F1DB529032862A07F0F15F0C25 /* STPPaymentMethodThreeDSecureUsage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPPaymentMethodThreeDSecureUsage.h; path = Stripe/PublicHeaders/STPPaymentMethodThreeDSecureUsage.h; sourceTree = "<group>"; };
 		8D0B2F13145DAF3CF7AB9D77442D5CE3 /* FSyncTree.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FSyncTree.h; path = Firebase/Database/Core/FSyncTree.h; sourceTree = "<group>"; };
 		8D162763109351312937FF8D8BDAA432 /* STPTheme.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STPTheme.m; path = Stripe/STPTheme.m; sourceTree = "<group>"; };
+		8D1F63DA24B99AD1B61387559A263160 /* SwiftyJSON-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-umbrella.h"; sourceTree = "<group>"; };
 		8D3A6187CBA182D86A9DABC179272103 /* GTMOAuth2-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GTMOAuth2-umbrella.h"; sourceTree = "<group>"; };
 		8D6C3E2C9146D401869EC353B4272DC2 /* FacebookCore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FacebookCore.xcconfig; sourceTree = "<group>"; };
 		8D75D5F2E1323F467E9A88C2BAC99E02 /* Date.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Date.swift; path = MapboxCoreNavigation/Date.swift; sourceTree = "<group>"; };
@@ -5100,7 +5102,6 @@
 		C2819FC7EB7FC4F7D3E413B0D0CFB8F4 /* TSKPinningValidator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TSKPinningValidator.h; path = vendor/TrustKit/TSKPinningValidator.h; sourceTree = "<group>"; };
 		C2A87AF3A73496AF6A74087926002A95 /* MMEUIApplicationWrapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMEUIApplicationWrapper.m; path = MapboxMobileEvents/MMEUIApplicationWrapper.m; sourceTree = "<group>"; };
 		C2B54EC85D40E68A94399C2D6875A335 /* MapboxDirections.swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MapboxDirections.swift-dummy.m"; sourceTree = "<group>"; };
-		C2CBECBF6F375C67622AEF7A087C83BC /* SwiftyJSON.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyJSON.xcconfig; sourceTree = "<group>"; };
 		C2F073F90CDDC221F86D0BC41754DF13 /* FIRInstanceIDCheckinPreferences+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FIRInstanceIDCheckinPreferences+Internal.h"; path = "Firebase/InstanceID/FIRInstanceIDCheckinPreferences+Internal.h"; sourceTree = "<group>"; };
 		C2F4CD2C3C6B22EC4BF3B2787B29A632 /* options.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = options.h; path = include/leveldb/options.h; sourceTree = "<group>"; };
 		C2FA1902B0EDF62A2C29008FF812AB25 /* STPImageLibrary+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "STPImageLibrary+Private.h"; path = "Stripe/STPImageLibrary+Private.h"; sourceTree = "<group>"; };
@@ -5407,7 +5408,6 @@
 		DFF47EA93BFCF63A9B771EC4BCF1FD1D /* AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFNetworking-dummy.m"; sourceTree = "<group>"; };
 		DFFF45FC238CDA87CC774E5583609364 /* FIRMessagingClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingClient.m; path = Firebase/Messaging/FIRMessagingClient.m; sourceTree = "<group>"; };
 		E013A110202431052F994733F5562B77 /* stp_card_discover@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "stp_card_discover@3x.png"; path = "Stripe/Resources/Images/stp_card_discover@3x.png"; sourceTree = "<group>"; };
-		E03845473499C809CADBC53E10FAC263 /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
 		E066583AED56073C11CAC6343E1E66DB /* STPTheme.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STPTheme.h; path = Stripe/PublicHeaders/STPTheme.h; sourceTree = "<group>"; };
 		E0742CFF3FA2B0BCEE1CBEE8515CE0C0 /* FBSDKDialogConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKDialogConfiguration.m; path = FBSDKCoreKit/FBSDKCoreKit/Internal/ServerConfiguration/FBSDKDialogConfiguration.m; sourceTree = "<group>"; };
 		E0BA0D115B5CA40F78E28F5C5DE9EB65 /* GPBDescriptor_PackagePrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPBDescriptor_PackagePrivate.h; path = objectivec/GPBDescriptor_PackagePrivate.h; sourceTree = "<group>"; };
@@ -7838,6 +7838,15 @@
 			path = "../Target Support Files/FirebaseCore";
 			sourceTree = "<group>";
 		};
+		5CA5600DBEFEADD258023E383E122ED0 /* SwiftyJSON */ = {
+			isa = PBXGroup;
+			children = (
+				3B3EE53A094A016A838D280AA24E0297 /* SwiftyJSON.swift */,
+				BF887B4521D7C16AEC94B859BDC282D2 /* Support Files */,
+			);
+			path = SwiftyJSON;
+			sourceTree = "<group>";
+		};
 		5CBF02FFA9EEB494498B0DBD00945602 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -7927,15 +7936,6 @@
 				5317012E7095C6C5337653E97B24935E /* Support Files */,
 			);
 			path = FirebaseMessaging;
-			sourceTree = "<group>";
-		};
-		62C614E0FDAAF3AFF2B5CF3081478594 /* SwiftyJSON */ = {
-			isa = PBXGroup;
-			children = (
-				01924EF7A45AA7C68C1BC2C2CA90432B /* SwiftyJSON.swift */,
-				CDBD37607324F13AD593E4410607424F /* Support Files */,
-			);
-			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
 		62E9239339F139A12DF2DB576376D1F6 /* nanopb */ = {
@@ -8946,7 +8946,7 @@
 				CF05F5DEC02C04DB143EC2A4B291BD10 /* PushNotifications */,
 				1817022D5F0F363B5918FBE0E504756C /* Solar */,
 				943B0B7FE182B791C425DA045AFB23CB /* Stripe */,
-				62C614E0FDAAF3AFF2B5CF3081478594 /* SwiftyJSON */,
+				5CA5600DBEFEADD258023E383E122ED0 /* SwiftyJSON */,
 				C075CF8E7A6B2F4480EC7A949018825C /* TextFieldEffects */,
 				EF5C930CD7FD630D578C135D5B01DC45 /* TOMSMorphingLabel */,
 				399D4013551DC7FD2798B5A2C0C0C662 /* Turf */,
@@ -9449,6 +9449,20 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		BF887B4521D7C16AEC94B859BDC282D2 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				3F6899F94D4965645B577D842F045020 /* Info.plist */,
+				60847FF90DC6ECB6A53410FC9DF3A7EB /* SwiftyJSON.modulemap */,
+				13D380268CE137CC4731579063B4DBE7 /* SwiftyJSON.xcconfig */,
+				55F32CCF7C69357D86627C61B53CA164 /* SwiftyJSON-dummy.m */,
+				05603E02E7E9170717A6F53143F19D10 /* SwiftyJSON-prefix.pch */,
+				8D1F63DA24B99AD1B61387559A263160 /* SwiftyJSON-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SwiftyJSON";
+			sourceTree = "<group>";
+		};
 		C04EE05DEF22C1F01E2D6EF58B993B1D /* ClusterKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -9584,20 +9598,6 @@
 				7AFC29DE5C493D08ED104DEE89912C0F /* NVActivityIndicatorViewable.swift */,
 			);
 			name = Presenter;
-			sourceTree = "<group>";
-		};
-		CDBD37607324F13AD593E4410607424F /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				53C5E07EE24FC197F2EE7FB94DCF5991 /* Info.plist */,
-				E03845473499C809CADBC53E10FAC263 /* SwiftyJSON.modulemap */,
-				C2CBECBF6F375C67622AEF7A087C83BC /* SwiftyJSON.xcconfig */,
-				72241EFF2A7599C9AE2893707A1F8C94 /* SwiftyJSON-dummy.m */,
-				85BCC6992AF5557D9AEFBA9C329CC506 /* SwiftyJSON-prefix.pch */,
-				6EEAA994D1E602B37522BD0B9860CA4C /* SwiftyJSON-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/SwiftyJSON";
 			sourceTree = "<group>";
 		};
 		CF05F5DEC02C04DB143EC2A4B291BD10 /* PushNotifications */ = {
@@ -12735,7 +12735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9A4B577ADC976789E123E357D52840E /* SwiftyJSON-dummy.m in Sources */,
-				5DEB5D02CD366A10E7B6F5794BBF53B9 /* SwiftyJSON.swift in Sources */,
+				56608E7C243E4FE733D75A629868EACF /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15789,39 +15789,6 @@
 			};
 			name = Debug;
 		};
-		6B41315DA1C69A47F9C529DC1B5F442F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C2CBECBF6F375C67622AEF7A087C83BC /* SwiftyJSON.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/SwiftyJSON/SwiftyJSON-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SwiftyJSON/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SwiftyJSON/SwiftyJSON.modulemap";
-				PRODUCT_MODULE_NAME = SwiftyJSON;
-				PRODUCT_NAME = SwiftyJSON;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		6C0D6E2E64C534FC3B2A0A1F7B22FCDC /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6222ACB7472E334FAA874D0AEE385CB /* Solar.xcconfig */;
@@ -16639,6 +16606,39 @@
 			};
 			name = Release;
 		};
+		C09EF056B27F59D8E57BBEC358A9679E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 13D380268CE137CC4731579063B4DBE7 /* SwiftyJSON.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftyJSON/SwiftyJSON-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftyJSON/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftyJSON/SwiftyJSON.modulemap";
+				PRODUCT_MODULE_NAME = SwiftyJSON;
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		C18155DB6746473143748B65E6B3CD05 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECC3FC60B4CA9170B2762F251B4E93D /* Alamofire.xcconfig */;
@@ -16991,6 +16991,38 @@
 			};
 			name = Debug;
 		};
+		E1B47B01FA38C5D1534C56A96768F43D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 13D380268CE137CC4731579063B4DBE7 /* SwiftyJSON.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftyJSON/SwiftyJSON-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftyJSON/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftyJSON/SwiftyJSON.modulemap";
+				PRODUCT_MODULE_NAME = SwiftyJSON;
+				PRODUCT_NAME = SwiftyJSON;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		E210D3DB343A70DFEC06D485E47DBB08 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 20DBB0DFE68257D110DE3A7B1ABE3192 /* Bolts.xcconfig */;
@@ -17158,38 +17190,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		EA98035E7B4D79C8CD3C11F63E944EFF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C2CBECBF6F375C67622AEF7A087C83BC /* SwiftyJSON.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/SwiftyJSON/SwiftyJSON-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SwiftyJSON/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SwiftyJSON/SwiftyJSON.modulemap";
-				PRODUCT_MODULE_NAME = SwiftyJSON;
-				PRODUCT_NAME = SwiftyJSON;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -17908,8 +17908,8 @@
 		EACD0E5C7EA2618ADB272815B92FDDA1 /* Build configuration list for PBXNativeTarget "SwiftyJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EA98035E7B4D79C8CD3C11F63E944EFF /* Debug */,
-				6B41315DA1C69A47F9C529DC1B5F442F /* Release */,
+				E1B47B01FA38C5D1534C56A96768F43D /* Debug */,
+				C09EF056B27F59D8E57BBEC358A9679E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

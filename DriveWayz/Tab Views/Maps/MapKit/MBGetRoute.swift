@@ -42,6 +42,7 @@ extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
         self.dismissKeyboard()
+        self.mainBarController.view.isUserInteractionEnabled = false
         self.mainBarController.closeSearchBar()
         self.mainBarController.shouldBeLoading = true
         self.mainBarController.loadingParking()
@@ -49,6 +50,9 @@ extension MapKitViewController: handleParkingOptions {
             self.delegate?.hideHamburger()
             self.beginSearchingForParking()
             self.mainBarTopAnchor.constant = -100
+            self.summaryController.toText = address
+            self.summaryController.shouldBeLoading = true
+            self.summaryController.loadingParking()
             UIView.animate(withDuration: animationOut) {
                 self.summaryController.view.alpha = 1
                 self.summaryController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -77,16 +81,7 @@ extension MapKitViewController: handleParkingOptions {
             self.shouldBeSearchingForAnnotations = false
             self.mapView.setCenter(location.coordinate, animated: true)
             self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
-            let addressArray = address.split(separator: ",")
-            if let firstAddress = addressArray.first {
-                let first = String(firstAddress)
-                self.quickDestinationController.destinationLabel.text = first
-                if let secondAddress = addressArray.dropFirst().first {
-                    let second = String(secondAddress.dropFirst())
-                    self.quickDestinationController.destinationSecondaryLabel.text = second
-                    self.quickDestinationController.setupData()
-                }
-            }
+            self.quickDestinationController.setupData()
         }
     }
     
@@ -132,7 +127,7 @@ extension MapKitViewController: handleParkingOptions {
 //                delayWithSeconds(1.2) {
                     if let region = ZoomMapView {
                         self.mapView.userTrackingMode = .none
-                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 36, bottom: 420, right: 36), animated: true)
+                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 36, bottom: 420, right: 36), animated: true)
                         if let location = DestinationAnnotationLocation {
                             delayWithSeconds(0.5) {
                                 self.checkQuickDestination(annotationLocation: location)

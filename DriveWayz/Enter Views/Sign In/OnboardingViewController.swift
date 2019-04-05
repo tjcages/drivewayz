@@ -52,7 +52,7 @@ class OnboardingViewController: UIViewController {
         field.font = Fonts.SSPLightH2
         field.text = "Enter your full name"
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.SEA_BLUE
+        field.tintColor = Theme.PACIFIC_BLUE
         field.textColor = Theme.WHITE
         field.autocapitalizationType = .words
         field.clearButtonMode = .whileEditing

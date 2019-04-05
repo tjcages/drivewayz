@@ -161,7 +161,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     var timeToPicker: UIPickerView = {
         let picker = UIPickerView()
         picker.backgroundColor = UIColor.clear
-        picker.tintColor = Theme.SEA_BLUE
+        picker.tintColor = Theme.PACIFIC_BLUE
         picker.frame = CGRect(x: 0, y: 0, width: 400, height: 380)
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.setValue(Theme.SEA_BLUE, forKeyPath: "textColor")

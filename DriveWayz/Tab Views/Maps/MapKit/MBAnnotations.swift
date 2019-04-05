@@ -16,11 +16,6 @@ extension MapKitViewController {
 
     func observeAllParking() {
         let ref = Database.database().reference().child("ParkingSpots")
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print(snapshot)
-        }) { (err) in
-            print(err.localizedDescription)
-        }
         ref.observeSingleEvent(of: .value) { (snapshot) in
             numberOfTotalParkingSpots = Int(snapshot.childrenCount)
             ref.observe(.childAdded, with: { (snapshot) in
@@ -42,7 +37,6 @@ extension MapKitViewController {
                 if var dictionary = snapshot.value as? [String:AnyObject] {
                     let parking = ParkingSpots(dictionary: dictionary)
                     let parkingID = dictionary["parkingID"] as! String
-                    print(parkingID)
                     self.parkingSpotsDictionary[parkingID] = parking
                     self.parkingSpots = Array(self.parkingSpotsDictionary.values)
                     
@@ -63,7 +57,6 @@ extension MapKitViewController {
             self.mapView.removeAnnotations(annotations)
         }
         for i in 0..<parkingSpots.count {
-            print(i)
             let parking = self.parkingSpots[i]
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)

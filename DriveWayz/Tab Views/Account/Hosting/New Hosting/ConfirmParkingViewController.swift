@@ -122,7 +122,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.SEA_BLUE
-        button.setTitle("CONFIRM", for: .normal)
+        button.setTitle("Confirm", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
         button.layer.cornerRadius = 4

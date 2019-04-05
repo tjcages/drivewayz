@@ -53,8 +53,6 @@ extension MapKitViewController {
                                 let wordString = number.asWord
                                 let publicAddress = "\(streetAddress)"
                                 let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
-                                self.quickDestinationController.destinationLabel.text = descriptionAddress
-                                self.quickDestinationController.destinationSecondaryLabel.text = publicAddress
                                 self.mapView.setCenter(location.coordinate, animated: true)
                                 self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
                                 delayWithSeconds(animationOut) {

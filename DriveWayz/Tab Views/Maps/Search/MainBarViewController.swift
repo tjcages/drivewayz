@@ -25,27 +25,29 @@ class MainBarViewController: UIViewController {
     var shouldRefresh: Bool = true
     var parkingState: ParkingState = .foundParking {
         didSet {
-            if parkingState == .foundParking && self.alreadyFoundParking == false {
-                self.alreadyFoundParking = true
-                self.endSearching(status: parkingState)
-                delayWithSeconds(0.4) {
-                    self.alreadyZoomedIn = false
-                }
-            } else if parkingState == .zoomIn && self.alreadyZoomedIn == false {
-                self.alreadyZoomedIn = true
-                self.endSearching(status: parkingState)
-                delayWithSeconds(0.4) {
-                    self.alreadyFoundParking = false
-                }
-            } else if parkingState == .noParking && self.shouldRefresh == true {
-                self.shouldRefresh = false
-                self.endSearching(status: parkingState)
-                delayWithSeconds(0.4) {
-                    self.alreadyFoundParking = false
-                    self.alreadyZoomedIn = false
-                    delayWithSeconds(2, completion: {
-                        self.shouldRefresh = true
-                    })
+            if self.searchBarHeightAnchor.constant == 89 || self.searchBarHeightAnchor.constant == 63 {
+                if parkingState == .foundParking && self.alreadyFoundParking == false {
+                    self.alreadyFoundParking = true
+                    self.endSearching(status: parkingState)
+                    delayWithSeconds(0.4) {
+                        self.alreadyZoomedIn = false
+                    }
+                } else if parkingState == .zoomIn && self.alreadyZoomedIn == false {
+                    self.alreadyZoomedIn = true
+                    self.endSearching(status: parkingState)
+                    delayWithSeconds(0.4) {
+                        self.alreadyFoundParking = false
+                    }
+                } else if parkingState == .noParking && self.shouldRefresh == true {
+                    self.shouldRefresh = false
+                    self.endSearching(status: parkingState)
+                    delayWithSeconds(0.4) {
+                        self.alreadyFoundParking = false
+                        self.alreadyZoomedIn = false
+                        delayWithSeconds(2, completion: {
+                            self.shouldRefresh = true
+                        })
+                    }
                 }
             }
         }
@@ -73,12 +75,13 @@ class MainBarViewController: UIViewController {
         return button
     }()
     
-    var searchLabel: UITextField = {
+    var searchTextField: UITextField = {
         let label = UITextField()
         label.text = "Where are you headed?"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
+        label.backgroundColor = Theme.WHITE
         
         return label
     }()
@@ -203,10 +206,25 @@ class MainBarViewController: UIViewController {
         return button
     }()
     
+    var backgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 12
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        view.alpha = 0
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchLabel.delegate = self
+        searchTextField.delegate = self
 
         view.backgroundColor = UIColor.clear
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -243,12 +261,12 @@ class MainBarViewController: UIViewController {
         searchButton.widthAnchor.constraint(equalTo: searchButton.heightAnchor).isActive = true
         searchButton.centerYAnchor.constraint(equalTo: searchBarView.topAnchor, constant: 31.5).isActive = true
         
-        searchBarView.addSubview(searchLabel)
-        searchLabel.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        searchLabel.leftAnchor.constraint(equalTo: searchBarView.leftAnchor, constant: 52).isActive = true
-        searchLabel.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -12).isActive = true
-        searchLabel.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
-        searchLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        searchBarView.addSubview(searchTextField)
+        searchTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        searchTextField.leftAnchor.constraint(equalTo: searchButton.rightAnchor, constant: 8).isActive = true
+        searchTextField.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -12).isActive = true
+        searchTextField.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
+        searchTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         searchBarView.addSubview(searchLine)
         loadingParkingHeightAnchor = searchLine.heightAnchor.constraint(equalToConstant: 3)
@@ -285,7 +303,7 @@ class MainBarViewController: UIViewController {
         self.view.addSubview(searchLocation)
         let width: CGFloat = (self.view.frame.width - 300)/2
         searchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -width).isActive = true
-        searchLocation.centerYAnchor.constraint(equalTo: searchLabel.centerYAnchor).isActive = true
+        searchLocation.centerYAnchor.constraint(equalTo: searchTextField.centerYAnchor).isActive = true
         searchLocation.widthAnchor.constraint(equalToConstant: 24).isActive = true
         searchLocation.heightAnchor.constraint(equalToConstant: 23).isActive = true
         
@@ -302,9 +320,9 @@ class MainBarViewController: UIViewController {
         
         self.view.addSubview(fromSearchBar)
         self.view.addSubview(fromSearchLocation)
-        fromSearchBar.leftAnchor.constraint(equalTo: searchLabel.leftAnchor).isActive = true
+        fromSearchBar.leftAnchor.constraint(equalTo: searchTextField.leftAnchor).isActive = true
         fromSearchBar.rightAnchor.constraint(equalTo: fromSearchLocation.leftAnchor, constant: -4).isActive = true
-        fromSeachTopAnchor = fromSearchBar.bottomAnchor.constraint(equalTo: searchLabel.topAnchor, constant: -10)
+        fromSeachTopAnchor = fromSearchBar.bottomAnchor.constraint(equalTo: searchTextField.topAnchor, constant: -10)
             fromSeachTopAnchor.isActive = true
         fromSearchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -317,7 +335,7 @@ class MainBarViewController: UIViewController {
         fromSearchBar.addSubview(fromSearchLine)
         fromSearchBar.bringSubviewToFront(fromSearchIcon)
         fromSearchLine.centerXAnchor.constraint(equalTo: searchButton.centerXAnchor).isActive = true
-        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.bottomAnchor).isActive = true
+        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.bottomAnchor, constant: -4).isActive = true
         fromSearchLine.widthAnchor.constraint(equalToConstant: 4).isActive = true
         fromSearchLine.heightAnchor.constraint(equalToConstant: 31).isActive = true
         
@@ -325,6 +343,13 @@ class MainBarViewController: UIViewController {
         fromSearchLocation.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
         fromSearchLocation.widthAnchor.constraint(equalToConstant: 26).isActive = true
         fromSearchLocation.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+        self.view.addSubview(backgroundView)
+        self.view.sendSubviewToBack(backgroundView)
+        backgroundView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        backgroundView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundView.topAnchor.constraint(equalTo: fromSearchBar.topAnchor, constant: 0).isActive = true
+        backgroundView.bottomAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 4).isActive = true
         
     }
     
@@ -397,7 +422,6 @@ class MainBarViewController: UIViewController {
     }
     
     func foundParking() {
-        print("found")
         let image = UIImage(named: "saleIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         UIView.animate(withDuration: animationOut, animations: {
@@ -412,7 +436,6 @@ class MainBarViewController: UIViewController {
     }
     
     func noParking() {
-        print("none")
         let image = UIImage(named: "Home")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         UIView.animate(withDuration: animationOut, animations: {
@@ -427,7 +450,6 @@ class MainBarViewController: UIViewController {
     }
     
     func zoomIn() {
-        print("zoom")
         let image = UIImage(named: "locator")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         UIView.animate(withDuration: animationOut, animations: {
@@ -453,10 +475,10 @@ class MainBarViewController: UIViewController {
         self.shouldRefresh = false
         self.fullSearchOpen = true
         self.delegate?.mainBarWillOpen()
-        self.searchBarHeightAnchor.constant = 63
+        self.searchBarHeightAnchor.constant = 60
         UIView.animate(withDuration: animationIn, animations: {
             UIView.animate(withDuration: animationOut) {
-                self.view.backgroundColor = Theme.WHITE
+                self.view.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
                 self.searchBackButton.alpha = 1
                 self.searchLine.alpha = 0
                 self.view.layoutIfNeeded()
@@ -473,7 +495,9 @@ class MainBarViewController: UIViewController {
                 self.searchLocation.alpha = 0.1
                 self.fromSearchIcon.alpha = 1
                 self.fromSearchLine.alpha = 1
+                self.searchBarView.backgroundColor = UIColor.clear
                 self.fromSearchLocation.alpha = 1
+                self.backgroundView.alpha = 1
                 self.view.layoutIfNeeded()
             }
         }
@@ -481,13 +505,17 @@ class MainBarViewController: UIViewController {
     
     @objc func closeSearchBar() {
         self.view.endEditing(true)
+        self.shouldBeLoading = true
         self.shouldRefresh = true
         self.fullSearchOpen = false
         self.delegate?.mainBarWillClose()
         self.searchBarHeightAnchor.constant = 89
-        self.searchLabel.text = "Where are you headed?"
+        self.alreadyFoundParking = false
+        self.searchTextField.text = "Where are you headed?"
         UIView.animate(withDuration: animationIn, animations: {
             UIView.animate(withDuration: animationOut) {
+                self.backgroundView.alpha = 0
+                self.searchBarView.backgroundColor = Theme.WHITE
                 self.fromSearchBar.alpha = 0
                 self.searchLocation.alpha = 0
                 self.fromSearchIcon.alpha = 0
@@ -516,9 +544,10 @@ extension MainBarViewController: UITextFieldDelegate, UITextViewDelegate {
             self.fromSearchBar.text = ""
             self.fromSearchBar.textColor = Theme.BLACK
             return true
-        } else if textField == self.searchLabel && self.searchBarHeightAnchor.constant != 89 {
+        } else if textField == self.searchTextField && self.searchBarHeightAnchor.constant != 89 && self.searchBarHeightAnchor.constant != 63 {
             return true
         } else {
+            self.shouldBeLoading = false
             self.searchBarTapped()
             self.delegate?.expandSearchBar()
             return false
@@ -531,7 +560,7 @@ extension MainBarViewController: UITextFieldDelegate, UITextViewDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(false)
-        self.searchLabel.becomeFirstResponder()
+        self.searchTextField.becomeFirstResponder()
     }
     
 }

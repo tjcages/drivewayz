@@ -41,6 +41,7 @@ class ExpandedInformationViewController: UIViewController {
         label.textColor = Theme.BLACK
         label.text = "Listed on 1/19/2019"
         label.font = Fonts.SSPRegularH3
+        label.backgroundColor = UIColor.clear
         label.isScrollEnabled = false
         label.isUserInteractionEnabled = false
         

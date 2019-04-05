@@ -44,9 +44,11 @@ extension MapKitViewController: mainBarSearchDelegate {
         summaryController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         switch device {
         case .iphone8:
-            summaryController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+            summaryBarTopAnchor = summaryController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100)
+                summaryBarTopAnchor.isActive = true
         case .iphoneX:
-            summaryController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80).isActive = true
+            summaryBarTopAnchor = summaryController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120)
+                summaryBarTopAnchor.isActive = true
         }
 
         setupEvents()

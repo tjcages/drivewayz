@@ -194,7 +194,7 @@ extension ConfigureParkingViewController {
         let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
         let compareImage = UIImage(named: "addImageIcon")
         
-        if mainType == "parkingLot" {
+        if mainType == "parking lot" {
             if !(businessSpot1?.isEqualToImage(image: compareImage!))! && businessSpot1 != nil {
                 if let uploadData = businessSpot1?.jpegData(compressionQuality: 0.5) {
                     storageRef.child("firstImage").putData(uploadData, metadata: nil) { (metadata, error) in

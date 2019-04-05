@@ -232,6 +232,8 @@ class TagLabel: UILabel {
 
 class TriangleView: UIView {
     
+    var color = Theme.WHITE
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -250,7 +252,7 @@ class TriangleView: UIView {
         context.addLine(to: CGPoint(x: (rect.maxX / 2.0), y: rect.minY))
         context.closePath()
         
-        context.setFillColor(Theme.WHITE.cgColor)
+        context.setFillColor(color.cgColor)
         context.fillPath()
     }
 }

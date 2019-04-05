@@ -201,7 +201,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
                     let parkingNumber: Int = Int(parkingString)!
                     if parkingNumber > 1 {
                         if let parkingType = dictionary["parkingType"] as? String {
-                            if parkingType == "parkingLot" {
+                            if parkingType == "parking lot" {
                                 self.parkingType.text = "This is one space in a parking lot \n- There are \(parkingNumber) spots total"
                             } else if parkingType == "apartment" {
                                 self.parkingType.text = "This is one of the apartment parking spaces \n- There are \(parkingNumber) spots total"
@@ -211,7 +211,7 @@ class ParkingReserveViewController: UIViewController, UITableViewDelegate, UITab
                         }
                     } else {
                         if let parkingType = dictionary["parkingType"] as? String {
-                            if parkingType == "parkingLot" {
+                            if parkingType == "parking lot" {
                                 self.parkingType.text = "This is one space in a parking lot \n- There is only one spot"
                             } else if parkingType == "apartment" {
                                 self.parkingType.text = "This is one of the apartment parking spaces \n- There is only one spot"

@@ -69,7 +69,7 @@ class ConfirmViewController: UIViewController {
     var confirmOrderLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.GREEN_PIGMENT
         label.text = "Confirm your booking"
         label.font = Fonts.SSPSemiBoldH3
         
@@ -226,7 +226,7 @@ class ConfirmViewController: UIViewController {
         confirmDurationButton.topAnchor.constraint(equalTo: durationLabel.bottomAnchor, constant: 68).isActive = true
         confirmDurationButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         confirmDurationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        confirmDurationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        confirmDurationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: confirmDurationButton.centerXAnchor).isActive = true

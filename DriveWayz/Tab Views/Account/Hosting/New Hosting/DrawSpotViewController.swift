@@ -23,18 +23,27 @@ class DrawSpotViewController: UIViewController {
         return view
     }()
     
+    lazy var realImageView: UIImageView = {
+        let view = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width))
+        view.contentMode = .scaleAspectFill
+        view.isUserInteractionEnabled = true
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
     lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("CONFIRM IMAGE", for: .normal)
+        button.setTitle("Confirm image", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.WHITE
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        let background = CAGradientLayer().purpleColor()
+        let background = CAGradientLayer().purpleBlueColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
         background.zPosition = -10
         button.layer.addSublayer(background)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 12
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
         
@@ -55,12 +64,7 @@ class DrawSpotViewController: UIViewController {
         return button
     }()
     
-    var panoView: GMSPanoramaView = {
-        let view = GMSPanoramaView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
+    var panoView: GMSPanoramaView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +80,18 @@ class DrawSpotViewController: UIViewController {
     }
     
     func setData(image: UIImage, lattitude: Double, longitude: Double) {
-        self.imageView.image = image
+        panoView = GMSPanoramaView(frame: .zero)
+        panoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.addSubview(panoView)
+        imageView.sendSubviewToBack(panoView)
+        imageView.addSubview(realImageView)
+        panoView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        panoView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40).isActive = true
+        panoView.leftAnchor.constraint(equalTo: imageView.leftAnchor).isActive = true
+        panoView.rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
+    
+        self.realImageView.image = image
         self.panoView.moveNearCoordinate(CLLocationCoordinate2D(latitude: lattitude, longitude: longitude))
     }
     
@@ -84,23 +99,17 @@ class DrawSpotViewController: UIViewController {
         
         self.view.addSubview(imageView)
         
-        imageView.addSubview(panoView)
-        panoView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
-        panoView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40).isActive = true
-        panoView.leftAnchor.constraint(equalTo: imageView.leftAnchor).isActive = true
-        panoView.rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
+        self.view.addSubview(hideDotsButton)
+        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16).isActive = true
+        hideDotsButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
+        hideDotsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(confirmButton)
         confirmButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        confirmButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -4).isActive = true
+        confirmButton.topAnchor.constraint(equalTo: hideDotsButton.bottomAnchor, constant: 16).isActive = true
         confirmButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
         confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        self.view.addSubview(hideDotsButton)
-        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        hideDotsButton.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -15).isActive = true
-        hideDotsButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        hideDotsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
@@ -120,9 +129,10 @@ class DrawSpotViewController: UIViewController {
         panView.addGestureRecognizer(panGesture)
         imageView.addSubview(panView)
         
-        dot1 = UIButton(frame: CGRect(x: 100, y: 300, width: 36, height: 36))
-        dot1.layer.cornerRadius = 18
-        dot1.layer.backgroundColor = UIColor.clear.cgColor
+        dot1 = UIButton(frame: CGRect(x: 100, y: 300, width: 12, height: 12))
+        dot1.layer.cornerRadius = 6
+        dot1.backgroundColor = Theme.PACIFIC_BLUE
+        dot1.clipsToBounds = true
         dot1.translatesAutoresizingMaskIntoConstraints = false
         let pan1 = UIPanGestureRecognizer(target: self, action: #selector(panButton1(sender:)))
         dot1.addGestureRecognizer(pan1)
@@ -131,7 +141,7 @@ class DrawSpotViewController: UIViewController {
         dot1View.layer.cornerRadius = 4
         dot1View.backgroundColor = Theme.PACIFIC_BLUE
         dot1View.center = dot1.center
-        dot1View.translatesAutoresizingMaskIntoConstraints = false
+//        dot1View.translatesAutoresizingMaskIntoConstraints = false
         imageView.addSubview(dot1View)
         imageView.addSubview(dot1)
         
@@ -140,14 +150,14 @@ class DrawSpotViewController: UIViewController {
         dot1View.centerXAnchor.constraint(equalTo: dot1.centerXAnchor).isActive = true
         dot1View.centerYAnchor.constraint(equalTo: dot1.centerYAnchor).isActive = true
         
-        dot1.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        dot1.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        dot1.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
-        dot1.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        dot1.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        dot1.heightAnchor.constraint(equalToConstant: 12).isActive = true
+//        dot1.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
+//        dot1.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
         
-        dot2 = UIButton(frame: CGRect(x: 200, y: 300, width: 36, height: 36))
-        dot2.layer.cornerRadius = 18
-        dot2.backgroundColor = UIColor.clear
+        dot2 = UIButton(frame: CGRect(x: 200, y: 300, width: 12, height: 12))
+        dot2.layer.cornerRadius = 6
+        dot2.backgroundColor = Theme.PACIFIC_BLUE
         dot2.translatesAutoresizingMaskIntoConstraints = false
         let pan2 = UIPanGestureRecognizer(target: self, action: #selector(panButton2(sender:)))
         dot2.addGestureRecognizer(pan2)
@@ -156,7 +166,7 @@ class DrawSpotViewController: UIViewController {
         dot2View.layer.cornerRadius = 4
         dot2View.backgroundColor = Theme.PACIFIC_BLUE
         dot2View.center = dot1.center
-        dot2View.translatesAutoresizingMaskIntoConstraints = false
+//        dot2View.translatesAutoresizingMaskIntoConstraints = false
         imageView.addSubview(dot2View)
         imageView.addSubview(dot2)
         
@@ -165,14 +175,14 @@ class DrawSpotViewController: UIViewController {
         dot2View.centerXAnchor.constraint(equalTo: dot2.centerXAnchor).isActive = true
         dot2View.centerYAnchor.constraint(equalTo: dot2.centerYAnchor).isActive = true
         
-        dot2.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        dot2.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        dot2.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
-        dot2.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        dot2.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        dot2.heightAnchor.constraint(equalToConstant: 12).isActive = true
+//        dot2.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
+//        dot2.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
         
-        dot3 = UIButton(frame: CGRect(x: 200, y: 400, width: 36, height: 36))
-        dot3.layer.cornerRadius = 18
-        dot3.backgroundColor = UIColor.clear
+        dot3 = UIButton(frame: CGRect(x: 200, y: 400, width: 12, height: 12))
+        dot3.layer.cornerRadius = 6
+        dot3.backgroundColor = Theme.BLUE
         dot3.translatesAutoresizingMaskIntoConstraints = false
         let pan3 = UIPanGestureRecognizer(target: self, action: #selector(panButton3(sender:)))
         dot3.addGestureRecognizer(pan3)
@@ -180,8 +190,8 @@ class DrawSpotViewController: UIViewController {
         dot3View = UIView()
         dot3View.layer.cornerRadius = 4
         dot3View.backgroundColor = Theme.PACIFIC_BLUE
-        dot3View.center = dot1.center
-        dot3View.translatesAutoresizingMaskIntoConstraints = false
+        dot3View.center = dot3.center
+//        dot3View.translatesAutoresizingMaskIntoConstraints = false
         imageView.addSubview(dot3View)
         imageView.addSubview(dot3)
         
@@ -190,14 +200,16 @@ class DrawSpotViewController: UIViewController {
         dot3View.centerXAnchor.constraint(equalTo: dot3.centerXAnchor).isActive = true
         dot3View.centerYAnchor.constraint(equalTo: dot3.centerYAnchor).isActive = true
         
-        dot3.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        dot3.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        dot3.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
-        dot3.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+        dot3.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        dot3.heightAnchor.constraint(equalToConstant: 12).isActive = true
+//        dot3.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
+//        dot3.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         
-        dot4 = UIButton(frame: CGRect(x: 100, y: 400, width: 36, height: 36))
-        dot4.layer.cornerRadius = 18
-        dot4.backgroundColor = UIColor.clear
+        dot4 = UIButton(frame: CGRect(x: 100, y: 400, width: 12, height: 12))
+        dot4.layer.cornerRadius = 6
+        dot4.backgroundColor = Theme.BLUE
+        dot4.layer.borderColor = UIColor.clear.cgColor
+        dot4.layer.borderWidth = 4
         dot4.translatesAutoresizingMaskIntoConstraints = false
         let pan4 = UIPanGestureRecognizer(target: self, action: #selector(panButton4(sender:)))
         dot4.addGestureRecognizer(pan4)
@@ -205,8 +217,8 @@ class DrawSpotViewController: UIViewController {
         dot4View = UIView()
         dot4View.layer.cornerRadius = 4
         dot4View.backgroundColor = Theme.PACIFIC_BLUE
-        dot4View.center = dot1.center
-        dot4View.translatesAutoresizingMaskIntoConstraints = false
+        dot4View.center = dot4.center
+//        dot4View.translatesAutoresizingMaskIntoConstraints = false
         imageView.addSubview(dot4View)
         imageView.addSubview(dot4)
         
@@ -215,10 +227,10 @@ class DrawSpotViewController: UIViewController {
         dot4View.centerXAnchor.constraint(equalTo: dot4.centerXAnchor).isActive = true
         dot4View.centerYAnchor.constraint(equalTo: dot4.centerYAnchor).isActive = true
         
-        dot4.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        dot4.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        dot4.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
-        dot4.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+        dot4.widthAnchor.constraint(equalToConstant: 12).isActive = true
+        dot4.heightAnchor.constraint(equalToConstant: 12).isActive = true
+//        dot4.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
+//        dot4.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         
         startPan()
         
@@ -226,10 +238,15 @@ class DrawSpotViewController: UIViewController {
     
     func useGoogleMaps() {
         self.panoView.alpha = 1
+        self.realImageView.alpha = 0
+        self.hideDotsButton.alpha = 1
     }
     
     func useRegularImage() {
         self.panoView.alpha = 0
+        self.panoView.removeFromSuperview()
+        self.realImageView.alpha = 1
+        self.hideDotsButton.alpha = 0
     }
     
     var toColor: Bool = true
@@ -237,11 +254,13 @@ class DrawSpotViewController: UIViewController {
     @objc func hideButtons(sender: UIButton) {
         if self.dot1View.alpha == 1 {
             UIView.animate(withDuration: animationIn) {
+                dot1.backgroundColor = UIColor.clear
                 self.dot1View.alpha = 0
                 self.dot2View.alpha = 0
                 self.dot3View.alpha = 0
                 self.dot4View.alpha = 0
                 self.shapeLayer.fillColor = UIColor.clear.cgColor
+                self.view.layoutIfNeeded()
             }
             self.toColor = false
             self.hideDotsButton.setTitle("Bring square", for: .normal)
@@ -294,6 +313,11 @@ class DrawSpotViewController: UIViewController {
         let x = (dot1.center.x + dot2.center.x + dot3.center.x + dot4.center.x) / 4
         let y = (dot1.center.y + dot2.center.y + dot3.center.y + dot4.center.y) / 4
         panView.center = CGPoint(x: x, y: y)
+        dot1.center = dot1View.center
+        dot2.center = dot2View.center
+        dot3.center = dot3View.center
+        dot4.center = dot4View.center
+        self.view.layoutIfNeeded()
     }
     
     func startPan() {
@@ -384,7 +408,7 @@ class DrawSpotViewController: UIViewController {
         
         shapeLayer.frame = CGRect(x: 0, y: 0,
                                   width: width, height: height)
-        
+        shapeLayerMoved()
         let path = UIBezierPath()
         path.move(to: CGPoint(x: dot1.center.x, y: dot1.center.y))
         path.addLine(to: CGPoint(x: dot2.center.x, y: dot2.center.y))
@@ -403,8 +427,6 @@ class DrawSpotViewController: UIViewController {
             shapeLayer.fillColor = UIColor.clear.cgColor
             shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
         }
-        
-        shapeLayerMoved()
     }
     
 

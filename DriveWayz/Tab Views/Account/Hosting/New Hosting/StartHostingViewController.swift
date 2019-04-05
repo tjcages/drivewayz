@@ -36,7 +36,7 @@ class StartHostingViewController: UIViewController {
         label.text = "Make up to an extra $100 a week while helping to improve your parking community"
         label.textColor = Theme.WHITE.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH4
         label.numberOfLines = 4
         
         return label

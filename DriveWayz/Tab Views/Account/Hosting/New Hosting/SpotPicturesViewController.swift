@@ -30,6 +30,14 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         return view
     }()
     
+    var drawController: DrawSpotViewController = {
+        let controller = DrawSpotViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
     var addAnImageButton1: UIButton = {
         let image = UIImage(named: "addImageIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
@@ -491,6 +499,8 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        drawController.delegate = self
+        
         setupViews()
         setupAdditionalViews()
         
@@ -625,6 +635,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
             }
         } else {
             let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertController.Style.actionSheet)
+            alert.popoverPresentationController?.sourceView = self.view
             alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertAction.Style.default, handler: { action in
                 self.useRegular = true
                 self.handleSelectParkingImageView()
@@ -695,7 +706,9 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         pickerParking?.delegate = self
         pickerParking?.allowsEditing = true
         
-        present(pickerParking!, animated: true, completion: nil)
+        if let presentor = pickerParking {
+            present(presentor, animated: true, completion: nil)
+        }
     }
     
     @objc func handleTakeAnImageView() {
@@ -704,7 +717,9 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         pickerParking?.allowsEditing = true
         pickerParking?.sourceType = .camera
         
-        present(pickerParking!, animated: true, completion: nil)
+        if let presentor = pickerParking {
+            present(presentor, animated: true, completion: nil)
+        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -726,28 +741,17 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         }
     }
     
-    var drawController = DrawSpotViewController()
-    
     func sendDraw(image: UIImage) {
-        drawController.view.translatesAutoresizingMaskIntoConstraints = false
-        drawController.delegate = self
-        drawController.view.alpha = 0
-        
-        self.view.addSubview(drawController.view)
         drawController.setData(image: image, lattitude: self.lattitude, longitude: self.longitude)
-        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
-        drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.view.layoutIfNeeded()
         self.delegate?.imageDrawSelected()
         UIView.animate(withDuration: animationIn) {
             self.drawController.view.alpha = 1
         }
         if self.useRegular == true {
-            self.drawController.useRegularImage()
+            drawController.useRegularImage()
         } else {
-            self.drawController.useGoogleMaps()
+            drawController.useGoogleMaps()
         }
     }
     
@@ -755,12 +759,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         UIView.animate(withDuration: animationIn, animations: {
             self.drawController.view.alpha = 0
             self.drawController.toColor = true
-        }) { (success) in
-            self.drawController.panoView.removeFromSuperview()
-            self.drawController.willMove(toParent: nil)
-            self.drawController.view.removeFromSuperview()
-            self.drawController.removeFromParent()
-        }
+        })
     }
     
     func configureExited() {
@@ -811,6 +810,12 @@ extension SpotPicturesViewController {
         setupSix()
         setupSeven()
         setupEight()
+        
+        self.view.addSubview(drawController.view)
+        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
+        drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
     }
     
     func setupOne() {

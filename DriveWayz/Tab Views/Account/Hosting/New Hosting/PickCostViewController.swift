@@ -32,9 +32,9 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 8
         label.text = """
-        To take the guesswork out of hourly rates, we utilize a flexible, optimized pricing algorithm influenced by proximity to events, time of day, and surge demand.
+        To take the guesswork out of hourly rates, we utilize a flexible, optimized pricing algorithm influenced by location, proximity to events, time of day, and surge demand.
         
-        This will maximize your profitability while giving consumers more options for easy, reasonably priced parking.
+        This price is subject to change.
         """
         
         return label
@@ -80,7 +80,7 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
-        informationHeightAnchor = informationLabel.heightAnchor.constraint(equalToConstant: 200)
+        informationHeightAnchor = informationLabel.heightAnchor.constraint(equalToConstant: 160)
             informationHeightAnchor.isActive = true
         
 //        self.view.addSubview(costPicker)
@@ -98,31 +98,31 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func configureCustomPricing(state: String, city: String) {
-        var stateAbrv = state
-        if state.first == " " { stateAbrv.removeFirst() }
-        let ref = Database.database().reference().child("CostLocations")
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let cities = dictionary["\(stateAbrv)"] as? [String:AnyObject] {
-                    for cit in cities {
-                        let key = cit.key
-                        if key == city {
-                            if let cost = cit.value as? Double {
-                                let costValue = NSString(format: "%.2f", cost) as String
-                                self.costValues = []
-                                var i = cost - 1
-                                while i <= cost + 1 {
-                                    let value = NSString(format: "%.2f", i) as String
-                                    self.costValues.append("$\(value)")
-                                    i = i + 0.25
-                                }
-                                self.costPicker.reloadAllComponents()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        var stateAbrv = state
+//        if state.first == " " { stateAbrv.removeFirst() }
+//        let ref = Database.database().reference().child("CostLocations")
+//        ref.observeSingleEvent(of: .value) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                if let cities = dictionary["\(stateAbrv)"] as? [String:AnyObject] {
+//                    for cit in cities {
+//                        let key = cit.key
+//                        if key == city {
+//                            if let cost = cit.value as? Double {
+//                                let costValue = NSString(format: "%.2f", cost) as String
+//                                self.costValues = []
+//                                var i = cost - 1
+//                                while i <= cost + 1 {
+//                                    let value = NSString(format: "%.2f", i) as String
+//                                    self.costValues.append("$\(value)")
+//                                    i = i + 0.25
+//                                }
+//                                self.costPicker.reloadAllComponents()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     func removeTutorial() {

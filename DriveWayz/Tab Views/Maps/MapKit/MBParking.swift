@@ -153,7 +153,7 @@ extension MapKitViewController: handleCheckoutParking {
         if let region = ZoomPurchaseMapView {
             if self.quickDestinationController.distanceLabel.text != "0 min" {
                 self.mapView.userTrackingMode = .none
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 520, right: 66), animated: true)
+                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 520, right: 66), animated: true)
                 if let location = DestinationAnnotationLocation {
                     delayWithSeconds(0.5) {
                         self.checkQuickDestination(annotationLocation: location)
@@ -177,7 +177,7 @@ extension MapKitViewController: handleCheckoutParking {
         self.parkingBackButton.addTarget(self, action: #selector(parkingHidden), for: .touchUpInside)
         if let region = ZoomMapView {
             self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
             if let location = DestinationAnnotationLocation {
                 delayWithSeconds(0.5) {
                     self.checkQuickDestination(annotationLocation: location)
@@ -199,8 +199,11 @@ extension MapKitViewController: handleCheckoutParking {
         self.parkingController.bookingFound()
         self.mapView.userTrackingMode = .none
         self.takeAwayEvents()
+        self.summaryController.shouldBeLoading = false
         UIView.animate(withDuration: animationIn) {
             self.parkingBackButton.alpha = 1
+            self.summaryBarTopAnchor.constant = self.summaryBarTopAnchor.constant - 60
+            self.summaryController.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
             self.parkingControllerBottomAnchor.constant = 0
             self.purchaseControllerBottomAnchor.constant = 500
             self.parkingBackButtonBookAnchor.isActive = true
@@ -218,6 +221,7 @@ extension MapKitViewController: handleCheckoutParking {
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, animated: false)
         }
+        self.summaryBarTopAnchor.constant = self.summaryBarTopAnchor.constant + 60
         switch device {
         case .iphone8:
             self.mainBarTopAnchor.constant = 100
@@ -239,6 +243,7 @@ extension MapKitViewController: handleCheckoutParking {
             self.parkingBackButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.mainBarController.view.isUserInteractionEnabled = true
             self.removeAllMapOverlays(shouldRefresh: true)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.quickDestinationController.view.alpha = 0

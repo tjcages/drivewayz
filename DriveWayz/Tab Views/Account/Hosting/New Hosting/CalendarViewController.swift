@@ -14,6 +14,8 @@ protocol CalendarCallBack {
 
 class CalendarViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    var numberOfMonths: Int = 3
+    
     lazy var calendar: UICollectionView = {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.backgroundColor = UIColor.clear
@@ -22,7 +24,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         view.decelerationRate = .fast
         view.register(CalendarCell.self, forCellWithReuseIdentifier: "cell")
         view.register(CalendarHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        view.contentInset = UIEdgeInsets(top: 40, left: 0, bottom: 120, right: 0)
+        view.contentInset = UIEdgeInsets(top: 40, left: 0, bottom: 200, right: 0)
         
         return view
     }()
@@ -52,6 +54,18 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         label.numberOfLines = 2
         
         return label
+    }()
+    
+    var showMoreButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.setTitle("Show more", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH5
+        button.addTarget(self, action: #selector(showMorePressed(sender:)), for: .touchUpInside)
+        
+        return button
     }()
     
     var delegate: CalendarCallBack? = nil
@@ -86,6 +100,8 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         calendar.reloadData()
     }
     
+    var showMoreTopAnchor: NSLayoutConstraint!
+    
     func setupViews() {
 
         self.view.addSubview(wrapper)
@@ -100,12 +116,30 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         calendar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         calendar.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
+        calendar.addSubview(showMoreButton)
+        showMoreButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        showMoreButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        showMoreButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        showMoreTopAnchor = showMoreButton.topAnchor.constraint(equalTo: calendar.topAnchor, constant: calendar.frame.size.width / 7 * 24)
+            showMoreTopAnchor.isActive = true
+        
         calendar.addSubview(scheduleLabel)
         scheduleLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         scheduleLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         scheduleLabel.topAnchor.constraint(equalTo: calendar.topAnchor, constant: -40).isActive = true
         scheduleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
+    }
+    
+    @objc func showMorePressed(sender: UIButton) {
+        if sender.titleLabel?.text == "Show more" {
+            self.numberOfMonths = 12
+            sender.setTitle("Show less", for: .normal)
+        } else {
+            self.numberOfMonths = 3
+            sender.setTitle("Show more", for: .normal)
+        }
+        calendar.reloadData()
     }
     
     func setupCalendar() {
@@ -150,7 +184,12 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 12
+        self.showMoreTopAnchor.constant = calendar.frame.size.width / 7 * 7.5 * CGFloat(numberOfMonths)
+        if numberOfMonths > 11 {
+            self.showMoreTopAnchor.constant = self.showMoreTopAnchor.constant - 60
+        }
+        self.view.layoutIfNeeded()
+        return numberOfMonths
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

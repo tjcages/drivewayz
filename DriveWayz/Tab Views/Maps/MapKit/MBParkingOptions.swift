@@ -32,7 +32,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = firstMapView, let purchaseRegion = firstPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {
@@ -69,7 +69,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = secondMapView, let purchaseRegion = secondPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {
@@ -106,7 +106,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
                 self.animateSecondPolyline()
                 if let region = thirdMapView, let purchaseRegion = thirdPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {
@@ -142,7 +142,7 @@ extension MapKitViewController {
                 self.animateFirstPolyline()
 //                self.animateSecondPolyline()
                 if let region = finalMapView, let purchaseRegion = finalPurchaseMapView {
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
                     ZoomMapView = region
                     ZoomPurchaseMapView = purchaseRegion
                     if let location = DestinationAnnotationLocation {

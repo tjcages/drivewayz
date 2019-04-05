@@ -156,6 +156,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         label.text = ""
         label.font = Fonts.SSPLightH3
         label.textColor = Theme.BLACK
+        label.backgroundColor = Theme.WHITE
         label.isEditable = false
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
@@ -227,7 +228,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE.withAlphaComponent(0.7)
         view.alpha = 0.9
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = 4
         
         return view
     }()

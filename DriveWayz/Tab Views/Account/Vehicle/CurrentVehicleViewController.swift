@@ -398,7 +398,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.tintColor = Theme.PURPLE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

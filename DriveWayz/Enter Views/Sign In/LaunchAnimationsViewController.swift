@@ -205,6 +205,9 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         self.view.addSubview(self.tabController!.view)
         self.addChild(self.tabController!)
         self.tabController!.willMove(toParent: self)
+        delayWithSeconds(4) {
+            self.tabController?.mapController.setupLocationManager()
+        }
         self.tabController!.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         self.tabController!.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         self.tabController!.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true

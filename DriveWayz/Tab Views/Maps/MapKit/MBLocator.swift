@@ -19,7 +19,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     @objc func locatorButtonAction(sender: UIButton) {
         if let region = ZoomMapView {
             self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 80, left: 66, bottom: 420, right: 66), animated: true)
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
             if let location = DestinationAnnotationLocation {
                 delayWithSeconds(0.5) {
                     self.checkQuickDestination(annotationLocation: location)
@@ -27,9 +27,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             }
         } else {
             if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-                self.mapView.userTrackingMode = .follow
+                self.mapView.setCenter(location, zoomLevel: 14, animated: true)
                 delayWithSeconds(animationOut * 2) {
-                    self.mapView.setCenter(location, zoomLevel: 14, animated: true)
+                    self.mapView.userTrackingMode = .follow
                 }
             }
         }
@@ -42,7 +42,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     func locatorButtonPressed() {
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, zoomLevel: 14, animated: true)
-            self.mapView.userTrackingMode = .follow
+            delayWithSeconds(animationOut * 2) {
+                self.mapView.userTrackingMode = .follow
+            }
         }
     }
     
@@ -62,18 +64,14 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             self.observeAllParking()
         }
         if self.searchedForPlace == false {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                guard let userLocation = self.mapView.userLocation else { return }
-                let location: CLLocationCoordinate2D = userLocation.coordinate
-                self.mapView.setCenter(location, zoomLevel: 12, animated: false)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.9) {
-                guard let userLocation = self.mapView.userLocation else { return }
-                let location: CLLocationCoordinate2D = userLocation.coordinate
-                self.mapView.setCenter(location, zoomLevel: 14, animated: true)
-                delayWithSeconds(1, completion: {
-                    self.mapView.userTrackingMode = .follow
-                })
+            if let userLocation = locationManager.location {
+                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: true)
+                delayWithSeconds(1.8) {
+                    self.mapView.setCenter(userLocation.coordinate, zoomLevel: 14, animated: true)
+                    delayWithSeconds(animationOut * 2, completion: {
+                        self.mapView.userTrackingMode = .follow
+                    })
+                }
             }
         } else {
             return
@@ -128,9 +126,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         let previousX: CGFloat = self.quickDestinationRightAnchor.constant
         let previousY: CGFloat = self.quickDestinationTopAnchor.constant
         if xDisplacement > self.mapView.frame.width/2 {
-            self.quickDestinationRightAnchor.constant = xDisplacement + 20
+            self.quickDestinationRightAnchor.constant = xDisplacement + 140
         } else {
-            self.quickDestinationRightAnchor.constant = xDisplacement + self.quickDestinationController.containerWidthAnchor.constant + 20
+            self.quickDestinationRightAnchor.constant = xDisplacement + self.quickDestinationController.containerWidthAnchor.constant + 140
         }
         if (previousX > self.view.frame.width && self.quickDestinationRightAnchor.constant < self.view.frame.width) || (previousX < self.view.frame.width && self.quickDestinationRightAnchor.constant > self.view.frame.width) {
             UIView.animate(withDuration: animationIn) {

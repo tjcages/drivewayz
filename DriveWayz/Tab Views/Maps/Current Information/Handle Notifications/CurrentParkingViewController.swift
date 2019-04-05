@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import UserNotifications
 import GoogleMaps
-import MapboxStatic
+//import MapboxStatic
 
 var timerStarted: Bool = false
 var currentParking: Bool = false

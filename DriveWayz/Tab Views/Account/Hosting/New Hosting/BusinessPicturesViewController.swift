@@ -232,9 +232,19 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         
         return button
     }()
+    
+    var drawController: DrawSpotViewController = {
+        let controller = DrawSpotViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        drawController.delegate = self
 
         setupViews()
     }
@@ -336,6 +346,12 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         spotRemove4.heightAnchor.constraint(equalTo: spotRemove4.widthAnchor).isActive = true
         
         scrollView.addSubview(checkmark)
+        
+        self.view.addSubview(drawController.view)
+        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
+        drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
     }
 
@@ -453,28 +469,17 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         }
     }
     
-    var drawController = DrawSpotViewController()
-    
     func sendDraw(image: UIImage) {
-        drawController.view.translatesAutoresizingMaskIntoConstraints = false
-        drawController.delegate = self
-        drawController.view.alpha = 0
-        
-        self.view.addSubview(drawController.view)
         drawController.setData(image: image, lattitude: self.lattitude, longitude: self.longitude)
-        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
-        drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.view.layoutIfNeeded()
         self.delegate?.imageDrawSelected()
         UIView.animate(withDuration: animationIn) {
             self.drawController.view.alpha = 1
         }
         if self.useRegular == true {
-            self.drawController.useRegularImage()
+            drawController.useRegularImage()
         } else {
-            self.drawController.useGoogleMaps()
+            drawController.useGoogleMaps()
         }
     }
     
@@ -482,11 +487,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         UIView.animate(withDuration: animationIn, animations: {
             self.drawController.view.alpha = 0
             self.drawController.toColor = true
-        }) { (success) in
-            self.drawController.willMove(toParent: nil)
-            self.drawController.view.removeFromSuperview()
-            self.drawController.removeFromParent()
-        }
+        })
     }
     
     func configureExited() {

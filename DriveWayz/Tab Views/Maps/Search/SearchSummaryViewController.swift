@@ -10,6 +10,19 @@ import UIKit
 
 class SearchSummaryViewController: UIViewController {
     
+    let maxWidth: CGFloat = 327
+    var shouldBeLoading: Bool = true
+    
+    var toText: String = "Folsom Field" {
+        didSet {
+            if let dotRange = toText.range(of: ",") {
+                toText.removeSubrange(dotRange.lowerBound..<toText.endIndex)
+            }
+            self.toLabel.text = toText
+            self.determineSizing()
+        }
+    }
+    
     var searchBarView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,30 +54,10 @@ class SearchSummaryViewController: UIViewController {
         return label
     }()
     
-    var fromSearchLine: UIView = {
+    var searchLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        
-        let dot1 = UIView(frame: CGRect(x: 8.2, y: 0, width: 4, height: 4))
-        dot1.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
-        dot1.layer.cornerRadius = 2
-        view.addSubview(dot1)
-        
-        let dot2 = UIView(frame: CGRect(x: 20.4, y: 0, width: 4, height: 4))
-        dot2.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
-        dot2.layer.cornerRadius = 2
-        view.addSubview(dot2)
-        
-        let dot3 = UIView(frame: CGRect(x: 32.6, y: 0, width: 4, height: 4))
-        dot3.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
-        dot3.layer.cornerRadius = 2
-        view.addSubview(dot3)
-        
-        let dot4 = UIView(frame: CGRect(x: 44.8, y: 0, width: 4, height: 4))
-        dot4.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
-        dot4.layer.cornerRadius = 2
-        view.addSubview(dot4)
+        view.backgroundColor = Theme.WHITE
         
         return view
     }()
@@ -79,34 +72,137 @@ class SearchSummaryViewController: UIViewController {
         view.layer.shadowOpacity = 0.4
 
         setupViews()
+        determineSizing()
+    }
+    
+    func determineSizing() {
+        guard let fromText = self.fromLabel.text, let toText = self.toLabel.text else { return }
+        var fromWidth = fromText.width(withConstrainedHeight: 25, font: Fonts.SSPRegularH4)
+        let toWidth = toText.width(withConstrainedHeight: 25, font: Fonts.SSPRegularH4)
+        if fromWidth > maxWidth/2 - 12 {
+           fromWidth = maxWidth/2 - 12
+        }
+        self.fromWidthAnchor.constant = fromWidth
+        self.searchBarWidthAnchor.constant = fromWidth + toWidth + 104
+        if self.searchBarWidthAnchor.constant > maxWidth {
+            self.searchBarWidthAnchor.constant = maxWidth
+        }
+        self.view.layoutIfNeeded()
     }
 
+    var fromWidthAnchor: NSLayoutConstraint!
+    var searchBarWidthAnchor: NSLayoutConstraint!
+    
+    var loadingParkingLeftAnchor: NSLayoutConstraint!
+    var loadingParkingRightAnchor: NSLayoutConstraint!
+    var loadingParkingWidthAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         self.view.addSubview(searchBarView)
+        self.view.addSubview(fromSearchLine)
+        self.view.addSubview(fromLabel)
+        self.view.addSubview(toLabel)
+        
         searchBarView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         searchBarView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        searchBarView.widthAnchor.constraint(equalToConstant: 327).isActive = true
-        searchBarView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        searchBarWidthAnchor = searchBarView.widthAnchor.constraint(equalToConstant: 327)
+            searchBarWidthAnchor.isActive = true
+        searchBarView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
-        self.view.addSubview(fromLabel)
-        fromLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        fromLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        fromLabel.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -12).isActive = true
-        fromLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        fromLabel.leftAnchor.constraint(equalTo: searchBarView.leftAnchor, constant: 16).isActive = true
+        fromLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -2).isActive = true
+        fromWidthAnchor = fromLabel.widthAnchor.constraint(equalToConstant: maxWidth)
+            fromWidthAnchor.isActive = true
+        fromLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.view.addSubview(toLabel)
-        toLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        toLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        toLabel.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 12).isActive = true
-        toLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        toLabel.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -16).isActive = true
+        toLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -2).isActive = true
+        toLabel.leftAnchor.constraint(equalTo: fromSearchLine.rightAnchor, constant: 8).isActive = true
+        toLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.view.addSubview(fromSearchLine)
         fromSearchLine.bottomAnchor.constraint(equalTo: toLabel.bottomAnchor, constant: -8).isActive = true
-        fromSearchLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        fromSearchLine.widthAnchor.constraint(equalToConstant: 31).isActive = true
+        fromSearchLine.leftAnchor.constraint(equalTo: fromLabel.rightAnchor, constant: 8).isActive = true
+        fromSearchLine.widthAnchor.constraint(equalToConstant: 49.4).isActive = true
         fromSearchLine.heightAnchor.constraint(equalToConstant: 4).isActive = true
         
+        searchBarView.addSubview(searchLine)
+        searchLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        searchLine.bottomAnchor.constraint(equalTo: searchBarView.bottomAnchor).isActive = true
+        loadingParkingLeftAnchor = searchLine.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+            loadingParkingLeftAnchor.isActive = true
+        loadingParkingRightAnchor = searchLine.rightAnchor.constraint(equalTo: self.view.rightAnchor)
+            loadingParkingRightAnchor.isActive = false
+        loadingParkingWidthAnchor = searchLine.widthAnchor.constraint(equalToConstant: 0)
+            loadingParkingWidthAnchor.isActive = true
+        
     }
+    
+    func loadingParking() {
+        if shouldBeLoading == true {
+            self.loadingParkingWidthAnchor.constant = 100
+            UIView.animate(withDuration: 0.4, animations: {
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.loadingParkingLeftAnchor.isActive = false
+                self.loadingParkingRightAnchor.isActive = true
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: { (success) in
+                    self.loadingParkingWidthAnchor.constant = 0
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.view.layoutIfNeeded()
+                    }, completion: { (success) in
+                        self.loadingParkingLeftAnchor.isActive = true
+                        self.loadingParkingRightAnchor.isActive = false
+                        self.view.layoutIfNeeded()
+                        self.loadingParking()
+                    })
+                })
+            }
+        }
+    }
+    
+    var fromSearchLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
+        let size: CGFloat = 2.0
+        let color = Theme.WHITE
+        let start: CGFloat = 4.2
+        let difference: CGFloat = 8.2
+        
+        let dot1 = UIView(frame: CGRect(x: start, y: 0.0, width: size, height: size))
+        dot1.backgroundColor = color
+        dot1.layer.cornerRadius = size/2
+        view.addSubview(dot1)
+        
+        let dot2 = UIView(frame: CGRect(x: start + difference, y: 0.0, width: size, height: size))
+        dot2.backgroundColor = color
+        dot2.layer.cornerRadius = size/2
+        view.addSubview(dot2)
+        
+        let dot3 = UIView(frame: CGRect(x: start + difference * 2, y: 0.0, width: size, height: size))
+        dot3.backgroundColor = color
+        dot3.layer.cornerRadius = size/2
+        view.addSubview(dot3)
+        
+        let dot4 = UIView(frame: CGRect(x: start + difference * 3, y: 0.0, width: size, height: size))
+        dot4.backgroundColor = color
+        dot4.layer.cornerRadius = size/2
+        view.addSubview(dot4)
+        
+        let dot5 = UIView(frame: CGRect(x: start + difference * 4, y: 0.0, width: size, height: size))
+        dot5.backgroundColor = color
+        dot5.layer.cornerRadius = size/2
+        view.addSubview(dot5)
+        
+        let dot6 = UIView(frame: CGRect(x: start + difference * 5, y: 0.0, width: size, height: size))
+        dot6.backgroundColor = color
+        dot6.layer.cornerRadius = size/2
+        view.addSubview(dot6)
+        
+        return view
+    }()
     
 }

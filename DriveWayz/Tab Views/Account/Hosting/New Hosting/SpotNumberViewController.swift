@@ -36,6 +36,7 @@ class SpotNumberViewController: UIViewController {
         view.font = Fonts.SSPLightH3
         view.tintColor = .clear
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -43,7 +44,7 @@ class SpotNumberViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -80,9 +81,10 @@ class SpotNumberViewController: UIViewController {
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
         view.textColor = Theme.WHITE
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -90,7 +92,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -127,9 +129,10 @@ class SpotNumberViewController: UIViewController {
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
         view.textColor = Theme.WHITE
-        view.tintColor = Theme.SEA_BLUE
+        view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.keyboardAppearance = .dark
         
         return view
     }()
@@ -137,7 +140,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -336,8 +339,8 @@ class SpotNumberViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.PURPLE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -400,7 +403,7 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         }
         label.textColor = Theme.BLACK
         label.textAlignment = .center
-        label.font = Fonts.SSPLightH3
+        label.font = Fonts.SSPRegularH3
         label.text = "\(numbers[row])"
         
         return label

@@ -18,7 +18,7 @@ class ResultsCell: UITableViewCell {
         let image = UIImage(named: "locationParkingIcon")
         imageView.image = image
         imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = Theme.SEA_BLUE
+        imageView.tintColor = Theme.PACIFIC_BLUE
 //        imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
 //        imageView.layer.cornerRadius = 25

@@ -164,6 +164,17 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
+
+    
+//    lazy var hostingController: MySpotsViewController = {
+//        let controller = MySpotsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Hosting"
+////        controller.delegate = self
+////        controller.moveDelegate = self
+//        return controller
+//    }()
+//
     lazy var configureParkingController: ConfigureParkingViewController = {
         let controller = ConfigureParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false

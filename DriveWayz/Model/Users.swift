@@ -19,6 +19,8 @@ class Users: NSObject {
 enum Device {
     case iphone8
     case iphoneX
+//    case iphonePlus
+//    case iPad
 }
 
 enum SolarTime {

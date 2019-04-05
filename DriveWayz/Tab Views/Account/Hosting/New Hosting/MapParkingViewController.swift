@@ -65,6 +65,7 @@ class MapParkingViewController: UIViewController {
     }
     
     func setupAddressMarker(address: String, title: String, city: String, state: String) {
+        self.removeAllMarkers()
         let geoCoder = CLGeocoder()
         let marker = MKPointAnnotation()
         geoCoder.geocodeAddressString(address) { (placemarks, error) in
@@ -115,7 +116,7 @@ extension MapParkingViewController: MKMapViewDelegate {
         guard let annotation = annotation as? MKPointAnnotation else { return nil }
         if typeOfParking == "house" {
             return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: AvailableHouseAnnotationView.ReuseID)
-        } else if typeOfParking == "parkingLot" {
+        } else if typeOfParking == "parking lot" {
             return AvailableLotAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
         } else if typeOfParking == "apartment" {
             return AvailableApartmentAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)

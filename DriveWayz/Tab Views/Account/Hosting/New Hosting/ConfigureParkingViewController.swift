@@ -108,7 +108,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(imageDrawExited), for: .touchUpInside)
         button.alpha = 0
@@ -230,7 +230,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        let background = CAGradientLayer().purpleColor()
+        let background = CAGradientLayer().purpleBlueColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2)
         background.zPosition = -10
         view.layer.addSublayer(background)
@@ -238,11 +238,25 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         return view
     }()
     
+    var exitButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.setTitle("Exit", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.contentHorizontalAlignment = .right
+        button.alpha = 0
+        button.addTarget(self, action: #selector(exitNewHost), for: .touchUpInside)
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-        let background = CAGradientLayer().customColor(topColor: Theme.BLACK.withAlphaComponent(0.95), bottomColor: Theme.BLACK.withAlphaComponent(0.87))
+        let background = CAGradientLayer().customColor(topColor: Theme.BLACK, bottomColor: Theme.BLACK.withAlphaComponent(0.92))
         let height = UIApplication.shared.statusBarFrame.height
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height + height)
         background.zPosition = -10
@@ -411,7 +425,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     func setupCountButtons() {
         
         nextButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
         switch device {
         case .iphone8:
@@ -431,11 +445,22 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
         }
         
+        self.view.addSubview(exitButton)
+        exitButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        exitButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         self.view.addSubview(imageBackButton)
-        imageBackButton.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 24).isActive = true
-        imageBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        imageBackButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12).isActive = true
+        imageBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
         imageBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        switch device {
+        case .iphone8:
+            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+        case .iphoneX:
+            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+        }
         
         self.view.addSubview(darkBlurView)
         self.view.bringSubviewToFront(nextButton)
@@ -450,11 +475,12 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         activityIndicatorParkingView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         activityIndicatorParkingView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        self.view.addSubview(progressBar)
+        containerView.addSubview(progressBar)
+        containerView.bringSubviewToFront(locationController.view)
         progressBar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         progressBarWidthAnchor = progressBar.widthAnchor.constraint(equalToConstant: 0)
             progressBarWidthAnchor.isActive = true
-        progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80).isActive = true
+        progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 84).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
     }
@@ -465,6 +491,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         UIView.animate(withDuration: animationIn) {
             self.nextButton.alpha = 0
             self.backButton.alpha = 0
+            self.exitButton.alpha = 0
             self.darkBlurView.alpha = 0
             self.imageBackButton.alpha = 1
         }
@@ -478,6 +505,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         UIView.animate(withDuration: animationIn) {
             self.nextButton.alpha = 1
             self.backButton.alpha = 1
+            self.exitButton.alpha = 1
             self.darkBlurView.alpha = 1
             self.imageBackButton.alpha = 0
         }
@@ -516,7 +544,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     
     var popupContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
@@ -546,7 +574,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
-        button.backgroundColor = UIColor.clear
+        button.backgroundColor = Theme.WHITE
         button.layer.borderColor = Theme.DARK_GRAY.cgColor
         button.layer.borderWidth = 0.5
         button.setTitleColor(Theme.BLACK, for: .normal)
@@ -581,6 +609,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.parkingTypeControllerAnchor.constant = 0
                     self.parkingLabel.alpha = 1
                     self.backButton.alpha = 1
+                    self.exitButton.alpha = 1
                     switch device {
                     case .iphone8:
                         self.containerHeightAnchor.constant = 70
@@ -593,7 +622,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.parkingLabel.text = "What kind of parking is it?"
             }
         } else if self.parkingTypeControllerAnchor.constant == 0 && self.parkingTypeController.view.alpha == 1 {
-            if self.parkingTypeController.parkingType == "parkingLot" {
+            if self.parkingTypeController.parkingType == "parking lot" || self.parkingTypeController.parkingType == "other" {
                 self.parkingOptionsController.onlyShowBusinessOptions()
             } else {
                 self.parkingOptionsController.onlyShowRegularOptions()
@@ -652,22 +681,27 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.parkingLabel.text = "Where is the spot located?"
             }
         } else if self.locationControllerAnchor.constant == 0 && self.locationController.view.alpha == 1 {
-            if let address = self.locationController.newHostAddress, let title = self.locationController.streetField.text, let state = self.locationController.stateField.text, let city = self.locationController.cityField.text {
-                self.mapController.setupAddressMarker(address: address, title: title, city: city, state: state)
-                self.costsController.configureCustomPricing(state: state, city: city)
-            }
-            UIView.animate(withDuration: animationIn, animations: {
-                self.locationController.view.alpha = 0
-            }) { (success) in
+            if self.locationController.goodToGo == true && self.locationController.streetField.textColor != Theme.WHITE.withAlphaComponent(0.4) && self.locationController.cityField.textColor != Theme.WHITE.withAlphaComponent(0.4) && self.locationController.stateField.textColor != Theme.WHITE.withAlphaComponent(0.4) {
+                self.locationController.goodTogo()
+                if let address = self.locationController.newHostAddress, let title = self.locationController.streetField.text, let state = self.locationController.stateField.text, let city = self.locationController.cityField.text {
+                    self.mapController.setupAddressMarker(address: address, title: title, city: city, state: state)
+                    self.costsController.configureCustomPricing(state: state, city: city)
+                }
                 UIView.animate(withDuration: animationIn, animations: {
-                    self.progressBarWidthAnchor.constant = self.progress * 6
-                    self.mapControllerAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                })
-                self.parkingLabel.text = "Please confirm location"
+                    self.locationController.view.alpha = 0
+                }) { (success) in
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.progressBarWidthAnchor.constant = self.progress * 6
+                        self.mapControllerAnchor.constant = 0
+                        self.view.layoutIfNeeded()
+                    })
+                    self.parkingLabel.text = "Please confirm location"
+                }
+            } else {
+                self.locationController.notGoodToGo()
             }
         } else if self.mapControllerAnchor.constant == 0 && self.mapController.view.alpha == 1 {
-            if self.parkingTypeController.parkingType == "parkingLot" {
+            if self.parkingTypeController.parkingType == "parking lot" {
                 self.picturesController.view.alpha = 0
                 self.businessPicturesController.view.alpha = 1
             } else {
@@ -718,6 +752,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.progressBarWidthAnchor.constant = self.progress * 9
                     self.timesControllerAnchor.constant = 0
                     self.backButton.alpha = 1
+                    self.exitButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
                 self.timesController.scrollViewParking.setContentOffset(.zero, animated: false)
@@ -732,9 +767,10 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.progressBarWidthAnchor.constant = self.progress * 10
                     self.costsControllerAnchor.constant = 0
                     self.backButton.alpha = 1
+                    self.exitButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
-                self.parkingLabel.text = "Select the cost for parking"
+                self.parkingLabel.text = "Dynamic pricing"
                 self.costsController.removeTutorial()
             }
         } else if self.costsControllerAnchor.constant == 0 && self.costsController.view.alpha == 1 {
@@ -792,6 +828,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             UIView.animate(withDuration: animationIn, animations: {
                 self.parkingLabel.alpha = 0
                 self.backButton.alpha = 0
+                self.exitButton.alpha = 0
                 self.containerHeightAnchor.constant = 120
                 self.moveDelegate?.moveMainLabel(percent: 0)
                 self.parkingTypeControllerAnchor.constant = self.view.frame.width
@@ -887,7 +924,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
                     self.progressBarWidthAnchor.constant = self.progress * 7
-                    if self.parkingTypeController.parkingType == "parkingLot" {
+                    if self.parkingTypeController.parkingType == "parking lot" {
                         self.picturesController.view.alpha = 0
                         self.businessPicturesController.view.alpha = 1
                     } else {
@@ -908,6 +945,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.scheduleControllerAnchor.constant = 0
                     self.scheduleController.view.alpha = 1
                     self.backButton.alpha = 1
+                    self.exitButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
                 self.parkingLabel.text = "What days are available?"
@@ -922,6 +960,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.timesControllerAnchor.constant = 0
                     self.timesController.view.alpha = 1
                     self.backButton.alpha = 1
+                    self.exitButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
                 self.parkingLabel.text = "Select the available times"
@@ -936,7 +975,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.costsController.view.alpha = 1
                     self.view.layoutIfNeeded()
                 })
-                self.parkingLabel.text = "Select the cost for parking"
+                self.parkingLabel.text = "Dynamic pricing"
                 self.costsController.removeTutorial()
             }
         } else if self.emailControllerAnchor.constant == 0 && self.emailController.view.alpha == 1 {
@@ -988,15 +1027,16 @@ extension ConfigureParkingViewController: handleConfigureProcess {
         self.emailController.view.alpha = 1
         self.confirmController.view.alpha = 1
         
-        self.locationController.streetField.text = ""
-        self.locationController.cityField.text = ""
-        self.locationController.stateField.text = ""
-        self.locationController.zipField.text = ""
-        self.emailController.emailTextField.text = ""
+//        self.locationController.streetField.text = ""
+//        self.locationController.cityField.text = ""
+//        self.locationController.stateField.text = ""
+//        self.locationController.zipField.text = ""
+//        self.emailController.emailTextField.text = ""
         
         UIView.animate(withDuration: animationIn, animations: {
             self.parkingLabel.alpha = 0
             self.backButton.alpha = 0
+            self.exitButton.alpha = 0
             self.containerHeightAnchor.constant = 120
             self.moveDelegate?.moveMainLabel(percent: 0)
             
@@ -1029,6 +1069,14 @@ extension ConfigureParkingViewController: handleConfigureProcess {
     func finalizeDatabase() {
         self.loadDatabase()
         delayWithSeconds(15) {
+            self.resetParking()
+        }
+    }
+    
+    @objc func exitNewHost() {
+        self.delegate?.hideNewHostingController()
+        self.delegate?.closeAccountView()
+        delayWithSeconds(1) {
             self.resetParking()
         }
     }
@@ -1094,14 +1142,19 @@ extension ConfigureParkingViewController: handlePopupTerms {
         self.view.addSubview(popupContainer)
         popupContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         popupContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        popupContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -18).isActive = true
-        popupContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 32).isActive = true
+        popupContainer.bottomAnchor.constraint(equalTo: self.nextButton.bottomAnchor, constant: 12).isActive = true
+        switch device {
+        case .iphone8:
+            popupContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 32).isActive = true
+        case .iphoneX:
+            popupContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 52).isActive = true
+        }
         
         self.view.addSubview(popupScrollView)
-        popupScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        popupScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        popupScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -62).isActive = true
-        popupScrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+        popupScrollView.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: 12).isActive = true
+        popupScrollView.rightAnchor.constraint(equalTo: popupContainer.rightAnchor).isActive = true
+        popupScrollView.bottomAnchor.constraint(equalTo: popupContainer.bottomAnchor, constant: -62).isActive = true
+        popupScrollView.topAnchor.constraint(equalTo: popupContainer.topAnchor).isActive = true
         
         let label1 = agreement
         let label2 = agreement2
@@ -1125,7 +1178,7 @@ extension ConfigureParkingViewController: handlePopupTerms {
         popupConfirm.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: -1).isActive = true
         popupConfirm.rightAnchor.constraint(equalTo: popupContainer.rightAnchor, constant: 1).isActive = true
         popupConfirm.bottomAnchor.constraint(equalTo: popupContainer.bottomAnchor, constant: 1).isActive = true
-        popupConfirm.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        popupConfirm.heightAnchor.constraint(equalToConstant: 63).isActive = true
         
         UIView.animate(withDuration: animationIn) {
             self.popupScrollView.alpha = 1

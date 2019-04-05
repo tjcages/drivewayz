@@ -228,7 +228,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         backgroundProfile.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
-            backgroundProfile.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 70).isActive = true
+            backgroundProfile.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100).isActive = true
         case .iphoneX:
             backgroundProfile.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: UIApplication.shared.statusBarFrame.height + 70).isActive = true
         }
