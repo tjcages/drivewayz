@@ -39,9 +39,9 @@ extension MapKitViewController {
         line.lineCap = .round
         
         let gradient = CAGradientLayer()
-        gradient.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 260)
-        gradient.colors = [Theme.PACIFIC_BLUE.cgColor,
-                           Theme.PURPLE.cgColor]
+        gradient.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 480)
+        gradient.colors = [Theme.STRAWBERRY_PINK.cgColor,
+                           Theme.LIGHT_ORANGE.cgColor]
         gradient.startPoint = CGPoint(x: 0, y: 1)
         gradient.endPoint = CGPoint(x: 1, y: 0)
         gradient.mask = line

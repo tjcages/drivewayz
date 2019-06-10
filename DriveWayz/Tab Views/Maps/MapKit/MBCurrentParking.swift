@@ -32,38 +32,34 @@ extension MapKitViewController: handleMinimizingFullController {
         
     }
     
-    func confirmPurchasePressed() {
+    func confirmPurchasePressed(booking: Bookings) {
+        self.removeAllMapOverlays(shouldRefresh: false)
+        self.currentTopController.setData(booking: booking)
+        self.removeAllMapOverlays(shouldRefresh: false)
+        self.currentBottomController.setData(booking: booking)
+        self.removeAllMapOverlays(shouldRefresh: false)
         self.userHasCurrentParking()
+        self.removeAllMapOverlays(shouldRefresh: false)
+        delayWithSeconds(0.1) {
+            self.removeAllMapOverlays(shouldRefresh: false)
+            delayWithSeconds(0.1, completion: {
+                self.removeAllMapOverlays(shouldRefresh: false)
+                delayWithSeconds(0.1, completion: {
+                    self.removeAllMapOverlays(shouldRefresh: false)
+                })
+            })
+        }
     }
     
     func userHasCurrentParking() {
         self.removeAllMapOverlays(shouldRefresh: false)
         DispatchQueue.main.async {
-            if let route = finalWalkingRoute, let underPolyline = finalPolyline, let destinationAnnotation = FinalAnnotationLocation {
-                let minute = route.expectedTravelTime / 60
-                self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
-                if let minute = finalDriveTime {
-                    self.currentSpotController.driveTime = minute
-                }
-                let routeCoordinates = route.coordinates!
-                self.parkingCoordinates = routeCoordinates
-                
-                self.mapView.addAnnotation(underPolyline)
-                self.destinationCoordinates = destinationFinalCoordinates
-                
-                self.shouldShowOverlay = true
-                self.addPolyline(to: self.mapView.style!, type: "Parking")
-                self.animateFirstPolyline()
-            
-                let marker = MGLPointAnnotation()
-                marker.coordinate = destinationAnnotation
-                self.mapView.addAnnotation(marker)
-                self.mapView.userTrackingMode = .followWithCourse
-                
-                delayWithSeconds(animationOut * 2, completion: {
-                    self.mapView.setZoomLevel(15, animated: true)
-                })
+            if let minute = finalDriveTime {
+                self.currentSpotController.driveTime = minute
             }
+            delayWithSeconds(animationOut, completion: {
+                self.mapView.setZoomLevel(15, animated: true)
+            })
         }
         self.openCurrentInformation()
     }
@@ -147,7 +143,7 @@ extension MapKitViewController: handleMinimizingFullController {
                         line.removeFromSuperlayer()
                         shadowLine.removeFromSuperlayer()
                     }
-                    self.applyFinalPolyline()
+//                    self.applyFinalPolyline()
                     self.delegate?.defaultContentStatusBar()
                     delayWithSeconds(animationIn, completion: {
                         UIView.animate(withDuration: animationOut, animations: {
@@ -171,7 +167,7 @@ extension MapKitViewController: handleMinimizingFullController {
                 line.removeFromSuperlayer()
                 shadowLine.removeFromSuperlayer()
             }
-            self.applyFinalPolyline()
+//            self.applyFinalPolyline()
             self.delegate?.defaultContentStatusBar()
             delayWithSeconds(animationIn, completion: {
                 UIView.animate(withDuration: animationOut, animations: {

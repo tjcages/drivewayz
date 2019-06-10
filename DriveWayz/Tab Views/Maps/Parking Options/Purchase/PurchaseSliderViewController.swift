@@ -37,7 +37,7 @@ class PurchaseSliderViewController: UIViewController {
         
         let center = UIView(frame: CGRect(x: 8, y: 8, width: 12, height: 12))
         center.backgroundColor = Theme.WHITE
-        center.layer.borderColor = Theme.BLUE.cgColor
+        center.layer.borderColor = Theme.STRAWBERRY_PINK.cgColor
         center.layer.borderWidth = 3
         center.layer.cornerRadius = 6
         view.addSubview(center)
@@ -48,7 +48,7 @@ class PurchaseSliderViewController: UIViewController {
     var coveredDistance: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.STRAWBERRY_PINK
+        view.backgroundColor = Theme.BLUE
         view.alpha = 0.8
         view.layer.cornerRadius = 4
         
@@ -67,9 +67,9 @@ class PurchaseSliderViewController: UIViewController {
         
         self.view.addSubview(sliderTrack)
         self.drawTicks(count: self.tickCount)
-        sliderTrack.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 14).isActive = true
+        sliderTrack.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 6).isActive = true
         sliderTrack.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
-        sliderTrack.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -14).isActive = true
+        sliderTrack.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -6).isActive = true
         sliderTrack.heightAnchor.constraint(equalToConstant: 8).isActive = true
         
         self.view.addSubview(coveredDistance)
@@ -89,18 +89,17 @@ class PurchaseSliderViewController: UIViewController {
     
     }
     
-    func initializeTime() {
-        let distance = phoneWidth - 72
+    func initializeTime(minutes: Int) {
+        let distance = phoneWidth - 56
         let deltaValue = 9/CGFloat(self.tickCount) * distance
         self.sliderCenterAnchor.constant = deltaValue
-        let minutes = 15 * 9
         self.delegate?.setHourLabel(minutes: minutes)
         self.view.layoutIfNeeded()
     }
     
     @objc func sliderMoved(sender: UIPanGestureRecognizer) {
         let location = sender.location(in: self.view)
-        let distance = phoneWidth - 72
+        let distance = phoneWidth - 56
         let deltaLocation = CGFloat(location.x)
         let displacement = distance/CGFloat(self.tickCount)
         let difference = ceil(deltaLocation/displacement)
@@ -116,7 +115,7 @@ class PurchaseSliderViewController: UIViewController {
     func drawTicks(count: Int) {
         for i in 1 ..< count {
             let tick = createTick()
-            let distance = phoneWidth - 64
+            let distance = phoneWidth - 56
             let displacement = distance/CGFloat(count)
         
             if i % 2 == 0 {

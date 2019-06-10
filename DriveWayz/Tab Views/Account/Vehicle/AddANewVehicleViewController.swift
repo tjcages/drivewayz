@@ -107,7 +107,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         color.tintColor = Theme.WHITE
         color.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         color.translatesAutoresizingMaskIntoConstraints = false
-        color.setValue(Theme.SEA_BLUE, forKeyPath: "textColor")
+        color.setValue(Theme.BLUE, forKeyPath: "textColor")
         color.alpha = 1
         
         return color
@@ -145,9 +145,9 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
         button.setTitle("", for: .selected)
-        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.SEA_BLUE.cgColor
+        button.layer.borderColor = Theme.BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(saveVehicleButtonPressed(sender:)), for: .touchUpInside)
@@ -396,7 +396,7 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         label.textAlignment = .center
-        label.textColor = Theme.SEA_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH3
         label.text = colorValues[row] as? String
         view.addSubview(label)

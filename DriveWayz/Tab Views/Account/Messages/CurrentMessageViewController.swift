@@ -286,7 +286,6 @@ class CurrentMessageViewController: UIViewController, UIImagePickerControllerDel
             self.speechCheckLabel.text = "Closed"
             self.speechCheck.tintColor = Theme.DARK_GRAY
             UIView.animate(withDuration: animationOut, animations: {
-                self.delegate?.moveMainLabel(percent: 0)
                 self.speechCheck.alpha = 0
                 self.speechCheckLabel.alpha = 0
                 self.hostMessageOptionsController.view.alpha = 0

@@ -13,8 +13,6 @@ class SettingsCell: UITableViewCell {
     
     var iconView: UIButton = {
         let imageView = UIButton()
-        let image = UIImage(named: "feed")
-        imageView.setImage(image, for: .normal)
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 20
@@ -24,7 +22,7 @@ class SettingsCell: UITableViewCell {
     
     var titleLabel: UILabel = {
         let view = UILabel()
-        view.text = "Some sample text!"
+        view.text = ""
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
@@ -34,7 +32,7 @@ class SettingsCell: UITableViewCell {
     
     var subtitleLabel: UILabel = {
         let view = UILabel()
-        view.text = "Some sample text!"
+        view.text = ""
         view.font = Fonts.SSPLightH5
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -42,12 +40,28 @@ class SettingsCell: UITableViewCell {
         return view
     }()
     
+    lazy var paymentButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Payment", for: .normal)
+        button.backgroundColor = UIColor.clear
+        button.contentHorizontalAlignment = .left
+        button.titleLabel?.textAlignment = .left
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
+        button.titleLabel?.font = Fonts.SSPLightH5
+        button.contentHorizontalAlignment = .left
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: self.frame.width - 75)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var nextButton: UIButton = {
         let button = UIButton()
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PURPLE
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -65,6 +79,7 @@ class SettingsCell: UITableViewCell {
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
+        addSubview(paymentButton)
         addSubview(nextButton)
         
         iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
@@ -86,10 +101,15 @@ class SettingsCell: UITableViewCell {
         subtitleLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
-        nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        paymentButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        paymentButton.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
+        paymentButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        paymentButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        
         nextButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -24).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
     

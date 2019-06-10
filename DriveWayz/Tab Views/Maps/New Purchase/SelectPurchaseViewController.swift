@@ -1145,28 +1145,28 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
 //        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
     }
     
-    var notificationController: SendNotificationsViewController = {
-        let controller = SendNotificationsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
+//    var notificationController: SendNotificationsViewController = {
+//        let controller = SendNotificationsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//
+//        return controller
+//    }()
     
     func sendNotifications() {
-        let ref = Database.database().reference().child("parking").child(self.parkingId)
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let parkingAddress = dictionary["parkingAddress"] as? String {
-                    let geoCoder = CLGeocoder()
-                    geoCoder.geocodeAddressString(parkingAddress) { (placemarks, error) in
-                        guard let placemarks = placemarks, let location = placemarks.first?.location else {
-                            return
-                        }
-                        self.notificationController.sendNotifications(location: location)
-                    }
-                }
-            }
-        }
+//        let ref = Database.database().reference().child("parking").child(self.parkingId)
+//        ref.observeSingleEvent(of: .value) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                if let parkingAddress = dictionary["parkingAddress"] as? String {
+//                    let geoCoder = CLGeocoder()
+//                    geoCoder.geocodeAddressString(parkingAddress) { (placemarks, error) in
+//                        guard let placemarks = placemarks, let location = placemarks.first?.location else {
+//                            return
+//                        }
+////                        self.notificationController.sendNotifications(location: location)
+//                    }
+//                }
+//            }
+//        }
     }
     
     

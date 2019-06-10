@@ -16,6 +16,8 @@ class AmenitiesParkingViewController: UIViewController {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
         
         return view
     }()
@@ -827,7 +829,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "covered" }
                 return
             }
-            self.selectedAmenities.append("covered")
+            self.selectedAmenities.append("Covered parking")
             UIView.animate(withDuration: 0.1) {
                 self.coveredIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.coveredIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -845,7 +847,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "charging" }
                 return
             }
-            self.selectedAmenities.append("charging")
+            self.selectedAmenities.append("Charging station")
             UIView.animate(withDuration: 0.1) {
                 self.chargingIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.chargingIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -863,7 +865,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "stadium" }
                 return
             }
-            self.selectedAmenities.append("stadium")
+            self.selectedAmenities.append("Stadium parking")
             UIView.animate(withDuration: 0.1) {
                 self.stadiumIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.stadiumIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -881,7 +883,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "gated" }
                 return
             }
-            self.selectedAmenities.append("gated")
+            self.selectedAmenities.append("Gated spot")
             UIView.animate(withDuration: 0.1) {
                 self.gatedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -899,7 +901,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "night" }
                 return
             }
-            self.selectedAmenities.append("night")
+            self.selectedAmenities.append("Nighttime parking")
             UIView.animate(withDuration: 0.1) {
                 self.nightIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.nightIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -917,7 +919,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "airport" }
                 return
             }
-            self.selectedAmenities.append("airport")
+            self.selectedAmenities.append("Near Airport")
             UIView.animate(withDuration: 0.1) {
                 self.airportIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.airportIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -935,7 +937,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "lighted" }
                 return
             }
-            self.selectedAmenities.append("lighted")
+            self.selectedAmenities.append("Lit space")
             UIView.animate(withDuration: 0.1) {
                 self.lightedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.lightedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -953,7 +955,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "large" }
                 return
             }
-            self.selectedAmenities.append("large")
+            self.selectedAmenities.append("Large space")
             self.resetSmall()
             UIView.animate(withDuration: 0.1) {
                 self.largeIconLabel.setTitleColor(Theme.WHITE, for: .normal)
@@ -972,7 +974,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "small" }
                 return
             }
-            self.selectedAmenities.append("small")
+            self.selectedAmenities.append("Compact space")
             self.resetLarge()
             UIView.animate(withDuration: 0.1) {
                 self.smallIconLabel.setTitleColor(Theme.WHITE, for: .normal)
@@ -991,7 +993,7 @@ extension AmenitiesParkingViewController {
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "easy" }
                 return
             }
-            self.selectedAmenities.append("easy")
+            self.selectedAmenities.append("Easy to find")
             UIView.animate(withDuration: 0.1) {
                 self.easyIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.easyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2

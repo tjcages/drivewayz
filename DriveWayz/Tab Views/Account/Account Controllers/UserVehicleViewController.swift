@@ -8,28 +8,38 @@
 
 import UIKit
 
-protocol handlePercentage {
-    func changePercentage(translation: CGFloat)
+protocol handleChangeVehicle {
+    func bringBackMain()
 }
 
-class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handlePercentage {
+class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handleChangeVehicle {
     
     var delegate: moveControllers?
     
-    var options: [String] = ["Add a vehicle"]
-    var optionsSub: [String] = [""]
+    var options: [String] = []
+    var optionsSub: [String] = []
+    var optionsKey: [String] = []
+    var selectedKey: String = ""
     var optionsImages: [UIImage] = [UIImage(), UIImage(), UIImage(), UIImage()]
     let cellId = "cellId"
     
-    var container: UIView = {
+    lazy var gradientContainer: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.4
+        view.clipsToBounds = false
         
         return view
+    }()
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Your Vehicles"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH0
+        
+        return label
     }()
     
     var optionsTableView: UITableView = {
@@ -47,6 +57,12 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.4
+        view.decelerationRate = .fast
         
         return view
     }()
@@ -73,24 +89,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         return button
     }()
     
-    var checkmark: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
-        button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
-        button.layer.borderWidth = 1
-        button.backgroundColor = Theme.GREEN_PIGMENT
-        button.alpha = 0
-        
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        view.clipsToBounds = true
         
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
@@ -101,29 +103,36 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         view.addGestureRecognizer(swipeGesture)
         
         setupViews()
+        observeVehicles()
     }
     
-    var containerHeightAnchor: NSLayoutConstraint!
+    var gradientHeightAnchor: NSLayoutConstraint!
     var containerCenterAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
     var currentAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(container)
-        container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160)
-        containerHeightAnchor.isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 50).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        
+        self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
         scrollView.contentSize = .zero
         containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         containerCenterAnchor.isActive = true
-        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+                gradientHeightAnchor.isActive = true
+        case .iphoneX:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
+                gradientHeightAnchor.isActive = true
+        }
         
         scrollView.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
@@ -133,28 +142,29 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         optionsHeight.isActive = true
 
         self.view.addSubview(currentVehicleController.view)
-        currentVehicleController.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        self.view.bringSubviewToFront(gradientContainer)
+        currentVehicleController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         currentVehicleController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        currentVehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        currentVehicleController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         currentAnchor = currentVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
         currentAnchor.isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
-        scrollView.addSubview(checkmark)
-        checkmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        checkmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
-        checkmark.centerYAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 40).isActive = true
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
     }
     
@@ -164,11 +174,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func bringBackMain() {
+        self.mainLabel.text = "Your Vehicles"
+        self.checkSelectedVehicle()
         self.view.endEditing(true)
         UIView.animate(withDuration: animationOut, animations: {
-            self.delegate?.changeMainLabel(text: "Vehicle")
-            self.delegate?.moveMainLabel(percent: 0)
-            self.containerHeightAnchor.constant = 160
             self.containerCenterAnchor.constant = 0
             self.currentAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
@@ -179,8 +188,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.optionsHeight.constant = CGFloat(60 * self.options.count)
-        return self.options.count
+        self.optionsHeight.constant = CGFloat(60 * (self.options.count + 1))
+        return self.options.count + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -189,25 +198,28 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! VehicleCell
-        cell.titleLabel.text = options[indexPath.row]
-        if optionsSub[indexPath.row] == "" {
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        cell.selectionStyle = .none
+        if indexPath.row == options.count {
             cell.titleTopAnchor.isActive = false
             cell.titleCenterAnchor.isActive = true
+            cell.titleLabel.textColor = Theme.BLUE
+            cell.plusButton.alpha = 1
+            cell.checkmark.alpha = 0
+            cell.titleLabel.text = "Add a vehicle"
+            cell.subtitleLabel.text = ""
         } else {
+            cell.titleLabel.text = options[indexPath.row]
             cell.titleTopAnchor.isActive = true
             cell.titleCenterAnchor.isActive = false
-        }
-        cell.titleLeftAnchor.constant = -20
-        cell.subtitleLabel.text = optionsSub[indexPath.row]
-        cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        cell.selectionStyle = .none
-        if cell.titleLabel.text == "Add a vehicle" {
-            cell.titleLabel.textColor = Theme.SEA_BLUE
-            cell.plusButton.alpha = 1
-        } else {
+            cell.subtitleLabel.text = optionsSub[indexPath.row]
             cell.titleLabel.textColor = Theme.BLACK
             cell.plusButton.alpha = 0
+            if optionsKey[indexPath.row] == selectedKey {
+                cell.checkmark.alpha = 1
+            } else {
+                cell.checkmark.alpha = 0
+            }
         }
         
         return cell
@@ -220,8 +232,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! VehicleCell
-        if options[indexPath.row] == "Add a vehicle" {
-            cell.titleLabel.textColor = Theme.SEA_BLUE
+        if cell.titleLabel.text == "Add a vehicle" {
+            cell.titleLabel.textColor = Theme.BLUE
         } else {
             cell.titleLabel.textColor = Theme.BLACK
         }
@@ -231,13 +243,80 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = optionsTableView.cellForRow(at: indexPath) as! VehicleCell
         if let title = cell.titleLabel.text, let subtitle = cell.subtitleLabel.text {
             if title != "" && subtitle != "" {
-                self.currentVehicleController.setData(type: title, license: subtitle)
+                let key = self.optionsKey[indexPath.row]
+                self.currentVehicleController.setData(type: title, license: subtitle, key: key)
                 self.currentVehicleController.setupCurrentVehicle()
             } else {
-                self.delegate?.changeMainLabel(text: "Add a vehicle")
+                self.mainLabel.text = "New Vehicle"
                 self.currentVehicleController.setupNewVehicle()
             }
             self.moveToNext()
+        }
+    }
+    
+    func observeVehicles() {
+        self.options = []
+        self.optionsSub = []
+        self.optionsKey = []
+        if let userID = Auth.auth().currentUser?.uid {
+            let userRef = Database.database().reference().child("users").child(userID)
+            userRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:Any] {
+                    if let vehicleKey = dictionary["selectedVehicle"] as? String {
+                        self.selectedKey = vehicleKey
+                        self.optionsTableView.reloadData()
+                    }
+                }
+            }
+            let ref = Database.database().reference().child("users").child(userID).child("Vehicles")
+            ref.observe(.childAdded) { (snapshot) in
+                let vehicleRef = Database.database().reference().child("UserVehicles").child(snapshot.key)
+                vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:Any] {
+                        if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleLicensePlate = dictionary["licensePlate"] as? String {
+                            let text = vehicleYear + " " + vehicleMake + " " + vehicleModel
+                            self.options.append(text)
+                            self.optionsSub.append(vehicleLicensePlate)
+                            self.optionsKey.append(snapshot.key)
+                            self.options.reverse()
+                            self.optionsSub.reverse()
+                            self.optionsKey.reverse()
+                            self.optionsTableView.reloadData()
+                        }
+                    }
+                })
+            }
+            ref.observe(.childRemoved) { (snapshot) in
+                let vehicleRef = Database.database().reference().child("UserVehicles").child(snapshot.key)
+                vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:Any] {
+                        if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleLicensePlate = dictionary["licensePlate"] as? String {
+                            let text = vehicleYear + " " + vehicleMake + " " + vehicleModel
+                            self.options.append(text)
+                            self.optionsSub.append(vehicleLicensePlate)
+                            self.optionsKey.append(snapshot.key)
+                            self.options.reverse()
+                            self.optionsSub.reverse()
+                            self.optionsKey.reverse()
+                            self.optionsTableView.reloadData()
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
+    func checkSelectedVehicle() {
+        if let userID = Auth.auth().currentUser?.uid {
+            let userRef = Database.database().reference().child("users").child(userID)
+            userRef.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:Any] {
+                    if let vehicleKey = dictionary["selectedVehicle"] as? String {
+                        self.selectedKey = vehicleKey
+                        self.optionsTableView.reloadData()
+                    }
+                }
+            }
         }
     }
     
@@ -251,50 +330,35 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let translation = scrollView.contentOffset.y
-        changePercentage(translation: translation)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let translation = scrollView.contentOffset.y
-        if translation < 30 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 0
-            }
-        } else if translation >= 30 && translation <= 50 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 50
-            }
-        }
-    }
-    
-    func changePercentage(translation: CGFloat) {
-        if translation <= 50 && translation >= 10 {
-            let percent = (translation-10)/40
-            switch device {
-            case .iphone8:
-                self.containerHeightAnchor.constant = 160 - (percent * 80)
-            case .iphoneX:
-                self.containerHeightAnchor.constant = 160 - (percent * 90)
-            }
-            self.delegate?.moveMainLabel(percent: percent)
-        } else if translation < 10 {
-            self.containerHeightAnchor.constant = 160
-            self.delegate?.moveMainLabel(percent: 0)
-        } else {
-            self.delegate?.moveMainLabel(percent: 1)
-            switch device {
-            case .iphone8:
-                self.containerHeightAnchor.constant = 80
-            case .iphoneX:
-                self.containerHeightAnchor.constant = 90
-            }
-        }
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+}
+
+
+extension UserVehicleViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var totalHeight: CGFloat = 0.0
+        switch device {
+        case .iphone8:
+            totalHeight = 160
+        case .iphoneX:
+            totalHeight = 180
+        }
+        let translation = scrollView.contentOffset.y
+        if translation > 0 && translation < 80 {
+            let percent = translation/80
+            self.gradientHeightAnchor.constant = totalHeight - percent * 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+        } else if translation >= 80 {
+            self.gradientHeightAnchor.constant = totalHeight - 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        } else if translation <= 0 {
+            self.gradientHeightAnchor.constant = totalHeight
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
     }
     
 }

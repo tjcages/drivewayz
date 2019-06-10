@@ -11,12 +11,8 @@ import MapKit
 import Mapbox
 
 protocol handleCheckoutParking {
-    func bookSpotPressed(amount: Double)
     func becomeAHost()
-    func confirmPurchasePressed()
-    func setDurationPressed()
-    func didTapParking(parking: ParkingSpots, price: String)
-    func didHideExpandedParking()
+    func setDurationPressed(fromDate: Date, totalTime: String)
 }
 
 extension MapKitViewController: handleCheckoutParking {
@@ -28,14 +24,22 @@ extension MapKitViewController: handleCheckoutParking {
         purchaseController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         purchaseControllerBottomAnchor = purchaseController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 500)
             purchaseControllerBottomAnchor.isActive = true
-        purchaseController.view.heightAnchor.constraint(equalToConstant: 468).isActive = true
+        switch device {
+        case .iphone8:
+            purchaseController.view.heightAnchor.constraint(equalToConstant: 412).isActive = true
+        case .iphoneX:
+            purchaseController.view.heightAnchor.constraint(equalToConstant: 440).isActive = true
+        }
         
         self.view.addSubview(parkingController.view)
         parkingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         parkingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         parkingControllerBottomAnchor = parkingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 420)
             parkingControllerBottomAnchor.isActive = true
-        parkingController.view.heightAnchor.constraint(equalToConstant: 332).isActive = true
+        parkingController.view.heightAnchor.constraint(equalToConstant: 372).isActive = true
+        parkingController.timeButton.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
+        parkingController.timeLabel.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
+        parkingController.mainButton.addTarget(self, action: #selector(bookSpotPressed), for: .touchUpInside)
         
         self.view.addSubview(expandedSpotController.view)
         expandedSpotController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -49,7 +53,9 @@ extension MapKitViewController: handleCheckoutParking {
         confirmPaymentController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         confirmControllerBottomAnchor = confirmPaymentController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 380)
             confirmControllerBottomAnchor.isActive = true
-        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 308).isActive = true
+        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 328).isActive = true
+        confirmPaymentController.monitorCurrentParking()
+        confirmPaymentController.changeButton.addTarget(self, action: #selector(changeFinalDates), for: .touchUpInside)
         
         self.view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
@@ -59,8 +65,8 @@ extension MapKitViewController: handleCheckoutParking {
             parkingBackButtonPurchaseAnchor.isActive = false
         parkingBackButtonConfirmAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: confirmPaymentController.view.topAnchor, constant: -8)
             parkingBackButtonConfirmAnchor.isActive = false
-        parkingBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        parkingBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkingBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        parkingBackButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(quickDestinationController.view)
         quickDestinationRightAnchor = quickDestinationController.view.rightAnchor.constraint(equalTo: self.view.leftAnchor)
@@ -78,28 +84,13 @@ extension MapKitViewController: handleCheckoutParking {
         
     }
     
-    func didTapParking(parking: ParkingSpots, price: String) {
-        self.delegate?.hideHamburger()
-        self.delegate?.lightContentStatusBar()
-        self.view.bringSubviewToFront(expandedSpotController.view)
-        self.expandedSpotController.openExpand(parking: parking, price: price)
-        UIView.animate(withDuration: animationOut) {
-            self.fullBackgroundView.alpha = 0.4
-            self.parkingControllerBottomAnchor.constant = 420
-            self.expandedSpotBottomAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func didHideExpandedParking() {
-        self.delegate?.bringHamburger()
-        self.delegate?.defaultContentStatusBar()
-        self.view.bringSubviewToFront(parkingController.view)
-        UIView.animate(withDuration: animationOut) {
-            self.fullBackgroundView.alpha = 0
-            self.parkingControllerBottomAnchor.constant = 0
-            self.expandedSpotBottomAnchor.constant = phoneHeight
-            self.view.layoutIfNeeded()
+    @objc func parkingBackButtonPressed() {
+        if purchaseControllerBottomAnchor.constant == 0 {
+            self.changeDatesDismissed()
+        } else if parkingControllerBottomAnchor.constant == 0 {
+            self.parkingHidden()
+        } else if confirmControllerBottomAnchor.constant == 0 {
+            self.backToBooking()
         }
     }
     
@@ -108,160 +99,87 @@ extension MapKitViewController: handleCheckoutParking {
         self.delegate?.bringNewHostingController()
     }
     
-    func setDurationPressed() {
-        self.confirmPaymentController.setData(price: self.parkingController.selectedPrice * self.purchaseController.totalSelectedTime,
-                                              fromDate: self.purchaseController.fromDate, toDate: self.purchaseController.toDate)
-        self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
-        self.parkingBackButton.addTarget(self, action: #selector(backToSetDuration), for: .touchUpInside)
+    func setDurationPressed(fromDate: Date, totalTime: String) {
+        self.changeDatesDismissed()
+        self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
+        self.parkingController.changeDates(fromDate: fromDate, totalTime: totalTime)
+        self.confirmPaymentController.changeDates(fromDate: fromDate, totalTime: totalTime)
+    }
+    
+    @objc func bookSpotPressed() {
+        self.purchaseController.saveDates()
+        self.view.bringSubviewToFront(confirmPaymentController.view)
+        self.confirmControllerBottomAnchor.constant = 0
+        self.parkingControllerBottomAnchor.constant = 420
+        self.parkingBackButtonBookAnchor.isActive = false
+        self.parkingBackButtonPurchaseAnchor.isActive = false
+        self.parkingBackButtonConfirmAnchor.isActive = true
         UIView.animate(withDuration: animationIn) {
-            self.purchaseControllerBottomAnchor.constant = 500
-            self.confirmControllerBottomAnchor.constant = 0
-            self.parkingBackButtonConfirmAnchor.isActive = true
-            self.parkingBackButtonBookAnchor.isActive = false
-            self.parkingBackButtonPurchaseAnchor.isActive = false
             self.view.layoutIfNeeded()
         }
-    }
-    
-    @objc func backToSetDuration() {
-        self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
-        self.parkingBackButton.addTarget(self, action: #selector(backToBook), for: .touchUpInside)
-        UIView.animate(withDuration: animationIn, animations: {
-            self.purchaseControllerBottomAnchor.constant = 0
-            self.confirmControllerBottomAnchor.constant = 380
-            self.parkingBackButtonConfirmAnchor.isActive = false
-            self.parkingBackButtonBookAnchor.isActive = false
-            self.parkingBackButtonPurchaseAnchor.isActive = true
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.purchaseController.resetDurationTimes()
-        }
-    }
-    
-    func bookSpotPressed(amount: Double) {
-        self.purchaseController.initializeTime()
-        UIView.animate(withDuration: 0.1) {
-            self.quickDestinationController.view.alpha = 0
-        }
-        self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
-        self.parkingBackButton.addTarget(self, action: #selector(backToBook), for: .touchUpInside)
-        self.view.bringSubviewToFront(purchaseController.view)
-        UIView.animate(withDuration: animationOut) {
-            self.purchaseControllerBottomAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }
-        if let region = ZoomPurchaseMapView {
-            if self.quickDestinationController.distanceLabel.text != "0 min" {
-                self.mapView.userTrackingMode = .none
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 520, right: 66), animated: true)
-                if let location = DestinationAnnotationLocation {
-                    delayWithSeconds(0.5) {
-                        self.checkQuickDestination(annotationLocation: location)
-                    }
-                }
-            }
-        }
-        UIView.animate(withDuration: animationOut, animations: {
-            self.parkingControllerBottomAnchor.constant = 420
-            self.parkingBackButtonBookAnchor.isActive = false
-            self.parkingBackButtonPurchaseAnchor.isActive = true
-            self.view.layoutIfNeeded()
-        })
-    }
-    
-    @objc func backToBook() {
-        UIView.animate(withDuration: 0.1) {
-            self.quickDestinationController.view.alpha = 0
-        }
-        self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
-        self.parkingBackButton.addTarget(self, action: #selector(parkingHidden), for: .touchUpInside)
-        if let region = ZoomMapView {
-            self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 66, bottom: 420, right: 66), animated: true)
-            if let location = DestinationAnnotationLocation {
-                delayWithSeconds(0.5) {
-                    self.checkQuickDestination(annotationLocation: location)
-                }
-            }
-        }
-        UIView.animate(withDuration: animationOut, animations: {
-            self.purchaseControllerBottomAnchor.constant = 500
-            self.parkingControllerBottomAnchor.constant = 0
-            self.parkingBackButtonBookAnchor.isActive = true
-            self.parkingBackButtonPurchaseAnchor.isActive = false
-            self.view.layoutIfNeeded()
-        })
     }
 
     func parkingSelected() {
+        self.parkingController.bookingPicker.reloadData()
+        self.purchaseController.saveDates()
         self.view.bringSubviewToFront(parkingController.view)
         self.view.bringSubviewToFront(parkingBackButton)
-        self.parkingController.bookingFound()
-        self.mapView.userTrackingMode = .none
-        self.takeAwayEvents()
-        self.summaryController.shouldBeLoading = false
+//        self.parkingController.bookingFound()
+//        self.summaryController.shouldBeLoading = false
+        self.parkingControllerBottomAnchor.constant = 0
+        self.purchaseControllerBottomAnchor.constant = 500
+        self.parkingBackButtonBookAnchor.isActive = true
+        self.parkingBackButtonPurchaseAnchor.isActive = false
+        self.parkingBackButtonConfirmAnchor.isActive = false
+        self.locatorMainBottomAnchor.isActive = false
+        self.locatorParkingBottomAnchor.isActive = true
+        self.mapViewBottomAnchor.constant = -300
         UIView.animate(withDuration: animationIn) {
             self.parkingBackButton.alpha = 1
-            self.summaryBarTopAnchor.constant = self.summaryBarTopAnchor.constant - 60
-            self.summaryController.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-            self.parkingControllerBottomAnchor.constant = 0
-            self.purchaseControllerBottomAnchor.constant = 500
-            self.parkingBackButtonBookAnchor.isActive = true
-            self.parkingBackButtonPurchaseAnchor.isActive = false
             self.view.layoutIfNeeded()
         }
     }
     
     @objc func parkingHidden() {
-        eventsAreAllowed = true
         self.shouldBeSearchingForAnnotations = true
         self.removePolylineAnnotations()
-        self.removeAllMapOverlays(shouldRefresh: true)
-        self.delegate?.bringHamburger()
-        if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-            self.mapView.setCenter(location, animated: false)
-        }
-        self.summaryBarTopAnchor.constant = self.summaryBarTopAnchor.constant + 60
-        switch device {
-        case .iphone8:
-            self.mainBarTopAnchor.constant = 100
-        case .iphoneX:
-            self.mainBarTopAnchor.constant = 120
-        }
-        UIView.animate(withDuration: animationOut) {
-            self.summaryController.view.alpha = 0
-            self.summaryController.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            self.view.layoutIfNeeded()
-        }
-        self.removeAllMapOverlays(shouldRefresh: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.removeAllMapOverlays(shouldRefresh: true)
-        }
+        self.parkingControllerBottomAnchor.constant = 420
+        self.searchBarController.closeSearchBar()
+        self.locatorMainBottomAnchor.isActive = true
+        self.locatorParkingBottomAnchor.isActive = false
+        self.mapViewBottomAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.quickDestinationController.view.alpha = 0
-            self.parkingControllerBottomAnchor.constant = 420
             self.parkingBackButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.mainBarController.view.isUserInteractionEnabled = true
+            self.bringMainBar()
             self.removeAllMapOverlays(shouldRefresh: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.quickDestinationController.view.alpha = 0
-                self.removeAllMapOverlays(shouldRefresh: true)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                self.quickDestinationController.view.alpha = 0
-                self.mapView.userTrackingMode = .follow
-                self.removeAllMapOverlays(shouldRefresh: true)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                self.quickDestinationController.view.alpha = 0
-                self.removeAllMapOverlays(shouldRefresh: true)
-                self.showPartyMarkers()
-            }
-            if eventsAreAllowed == true {
-                self.eventsControllerHidden()
-            }
+            self.delegate?.bringHamburger()
+        }
+    }
+    
+    func backToBooking() {
+        self.view.bringSubviewToFront(parkingController.view)
+        self.confirmControllerBottomAnchor.constant = 380
+        self.parkingControllerBottomAnchor.constant = 0
+        self.parkingBackButtonBookAnchor.isActive = true
+        self.parkingBackButtonPurchaseAnchor.isActive = false
+        self.parkingBackButtonConfirmAnchor.isActive = false
+        UIView.animate(withDuration: animationIn) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func changeFinalDates() {
+        self.backToBooking()
+        delayWithSeconds(animationIn) {
+            self.changeDatesPressed()
+        }
+    }
+    
+    func removeAllHostLocations() {
+        if let annotations = self.mapView.annotations {
+            self.mapView.removeAnnotations(annotations)
         }
     }
     
@@ -281,9 +199,9 @@ extension MapKitViewController: handleCheckoutParking {
         if shouldRefresh == true {
             if let annotations = self.mapView.annotations {
                 self.mapView.removeAnnotations(annotations)
-                self.findParkingNearUserLocation()
+                self.placeAllAnnotations()
             } else {
-                self.findParkingNearUserLocation()
+                self.placeAllAnnotations()
             }
         } else {
             if let annotations = self.mapView.annotations {

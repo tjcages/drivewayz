@@ -2,11 +2,16 @@
 //  MainBarViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler Jordan Cagle on 3/31/19.
+//  Created by Tyler Jordan Cagle on 5/17/19.
 //  Copyright © 2019 COAD. All rights reserved.
 //
 
 import UIKit
+
+protocol handleInviteControllers {
+    func inviteControllerDismissed()
+    func openEvents()
+}
 
 class MainBarViewController: UIViewController {
     
@@ -25,543 +30,466 @@ class MainBarViewController: UIViewController {
     var shouldRefresh: Bool = true
     var parkingState: ParkingState = .foundParking {
         didSet {
-            if self.searchBarHeightAnchor.constant == 89 || self.searchBarHeightAnchor.constant == 63 {
-                if parkingState == .foundParking && self.alreadyFoundParking == false {
-                    self.alreadyFoundParking = true
-                    self.endSearching(status: parkingState)
-                    delayWithSeconds(0.4) {
-                        self.alreadyZoomedIn = false
-                    }
-                } else if parkingState == .zoomIn && self.alreadyZoomedIn == false {
-                    self.alreadyZoomedIn = true
-                    self.endSearching(status: parkingState)
-                    delayWithSeconds(0.4) {
-                        self.alreadyFoundParking = false
-                    }
-                } else if parkingState == .noParking && self.shouldRefresh == true {
-                    self.shouldRefresh = false
-                    self.endSearching(status: parkingState)
-                    delayWithSeconds(0.4) {
-                        self.alreadyFoundParking = false
-                        self.alreadyZoomedIn = false
-                        delayWithSeconds(2, completion: {
-                            self.shouldRefresh = true
-                        })
-                    }
-                }
-            }
+//            if self.searchBarHeightAnchor.constant == 89 || self.searchBarHeightAnchor.constant == 63 {
+//                if parkingState == .foundParking && self.alreadyFoundParking == false {
+//                    self.alreadyFoundParking = true
+//                    self.endSearching(status: parkingState)
+//                    delayWithSeconds(0.4) {
+//                        self.alreadyZoomedIn = false
+//                    }
+//                } else if parkingState == .zoomIn && self.alreadyZoomedIn == false {
+//                    self.alreadyZoomedIn = true
+//                    self.endSearching(status: parkingState)
+//                    delayWithSeconds(0.4) {
+//                        self.alreadyFoundParking = false
+//                    }
+//                } else if parkingState == .noParking && self.shouldRefresh == true {
+//                    self.shouldRefresh = false
+//                    self.endSearching(status: parkingState)
+//                    delayWithSeconds(0.4) {
+//                        self.alreadyFoundParking = false
+//                        self.alreadyZoomedIn = false
+//                        delayWithSeconds(2, completion: {
+//                            self.shouldRefresh = true
+//                        })
+//                    }
+//                }
+//            }
         }
     }
     
-    var searchBarView: UIView = {
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
+        view.layer.cornerRadius = 8
+        view.isScrollEnabled = false
+        
+        return view
+    }()
+    
+    var scrollBar: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.layer.cornerRadius = 3
+        
+        return view
+    }()
+    
+    var searchView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 4
-        view.clipsToBounds = true
         
         return view
     }()
     
     var searchButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let image = UIImage(named: "locationArrow")
-        button.setImage(image, for: .normal)
-        //        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0.8
-        button.isUserInteractionEnabled = false
+        button.backgroundColor = Theme.OFF_WHITE
+        button.layer.cornerRadius = 4
         
         return button
     }()
     
-    var searchTextField: UITextField = {
-        let label = UITextField()
-        label.text = "Where are you headed?"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH3
-        label.backgroundColor = Theme.WHITE
-        
-        return label
-    }()
-    
-    var searchLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
-        
-        return view
-    }()
-    
-    var couponLabel: UILabel = {
+    var searchLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
-        label.text = "Park today and receive 10% off!"
-        label.font = Fonts.SSPRegularH6
-        label.alpha = 0
+        label.text = "Where are you headed?"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPSemiBoldH3
         
         return label
     }()
     
-    var couponButton: UIButton = {
+    var microphoneButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "saleIcon")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.2)
+        button.layer.cornerRadius = 18
+        let origImage = UIImage(named: "microphoneButton")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isUserInteractionEnabled = false
-        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        button.alpha = 0
+        button.tintColor = Theme.STRAWBERRY_PINK
+        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
         
         return button
     }()
     
-    var searchBackButton: UIButton = {
+    var homeButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(closeSearchBar), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-    
-    var fromSearchBar: UITextField = {
-        let view = UITextField()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "Current location"
-        view.textColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.8)
-        view.font = Fonts.SSPRegularH3
-        view.clearButtonMode = .never
-        view.alpha = 0
-        view.isUserInteractionEnabled = false ////////////////////////////NEED TO FIX
-        view.alpha = 0
-        
-        return view
-    }()
-    
-    var searchLocation: UIButton = {
-        let button = UIButton(type: .custom)
-        let image = UIImage(named: "searchLocation")
+        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.layer.cornerRadius = 15
+        button.tintColor = Theme.WHITE
+        let image = UIImage(named: "coupon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0
-        button.isUserInteractionEnabled = false
+        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
         
         return button
     }()
     
-    var fromSearchIcon: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.borderColor = Theme.BLUE.cgColor
-        view.layer.borderWidth = 5
-        view.layer.cornerRadius = 8
-        view.alpha = 0
+    var homeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Park today and receive 10% off!"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPSemiBoldH4
         
-        return view
+        return label
     }()
     
-    var fromSearchLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        view.alpha = 0
-        
-        let dot1 = UIView(frame: CGRect(x: 0, y: 8.2, width: 4, height: 4))
-        dot1.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        dot1.layer.cornerRadius = 2
-        view.addSubview(dot1)
-        
-        let dot2 = UIView(frame: CGRect(x: 0, y: 20.4, width: 4, height: 4))
-        dot2.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        dot2.layer.cornerRadius = 2
-        view.addSubview(dot2)
-        
-        let dot3 = UIView(frame: CGRect(x: 0, y: 32.6, width: 4, height: 4))
-        dot3.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        dot3.layer.cornerRadius = 2
-        view.addSubview(dot3)
-        
-        return view
-    }()
-    
-    var fromSearchLocation: UIButton = {
-        let button = UIButton(type: .custom)
-        let image = UIImage(named: "locator")
-        button.setImage(image, for: .normal)
+    var recentButton: UIButton = {
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(searchLocationPressed), for: .touchUpInside)
-        button.alpha = 0
+        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.4)
+        button.layer.cornerRadius = 15
+        button.tintColor = Theme.WHITE
         
         return button
     }()
     
-    var backgroundView: UIView = {
+    var recentLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPSemiBoldH4
+        
+        return label
+    }()
+    
+    lazy var worksController: HowItWorksController = {
+        let controller = HowItWorksController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    var eventsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 12
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
         view.alpha = 0
-        view.clipsToBounds = false
         
         return view
     }()
     
+    var eventsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Upcoming Events"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPBoldH3
+        
+        return label
+    }()
+    
+    lazy var eventsController: EventsViewController = {
+        let controller = EventsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.mainDelegate = self
+        
+        return controller
+    }()
+    
+    var newHostController: NewHostBannerViewController = {
+        let controller = NewHostBannerViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    var inviteFriendController: InviteBannerViewController = {
+        let controller = InviteBannerViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
+    }()
+    
+    lazy var inviteController: InviteExpandedViewController = {
+        let controller = InviteExpandedViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var quickHostController: QuickHostViewController = {
+        let controller = QuickHostViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        controller.delegate = self
+        
+        return controller
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchTextField.delegate = self
-
-        view.backgroundColor = UIColor.clear
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
+
+        scrollView.delegate = self
         
+        checkRecentSearches()
         setupViews()
         setupSearch()
-        loadingParking()
+        setupRecents()
+        setupWorks()
+        setupInvite()
+        setupEvents()
+        setupHosting()
+        setupBannerExpanded()
     }
     
-    var mainBarTopAnchor: NSLayoutConstraint!
-    
-    var searchBarHeightAnchor: NSLayoutConstraint!
-    var loadingParkingLeftAnchor: NSLayoutConstraint!
-    var loadingParkingRightAnchor: NSLayoutConstraint!
-    var loadingParkingWidthAnchor: NSLayoutConstraint!
-    var loadingParkingHeightAnchor: NSLayoutConstraint!
-    
+    override func viewDidAppear(_ animated: Bool) {
+        self.eventsController.checkEvents()
+    }
+
     func setupViews() {
         
-        self.view.addSubview(searchBarView)
-        mainBarTopAnchor = searchBarView.topAnchor.constraint(equalTo: self.view.topAnchor)
-            mainBarTopAnchor.isActive = true
-        searchBarView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        searchBarView.widthAnchor.constraint(equalToConstant: 327).isActive = true
-        searchBarHeightAnchor = searchBarView.heightAnchor.constraint(equalToConstant: 63)
-            searchBarHeightAnchor.isActive = true
+        self.view.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: phoneWidth, height: 860)
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        searchBarView.addSubview(searchButton)
-        searchButton.leftAnchor.constraint(equalTo: searchBarView.leftAnchor, constant: 16).isActive = true
-        searchButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        searchButton.widthAnchor.constraint(equalTo: searchButton.heightAnchor).isActive = true
-        searchButton.centerYAnchor.constraint(equalTo: searchBarView.topAnchor, constant: 31.5).isActive = true
-        
-        searchBarView.addSubview(searchTextField)
-        searchTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        searchTextField.leftAnchor.constraint(equalTo: searchButton.rightAnchor, constant: 8).isActive = true
-        searchTextField.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -12).isActive = true
-        searchTextField.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
-        searchTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        searchBarView.addSubview(searchLine)
-        loadingParkingHeightAnchor = searchLine.heightAnchor.constraint(equalToConstant: 3)
-            loadingParkingHeightAnchor.isActive = true
-        searchLine.bottomAnchor.constraint(equalTo: searchBarView.bottomAnchor).isActive = true
-        loadingParkingLeftAnchor = searchLine.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-            loadingParkingLeftAnchor.isActive = true
-        loadingParkingRightAnchor = searchLine.rightAnchor.constraint(equalTo: self.view.rightAnchor)
-            loadingParkingRightAnchor.isActive = false
-        loadingParkingWidthAnchor = searchLine.widthAnchor.constraint(equalToConstant: 0)
-            loadingParkingWidthAnchor.isActive = true
-
-        searchBarView.addSubview(couponLabel)
-        couponLabel.leftAnchor.constraint(equalTo: searchBarView.leftAnchor, constant: 12).isActive = true
-        couponLabel.centerYAnchor.constraint(equalTo: searchLine.centerYAnchor).isActive = true
-        couponLabel.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -12).isActive = true
-        couponLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        
-        searchBarView.addSubview(couponButton)
-        couponButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        couponButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        couponButton.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -4).isActive = true
-        couponButton.centerYAnchor.constraint(equalTo: couponLabel.centerYAnchor).isActive = true
-        
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(searchBarTapped))
-//        searchBarView.addGestureRecognizer(tapGesture)
+        scrollView.addSubview(scrollBar)
+        scrollBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        scrollBar.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
+        scrollBar.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        scrollBar.heightAnchor.constraint(equalToConstant: 6).isActive = true
         
     }
-    
-    var fromSeachTopAnchor: NSLayoutConstraint!
     
     func setupSearch() {
         
-        self.view.addSubview(searchLocation)
-        let width: CGFloat = (self.view.frame.width - 300)/2
-        searchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -width).isActive = true
-        searchLocation.centerYAnchor.constraint(equalTo: searchTextField.centerYAnchor).isActive = true
-        searchLocation.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        searchLocation.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        scrollView.addSubview(searchView)
+        scrollView.bringSubviewToFront(scrollBar)
         
-        self.view.addSubview(searchBackButton)
-        searchBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        searchBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        searchBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            searchBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
-        case .iphoneX:
-            searchBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
-        }
+        searchView.addSubview(searchButton)
+        searchButton.topAnchor.constraint(equalTo: scrollBar.bottomAnchor, constant: 16).isActive = true
+        searchButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        searchButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        searchButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.view.addSubview(fromSearchBar)
-        self.view.addSubview(fromSearchLocation)
-        fromSearchBar.leftAnchor.constraint(equalTo: searchTextField.leftAnchor).isActive = true
-        fromSearchBar.rightAnchor.constraint(equalTo: fromSearchLocation.leftAnchor, constant: -4).isActive = true
-        fromSeachTopAnchor = fromSearchBar.bottomAnchor.constraint(equalTo: searchTextField.topAnchor, constant: -10)
-            fromSeachTopAnchor.isActive = true
-        fromSearchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        searchButton.addSubview(searchLabel)
+        searchLabel.leftAnchor.constraint(equalTo: searchButton.leftAnchor, constant: 16).isActive = true
+        searchLabel.rightAnchor.constraint(equalTo: searchButton.rightAnchor, constant: -16).isActive = true
+        searchLabel.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
+        searchLabel.sizeToFit()
         
-        fromSearchBar.addSubview(fromSearchIcon)
-        fromSearchIcon.centerXAnchor.constraint(equalTo: searchButton.centerXAnchor).isActive = true
-        fromSearchIcon.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
-        fromSearchIcon.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        fromSearchIcon.widthAnchor.constraint(equalTo: fromSearchIcon.heightAnchor).isActive = true
-        
-        fromSearchBar.addSubview(fromSearchLine)
-        fromSearchBar.bringSubviewToFront(fromSearchIcon)
-        fromSearchLine.centerXAnchor.constraint(equalTo: searchButton.centerXAnchor).isActive = true
-        fromSearchLine.topAnchor.constraint(equalTo: fromSearchIcon.bottomAnchor, constant: -4).isActive = true
-        fromSearchLine.widthAnchor.constraint(equalToConstant: 4).isActive = true
-        fromSearchLine.heightAnchor.constraint(equalToConstant: 31).isActive = true
-        
-        fromSearchLocation.centerXAnchor.constraint(equalTo: searchLocation.centerXAnchor).isActive = true
-        fromSearchLocation.centerYAnchor.constraint(equalTo: fromSearchBar.centerYAnchor).isActive = true
-        fromSearchLocation.widthAnchor.constraint(equalToConstant: 26).isActive = true
-        fromSearchLocation.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        self.view.addSubview(backgroundView)
-        self.view.sendSubviewToBack(backgroundView)
-        backgroundView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        backgroundView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        backgroundView.topAnchor.constraint(equalTo: fromSearchBar.topAnchor, constant: 0).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 4).isActive = true
+        searchButton.addSubview(microphoneButton)
+        microphoneButton.rightAnchor.constraint(equalTo: searchButton.rightAnchor, constant: -12).isActive = true
+        microphoneButton.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
+        microphoneButton.topAnchor.constraint(equalTo: searchButton.topAnchor, constant: 12).isActive = true
+        microphoneButton.widthAnchor.constraint(equalTo: microphoneButton.heightAnchor).isActive = true
         
     }
     
-    func loadingParking() {
-        if shouldBeLoading == true {
-            self.loadingParkingHeightAnchor.constant = 3
-            self.searchBarHeightAnchor.constant = 63
-            self.loadingParkingWidthAnchor.constant = 100
-            UIView.animate(withDuration: 0.4, animations: {
-                self.searchLine.backgroundColor = Theme.BLACK
-                self.couponLabel.alpha = 0
-                self.couponButton.alpha = 0
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.loadingParkingLeftAnchor.isActive = false
-                self.loadingParkingRightAnchor.isActive = true
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    self.loadingParkingWidthAnchor.constant = 0
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.view.layoutIfNeeded()
-                    }, completion: { (success) in
-                        self.loadingParkingLeftAnchor.isActive = true
-                        self.loadingParkingRightAnchor.isActive = false
-                        self.view.layoutIfNeeded()
-                        self.loadingParking()
-                    })
-                })
+    func setupRecents() {
+        
+        searchView.addSubview(homeButton)
+        homeButton.leftAnchor.constraint(equalTo: searchButton.leftAnchor).isActive = true
+        homeButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16).isActive = true
+        homeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        homeButton.widthAnchor.constraint(equalTo: homeButton.heightAnchor).isActive = true
+        
+        searchView.addSubview(homeLabel)
+        homeLabel.leftAnchor.constraint(equalTo: homeButton.rightAnchor, constant: 6).isActive = true
+        homeLabel.centerYAnchor.constraint(equalTo: homeButton.centerYAnchor).isActive = true
+        homeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        homeLabel.sizeToFit()
+        
+        searchView.addSubview(recentButton)
+        recentButton.leftAnchor.constraint(equalTo: homeLabel.rightAnchor, constant: 16).isActive = true
+        recentButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16).isActive = true
+        recentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        recentButton.widthAnchor.constraint(equalTo: homeButton.heightAnchor).isActive = true
+        
+        searchView.addSubview(recentLabel)
+        recentLabel.leftAnchor.constraint(equalTo: recentButton.rightAnchor, constant: 6).isActive = true
+        recentLabel.centerYAnchor.constraint(equalTo: recentButton.centerYAnchor).isActive = true
+        recentLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        recentLabel.rightAnchor.constraint(lessThanOrEqualTo: self.view.rightAnchor, constant: -12).isActive = true
+        recentLabel.sizeToFit()
+        
+        searchView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        searchView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        searchView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        searchView.bottomAnchor.constraint(equalTo: homeButton.bottomAnchor, constant: 24).isActive = true
+        
+    }
+    
+    func setupWorks() {
+        
+        scrollView.addSubview(worksController.view)
+        worksController.view.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 4).isActive = true
+        worksController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        worksController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        worksController.view.heightAnchor.constraint(equalToConstant: 372).isActive = true
+        
+    }
+    
+    func setupInvite() {
+        
+        scrollView.addSubview(inviteFriendController.view)
+        inviteFriendController.view.topAnchor.constraint(equalTo: worksController.view.bottomAnchor, constant: 4).isActive = true
+        inviteFriendController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        inviteFriendController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        inviteFriendController.view.heightAnchor.constraint(equalToConstant: 112).isActive = true
+        
+    }
+    
+    var minimizeEvents: NSLayoutConstraint!
+    var maximizeEvents: NSLayoutConstraint!
+    
+    func setupEvents() {
+        
+        scrollView.addSubview(eventsView)
+        
+        eventsView.addSubview(eventsLabel)
+        eventsLabel.topAnchor.constraint(equalTo: eventsView.topAnchor, constant: 16).isActive = true
+        eventsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        eventsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        eventsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        eventsView.addSubview(eventsController.view)
+        eventsController.view.topAnchor.constraint(equalTo: eventsLabel.bottomAnchor, constant: 16).isActive = true
+        eventsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        eventsController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        eventsController.view.heightAnchor.constraint(equalToConstant: eventsController.cellHeight + 16).isActive = true
+        
+        eventsView.topAnchor.constraint(equalTo: inviteFriendController.view.bottomAnchor, constant: 4).isActive = true
+        eventsView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        eventsView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        eventsView.bottomAnchor.constraint(equalTo: eventsController.view.bottomAnchor, constant: 24).isActive = true
+        
+    }
+    
+    func setupHosting() {
+        
+        scrollView.addSubview(newHostController.view)
+        minimizeEvents = newHostController.view.topAnchor.constraint(equalTo: inviteFriendController.view.bottomAnchor, constant: 4)
+            minimizeEvents.isActive = true
+        maximizeEvents = newHostController.view.topAnchor.constraint(equalTo: eventsView.bottomAnchor, constant: 4)
+            maximizeEvents.isActive = false
+        newHostController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        newHostController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        newHostController.view.heightAnchor.constraint(equalToConstant: 140).isActive = true
+        
+    }
+    
+    func setupBannerExpanded() {
+        
+        self.view.addSubview(inviteController.view)
+        inviteController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusHeight).isActive = true
+        inviteController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        inviteController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        inviteController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
+        inviteFriendController.view.addGestureRecognizer(invite)
+        
+        self.view.addSubview(quickHostController.view)
+        quickHostController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusHeight).isActive = true
+        quickHostController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        quickHostController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        quickHostController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        let host = UITapGestureRecognizer(target: self, action: #selector(newHostControllerPressed))
+        newHostController.view.addGestureRecognizer(host)
+        
+    }
+    
+    func checkRecentSearches() {
+        let userDefaults = UserDefaults.standard
+        if let firstRecent = userDefaults.value(forKey: "firstSavedRecentTerm") {
+            var first = firstRecent as! String
+            if let dotRange = first.range(of: ",") {
+                first.removeSubrange(dotRange.lowerBound..<first.endIndex)
+                self.homeLabel.text = first
+                self.homeButton.alpha = 1
+                self.homeLabel.alpha = 1
+                let image = UIImage(named: "time")
+                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+                self.homeButton.setImage(tintedImage, for: .normal)
+                self.homeButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+                self.homeButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
             }
         }
-    }
-    
-    func endSearching(status: ParkingState) {
-        self.shouldBeLoading = false
-        self.loadingParkingHeightAnchor.constant = 3
-        self.searchBarHeightAnchor.constant = 63
-        self.loadingParkingWidthAnchor.constant = 0
-        UIView.animate(withDuration: 0.3, animations: {
-            self.searchLine.backgroundColor = Theme.BLACK
-            self.couponLabel.alpha = 0
-            self.couponButton.alpha = 0
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.loadingParkingLeftAnchor.isActive = true
-            self.loadingParkingRightAnchor.isActive = false
-            self.view.layoutIfNeeded()
-            self.loadingParkingWidthAnchor.constant = 100
-            UIView.animate(withDuration: 0.4, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.loadingParkingLeftAnchor.isActive = true
-                self.loadingParkingRightAnchor.isActive = true
-                self.loadingParkingWidthAnchor.constant = 327
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    self.loadingParkingHeightAnchor.constant = 26
-                    self.searchBarHeightAnchor.constant = 89
-                    if status == .foundParking {
-                        self.foundParking()
-                    } else if status == .noParking {
-                        self.noParking()
-                    } else if status == .zoomIn {
-                        self.zoomIn()
-                    }
-                })
+        if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
+            var second = secondRecent as! String
+            if let dotRange = second.range(of: ",") {
+                second.removeSubrange(dotRange.lowerBound..<second.endIndex)
+                self.recentLabel.text = second
+                self.recentButton.alpha = 1
+                self.recentLabel.alpha = 1
+                let image = UIImage(named: "time")
+                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+                self.recentButton.setImage(tintedImage, for: .normal)
+                self.recentButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+                self.recentButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
             }
-        })
-    }
-    
-    func foundParking() {
-        let image = UIImage(named: "saleIcon")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.couponLabel.text = "Park today and receive 10% off!"
-            self.couponButton.setImage(tintedImage, for: .normal)
-            self.searchLine.backgroundColor = Theme.LIGHT_BLUE
-            self.couponLabel.alpha = 1
-            self.couponButton.alpha = 0.8
-            self.view.layoutIfNeeded()
-        }) { (success) in
-        }
-    }
-    
-    func noParking() {
-        let image = UIImage(named: "Home")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.couponLabel.text = "There is currently no parking in this area"
-            self.couponButton.setImage(tintedImage, for: .normal)
-            self.searchLine.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.9)
-            self.couponLabel.alpha = 1
-            self.couponButton.alpha = 0.8
-            self.view.layoutIfNeeded()
-        }) { (success) in
-        }
-    }
-    
-    func zoomIn() {
-        let image = UIImage(named: "locator")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.couponLabel.text = "Zoom in to find available parking spots"
-            self.couponButton.setImage(tintedImage, for: .normal)
-            self.searchLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
-            self.couponLabel.alpha = 1
-            self.couponButton.alpha = 0.8
-            self.view.layoutIfNeeded()
-        }) { (success) in
-        }
-    }
-
-    @objc func searchBarTapped() {
-        if fullSearchOpen == false {
-            self.openSearchBar()
         } else {
-            self.closeSearchBar()
-        }
-    }
-    
-    func openSearchBar() {
-        self.shouldRefresh = false
-        self.fullSearchOpen = true
-        self.delegate?.mainBarWillOpen()
-        self.searchBarHeightAnchor.constant = 60
-        UIView.animate(withDuration: animationIn, animations: {
-            UIView.animate(withDuration: animationOut) {
-                self.view.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
-                self.searchBackButton.alpha = 1
-                self.searchLine.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-        }) { (success) in
-            switch device {
-            case .iphone8:
-                self.mainBarTopAnchor.constant = 116
-            case .iphoneX:
-                self.mainBarTopAnchor.constant = 136
-            }
-            UIView.animate(withDuration: animationOut) {
-                self.fromSearchBar.alpha = 1
-                self.searchLocation.alpha = 0.1
-                self.fromSearchIcon.alpha = 1
-                self.fromSearchLine.alpha = 1
-                self.searchBarView.backgroundColor = UIColor.clear
-                self.fromSearchLocation.alpha = 1
-                self.backgroundView.alpha = 1
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @objc func closeSearchBar() {
-        self.view.endEditing(true)
-        self.shouldBeLoading = true
-        self.shouldRefresh = true
-        self.fullSearchOpen = false
-        self.delegate?.mainBarWillClose()
-        self.searchBarHeightAnchor.constant = 89
-        self.alreadyFoundParking = false
-        self.searchTextField.text = "Where are you headed?"
-        UIView.animate(withDuration: animationIn, animations: {
-            UIView.animate(withDuration: animationOut) {
-                self.backgroundView.alpha = 0
-                self.searchBarView.backgroundColor = Theme.WHITE
-                self.fromSearchBar.alpha = 0
-                self.searchLocation.alpha = 0
-                self.fromSearchIcon.alpha = 0
-                self.fromSearchLine.alpha = 0
-                self.fromSearchLocation.alpha = 0
-                self.searchBackButton.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-        }) { (success) in
-            self.mainBarTopAnchor.constant = 0
-            UIView.animate(withDuration: animationOut) {
-                self.view.backgroundColor = UIColor.clear
-                self.searchLine.alpha = 1
-                self.view.layoutIfNeeded()
-            }
+            self.recentButton.alpha = 0
+            self.recentLabel.alpha = 0
         }
     }
     
 }
 
 
-extension MainBarViewController: UITextFieldDelegate, UITextViewDelegate {
+extension MainBarViewController: handleInviteControllers {
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == fromSearchBar && fromSearchBar.text == "Current location" {
-            self.fromSearchBar.text = ""
-            self.fromSearchBar.textColor = Theme.BLACK
-            return true
-        } else if textField == self.searchTextField && self.searchBarHeightAnchor.constant != 89 && self.searchBarHeightAnchor.constant != 63 {
-            return true
-        } else {
-            self.shouldBeLoading = false
-            self.searchBarTapped()
-            self.delegate?.expandSearchBar()
-            return false
+    @objc func inviteControllerPressed() {
+        shouldDragMainBar = false
+        self.delegate?.expandedMainBar()
+        self.scrollView.isScrollEnabled = false
+        self.inviteController.openController()
+    }
+    
+    @objc func newHostControllerPressed() {
+        shouldDragMainBar = false
+        self.delegate?.expandedMainBar()
+        self.scrollView.isScrollEnabled = false
+        self.quickHostController.openController()
+    }
+    
+    func inviteControllerDismissed() {
+        shouldDragMainBar = true
+        self.scrollView.isScrollEnabled = true
+    }
+    
+    func openEvents() {
+        self.minimizeEvents.isActive = false
+        self.maximizeEvents.isActive = true
+        self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1140)
+        UIView.animate(withDuration: animationIn) {
+            self.eventsView.alpha = 1
+            self.view.layoutIfNeeded()
         }
-    }
-    
-    @objc private func textFieldDidChange(textField: UITextField) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil, userInfo: ["text":textField.text!])
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(false)
-        self.searchTextField.becomeFirstResponder()
     }
     
 }
 
+
+extension MainBarViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        if translation < 0 {
+            scrollView.contentOffset.y = 0.0
+            scrollView.isScrollEnabled = false
+            self.delegate?.mainBarWillClose()
+        }
+    }
+    
+}

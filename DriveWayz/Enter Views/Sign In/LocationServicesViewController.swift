@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 class LocationServicesViewController: UIViewController {
 
-    var delegate: handleVerificationCode?
+    var delegate: handlePhoneNumberVerification?
     let locationManager = CLLocationManager()
     
     var mapView: MKMapView = {
@@ -39,7 +39,7 @@ class LocationServicesViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPLightH1
+        label.font = Fonts.SSPSemiBoldH1
         label.text = "Location Services"
         
         return label
@@ -49,7 +49,7 @@ class LocationServicesViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPLightH3
+        label.font = Fonts.SSPRegularH3
         label.text = "Drivewayz would like to access your location to provide parking for you faster and simpler"
         label.numberOfLines = 3
         
@@ -72,13 +72,10 @@ class LocationServicesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
+        button.backgroundColor = Theme.STRAWBERRY_PINK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkLocationServices), for: .touchUpInside)
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
         
         return button
@@ -150,7 +147,7 @@ class LocationServicesViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         nextButton.topAnchor.constraint(equalTo: thirdLabel.bottomAnchor, constant: 72).isActive = true
         nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
         nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true

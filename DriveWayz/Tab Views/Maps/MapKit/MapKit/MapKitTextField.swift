@@ -14,68 +14,75 @@ import GooglePlaces
 
 extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        // Get data
-        let lat = place.coordinate.latitude
-        let long = place.coordinate.longitude
-        
-        // Create Annotation
-        let annotation = MGLPointAnnotation()
-        let coordinate = CLLocationCoordinate2DMake(lat, long)
-        annotation.title = "\(place.name)"
-        annotation.coordinate = coordinate
-        self.mapView.addAnnotation(annotation)
-        
-        // Zoom in on coordinate
-//        self.mapView.setCenter(coordinate, animated: true)
-    }
-    
-    func expandSearchBar() {
-        self.mainBarController.searchTextField.text = ""
-        self.mainBarController.searchTextField.font = Fonts.SSPRegularH4
-        delayWithSeconds(animationIn) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.locationsSearchResults.checkRecentSearches()
-                self.locationResultsHeightAnchor.constant = self.view.frame.height - self.mainBarHeightAnchor.constant + 80
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+        self.summaryTopAnchor.constant = -260
+        self.mainBarController.checkRecentSearches()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.locationResultsHeightAnchor.constant = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: animationOut, animations: {
+                self.fullBackgroundView.alpha = 0
                 self.view.layoutIfNeeded()
-            }) { (success) in
-                self.mainBarController.searchTextField.becomeFirstResponder()
+            }, completion: { (success) in
+                self.mainBarHighest = false
+                self.delegate?.defaultContentStatusBar()
+            })
+        }
+    }
+    
+    @objc func changeDatesPressed() {
+        self.view.endEditing(true)
+        self.purchaseControllerBottomAnchor.constant = 0
+        self.fullBackgroundView.alpha = 0
+        self.view.bringSubviewToFront(fullBackgroundView)
+        self.view.bringSubviewToFront(purchaseController.view)
+        self.view.bringSubviewToFront(parkingBackButton)
+        self.parkingBackButtonPurchaseAnchor.isActive = true
+        self.parkingBackButtonBookAnchor.isActive = false
+        self.parkingBackButtonConfirmAnchor.isActive = false
+        UIView.animate(withDuration: animationIn) {
+            self.parkingBackButton.tintColor = Theme.WHITE
+            self.parkingBackButton.alpha = 1
+            self.fullBackgroundView.alpha = 0.6
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func changeDatesDismissed() {
+        self.purchaseControllerBottomAnchor.constant = 500
+        self.parkingBackButtonPurchaseAnchor.isActive = false
+        self.parkingBackButtonBookAnchor.isActive = true
+        self.parkingBackButtonConfirmAnchor.isActive = false
+        UIView.animate(withDuration: animationOut, animations: {
+            self.fullBackgroundView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.view.bringSubviewToFront(self.mainBarController.view)
+            self.view.bringSubviewToFront(self.locationsSearchResults.view)
+            self.view.bringSubviewToFront(self.summaryController.view)
+            self.view.bringSubviewToFront(self.parkingController.view)
+            if self.parkingControllerBottomAnchor.constant != 0 && self.confirmControllerBottomAnchor.constant != 0 {
+                self.summaryController.searchTextField.becomeFirstResponder()
             }
-        }
-    }
-    
-    func hideSearchBar(regular: Bool) {
-        if regular == false {
-            self.delegate?.hideHamburger()
-            self.beginSearchingForParking()
-            self.mainBarTopAnchor.constant = -100
-        }
-        if eventsAreAllowed == true {
-            self.eventsControllerHidden()
-        }
-        self.locationResultsHeightAnchor.constant = 0
-        self.mainBarController.searchTextField.font = Fonts.SSPRegularH3
-        UIView.animate(withDuration: animationIn, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-        }
-    }
-    
-    func beginSearchingForParking() {
-        self.takeAwayEvents()
-        self.locationResultsHeightAnchor.constant = 0
-//        self.searchBar.font = Fonts.SSPRegularH3
-        UIView.animate(withDuration: animationIn, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-           
+            UIView.animate(withDuration: animationIn, animations: {
+                self.parkingBackButton.tintColor = Theme.DARK_GRAY
+            })
         }
     }
     
     @objc func searchBackButtonPressed() {
         self.view.endEditing(true)
-        self.hideSearchBar(regular: true)
         self.findParkingNearUserLocation()
+    }
+    
+    func showCurrentLocation() {
+        self.locationsSearchResults.bringCurrentLocation()
+    }
+    
+    func hideCurrentLocation() {
+        self.locationsSearchResults.hideCurrentLocation()
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {

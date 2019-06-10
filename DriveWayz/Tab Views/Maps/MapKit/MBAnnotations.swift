@@ -14,41 +14,75 @@ var numberOfTotalParkingSpots: Int = 0
 
 extension MapKitViewController {
 
-    func observeAllParking() {
-        let ref = Database.database().reference().child("ParkingSpots")
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            numberOfTotalParkingSpots = Int(snapshot.childrenCount)
-            ref.observe(.childAdded, with: { (snapshot) in
-                let parkingID = [snapshot.key]
-                self.fetchParking(parkingID: parkingID)
-            }, withCancel: nil)
-            ref.observe(.childRemoved, with: { (snapshot) in
-                self.parkingSpotsDictionary.removeValue(forKey: snapshot.key)
-            }, withCancel: nil)
-        }
-    }
-    
-    private func fetchParking(parkingID: [String]) {
-        self.parkingSpots = []
-        self.parkingSpotsDictionary = [:]
-        for parking in parkingID {
-            let ref = Database.database().reference().child("ParkingSpots").child(parking)
-            ref.observe(.value, with: { (snapshot) in
-                if var dictionary = snapshot.value as? [String:AnyObject] {
-                    let parking = ParkingSpots(dictionary: dictionary)
-                    let parkingID = dictionary["parkingID"] as! String
-                    self.parkingSpotsDictionary[parkingID] = parking
-                    self.parkingSpots = Array(self.parkingSpotsDictionary.values)
+    func observeAllParking(location: String) {
+        var parkingSpots: [String] = []
+        if !isCurrentlyBooked {
+            let ref = Database.database().reference().child("ParkingLocations").child(location)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                numberOfTotalParkingSpots = Int(snapshot.childrenCount)
+                ref.observe(.childAdded) { (snapshot) in
+                    if let key = snapshot.value as? String {
+                        parkingSpots.append(key)
+                        if parkingSpots.count == numberOfTotalParkingSpots {
+                            for parking in parkingSpots {
+                                let ref = Database.database().reference().child("ParkingSpots").child(parking)
+                                ref.observe(.value, with: { (snapshot) in
+                                    if var dictionary = snapshot.value as? [String:AnyObject] {
+                                        let parking = ParkingSpots(dictionary: dictionary)
+                                        let parkingID = dictionary["parkingID"] as! String
+                                        self.parkingSpotsDictionary[parkingID] = parking
+                                        self.parkingSpots = Array(self.parkingSpotsDictionary.values)
                     
-                    if self.parkingSpotsDictionary.count == numberOfTotalParkingSpots {
-                        self.findParkingNearUserLocation()
+                                        if self.parkingSpotsDictionary.count == numberOfTotalParkingSpots {
+                                            self.placeAllAnnotations()
+                                        }
+                                    }
+                                }) { (error) in
+                                    print(error.localizedDescription)
+                                }
+                            }
+                            
+                            
+//                            DynamicParking.getDynamicParking(parkingIDs: parkingSpots) { (parking) in
+//                                self.parkingSpots = parking
+//                                self.availableParkingSpots = parking
+//                                self.placeAllAnnotations()
+//                            }
+                        }
                     }
                 }
-            }) { (error) in
-                print(error.localizedDescription)
             }
         }
     }
+    
+    func placeAllAnnotations() {
+        for i in 0..<self.parkingSpots.count {
+            let parking = self.parkingSpots[i]
+            if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
+                let location = CLLocation(latitude: latitude, longitude: longitude)
+                let marker = MGLPointAnnotation()
+                marker.title = parking.parkingCost
+                marker.coordinate = location.coordinate
+                marker.subtitle = "\(i)"
+                self.mapView.addAnnotation(marker)
+//                self.mainBarController.parkingState = .foundParking
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func organizeParkingLocation(searchLocation: CLLocation, shouldDraw: Bool) {
         self.closeParkingSpots = []
@@ -56,23 +90,20 @@ extension MapKitViewController {
         if let annotations = self.mapView.annotations {
             self.mapView.removeAnnotations(annotations)
         }
-        for i in 0..<parkingSpots.count {
-            let parking = self.parkingSpots[i]
+        for i in 0..<availableParkingSpots.count {
+            let parking = self.availableParkingSpots[i]
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
-                let distance = self.distanceBetweenCoordinates(from: searchLocation, to: location)
-                if distance < 6436 {
-                    parking.parkingDistance = distance
-                    self.closeParkingSpots.append(parking)
-                    let marker = MGLPointAnnotation()
-                    marker.title = parking.parkingCost
-                    marker.coordinate = location.coordinate
-                    marker.subtitle = "\(i)"
-                    self.mapView.addAnnotation(marker)
-                }
+                self.closeParkingSpots.append(parking)
+                let marker = MGLPointAnnotation()
+                marker.title = parking.parkingCost
+                marker.coordinate = location.coordinate
+                marker.subtitle = "\(i)"
+                self.mapView.addAnnotation(marker)
+                self.mainBarController.parkingState = .foundParking
             }
         }
-        delayWithSeconds(0.1) {
+        delayWithSeconds(0.3) {
             if self.closeParkingSpots.count > 0 && self.closeParkingSpots.count != self.visibleParkingSpots {
                 self.visibleParkingSpots = self.closeParkingSpots.count
                 self.mainBarController.parkingState = .foundParking
@@ -95,7 +126,7 @@ extension MapKitViewController {
                     if let userLocation = locationManager.location {
                         self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: searchLocation, address: address)
                         delayWithSeconds(1.6) {
-                            self.hideSearchBar(regular: false)
+                            self.dismissKeyboard()
                         }
                         if let bestPrice = self.cheapestParkingSpots.last {
                             let latitude = bestPrice.latitude
@@ -126,8 +157,8 @@ extension MapKitViewController {
             } else {
                 delayWithSeconds(2.4) {
                     self.parkingSelected()
-                    self.hideSearchBar(regular: false)
-                    self.parkingController.noBookingFound()
+                    self.dismissKeyboard()
+//                    self.parkingController.noBookingFound()
                 }
             }
         }

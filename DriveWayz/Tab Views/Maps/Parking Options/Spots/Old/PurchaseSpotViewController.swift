@@ -287,7 +287,7 @@ class PurchaseSpotViewController: UIViewController, handleDurationSet {
     }
     
     @objc func durationPressed() {
-        self.delegate?.setDurationPressed()
+//        self.delegate?.setDurationPressed()
         self.durationController.didSetTimes()
         UIView.animate(withDuration: animationIn, animations: {
             self.locatorArrow.alpha = 0

@@ -18,13 +18,12 @@ protocol moveControllers {
     func moveToMap()
     func lightContentStatusBar()
     func defaultContentStatusBar()
-    func changeMainLabel(text: String)
-    func moveMainLabel(percent: CGFloat)
     func bringExitButton()
     func hideExitButton()
     func bringNewHostingController()
     func hideHamburger()
     func bringHamburger()
+    func changeProfileImage(image: UIImage)
 }
 
 protocol controlsNewParking {
@@ -84,30 +83,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         
         return view
     }()
-    
-    lazy var purpleGradient: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleStraightColor()
-        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
-        background.zPosition = -10
-        view.alpha = 0
-        view.layer.addSublayer(background)
-        
-        return view
-    }()
-    
-    var mainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Analytics"
-        label.textColor = Theme.WHITE
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH0
-        label.alpha = 0
-        
-        return label
-    }()
-    
+
     lazy var exitButton: UIButton = {
         let button = UIButton()
         let origImage = UIImage(named: "Delete")
@@ -126,7 +102,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 10
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize.zero
         view.layer.shadowRadius = 5
@@ -154,27 +130,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         controller.moveDelegate = self
         return controller
     }()
-    
-    lazy var hostingController: MainHostViewController = {
-        let controller = MainHostViewController()
+
+    lazy var hostingController: MySpotsViewController = {
+        let controller = MySpotsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Hosting"
         controller.delegate = self
-        controller.moveDelegate = self
+
         return controller
     }()
-    
 
-    
-//    lazy var hostingController: MySpotsViewController = {
-//        let controller = MySpotsViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.title = "Hosting"
-////        controller.delegate = self
-////        controller.moveDelegate = self
-//        return controller
-//    }()
-//
     lazy var configureParkingController: ConfigureParkingViewController = {
         let controller = ConfigureParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -205,6 +170,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let controller = UpcomingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
+        controller.delegate = self
         
         return controller
     }()
@@ -273,6 +239,19 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
+    lazy var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.WHITE
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().purpleBlueColor()
+        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        view.alpha = 0
+        
+        return view
+    }()
+    
     var mapCenterAnchor: NSLayoutConstraint!
     var containerLeftAnchor: NSLayoutConstraint!
     var containerRightAnchor: NSLayoutConstraint!
@@ -336,33 +315,26 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         hamburgerButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
         switch device {
         case .iphone8:
-            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
-        self.view.addSubview(purpleGradient)
-        purpleGradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        purpleGradient.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        purpleGradient.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        purpleGradient.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainTopAnchor = mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 102)
-            mainTopAnchor.isActive = true
+        self.view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        gradientContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(exitButton)
         exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
     }
@@ -410,12 +382,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func moveToProfile() {
         self.delegate?.hideStatusBar()
         self.mapController.purchaseButtonSwipedDown()
-//        self.mapController.eventsControllerHidden()
-//        self.mapController.takeAwayEvents()
+        self.mapController.view.bringSubviewToFront(self.mapController.fullBackgroundView)
         UIView.animate(withDuration: animationIn, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.shadowView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            self.mapController.view.layer.cornerRadius = 5
+            self.mapController.view.layer.cornerRadius = 8
+            self.mapController.fullBackgroundView.alpha = 0.2
             hamburgerView1.backgroundColor = Theme.BLACK
             hamburgerView2.backgroundColor = Theme.BLACK
             hamburgerView3.backgroundColor = Theme.BLACK
@@ -449,31 +421,17 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     func moveToMap() {
         self.delegate?.bringStatusBar()
-        switch solar {
-        case .day:
-            hamburgerView1.backgroundColor = Theme.BLACK
-            hamburgerView2.backgroundColor = Theme.BLACK
-            hamburgerView3.backgroundColor = Theme.BLACK
-            self.defaultContentStatusBar()
-        case .night:
-            hamburgerView1.backgroundColor = Theme.BLACK
-            hamburgerView2.backgroundColor = Theme.BLACK
-            hamburgerView3.backgroundColor = Theme.BLACK
-            self.defaultContentStatusBar()
-//            hamburgerView1.backgroundColor = Theme.OFF_WHITE
-//            hamburgerView2.backgroundColor = Theme.OFF_WHITE
-//            hamburgerView3.backgroundColor = Theme.OFF_WHITE
-//            self.lightContentStatusBar()
-        }
         self.mapCenterAnchor.constant = 0
         hamburgerWidthAnchor.constant = -12
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.mapController.view.layer.cornerRadius = 0
+            self.mapController.fullBackgroundView.alpha = 0
             self.blurView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.mapController.view.bringSubviewToFront(self.mapController.mainBarController.view)
             if eventsAreAllowed == true {
                 self.mapController.eventsControllerHidden()
             }
@@ -481,8 +439,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     
     func openProfileOptions() {
-        self.mapCenterAnchor.constant = self.view.frame.width * 1.3
-        UIView.animate(withDuration: animationIn) {
+        self.mapCenterAnchor.constant = phoneWidth * 1.3
+        UIView.animate(withDuration: animationOut) {
             self.view.layoutIfNeeded()
         }
     }
@@ -532,16 +490,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {
-                self.accountSlideController.profileImageView.alpha = 0
-                self.accountSlideController.profileName.alpha = 0
-                self.accountSlideController.profileLine.alpha = 0
-                self.accountSlideController.optionsTableView.alpha = 0
-                self.accountSlideController.backgroundProfile.alpha = 0
-                self.accountSlideController.settingsSelect.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.delegate?.bringStatusBar()
-                self.delegate?.lightContentStatusBar()
+                delayWithSeconds(animationIn, completion: {
+                    self.delegate?.bringStatusBar()
+                    self.delegate?.lightContentStatusBar()
+                })
             }
         }
     }
@@ -550,14 +504,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         closeProfileOptions()
         self.delegate?.hideStatusBar()
         UIView.animate(withDuration: animationIn, animations: {
-            self.purpleGradient.alpha = 0
             self.exitButton.alpha = 0
-            self.accountSlideController.profileImageView.alpha = 1
-            self.accountSlideController.profileName.alpha = 1
-            self.accountSlideController.profileLine.alpha = 1
-            self.accountSlideController.optionsTableView.alpha = 1
-            self.accountSlideController.backgroundProfile.alpha = 1
-            self.accountSlideController.settingsSelect.alpha = 1
+            self.gradientContainer.alpha = 0
             if self.accountSlideController.hostMarkShouldShow == true {
                 self.accountSlideController.hostingMark.alpha = 1
             } else {
@@ -572,24 +520,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         }) { (success) in
             self.delegate?.defaultStatusBar()
         }
-    }
-    
-    func moveMainLabel(percent: CGFloat) {
-        if percent <= 1 && percent >= 0 {
-            let scale = 0.8 + (1-percent)/5
-            self.mainLabel.transform = CGAffineTransform(scaleX: scale, y: scale)
-            switch device {
-            case .iphone8:
-                mainTopAnchor.constant = 98 - (percent * 76)
-            case .iphoneX:
-                mainTopAnchor.constant = 108 - (percent * 76)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func changeMainLabel(text: String) {
-        self.mainLabel.text = text
     }
     
     func lightContentStatusBar() {
@@ -630,6 +560,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func bringExitButton() {
         UIView.animate(withDuration: animationOut) {
             self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
         }
     }
     
@@ -643,6 +574,10 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         self.removeAll()
     }
     
+    func changeProfileImage(image: UIImage) {
+        self.accountSlideController.profileImageView.image = image
+    }
+    
 }
 
 
@@ -654,16 +589,15 @@ extension TabViewController {
         self.view.bringSubviewToFront(exitButton)
         upcomingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         upcomingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        upcomingAnchor = upcomingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
+            upcomingAnchor.isActive = true
         upcomingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        upcomingAnchor = upcomingController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
-        upcomingAnchor.isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Your bookings"
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.upcomingAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -675,16 +609,15 @@ extension TabViewController {
         self.view.bringSubviewToFront(exitButton)
         userMessagesController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         userMessagesController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        messagesAnchor = userMessagesController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
+            messagesAnchor.isActive = true
         userMessagesController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        messagesAnchor = userMessagesController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
-        messagesAnchor.isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Messages"
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.messagesAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -696,16 +629,15 @@ extension TabViewController {
         self.view.bringSubviewToFront(exitButton)
         hostingController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         hostingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        hostingAnchor = hostingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
+            hostingAnchor.isActive = true
         hostingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        hostingAnchor = hostingController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
-        hostingAnchor.isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Hosted spaces"
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.hostingAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -733,8 +665,6 @@ extension TabViewController {
         self.view.layoutIfNeeded()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.mainLabel.alpha = 0
-            self.mainLabel.text = "Become a host"
             self.view.bringSubviewToFront(self.exitButton)
             self.becomeHostController.startAnimations()
             UIView.animate(withDuration: animationIn, animations: {
@@ -742,10 +672,9 @@ extension TabViewController {
             }, completion: { (success) in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     UIView.animate(withDuration: animationIn, animations: {
-                        self.purpleGradient.alpha = 0
                         self.exitButton.alpha = 1
+                        self.gradientContainer.alpha = 1
                         self.newParkingAnchor.constant = 0
-                        self.mainLabel.alpha = 1
                         self.view.layoutIfNeeded()
                     })
                 }
@@ -758,16 +687,15 @@ extension TabViewController {
         self.view.bringSubviewToFront(exitButton)
         vehicleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         vehicleController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        vehicleAnchor = vehicleController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
+            vehicleAnchor.isActive = true
         vehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        vehicleAnchor = vehicleController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
-        vehicleAnchor.isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Vehicle"
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.vehicleAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -775,96 +703,92 @@ extension TabViewController {
     }
     
     func bringAnalyticsController() {
-        self.view.addSubview(analController.view)
-        self.view.bringSubviewToFront(exitButton)
-        analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        analController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        analControllerAnchor = analController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
-        analControllerAnchor.isActive = true
-        self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Analytics"
-            UIView.animate(withDuration: animationIn, animations: {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
-                self.analControllerAnchor.constant = 0
-                self.view.layoutIfNeeded()
-            }, completion: { (success) in
-            })
-        }
+//        self.view.addSubview(analController.view)
+//        self.view.bringSubviewToFront(exitButton)
+//        analController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        analController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//        analController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+//        analControllerAnchor = analController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+//        analControllerAnchor.isActive = true
+//        self.view.layoutIfNeeded()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.exitButton.alpha = 1
+//                self.gradientContainer.alpha = 1
+//                self.analControllerAnchor.constant = 0
+//                self.view.layoutIfNeeded()
+//            }, completion: { (success) in
+//            })
+//        }
     }
     
     func bringCouponsController() {
-        self.view.addSubview(self.couponController.view)
-        self.view.bringSubviewToFront(exitButton)
-        self.addChild(couponController)
-        self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.couponController.view.alpha = 0
-        self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.couponController.view.alpha = 1
-            })
-        }
+//        self.view.addSubview(self.couponController.view)
+//        self.view.bringSubviewToFront(exitButton)
+//        self.addChild(couponController)
+//        self.couponController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        self.couponController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        self.couponController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        self.couponController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//        self.couponController.view.alpha = 0
+//        self.view.layoutIfNeeded()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.couponController.view.alpha = 1
+//            })
+//        }
     }
     
     func bringContactUsController() {
-        self.view.addSubview(self.contactController.view)
-        self.view.bringSubviewToFront(exitButton)
-        self.addChild(contactController)
-        self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        self.contactController.view.alpha = 0
-        self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.contactController.view.alpha = 1
-            })
-        }
+//        self.view.addSubview(self.contactController.view)
+//        self.view.bringSubviewToFront(exitButton)
+//        self.addChild(contactController)
+//        self.contactController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        self.contactController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        self.contactController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        self.contactController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+//        self.contactController.view.alpha = 0
+//        self.view.layoutIfNeeded()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.contactController.view.alpha = 1
+//            })
+//        }
     }
     
     func bringBankAccountController() {
         self.view.addSubview(self.bankAccountController.view)
-        self.view.bringSubviewToFront(exitButton)
-        self.addChild(bankAccountController)
-        self.bankAccountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.bankAccountController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        self.bankAccountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        bankAccountCenterAnchor = self.bankAccountController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-        bankAccountCenterAnchor.isActive = true
-        self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.bankAccountCenterAnchor.constant = 0
-                self.view.layoutIfNeeded()
-            })
-        }
+//        self.view.bringSubviewToFront(exitButton)
+//        self.addChild(bankAccountController)
+//        self.bankAccountController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        self.bankAccountController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        self.bankAccountController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+//        bankAccountCenterAnchor = self.bankAccountController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+//        bankAccountCenterAnchor.isActive = true
+//        self.view.layoutIfNeeded()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.bankAccountCenterAnchor.constant = 0
+//                self.view.layoutIfNeeded()
+//            })
+//        }
     }
     
     func bringSettingsController(image: UIImage, name: String) {
         self.view.addSubview(userSettingsController.view)
+        self.addChild(userSettingsController)
         self.view.bringSubviewToFront(exitButton)
         userSettingsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         userSettingsController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        userSettingsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        settingsAnchor = userSettingsController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+        settingsAnchor = userSettingsController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
             settingsAnchor.isActive = true
+        userSettingsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Settings"
-            self.userSettingsController.profileImageView.image = image
-            self.userSettingsController.profileName.text = name
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.settingsAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -873,19 +797,19 @@ extension TabViewController {
     
     func bringHelpController() {
         self.view.addSubview(helpController.view)
+        self.addChild(helpController)
         self.view.bringSubviewToFront(exitButton)
         helpController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         helpController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        helpController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        helpAnchor = helpController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height)
+        helpAnchor = helpController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
             helpAnchor.isActive = true
+        helpController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         self.view.layoutIfNeeded()
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationIn) {
-            self.mainLabel.text = "Help"
+        UIView.animate(withDuration: animationIn, animations: {
+            self.exitButton.alpha = 1
+            self.gradientContainer.alpha = 1
+        }) { (success) in
             UIView.animate(withDuration: animationIn) {
-                self.purpleGradient.alpha = 1
-                self.exitButton.alpha = 1
-                self.mainLabel.alpha = 1
                 self.helpAnchor.constant = 0
                 self.view.layoutIfNeeded()
             }
@@ -928,15 +852,11 @@ extension TabViewController {
         }
         hideCouponsController()
         hideContactUsController()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.moveMainLabel(percent: 0)
-        }
     }
     
     func hideUpcomingController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.upcomingAnchor.constant = self.view.frame.height
+            self.upcomingAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
             self.upcomingController.willMove(toParent: nil)
@@ -947,8 +867,7 @@ extension TabViewController {
     
     func hideMessagesController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.messagesAnchor.constant = self.view.frame.height
+            self.messagesAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
             self.userMessagesController.scrollView.setContentOffset(.zero, animated: true)
@@ -960,11 +879,10 @@ extension TabViewController {
     
     func hideHostingController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.hostingAnchor.constant = self.view.frame.height
+            self.hostingAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
-//            self.hostingController.scrollView.setContentOffset(.zero, animated: true)
+            self.hostingController.scrollView.setContentOffset(.zero, animated: true)
             self.hostingController.willMove(toParent: nil)
             self.hostingController.view.removeFromSuperview()
             self.hostingController.removeFromParent()
@@ -973,8 +891,7 @@ extension TabViewController {
     
     func hideNewHostingController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.newParkingAnchor.constant = self.view.frame.height
+            self.newParkingAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }, completion: { (success) in
             self.configureParkingController.willMove(toParent: nil)
@@ -985,8 +902,7 @@ extension TabViewController {
     
     func hideVehicleController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.vehicleAnchor.constant = self.view.frame.height
+            self.vehicleAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
             self.vehicleController.scrollView.setContentOffset(.zero, animated: true)
@@ -998,7 +914,6 @@ extension TabViewController {
     
     func hideAnalyticsController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
             self.analControllerAnchor.constant = self.view.frame.height
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -1046,8 +961,7 @@ extension TabViewController {
     
     func hideSettingsController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.settingsAnchor.constant = self.view.frame.height
+            self.settingsAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
             self.userSettingsController.scrollView.setContentOffset(.zero, animated: true)
@@ -1059,8 +973,7 @@ extension TabViewController {
     
     func hideHelpController() {
         UIView.animate(withDuration: animationOut, animations: {
-            self.mainLabel.alpha = 0
-            self.helpAnchor.constant = self.view.frame.height
+            self.helpAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
             self.helpController.scrollView.setContentOffset(.zero, animated: true)

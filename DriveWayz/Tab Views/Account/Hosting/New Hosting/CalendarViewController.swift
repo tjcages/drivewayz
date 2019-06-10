@@ -101,6 +101,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     var showMoreTopAnchor: NSLayoutConstraint!
+    var showMoreHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
 
@@ -119,7 +120,8 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         calendar.addSubview(showMoreButton)
         showMoreButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         showMoreButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        showMoreButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        showMoreHeightAnchor = showMoreButton.heightAnchor.constraint(equalToConstant: 40)
+            showMoreHeightAnchor.isActive = true
         showMoreTopAnchor = showMoreButton.topAnchor.constraint(equalTo: calendar.topAnchor, constant: calendar.frame.size.width / 7 * 24)
             showMoreTopAnchor.isActive = true
         
@@ -184,7 +186,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        self.showMoreTopAnchor.constant = calendar.frame.size.width / 7 * 7.5 * CGFloat(numberOfMonths)
+        self.showMoreTopAnchor.constant = calendar.frame.size.width / 7 * 7.5 * CGFloat(numberOfMonths) + 30
         if numberOfMonths > 11 {
             self.showMoreTopAnchor.constant = self.showMoreTopAnchor.constant - 60
         }
@@ -329,6 +331,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                     if cell.cellView.isHidden == true {
                         cell.cellView.isHidden = false
                         cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+                        print(indexPath)
                         self.selectedIndeces.append(indexPath)
                         self.addDayOfWeek(indexPath: indexPath, calendarDay: calendarDay)
                     } else {
@@ -364,6 +367,34 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                 self.selectedFridays.append(stringDate)
             } else if weekDay == 7 {
                 self.selectedSaturdays.append(stringDate)
+            }
+        }
+    }
+    
+    func pullDatesFromDatabase(dateString: String) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        if let date = formatter.date(from: dateString) {
+            let thisMonth = Date().month
+            var printMonth = thisMonth - date.month
+            if printMonth <= 0 {
+                printMonth = abs(printMonth)
+                let startDay = date.startOfMonthFC().getDayOfWeekFC()
+                let printDay = date.days(from: date.startOfMonthFC()) + 6 + startDay!
+                let indexPath = IndexPath(row: printDay, section: printMonth)
+                if !self.selectedIndeces.contains(indexPath) {
+                    self.selectedIndeces.append(indexPath)
+                }
+                self.calendar.reloadData()
+            } else {
+                printMonth = date.month + 12 - thisMonth
+                let startDay = date.startOfMonthFC().getDayOfWeekFC()
+                let printDay = date.days(from: date.startOfMonthFC()) + 6 + startDay!
+                let indexPath = IndexPath(row: printDay, section: printMonth)
+                if !self.selectedIndeces.contains(indexPath) {
+                    self.selectedIndeces.append(indexPath)
+                }
+                self.calendar.reloadData()
             }
         }
     }

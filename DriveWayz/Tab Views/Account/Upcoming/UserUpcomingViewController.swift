@@ -7,240 +7,413 @@
 //
 
 import UIKit
-import Firebase
-import GooglePlaces
+import Cosmos
+import Mapbox
 
 class UserUpcomingViewController: UIViewController {
     
-    var notificationController: NotifyUpcomingViewController = {
-        let controller = NotifyUpcomingViewController()
-        controller.view.alpha = 0
+    let cellHeight: CGFloat = 202
+    var delegate: handleUpcomingConrollers?
+    
+    lazy var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = false
         
-        return controller
+        return view
     }()
     
-    var current: UIView = {
-        let current = UIView()
-        current.layer.cornerRadius = 15
-        current.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        current.layer.shadowOffset = CGSize(width: 0, height: 1)
-        current.layer.shadowRadius = 1
-        current.layer.shadowOpacity = 0.8
-        current.translatesAutoresizingMaskIntoConstraints = false
-        
-        return current
-    }()
-
-    var alertLabel: UILabel = {
+    var reservationsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Upcoming"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Reservations"
         label.textColor = Theme.WHITE
-        label.textAlignment = .center
-        label.font = Fonts.SSPSemiBoldH5
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH2
         
         return label
     }()
     
-    var currentContainer: UIView = {
-        let chart = UIView()
-        chart.translatesAutoresizingMaskIntoConstraints = false
-        chart.backgroundColor = Theme.WHITE
-        chart.layer.shadowColor = UIColor.darkGray.cgColor
-        chart.layer.shadowOffset = CGSize(width: 0, height: 1)
-        chart.layer.shadowOpacity = 0.8
-        chart.layer.cornerRadius = 10
-        chart.layer.shadowRadius = 1
-        
-        return chart
-    }()
-    
-    lazy var infoController: UpcomingInfoViewController = {
-        let controller = UpcomingInfoViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Info"
-        return controller
-    }()
-    
-    lazy var upcomingParkingImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.SEA_BLUE
-        imageView.clipsToBounds = true
-        
-        return imageView
-    }()
-    
-    var fromToLabel: UILabel = {
+    var upcomingLabel: UILabel = {
         let label = UILabel()
-        label.text = "From to To"
-        label.font = Fonts.SSPRegularH5
-        label.textColor = Theme.PACIFIC_BLUE
-        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "History"
+        label.textColor = Theme.WHITE
+        label.font = Fonts.SSPBoldH2
+        label.alpha = 0.6
         
         return label
     }()
     
-    var line: UIView = {
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+    var selectionLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 2
         
-        return line
+        return view
+    }()
+    
+    var horizontalScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.isPagingEnabled = true
+        view.backgroundColor = Theme.WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.4
+        
+        return view
+    }()
+    
+    var reservationsTableView: UITableView = {
+        let view = UITableView()
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.separatorColor = UIColor.clear
+        view.register(ReservationsView.self, forCellReuseIdentifier: "cellId")
+        view.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 200, right: 0)
+        view.contentOffset = CGPoint.zero
+        view.decelerationRate = .fast
+        view.showsVerticalScrollIndicator = false
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var upcomingTableView: UITableView = {
+        let view = UITableView()
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.separatorColor = UIColor.clear
+        view.register(ReservationsView.self, forCellReuseIdentifier: "cellId")
+        view.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 200, right: 0)
+        view.contentOffset = CGPoint.zero
+        view.decelerationRate = .fast
+        view.showsVerticalScrollIndicator = false
+        view.clipsToBounds = false
+        
+        return view
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.clipsToBounds = false
+        
+        horizontalScrollView.delegate = self
+        reservationsTableView.delegate = self
+        reservationsTableView.dataSource = self
+        upcomingTableView.delegate = self
+        upcomingTableView.dataSource = self
+        
         setupViews()
-        checkUpcomingStatus()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        self.notificationController.checkForUpcoming()
-    }
+    var reservationsLabelCenterAnchor: NSLayoutConstraint!
+    var reservationsWidth: CGFloat = 0.0
     
     func setupViews() {
         
-        self.view.addSubview(current)
-        current.backgroundColor = Theme.PACIFIC_BLUE
-        current.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        current.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        current.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        current.topAnchor.constraint(equalTo: view.topAnchor, constant: 40).isActive = true
+        self.view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 204).isActive = true
+        case .iphoneX:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 232).isActive = true
+        }
         
-        current.addSubview(alertLabel)
-        alertLabel.centerXAnchor.constraint(equalTo: current.centerXAnchor).isActive = true
-        alertLabel.centerYAnchor.constraint(equalTo: current.centerYAnchor).isActive = true
-        alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        alertLabel.widthAnchor.constraint(equalTo: current.widthAnchor, constant: -10).isActive = true
+        gradientContainer.addSubview(reservationsLabel)
+        gradientContainer.addSubview(upcomingLabel)
+        reservationsWidth = (reservationsLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPBoldH2))!
+        reservationsLabelCenterAnchor = reservationsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24)
+        reservationsLabelCenterAnchor.isActive = true
+        reservationsLabel.widthAnchor.constraint(equalToConstant: reservationsWidth).isActive = true
+        reservationsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            reservationsLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 140).isActive = true
+            upcomingLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 140).isActive = true
+        case .iphoneX:
+            reservationsLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 180).isActive = true
+            upcomingLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 180).isActive = true
+        }
         
-        self.view.addSubview(currentContainer)
-        currentContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
-        currentContainer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        currentContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        currentContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        upcomingLabel.leftAnchor.constraint(equalTo: reservationsLabel.rightAnchor, constant: 62).isActive = true
+        upcomingLabel.widthAnchor.constraint(equalToConstant: (upcomingLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPBoldH2))!).isActive = true
+        upcomingLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        currentContainer.addSubview(infoController.view)
-        infoController.view.leftAnchor.constraint(equalTo: currentContainer.leftAnchor).isActive = true
-        infoController.view.rightAnchor.constraint(equalTo: currentContainer.rightAnchor).isActive = true
-        infoController.view.topAnchor.constraint(equalTo: currentContainer.topAnchor, constant: 10).isActive = true
-        infoController.view.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        gradientContainer.addSubview(selectionLine)
+        selectionLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        selectionLine.topAnchor.constraint(equalTo: reservationsLabel.bottomAnchor, constant: 4).isActive = true
+        selectionLine.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        selectionLine.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
-        currentContainer.addSubview(line)
-        line.leftAnchor.constraint(equalTo: currentContainer.leftAnchor, constant: 20).isActive = true
-        line.rightAnchor.constraint(equalTo: currentContainer.rightAnchor, constant: -20).isActive = true
-        line.topAnchor.constraint(equalTo: infoController.view.bottomAnchor).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        self.view.addSubview(horizontalScrollView)
+        horizontalScrollView.contentSize = CGSize(width: phoneWidth * 2, height: self.view.frame.height)
+        horizontalScrollView.topAnchor.constraint(equalTo: selectionLine.bottomAnchor, constant: 8).isActive = true
+        horizontalScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        horizontalScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        horizontalScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        currentContainer.addSubview(fromToLabel)
-        fromToLabel.leftAnchor.constraint(equalTo: currentContainer.leftAnchor, constant: 20).isActive = true
-        fromToLabel.rightAnchor.constraint(equalTo: currentContainer.rightAnchor, constant: -20).isActive = true
-        fromToLabel.topAnchor.constraint(equalTo: infoController.view.bottomAnchor, constant: 10).isActive = true
-        fromToLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        horizontalScrollView.addSubview(reservationsTableView)
+        reservationsTableView.leftAnchor.constraint(equalTo: horizontalScrollView.leftAnchor).isActive = true
+        reservationsTableView.topAnchor.constraint(equalTo: selectionLine.bottomAnchor, constant: -8).isActive = true
+        reservationsTableView.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        reservationsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 80).isActive = true
         
-        currentContainer.addSubview(upcomingParkingImageView)
-        upcomingParkingImageView.leftAnchor.constraint(equalTo: currentContainer.leftAnchor).isActive = true
-        upcomingParkingImageView.rightAnchor.constraint(equalTo: currentContainer.rightAnchor).isActive = true
-        upcomingParkingImageView.topAnchor.constraint(equalTo: fromToLabel.bottomAnchor, constant: 5).isActive = true
-        upcomingParkingImageView.heightAnchor.constraint(equalToConstant: 260).isActive = true
-        upcomingParkingImageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 60, height: 260)
-        upcomingParkingImageView.roundCorners([.bottomLeft, .bottomRight], radius: 10)
+        horizontalScrollView.addSubview(upcomingTableView)
+        upcomingTableView.leftAnchor.constraint(equalTo: reservationsTableView.rightAnchor).isActive = true
+        upcomingTableView.topAnchor.constraint(equalTo: selectionLine.bottomAnchor, constant: -8).isActive = true
+        upcomingTableView.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        upcomingTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 80).isActive = true
         
     }
     
-    func checkUpcomingStatus() {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        let ref = Database.database().reference().child("users").child(currentUser).child("upcomingParking")
-        ref.observe(.childAdded) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let parkingID = dictionary["parkingID"] as? String
-                let startTime = dictionary["startTime"] as? Double
-                let endTime = dictionary["endTime"] as? Double
-                let startDate = Date(timeIntervalSince1970: startTime!)
-                let endDate = Date(timeIntervalSince1970: endTime!)
-                let formatter = DateFormatter()
-                formatter.dateFormat = "h:mm a EE"
-                formatter.amSymbol = "am"
-                formatter.pmSymbol = "pm"
-                let startString = formatter.string(from: startDate)
-                let endString = formatter.string(from: endDate)
-                self.fromToLabel.text = "\(startString) to \(endString)"
-                let parkingRef = Database.database().reference().child("parking").child(parkingID!)
-                parkingRef.observeSingleEvent(of: .value, with: { (parkingSnap) in
-                    if let parkingDict = parkingSnap.value as? [String:AnyObject] {
-                        let name = parkingDict["parkingCity"] as? String
-                        let address = parkingDict["parkingAddress"] as? String
-                        let price = parkingDict["parkingCost"] as? String
-                        let parkingImageURL = parkingDict["parkingImageURL"] as? String
-                        var officialRating: Double = 5.0
-                        if let rating = parkingDict["rating"] as? Int {
-                            parkingRef.child("Reviews").observeSingleEvent(of: .value, with: { (ratingSnap) in
-                                let count = ratingSnap.childrenCount
-                                if count != 0 {
-                                    officialRating = Double(rating/Int(count))
-                                }
-                                self.infoController.setData(cityAddress: name!, parkingCost: price!, formattedAddress: address!, rating: officialRating)
-                            })
-                        }
-                        self.infoController.setData(cityAddress: name!, parkingCost: price!, formattedAddress: address!, rating: officialRating)
-                        self.bringUpcomingParking()
-                        if parkingImageURL == nil {
-                            self.upcomingParkingImageView.image = UIImage(named: "profileprofile")
-                        } else {
-                            self.upcomingParkingImageView.loadImageUsingCacheWithUrlString(parkingImageURL!)
-                        }
-                        return
-                    }
-                })
-            }
-        }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.hideUpcomingParking()
-            return
-        }
-        self.hideUpcomingParking()
-    }
-    
-    func bringUpcomingParking() {
-        UIView.animate(withDuration: animationIn) {
-            self.alertLabel.alpha = 1
-            self.current.alpha = 1
-            self.fromToLabel.alpha = 1
-            self.infoController.view.alpha = 1
-            self.line.alpha = 1
-            self.upcomingParkingImageView.alpha = 1
-        }
-    }
-    
-    func hideUpcomingParking() {
-        UIView.animate(withDuration: animationIn) {
-            self.alertLabel.alpha = 0
-            self.current.alpha = 0
-            self.fromToLabel.alpha = 0
-            self.infoController.view.alpha = 0
-            self.line.alpha = 0
-            self.upcomingParkingImageView.alpha = 0
-        }
-    }
-    
-
 }
 
-
-
-extension UIImageView {
-    public func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
-        let maskPath = UIBezierPath(roundedRect: bounds,
-                                    byRoundingCorners: corners,
-                                    cornerRadii: CGSize(width: radius, height: radius))
-        let shape = CAShapeLayer()
-        shape.path = maskPath.cgPath
-        layer.mask = shape
+extension UserUpcomingViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.openRecentController()
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return cellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = reservationsTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as? ReservationsView {
+            cell.selectionStyle = .none
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == horizontalScrollView {
+            let translation = scrollView.contentOffset.x
+            var percentage = translation/phoneWidth
+            if percentage >= 0 && percentage <= 0.9 {
+                percentage = percentage/0.9
+                self.reservationsLabel.alpha = 1 - 0.4 * percentage
+                self.upcomingLabel.alpha = 0.6 + 0.4 * percentage
+                self.reservationsLabelCenterAnchor.constant = 24 - (self.reservationsWidth + 64) * percentage
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+}
+
+class ReservationsView: UITableViewCell {
+    
+    var container: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.WHITE
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 6
+        view.layer.shadowOpacity = 0.4
+        view.layer.cornerRadius = 4
+        
+        return view
+    }()
+    
+    var dateLabel: UILabel = {
+        let view = UILabel()
+        view.text = "5:50pm - 6:45pm"
+        view.font = Fonts.SSPRegularH6
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        
+        return view
+    }()
+    
+    lazy var mapView: MGLMapView = {
+        let view = MGLMapView(frame: CGRect(x: 0, y: 0, width: 400, height: 45))
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.setCenter(CLLocationCoordinate2D(latitude: 59.31, longitude: 18.06), zoomLevel: 9, animated: false)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsUserLocation = true
+        view.showsScale = false
+        view.isRotateEnabled = false
+        view.isPitchEnabled = false
+        view.logoView.isHidden = true
+        view.attributionButton.isHidden = true
+        view.isUserInteractionEnabled = false
+        view.showsUserLocation = false
+        
+        return view
+    }()
+    
+    var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        let origImage = UIImage(named: "background4")
+        imageView.image = origImage
+        imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = Theme.OFF_WHITE
+        imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        imageView.layer.cornerRadius = 20
+        imageView.clipsToBounds = true
+        
+        return imageView
+    }()
+    
+    var userName: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Graham"
+        label.textColor = Theme.BLACK
+        label.font = Fonts.SSPBoldH4
+        
+        return label
+    }()
+    
+    var stars: CosmosView = {
+        let view = CosmosView()
+        view.rating = 1
+        view.settings.updateOnTouch = false
+        view.settings.fillMode = .full
+        view.settings.starSize = 16
+        view.settings.starMargin = 2
+        view.settings.filledColor = Theme.LIGHT_BLUE
+        view.settings.emptyBorderColor = UIColor.clear
+        view.settings.filledBorderColor = Theme.BLUE
+        view.settings.emptyColor = UIColor.clear
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    var starsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "4.9"
+        label.textColor = Theme.BLACK
+        label.font = Fonts.SSPSemiBoldH6
+        
+        return label
+    }()
+    
+    var paymentLabel: UILabel = {
+        let view = UILabel()
+        view.text = "Payment"
+        view.font = Fonts.SSPRegularH6
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textAlignment = .right
+        
+        return view
+    }()
+    
+    var paymentAmount: UILabel = {
+        let view = UILabel()
+        view.text = "$34.74"
+        view.font = Fonts.SSPBoldH3
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = Theme.BLACK
+        view.textAlignment = .right
+        
+        return view
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.backgroundColor = UIColor.clear
+        
+        addSubview(container)
+        addSubview(mapView)
+        addSubview(dateLabel)
+        addSubview(profileImageView)
+        addSubview(userName)
+        addSubview(stars)
+        addSubview(starsLabel)
+        addSubview(paymentLabel)
+        addSubview(paymentAmount)
+        
+        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        mapView.styleURL = url
+        let location = CLLocationCoordinate2D(latitude: 40.0150, longitude: -105.2705)
+        var center = location
+        center.latitude = center.latitude + 0.0002
+        center.longitude = center.longitude + 0.0006
+        mapView.setCenter(center, zoomLevel: 16, animated: false)
+        let annotation = MGLPointAnnotation()
+        annotation.coordinate = location
+        mapView.addAnnotation(annotation)
+        
+        container.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
+        container.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12).isActive = true
+        container.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
+        
+        dateLabel.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
+        dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        mapView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
+        mapView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        mapView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 6).isActive = true
+        mapView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        profileImageView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
+        profileImageView.topAnchor.constraint(equalTo: mapView.bottomAnchor, constant: 14).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor).isActive = true
+        
+        userName.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
+        userName.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        userName.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -2).isActive = true
+        userName.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        stars.leftAnchor.constraint(equalTo: userName.leftAnchor, constant: -2).isActive = true
+        stars.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        stars.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: -4).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        
+        starsLabel.leftAnchor.constraint(equalTo: stars.rightAnchor, constant: 4).isActive = true
+        starsLabel.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        starsLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
+        starsLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        paymentLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
+        paymentLabel.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        paymentLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -2).isActive = true
+        paymentLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        paymentAmount.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
+        paymentAmount.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
+        paymentAmount.topAnchor.constraint(equalTo: paymentLabel.bottomAnchor, constant: -2).isActive = true
+        paymentAmount.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
 }
 
 

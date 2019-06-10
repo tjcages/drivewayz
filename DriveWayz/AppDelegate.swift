@@ -16,6 +16,7 @@ import GoogleMaps
 import GooglePlaces
 import Stripe
 import FacebookCore
+import FacebookLogin
 import UserNotifications
 import AFNetworking
 import Solar
@@ -39,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         checkNetwork()
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
+        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
 //        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
 //        GIDSignIn.sharedInstance().delegate = self
         
@@ -46,6 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
         STPPaymentConfiguration.shared().publishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
+        
+        statusHeight = UIApplication.shared.statusBarFrame.height
         
         _ = self.window!.rootViewController
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -72,6 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         })
+        
         return true
     }
     

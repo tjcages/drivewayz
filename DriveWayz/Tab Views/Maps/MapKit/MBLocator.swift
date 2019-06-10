@@ -27,8 +27,13 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             }
         } else {
             if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-                self.mapView.setCenter(location, zoomLevel: 14, animated: true)
+                self.mapView.allowsRotating = true
+                self.mapView.isRotateEnabled = true
+                self.mapView.resetNorth()
+                self.mapView.setCenter(location, zoomLevel: 13, animated: true)
                 delayWithSeconds(animationOut * 2) {
+                    self.mapView.isRotateEnabled = false
+                    self.mapView.allowsRotating = false
                     self.mapView.userTrackingMode = .follow
                 }
             }
@@ -41,7 +46,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     
     func locatorButtonPressed() {
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-            self.mapView.setCenter(location, zoomLevel: 14, animated: true)
+            self.mapView.setCenter(location, zoomLevel: 13, animated: true)
             delayWithSeconds(animationOut * 2) {
                 self.mapView.userTrackingMode = .follow
             }
@@ -60,14 +65,18 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         
         locationManager.startUpdatingLocation()
         
-        if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
-            self.observeAllParking()
-        }
         if self.searchedForPlace == false {
             if let userLocation = locationManager.location {
-                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: true)
+                if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
+                    let geocoder = CLGeocoder()
+                    geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
+                        // Process Response
+                        self.processResponse(withPlacemarks: placemarks, error: error)
+                    }
+                }
+                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 10, animated: true)
                 delayWithSeconds(1.8) {
-                    self.mapView.setCenter(userLocation.coordinate, zoomLevel: 14, animated: true)
+                    self.mapView.setCenter(userLocation.coordinate, zoomLevel: 13, animated: true)
                     delayWithSeconds(animationOut * 2, completion: {
                         self.mapView.userTrackingMode = .follow
                     })
@@ -78,18 +87,31 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         }
     }
     
+    private func processResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?) {
+        if let error = error {
+            print("Unable to Reverse Geocode Location (\(error))")
+        } else {
+            if let placemarks = placemarks, let placemark = placemarks.first {
+                if let city = placemark.locality {
+                    print(city)
+                    self.observeAllParking(location: city)
+                }
+            }
+        }
+    }
+    
     func mapView(_ mapView: MGLMapView, regionIsChangingWith reason: MGLCameraChangeReason) {
         self.view.layoutIfNeeded()
         let value = reason.rawValue
         self.userInteractionChange(value: value)
-        let zoomLevel = self.mapView.zoomLevel
-        if zoomLevel >= 10.0 && self.shouldBeSearchingForAnnotations == true {
-            let centerCoordinate = self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView)
-            let location = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
-            self.organizeParkingLocation(searchLocation: location, shouldDraw: false)
-        } else if self.shouldBeSearchingForAnnotations == true {
-            self.mainBarController.parkingState = .zoomIn
-        }
+//        let zoomLevel = self.mapView.zoomLevel
+//        if zoomLevel >= 10.0 && self.shouldBeSearchingForAnnotations == true {
+//            let centerCoordinate = self.mapView.convert(self.mapView.center, toCoordinateFrom: self.mapView)
+//            let location = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
+//            self.organizeParkingLocation(searchLocation: location, shouldDraw: false)
+//        } else if self.shouldBeSearchingForAnnotations == true {
+//            self.mainBarController.parkingState = .zoomIn
+//        }
     }
     
     func userInteractionChange(value: UInt) {
@@ -157,6 +179,11 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     
     func mapView(_ mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
         self.view.layoutIfNeeded()
+        
+        if isCurrentlyBooked {
+//            self.drawCurrentParkingPolyline()
+        }
+        
         if let annotations = self.mapView.visibleAnnotations {
             for annontation in annotations {
                 if annontation.subtitle == "Destination" {

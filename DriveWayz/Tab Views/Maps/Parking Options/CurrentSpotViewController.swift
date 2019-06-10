@@ -188,7 +188,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -196,7 +196,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -204,7 +204,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView3: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -260,8 +260,8 @@ class CurrentSpotViewController: UIViewController {
         
         self.view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        parkingBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        parkingBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkingBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        parkingBackButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
             parkingBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true

@@ -10,8 +10,9 @@ import UIKit
 
 class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
-    var delegate: handlePercentage?
     var activeTextField = UITextField()
+    var delegate: handleChangeVehicle?
+    var selectedKey: String = ""
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -169,6 +170,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.contentHorizontalAlignment = .left
         button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(handleCurrentButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -188,6 +190,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         button.setTitleColor(Theme.HARMONY_RED, for: .normal)
         button.contentHorizontalAlignment = .left
         button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(deleteVehiclePressed), for: .touchUpInside)
         
         return button
     }()
@@ -203,6 +206,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.GREEN_PIGMENT
+        button.addTarget(self, action: #selector(handleCurrentButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -217,8 +221,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         return view
     }()
     
-    func setData(type: String, license: String) {
+    func setData(type: String, license: String, key: String) {
         self.vehicleLicenseLabel.text = license
+        self.selectedKey = key
         let split = type.split(separator: " ")
         if let year = split.first {
             self.vehicleYearLabel.text = String(year)
@@ -368,7 +373,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.vehicleYearLabel.text = ""
         self.vehicleLicenseLabel.text = ""
         self.currentButton.setTitle("Confirm vehicle", for: .normal)
-        self.currentButton.setTitleColor(Theme.SEA_BLUE, for: .normal)
+        self.currentButton.setTitleColor(Theme.BLUE, for: .normal)
         self.detailLabel.text = "Enter details"
         self.doneButton.title = "Next"
         self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -445,24 +450,6 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let translation = scrollView.contentOffset.y
-        self.delegate?.changePercentage(translation: translation)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let translation = scrollView.contentOffset.y
-        if translation < 30 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 0
-            }
-        } else if translation >= 30 && translation <= 50 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 50
-            }
-        }
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -488,19 +475,56 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.licenseLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         if textField == vehicleYearLabel {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: self.view.frame.height * 0.2), animated: true)
-            self.yearLabel.textColor = Theme.SEA_BLUE
-            self.yearLine.backgroundColor = Theme.SEA_BLUE
+            self.yearLabel.textColor = Theme.BLUE
+            self.yearLine.backgroundColor = Theme.BLUE
         } else if textField == vehicleLicenseLabel {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: self.view.frame.height * 0.3), animated: true)
-            self.licenseLabel.textColor = Theme.SEA_BLUE
-            self.licenseLine.backgroundColor = Theme.SEA_BLUE
+            self.licenseLabel.textColor = Theme.BLUE
+            self.licenseLine.backgroundColor = Theme.BLUE
         } else if textField == vehicleModelLabel {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: self.view.frame.height * 0.1), animated: true)
-            self.modelLabel.textColor = Theme.SEA_BLUE
-            self.modelLine.backgroundColor = Theme.SEA_BLUE
+            self.modelLabel.textColor = Theme.BLUE
+            self.modelLine.backgroundColor = Theme.BLUE
         } else if textField == vehicleMakeLabel {
-            self.makeLabel.textColor = Theme.SEA_BLUE
-            self.makeLine.backgroundColor = Theme.SEA_BLUE
+            self.makeLabel.textColor = Theme.BLUE
+            self.makeLine.backgroundColor = Theme.BLUE
+        }
+    }
+    
+    @objc func handleCurrentButtonPressed() {
+        self.delegate?.bringBackMain()
+        let timestamp = Date().timeIntervalSince1970
+        if let userID = Auth.auth().currentUser?.uid {
+            let userRef = Database.database().reference().child("users").child(userID)
+            if currentButton.titleLabel!.text == "Confirm vehicle" {
+                let ref = Database.database().reference().child("UserVehicles")
+                let uid = ref.childByAutoId()
+                if let vehicleMake = self.vehicleMakeLabel.text, let vehicleModel = self.vehicleModelLabel.text, let vehicleYear = self.vehicleYearLabel.text, let vehicleLicense = self.vehicleLicenseLabel.text, let uidKey = uid.key {
+                    if vehicleMake != "", vehicleModel != "", vehicleYear != "", vehicleLicense != "", uidKey != "" {
+                        uid.updateChildValues(["userID": userID, "timestamp": timestamp, "vehicleID": uidKey, "vehicleMake": vehicleMake, "vehicleModel": vehicleModel, "vehicleYear": vehicleYear, "licensePlate": vehicleLicense])
+                        userRef.child("Vehicles").updateChildValues([uidKey: uidKey])
+                        userRef.updateChildValues(["selectedVehicle": uidKey])
+                    }
+                }
+            } else if currentButton.titleLabel!.text == "Make current vehicle" {
+                userRef.updateChildValues(["selectedVehicle": selectedKey])
+                let ref = Database.database().reference().child("UserVehicles").child(selectedKey)
+                if let vehicleMake = self.vehicleMakeLabel.text, let vehicleModel = self.vehicleModelLabel.text, let vehicleYear = self.vehicleYearLabel.text, let vehicleLicense = self.vehicleLicenseLabel.text {
+                    if vehicleMake != "", vehicleModel != "", vehicleYear != "", vehicleLicense != "", selectedKey != "" {
+                        ref.updateChildValues(["vehicleMake": vehicleMake, "vehicleModel": vehicleModel, "vehicleYear": vehicleYear, "licensePlate": vehicleLicense])
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func deleteVehiclePressed() {
+        self.delegate?.bringBackMain()
+        if let userID = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child("users").child(userID).child("Vehicles").child(selectedKey)
+            ref.removeValue()
+            let vehicleRef = Database.database().reference().child("UserVehicles").child(selectedKey)
+            vehicleRef.removeValue()
         }
     }
 

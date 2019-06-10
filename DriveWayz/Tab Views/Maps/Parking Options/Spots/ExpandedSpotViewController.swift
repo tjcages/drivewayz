@@ -154,10 +154,11 @@ class ExpandedSpotViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Set Duration", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.DARK_GRAY.lighter(by: 40)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(confirmPurchasePressed(sender:)), for: .touchUpInside)
         button.layer.cornerRadius = 25
+        button.isUserInteractionEnabled = false
         
         return button
     }()
@@ -252,8 +253,8 @@ class ExpandedSpotViewController: UIViewController {
         self.view.bringSubviewToFront(spotLocatingLabel2)
         self.view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        parkingBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        parkingBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkingBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        parkingBackButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
             parkingBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30).isActive = true
@@ -378,8 +379,8 @@ class ExpandedSpotViewController: UIViewController {
             if let purchaseString = self.infoController.priceLabel.text {
                 let amount = purchaseString.replacingOccurrences(of: " per hour", with: "")
                 if let price = Double(amount.replacingOccurrences(of: "$", with: "")) {
-                    self.delegate?.bookSpotPressed(amount: price)
-                    self.delegate?.setDurationPressed()
+//                    self.delegate?.bookSpotPressed(amount: price)
+//                    self.delegate?.setDurationPressed()
                 }
             }
         }
@@ -441,7 +442,7 @@ extension ExpandedSpotViewController: UIScrollViewDelegate {
         if scrollView == self.scrollView {
             let translation = scrollView.contentOffset.y
             if translation <= -46.0 && self.scrollView.isScrollEnabled == true && self.parkingBackButton.alpha == 1 {
-                self.delegate?.didHideExpandedParking()
+//                self.delegate?.didHideExpandedParking()
                 UIView.animate(withDuration: animationOut) {
                     self.parkingBackButton.alpha = 0
                 }

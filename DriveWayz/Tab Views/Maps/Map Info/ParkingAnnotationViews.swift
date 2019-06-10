@@ -202,7 +202,7 @@ class ClusterAnnotationView: MKMarkerAnnotationView {
     }
 }
 
-class DestinationAnnotationView : MGLAnnotationView, CAAnimationDelegate {
+class DestinationAnnotationView : MGLAnnotationView {
     
     static let ReuseID = "availableAnnotation"
     
@@ -221,39 +221,15 @@ class DestinationAnnotationView : MGLAnnotationView, CAAnimationDelegate {
         layer.shadowOpacity = 0.6
         layer.shadowOffset = .zero
         
-        layer.removeAllAnimations()
-
-//        swell()
     }
     
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if let animation = anim as? CABasicAnimation {
-            if let value = animation.toValue as? Int {
-                if value == 2 {
-                    layer.removeAllAnimations()
-                    self.shrink()
-                } else if value == 5 {
-                    self.swell()
-                }
-            }
-        }
-    }
-    
-    func swell() {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Animate the border width in/out, creating an iris effect.
         let animation = CABasicAnimation(keyPath: "borderWidth")
-        animation.fromValue = 5
-        animation.toValue = 2
-        animation.duration = 4
-        animation.delegate = self
-        layer.add(animation, forKey: "borderWidth")
-    }
-    
-    func shrink() {
-        let animation = CABasicAnimation(keyPath: "borderWidth")
-        animation.fromValue = 2
-        animation.toValue = 5
-        animation.duration = 6
-        animation.delegate = self
+        animation.duration = 0.1
+        layer.borderWidth = selected ? bounds.width / 4 : 2
         layer.add(animation, forKey: "borderWidth")
     }
     

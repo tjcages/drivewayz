@@ -18,7 +18,7 @@ extension MapKitViewController {
                 let parking = self.parkingSpots[i]
                 if annotation.subtitle == "\(i)" {
                     self.closeParkingSpots = [parking]
-                    self.hideSearchBar(regular: false)
+                    self.dismissKeyboard()
                     self.takeAwayEvents()
                     let latitude = parking.latitude
                     let longitude = parking.longitude
@@ -29,7 +29,7 @@ extension MapKitViewController {
                             let search = CLLocation(latitude: searchLocation.latitude, longitude: searchLocation.longitude)
                             self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: search, address: address)
                             delayWithSeconds(1.6) {
-                                self.hideSearchBar(regular: false)
+                                self.dismissKeyboard()
                             }
                         }
                     }
@@ -41,7 +41,7 @@ extension MapKitViewController {
                 let parking = self.parkingSpots[i]
                 if annotation.subtitle == "\(i)" {
                     self.closeParkingSpots = [parking]
-                    self.hideSearchBar(regular: false)
+                    self.dismissKeyboard()
                     self.takeAwayEvents()
                     let latitude = parking.latitude
                     let longitude = parking.longitude
@@ -56,7 +56,7 @@ extension MapKitViewController {
                                 self.mapView.setCenter(location.coordinate, animated: true)
                                 self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
                                 delayWithSeconds(animationOut) {
-                                    self.hideSearchBar(regular: false)
+                                    self.dismissKeyboard()
                                 }
                             }
                         }

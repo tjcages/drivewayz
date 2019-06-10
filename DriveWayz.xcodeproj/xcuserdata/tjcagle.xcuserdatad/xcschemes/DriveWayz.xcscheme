@@ -71,8 +71,8 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LocationScenarioReference
-         identifier = "San Francisco, CA, USA"
-         referenceType = "1">
+         identifier = "../DriveWayz/Assets/CustomLocation.gpx"
+         referenceType = "0">
       </LocationScenarioReference>
       <RoutingCoverageFileReference
          identifier = "../DrivewayzGeoMap.geojson">

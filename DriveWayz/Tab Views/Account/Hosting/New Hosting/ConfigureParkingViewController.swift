@@ -82,9 +82,12 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
-        button.titleLabel?.font = Fonts.SSPRegularH2
-        button.layer.cornerRadius = 12
-        button.clipsToBounds = true
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 6
+        button.layer.shadowOpacity = 0.4
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
         
         return button
@@ -244,7 +247,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.backgroundColor = UIColor.clear
         button.setTitle("Exit", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.contentHorizontalAlignment = .right
         button.alpha = 0
         button.addTarget(self, action: #selector(exitNewHost), for: .touchUpInside)
@@ -424,9 +427,9 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     
     func setupCountButtons() {
         
-        nextButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
+        nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
         switch device {
         case .iphone8:
             nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
@@ -436,13 +439,13 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
         self.view.addSubview(exitButton)
@@ -453,8 +456,8 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         
         self.view.addSubview(imageBackButton)
         imageBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        imageBackButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        imageBackButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        imageBackButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        imageBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
             imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
@@ -605,7 +608,6 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 UIView.animate(withDuration: animationIn, animations: {
                     self.progressBarWidthAnchor.constant = self.progress * 1
                     self.moveDelegate?.hideExitButton()
-                    self.moveDelegate?.moveMainLabel(percent: 1)
                     self.parkingTypeControllerAnchor.constant = 0
                     self.parkingLabel.alpha = 1
                     self.backButton.alpha = 1
@@ -830,7 +832,6 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.backButton.alpha = 0
                 self.exitButton.alpha = 0
                 self.containerHeightAnchor.constant = 120
-                self.moveDelegate?.moveMainLabel(percent: 0)
                 self.parkingTypeControllerAnchor.constant = self.view.frame.width
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -1038,7 +1039,6 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             self.backButton.alpha = 0
             self.exitButton.alpha = 0
             self.containerHeightAnchor.constant = 120
-            self.moveDelegate?.moveMainLabel(percent: 0)
             
             self.parkingTypeControllerAnchor.constant = self.view.frame.width
             self.parkingOptionsControllerAnchor.constant = self.view.frame.width
@@ -1074,10 +1074,13 @@ extension ConfigureParkingViewController: handleConfigureProcess {
     }
     
     @objc func exitNewHost() {
-        self.delegate?.hideNewHostingController()
         self.delegate?.closeAccountView()
+        self.delegate?.hideNewHostingController()
         delayWithSeconds(1) {
             self.resetParking()
+            delayWithSeconds(0.1, completion: {
+                self.delegate?.closeAccountView()
+            })
         }
     }
     

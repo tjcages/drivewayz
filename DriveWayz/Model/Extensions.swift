@@ -269,8 +269,8 @@ var hamburgerWidthAnchor: NSLayoutConstraint!
 var hamburgerView1: UIView = {
     let view1 = UIView()
     view1.translatesAutoresizingMaskIntoConstraints = false
-    view1.backgroundColor = Theme.BLACK
-    view1.layer.cornerRadius = 1.25
+    view1.backgroundColor = Theme.DARK_GRAY
+    view1.layer.cornerRadius = 1.75
     
     return view1
 }()
@@ -278,8 +278,8 @@ var hamburgerView1: UIView = {
 var hamburgerView2: UIView = {
     let view2 = UIView()
     view2.translatesAutoresizingMaskIntoConstraints = false
-    view2.backgroundColor = Theme.BLACK
-    view2.layer.cornerRadius = 1.25
+    view2.backgroundColor = Theme.DARK_GRAY
+    view2.layer.cornerRadius = 1.75
     
     return view2
 }()
@@ -287,8 +287,8 @@ var hamburgerView2: UIView = {
 var hamburgerView3: UIView = {
     let view3 = UIView()
     view3.translatesAutoresizingMaskIntoConstraints = false
-    view3.backgroundColor = Theme.BLACK
-    view3.layer.cornerRadius = 1.25
+    view3.backgroundColor = Theme.DARK_GRAY
+    view3.layer.cornerRadius = 1.75
     
     return view3
 }()
@@ -299,20 +299,20 @@ func createHamburgerButton() {
     hamburgerView1.topAnchor.constraint(equalTo: hamburgerButton.topAnchor, constant: 6).isActive = true
     hamburgerView1.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
     hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
-    hamburgerView1.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
+    hamburgerView1.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView2)
     hamburgerView2.bottomAnchor.constraint(equalTo: hamburgerButton.bottomAnchor, constant: -6).isActive = true
     hamburgerView2.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
     hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
-    hamburgerView2.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
+    hamburgerView2.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView3)
     hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor).isActive = true
     hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
     hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -12)
         hamburgerWidthAnchor.isActive = true
-    hamburgerView3.heightAnchor.constraint(equalToConstant: 2.5).isActive = true
+    hamburgerView3.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
 }
 

@@ -111,8 +111,8 @@ open class CustomDayStyle: Style, InstructionsBannerViewDelegate {
         GenericRouteShield.appearance().foregroundColor = .black
         GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = .white
         
-        InstructionsBannerContentView.appearance().backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
-        InstructionsBannerView.appearance().backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
+        InstructionsBannerContentView.appearance().backgroundColor = Theme.BLACK
+        InstructionsBannerView.appearance().backgroundColor = Theme.BLACK
         
         LaneView.appearance().primaryColor = .defaultLaneArrowPrimary
         LaneView.appearance().secondaryColor = .defaultLaneArrowSecondary

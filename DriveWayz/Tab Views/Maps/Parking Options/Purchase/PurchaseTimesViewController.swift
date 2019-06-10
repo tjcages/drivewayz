@@ -14,6 +14,8 @@ class PurchaseTimesViewController: UIViewController {
     var timesArray: [String] = ["Now"]
     var datesArray: [Date] = [Date()]
     var selectedTime: Int = 0
+    var selectedString: String = "Now"
+    var beginningDate: Date = Date()
     
     var layout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()
@@ -31,10 +33,53 @@ class PurchaseTimesViewController: UIViewController {
         view.showsVerticalScrollIndicator = false
         view.clipsToBounds = false
         view.register(PurchaseTimes.self, forCellWithReuseIdentifier: "Cell")
-        view.contentInset = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 36)
+        view.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         
         return view
     }()
+    
+    func setData(isToday: Bool) {
+        if isToday {
+            self.timesArray = ["Now"]
+            self.datesArray = [Date()]
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:'00'"
+            let calendar = Calendar.current
+            if let currentDate = Date().nearestHour() {
+                var nextDate = currentDate
+                while calendar.isDate(nextDate, inSameDayAs: currentDate) {
+                    let dateString = formatter.string(from: nextDate)
+                    self.timesArray.append(dateString)
+                    self.datesArray.append(nextDate)
+                    self.timesPicker.reloadData()
+                    nextDate = nextDate.addingTimeInterval(3600)
+                }
+            }
+        } else {
+            self.timesArray = []
+            self.datesArray = []
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:'00'"
+            let calendar = Calendar.current
+            let currentDate = Date().dateAt(hours: 0, minutes: 0)
+            var nextDate = currentDate
+            while calendar.isDate(nextDate, inSameDayAs: currentDate) {
+                let dateString = formatter.string(from: nextDate)
+                self.timesArray.append(dateString)
+                self.datesArray.append(nextDate)
+                self.timesPicker.reloadData()
+                nextDate = nextDate.addingTimeInterval(3600)
+            }
+        }
+        self.timesPicker.reloadData()
+        let date = self.datesArray[self.selectedTime]
+        self.delegate?.changeStartDate(date: date)
+        delayWithSeconds(0.2) {
+            let indexPath = self.timesPicker.indexPathsForSelectedItems?.first ?? IndexPath(item: 0, section: 0)
+            self.timesPicker.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+            self.collectionView(self.timesPicker, didSelectItemAt: indexPath)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +88,7 @@ class PurchaseTimesViewController: UIViewController {
         timesPicker.dataSource = self
         
         setupViews()
-        setupTimes()
+        setData(isToday: true)
     }
     
     func setupViews() {
@@ -56,24 +101,14 @@ class PurchaseTimesViewController: UIViewController {
         
     }
     
-    func setupTimes() {
-        if var currentDate = nextHourDate() {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:'00'"
-            let calendar = Calendar.current
-            while calendar.isDateInToday(currentDate) {
-                self.datesArray.append(currentDate)
-                let dateString = formatter.string(from: currentDate)
-                currentDate = currentDate.addingTimeInterval(TimeInterval(3600))
-                self.timesArray.append(dateString)
-            }
-            self.timesPicker.reloadData()
-        }
-    }
-    
-    func nextHourDate() -> Date? {
+    func nextHourDate(nextDays: Int) -> Date? {
         let calendar = Calendar.current
-        let date = Date()
+        var date = Date()
+        var i = 0
+        while i < nextDays {
+            date = date.tomorrow
+            i += 1
+        }
         let minuteComponent = calendar.component(.minute, from: date)
         var components = DateComponents()
         components.minute = 60 - minuteComponent
@@ -104,12 +139,12 @@ extension PurchaseTimesViewController : UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! PurchaseTimes
         cell.iconLabel.text = timesArray[indexPath.row]
         if indexPath.row == self.selectedTime {
-            cell.cellView.backgroundColor = Theme.BLACK
+            cell.cellView.backgroundColor = Theme.STRAWBERRY_PINK
             cell.iconLabel.textColor = Theme.WHITE
             cell.cellView.alpha = 1
         } else {
-            cell.cellView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-            cell.iconLabel.textColor = Theme.BLACK
+            cell.cellView.backgroundColor = Theme.OFF_WHITE
+            cell.iconLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
             cell.cellView.alpha = 0.8
         }
         
@@ -117,25 +152,26 @@ extension PurchaseTimesViewController : UICollectionViewDataSource, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row != self.selectedTime && self.selectedTime < self.timesArray.count {
-            let index = IndexPath(row: self.selectedTime, section: 0)
-            if let previousCell = collectionView.cellForItem(at: index) as? PurchaseTimes {
-                previousCell.cellView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-                previousCell.iconLabel.textColor = Theme.BLACK
-                previousCell.cellView.alpha = 0.8
+        let index = IndexPath(row: self.selectedTime, section: 0)
+        if let previousCell = collectionView.cellForItem(at: index) as? PurchaseTimes {
+            previousCell.cellView.backgroundColor = Theme.OFF_WHITE
+            previousCell.iconLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+            previousCell.cellView.alpha = 0.8
+        }
+        if let cell = collectionView.cellForItem(at: indexPath) as? PurchaseTimes {
+            cell.cellView.backgroundColor = Theme.STRAWBERRY_PINK
+            cell.iconLabel.textColor = Theme.WHITE
+            cell.cellView.alpha = 1
+            if let text = cell.iconLabel.text {
+                self.selectedString = text
             }
-            if let cell = collectionView.cellForItem(at: indexPath) as? PurchaseTimes {
-                cell.cellView.backgroundColor = Theme.BLACK
-                cell.iconLabel.textColor = Theme.WHITE
-                cell.cellView.alpha = 1
-                self.selectedTime = indexPath.row
-                var date = self.datesArray[indexPath.row]
-                if indexPath.row == 0 {
-                    date = Date()
-                }
-                self.delegate?.changeStartDate(date: date)
-                self.timesPicker.reloadData()
+            self.selectedTime = indexPath.row
+            var date = self.datesArray[indexPath.row]
+            if indexPath.row == 0 {
+                date = beginningDate
             }
+            self.delegate?.changeStartDate(date: date)
+            self.timesPicker.reloadData()
         }
     }
     
@@ -146,7 +182,7 @@ class PurchaseTimes: UICollectionViewCell {
     
     let cellView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.OFF_WHITE
         view.alpha = 0.8
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
@@ -191,4 +227,11 @@ class PurchaseTimes: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+
+extension Date {
+    func isBetween(date date1: Date, andDate date2: Date) -> Bool {
+        return date1.compare(self) == self.compare(date2)
+    }
 }

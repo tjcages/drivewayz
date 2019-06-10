@@ -13,9 +13,9 @@ import MapboxNavigation
 import MapboxCoreNavigation
 
 protocol handleParkingOptions {
-    func applyFirstPolyline()
-    func applySecondPolyline()
-    func applyThirdPolyline()
+//    func applyFirstPolyline()
+//    func applySecondPolyline()
+//    func applyThirdPolyline()
 }
 
 var DestinationAnnotationLocation: CLLocationCoordinate2D?
@@ -41,26 +41,19 @@ var thirdDestinationCoordinate: CLLocationCoordinate2D?
 extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
-        self.dismissKeyboard()
-        self.mainBarController.view.isUserInteractionEnabled = false
-        self.mainBarController.closeSearchBar()
-        self.mainBarController.shouldBeLoading = true
-        self.mainBarController.loadingParking()
-        delayWithSeconds(animationOut) {
-            self.delegate?.hideHamburger()
-            self.beginSearchingForParking()
-            self.mainBarTopAnchor.constant = -100
-            self.summaryController.toText = address
-            self.summaryController.shouldBeLoading = true
-            self.summaryController.loadingParking()
-            UIView.animate(withDuration: animationOut) {
-                self.summaryController.view.alpha = 1
-                self.summaryController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                self.view.layoutIfNeeded()
-            }
-            delayWithSeconds(3, completion: {
-                self.mainBarController.shouldBeLoading = false
-            })
+        if !mainSearchTextField {
+            mainSearchTextField = true
+            self.summaryController.fromSearchBar.text = address
+            self.summaryController.searchTextField.becomeFirstResponder()
+            return
+        }
+        guard let fromText = self.summaryController.fromSearchBar.text else { return }
+        self.summaryController.searchTextField.text = address
+        self.searchBarController.fromLabel.text = fromText
+        self.searchBarController.toLabel.text = address
+        self.removeMainBar()
+        delayWithSeconds(animationIn) {
+            self.searchBarController.openSearchBar()
         }
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address) { (placemarks, error) in
@@ -68,22 +61,81 @@ extension MapKitViewController: handleParkingOptions {
                 let placemarks = placemarks,
                 let location = placemarks.first?.location
                 else {
-                    print("error searching for location: \(error?.localizedDescription as Any)")
+                    print("lookup place id query error: \(error!.localizedDescription)")
                     delayWithSeconds(2, completion: {
                         DispatchQueue.main.async {
-//                            self.hideSearchBar(regular: true)
                             self.parkingHidden()
                         }
                     })
                     return
             }
-            eventsAreAllowed = false
-            self.shouldBeSearchingForAnnotations = false
+            self.parkingSelected()
             self.mapView.setCenter(location.coordinate, animated: true)
-            self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
+            self.removeAllHostLocations()
             self.quickDestinationController.setupData()
+            
+            
+            if let userLocation = self.mapView.userLocation?.location {
+                self.drawRoute(fromLocation: userLocation, toLocation: location)
+            }
         }
     }
+    
+    func drawRoute(fromLocation: CLLocation, toLocation: CLLocation) {
+        let directions = Directions.shared
+        let waypoints = [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), name: "Start"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: toLocation.coordinate.latitude, longitude: toLocation.coordinate.longitude), name: "Destination"),
+        ]
+        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        options.includesSteps = true
+            
+        _ = directions.calculate(options) { (waypoints, routes, error) in
+            guard error == nil else {
+                print("Error calculating directions: \(error!)")
+                return
+            }
+            if let route = routes?.first {
+                let minute = route.expectedTravelTime / 60
+//                self.quickDestinationController.distanceLabel.text = "\(Int(minute.rounded())) min"
+//                self.quickDestinationController.setupData()
+                if route.coordinateCount > 0 {
+//                    firstWalkingRoute = route
+                    // Convert the route’s coordinates into a polyline.
+                    
+                    var routeCoordinates = route.coordinates!
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+                    routeLine.title = "ParkingUnder"
+                    let ne = routeLine.overlayBounds.ne
+                    let sw = routeLine.overlayBounds.sw
+                    let region = MGLCoordinateBounds(sw: sw, ne: ne)
+                    self.mapView.addAnnotation(routeLine)
+                    
+                    self.parkingCoordinates = route.coordinates!
+                    self.addPolyline(to: self.mapView.style!)
+                    self.animateFirstPolyline()
+
+                    let marker = MGLPointAnnotation()
+                    marker.coordinate = toLocation.coordinate
+                    marker.subtitle = "Destination"
+                    self.mapView.addAnnotation(marker)
+                    delayWithSeconds(animationIn, completion: {
+                        self.mapView.setZoomLevel(14, animated: true)
+                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 64, bottom: 40, right: 64), animated: true)
+                        delayWithSeconds(1.2, completion: {
+                            self.drawCurvedOverlay(startCoordinate: fromLocation.coordinate, endCoordinate: toLocation.coordinate)
+                        })
+                    })
+//                    DestinationAnnotationLocation = dest.coordinate
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
     
     func findBestParking(location: CLLocation, sourceLocation: CLLocation, searchLocation: CLLocation, address: String) {
         parkingController.setData(closestParking: self.closeParkingSpots, cheapestParking: self.cheapestParkingSpots, overallDestination: searchLocation.coordinate)
@@ -105,7 +157,7 @@ extension MapKitViewController: handleParkingOptions {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.findBestLatLong(first: location, second: location, third: searchLocation, type: "First")
                     self.parkingSelected()
-                    self.parkingController.bookingFound()
+//                    self.parkingController.bookingFound()
                 }
             }
         }
@@ -193,8 +245,8 @@ extension MapKitViewController: handleParkingOptions {
                         self.mapView.addAnnotation(marker)
                         
                         self.parkingCoordinates = route.coordinates!
-                        self.addPolyline(to: self.mapView.style!, type: type)
-                        self.animateSecondPolyline()
+//                        self.addPolyline(to: self.mapView.style!, type: type)
+//                        self.animateSecondPolyline()
                         self.animateFirstPolyline()
                         DestinationAnnotationLocation = dest.coordinate
                         
@@ -233,7 +285,7 @@ extension MapKitViewController: handleParkingOptions {
                         
                         destinationFirstCoordinates = route.coordinates!
                         self.destinationCoordinates = route.coordinates!
-                        self.addPolyline(to: self.mapView.style!, type: type)
+//                        self.addPolyline(to: self.mapView.style!, type: type)
                         
                         completion(parking.coordinate)
                     }

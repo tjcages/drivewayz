@@ -10,6 +10,8 @@ import UIKit
 
 class EditSettingsViewController: UIViewController {
     
+    var delegate: changeSettingsHandler?
+    
     var detailLabel: UILabel = {
         let label = UILabel()
         label.text = "Details"
@@ -43,13 +45,16 @@ class EditSettingsViewController: UIViewController {
     var updateButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Update", for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH2
+        button.setTitle("Save", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
-        button.layer.cornerRadius = 12
-        button.clipsToBounds = true
-        button.alpha = 1
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowRadius = 6
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowOpacity = 0.4
+        button.addTarget(self, action: #selector(updateButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -58,14 +63,21 @@ class EditSettingsViewController: UIViewController {
         detailLabel.text = title
         subDetailLabel.placeholder = title
         subDetailLabel.text = subtitle
-        subDetailLabel.becomeFirstResponder()
         updateButton.setTitle("Update \(title.lowercased())", for: .normal)
+        if title == "Phone" {
+            self.subDetailLabel.keyboardType = .numberPad
+        } else {
+            self.subDetailLabel.keyboardType = .default
+        }
+        subDetailLabel.becomeFirstResponder()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
+        
+        subDetailLabel.delegate = self
         
         setupViews()
     }
@@ -91,15 +103,75 @@ class EditSettingsViewController: UIViewController {
         subLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         self.view.addSubview(updateButton)
-        updateButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        updateButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        updateButton.widthAnchor.constraint(equalToConstant: phoneWidth - 72).isActive = true
-        updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 80).isActive = true
+        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        updateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        updateButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 60).isActive = true
         
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
+    @objc func updateButtonPressed() {
+        self.view.endEditing(true)
+        self.delegate?.bringBackMain()
+        if let title = detailLabel.text, let message = subDetailLabel.text, let userID = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child("users").child(userID)
+            if title == "Email" {
+                ref.updateChildValues(["email": message])
+                self.delegate?.changeEmail(text: message)
+            } else if title == "Phone" {
+                ref.updateChildValues(["phone": message])
+                self.delegate?.changePhone(text: message)
+            }
+        }
+    }
 
+}
+
+
+extension EditSettingsViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.subDetailLabel && self.detailLabel.text == "Phone" {
+            var fullString = textField.text ?? ""
+            fullString.append(string)
+            if range.length == 1 {
+                textField.text = format(phoneNumber: fullString, shouldRemoveLastDigit: true)
+            } else {
+                textField.text = format(phoneNumber: fullString)
+            }
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func format(phoneNumber: String, shouldRemoveLastDigit: Bool = false) -> String {
+        guard !phoneNumber.isEmpty else { return "" }
+        guard let regex = try? NSRegularExpression(pattern: "[\\s-\\(\\)]", options: .caseInsensitive) else { return "" }
+        let r = NSString(string: phoneNumber).range(of: phoneNumber)
+        var number = regex.stringByReplacingMatches(in: phoneNumber, options: .init(rawValue: 0), range: r, withTemplate: "")
+        if number.count > 10 {
+            let tenthDigitIndex = number.index(number.startIndex, offsetBy: 10)
+            number = String(number[number.startIndex..<tenthDigitIndex])
+        }
+        if shouldRemoveLastDigit {
+            let end = number.index(number.startIndex, offsetBy: number.count-1)
+            number = String(number[number.startIndex..<end])
+        }
+        if number.count < 7 {
+            let end = number.index(number.startIndex, offsetBy: number.count)
+            let range = number.startIndex..<end
+            number = number.replacingOccurrences(of: "(\\d{3})(\\d+)", with: "($1) $2", options: .regularExpression, range: range)
+        } else {
+            let end = number.index(number.startIndex, offsetBy: number.count)
+            let range = number.startIndex..<end
+            number = number.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "($1) $2-$3", options: .regularExpression, range: range)
+        }
+        return number
+    }
+    
 }

@@ -14,6 +14,7 @@ class EventCell: UICollectionViewCell {
     
     var image: UIImage? {
         didSet {
+            self.eventLabel.sizeToFit()
             image?.getColors({ (colors) in
                 let primaryString = "\(String(describing: colors?.primary))"
                 let values = primaryString.replacingOccurrences(of: "Optional(UIExtendedSRGBColorSpace ", with: "", options: .literal, range: nil)
@@ -24,13 +25,13 @@ class EventCell: UICollectionViewCell {
                     if let rDouble = formatter.number(from: String(r)), let gDouble = formatter.number(from: String(g)), let bDouble = formatter.number(from: String(b)) {
                         if Double(truncating: rDouble) < 0.9 && Double(truncating: gDouble) < 0.7 && Double(truncating: bDouble) < 0.7 {
                             let background = self.gradientColor(topColor: colors?.primary ?? Theme.DARK_GRAY, bottomColor: colors?.secondary ?? Theme.OFF_WHITE)
-                            background.frame = CGRect(x: 0, y: 0, width: 240, height: 140)
+                            background.frame = CGRect(x: 0, y: 0, width: 300, height: 180)
                             background.zPosition = -10
                             self.darkView.layer.addSublayer(background)
                             self.layoutIfNeeded()
                         } else {
                             let background = self.gradientColor(topColor: Theme.DARK_GRAY, bottomColor: Theme.DARK_GRAY.withAlphaComponent(0.6))
-                            background.frame = CGRect(x: 0, y: 0, width: 240, height: 140)
+                            background.frame = CGRect(x: 0, y: 0, width: 300, height: 180)
                             background.zPosition = -10
                             self.darkView.layer.addSublayer(background)
                             self.layoutIfNeeded()
@@ -62,19 +63,6 @@ class EventCell: UICollectionViewCell {
         return view
     }()
     
-    let shadowView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.clear
-        view.layer.cornerRadius = 4
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 1, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.6
-        
-        return view
-    }()
-    
     let backgroundImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +74,7 @@ class EventCell: UICollectionViewCell {
     var darkView: UIView = {
         let dark = UIView()
         dark.backgroundColor = Theme.DARK_GRAY
-        dark.alpha = 0.6
+        dark.alpha = 0.2
         dark.translatesAutoresizingMaskIntoConstraints = false
         
         return dark
@@ -97,7 +85,7 @@ class EventCell: UICollectionViewCell {
         label.textAlignment = .left
         label.isScrollEnabled = false
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPSemiBoldH4
         label.text = "Event"
         label.isEditable = false
         label.isUserInteractionEnabled = false
@@ -110,7 +98,7 @@ class EventCell: UICollectionViewCell {
     var date: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = Fonts.SSPRegularH4
+        label.font = Fonts.SSPRegularH5
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
@@ -121,27 +109,27 @@ class EventCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        layer.shadowRadius = 3
+        layer.shadowOpacity = 0.6
+        layer.cornerRadius = 4
+        
         setupViews()
     }
     
     func setupViews() {
         
-        self.addSubview(shadowView)
-        shadowView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        shadowView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        shadowView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        shadowView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        
-        shadowView.addSubview(cellView)
+        addSubview(cellView)
         cellView.addSubview(backgroundImageView)
         backgroundImageView.addSubview(darkView)
         cellView.addSubview(eventLabel)
         cellView.addSubview(date)
         
-        cellView.leftAnchor.constraint(equalTo: shadowView.leftAnchor).isActive = true
-        cellView.rightAnchor.constraint(equalTo: shadowView.rightAnchor).isActive = true
-        cellView.topAnchor.constraint(equalTo: shadowView.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: shadowView.bottomAnchor).isActive = true
+        cellView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        cellView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        cellView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         backgroundImageView.leftAnchor.constraint(equalTo: cellView.leftAnchor).isActive = true
         backgroundImageView.rightAnchor.constraint(equalTo: cellView.rightAnchor).isActive = true
@@ -153,15 +141,16 @@ class EventCell: UICollectionViewCell {
         darkView.topAnchor.constraint(equalTo: backgroundImageView.topAnchor).isActive = true
         darkView.bottomAnchor.constraint(equalTo: backgroundImageView.bottomAnchor).isActive = true
         
-        eventLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 12).isActive = true
-        eventLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -12).isActive = true
-        eventLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: -4).isActive = true
-        eventLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
         date.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 16).isActive = true
         date.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -12).isActive = true
         date.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8).isActive = true
-        date.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        date.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        eventLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 12).isActive = true
+        eventLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -12).isActive = true
+        eventLabel.bottomAnchor.constraint(equalTo: date.topAnchor, constant: 6).isActive = true
+        eventLabel.sizeToFit()
+//        eventLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
     }
     

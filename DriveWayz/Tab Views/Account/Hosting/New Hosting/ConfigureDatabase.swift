@@ -160,7 +160,6 @@ extension ConfigureParkingViewController {
                             self.delegate?.hideNewHostingController()
                             self.delegate?.bringHostingController()
                             self.containerHeightAnchor.constant = 120
-                            self.moveDelegate?.moveMainLabel(percent: 0)
                         }
                     }
                 }

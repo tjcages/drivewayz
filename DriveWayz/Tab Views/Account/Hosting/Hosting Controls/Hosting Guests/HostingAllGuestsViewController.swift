@@ -45,7 +45,7 @@ class HostingAllGuestsViewController: UIViewController {
     lazy var previousView: HostingPreviousViewController = {
         let controller = HostingPreviousViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
+//        controller.delegate = self
         
         return controller
     }()
@@ -113,7 +113,6 @@ extension HostingAllGuestsViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.changeMainLabel(text: "")
         UIView.animate(withDuration: animationIn) {
             self.previousAnchor.constant = 0
             self.tableViewCenterAnchor.constant = -self.view.frame.width/2

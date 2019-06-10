@@ -145,11 +145,67 @@ class ParkingOptionViewController: UIViewController {
     }
     
     func configureDynamicParking(parking: ParkingSpots, overallDestination: CLLocationCoordinate2D) {
+        DispatchQueue.main.async {
+            self.checkAvailability(parking: parking)
+        }
         if let latitude = parking.latitude, let longitude = parking.longitude, let state = parking.stateAddress, let city = parking.cityAddress {
             let location = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: latitude), longitude: CLLocationDegrees(truncating: longitude))
             dynamicPricing.getDynamicPricing(place: location, state: state, city: city, overallDestination: overallDestination) { (dynamicPrice: CGFloat) in
                 let price = String(format: "%.2f", dynamicPrice)
                 self.priceLabel.text = "$\(price) per hour"
+            }
+        }
+    }
+    
+    func checkAvailability(parking: ParkingSpots) {
+        if let today = Date().dayOfWeek() {
+            if today == "Monday" {
+                if parking.mondayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Tuesday" {
+                if parking.tuesdayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Wednesday" {
+                if parking.wednesdayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Thursday" {
+                if parking.thursdayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Friday" {
+                if parking.fridayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Saturday" {
+                if parking.saturdayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            } else if today == "Sunday" {
+                if parking.sundayUnavailable == true {
+                    self.spotUnavailable()
+                } else {
+                    self.spotAvailable()
+                }
+            }
+            if parking.isSpotAvailable {
+                self.spotAvailable()
+            } else {
+                self.spotUnavailable()
             }
         }
     }
@@ -245,6 +301,18 @@ class ParkingOptionViewController: UIViewController {
         bookButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         bookButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
         
+    }
+    
+    func spotAvailable() {
+        self.bookButton.backgroundColor = Theme.BLUE
+        self.bookButton.setTitle("Book spot", for: .normal)
+        self.bookButton.isUserInteractionEnabled = true
+    }
+    
+    func spotUnavailable() {
+        self.bookButton.backgroundColor = Theme.DARK_GRAY.lighter(by: 40)
+        self.bookButton.setTitle("Unavailable", for: .normal)
+        self.bookButton.isUserInteractionEnabled = false
     }
     
     @objc func bookSpotPressed(sender: UIButton) {

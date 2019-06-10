@@ -10,6 +10,15 @@ import Foundation
 import MapKit
 import Mapbox
 
+var ParkingRoutePolyLine: [MKOverlay] = []
+var DestinationRoutePolyLine = MKPolyline()
+var DestinationAnnotation: MKAnnotation?
+var ZoomMapView: MGLCoordinateBounds?
+var ZoomPurchaseMapView: MGLCoordinateBounds?
+var IncreasedZoomMapView: CLLocationCoordinate2D?
+var CurrentDestinationLocation: CLLocation?
+var ClosestParkingLocation: CLLocation?
+
 extension MapKitViewController {
     
     func observeUserParkingSpots() {
@@ -92,20 +101,23 @@ extension MapKitViewController {
 //        }
     }
     
-    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        guard annotation is MGLPointAnnotation else { return nil }
-        let reuseIdentifier = "\(annotation.coordinate.longitude)"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
-        
-        if annotationView == nil {
-            if annotation.subtitle == "Destination" {
-                annotationView = DestinationAnnotationView(reuseIdentifier: DestinationAnnotationView.ReuseID)
-                annotationView!.bounds = CGRect(x: 0, y: 0, width: 40, height: 40)
-                return annotationView
-            }
-        }
-        return annotationView
-    }
+//    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+//        guard annotation is MGLPointAnnotation else { return nil }
+//        let reuseIdentifier = "\(annotation.coordinate.longitude)"
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+//        
+//        if annotationView == nil {
+//            if annotation.subtitle == "Destination" {
+//                annotationView = DestinationAnnotationView(reuseIdentifier: DestinationAnnotationView.ReuseID)
+//                annotationView!.bounds = CGRect(x: 0, y: 0, width: 40, height: 40)
+//                return annotationView
+//            } else {
+//                return annotationView
+//            }
+//        }
+//        
+//        return annotationView
+//    }
     
     
 }

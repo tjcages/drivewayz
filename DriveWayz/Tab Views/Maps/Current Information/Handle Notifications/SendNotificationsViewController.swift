@@ -12,43 +12,7 @@ import Firebase
 import UserNotifications
 import MapboxStatic
 
-class SendNotificationsViewController: UIViewController {
-    
-    var timestamp: Double?
-    var hours: Int?
-    var currentParkingID: String = ""
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        checkCurrentParking()
-    }
-    
-    func checkCurrentParking() {
-        if let userID = Auth.auth().currentUser?.uid {
-            let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
-            currentRef.observe(.childAdded, with: { (snapshot) in
-                self.currentParkingID = snapshot.key
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    currentParking = true
-                    self.timestamp = dictionary["timestamp"] as? Double
-                    self.hours = dictionary["hours"] as? Int
-                    if notificationSent == false {
-                        self.setupNotifications()
-                        notificationSent = true
-                    }
-                }
-            }, withCancel: nil)
-            currentRef.observe(.childRemoved, with: { (snapshot) in
-                currentParking = false
-                UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                //delete
-            }, withCancel: nil)
-        } else {
-            return
-        }
-    }
+extension ConfirmViewController {
     
     func setupNotifications() {
         let center = UNUserNotificationCenter.current()
@@ -56,11 +20,21 @@ class SendNotificationsViewController: UIViewController {
         { (granted, error) in
             if error != nil {
                 print(error?.localizedDescription as Any)
+                let alert = UIAlertController(title: "Notifications are currently disabled.", message: "Please allow notifications to know when your parking duration has ended or you will be charged an overstay fee.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+                self.present(alert, animated: true)
             } else {
-                let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
-                let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
-                let center = UNUserNotificationCenter.current()
-                center.setNotificationCategories([category])
+                notificationCenter.getNotificationSettings { (settings) in
+                    if settings.authorizationStatus != .authorized {
+                        let alert = UIAlertController(title: "Notifications are currently disabled.", message: "Please allow notifications to know when your parking duration has ended or you will be charged an overstay fee.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+                        self.present(alert, animated: true)
+                    }
+                    let endParkingAction = UNNotificationAction(identifier: "endParking", title: "Confirm you have left", options: [])
+                    let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
+                    let center = UNUserNotificationCenter.current()
+                    center.setNotificationCategories([category])
+                }
             }
         }
     }
@@ -165,7 +139,7 @@ class SendNotificationsViewController: UIViewController {
 }
 
 
-extension SendNotificationsViewController: UNUserNotificationCenterDelegate {
+extension ConfirmViewController: UNUserNotificationCenterDelegate {
     
     //for displaying notification when app is in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

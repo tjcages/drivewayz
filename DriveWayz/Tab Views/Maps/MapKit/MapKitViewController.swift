@@ -17,6 +17,7 @@ import Mapbox
 import MapboxDirections
 import MapboxNavigation
 import MapboxCoreNavigation
+import CoreMotion
 
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
@@ -48,8 +49,7 @@ var firstPurchaseMapView: MGLCoordinateBounds?
 var secondPurchaseMapView: MGLCoordinateBounds?
 var thirdPurchaseMapView: MGLCoordinateBounds?
 
-class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
-    
+class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,14 +59,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         speechSythensizer.delegate = self
         
         setupViews()
-        setupMainBar()
         setupParking()
         setupNetworkConnection()
         setupAdditionalViews()
         setupViewController()
         setupPurchaseStatus()
+        setupMainBar()
         setupCurrent()
         setupNavigationControllers()
+        setupCoreMotion()
         checkDayTimeStatus()
         checkNetwork()
     }
@@ -75,6 +76,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         if self.hasLoaded == false {
             self.hasLoaded = true
             self.setupLocationManager()
+        }
+        if isCurrentlyBooked {
+            self.delegate?.lightContentStatusBar()
         }
     }
     
@@ -110,9 +114,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
         button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -157,8 +161,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     lazy var summaryController: SearchSummaryViewController = {
         let controller = SearchSummaryViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var searchBarController: SearchBarViewController = {
+        let controller = SearchBarViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self
         
         return controller
     }()
@@ -409,7 +420,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(parkingHidden), for: .touchUpInside)
+        button.addTarget(self, action: #selector(parkingBackButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -425,6 +436,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var holdNavController: HoldNavViewController = {
         let controller = HoldNavViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
         
         return controller
     }()
@@ -465,8 +477,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         return button
     }()
     
+    var motionManager: CMMotionActivityManager!
+    var motionTimer: Timer!
+    var shouldUpdatePolyline: Bool = true
+    
     var currentBottomHeightAnchor: NSLayoutConstraint!
-    var currentTopHeightAnchor: NSLayoutConstraint!
     var currentBottomBottomAnchor: NSLayoutConstraint!
     var currentTopTopAnchor: NSLayoutConstraint!
     var previousAnchor: CGFloat = 170.0
@@ -497,6 +512,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var changeLocationCounter: Int = 0
     
     var parkingSpots = [ParkingSpots]()
+    var availableParkingSpots = [ParkingSpots]()
     var closeParkingSpots = [ParkingSpots]()
     var cheapestParkingSpots = [ParkingSpots]()
     var parkingSpotsDictionary = [String: ParkingSpots]()
@@ -515,24 +531,17 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var diamondTopAnchor: NSLayoutConstraint!
     var locationResultsHeightAnchor: NSLayoutConstraint!
     
+    var summaryTopAnchor: NSLayoutConstraint!
     var mainBarTopAnchor: NSLayoutConstraint!
-    var mainBarWidthAnchor: NSLayoutConstraint!
-    var mainBarHeightAnchor: NSLayoutConstraint!
-    var summaryBarTopAnchor: NSLayoutConstraint!
-    
-    var checkEventsAnchor: NSLayoutConstraint!
-    var checkEventsBottomAnchor: NSLayoutConstraint!
-    var checkEventsWidthAnchor: NSLayoutConstraint!
-    var checkEventsHeightAnchor: NSLayoutConstraint!
-    var eventsControllerAnchor: NSLayoutConstraint!
-    var eventsHeightAnchor: NSLayoutConstraint!
-    var giftBottomAnchor: NSLayoutConstraint!
-    var giftOnlyBottomAnchor: NSLayoutConstraint!
-    var giftRightAnchor: NSLayoutConstraint!
+    var mainBarPreviousPosition: CGFloat = 0.0
+    var mainBarHighest: Bool = false
     
     var parkingBackButtonBookAnchor: NSLayoutConstraint!
     var parkingBackButtonPurchaseAnchor: NSLayoutConstraint!
     var parkingBackButtonConfirmAnchor: NSLayoutConstraint!
+    
+    var locatorMainBottomAnchor: NSLayoutConstraint!
+    var locatorParkingBottomAnchor: NSLayoutConstraint!
     
     var mapViewBottomAnchor: NSLayoutConstraint!
     var mapViewTopAnchor: NSLayoutConstraint!
@@ -572,7 +581,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         mapViewTopAnchor = mapView.topAnchor.constraint(equalTo: self.view.topAnchor)
             mapViewTopAnchor.isActive = true
-        mapViewBottomAnchor = mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        mapViewBottomAnchor = mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -300)
             mapViewBottomAnchor.isActive = true
         mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
         mapView.userTrackingMode = .follow
@@ -603,11 +612,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         self.locationsSearchResults.tableView.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
     }
     
-    @objc func dismissKeyboard() {
-        self.view.endEditing(true)
-        self.hideSearchBar(regular: true)
-    }
-    
     func sendNewHost() {
         self.vehicleDelegate?.bringNewHostingController()
     }
@@ -629,12 +633,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
 protocol controlSaveLocation {
     func zoomToSearchLocation(address: String)
     func saveUserCurrentLocation()
+    func mainBarWillClose()
 }
 
 protocol handleEventSelection {
-    func openSpecificEvent()
-    func closeSpecificEvent()
-    func eventsControllerHidden()
     func zoomToSearchLocation(address: String)
 }
 

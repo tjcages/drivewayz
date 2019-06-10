@@ -22,6 +22,7 @@ protocol handleSignIn {
 
 var phoneHeight: CGFloat = 0
 var phoneWidth: CGFloat = 0
+var statusHeight: CGFloat = 0
 
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, handleSignIn {
     
@@ -66,12 +67,31 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     lazy var purpleGradient: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleColor()
+        let background = CAGradientLayer().purpleBlueColor()
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
         background.zPosition = -10
         view.layer.addSublayer(background)
         
         return view
+    }()
+    
+    lazy var startupOnboardingController: OnboardingViewController = {
+        let controller = OnboardingViewController()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        controller.statusDelegate = self
+        
+        return controller
+    }()
+    
+    lazy var startupMapController: TabViewController = {
+        let controller = TabViewController()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
     }()
 
     var drivewayzCarAnchor: NSLayoutConstraint!
@@ -124,9 +144,9 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 UIView.animate(withDuration: animationIn, animations: {
                     self.startupAnchor.constant = 0
-                    if self.tabController != nil {
+                    if self.controller == true {
                         self.logoView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                        self.tabController!.view.alpha = 1
+                        self.startupMapController.view.alpha = 1
                     } else {
                         switch device {
                         case .iphone8:
@@ -147,26 +167,22 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         }
     }
     
-    var tabController: TabViewController?
     var controller: Bool = false
     
     func checkViews() {
         let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if isUserLoggedIn == true {
-            self.tabController = TabViewController()
-            self.tabController!.view.translatesAutoresizingMaskIntoConstraints = false
-            self.tabController!.delegate = self
-            
             self.controller = true
-            self.view.addSubview(self.tabController!.view)
-            self.addChild(self.tabController!)
-            self.tabController!.willMove(toParent: self)
-            self.tabController!.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = self.tabController!.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-                self.startupAnchor.isActive = true
-            self.tabController!.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            self.tabController!.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            self.tabController!.view.alpha = 0
+            
+            self.view.addSubview(startupMapController.view)
+            self.addChild(startupMapController)
+            startupMapController.willMove(toParent: self)
+            startupMapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            startupAnchor = startupMapController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+                startupAnchor.isActive = true
+            startupMapController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+            startupMapController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            startupMapController.view.alpha = 0
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.hideStatusBar()
                 self.defaultStatusBar()
@@ -176,19 +192,17 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                 self.checkDayTimeStatus()
             }
         } else {
-            let startupController: PhoneVerificationViewController = PhoneVerificationViewController()
-            startupController.view.translatesAutoresizingMaskIntoConstraints = false
-            startupController.delegate = self
+            self.controller = false
             
-            self.view.addSubview(startupController.view)
-            self.addChild(startupController)
-            startupController.willMove(toParent: self)
-            startupController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = startupController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
+            self.view.addSubview(startupOnboardingController.view)
+            self.addChild(startupOnboardingController)
+            startupOnboardingController.willMove(toParent: self)
+            startupOnboardingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.startupAnchor = startupOnboardingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
                 self.startupAnchor.isActive = true
-            startupController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            startupController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            startupController.view.alpha = 1
+            startupOnboardingController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+            startupOnboardingController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+            startupOnboardingController.view.alpha = 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.hideStatusBar()
                 self.checkDayTimeStatus()
@@ -197,25 +211,22 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     }
     
     func moveToMainController() {
-        self.tabController = TabViewController()
-        self.tabController!.view.translatesAutoresizingMaskIntoConstraints = false
-        self.tabController!.delegate = self
-        
         self.controller = true
-        self.view.addSubview(self.tabController!.view)
-        self.addChild(self.tabController!)
-        self.tabController!.willMove(toParent: self)
+        
+        self.view.addSubview(self.startupMapController.view)
+        self.addChild(self.startupMapController)
+        self.startupMapController.willMove(toParent: self)
         delayWithSeconds(4) {
-            self.tabController?.mapController.setupLocationManager()
+            self.startupMapController.mapController.setupLocationManager()
         }
-        self.tabController!.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.tabController!.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        self.tabController!.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-        self.tabController!.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        self.tabController!.view.alpha = 0
+        startupMapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        startupMapController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        startupMapController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        startupMapController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        startupMapController.view.alpha = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
             UIView.animate(withDuration: animationIn, animations: {
-                self.tabController!.view.alpha = 1
+                self.startupMapController.view.alpha = 1
                 self.blackView.alpha = 1
             }, completion: { (success) in
                 self.bringStatusBar()

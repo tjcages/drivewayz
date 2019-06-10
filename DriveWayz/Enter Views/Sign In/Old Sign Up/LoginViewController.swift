@@ -372,9 +372,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         switch device {
         case .iphone8:
-            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
-        case .iphoneX:
             exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true
+        case .iphoneX:
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
         self.view.addSubview(loginLabel)

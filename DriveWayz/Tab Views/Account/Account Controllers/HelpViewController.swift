@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HelpViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HelpViewController: UIViewController {
     
     var delegate: moveControllers?
 
@@ -17,16 +17,23 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
     var optionsImages: [UIImage] = [UIImage(), UIImage(), UIImage()]
     let cellId = "cellId"
     
-    var container: UIView = {
+    lazy var gradientContainer: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        //        view.clipsToBounds = true
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.4
+        view.clipsToBounds = false
         
         return view
+    }()
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Help"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH0
+        
+        return label
     }()
     
     var optionsTableView: UITableView = {
@@ -44,6 +51,12 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.4
+        view.decelerationRate = .fast
         
         return view
     }()
@@ -72,6 +85,8 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.clipsToBounds = true
+        
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
         scrollView.delegate = self
@@ -83,27 +98,33 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupViews()
     }
     
-    var containerHeightAnchor: NSLayoutConstraint!
+    var gradientHeightAnchor: NSLayoutConstraint!
     var containerCenterAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
     var contactDrivewayzAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(container)
-        container.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        containerHeightAnchor = container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 160)
-            containerHeightAnchor.isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 50).isActive = true
-        container.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        
+        self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height - 160)
+        scrollView.contentSize = CGSize(width: phoneWidth, height: phoneHeight)
         containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
             containerCenterAnchor.isActive = true
-        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+                gradientHeightAnchor.isActive = true
+        case .iphoneX:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
+                gradientHeightAnchor.isActive = true
+        }
         
         scrollView.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
@@ -113,7 +134,9 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
             optionsHeight.isActive = true
         
         self.view.addSubview(contactDrivewayzController.view)
-        contactDrivewayzController.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        self.view.bringSubviewToFront(gradientContainer)
+        self.addChild(contactDrivewayzController)
+        contactDrivewayzController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contactDrivewayzController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         contactDrivewayzController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         contactDrivewayzAnchor = contactDrivewayzController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
@@ -121,14 +144,20 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
     }
     
@@ -138,10 +167,8 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func bringBackMain() {
+        self.mainLabel.text = "Help"
         UIView.animate(withDuration: animationOut, animations: {
-            self.delegate?.changeMainLabel(text: "Help")
-            self.delegate?.moveMainLabel(percent: 0)
-            self.containerHeightAnchor.constant = 160
             self.containerCenterAnchor.constant = 0
             self.contactDrivewayzAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
@@ -150,6 +177,10 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.delegate?.bringExitButton()
         }
     }
+    
+}
+
+extension HelpViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.optionsHeight.constant = CGFloat(60 * self.options.count)
@@ -174,15 +205,22 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
         if optionsSub[indexPath.row] == "" {
             cell.titleTopAnchor.isActive = false
             cell.titleCenterAnchor.isActive = true
-            cell.titleLeftAnchor.constant = -20
+            cell.titleLeftAnchor.constant = -40
         } else {
             cell.titleTopAnchor.isActive = true
             cell.titleCenterAnchor.isActive = false
-            cell.titleLeftAnchor.constant = 30
+            cell.titleLeftAnchor.constant = -40
+        }
+        if cell.titleLabel.text == "Contact Drivewayz" {
+            cell.titleLabel.alpha = 1
+            cell.nextButton.alpha = 1
+        } else {
+            cell.titleLabel.alpha = 0.4
+            cell.nextButton.alpha = 0
         }
         cell.subtitleLabel.text = optionsSub[indexPath.row]
         cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         cell.selectionStyle = .none
         
         return cell
@@ -201,18 +239,11 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
         if let title = cell.titleLabel.text {
-            if title != "" {
+            if title == "Contact Drivewayz" {
+                self.mainLabel.text = "Contact Drivewayz"
                 UIView.animate(withDuration: animationIn) {
-                    self.delegate?.changeMainLabel(text: title)
-                    self.delegate?.moveMainLabel(percent: 1)
                     self.delegate?.hideExitButton()
                     self.backButton.alpha = 1
-                    switch device {
-                    case .iphone8:
-                        self.containerHeightAnchor.constant = 80
-                    case .iphoneX:
-                        self.containerHeightAnchor.constant = 90
-                    }
                     self.containerCenterAnchor.constant = -self.view.frame.width/2
                     self.contactDrivewayzAnchor.constant = 0
                     self.view.layoutIfNeeded()
@@ -220,43 +251,31 @@ class HelpViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
+}
+
+
+extension HelpViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var totalHeight: CGFloat = 0.0
+        switch device {
+        case .iphone8:
+            totalHeight = 160
+        case .iphoneX:
+            totalHeight = 180
+        }
         let translation = scrollView.contentOffset.y
-        if translation <= 50 && translation >= 10 {
-            let percent = (translation-10)/40
-            switch device {
-            case .iphone8:
-                self.containerHeightAnchor.constant = 160 - (percent * 80)
-            case .iphoneX:
-                self.containerHeightAnchor.constant = 160 - (percent * 70)
-            }
-            self.delegate?.moveMainLabel(percent: percent)
-        } else if translation < 10 {
-            self.containerHeightAnchor.constant = 160
-            self.delegate?.moveMainLabel(percent: 0)
-        } else {
-            self.delegate?.moveMainLabel(percent: 1)
-            switch device {
-            case .iphone8:
-                self.containerHeightAnchor.constant = 80
-            case .iphoneX:
-                self.containerHeightAnchor.constant = 90
-            }
+        if translation > 0 && translation < 80 {
+            let percent = translation/80
+            self.gradientHeightAnchor.constant = totalHeight - percent * 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+        } else if translation >= 80 {
+            self.gradientHeightAnchor.constant = totalHeight - 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        } else if translation <= 0 {
+            self.gradientHeightAnchor.constant = totalHeight
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let translation = scrollView.contentOffset.y
-        if translation < 30 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 0
-            }
-        } else if translation >= 30 && translation <= 50 {
-            UIView.animate(withDuration: 0.2) {
-                scrollView.contentOffset.y = 50
-            }
-        }
-    }
-
 }

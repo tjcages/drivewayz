@@ -11,17 +11,6 @@ import UIKit
 
 class VehicleCell: UITableViewCell {
     
-    var iconView: UIButton = {
-        let imageView = UIButton()
-        let image = UIImage(named: "feed")
-        imageView.setImage(image, for: .normal)
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 20
-        
-        return imageView
-    }()
-    
     var titleLabel: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
@@ -49,35 +38,46 @@ class VehicleCell: UITableViewCell {
         button.setImage(image, for: .normal)
         button.isUserInteractionEnabled = false
         button.alpha = 0
+        button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        return button
+    }()
+    
+    var checkmark: UIButton = {
+        let image = UIImage(named: "Checkmark")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton()
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 35/2
+        button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+        button.layer.borderWidth = 1
+        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.alpha = 0
+        button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
         return button
     }()
     
     var titleTopAnchor: NSLayoutConstraint!
     var titleCenterAnchor: NSLayoutConstraint!
-    var titleLeftAnchor: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = Theme.WHITE
         
-        addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(plusButton)
-        
-        iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
-        iconView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        iconView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        addSubview(checkmark)
         
         titleTopAnchor = titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4)
-        titleTopAnchor.isActive = true
+            titleTopAnchor.isActive = true
         titleCenterAnchor = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        titleCenterAnchor.isActive = false
-        titleLeftAnchor = titleLabel.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 30)
-        titleLeftAnchor.isActive = true
+            titleCenterAnchor.isActive = false
+        titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
@@ -87,9 +87,14 @@ class VehicleCell: UITableViewCell {
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
      
         plusButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        plusButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -38.5).isActive = true
+        plusButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor).isActive = true
+     
+        checkmark.centerXAnchor.constraint(equalTo: plusButton.centerXAnchor).isActive = true
+        checkmark.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
+        checkmark.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
     }
     
