@@ -15,7 +15,7 @@ class ParkingSpots: NSObject {
     var hostEmail: String?
     var hostMessage: String?
     var id: String?
-    var parkingCost: String?
+    var parkingCost: CGFloat?
     var parkingID: String?
     var timestamp: NSNumber?
     var parkingDistance: Double?
@@ -111,7 +111,7 @@ class ParkingSpots: NSObject {
         hostEmail = dictionary["hostEmail"] as? String
         hostMessage = dictionary["hostMessage"] as? String
         id = dictionary["id"] as? String
-        parkingCost = dictionary["parkingCost"] as? String
+        parkingCost = dictionary["parkingCost"] as? CGFloat
         parkingID = dictionary["parkingID"] as? String
         timestamp = dictionary["timestamp"] as? NSNumber
         

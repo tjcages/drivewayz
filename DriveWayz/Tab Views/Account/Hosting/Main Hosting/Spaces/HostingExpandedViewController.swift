@@ -258,8 +258,8 @@ class HostingExpandedViewController: UIViewController {
         
         scrollView.addSubview(expandedOptions.view)
         expandedOptions.view.topAnchor.constraint(equalTo: expandedAmenities.view.bottomAnchor, constant: 20).isActive = true
-        expandedOptions.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -12).isActive = true
-        expandedOptions.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 12).isActive = true
+        expandedOptions.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        expandedOptions.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         expandedOptions.view.heightAnchor.constraint(equalToConstant: 240).isActive = true
         expandedOptions.seeAvailability.addTarget(self, action: #selector(openCalendar), for: .touchUpInside)
         expandedInformation.editInformation.addTarget(self, action: #selector(openInformation), for: .touchUpInside)

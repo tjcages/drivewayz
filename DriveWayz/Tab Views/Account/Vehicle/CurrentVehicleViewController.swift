@@ -18,6 +18,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
         
         return view
     }()
@@ -214,7 +215,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var grayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         view.layer.borderWidth = 0.5
         
@@ -239,7 +240,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         
         vehicleMakeLabel.delegate = self
         vehicleModelLabel.delegate = self
@@ -254,48 +255,48 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.2)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 740)
         scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         scrollView.addSubview(detailLabel)
-        detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         detailLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
         detailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(makeLabel)
         scrollView.addSubview(vehicleMakeLabel)
         makeLabel.leftAnchor.constraint(equalTo: detailLabel.leftAnchor, constant: 8).isActive = true
-        makeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        makeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         makeLabel.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 14).isActive = true
         makeLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(modelLabel)
         scrollView.addSubview(vehicleModelLabel)
         modelLabel.leftAnchor.constraint(equalTo: detailLabel.leftAnchor, constant: 8).isActive = true
-        modelLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        modelLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         modelLabel.topAnchor.constraint(equalTo: vehicleMakeLabel.bottomAnchor, constant: 20).isActive = true
         modelLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(yearLabel)
         scrollView.addSubview(vehicleYearLabel)
         yearLabel.leftAnchor.constraint(equalTo: detailLabel.leftAnchor, constant: 8).isActive = true
-        yearLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        yearLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         yearLabel.topAnchor.constraint(equalTo: vehicleModelLabel.bottomAnchor, constant: 20).isActive = true
         yearLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(licenseLabel)
         scrollView.addSubview(vehicleLicenseLabel)
         licenseLabel.leftAnchor.constraint(equalTo: detailLabel.leftAnchor, constant: 8).isActive = true
-        licenseLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        licenseLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         licenseLabel.topAnchor.constraint(equalTo: vehicleYearLabel.bottomAnchor, constant: 20).isActive = true
         licenseLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         vehicleMakeLabel.leftAnchor.constraint(equalTo: makeLabel.leftAnchor).isActive = true
-        vehicleMakeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        vehicleMakeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         vehicleMakeLabel.topAnchor.constraint(equalTo: makeLabel.bottomAnchor).isActive = true
         vehicleMakeLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -306,7 +307,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         makeLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         vehicleModelLabel.leftAnchor.constraint(equalTo: modelLabel.leftAnchor).isActive = true
-        vehicleModelLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        vehicleModelLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         vehicleModelLabel.topAnchor.constraint(equalTo: modelLabel.bottomAnchor).isActive = true
         vehicleModelLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -317,7 +318,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         modelLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         vehicleYearLabel.leftAnchor.constraint(equalTo: yearLabel.leftAnchor).isActive = true
-        vehicleYearLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        vehicleYearLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         vehicleYearLabel.topAnchor.constraint(equalTo: yearLabel.bottomAnchor).isActive = true
         vehicleYearLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -328,7 +329,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         yearLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         vehicleLicenseLabel.leftAnchor.constraint(equalTo: licenseLabel.leftAnchor).isActive = true
-        vehicleLicenseLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        vehicleLicenseLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         vehicleLicenseLabel.topAnchor.constraint(equalTo: licenseLabel.bottomAnchor).isActive = true
         vehicleLicenseLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -339,8 +340,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         grayView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(currentButton)
-        currentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        currentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         currentButton.topAnchor.constraint(equalTo: grayView.bottomAnchor).isActive = true
         currentButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
@@ -351,13 +352,13 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         deleteLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(deleteButton)
-        deleteButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        deleteButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        deleteButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        deleteButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         deleteButton.topAnchor.constraint(equalTo: deleteLine.bottomAnchor).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         scrollView.addSubview(checkmark)
-        checkmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        checkmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         checkmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
         checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
         checkmark.centerYAnchor.constraint(equalTo: currentButton.centerYAnchor).isActive = true
@@ -403,7 +404,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.PURPLE
+        toolBar.tintColor = Theme.PRUSSIAN_BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

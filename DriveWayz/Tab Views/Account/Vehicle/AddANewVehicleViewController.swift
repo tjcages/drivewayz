@@ -22,8 +22,6 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 10
         
         return view
     }()
@@ -158,6 +156,13 @@ class AddANewVehicleViewController: UIViewController, UIImagePickerControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = Theme.WHITE
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.layer.shadowRadius = 6
+        view.layer.shadowOpacity = 0.2
+        view.layer.cornerRadius = 4
         
         self.colorPicker.delegate = self
         self.colorPicker.dataSource = self

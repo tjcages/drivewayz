@@ -27,7 +27,7 @@ class EditSettingsViewController: UIViewController {
         label.text = ""
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH3
+        label.font = Fonts.SSPRegularH2
         label.placeholder = ""
         label.textAlignment = .center
         
@@ -37,7 +37,7 @@ class EditSettingsViewController: UIViewController {
     var subLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return view
     }()
@@ -45,15 +45,11 @@ class EditSettingsViewController: UIViewController {
     var updateButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Save", for: .normal)
+        button.setTitle("Update", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowRadius = 6
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.layer.shadowOpacity = 0.4
         button.addTarget(self, action: #selector(updateButtonPressed), for: .touchUpInside)
         
         return button
@@ -63,7 +59,6 @@ class EditSettingsViewController: UIViewController {
         detailLabel.text = title
         subDetailLabel.placeholder = title
         subDetailLabel.text = subtitle
-        updateButton.setTitle("Update \(title.lowercased())", for: .normal)
         if title == "Phone" {
             self.subDetailLabel.keyboardType = .numberPad
         } else {
@@ -75,7 +70,7 @@ class EditSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         
         subDetailLabel.delegate = self
         
@@ -85,27 +80,27 @@ class EditSettingsViewController: UIViewController {
     func setupViews() {
      
         self.view.addSubview(detailLabel)
-        detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         detailLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
         detailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(subDetailLabel)
-        subDetailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        subDetailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        subDetailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        subDetailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         subDetailLabel.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 24).isActive = true
         subDetailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(subLine)
-        subLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        subLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        subLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        subLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         subLine.topAnchor.constraint(equalTo: subDetailLabel.bottomAnchor, constant: 12).isActive = true
-        subLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        subLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         self.view.addSubview(updateButton)
-        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         updateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        updateButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        updateButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
         updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 60).isActive = true
         
     }

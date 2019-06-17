@@ -12,14 +12,22 @@ import Cosmos
 
 class BookingCell: UICollectionViewCell {
     
+    var price: String = "$1.50/hour" {
+        didSet {
+            self.priceLabel.text = price
+            self.priceWidthAnchor.constant = (self.priceLabel.text?.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4))! + 16
+            self.spotWidthAnchor.constant = (self.spotLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3))! + 16
+            self.layoutIfNeeded()
+        }
+    }
+    
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
-        view.layer.cornerRadius = 55
-        let image = UIImage(named: "gatedBooking")
-//        let image = UIImage(named: "apartmentBooking")
+        view.layer.cornerRadius = 50
+        let image = UIImage(named: "Apartment Parking")
         view.image = image
         
         return view
@@ -50,12 +58,12 @@ class BookingCell: UICollectionViewCell {
         view.rating = 3.6
         view.settings.updateOnTouch = false
         view.settings.fillMode = StarFillMode.precise
-        view.settings.starSize = 18
-        view.settings.starMargin = 2
+        view.settings.starSize = 16
+        view.settings.starMargin = 0
         view.settings.filledColor = Theme.GOLD
         view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.OFF_WHITE
+        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -68,7 +76,7 @@ class BookingCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "10"
         label.textColor = Theme.PRUSSIAN_BLUE
-        label.font = Fonts.SSPRegularH5
+        label.font = Fonts.SSPSemiBoldH5
         
         return label
     }()
@@ -106,6 +114,8 @@ class BookingCell: UICollectionViewCell {
         label.layer.cornerRadius = 14
         label.clipsToBounds = true
         label.textAlignment = .center
+//        label.alpha = 0
+//        label.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         
         return label
     }()
@@ -135,7 +145,7 @@ class BookingCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         view.clipsToBounds = true
-        view.layer.cornerRadius = 55
+        view.layer.cornerRadius = 50
         
         return view
     }()
@@ -151,22 +161,27 @@ class BookingCell: UICollectionViewCell {
         setupShimmerIcon()
     }
     
+    var priceWidthAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         addSubview(spotIcon)
         addSubview(priceLabel)
         
         spotIcon.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        spotIcon.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        spotIcon.widthAnchor.constraint(equalToConstant: 110).isActive = true
+        spotIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 12).isActive = true
+        spotIcon.widthAnchor.constraint(equalToConstant: 100).isActive = true
         spotIcon.heightAnchor.constraint(equalTo: spotIcon.widthAnchor).isActive = true
         
         priceLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        priceLabel.widthAnchor.constraint(equalToConstant: (priceLabel.text?.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4))! + 16).isActive = true
+        priceWidthAnchor = priceLabel.widthAnchor.constraint(equalToConstant: (priceLabel.text?.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4))! + 16)
+            priceWidthAnchor.isActive = true
         priceLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
         priceLabel.centerYAnchor.constraint(equalTo: spotIcon.bottomAnchor).isActive = true
         
     }
+    
+    var spotWidthAnchor: NSLayoutConstraint!
     
     func setupDetails() {
         
@@ -176,9 +191,10 @@ class BookingCell: UICollectionViewCell {
 //        addSubview(destinationIcon)
 //        addSubview(destinationLabel)
         
-        spotLabel.topAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: 20).isActive = true
+        spotLabel.topAnchor.constraint(equalTo: stars.bottomAnchor, constant: 4).isActive = true
         spotLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        spotLabel.widthAnchor.constraint(equalToConstant: (spotLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3))! + 16).isActive = true
+        spotWidthAnchor = spotLabel.widthAnchor.constraint(equalToConstant: (spotLabel.text?.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3))! + 16)
+            spotWidthAnchor.isActive = true
         spotLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
 //        destinationIcon.rightAnchor.constraint(equalTo: destinationLabel.leftAnchor, constant: -4).isActive = true
@@ -190,7 +206,7 @@ class BookingCell: UICollectionViewCell {
 //        destinationLabel.centerYAnchor.constraint(equalTo: destinationIcon.centerYAnchor).isActive = true
 //        destinationLabel.sizeToFit()
         
-        stars.topAnchor.constraint(equalTo: spotLabel.bottomAnchor, constant: 0).isActive = true
+        stars.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8).isActive = true
         stars.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -12).isActive = true
         stars.sizeToFit()
         
@@ -222,13 +238,27 @@ class BookingCell: UICollectionViewCell {
         
     }
     
+    func expandPrice() {
+        UIView.animate(withDuration: animationIn) {
+            self.priceLabel.alpha = 1
+            self.priceLabel.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        }
+    }
+    
+    func minimizePrice() {
+        UIView.animate(withDuration: animationIn) {
+            self.priceLabel.alpha = 0
+            self.priceLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        }
+    }
+    
     func setupShimmer() {
         
         self.addSubview(shimmerMain)
-        shimmerMain.topAnchor.constraint(equalTo: spotLabel.topAnchor).isActive = true
+        shimmerMain.topAnchor.constraint(equalTo: spotLabel.topAnchor, constant: -40).isActive = true
         shimmerMain.leftAnchor.constraint(equalTo: spotLabel.leftAnchor).isActive = true
         shimmerMain.rightAnchor.constraint(equalTo: spotLabel.rightAnchor).isActive = true
-        shimmerMain.bottomAnchor.constraint(equalTo: spotLabel.bottomAnchor).isActive = true
+        shimmerMain.bottomAnchor.constraint(equalTo: spotLabel.bottomAnchor, constant: -40).isActive = true
         
         let shimmerView = UIView()
         shimmerView.backgroundColor = Theme.WHITE
@@ -257,15 +287,15 @@ class BookingCell: UICollectionViewCell {
     func setupShimmerIcon() {
         
         self.addSubview(shimmerIcon)
-        shimmerIcon.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 36).isActive = true
+        shimmerIcon.topAnchor.constraint(equalTo: spotIcon.topAnchor).isActive = true
         shimmerIcon.leftAnchor.constraint(equalTo: spotIcon.leftAnchor).isActive = true
         shimmerIcon.rightAnchor.constraint(equalTo: spotIcon.rightAnchor).isActive = true
-        shimmerIcon.bottomAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: 36).isActive = true
+        shimmerIcon.bottomAnchor.constraint(equalTo: spotIcon.bottomAnchor).isActive = true
         
         let shimmerView = UIView()
         shimmerView.backgroundColor = Theme.WHITE
         shimmerView.frame = shimmerIcon.frame
-        shimmerView.transform = CGAffineTransform(scaleX: 2.0, y: 4.0)
+        shimmerView.transform = CGAffineTransform(scaleX: 4.0, y: 1.0)
         shimmerIcon.addSubview(shimmerView)
         
         let gradientLayer = CAGradientLayer()

@@ -13,12 +13,12 @@ import MapboxNavigation
 import MapboxCoreNavigation
 
 protocol handleParkingOptions {
-//    func applyFirstPolyline()
-//    func applySecondPolyline()
-//    func applyThirdPolyline()
+    func drawHostPolyline(fromLocation: CLLocation)
 }
 
-var DestinationAnnotationLocation: CLLocationCoordinate2D?
+var DestinationAnnotationLocation: CLLocation?
+var ZooomRegion: MGLCoordinateBounds?
+
 var FinalAnnotationLocation: CLLocationCoordinate2D?
 var FirstAnnotationLocation: CLLocationCoordinate2D?
 var SecondAnnotationLocation: CLLocationCoordinate2D?
@@ -37,6 +37,9 @@ var secondPickupCoordinate: CLLocationCoordinate2D?
 var secondDestinationCoordinate: CLLocationCoordinate2D?
 var thirdPickupCoordinate: CLLocationCoordinate2D?
 var thirdDestinationCoordinate: CLLocationCoordinate2D?
+
+var quadStartCoordinate: CLLocationCoordinate2D?
+var quadEndCoordinate: CLLocationCoordinate2D?
 
 extension MapKitViewController: handleParkingOptions {
     
@@ -69,15 +72,23 @@ extension MapKitViewController: handleParkingOptions {
                     })
                     return
             }
+            DestinationAnnotationLocation = location
+            self.processResponse(withPlacemarks: placemarks, error: error, completion: { (city) in
+                self.observeAllParking(location: city)
+            })
             self.parkingSelected()
             self.mapView.setCenter(location.coordinate, animated: true)
             self.removeAllHostLocations()
             self.quickDestinationController.setupData()
-            
-            
-            if let userLocation = self.mapView.userLocation?.location {
-                self.drawRoute(fromLocation: userLocation, toLocation: location)
-            }
+        }
+    }
+    
+    func drawHostPolyline(fromLocation: CLLocation) {
+        self.removeAllHostLocations()
+        self.removePolylineAnnotations()
+        self.placeAvailableParking(shouldDraw: false)
+        if let location = DestinationAnnotationLocation {
+            self.drawRoute(fromLocation: fromLocation, toLocation: location)
         }
     }
     
@@ -105,10 +116,11 @@ extension MapKitViewController: handleParkingOptions {
                     
                     var routeCoordinates = route.coordinates!
                     let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
-                    routeLine.title = "ParkingUnder"
+                    routeLine.title = "ParkingDestUnder"
                     let ne = routeLine.overlayBounds.ne
                     let sw = routeLine.overlayBounds.sw
                     let region = MGLCoordinateBounds(sw: sw, ne: ne)
+                    ZooomRegion = region
                     self.mapView.addAnnotation(routeLine)
                     
                     self.parkingCoordinates = route.coordinates!
@@ -120,13 +132,15 @@ extension MapKitViewController: handleParkingOptions {
                     marker.subtitle = "Destination"
                     self.mapView.addAnnotation(marker)
                     delayWithSeconds(animationIn, completion: {
-                        self.mapView.setZoomLevel(14, animated: true)
-                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 64, bottom: 40, right: 64), animated: true)
-                        delayWithSeconds(1.2, completion: {
-                            self.drawCurvedOverlay(startCoordinate: fromLocation.coordinate, endCoordinate: toLocation.coordinate)
-                        })
+//                        self.mapView.setZoomLevel(14, animated: true)
+                        
+                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 140, left: 64, bottom: 430, right: 64), animated: true)
+                        quadStartCoordinate = fromLocation.coordinate
+                        if let userLocation = self.locationManager.location?.coordinate {
+                            quadEndCoordinate = userLocation
+                            self.drawCurvedOverlay(startCoordinate: userLocation, endCoordinate: fromLocation.coordinate)
+                        }
                     })
-//                    DestinationAnnotationLocation = dest.coordinate
                 }
             }
         }
@@ -138,7 +152,7 @@ extension MapKitViewController: handleParkingOptions {
     
     
     func findBestParking(location: CLLocation, sourceLocation: CLLocation, searchLocation: CLLocation, address: String) {
-        parkingController.setData(closestParking: self.closeParkingSpots, cheapestParking: self.cheapestParkingSpots, overallDestination: searchLocation.coordinate)
+//        parkingController.setData(closestParking: self.closeParkingSpots, cheapestParking: self.cheapestParkingSpots, overallDestination: searchLocation.coordinate)
         self.drawCurrentPath(dest: location, start: sourceLocation, type: "Parking", address: address) { (results: CLLocationCoordinate2D) in
             if sourceLocation != searchLocation {
                 self.drawCurrentPath(dest: searchLocation, start: location, type: "Destination", address: address) { (result: CLLocationCoordinate2D) in
@@ -164,51 +178,51 @@ extension MapKitViewController: handleParkingOptions {
     }
     
     func findBestLatLong(first: CLLocation, second: CLLocation, third: CLLocation, type: String) {
-        let long = [first.coordinate.longitude, second.coordinate.longitude, third.coordinate.longitude].sorted()
-        let lat = [first.coordinate.latitude, second.coordinate.latitude, third.coordinate.latitude].sorted()
-        if let leftLast = lat.last, let leftFirst = long.first, let rightFirst = lat.first, let rightLast = long.last {
-            let leftMost = CLLocation(latitude: leftLast, longitude: leftFirst)
-            let rightMost = CLLocation(latitude: rightFirst, longitude: rightLast)
-            
-            let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
-            if type == "First" {
-                firstPickupCoordinate = second.coordinate
-                firstDestinationCoordinate = first.coordinate
-                ZoomMapView = region
-                firstMapView = region
-//                delayWithSeconds(1.2) {
-                    if let region = ZoomMapView {
-                        self.mapView.userTrackingMode = .none
-                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 36, bottom: 420, right: 36), animated: true)
-                        if let location = DestinationAnnotationLocation {
-                            delayWithSeconds(0.5) {
-                                self.checkQuickDestination(annotationLocation: location)
-                            }
-                        }
-                    }
-//                }
-            } else if type == "FirstPurchase" {
-                ZoomPurchaseMapView = region
-                firstPurchaseMapView = region
-            } else if type == "Second" {
-                secondPickupCoordinate = second.coordinate
-                secondDestinationCoordinate = first.coordinate
-                secondMapView = region
-            } else if type == "SecondPurchase" {
-                secondPurchaseMapView = region
-            } else if type == "Third" {
-                thirdPickupCoordinate = second.coordinate
-                thirdDestinationCoordinate = first.coordinate
-                thirdMapView = region
-            } else if type == "ThirdPurchase" {
-                thirdPurchaseMapView = region
-            }
-        }
-        if abs(first.coordinate.longitude) > abs(second.coordinate.longitude) {
-            self.shouldFlipGradient = true
-        } else {
-            self.shouldFlipGradient = false
-        }
+//        let long = [first.coordinate.longitude, second.coordinate.longitude, third.coordinate.longitude].sorted()
+//        let lat = [first.coordinate.latitude, second.coordinate.latitude, third.coordinate.latitude].sorted()
+//        if let leftLast = lat.last, let leftFirst = long.first, let rightFirst = lat.first, let rightLast = long.last {
+//            let leftMost = CLLocation(latitude: leftLast, longitude: leftFirst)
+//            let rightMost = CLLocation(latitude: rightFirst, longitude: rightLast)
+//
+//            let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
+//            if type == "First" {
+//                firstPickupCoordinate = second.coordinate
+//                firstDestinationCoordinate = first.coordinate
+//                ZoomMapView = region
+//                firstMapView = region
+////                delayWithSeconds(1.2) {
+//                    if let region = ZoomMapView {
+//                        self.mapView.userTrackingMode = .none
+//                        self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 100, left: 36, bottom: 420, right: 36), animated: true)
+//                        if let location = DestinationAnnotationLocation {
+//                            delayWithSeconds(0.5) {
+//                                self.checkQuickDestination(annotationLocation: location)
+//                            }
+//                        }
+//                    }
+////                }
+//            } else if type == "FirstPurchase" {
+//                ZoomPurchaseMapView = region
+//                firstPurchaseMapView = region
+//            } else if type == "Second" {
+//                secondPickupCoordinate = second.coordinate
+//                secondDestinationCoordinate = first.coordinate
+//                secondMapView = region
+//            } else if type == "SecondPurchase" {
+//                secondPurchaseMapView = region
+//            } else if type == "Third" {
+//                thirdPickupCoordinate = second.coordinate
+//                thirdDestinationCoordinate = first.coordinate
+//                thirdMapView = region
+//            } else if type == "ThirdPurchase" {
+//                thirdPurchaseMapView = region
+//            }
+//        }
+//        if abs(first.coordinate.longitude) > abs(second.coordinate.longitude) {
+//            self.shouldFlipGradient = true
+//        } else {
+//            self.shouldFlipGradient = false
+//        }
     }
     
     func distanceBetweenCoordinates(from: CLLocation, to: CLLocation) -> Double {
@@ -248,7 +262,6 @@ extension MapKitViewController: handleParkingOptions {
 //                        self.addPolyline(to: self.mapView.style!, type: type)
 //                        self.animateSecondPolyline()
                         self.animateFirstPolyline()
-                        DestinationAnnotationLocation = dest.coordinate
                         
                         completion(marker.coordinate)
                     }

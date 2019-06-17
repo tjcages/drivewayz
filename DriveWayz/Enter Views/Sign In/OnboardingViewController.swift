@@ -39,6 +39,7 @@ class OnboardingViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 1400/2
         view.clipsToBounds = true
+        view.alpha = 0
         
         return view
     }()
@@ -57,10 +58,10 @@ class OnboardingViewController: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.font = Fonts.SSPRegularH4
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
-        label.text = "Generate Lorem Ipsum placeholder text for use in your graphic, print."
+        label.text = "Never stress about finding parking again. Reserve your private parking spot today!"
         label.numberOfLines = 2
         
         return label
@@ -102,10 +103,6 @@ class OnboardingViewController: UIViewController {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.setTitleColor(Theme.WHITE.withAlphaComponent(0.5), for: .highlighted)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowRadius = 6
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.layer.shadowOpacity = 0.4
         button.addTarget(self, action: #selector(mainButtonPressed), for: .touchUpInside)
         
         return button
@@ -135,7 +132,10 @@ class OnboardingViewController: UIViewController {
     var firstImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
+        view.contentMode = .scaleAspectFill
+        let image = UIImage(named: "onboardingFirstGraphic")
+        view.image = image
+        view.clipsToBounds = true
         
         return view
     }()
@@ -143,7 +143,10 @@ class OnboardingViewController: UIViewController {
     var secondImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .blue
+        view.contentMode = .scaleAspectFill
+        let image = UIImage(named: "onboardingSecondGraphic")
+        view.image = image
+        view.clipsToBounds = true
         
         return view
     }()
@@ -151,7 +154,10 @@ class OnboardingViewController: UIViewController {
     var thirdImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .green
+        view.contentMode = .scaleAspectFill
+        let image = UIImage(named: "onboardingThirdGraphic")
+        view.image = image
+        view.clipsToBounds = true
         
         return view
     }()
@@ -167,7 +173,9 @@ class OnboardingViewController: UIViewController {
     var facebookButton: UIButton = {
         let button = UIButton()
         let image = UIImage(named: "FacebookIcon")
-        button.setImage(image, for: .normal)
+        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(loginButtonDidCompleteLogin), for: .touchUpInside)
         button.alpha = 0.9
@@ -272,22 +280,22 @@ class OnboardingViewController: UIViewController {
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         circularView.addSubview(firstImageView)
-        firstImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
+        firstImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         firstImageView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         firstImageView.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        firstImageView.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
+        firstImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
         
         circularView.addSubview(secondImageView)
-        secondImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
+        secondImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         secondImageView.leftAnchor.constraint(equalTo: firstImageView.rightAnchor).isActive = true
         secondImageView.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        secondImageView.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
+        secondImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
         
         circularView.addSubview(thirdImageView)
-        thirdImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
+        thirdImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         thirdImageView.leftAnchor.constraint(equalTo: secondImageView.rightAnchor).isActive = true
         thirdImageView.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        thirdImageView.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
+        thirdImageView.bottomAnchor.constraint(equalTo: circularView.bottomAnchor).isActive = true
         
     }
     
@@ -397,6 +405,16 @@ extension OnboardingViewController: UIScrollViewDelegate {
             self.mainLabelCenterAnchor.constant = -phoneWidth/2 * percentage
         }
         self.lastTranslation = translation
+        if translation == 0 {
+            self.mainLabel.text = "Smarter Parking"
+            self.subLabel.text = "Never stress about finding parking again. Reserve your private parking spot today!"
+        } else if translation >= phoneWidth - 20 && translation <= phoneWidth + 20 {
+            self.mainLabel.text = "Help Your Community"
+            self.subLabel.text = "Rent out your private parking space to drivers searching for more convenient options!"
+        } else if translation >= phoneWidth * 2 - 20 && translation <= phoneWidth * 2 + 20 {
+            self.mainLabel.text = "Our Mission"
+            self.subLabel.text = "Drivewayz is creating parking for the community, from the community."
+        }
         self.view.layoutIfNeeded()
     }
     

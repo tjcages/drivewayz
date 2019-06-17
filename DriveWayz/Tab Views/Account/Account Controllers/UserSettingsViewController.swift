@@ -10,32 +10,39 @@ import UIKit
 import Firebase
 import FacebookLogin
 import Stripe
+import Cosmos
 
 protocol changeSettingsHandler {
     func changeEmail(text: String)
     func changePhone(text: String)
     func bringBackMain()
+    func moveToNext()
+    func moveToAbout()
+    func editSettings(title: String, subtitle: String)
+    func handleLogout()
+    
+    func moveToTerms()
+    func moveToPrivacy()
 }
 
 var userInformationNumbers: String = ""
 var userInformationImage: UIImage = UIImage()
 
-class UserSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, changeSettingsHandler {
+class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     var delegate: moveControllers?
     var paymentInformation: String = ""
     var pickerParking: UIImagePickerController?
     
-    var options: [String] = ["Email", "Phone", "Payment", "Vehicle", "", "Notifications", "Accessibility", "Terms", "", "Logout"]
-    var optionsSub: [String] = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    var optionsImages: [UIImage] = [UIImage(named: "email")!, UIImage(named: "phone")!, UIImage(named: "credit_card")!, UIImage(named: "car")!, UIImage(), UIImage(named: "bell_notification")!,UIImage(named: "tool")!, UIImage(), UIImage(), UIImage()]
-    let cellId = "cellId"
-    
-    lazy var gradientContainer: UIView = {
+    var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0
         
         return view
     }()
@@ -43,76 +50,90 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Settings"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
     
+    var stars: CosmosView = {
+        let view = CosmosView()
+        view.rating = 4
+        view.settings.updateOnTouch = false
+        view.settings.fillMode = StarFillMode.precise
+        view.settings.starSize = 20
+        view.settings.starMargin = 0
+        view.settings.filledColor = Theme.GOLD
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.GOLD
+        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.isUserInteractionEnabled = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
+    var starLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "4.65"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPRegularH5
+        label.textAlignment = .right
+        
+        return label
+    }()
+    
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
+        
+        return view
+    }()
+    
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "background2")
+        let image = UIImage(named: "dadAndKid")
         imageView.image = image
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.white
-        imageView.layer.cornerRadius = 35
+        imageView.layer.cornerRadius = 45
         imageView.clipsToBounds = true
         
         return imageView
     }()
     
-    var profileName: UILabel = {
-        let profileName = UILabel()
-        profileName.translatesAutoresizingMaskIntoConstraints = false
-        profileName.textColor = Theme.BLACK
-        profileName.font = Fonts.SSPRegularH3
-        profileName.text = ""
+    lazy var accountController: AccountSettingsViewController = {
+        let controller = AccountSettingsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
-        return profileName
+        return controller
     }()
     
-    var editImage: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Edit photo", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
-        button.titleLabel?.font = Fonts.SSPLightH5
-        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+    lazy var otherController: OtherSettingsViewController = {
+        let controller = OtherSettingsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
-        return button
-    }()
-    
-    var profileLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        
-        return view
-    }()
-    
-    var optionsTableView: UITableView = {
-        let view = UITableView()
-        view.backgroundColor = Theme.WHITE
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.register(SettingsCell.self, forCellReuseIdentifier: "cellId")
-        view.isScrollEnabled = false
-        
-        return view
+        return controller
     }()
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
+        view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
+        view.layer.cornerRadius = 8
         
         return view
     }()
@@ -122,10 +143,10 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
-        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -138,6 +159,15 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         return controller
     }()
     
+    lazy var aboutController: AboutUsViewController = {
+        let controller = AboutUsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
     lazy var termsController: DrivewayzTermsViewController = {
         let controller = DrivewayzTermsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -145,37 +175,64 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         
         return controller
     }()
+    
+    lazy var privacyController: DrivewayzPrivacyViewController = {
+        let controller = DrivewayzPrivacyViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        
+        return controller
+    }()
+    
+    var versionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Ver. 3.145"
+        label.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.5)
+        label.font = Fonts.SSPRegularH6
+        label.textAlignment = .center
+        
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
 
-        optionsTableView.delegate = self
-        optionsTableView.dataSource = self
         scrollView.delegate = self
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(bringBackMain))
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(backButtonPressed))
         swipeGesture.direction = .right
         view.addGestureRecognizer(swipeGesture)
         
         setupViews()
+        setupAccount()
+        setupControllers()
         observeUserInformation()
+        getVersionNumber()
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
-    var containerCenterAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
     var editAnchor: NSLayoutConstraint!
+    var aboutAnchor: NSLayoutConstraint!
     var termsAnchor: NSLayoutConstraint!
+    var privacyAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
-        self.view.addSubview(gradientContainer)
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 760)
-        containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-            containerCenterAnchor.isActive = true
+        self.view.addSubview(gradientContainer)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 970)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
@@ -192,53 +249,87 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
                 gradientHeightAnchor.isActive = true
         }
         
-        scrollView.addSubview(profileImageView)
-        profileImageView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 24).isActive = true
-        profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
+        
+    }
+    
+    func setupAccount() {
+        
+        self.view.addSubview(profileImageView)
+        profileImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        profileImageView.topAnchor.constraint(equalTo: mainLabel.topAnchor, constant: -12).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 90).isActive = true
         profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor).isActive = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(editProfile))
+        profileImageView.addGestureRecognizer(tap)
         
-        scrollView.addSubview(profileName)
-        profileName.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 12).isActive = true
-        profileName.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: 2).isActive = true
-        profileName.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.view.addSubview(stars)
+        stars.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -16).isActive = true
+        stars.rightAnchor.constraint(equalTo: profileImageView.leftAnchor, constant: 8).isActive = true
+        stars.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        scrollView.addSubview(editImage)
-        editImage.leftAnchor.constraint(equalTo: profileName.leftAnchor).isActive = true
-        editImage.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -2).isActive = true
-        editImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        if let width = editImage.titleLabel?.text?.width(withConstrainedHeight: 40, font: (editImage.titleLabel?.font)!) {
-            editImage.widthAnchor.constraint(equalToConstant: width).isActive = true
-        }
+        self.view.addSubview(starLabel)
+        starLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
+        starLabel.rightAnchor.constraint(equalTo: stars.leftAnchor, constant: -2).isActive = true
+        starLabel.sizeToFit()
         
-        scrollView.addSubview(profileLine)
-        profileLine.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
-        profileLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        profileLine.topAnchor.constraint(equalTo: editImage.bottomAnchor, constant: 20).isActive = true
-        profileLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        scrollView.addSubview(accountController.view)
+        accountController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 48).isActive = true
+        accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        accountController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        accountController.view.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
-        scrollView.addSubview(optionsTableView)
-        optionsTableView.topAnchor.constraint(equalTo: profileLine.bottomAnchor).isActive = true
-        optionsTableView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 60)
-            optionsHeight.isActive = true
+        scrollView.addSubview(otherController.view)
+        otherController.view.topAnchor.constraint(equalTo: accountController.view.bottomAnchor, constant: 20).isActive = true
+        otherController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        otherController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        otherController.view.heightAnchor.constraint(equalToConstant: 540).isActive = true
+
+        scrollView.addSubview(versionLabel)
+        versionLabel.topAnchor.constraint(equalTo: otherController.view.bottomAnchor, constant: 16).isActive = true
+        versionLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        versionLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        versionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+    }
+    
+    func setupControllers() {
         
         self.view.addSubview(editSettingsController.view)
-        editSettingsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        editSettingsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        editSettingsController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        editSettingsController.view.bottomAnchor.constraint(equalTo: accountController.view.bottomAnchor).isActive = true
         editSettingsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editAnchor = editSettingsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
             editAnchor.isActive = true
         
+        self.view.addSubview(aboutController.view)
+        aboutController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        aboutController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        aboutController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        aboutAnchor = aboutController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            aboutAnchor.isActive = true
+        
         self.view.addSubview(termsController.view)
-        self.view.bringSubviewToFront(gradientContainer)
         termsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         termsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
         termsAnchor = termsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
             termsAnchor.isActive = true
+        
+        self.view.addSubview(privacyController.view)
+        self.view.bringSubviewToFront(gradientContainer)
+        self.view.bringSubviewToFront(mainLabel)
+        
+        privacyController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        privacyController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        privacyController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
+        privacyAnchor = privacyController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
+            privacyAnchor.isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -251,12 +342,23 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
-        
+    }
+    
+    func editSettings(title: String, subtitle: String) {
+        self.moveToNext()
+        self.scrollMinimized()
+        self.editSettingsController.setData(title: title, subtitle: subtitle)
+        self.editAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.mainLabel.text = ""
+            self.accountController.view.alpha = 0
+            self.otherController.view.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Edit Account"
+            }, completion: nil)
+        }
     }
     
     func observeUserInformation() {
@@ -264,9 +366,10 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
             let ref = Database.database().reference().child("users").child(userID)
             ref.observeSingleEvent(of: .value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:Any] {
-                    self.optionsSub = []
+                    self.accountController.optionsSub = []
+                    self.otherController.optionsSub = []
                     if let name = dictionary["name"] as? String {
-                        self.profileName.text = name
+                        self.accountController.optionsSub.append(name)
                     }
                     if let userPicture = dictionary["picture"] as? String {
                         if userPicture == "" {
@@ -276,184 +379,139 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
                         }
                     }
                     if let email = dictionary["email"] as? String {
-                        self.optionsSub.append(email)
-                    } else { self.optionsSub.append("No email") }
+                        self.accountController.optionsSub.append(email)
+                    } else { self.accountController.optionsSub.append("No email") }
                     if let phone = dictionary["phone"] as? String {
-                        self.optionsSub.append(phone)
-                    } else { self.optionsSub.append("No phone number") }
-                    self.optionsSub.append("Payment")
-                    self.optionsTableView.reloadData()
+                        self.accountController.optionsSub.append(phone)
+                    } else { self.accountController.optionsSub.append("No phone number") }
+                    self.otherController.optionsSub.append("Payment")
+                    self.otherController.optionsTableView.reloadData()
                     if let vehicle = dictionary["selectedVehicle"] as? String {
                         let vehicleRef = Database.database().reference().child("UserVehicles").child(vehicle)
                         vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
                             if let dictionary = snapshot.value as? [String:Any] {
                                 if let vehicleLicensePlate = dictionary["licensePlate"] as? String {
-                                    self.optionsSub.append(vehicleLicensePlate)
+                                    self.otherController.optionsSub.append(vehicleLicensePlate)
                                 } else {
-                                    self.optionsSub.append("No vehicle")
+                                    self.otherController.optionsSub.append("No vehicle")
                                 }
-                                self.optionsTableView.reloadData()
+                                self.accountController.optionsTableView.reloadData()
+                                self.otherController.optionsTableView.reloadData()
                             }
                         })
                     } else {
-                        self.optionsSub.append("No vehicle")
+                        self.otherController.optionsSub.append("No vehicle")
                     }
                 }
             }
         }
     }
-    
-    @objc func backButtonPressed(sender: UIButton) {
+
+    @objc func backButtonPressed() {
         self.view.endEditing(true)
-        self.bringBackMain()
+        if self.termsAnchor.constant == 0 || self.privacyAnchor.constant == 0 {
+            self.bringBackAbout()
+        } else {
+            self.bringBackMain()
+        }
+    }
+    
+    @objc func bringBackAbout() {
+        self.termsAnchor.constant = phoneWidth
+        self.privacyAnchor.constant = phoneWidth
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.aboutController.view.alpha = 1
+            self.mainLabel.text = ""
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "About Us"
+            }, completion: nil)
+        }
     }
     
     @objc func bringBackMain() {
-        UIView.animate(withDuration: animationOut, animations: {
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.mainLabel.text = ""
+            self.accountController.view.alpha = 1
+            self.otherController.view.alpha = 1
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-            self.containerCenterAnchor.constant = 0
             self.editAnchor.constant = self.view.frame.width
-            self.termsAnchor.constant = self.view.frame.width
+            self.aboutAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
+            self.accountController.view.alpha = 1
+            self.otherController.view.alpha = 1
+            self.profileImageView.alpha = 1
+            self.backgroundCircle.alpha = 1
+            self.stars.alpha = 1
+            self.starLabel.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.delegate?.defaultContentStatusBar()
             self.delegate?.bringExitButton()
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Settings"
+            }, completion: nil)
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.optionsHeight.constant = CGFloat(60 * (self.options.count) - 60)
-        return self.options.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if options.count > indexPath.row {
-            if options[indexPath.row] == "" {
-                return 30
-            } else {
-                return 60
-            }
-        } else {
-            return 60
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
-        if options.count > indexPath.row {
-            cell.selectionStyle = .none
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-            if indexPath.row < self.optionsSub.count {
-                cell.titleLabel.text = options[indexPath.row]
-                cell.subtitleLabel.text = optionsSub[indexPath.row]
-                cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-                cell.paymentButton.alpha = 0
-                cell.titleLabel.alpha = 1
-            } else {
-                cell.titleLabel.text = options[indexPath.row]
-                let index = indexPath.row - self.optionsSub.count
-                if index == 0 {
-                    cell.titleLabel.alpha = 1
-                    cell.subtitleLabel.text = ""
-                    cell.iconView.setImage(UIImage(), for: .normal)
-                } else if index == 1 {
-                    cell.titleLabel.alpha = 0.4
-                    cell.subtitleLabel.text = "Update your preferences"
-                    cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-                } else if index == 2 {
-                    cell.titleLabel.alpha = 0.4
-                    cell.subtitleLabel.text = "Wheelchair access"
-                    cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-                } else if index == 3 {
-                    cell.titleLabel.alpha = 1
-                    cell.subtitleLabel.text = ""
-                    cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-                } else if index == 4 {
-                    cell.titleLabel.alpha = 1
-                    cell.subtitleLabel.text = ""
-                    cell.iconView.setImage(UIImage(), for: .normal)
-                } else if index == 5 {
-                    cell.titleLabel.alpha = 1
-                    cell.subtitleLabel.text = ""
-                    cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-                }
-            }
-            if cell.titleLabel.text == "Payment" || cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Notifications" || cell.titleLabel.text == "Accessibility" || cell.titleLabel.text == "Logout" || cell.titleLabel.text == "" {
-                cell.nextButton.alpha = 0
-            } else {
-                cell.nextButton.alpha = 1
-            }
-            if options[indexPath.row] == "" {
-                cell.nextButton.alpha = 0
-                cell.backgroundColor = Theme.OFF_WHITE
-            }
-            if cell.titleLabel.text == "Logout" {
-                cell.titleLabel.textColor = Theme.HARMONY_RED
-                cell.nextButton.alpha = 0
-            } else if cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Terms" || cell.titleLabel.text == "" {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: self.view.frame.width, bottom: 0, right: self.view.frame.width)
-            } else {
-                cell.titleLabel.textColor = Theme.BLACK
-            }
-            if cell.subtitleLabel.text == "" {
-                cell.titleTopAnchor.isActive = false
-                cell.titleCenterAnchor.isActive = true
-                cell.titleLeftAnchor.constant = -20
-            } else {
-                cell.titleTopAnchor.isActive = true
-                cell.titleCenterAnchor.isActive = false
-                cell.titleLeftAnchor.constant = 30
-            }
-            if cell.subtitleLabel.text == "Payment" {
-                cell.paymentButton.alpha = 1
-                cell.subtitleLabel.text = ""
-                cell.paymentButton.setTitle(userInformationNumbers, for: .normal)
-                cell.paymentButton.setImage(userInformationImage, for: .normal)
-            } else {
-                cell.paymentButton.alpha = 0
-            }
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        cell.titleLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-    }
-    
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        cell.titleLabel.textColor = Theme.BLACK
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        if let title = cell.titleLabel.text, let subtitle = cell.subtitleLabel.text {
-            if title == "Terms" {
-                self.termsAnchor.constant = 0
-            } else if title == "Logout" {
-                self.handleLogout()
-            } else if title != "" && title != "Notifications" && title != "Accessibility" && title != "Vehicle" && title != "Payment" {
-                if subtitle == "No phone number" || subtitle == "No email" {
-                    self.editSettingsController.setData(title: title, subtitle: "")
-                } else {
-                    self.editSettingsController.setData(title: title, subtitle: subtitle)
-                }
-                self.editAnchor.constant = 0
-            }
-            if title == "Email" || title == "Phone" || title == "Terms" {
-                self.moveToNext()
-            }
-        }
+    func hideExitButton() {
+        self.delegate?.hideExitButton()
     }
     
     func moveToNext() {
         UIView.animate(withDuration: animationIn) {
             self.delegate?.hideExitButton()
             self.backButton.alpha = 1
-            self.containerCenterAnchor.constant = -self.view.frame.width/2
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    func moveToAbout() {
+        self.moveToNext()
+        self.aboutAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.accountController.view.alpha = 0
+            self.otherController.view.alpha = 0
+            self.mainLabel.text = ""
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.lightContentStatusBar()
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "About Us"
+            }, completion: nil)
+        }
+    }
+    
+    func moveToTerms() {
+        self.termsAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.aboutController.view.alpha = 0
+            self.mainLabel.text = ""
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Terms & Conditions"
+            }, completion: nil)
+        }
+    }
+    
+    func moveToPrivacy() {
+        self.privacyAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.aboutController.view.alpha = 0
+            self.mainLabel.text = ""
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Privacy Policy"
+            }, completion: nil)
         }
     }
     
@@ -470,7 +528,7 @@ class UserSettingsViewController: UIViewController, UITableViewDelegate, UITable
         self.delegate?.hideExitButton()
         UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
         UserDefaults.standard.synchronize()
-        
+
         let launchController = LaunchAnimationsViewController()
         launchController.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(launchController.view)
@@ -505,12 +563,71 @@ extension UserSettingsViewController: UIScrollViewDelegate {
             let percent = translation/80
             self.gradientHeightAnchor.constant = totalHeight - percent * 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            if self.profileImageView.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.gradientContainer.layer.shadowOpacity = 0
+                    self.profileImageView.alpha = 1
+                    self.backgroundCircle.alpha = 1
+                    self.stars.alpha = 1
+                    self.starLabel.alpha = 1
+                }
+            }
+            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                self.scrollExpanded()
+            }
+        } else if translation >= 40 && self.profileImageView.alpha == 1 {
+            UIView.animate(withDuration: animationIn) {
+                self.gradientContainer.layer.shadowOpacity = 0.2
+                self.profileImageView.alpha = 0
+                self.backgroundCircle.alpha = 0
+                self.stars.alpha = 0
+                self.starLabel.alpha = 0
+            }
         } else if translation >= 80 {
             self.gradientHeightAnchor.constant = totalHeight - 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                self.scrollMinimized()
+            }
         } else if translation <= 0 {
             self.gradientHeightAnchor.constant = totalHeight
             self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 75 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        self.delegate?.defaultContentStatusBar()
+        self.scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.profileImageView.alpha = 1
+            self.backgroundCircle.alpha = 1
+            self.stars.alpha = 1
+            self.starLabel.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
+        }
+    }
+    
+    func scrollMinimized() {
+        self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.profileImageView.alpha = 0
+            self.backgroundCircle.alpha = 0
+            self.stars.alpha = 0
+            self.starLabel.alpha = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
         }
     }
     
@@ -587,15 +704,24 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
     }
     
     func changeEmail(text: String) {
-        self.optionsSub.insert(text, at: 0)
-        self.optionsSub.remove(at: 1)
-        self.optionsTableView.reloadData()
+        self.accountController.optionsSub.insert(text, at: 0)
+        self.accountController.optionsSub.remove(at: 1)
+        self.accountController.optionsTableView.reloadData()
+        self.otherController.optionsTableView.reloadData()
     }
     
     func changePhone(text: String) {
-        self.optionsSub.insert(text, at: 1)
-        self.optionsSub.remove(at: 2)
-        self.optionsTableView.reloadData()
+        self.accountController.optionsSub.insert(text, at: 1)
+        self.accountController.optionsSub.remove(at: 2)
+        self.accountController.optionsTableView.reloadData()
+        self.otherController.optionsTableView.reloadData()
+    }
+    
+    func getVersionNumber() {
+        //First get the nsObject by defining as an optional anyObject
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            self.versionLabel.text = "Ver. " + version
+        }
     }
     
 }

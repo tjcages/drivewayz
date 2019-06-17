@@ -45,106 +45,62 @@ struct DynamicEvents {
         self.hrefEvent = hrefEvent
     }
     
-    static let basePath = "https://app.ticketmaster.com/discovery/v2/events.json?"
-    static let endPath = "&apikey=BZ9kNjuf6LB0KSXYgAAOXvfTHvePM4nA"
-    
-    static func eventLookup(withLocation location: String, userLocation: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
-        localEventLocations = []
+    static func eventLookup(withLocation city: String, userLocation: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
         var checkedEvents: [String] = []
         var eventCounter: Int = 0
         var locationCounter: Int = 0
-        for i in 1...2 {
-            var eventTypePath = ""
-            if i == 1 {
-                eventTypePath = "classificationName=music"
-            } else if i == 2 {
-                eventTypePath = "classificationName=sports"
-            }
-            let url = basePath + eventTypePath + "&latlong=" + location + endPath
-            let request = URLRequest(url: URL(string: url)!)
-            
-            let task = URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-                if let data = data {
-                    do { if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
-                        if let embeddedEvents = json["_embedded"] as? [String:Any] {
-                            if let events = embeddedEvents["events"] as? [[String:Any]] {
-                                for data in events {
-                                    if var eventName = data["name"] as? String {
-                                        if let range = eventName.range(of: "HALF PRICE GAME: ") { eventName.removeSubrange(range) }
-                                        eventName = eventName.replacingOccurrences(of: " v ", with: " vs. ", options: .literal, range: nil)
-                                        if let eventDate = data["dates"] as? [String:Any] {
-                                            if let eventStart = eventDate["start"] as? [String:Any] {
-                                                if let localDate = eventStart["localDate"] as? String, let localTime = eventStart["localTime"] as? String {
-                                                    if let embeddedVenues = data["_embedded"] as? [String:Any] {
-                                                        if let venues = embeddedVenues["venues"] as? [[String:Any]] {
-                                                            for venue in venues {
-                                                                let isoDate = "\(localDate) \(localTime)"
-                                                                let currentDate = Date()
-                                                                let dateFormatter = DateFormatter()
-                                                                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                                                                if let date = dateFormatter.date(from: isoDate) {
-                                                                    let hours = date.hours(from: currentDate)
-                                                                    if hours < 6 {
-                                                                        if let addressObj = venue["address"] as? [String:Any], let address = addressObj["line1"] as? String {
-                                                                            if !checkedEvents.contains(address) {
-                                                                                checkedEvents.append(address)
-                                                                                let geoCoder = CLGeocoder()
-                                                                                eventCounter += 1
-                                                                                geoCoder.geocodeAddressString(address) { (placemarks, error) in
-                                                                                    guard
-                                                                                        let placemarks = placemarks,
-                                                                                        let location = placemarks.first?.location
-                                                                                        else {
-                                                                                            print(error?.localizedDescription as Any, "\nCannot find dynamic price for event")
-                                                                                            completion(0.0)
-                                                                                            return
-                                                                                    }
-                                                                                    locationCounter += 1
-                                                                                    localEventLocations.append(location.coordinate)
-                                                                                    if locationCounter == eventCounter {
-                                                                                        DispatchQueue.main.async {
-                                                                                            checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
-                                                                                                completion(numberOfEvents)
-                                                                                            })
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            } else {
-                                                                                checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
-                                                                                    completion(numberOfEvents)
-                                                                                })
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
-                                                                            completion(numberOfEvents)
-                                                                        })
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else {
-                                                            checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
-                                                                completion(numberOfEvents)
-                                                            })
-                                                        }
-                                                    }
-                                                }
-                                            }
+        
+        if let localEvents = localEventLookup {
+            let userPlace = userCity
+            for event in localEvents {
+                if event.city == userPlace {
+                    let isoDate = "\(event.date) \(event.time)"
+                    let currentDate = Date()
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    if let date = dateFormatter.date(from: isoDate) {
+                        let hours = date.hours(from: currentDate)
+                        if hours < 800 {
+                            let address = event.address
+                            if !checkedEvents.contains(address) {
+                                checkedEvents.append(address)
+                                let geoCoder = CLGeocoder()
+                                eventCounter += 1
+                                geoCoder.geocodeAddressString(address) { (placemarks, error) in
+                                    guard
+                                        let placemarks = placemarks,
+                                        let location = placemarks.first?.location
+                                        else {
+                                            print(error?.localizedDescription as Any, "\nCannot find dynamic price for event")
+                                            completion(0.0)
+                                            return
+                                    }
+                                    locationCounter += 1
+                                    localEventLocations.append(location.coordinate)
+                                    if locationCounter == eventCounter {
+                                        DispatchQueue.main.async {
+                                            checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
+                                                completion(numberOfEvents)
+                                            })
                                         }
                                     }
                                 }
+                            } else {
+                                checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
+                                    completion(numberOfEvents)
+                                })
                             }
+                        } else {
+                            checkDistance(userLocation: userLocation, completion: { (numberOfEvents) in
+                                completion(numberOfEvents)
+                            })
                         }
-                        }
-                    } catch {
-                        print(error.localizedDescription)
                     }
                 }
             }
-            task.resume()
         }
     }
-    
+
     static func checkDistance(userLocation: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
         var numberOfEvents: CGFloat = 0.0
         for location in localEventLocations {

@@ -33,12 +33,14 @@ extension MapKitViewController: handleMinimizingFullController {
     }
     
     func confirmPurchasePressed(booking: Bookings) {
+        self.parkingHidden()
+        self.currentUserBooking = booking
         self.removeAllMapOverlays(shouldRefresh: false)
-        self.currentTopController.setData(booking: booking)
         self.removeAllMapOverlays(shouldRefresh: false)
         self.currentBottomController.setData(booking: booking)
         self.removeAllMapOverlays(shouldRefresh: false)
         self.userHasCurrentParking()
+        self.removeMainBar()
         self.removeAllMapOverlays(shouldRefresh: false)
         delayWithSeconds(0.1) {
             self.removeAllMapOverlays(shouldRefresh: false)
@@ -46,6 +48,9 @@ extension MapKitViewController: handleMinimizingFullController {
                 self.removeAllMapOverlays(shouldRefresh: false)
                 delayWithSeconds(0.1, completion: {
                     self.removeAllMapOverlays(shouldRefresh: false)
+                    delayWithSeconds(0.2, completion: {
+                        self.removeMainBar()
+                    })
                 })
             })
         }

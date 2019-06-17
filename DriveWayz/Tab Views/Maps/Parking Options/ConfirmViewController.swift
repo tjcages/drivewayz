@@ -38,9 +38,9 @@ class ConfirmViewController: UIViewController {
                     self.loadingActivity.alpha = 0
                     self.mainButton.alpha = 1
                     self.mainButton.isUserInteractionEnabled = true
-                    self.mainButton.backgroundColor = Theme.BLUE
+                    self.mainButton.backgroundColor = Theme.STRAWBERRY_PINK
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.mainButton.setTitle("Confirm Purchase", for: .normal)
+                        self.mainButton.setTitle("Purchase Spot", for: .normal)
                     }
                 }
             }, completion: nil)
@@ -64,9 +64,8 @@ class ConfirmViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
-        view.layer.cornerRadius = 85/2
-        let image = UIImage(named: "gatedBooking")
-        //        let image = UIImage(named: "apartmentBooking")
+        view.layer.cornerRadius = 35
+        let image = UIImage(named: "Apartment Parking")
         view.image = image
         
         return view
@@ -79,9 +78,11 @@ class ConfirmViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 25/2
         button.backgroundColor = Theme.GREEN_PIGMENT
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.layer.borderColor = Theme.WHITE.cgColor
+        button.layer.borderWidth = 2
         
         return button
     }()
@@ -97,9 +98,9 @@ class ConfirmViewController: UIViewController {
     var durationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLUE
-        label.text = "5:30 - 7:15 pm"
-        label.font = Fonts.SSPSemiBoldH3
+        label.textColor = Theme.PRUSSIAN_BLUE
+        label.text = "5 hours"
+        label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
         
         return label
@@ -108,8 +109,8 @@ class ConfirmViewController: UIViewController {
     var totalCostLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.text = "$9.10"
+        label.textColor = Theme.GREEN_PIGMENT
+        label.text = "$54.64"
         label.font = Fonts.SSPSemiBoldH1
         label.textAlignment = .right
         
@@ -133,7 +134,7 @@ class ConfirmViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
-        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: phoneWidth/2 - 60)
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: phoneWidth/2 - 72)
         button.addTarget(self, action: #selector(handlePaymentButtonTapped), for: .touchUpInside)
         
         return button
@@ -156,8 +157,7 @@ class ConfirmViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
         label.text = "4Runner"
-        label.font = Fonts.SSPRegularH5
-        label.textAlignment = .right
+        label.font = Fonts.SSPSemiBoldH4
         
         return label
     }()
@@ -166,11 +166,12 @@ class ConfirmViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.STRAWBERRY_PINK
-        button.setTitle("Confirm Purchase", for: .normal)
+        button.setTitle("Purchase Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.setTitleColor(Theme.WHITE.withAlphaComponent(0.5), for: .highlighted)
         button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(confirmPurchasePressed), for: .touchUpInside)
         
         return button
     }()
@@ -188,7 +189,7 @@ class ConfirmViewController: UIViewController {
         let image = UIImage(named: "calendarIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
+        button.tintColor = Theme.PRUSSIAN_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -198,7 +199,7 @@ class ConfirmViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Today", for: .normal)
-        label.setTitleColor(Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8), for: .normal)
+        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH5
         label.contentHorizontalAlignment = .left
         
@@ -210,7 +211,7 @@ class ConfirmViewController: UIViewController {
         let image = UIImage(named: "time")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
+        button.tintColor = Theme.PRUSSIAN_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -220,7 +221,7 @@ class ConfirmViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("2 hours 15 minutes", for: .normal)
-        label.setTitleColor(Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8), for: .normal)
+        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH5
         label.contentHorizontalAlignment = .left
         
@@ -258,24 +259,24 @@ class ConfirmViewController: UIViewController {
         self.view.addSubview(spotIcon)
         spotIcon.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
         spotIcon.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 18).isActive = true
-        spotIcon.widthAnchor.constraint(equalToConstant: 85).isActive = true
+        spotIcon.widthAnchor.constraint(equalToConstant: 70).isActive = true
         spotIcon.heightAnchor.constraint(equalTo: spotIcon.widthAnchor).isActive = true
         
         self.view.addSubview(checkmark)
         checkmark.centerXAnchor.constraint(equalTo: spotIcon.rightAnchor, constant: -12).isActive = true
         checkmark.centerYAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: -12).isActive = true
-        checkmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        checkmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
         checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
         
         self.view.addSubview(totalCostLabel)
         totalCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        totalCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 20).isActive = true
+        totalCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 12).isActive = true
         totalCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         totalCostLabel.sizeToFit()
         
         self.view.addSubview(durationLabel)
         durationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        durationLabel.topAnchor.constraint(equalTo: totalCostLabel.bottomAnchor, constant: 8).isActive = true
+        durationLabel.topAnchor.constraint(equalTo: totalCostLabel.bottomAnchor, constant: 4).isActive = true
         durationLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         durationLabel.sizeToFit()
         
@@ -325,7 +326,7 @@ class ConfirmViewController: UIViewController {
         
         self.view.addSubview(mainButton)
         mainButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -28).isActive = true
-        mainButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -12).isActive = true
         mainButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
@@ -337,27 +338,27 @@ class ConfirmViewController: UIViewController {
         
         self.view.addSubview(paymentButton)
         paymentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        paymentButton.rightAnchor.constraint(equalTo: mainButton.centerXAnchor).isActive = true
-        paymentButton.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -10).isActive = true
+        paymentButton.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
+        paymentButton.bottomAnchor.constraint(equalTo: mainButton.bottomAnchor).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(line2)
-        line2.bottomAnchor.constraint(equalTo: paymentButton.topAnchor, constant: -10).isActive = true
+        line2.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -16).isActive = true
         line2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         line2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         line2.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        self.view.addSubview(carIcon)
-        carIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        carIcon.centerYAnchor.constraint(equalTo: paymentButton.centerYAnchor, constant: 2).isActive = true
-        carIcon.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        carIcon.heightAnchor.constraint(equalTo: carIcon.widthAnchor).isActive = true
-        
         self.view.addSubview(carLabel)
-        carLabel.rightAnchor.constraint(equalTo: carIcon.leftAnchor, constant: -8).isActive = true
-        carLabel.centerYAnchor.constraint(equalTo: paymentButton.centerYAnchor).isActive = true
-        carLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        carLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.view.addSubview(carIcon)
+        carLabel.leftAnchor.constraint(equalTo: carIcon.rightAnchor, constant: 8).isActive = true
+        carLabel.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
+        carLabel.topAnchor.constraint(equalTo: mainButton.topAnchor, constant: -4).isActive = true
+        carLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        carIcon.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        carIcon.bottomAnchor.constraint(equalTo: carLabel.bottomAnchor, constant: 4).isActive = true
+        carIcon.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        carIcon.heightAnchor.constraint(equalTo: carIcon.widthAnchor).isActive = true
         
     }
     
@@ -395,7 +396,9 @@ class ConfirmViewController: UIViewController {
             let APString = APformatter.string(from: nextDate).lowercased()
             
             let finalString = fromString + " - " + toString + " " + APString
-            self.durationLabel.text = finalString
+            self.timeLabel.setTitle(finalString, for: .normal)
+//            self.durationLabel.text = finalString
+            self.setHourLabel(minutes: Int(hours * 60 + minutes))
         }
         
         let formatter = DateFormatter()
@@ -408,7 +411,7 @@ class ConfirmViewController: UIViewController {
                 timeString = timeString.replacingOccurrences(of: "hrs", with: "hours")
                 timeString = timeString.replacingOccurrences(of: "hr", with: "hour")
                 timeString = timeString.replacingOccurrences(of: "min", with: "minutes")
-                self.timeLabel.setTitle(timeString, for: .normal)
+//                self.timeLabel.setTitle(timeString, for: .normal)
                 if dateWeek == dayOfTheWeekFrom {
                     let fromDay = dayFormatter.string(from: fromDate)
                     self.calendarLabel.setTitle("Today, \(fromDay)", for: .normal)
@@ -420,25 +423,15 @@ class ConfirmViewController: UIViewController {
         }
     }
     
-    func setData(price: Double, fromDate: Date, toDate: Date, hours: Double, parking: ParkingSpots) {
+    func setData(price: Double, hours: Double, parking: ParkingSpots) {
         self.parking = parking
-        self.fromDate = fromDate
-        self.toDate = toDate
+        self.fromDate = bookingFromDate /////////////////////
+        self.toDate = bookingToDate //////////////////////
         self.price = price
         self.hours = hours
         
-        let cost = String(format:"%.02f", price.rounded(toPlaces: 2))
-        self.totalCostLabel.text = "$\(cost)"
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        let fromString = formatter.string(from: fromDate)
-        let toString = formatter.string(from: toDate)
-        self.durationLabel.text = "\(fromString) - \(toString)"
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEEE, MMM d"
-        let day = dayFormatter.string(from: fromDate)
-//        self.dateLabel.text = day ///////
-        
+        let cost = (price * hours).rounded(toPlaces: 2)
+        self.totalCostLabel.text = String(format:"$%.02f", cost)
         if let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID)
             ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -459,13 +452,46 @@ class ConfirmViewController: UIViewController {
         }
     }
     
+    func setHourLabel(minutes: Int) {
+        let tuple = minutesToHoursMinutes(minutes: minutes)
+        if tuple.hours == 1 {
+            self.mainButton.alpha = 1
+            self.mainButton.isUserInteractionEnabled = true
+            if tuple.leftMinutes == 0 {
+                self.durationLabel.text = "\(tuple.hours) hour"
+            } else {
+                self.durationLabel.text = "\(tuple.hours) hour \(tuple.leftMinutes) min"
+            }
+        } else if tuple.hours == 0 {
+            if tuple.leftMinutes == 0 {
+                self.durationLabel.text = "00 min"
+                self.mainButton.alpha = 0.5
+                self.mainButton.isUserInteractionEnabled = false
+            } else {
+                self.mainButton.alpha = 1
+                self.mainButton.isUserInteractionEnabled = true
+                self.durationLabel.text = "\(tuple.leftMinutes) min"
+            }
+        } else {
+            self.mainButton.alpha = 1
+            self.mainButton.isUserInteractionEnabled = true
+            if tuple.leftMinutes == 0 {
+                self.durationLabel.text = "\(tuple.hours) hours"
+            } else {
+                self.durationLabel.text = "\(tuple.hours) hours \(tuple.leftMinutes) min"
+            }
+        }
+    }
+    
+    func minutesToHoursMinutes (minutes : Int) -> (hours : Int , leftMinutes : Int) {
+        return (minutes / 60, (minutes % 60))
+    }
+    
     @objc func confirmPurchasePressed(sender: UIButton) {
 //        self.paymentInProgress = true
 //        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
         
-        
         ///////////fasfasdfasdgfasgahdfg;jhS{LHFla;snf'd
-        
         
         self.setupNotifications()
 //        self.postToDatabase()
@@ -604,7 +630,7 @@ extension ConfirmViewController: STPPaymentContextDelegate {
     func reloadRequestRideButton() {
         // Show disabled state
         mainButton.backgroundColor = Theme.DARK_GRAY
-        self.mainButton.setTitle("Confirm Purchase", for: .normal)
+        self.mainButton.setTitle("Purchase Spot", for: .normal)
         mainButton.setTitleColor(.white, for: .normal)
         //        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
         mainButton.isEnabled = false
@@ -612,8 +638,8 @@ extension ConfirmViewController: STPPaymentContextDelegate {
         switch rideRequestState {
         case .none:
             // Show enabled state
-            mainButton.backgroundColor = Theme.BLUE
-            self.mainButton.setTitle("Confirm Purchase", for: .normal)
+            mainButton.backgroundColor = Theme.STRAWBERRY_PINK
+            self.mainButton.setTitle("Purchase Spot", for: .normal)
             mainButton.setTitleColor(.white, for: .normal)
             //            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
             mainButton.isEnabled = true

@@ -138,8 +138,8 @@ extension CAGradientLayer {
     
     @objc func purpleBlueColor() -> CAGradientLayer {
         
-        let topColor = Theme.LIGHT_ORANGE
-        let middleColor = Theme.STRAWBERRY_PINK
+        let topColor = Theme.STRAWBERRY_PINK
+        let middleColor = Theme.LIGHT_ORANGE
         let bottomColor = Theme.STRAWBERRY_PINK
         
         let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]

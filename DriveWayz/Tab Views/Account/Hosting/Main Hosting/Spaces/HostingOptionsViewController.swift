@@ -42,7 +42,7 @@ class HostingOptionsViewController: UIViewController {
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
 //        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
         return button
     }()
@@ -76,7 +76,7 @@ class HostingOptionsViewController: UIViewController {
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
 //        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
         return button
     }()
@@ -111,7 +111,7 @@ class HostingOptionsViewController: UIViewController {
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
 //        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
         return button
     }()
@@ -145,7 +145,7 @@ class HostingOptionsViewController: UIViewController {
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
 //        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
         return button
     }()
@@ -178,7 +178,7 @@ class HostingOptionsViewController: UIViewController {
         
         self.view.addSubview(optionsLabel)
         optionsLabel.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        optionsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
+        optionsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         optionsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         optionsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
@@ -189,10 +189,10 @@ class HostingOptionsViewController: UIViewController {
         seeAvailability.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         container.addSubview(expandAvailabilityButton)
-        expandAvailabilityButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -28).isActive = true
+        expandAvailabilityButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
         expandAvailabilityButton.centerYAnchor.constraint(equalTo: seeAvailability.centerYAnchor).isActive = true
-        expandAvailabilityButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        expandAvailabilityButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        expandAvailabilityButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandAvailabilityButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
 //        container.addSubview(lineView1)
 //        lineView1.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
@@ -207,10 +207,10 @@ class HostingOptionsViewController: UIViewController {
         markUnavailable.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         container.addSubview(expandUnavailableButton)
-        expandUnavailableButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -28).isActive = true
+        expandUnavailableButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
         expandUnavailableButton.centerYAnchor.constraint(equalTo: markUnavailable.centerYAnchor).isActive = true
-        expandUnavailableButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        expandUnavailableButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        expandUnavailableButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandUnavailableButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
 //        container.addSubview(lineView2)
 //        lineView2.topAnchor.constraint(equalTo: markUnavailable.bottomAnchor).isActive = true
@@ -225,10 +225,10 @@ class HostingOptionsViewController: UIViewController {
         addSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         container.addSubview(expandSpotButton)
-        expandSpotButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -28).isActive = true
+        expandSpotButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
         expandSpotButton.centerYAnchor.constraint(equalTo: addSpot.centerYAnchor).isActive = true
-        expandSpotButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        expandSpotButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        expandSpotButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandSpotButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
 //        container.addSubview(lineView4)
 //        lineView4.topAnchor.constraint(equalTo: addSpot.bottomAnchor).isActive = true
@@ -243,10 +243,10 @@ class HostingOptionsViewController: UIViewController {
         deleteSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         container.addSubview(expandDeleteButton)
-        expandDeleteButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -28).isActive = true
+        expandDeleteButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
         expandDeleteButton.centerYAnchor.constraint(equalTo: deleteSpot.centerYAnchor).isActive = true
-        expandDeleteButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        expandDeleteButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        expandDeleteButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandDeleteButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
     

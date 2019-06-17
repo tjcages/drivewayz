@@ -19,6 +19,11 @@ class Bookings: NSObject {
     var price: Double?
     var toDate: TimeInterval?
     
+    var parkingLat: Double?
+    var parkingLong: Double?
+    var destinationLat: Double?
+    var destinationLong: Double?
+    
     init(dictionary: [String:Any]) {
         super.init()
         
@@ -29,6 +34,11 @@ class Bookings: NSObject {
         vehicleID = dictionary["vehicleID"] as? String
         price = dictionary["price"] as? Double
         toDate = dictionary["toDate"] as? TimeInterval
+        
+        parkingLat = dictionary["finalParkingLat"] as? Double
+        parkingLong = dictionary["finalParkingLong"] as? Double
+        destinationLat = dictionary["finalDestinationLat"] as? Double
+        destinationLong = dictionary["finalDestinationLong"] as? Double
         
     }
         

@@ -23,45 +23,73 @@ extension MapKitViewController {
         
         let start = self.mapView.convert(startCoordinate, toPointTo: self.view)
         let raise: CGFloat = 1.0
-        let startPoint = CGPoint(x: start.x, y: start.y - raise)
-        let endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
-        let controlPoint = calculateControlPoint(startPoint: startPoint, endPoint: endPoint)
-
-        let line = CAShapeLayer()
-        let linePath = UIBezierPath()
-        linePath.move(to: startPoint)
-        linePath.addQuadCurve(to: endPoint, controlPoint: controlPoint)
-
-        line.strokeColor = Theme.PACIFIC_BLUE.cgColor
-        line.fillColor = UIColor.clear.cgColor
-        line.lineWidth = 6.0
-        line.path = linePath.cgPath
-        line.lineCap = .round
+        var startPoint = CGPoint(x: start.x, y: start.y - raise)
+        var endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
         
-        let gradient = CAGradientLayer()
-        gradient.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 480)
-        gradient.colors = [Theme.STRAWBERRY_PINK.cgColor,
-                           Theme.LIGHT_ORANGE.cgColor]
-        gradient.startPoint = CGPoint(x: 0, y: 1)
-        gradient.endPoint = CGPoint(x: 1, y: 0)
-        gradient.mask = line
-
         let lineShadow = CAShapeLayer()
         let linePathShadow = UIBezierPath()
         linePathShadow.move(to: startPoint)
         linePathShadow.addLine(to: endPoint)
         
-        lineShadow.strokeColor = Theme.DARK_GRAY.withAlphaComponent(0.3).cgColor
+        lineShadow.strokeColor = Theme.DARK_GRAY.withAlphaComponent(0.1).cgColor
         lineShadow.fillColor = UIColor.clear.cgColor
         lineShadow.lineWidth = 6.0
         lineShadow.path = linePathShadow.cgPath
         lineShadow.lineCap = .round
+        
+        let width = start.x - endPoint.x
+        let height = start.y - endPoint.y
+        
+        let gradient = CAGradientLayer()
+        var startGradientPoint = CGPoint(x: 0, y: 0)
+        
+        if width <= 0 {
+            if height >= 0 {
+                startGradientPoint = CGPoint(x: start.x, y: endPoint.y)
+            } else {
+                startGradientPoint = CGPoint(x: start.x, y: start.y)
+            }
+            gradient.colors = [Theme.STRAWBERRY_PINK.cgColor,
+                               Theme.LIGHT_ORANGE.cgColor]
+        } else {
+            if height >= 0 {
+                startGradientPoint = CGPoint(x: endPoint.x, y: endPoint.y)
+            } else {
+                startGradientPoint = CGPoint(x: endPoint.x, y: start.y)
+            }
+            gradient.colors = [Theme.LIGHT_ORANGE.cgColor,
+                               Theme.STRAWBERRY_PINK.cgColor]
+        }
+        gradient.frame = CGRect(x: startGradientPoint.x - 8, y: 0, width: abs(width) + 16, height: phoneHeight)
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 0)
+        
+        let line = CAShapeLayer()
+        let linePath = UIBezierPath()
+        
+        startPoint.x = startPoint.x - gradient.frame.minX
+        startPoint.y = startPoint.y - gradient.frame.minY
+        endPoint.x = endPoint.x - gradient.frame.minX
+        endPoint.y = endPoint.y - gradient.frame.minY
+        
+        linePath.move(to: startPoint)
+        let controlPoint = calculateControlPoint(startPoint: startPoint, endPoint: endPoint)
+        linePath.addQuadCurve(to: endPoint, controlPoint: controlPoint)
+        
+        line.strokeColor = Theme.WHITE.cgColor
+        line.fillColor = UIColor.clear.cgColor
+        line.lineWidth = 6.0
+        line.path = linePath.cgPath
+        line.lineCap = .round
+        line.opacity = 0.8
+        
+        gradient.mask = line
 
         quadPolylineShadow = lineShadow
         quadPolyline = gradient
         if let gradient = quadPolyline, let shadowLine = quadPolylineShadow {
-            self.view.layer.addSublayer(shadowLine)
-            self.view.layer.addSublayer(gradient)
+            self.mapView.layer.addSublayer(shadowLine)
+            self.mapView.layer.addSublayer(gradient)
         }
     }
     

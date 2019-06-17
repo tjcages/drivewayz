@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -35,36 +35,36 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Mh-ND-wym">
-                                <rect key="frame" x="156.5" y="301" width="62" height="65"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drivewayzLogo" translatesAutoresizingMaskIntoConstraints="NO" id="LKt-dT-oy1">
-                                        <rect key="frame" x="0.0" y="0.0" width="276" height="65"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="TYe-LH-9n1"/>
-                                            <constraint firstAttribute="width" constant="276" id="vQb-lu-A4T"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DrivewayzBottomIcon" translatesAutoresizingMaskIntoConstraints="NO" id="LKt-dT-oy1">
+                                <rect key="frame" x="147.5" y="293.5" width="80" height="80"/>
                                 <constraints>
-                                    <constraint firstItem="LKt-dT-oy1" firstAttribute="leading" secondItem="9Mh-ND-wym" secondAttribute="leading" id="13q-OW-rKy"/>
-                                    <constraint firstItem="LKt-dT-oy1" firstAttribute="centerY" secondItem="9Mh-ND-wym" secondAttribute="centerY" id="Lm6-Ni-LNf"/>
-                                    <constraint firstAttribute="height" constant="65" id="fOl-Rm-pPL"/>
-                                    <constraint firstAttribute="width" constant="62" id="g7H-1V-Jxa"/>
+                                    <constraint firstAttribute="width" constant="80" id="Oqx-UX-XB2"/>
+                                    <constraint firstAttribute="height" constant="80" id="Z2z-9P-xB5"/>
                                 </constraints>
-                            </view>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DrivewayzTopIcon" translatesAutoresizingMaskIntoConstraints="NO" id="HlO-wQ-3Sp">
+                                <rect key="frame" x="147.5" y="293.5" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="2Hp-XT-F5C"/>
+                                    <constraint firstAttribute="width" constant="80" id="BxC-lP-0Qf"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="q8X-Ch-Dmr"/>
+                                    <constraint firstAttribute="height" constant="80" id="sNi-q5-34k"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.074509803921568626" green="0.62352941176470589" blue="0.792156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="xy4-13-aPY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-53" id="5qo-uP-wWi"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zzb-hL-Ofc" secondAttribute="trailing" constant="20" id="6tK-Nj-iAt"/>
-                            <constraint firstItem="9Mh-ND-wym" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AeD-5z-fE3"/>
+                            <constraint firstItem="HlO-wQ-3Sp" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="IWg-vZ-Lo1"/>
+                            <constraint firstItem="LKt-dT-oy1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Nxo-er-Ew5"/>
                             <constraint firstItem="xy4-13-aPY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Okg-vl-Tbg"/>
-                            <constraint firstItem="9Mh-ND-wym" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ao2-4E-DFr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xy4-13-aPY" secondAttribute="trailing" id="cxE-0W-zBZ"/>
                             <constraint firstItem="zzb-hL-Ofc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="fGp-bh-7bv"/>
                             <constraint firstAttribute="bottom" secondItem="zzb-hL-Ofc" secondAttribute="bottom" constant="40" id="k8D-VJ-FXJ"/>
                             <constraint firstItem="zzb-hL-Ofc" firstAttribute="top" secondItem="xy4-13-aPY" secondAttribute="bottom" constant="-61" id="lgY-dj-wrt"/>
+                            <constraint firstItem="LKt-dT-oy1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="rih-aj-QyZ"/>
+                            <constraint firstItem="HlO-wQ-3Sp" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="wvx-a5-bGy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -75,7 +75,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="drivewayzLogo" width="384" height="95"/>
-        <image name="purpleGradient" width="506" height="900"/>
+        <image name="DrivewayzBottomIcon" width="270" height="270"/>
+        <image name="DrivewayzTopIcon" width="270" height="270"/>
+        <image name="purpleGradient" width="1125" height="2350"/>
     </resources>
 </document>

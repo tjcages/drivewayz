@@ -35,9 +35,9 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Messages"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
@@ -46,7 +46,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 8
@@ -82,7 +82,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)

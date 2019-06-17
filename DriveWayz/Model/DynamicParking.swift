@@ -21,40 +21,174 @@ struct DynamicParking {
         for parking in parkingSpots {
             let isAvailable = parking.isSpotAvailable
             if isAvailable == true {
-                
+                let removalDay = self.removeBlackoutDays(parkingSpot: parking, dateFrom: dateFrom, dateTo: dateTo)
+                if removalDay != true {
+                    let removalHour = self.removeBlackoutHours(parkingSpot: parking, dateFrom: dateFrom, dateTo: dateTo)
+                    if removalHour != true {
+                        ///////
+                        
+                    } else {
+                        finalParking = finalParking.filter { $0 != parking }
+                    }
+                } else {
+                    finalParking = finalParking.filter { $0 != parking }
+                }
             } else {
                 finalParking = finalParking.filter { $0 != parking }
             }
+            if parking == parkingSpots.last {
+                completion(finalParking)
+            }
         }
-        
-        
-        
-//        var parkingSpots: [ParkingSpots] = []
-//        var parkingSpotsDictionary: [String: ParkingSpots] = [:]
-//        let numberOfTotalParkingSpots: Int = parkingIDs.count
-//
-//        let ref = Database.database().reference().child("ParkingSpots")
-//        for parking in parkingIDs {
-//            ref.child(parking).observe(.value, with: { (snapshot) in
-//                if var dictionary = snapshot.value as? [String:AnyObject] {
-//                    let parking = ParkingSpots(dictionary: dictionary)
-//                    let parkingID = dictionary["parkingID"] as! String
-//                    parkingSpotsDictionary[parkingID] = parking
-//                    parkingSpots = Array(parkingSpotsDictionary.values)
-//
-//                    if parkingSpotsDictionary.count == numberOfTotalParkingSpots {
-//                        self.filterUnavailable(parkingSpots: parkingSpots, completion: { (finalParking) in
-//                            completion(finalParking)
-//                        })
-//                    }
-//                }
-//            }) { (error) in
-//                print(error.localizedDescription)
-//            }
-//        }
     }
     
+    static func removeBlackoutDays(parkingSpot: ParkingSpots, dateFrom: Date, dateTo: Date) -> Bool {
+        if let dayOfTheWeekFrom = dateFrom.dayOfWeek(), let dayOfTheWeekTo = dateTo.dayOfWeek() {
+            if dayOfTheWeekFrom == dayOfTheWeekTo {
+                if dayOfTheWeekFrom == "Monday" {
+                    let unavailableDay = parkingSpot.mondayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Tuesday" {
+                    let unavailableDay = parkingSpot.tuesdayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Wednesday" {
+                    let unavailableDay = parkingSpot.wednesdayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Thursday" {
+                    let unavailableDay = parkingSpot.thursdayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Friday" {
+                    let unavailableDay = parkingSpot.fridayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Saturday" {
+                    let unavailableDay = parkingSpot.saturdayUnavailable
+                    return unavailableDay
+                } else if dayOfTheWeekFrom == "Sunday" {
+                    let unavailableDay = parkingSpot.sundayUnavailable
+                    return unavailableDay
+                }
+            } else {
+                //days not equal
+                return false
+            }
+        } else {
+            return true
+        }
+        return true
+    }
     
+    static func removeBlackoutHours(parkingSpot: ParkingSpots, dateFrom: Date, dateTo: Date) -> Bool {
+        if let dayOfTheWeekFrom = dateFrom.dayOfWeek(), let dayOfTheWeekTo = dateTo.dayOfWeek() {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM-dd-yyy"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyy h:mm a"
+            if dayOfTheWeekFrom == dayOfTheWeekTo {
+                let days = formatter.string(from: dateFrom)
+                var fullStringFrom = days + " "
+                var fullStringTo = days + " "
+                if dayOfTheWeekFrom == "Monday" {
+                    if let availableStart = parkingSpot.mondayAvailableFrom, let availableEnd = parkingSpot.mondayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Tuesday" {
+                    if let availableStart = parkingSpot.tuesdayAvailableFrom, let availableEnd = parkingSpot.tuesdayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Wednesday" {
+                    if let availableStart = parkingSpot.wednesdayAvailableFrom, let availableEnd = parkingSpot.wednesdayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Thursday" {
+                    if let availableStart = parkingSpot.thursdayAvailableFrom, let availableEnd = parkingSpot.thursdayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Friday" {
+                    if let availableStart = parkingSpot.fridayAvailableFrom, let availableEnd = parkingSpot.fridayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Saturday" {
+                    if let availableStart = parkingSpot.saturdayAvailableFrom, let availableEnd = parkingSpot.saturdayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                } else if dayOfTheWeekFrom == "Sunday" {
+                    if let availableStart = parkingSpot.sundayAvailableFrom, let availableEnd = parkingSpot.sundayAvailableTo {
+                        if availableStart == "All day" || availableEnd == "All day" {
+                            fullStringFrom = fullStringFrom + "0:00 AM"
+                            let timeInterval = TimeInterval(3600 * 24)
+                            let days = formatter.string(from: dateFrom.addingTimeInterval(timeInterval))
+                            fullStringTo = days + " " + "0:00 AM"
+                        } else {
+                            fullStringFrom = fullStringFrom + availableStart
+                            fullStringTo = fullStringTo + availableEnd
+                        }
+                    }
+                }
+                if let availableFromDate = dateFormatter.date(from: fullStringFrom), let availableToDate = dateFormatter.date(from: fullStringTo) {
+                    if dateFrom >= availableFromDate && dateTo <= availableToDate {
+                        return false
+                    } else {
+                        return true
+                    }
+                } else {
+                    return true
+                }
+            } else {
+                //days not equal
+                return false
+            }
+        } else {
+            return true
+        }
+    }
     
     
     

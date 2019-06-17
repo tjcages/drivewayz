@@ -64,6 +64,8 @@ extension MapKitViewController: mainBarSearchDelegate {
         case .iphoneX:
             searchBarController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
+        let touch = UITapGestureRecognizer(target: self, action: #selector(mainBarWillOpen))
+        searchBarController.view.addGestureRecognizer(touch)
 
         self.view.addSubview(locatorButton)
         locatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
@@ -88,7 +90,6 @@ extension MapKitViewController: mainBarSearchDelegate {
         self.view.endEditing(true)
         self.summaryTopAnchor.constant = -260
         self.mainBarTopAnchor.constant = 0
-        self.mapViewBottomAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
             self.mainBarController.scrollView.alpha = 1
             self.mainBarController.view.backgroundColor = UIColor.clear
@@ -109,31 +110,48 @@ extension MapKitViewController: mainBarSearchDelegate {
     }
     
     @objc func mainBarWillOpen() {
-        if let currentLocation = self.locationManager.location?.coordinate {
-            userMostRecentLocation = currentLocation
-        }
-        self.summaryTopAnchor.constant = 0
-        self.mainBarTopAnchor.constant = phoneHeight
-        self.delegate?.hideHamburger()
-        self.delegate?.defaultContentStatusBar()
-        self.view.bringSubviewToFront(locationsSearchResults.view)
-        self.view.bringSubviewToFront(summaryController.view)
-        self.summaryController.searchTextField.text = ""
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mainBarController.scrollView.alpha = 0
-            self.mainBarController.view.backgroundColor = Theme.WHITE
-            self.fullBackgroundView.alpha = 0.4
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.mainBarController.scrollView.isScrollEnabled = true
-            self.mainBarController.scrollView.setContentOffset(.zero, animated: false)
-            UIView.animate(withDuration: animationIn, animations: {
-                self.locationsSearchResults.checkRecentSearches()
-                self.locationResultsHeightAnchor.constant = self.view.frame.height - 100
+        if self.fullBackgroundView.alpha <= 0.85 {
+            if let currentLocation = self.locationManager.location?.coordinate {
+                userMostRecentLocation = currentLocation
+            }
+            self.summaryTopAnchor.constant = 0
+            self.parkingControllerBottomAnchor.constant = 400
+            self.confirmControllerBottomAnchor.constant = 360
+            self.mainBarTopAnchor.constant = phoneHeight
+            self.delegate?.hideHamburger()
+            self.delegate?.defaultContentStatusBar()
+            self.view.bringSubviewToFront(locationsSearchResults.view)
+            self.view.bringSubviewToFront(summaryController.view)
+            self.summaryController.searchTextField.text = ""
+            UIView.animate(withDuration: animationOut, animations: {
+                self.mainBarController.scrollView.alpha = 0
+                self.mainBarController.view.backgroundColor = Theme.WHITE
+                self.fullBackgroundView.alpha = 0.4
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.summaryController.searchTextField.becomeFirstResponder()
+                self.mainBarController.scrollView.isScrollEnabled = true
+                self.mainBarController.scrollView.setContentOffset(.zero, animated: false)
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.locationsSearchResults.checkRecentSearches()
+                    self.locationResultsHeightAnchor.constant = self.view.frame.height - 100
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.summaryController.searchTextField.becomeFirstResponder()
+                    self.mainBarController.scrollView.isScrollEnabled = false
+                }
+            }
+        } else {
+            self.mainBarTopAnchor.constant = phoneHeight - 150
+            self.delegate?.lightContentStatusBar()
+            self.delegate?.hideHamburger()
+            UIView.animate(withDuration: animationIn, animations: {
+                self.fullBackgroundView.alpha = 0.7
+                self.locatorButton.alpha = 0
+                self.view.layoutIfNeeded()
+            }) { (success) in
                 self.mainBarController.scrollView.isScrollEnabled = false
+                self.mainBarHighest = true
+                self.mainBarWillOpen()
             }
         }
     }
@@ -161,12 +179,11 @@ extension MapKitViewController: mainBarSearchDelegate {
     }
     
     func bringMainBar() {
+        if let userLocation = locationManager.location {
+            let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+            self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
+        }
         self.mainBarTopAnchor.constant = 354
-//        if let location: CLLocationCoordinate2D = self.mapView.userLocation?.coordinate {
-//            self.mapView.setCenter(location, zoomLevel: 13, animated: true)
-//        }
-        self.mapViewBottomAnchor.constant = -300
-        self.mapViewTopAnchor.constant = -300
         UIView.animate(withDuration: animationOut, animations: {
             self.mainBarController.scrollView.alpha = 1
             self.mainBarController.view.backgroundColor = UIColor.clear
@@ -176,12 +193,6 @@ extension MapKitViewController: mainBarSearchDelegate {
             self.mainBarHighest = false
             self.delegate?.bringHamburger()
             self.delegate?.defaultContentStatusBar()
-            self.mapViewTopAnchor.constant = 0
-            delayWithSeconds(animationIn, completion: {
-                if let location: CLLocationCoordinate2D = self.mapView.userLocation?.coordinate {
-                    self.mapView.setCenter(location, zoomLevel: 13, animated: true)
-                }
-            })
         })
     }
     

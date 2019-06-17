@@ -17,7 +17,7 @@ extension MapKitViewController {
             for i in 0..<parkingSpots.count {
                 let parking = self.parkingSpots[i]
                 if annotation.subtitle == "\(i)" {
-                    self.closeParkingSpots = [parking]
+//                    self.closeParkingSpots = [parking]
                     self.dismissKeyboard()
                     self.takeAwayEvents()
                     let latitude = parking.latitude
@@ -26,7 +26,7 @@ extension MapKitViewController {
                     if let address = parking.overallAddress {
                         self.mapView.setCenter(location.coordinate, animated: true)
                         if let userLocation = locationManager.location {
-                            let search = CLLocation(latitude: searchLocation.latitude, longitude: searchLocation.longitude)
+                            let search = CLLocation(latitude: searchLocation.coordinate.latitude, longitude: searchLocation.coordinate.longitude)
                             self.findBestParking(location: location, sourceLocation: userLocation, searchLocation: search, address: address)
                             delayWithSeconds(1.6) {
                                 self.dismissKeyboard()
@@ -40,7 +40,7 @@ extension MapKitViewController {
             for i in 0..<parkingSpots.count {
                 let parking = self.parkingSpots[i]
                 if annotation.subtitle == "\(i)" {
-                    self.closeParkingSpots = [parking]
+//                    self.closeParkingSpots = [parking]
                     self.dismissKeyboard()
                     self.takeAwayEvents()
                     let latitude = parking.latitude
@@ -54,7 +54,7 @@ extension MapKitViewController {
                                 let publicAddress = "\(streetAddress)"
                                 let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
                                 self.mapView.setCenter(location.coordinate, animated: true)
-                                self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
+//                                self.organizeParkingLocation(searchLocation: location, shouldDraw: true)
                                 delayWithSeconds(animationOut) {
                                     self.dismissKeyboard()
                                 }

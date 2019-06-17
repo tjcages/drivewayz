@@ -68,7 +68,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         label.text = "What kind of parking is it?"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH1
+        label.font = Fonts.SSPRegularH2
         label.numberOfLines = 2
         label.backgroundColor = UIColor.clear
         label.alpha = 0
@@ -81,7 +81,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.layer.shadowColor = Theme.BLACK.cgColor
@@ -287,7 +287,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         containerView.addSubview(parkingLabel)
         parkingLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 24).isActive = true
         parkingLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -24).isActive = true
-        parkingLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12).isActive = true
+        parkingLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24).isActive = true
         parkingLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         setupOptions()
@@ -429,7 +429,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         
         nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        nextButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 32).isActive = true
         switch device {
         case .iphone8:
             nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
@@ -483,7 +483,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         progressBar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         progressBarWidthAnchor = progressBar.widthAnchor.constraint(equalToConstant: 0)
             progressBarWidthAnchor.isActive = true
-        progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 84).isActive = true
+        progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 94).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
     }
@@ -1160,10 +1160,11 @@ extension ConfigureParkingViewController: handlePopupTerms {
         popupScrollView.topAnchor.constraint(equalTo: popupContainer.topAnchor).isActive = true
         
         let label1 = agreement
-        let label2 = agreement2
+//        let label2 = agreement2
         let agreementHeight = agreement.text?.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH6)
-        let agreement2Height = agreement2.text?.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH6)
-        popupScrollView.contentSize = CGSize(width: self.view.frame.width, height: agreementHeight! + agreement2Height!)
+//        let agreement2Height = agreement2.text?.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH6)
+//        popupScrollView.contentSize = CGSize(width: self.view.frame.width, height: agreementHeight! + agreement2Height!)
+        popupScrollView.contentSize = CGSize(width: self.view.frame.width, height: agreementHeight!)
         
         popupScrollView.addSubview(label1)
         label1.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: 12).isActive = true
@@ -1171,11 +1172,11 @@ extension ConfigureParkingViewController: handlePopupTerms {
         label1.topAnchor.constraint(equalTo: popupScrollView.topAnchor, constant: 24).isActive = true
         label1.heightAnchor.constraint(equalToConstant: agreementHeight!).isActive = true
         
-        popupScrollView.addSubview(label2)
-        label2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        label2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        label2.topAnchor.constraint(equalTo: label1.bottomAnchor).isActive = true
-        label2.heightAnchor.constraint(equalToConstant: agreement2Height!)
+//        popupScrollView.addSubview(label2)
+//        label2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+//        label2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+//        label2.topAnchor.constraint(equalTo: label1.bottomAnchor).isActive = true
+//        label2.heightAnchor.constraint(equalToConstant: agreement2Height!)
         
         popupContainer.addSubview(popupConfirm)
         popupConfirm.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: -1).isActive = true

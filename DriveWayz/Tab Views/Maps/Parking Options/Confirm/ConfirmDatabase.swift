@@ -23,8 +23,9 @@ extension ConfirmViewController {
                     if let selectedVehicle = dictionary["selectedVehicle"] as? String {
                         let ref = Database.database().reference().child("UserBookings")
                         let bookingRef = ref.childByAutoId()
-                        if let finalDestination = DestinationAnnotationLocation, let finalParking = FinalAnnotationLocation {
-                            bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.latitude, "finalDestinationLong": finalDestination.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude])
+                        if let finalDestination = DestinationAnnotationLocation, let parkingLat = parking.latitude, let parkingLong = parking.longitude {
+                            let finalParking = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: parkingLat), longitude: CLLocationDegrees(truncating: parkingLong))
+                            bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude])
                         }
                         if let bookingID = bookingRef.key {
                             let hostRef = Database.database().reference().child("ParkingSpots").child(parkingID)
@@ -74,7 +75,7 @@ extension ConfirmViewController {
                                                         self.sendNotifications(latitude: latitude, longitude: longitude, seconds: seconds)
                                                         let booking = Bookings(dictionary: bookingDictionary)
                                                         isCurrentlyBooked = true
-//                                                        self.delegate?.confirmPurchasePressed(booking: booking)
+                                                        self.delegate?.confirmPurchasePressed(booking: booking)
                                                         print("sending notifications")
                                                     } else {
                                                         ref.removeValue()

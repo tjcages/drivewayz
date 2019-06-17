@@ -15,7 +15,7 @@ class NewHostBannerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Become a Host"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPRegularH2
         
         return label
     }()
@@ -30,11 +30,20 @@ class NewHostBannerViewController: UIViewController {
         
         return label
     }()
+    
+    var hostGraphic: UIImageView = {
+        let image = UIImage(named: "newHostGraphic")
+        let view = UIImageView(image: image)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
 
         setupViews()
     }
@@ -52,6 +61,12 @@ class NewHostBannerViewController: UIViewController {
         subLabel.rightAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         subLabel.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 0).isActive = true
         subLabel.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        
+        self.view.addSubview(hostGraphic)
+        hostGraphic.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        hostGraphic.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        hostGraphic.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        hostGraphic.leftAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
     }
 

@@ -35,7 +35,7 @@ class MySpotsViewController: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.alpha = 0
@@ -47,22 +47,34 @@ class MySpotsViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Hosted spaces"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
+    }()
+    
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
+        
+        return view
     }()
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.WHITE
+        view.showsVerticalScrollIndicator = false
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        view.layer.cornerRadius = 4
         view.decelerationRate = .fast
         
         return view
@@ -86,7 +98,7 @@ class MySpotsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Notifications"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.font = Fonts.SSPSemiBoldH5
         
         return label
@@ -103,7 +115,7 @@ class MySpotsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "My parking spaces"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.font = Fonts.SSPSemiBoldH5
         
         return label
@@ -161,6 +173,12 @@ class MySpotsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.delegate = self
+        
+        view.clipsToBounds = true
+        
+        view.backgroundColor = Theme.OFF_WHITE
 
         setupViews()
         setupControllers()
@@ -169,6 +187,12 @@ class MySpotsViewController: UIViewController {
     var gradientHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
+        
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
 
         self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
@@ -234,7 +258,7 @@ class MySpotsViewController: UIViewController {
         let reservationsTap = UITapGestureRecognizer(target: self, action: #selector(expandReservationsContainer))
         reservationsContainer.view.addGestureRecognizer(reservationsTap)
         
-        scrollView.addSubview(notificationsLabel)
+        self.view.addSubview(notificationsLabel)
         notificationsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         notificationsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         notificationsLabel.topAnchor.constraint(equalTo: reservationsContainer.view.bottomAnchor, constant: 20).isActive = true
@@ -246,7 +270,9 @@ class MySpotsViewController: UIViewController {
         notificationsContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         notificationsContainer.view.heightAnchor.constraint(equalToConstant: 258).isActive = true
         
-        scrollView.addSubview(hostLabel)
+        self.view.addSubview(hostLabel)
+        self.view.bringSubviewToFront(gradientContainer)
+        self.view.bringSubviewToFront(mainLabel)
         hostLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         hostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         hostLabel.topAnchor.constraint(equalTo: notificationsContainer.view.bottomAnchor, constant: 20).isActive = true
@@ -313,7 +339,7 @@ extension MySpotsViewController: handleHostingReservations {
         self.reservationsTableContainer.gradientContainer.isHidden = true
         self.gradientContainer.isHidden = false
         self.scrollView.isScrollEnabled = true
-        self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1300)
+        self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1100)
         self.profitsHeightAnchor.constant = 168
         self.profitsDateTopAnchor.constant = phoneHeight + 24
         self.reservationsTopAnchor.constant = phoneHeight
@@ -325,7 +351,6 @@ extension MySpotsViewController: handleHostingReservations {
             self.reservationsTableContainer.view.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.lightContentStatusBar()
             self.scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: true)
             self.delegate?.bringExitButton()
             UIView.animate(withDuration: animationIn, animations: {
@@ -360,14 +385,14 @@ extension MySpotsViewController: handleHostingReservations {
                 self.profitsContainer.transferButton.alpha = 1
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.scrollView.contentSize = CGSize(width: phoneWidth, height: 900)
+                self.scrollView.contentSize = CGSize(width: phoneWidth, height: 800)
                 UIView.animate(withDuration: animationOut, animations: {
                     self.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 })
             }
         } else {
-            self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1300)
+            self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1100)
             self.scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: true)
             self.profitsHeightAnchor.constant = 168
             self.profitsDateTopAnchor.constant = phoneHeight + 24
@@ -483,12 +508,59 @@ extension MySpotsViewController: UIScrollViewDelegate {
             let percent = translation/80
             self.gradientHeightAnchor.constant = totalHeight - percent * 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            if self.backgroundCircle.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.gradientContainer.layer.shadowOpacity = 0
+                    self.backgroundCircle.alpha = 1
+                }
+            }
+            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                self.scrollExpanded()
+            }
+        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
+            UIView.animate(withDuration: animationIn) {
+                self.gradientContainer.layer.shadowOpacity = 0.2
+                self.backgroundCircle.alpha = 0
+            }
         } else if translation >= 80 {
             self.gradientHeightAnchor.constant = totalHeight - 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                self.scrollMinimized()
+            }
         } else if translation <= 0 {
             self.gradientHeightAnchor.constant = totalHeight
             self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 75 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        self.delegate?.defaultContentStatusBar()
+        self.scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
+        }
+    }
+    
+    func scrollMinimized() {
+        self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
         }
     }
     

@@ -13,9 +13,9 @@ class HowItWorksController: UIViewController {
     var worksLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "How it works"
+        label.text = "How it Works"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPBoldH3
+        label.font = Fonts.SSPRegularH2
         
         return label
     }()
@@ -24,6 +24,7 @@ class HowItWorksController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.alpha = 0
         
         return view
     }()
@@ -33,7 +34,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Search"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.font = Fonts.SSPRegularH3
         
         return label
     }()
@@ -43,7 +44,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Enter your destination and we link you with the best private spots in that area."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = Fonts.SSPRegularH5
+        label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
         return label
@@ -53,12 +54,10 @@ class HowItWorksController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.2)
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        let image = UIImage(named: "Search")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.STRAWBERRY_PINK
+        let image = UIImage(named: "worksSearch")
+        button.setImage(image, for: .normal)
         button.layer.borderColor = Theme.WHITE.cgColor
         button.layer.borderWidth = 2
         
@@ -69,6 +68,7 @@ class HowItWorksController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.alpha = 0
         
         return view
     }()
@@ -88,7 +88,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Book"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.font = Fonts.SSPRegularH3
         
         return label
     }()
@@ -98,7 +98,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select the closest parking space to your final destination."
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = Fonts.SSPRegularH5
+        label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
         return label
@@ -107,13 +107,11 @@ class HowItWorksController: UIViewController {
     var secondButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
-        button.layer.cornerRadius = 15
+        button.backgroundColor = Theme.LIGHT_PURPLE.withAlphaComponent(0.2)
+        button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        let image = UIImage(named: "walkingIcon")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLUE
+        let image = UIImage(named: "worksReserve")
+        button.setImage(image, for: .normal)
         button.layer.borderColor = Theme.WHITE.cgColor
         button.layer.borderWidth = 2
         
@@ -124,6 +122,7 @@ class HowItWorksController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.alpha = 0
         
         return view
     }()
@@ -153,7 +152,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Relax"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.font = Fonts.SSPRegularH3
         
         return label
     }()
@@ -163,7 +162,7 @@ class HowItWorksController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Never forget where you parked again and rest easy knowing your car is secure!"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = Fonts.SSPRegularH5
+        label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
         return label
@@ -172,13 +171,11 @@ class HowItWorksController: UIViewController {
     var thirdButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.2)
-        button.layer.cornerRadius = 15
+        button.backgroundColor = Theme.LightTeal.withAlphaComponent(0.4)
+        button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        let image = UIImage(named: "carIcon")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.GREEN_PIGMENT
+        let image = UIImage(named: "worksVehicle")
+        button.setImage(image, for: .normal)
         button.layer.borderColor = Theme.WHITE.cgColor
         button.layer.borderWidth = 2
         
@@ -210,13 +207,13 @@ class HowItWorksController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(worksLabel)
-        worksLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16).isActive = true
+        worksLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
         worksLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         worksLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         worksLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(mainLine)
-        mainLine.topAnchor.constraint(equalTo: worksLabel.bottomAnchor, constant: 12).isActive = true
+        mainLine.topAnchor.constraint(equalTo: worksLabel.bottomAnchor, constant: 8).isActive = true
         mainLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         mainLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -228,7 +225,7 @@ class HowItWorksController: UIViewController {
         self.view.addSubview(firstButton)
         firstButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         firstButton.centerYAnchor.constraint(equalTo: mainLine.bottomAnchor, constant: 50).isActive = true
-        firstButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        firstButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         firstButton.heightAnchor.constraint(equalTo: firstButton.widthAnchor).isActive = true
         
         self.view.addSubview(firstLabel)
@@ -256,7 +253,7 @@ class HowItWorksController: UIViewController {
         self.view.addSubview(secondButton)
         secondButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         secondButton.centerYAnchor.constraint(equalTo: firstLine.bottomAnchor, constant: 50).isActive = true
-        secondButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        secondButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         secondButton.heightAnchor.constraint(equalTo: secondButton.widthAnchor).isActive = true
         
         self.view.addSubview(secondLabel)
@@ -284,7 +281,7 @@ class HowItWorksController: UIViewController {
         self.view.addSubview(thirdButton)
         thirdButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         thirdButton.centerYAnchor.constraint(equalTo: secondLine.bottomAnchor, constant: 50).isActive = true
-        thirdButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        thirdButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         thirdButton.heightAnchor.constraint(equalTo: thirdButton.widthAnchor).isActive = true
         
         self.view.addSubview(thirdLabel)

@@ -15,7 +15,7 @@ class SearchBarViewController: UIViewController {
         let image = UIImage(named: "searchLocation")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLUE
+        button.tintColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.7)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -26,7 +26,7 @@ class SearchBarViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.borderColor = Theme.BLUE.cgColor
+        view.layer.borderColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.7).cgColor
         view.layer.borderWidth = 5
         view.layer.cornerRadius = 8
         

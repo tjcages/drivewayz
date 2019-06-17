@@ -104,13 +104,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         view.logoView.isHidden = true
         view.attributionButton.isHidden = true
         view.showsUserHeadingIndicator = true
+        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+        view.decelerationRate = 2.0
         
         return view
     }()
     
     var locatorButton: UIButton = {
         let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "locator") {
+        if let myImage = UIImage(named: "my_location") {
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
@@ -131,14 +133,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var polyRouteLocatorButton: UIButton = {
         let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "locator") {
+        if let myImage = UIImage(named: "my_location") {
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
         button.backgroundColor = Theme.WHITE
         button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
         button.layer.shadowRadius = 3
@@ -449,22 +451,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    var currentTopController: NavigationTopViewController = {
-        let controller = NavigationTopViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
-    
     var currentSearchLocation: UIButton = {
         let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "locator") {
+        if let myImage = UIImage(named: "my_location") {
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
         button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -482,8 +477,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var shouldUpdatePolyline: Bool = true
     
     var currentBottomHeightAnchor: NSLayoutConstraint!
-    var currentBottomBottomAnchor: NSLayoutConstraint!
-    var currentTopTopAnchor: NSLayoutConstraint!
     var previousAnchor: CGFloat = 170.0
     
     var navigationRouteController: NavigationViewController?
@@ -513,13 +506,13 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var parkingSpots = [ParkingSpots]()
     var availableParkingSpots = [ParkingSpots]()
-    var closeParkingSpots = [ParkingSpots]()
-    var cheapestParkingSpots = [ParkingSpots]()
     var parkingSpotsDictionary = [String: ParkingSpots]()
     var visibleAnnotationsDistance: [Double] = []
     var visibleAnnotations: [MGLPointAnnotation] = []
-    var visibleParkingSpots: Int = 0
+//    var visibleParkingSpots: Int = 0
     var destination: CLLocation?
+    
+    var currentUserBooking: Bookings?
     
     var mapViewConstraint: NSLayoutConstraint!
     var tabPullWidthShort: NSLayoutConstraint!
@@ -543,8 +536,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var locatorMainBottomAnchor: NSLayoutConstraint!
     var locatorParkingBottomAnchor: NSLayoutConstraint!
     
-    var mapViewBottomAnchor: NSLayoutConstraint!
-    var mapViewTopAnchor: NSLayoutConstraint!
     var parkingControllerBottomAnchor: NSLayoutConstraint!
     var purchaseControllerBottomAnchor: NSLayoutConstraint!
     var confirmControllerBottomAnchor: NSLayoutConstraint!
@@ -577,12 +568,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     func setupViews() {
         
         self.view.addSubview(mapView)
+        mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mapViewTopAnchor = mapView.topAnchor.constraint(equalTo: self.view.topAnchor)
-            mapViewTopAnchor.isActive = true
-        mapViewBottomAnchor = mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -300)
-            mapViewBottomAnchor.isActive = true
+        mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
         mapView.userTrackingMode = .follow
         

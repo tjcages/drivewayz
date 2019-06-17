@@ -19,10 +19,6 @@ class ReservationsTableViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
         view.clipsToBounds = false
         view.isHidden = true
         

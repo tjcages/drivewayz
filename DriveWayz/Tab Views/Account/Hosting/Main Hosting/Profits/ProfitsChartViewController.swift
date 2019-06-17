@@ -19,7 +19,7 @@ class ProfitsChartViewController: UIViewController {
         view.layer.cornerRadius = 2
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowRadius = 2
-        view.layer.shadowOpacity = 0.2
+        view.layer.shadowOpacity = 0
         view.layer.shadowOffset = .zero
         
         return view
@@ -36,7 +36,7 @@ class ProfitsChartViewController: UIViewController {
     var selectionContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
         
         return view
     }()

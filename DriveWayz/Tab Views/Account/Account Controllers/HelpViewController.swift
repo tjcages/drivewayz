@@ -8,10 +8,13 @@
 
 import UIKit
 
-class HelpViewController: UIViewController {
+protocol handleHelpControllers {
+    func moveToContact()
+}
+
+class HelpViewController: UIViewController, handleHelpControllers {
     
     var delegate: moveControllers?
-
     var options: [String] = ["Contact Drivewayz", "Review last booking", "Someone is in my spot"]
     var optionsSub: [String] = ["", "", ""]
     var optionsImages: [UIImage] = [UIImage(), UIImage(), UIImage()]
@@ -29,33 +32,37 @@ class HelpViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Help"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
     
-    var optionsTableView: UITableView = {
-        let view = UITableView()
-        view.backgroundColor = Theme.WHITE
+    var backgroundCircle: UIView = {
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.register(SettingsCell.self, forCellReuseIdentifier: "cellId")
-        view.isScrollEnabled = false
-        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
         
         return view
+    }()
+    
+    lazy var optionsController: HelpOptionsViewController = {
+        let controller = HelpOptionsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
     }()
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
+        view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
         
         return view
@@ -74,7 +81,7 @@ class HelpViewController: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
@@ -82,13 +89,32 @@ class HelpViewController: UIViewController {
         return button
     }()
     
+    var contactGraphic: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        let image = UIImage(named: "contactGraphic")
+        view.image = image
+        
+        return view
+    }()
+    
+    var contactGraphicHouse: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        let image = UIImage(named: "contactGraphicHouse")
+        view.image = image
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
         
-        optionsTableView.delegate = self
-        optionsTableView.dataSource = self
         scrollView.delegate = self
         
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(bringBackMain))
@@ -96,6 +122,8 @@ class HelpViewController: UIViewController {
         view.addGestureRecognizer(swipeGesture)
         
         setupViews()
+        setupControllers()
+        setupTopbar()
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
@@ -105,9 +133,37 @@ class HelpViewController: UIViewController {
     
     func setupViews() {
         
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
+        self.view.addSubview(contactGraphic)
+        contactGraphic.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        contactGraphic.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        contactGraphic.sizeToFit()
+        switch device {
+        case .iphone8:
+            contactGraphic.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -32).isActive = true
+        case .iphoneX:
+            contactGraphic.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -72).isActive = true
+        }
+        
+        self.view.addSubview(contactGraphicHouse)
+        contactGraphicHouse.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 48).isActive = true
+        contactGraphicHouse.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        contactGraphicHouse.sizeToFit()
+        switch device {
+        case .iphone8:
+            contactGraphicHouse.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -52).isActive = true
+        case .iphoneX:
+            contactGraphicHouse.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -72).isActive = true
+        }
+        
         self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: phoneHeight)
+        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
         containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
             containerCenterAnchor.isActive = true
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
@@ -126,12 +182,15 @@ class HelpViewController: UIViewController {
                 gradientHeightAnchor.isActive = true
         }
         
-        scrollView.addSubview(optionsTableView)
-        optionsTableView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        optionsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        optionsTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 60)
-            optionsHeight.isActive = true
+    }
+    
+    func setupControllers() {
+        
+        scrollView.addSubview(optionsController.view)
+        optionsController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
+        optionsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        optionsController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        optionsController.view.heightAnchor.constraint(equalToConstant: 264).isActive = true
         
         self.view.addSubview(contactDrivewayzController.view)
         self.view.bringSubviewToFront(gradientContainer)
@@ -141,6 +200,10 @@ class HelpViewController: UIViewController {
         contactDrivewayzController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         contactDrivewayzAnchor = contactDrivewayzController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
             contactDrivewayzAnchor.isActive = true
+        
+    }
+    
+    func setupTopbar() {
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -167,90 +230,42 @@ class HelpViewController: UIViewController {
     }
     
     @objc func bringBackMain() {
-        self.mainLabel.text = "Help"
-        UIView.animate(withDuration: animationOut, animations: {
-            self.containerCenterAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.mainLabel.text = ""
+            self.delegate?.hideExitButton()
             self.contactDrivewayzAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.bringExitButton()
+            self.delegate?.defaultContentStatusBar()
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Help"
+            }, completion: nil)
         }
     }
     
-}
-
-extension HelpViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.optionsHeight.constant = CGFloat(60 * self.options.count)
-        return self.options.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if options[indexPath.row] == "" {
-            return 30
-        } else {
-            return 60
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
-        cell.titleLabel.text = options[indexPath.row]
-        if options[indexPath.row] == "" {
-            cell.nextButton.alpha = 0
-            cell.backgroundColor = Theme.OFF_WHITE
-        }
-        if optionsSub[indexPath.row] == "" {
-            cell.titleTopAnchor.isActive = false
-            cell.titleCenterAnchor.isActive = true
-            cell.titleLeftAnchor.constant = -40
-        } else {
-            cell.titleTopAnchor.isActive = true
-            cell.titleCenterAnchor.isActive = false
-            cell.titleLeftAnchor.constant = -40
-        }
-        if cell.titleLabel.text == "Contact Drivewayz" {
-            cell.titleLabel.alpha = 1
-            cell.nextButton.alpha = 1
-        } else {
-            cell.titleLabel.alpha = 0.4
-            cell.nextButton.alpha = 0
-        }
-        cell.subtitleLabel.text = optionsSub[indexPath.row]
-        cell.iconView.setImage(optionsImages[indexPath.row], for: .normal)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        cell.selectionStyle = .none
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        cell.titleLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-    }
-    
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        cell.titleLabel.textColor = Theme.BLACK
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
-        if let title = cell.titleLabel.text {
-            if title == "Contact Drivewayz" {
+    func moveToContact() {
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.mainLabel.text = ""
+            self.delegate?.hideExitButton()
+            self.backButton.alpha = 1
+            self.contactDrivewayzAnchor.constant = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.lightContentStatusBar()
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainLabel.text = "Contact Drivewayz"
-                UIView.animate(withDuration: animationIn) {
-                    self.delegate?.hideExitButton()
-                    self.backButton.alpha = 1
-                    self.containerCenterAnchor.constant = -self.view.frame.width/2
-                    self.contactDrivewayzAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                }
-            }
+            }, completion: nil)
         }
     }
+    
 }
 
 
@@ -269,12 +284,59 @@ extension HelpViewController: UIScrollViewDelegate {
             let percent = translation/80
             self.gradientHeightAnchor.constant = totalHeight - percent * 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            if self.backgroundCircle.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.gradientContainer.layer.shadowOpacity = 0
+                    self.backgroundCircle.alpha = 1
+                }
+            }
+            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                self.scrollExpanded()
+            }
+        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
+            UIView.animate(withDuration: animationIn) {
+                self.gradientContainer.layer.shadowOpacity = 0.2
+                self.backgroundCircle.alpha = 0
+            }
         } else if translation >= 80 {
             self.gradientHeightAnchor.constant = totalHeight - 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                self.scrollMinimized()
+            }
         } else if translation <= 0 {
             self.gradientHeightAnchor.constant = totalHeight
             self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 75 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        self.delegate?.defaultContentStatusBar()
+        self.scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
+        }
+    }
+    
+    func scrollMinimized() {
+        self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
         }
     }
     

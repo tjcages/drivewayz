@@ -90,7 +90,7 @@ class MainBarViewController: UIViewController {
     var searchButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
         button.layer.cornerRadius = 4
         
         return button
@@ -101,7 +101,7 @@ class MainBarViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Where are you headed?"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPRegularH3
         
         return label
     }()
@@ -111,11 +111,11 @@ class MainBarViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.2)
         button.layer.cornerRadius = 18
-        let origImage = UIImage(named: "microphoneButton")
+        let origImage = UIImage(named: "searchMicrophone")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.STRAWBERRY_PINK
-        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
+//        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
         
         return button
     }()
@@ -235,7 +235,7 @@ class MainBarViewController: UIViewController {
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 6
-        view.layer.shadowOpacity = 0.4
+        view.layer.shadowOpacity = 0.2
 
         scrollView.delegate = self
         
@@ -336,7 +336,7 @@ class MainBarViewController: UIViewController {
         worksController.view.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 4).isActive = true
         worksController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         worksController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        worksController.view.heightAnchor.constraint(equalToConstant: 372).isActive = true
+        worksController.view.heightAnchor.constraint(equalToConstant: 384).isActive = true
         
     }
     

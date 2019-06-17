@@ -24,7 +24,7 @@ class ContactDrivewayzViewController: UIViewController {
     
     var message: UITextView = {
         let field = UITextView()
-        field.backgroundColor = Theme.OFF_WHITE
+        field.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
         field.text = "Message"
         field.textColor = Theme.BLACK
         field.font = Fonts.SSPRegularH5
@@ -56,19 +56,10 @@ class ContactDrivewayzViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Send", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.WHITE
+        button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.layer.cornerRadius = 55/2
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: 140, height: 55)
-        background.zPosition = -10
-        background.cornerRadius = button.layer.cornerRadius
-        button.layer.addSublayer(background)
+        button.layer.cornerRadius = 4
 //        button.clipsToBounds = true
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 1)
-        button.layer.shadowRadius = 6
-        button.layer.shadowOpacity = 0.4
         button.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
         
         return button
@@ -77,7 +68,8 @@ class ContactDrivewayzViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
+        view.clipsToBounds = true
         
         message.delegate = self
 

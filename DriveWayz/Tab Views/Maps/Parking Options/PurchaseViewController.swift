@@ -14,6 +14,9 @@ protocol handleHoursSelected {
     func setData(isToday: Bool)
 }
 
+var bookingFromDate: Date?
+var bookingToDate: Date?
+
 class PurchaseViewController: UIViewController, handleHoursSelected {
     
     var delegate: handleCheckoutParking?
@@ -131,7 +134,7 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.STRAWBERRY_PINK
         button.setTitle("Set duration", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -144,6 +147,9 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bookingFromDate = Date()
+        bookingToDate = Date().addingTimeInterval(3600 * 2.25)
         
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -260,6 +266,28 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
         
         if let fromDate = dateFormatter.date(from: startString), let toTime = totalTimeLabel.text {
             self.delegate?.setDurationPressed(fromDate: fromDate, totalTime: toTime)
+            var hours: Int = 0
+            var minutes: Int = 0
+            let timeArray = toTime.split(separator: " ")
+            if let hourString = timeArray.dropFirst().first, hourString.contains("h") {
+                if let timeHours = timeArray.first {
+                    if let intHours = Int(timeHours) {
+                        hours = intHours
+                    }
+                }
+            }
+            if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
+                if let timeMinutes = timeArray.dropFirst().dropFirst().first {
+                    if let intMinutes = Int(timeMinutes) {
+                        minutes = intMinutes
+                    }
+                }
+            }
+            let additionalSeconds: Double = Double((hours * 60 + minutes) * 60)
+            let toDate = fromDate.addingTimeInterval(additionalSeconds)
+            bookingFromDate = fromDate
+            bookingToDate = toDate
+            self.delegate?.observeAllHosting(location: userCity)
         }
     }
     
@@ -307,6 +335,7 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
         }
         self.selectedHours = tuple.hours
         self.selectedMinutes = tuple.leftMinutes
+        self.totalSelectedTime = Double(tuple.hours) + Double(tuple.leftMinutes)/60
     }
     
     

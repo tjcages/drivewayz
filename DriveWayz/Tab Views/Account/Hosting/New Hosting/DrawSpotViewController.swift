@@ -37,12 +37,8 @@ class DrawSpotViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Confirm image", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.WHITE
+        button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        let background = CAGradientLayer().purpleBlueColor()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 48, height: 60)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
         button.layer.cornerRadius = 12
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
@@ -247,6 +243,7 @@ class DrawSpotViewController: UIViewController {
         self.panoView.removeFromSuperview()
         self.realImageView.alpha = 1
         self.hideDotsButton.alpha = 0
+        self.addOverlay()
     }
     
     var toColor: Bool = true

@@ -23,8 +23,29 @@ class ParkingViewController: UIViewController, handleTestParking {
     let identifier = "cellID"
     let cellHeight: CGFloat = 242
     let cellWidth: CGFloat = phoneWidth
+    var selectedParkingSpot: ParkingSpots?
+    var parkingSpots: [ParkingSpots] = [] {
+        didSet {
+            self.selectedParkingSpot = parkingSpots.first
+            self.bookingPicker.reloadData()
+            delayWithSeconds(animationIn) {
+                self.bookingPicker.alpha = 1
+                self.loadingPicker.alpha = 0
+                self.bookingSliderController.view.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
     
     var bookingLayout: UICollectionViewLayout = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        
+        return layout
+    }()
+    
+    var loadingLayout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
@@ -41,6 +62,21 @@ class ParkingViewController: UIViewController, handleTestParking {
         picker.register(BookingCell.self, forCellWithReuseIdentifier: identifier)
         picker.decelerationRate = .fast
         picker.isPagingEnabled = true
+        picker.alpha = 0
+        
+        return picker
+    }()
+    
+    lazy var loadingPicker: UICollectionView = {
+        let picker = UICollectionView(frame: CGRect.zero, collectionViewLayout: loadingLayout)
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.backgroundColor = UIColor.clear
+        picker.showsHorizontalScrollIndicator = false
+        picker.showsVerticalScrollIndicator = false
+        picker.register(BookingCell.self, forCellWithReuseIdentifier: identifier)
+        picker.decelerationRate = .fast
+        picker.isPagingEnabled = true
+        picker.alpha = 1
         
         return picker
     }()
@@ -48,7 +84,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.STRAWBERRY_PINK
         button.setTitle("Book Prime Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -65,22 +101,12 @@ class ParkingViewController: UIViewController, handleTestParking {
         return controller
     }()
     
-    var durationLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Duration:"
-        label.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.7)
-        label.font = Fonts.SSPRegularH4
-        
-        return label
-    }()
-    
     var timeButton: UIButton = {
         let button = UIButton()
         let image = UIImage(named: "time")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLUE
+        button.tintColor = Theme.PRUSSIAN_BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -90,8 +116,33 @@ class ParkingViewController: UIViewController, handleTestParking {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("2 hours 15 minutes", for: .normal)
-        label.setTitleColor(Theme.BLUE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH4
+        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH5
+        label.contentHorizontalAlignment = .left
+        
+        return label
+    }()
+    
+    var walkingButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "locationArrow")
+        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE
+        button.layer.cornerRadius = 7
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        
+        return button
+    }()
+    
+    var walkingLabel: UIButton = {
+        let label = UIButton()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setTitle("0.45 miles", for: .normal)
+        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH5
         label.contentHorizontalAlignment = .right
         
         return label
@@ -110,6 +161,8 @@ class ParkingViewController: UIViewController, handleTestParking {
         
         bookingPicker.delegate = self
         bookingPicker.dataSource = self
+        loadingPicker.delegate = self
+        loadingPicker.dataSource = self
         
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -131,11 +184,17 @@ class ParkingViewController: UIViewController, handleTestParking {
         self.view.addSubview(mainButton)
         self.view.addSubview(bookingPicker)
         self.view.addSubview(bookingSliderController.view)
+        self.view.addSubview(loadingPicker)
         
         bookingPicker.heightAnchor.constraint(equalToConstant: cellHeight).isActive = true
         bookingPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         bookingPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         bookingPicker.bottomAnchor.constraint(equalTo: mainButton.topAnchor).isActive = true
+        
+        loadingPicker.heightAnchor.constraint(equalToConstant: cellHeight).isActive = true
+        loadingPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingPicker.bottomAnchor.constraint(equalTo: mainButton.topAnchor).isActive = true
         
         mainButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -28).isActive = true
         mainButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -151,22 +210,29 @@ class ParkingViewController: UIViewController, handleTestParking {
     
     func setupCalendar() {
         
-        self.view.addSubview(durationLabel)
-        durationLabel.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -12).isActive = true
-        durationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        durationLabel.sizeToFit()
-        
         self.view.addSubview(timeLabel)
         self.view.addSubview(timeButton)
-        timeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        timeLabel.leftAnchor.constraint(equalTo: timeButton.rightAnchor, constant: 10).isActive = true
         timeLabel.centerYAnchor.constraint(equalTo: timeButton.centerYAnchor).isActive = true
         timeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         timeLabel.sizeToFit()
         
-        timeButton.rightAnchor.constraint(equalTo: timeLabel.leftAnchor, constant: -6).isActive = true
+        timeButton.leftAnchor.constraint(equalTo: mainButton.leftAnchor, constant: 12).isActive = true
         timeButton.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -16).isActive = true
-        timeButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        timeButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
         timeButton.widthAnchor.constraint(equalTo: timeButton.heightAnchor).isActive = true
+        
+        self.view.addSubview(walkingLabel)
+        self.view.addSubview(walkingButton)
+        walkingLabel.rightAnchor.constraint(equalTo: mainButton.rightAnchor, constant: -12).isActive = true
+        walkingLabel.centerYAnchor.constraint(equalTo: walkingButton.centerYAnchor).isActive = true
+        walkingLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        walkingLabel.sizeToFit()
+        
+        walkingButton.rightAnchor.constraint(equalTo: walkingLabel.leftAnchor, constant: -8).isActive = true
+        walkingButton.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -16).isActive = true
+        walkingButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        walkingButton.widthAnchor.constraint(equalTo: walkingButton.heightAnchor).isActive = true
         
         self.view.addSubview(line)
         line.bottomAnchor.constraint(equalTo: timeButton.topAnchor, constant: -14).isActive = true
@@ -174,6 +240,13 @@ class ParkingViewController: UIViewController, handleTestParking {
         line.rightAnchor.constraint(equalTo: mainButton.rightAnchor).isActive = true
         line.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+    }
+    
+    func loadBookings() {
+        self.bookingPicker.alpha = 0
+        self.loadingPicker.alpha = 1
+        self.bookingSliderController.view.alpha = 0
+        self.view.layoutIfNeeded()
     }
     
     func bookSpotPressed(amount: Double) {
@@ -198,10 +271,23 @@ class ParkingViewController: UIViewController, handleTestParking {
 extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let contentSize = collectionView.contentSize
-        self.bookingSliderController.scrollView.contentSize = contentSize
-        
-        return 7
+        if collectionView == bookingPicker {
+            let contentSize = collectionView.contentSize
+            self.bookingSliderController.scrollView.contentSize = contentSize
+            if parkingSpots.count > 0 {
+                self.bookingPicker.alpha = 1
+                self.loadingPicker.alpha = 0
+                self.bookingSliderController.view.alpha = 1
+                self.view.layoutIfNeeded()
+                delayWithSeconds(animationIn) {
+                    self.checkPolyline(percentage: 0)
+                    self.getCellAtIndex(index: 0)
+                }
+            }
+            return parkingSpots.count
+        } else {
+            return 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -214,9 +300,20 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! BookingCell
-        
-        delayWithSeconds(2) {
+        if collectionView == bookingPicker && parkingSpots.count > indexPath.row {
             cell.endAnimations()
+            cell.minimizePrice()
+            let parking = parkingSpots[indexPath.row]
+            cell.spotLabel.text = parking.overallAddress
+            if let parkingCost = parking.parkingCost {
+                let cost = String(format: "$%.2f/hour", parkingCost)
+                cell.price = cost
+            }
+            if indexPath.row > 2 {
+                cell.expandPrice()
+            }
+        } else {
+            cell.beginAnimations()
         }
         
         return cell
@@ -236,16 +333,30 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
             }) { (success) in
                 UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
                     self.mainButton.setTitle("Book Prime Spot", for: .normal)
+                    self.bookingSliderController.firstIcon.alpha = 1
+                    self.bookingSliderController.firstIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 }, completion: nil)
             }
+        } else if percentage == 0 {
+            UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.bookingSliderController.firstIcon.alpha = 1
+                self.bookingSliderController.firstIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            })
         } else if percentage == 1 && self.mainButton.titleLabel?.text != "Book Economy Spot" {
             UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainButton.setTitle("", for: .normal)
             }) { (success) in
                 UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
                     self.mainButton.setTitle("Book Economy Spot", for: .normal)
+                    self.bookingSliderController.secondIcon.alpha = 1
+                    self.bookingSliderController.secondIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 }, completion: nil)
             }
+        } else if percentage == 1 {
+            UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.bookingSliderController.secondIcon.alpha = 1
+                self.bookingSliderController.secondIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            })
         } else if percentage == 2 && self.mainButton.titleLabel?.text != "Book Standard Spot" {
             UIView.transition(with: self.mainButton, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainButton.setTitle("", for: .normal)
@@ -254,6 +365,72 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
                     self.mainButton.setTitle("Book Standard Spot", for: .normal)
                 }, completion: nil)
             }
+        }
+    }
+    
+    func getCellAtIndex(index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        if let cell = self.bookingPicker.cellForItem(at: indexPath) as? BookingCell {
+            cell.expandPrice()
+            if let parking = self.selectedParkingSpot, let distance = parking.parkingDistance {
+                if distance > 0 {
+                    self.walkingLabel.alpha = 1
+                    self.walkingButton.alpha = 1
+                    if distance < 650 {
+                        let string = String(format: "%.0f ft", round(distance/10)*10)
+                        self.walkingButton.alpha = 0
+                        UIView.transition(with: self.walkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                            self.walkingLabel.setTitle("", for: .normal)
+                        }) { (success) in
+                            UIView.transition(with: self.walkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                                self.walkingLabel.setTitle(string, for: .normal)
+                                self.walkingButton.alpha = 1
+                            }, completion: nil)
+                        }
+                    } else {
+                        let miles = distance/5280
+                        let string = "\(miles.rounded(toPlaces: 2)) miles"
+                        self.walkingButton.alpha = 0
+                        UIView.transition(with: self.walkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                            self.walkingLabel.setTitle("", for: .normal)
+                        }) { (success) in
+                            UIView.transition(with: self.walkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                                self.walkingLabel.setTitle(string, for: .normal)
+                                self.walkingButton.alpha = 1
+                            }, completion: nil)
+                        }
+                    }
+                } else {
+                    self.walkingLabel.alpha = 0
+                    self.walkingButton.alpha = 0
+                }
+            }
+        }
+    }
+    
+    func closeCellAtIndex(index: Int) {
+        delayWithSeconds(animationOut) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = self.bookingPicker.cellForItem(at: indexPath) as? BookingCell {
+                cell.minimizePrice()
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.x
+        let percentage = translation/phoneWidth
+        self.checkPolyline(percentage: Int(percentage))
+    }
+    
+    func checkPolyline(percentage: Int) {
+        self.selectedParkingSpot = parkingSpots[percentage]
+        self.getCellAtIndex(index: percentage)
+        self.closeCellAtIndex(index: percentage - 1)
+        self.closeCellAtIndex(index: percentage + 1)
+        if let latitude = self.selectedParkingSpot?.latitude, let longitude = self.selectedParkingSpot?.longitude {
+            let location = CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees)
+            self.parkingDelegate?.drawHostPolyline(fromLocation: location)
         }
     }
     

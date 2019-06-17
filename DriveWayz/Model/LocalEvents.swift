@@ -8,6 +8,8 @@
 
 import Foundation
 
+var localEventLookup: [LocalEvents]?
+
 struct LocalEvents {
     let name: String
     let date: String
@@ -17,6 +19,8 @@ struct LocalEvents {
     let venueImageURL: String
     let venueParking: String
     let hrefEvent: String
+    let city: String
+    let address: String
     
     enum SerializationError: Error {
         case missing(String)
@@ -32,6 +36,8 @@ struct LocalEvents {
         guard let venueImageURL = json["venueImageURL"] as? String else { throw SerializationError.missing("Venue image missing")}
         guard let venueParking = json["venueParking"] as? String else { throw SerializationError.missing("Venue parking missing")}
         guard let hrefEvent = json["hrefEvent"] as? String else { throw SerializationError.missing("Event href missing")}
+        guard let city = json["city"] as? String else { throw SerializationError.missing("Venue city missing")}
+        guard let address = json["address"] as? String else { throw SerializationError.missing("Venue address missing")}
         self.name = name
         self.date = date
         self.time = time
@@ -40,12 +46,15 @@ struct LocalEvents {
         self.venueImageURL = venueImageURL
         self.venueParking = venueParking
         self.hrefEvent = hrefEvent
+        self.city = city
+        self.address = address
     }
     
     static let basePath = "https://app.ticketmaster.com/discovery/v2/events.json?"
     static let endPath = "&apikey=BZ9kNjuf6LB0KSXYgAAOXvfTHvePM4nA"
     
     static func eventLookup(withLocation location: String, completion: @escaping([LocalEvents]) -> ()) {
+        localEventLookup = []
         var localEvents: [LocalEvents] = []
         for i in 1...2 {
             var eventTypePath = ""
@@ -78,6 +87,15 @@ struct LocalEvents {
                                                             if let venues = embeddedVenues["venues"] as? [[String:Any]] {
                                                                 for (eventImage, venue) in zip(eventImages, venues) {
                                                                     guard let venueName = venue["name"] as? String else { return }
+                                                                    var venueCity = ""
+                                                                    var venueAddress = ""
+                                                                    if let venueCities = venue["city"] as? [String:Any], let venueAddres = venue["address"] as? [String:Any], let venueStates = venue["state"] as? [String:Any] {
+                                                                        guard let venueSpot = venueCities["name"] as? String else { return }
+                                                                        guard let venueSpotAdd = venueAddres["line1"] as? String else { return }
+                                                                        guard let venueSpotState = venueStates["name"] as? String else { return }
+                                                                        venueCity = venueSpot
+                                                                        venueAddress = venueSpotAdd + " " + venueSpot + ", " + venueSpotState
+                                                                    }
                                                                     if let eventImageURL = eventImage["url"] as? String {
                                                                         var venueImageURL: String = ""
                                                                         var venueParking: String = ""
@@ -91,7 +109,7 @@ struct LocalEvents {
                                                                                 }
                                                                             }
                                                                         }
-                                                                        let jsonArray = ["name": eventName, "date": localDate, "time": localTime, "imageURL": eventImageURL, "venueName": venueName, "venueImageURL": venueImageURL, "venueParking": venueParking, "hrefEvent": hrefEvent]
+                                                                        let jsonArray = ["name": eventName, "date": localDate, "time": localTime, "imageURL": eventImageURL, "venueName": venueName, "venueImageURL": venueImageURL, "venueParking": venueParking, "hrefEvent": hrefEvent, "city": venueCity, "address": venueAddress]
                                                                         if let eventObject = try? LocalEvents(json: jsonArray) {
                                                                             localEvents.append(eventObject)
                                                                         }
@@ -111,6 +129,7 @@ struct LocalEvents {
                     } catch {
                         print(error.localizedDescription)
                     }
+                    localEventLookup = localEvents
                     completion(localEvents)
                 }
             }

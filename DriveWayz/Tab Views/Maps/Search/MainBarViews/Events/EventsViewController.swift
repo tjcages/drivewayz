@@ -488,8 +488,10 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
                 cell.backgroundImageView.loadImageUsingCacheWithUrlString(localEvents[indexPath.row].imageURL)
                 cell.image = cell.backgroundImageView.image
             }
-            cell.eventLabel.text = localEvents[indexPath.row].name
-            cell.date.text = formattDate(date: localEvents[indexPath.row].date, time: localEvents[indexPath.row].time, type: "dotDate")
+            if localEvents.count > indexPath.row {
+                cell.eventLabel.text = localEvents[indexPath.row].name
+                cell.date.text = formattDate(date: localEvents[indexPath.row].date, time: localEvents[indexPath.row].time, type: "dotDate")
+            }
             cell.darkView.alpha = 0.6
             cell.layoutIfNeeded()
             

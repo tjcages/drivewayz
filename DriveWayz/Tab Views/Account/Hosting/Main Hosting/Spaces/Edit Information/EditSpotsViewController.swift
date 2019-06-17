@@ -100,8 +100,8 @@ class EditSpotsViewController: UIViewController {
         
         self.view.addSubview(exitButton)
         exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        exitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        exitButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
             exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36).isActive = true

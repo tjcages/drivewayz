@@ -18,27 +18,36 @@ struct dynamicPricing {
         case missing(String)
         case invalid(String, Any)
     }
+
+    static var dictionaryStates: [String:Any] = [:]
+    
+    static func checkAveragePrices() {
+        self.dictionaryStates = [:]
+        let reference = Database.database().reference().child("Average Prices")
+        reference.observe(.value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:Any] {
+                self.dictionaryStates = dictionary
+            }
+        }
+    }
     
     static func getDynamicPricing(place: CLLocationCoordinate2D, state: String, city: String, overallDestination: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
         var stateAbrv = state
         if stateAbrv.first == " " { stateAbrv = String(stateAbrv.dropFirst()) }
-        let reference = Database.database().reference().child("Average Prices").child(stateAbrv)
-        reference.observe(.value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:Any] {
-                for value in dictionary.keys {
-                    let valueString = value
-                    let count: CGFloat = CGFloat(valueString.count)
-                    var counter: CGFloat = 0
-                    for characters in city {
-                        if valueString.contains(characters) {
-                            counter += 1
-                        }
+        if let dictionary = self.dictionaryStates[stateAbrv] as? [String:Any] {
+            for value in dictionary.keys {
+                let valueString = value
+                let count: CGFloat = CGFloat(valueString.count)
+                var counter: CGFloat = 0
+                for characters in city {
+                    if valueString.contains(characters) {
+                        counter += 1
                     }
-                    if counter/count >= 0.9 {
-                        if let averagePrice = dictionary[valueString] as? CGFloat {
-                            filterDynamicPricing(place: place, overallDestination: overallDestination, state: stateAbrv, city: city, averagePrice: averagePrice) { (dynamicPrice: CGFloat) in
-                                completion(dynamicPrice)
-                            }
+                }
+                if counter/count >= 0.9 {
+                    if let averagePrice = dictionary[valueString] as? CGFloat {
+                        filterDynamicPricing(place: place, overallDestination: overallDestination, state: stateAbrv, city: city, averagePrice: averagePrice) { (dynamicPrice: CGFloat) in
+                            completion(dynamicPrice)
                         }
                     }
                 }
@@ -103,31 +112,16 @@ struct dynamicPricing {
         }
     }
     
-    //change price is spot is located near an event location
+    //change price if spot is located near an event location
     static func getEventPricing(place: CLLocationCoordinate2D, geoLocation: CLLocation, overallDestination: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
-        let latlong = "\(place.latitude),\(place.longitude)"
-        if sameLocation == overallDestination && sameLocation != nil {
-            DynamicEvents.checkDistance(userLocation: geoLocation.coordinate) { (results) in
-                if results > 0.0 {
-                    let percentage = results * 0.2
-                    let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
-                    completion(dynamicPrice)
-                } else {
-                    let nonDynamicPrice = 0.45 * averagePrice
-                    completion(nonDynamicPrice)
-                }
-            }
-        } else {
-            sameLocation = overallDestination
-            DynamicEvents.eventLookup(withLocation: latlong, userLocation: geoLocation.coordinate) { (results) in
-                if results > 0.0 {
-                    let percentage = results * 0.2
-                    let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
-                    completion(dynamicPrice)
-                } else {
-                    let nonDynamicPrice = 0.45 * averagePrice
-                    completion(nonDynamicPrice)
-                }
+        DynamicEvents.checkDistance(userLocation: geoLocation.coordinate) { (results) in
+            if results > 0.0 {
+                let percentage = results * 0.2
+                let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
+                completion(dynamicPrice)
+            } else {
+                let nonDynamicPrice = 0.45 * averagePrice
+                completion(nonDynamicPrice)
             }
         }
     }

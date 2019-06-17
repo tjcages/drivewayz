@@ -22,6 +22,7 @@ protocol handleRouteNavigation {
 }
 
 protocol handleCurrentNavigationViews {
+    func maximizeBottomView()
     func minimizeBottomView()
     func beginRouteNavigation()
     func closeCurrentBooking()
@@ -44,26 +45,18 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     
     func setupNavigationControllers() {
         
-        self.view.addSubview(currentSearchLocation)
-        self.view.addSubview(currentTopController.view)
-        currentTopTopAnchor = currentTopController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -200)
-            currentTopTopAnchor.isActive = true
-        currentTopController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        currentTopController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        currentTopController.view.heightAnchor.constraint(equalToConstant: 172).isActive = true
-        
         self.view.addSubview(currentBottomController.view)
-        currentBottomBottomAnchor = currentBottomController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 200)
-            currentBottomBottomAnchor.isActive = true
+        currentBottomController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         currentBottomController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         currentBottomController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        currentBottomHeightAnchor = currentBottomController.view.heightAnchor.constraint(equalToConstant: 130)
+        currentBottomHeightAnchor = currentBottomController.view.heightAnchor.constraint(equalToConstant: 0)
             currentBottomHeightAnchor.isActive = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(bottomPanned(sender:)))
         currentBottomController.view.addGestureRecognizer(pan)
         
+        self.view.addSubview(currentSearchLocation)
         currentSearchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        currentSearchLocation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        currentSearchLocation.heightAnchor.constraint(equalToConstant: 40).isActive = true
         currentSearchLocation.widthAnchor.constraint(equalTo: currentSearchLocation.heightAnchor).isActive = true
         currentSearchLocation.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16).isActive = true
         
@@ -78,45 +71,48 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     
     func drawCurrentParkingPolyline() {
         self.removeAllMapOverlays(shouldRefresh: false)
-        for index in 0...1 {
-            if let finalDestination = finalDestinationCoordinate, let finalParking = FinalAnnotationLocation, let currentLocation = self.locationManager.location?.coordinate {
-                if index == 0 {
-                    let directions = Directions.shared
-                    let waypoints = [
-                        Waypoint(coordinate: CLLocationCoordinate2D(latitude: currentLocation.latitude, longitude: currentLocation.longitude), name: "Start"),
-                        Waypoint(coordinate: CLLocationCoordinate2D(latitude: finalParking.latitude, longitude: finalParking.longitude), name: "Destination"),
-                    ]
-                    let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
-                    options.includesSteps = true
-                    
-                    _ = directions.calculate(options) { (waypoints, routes, error) in
-                        guard error == nil else {
-                            print("Error calculating directions: \(error!)")
-                            return
-                        }
-                        if let route = routes?.first {
-                            //                    let minute = route.expectedTravelTime / 60
-                            self.holdNavController.view.alpha = 1
-                            self.holdNavController.setupNavigation(route: route)
-                        }
+        if let booking = self.currentUserBooking, let parkingLat = booking.parkingLat, let parkingLong = booking.parkingLong, let destinationLat = booking.destinationLat, let destinationLong = booking.destinationLong {
+            let parkingCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(parkingLat), longitude: CLLocationDegrees(parkingLong))
+            let destinationCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(destinationLat), longitude: CLLocationDegrees(destinationLong))
+            if let currentLocation = self.locationManager.location?.coordinate {
+                let directions = Directions.shared
+                let waypoints = [
+                    Waypoint(coordinate: CLLocationCoordinate2D(latitude: currentLocation.latitude, longitude: currentLocation.longitude), name: "Start"),
+                    Waypoint(coordinate: CLLocationCoordinate2D(latitude: parkingCoordinate.latitude, longitude: parkingCoordinate.longitude), name: "Destination"),
+                ]
+                let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
+                options.includesSteps = true
+                
+                _ = directions.calculate(options) { (waypoints, routes, error) in
+                    guard error == nil else {
+                        print("Error calculating directions: \(error!)")
+                        return
                     }
-                } else if index == 1 {
-                    let directions = Directions.shared
-                    let waypoints = [
-                        Waypoint(coordinate: CLLocationCoordinate2D(latitude: finalParking.latitude, longitude: finalParking.longitude), name: "Start"),
-                        Waypoint(coordinate: CLLocationCoordinate2D(latitude: finalDestination.latitude, longitude: finalDestination.longitude), name: "Destination"),
-                    ]
-                    let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
-                    options.includesSteps = true
-                    
-                    _ = directions.calculate(options) { (waypoints, routes, error) in
-                        guard error == nil else {
-                            print("Error calculating directions: \(error!)")
-                            return
-                        }
-                        if let route = routes?.first {
-                            destinationRoute = route
-                        }
+                    if let route = routes?.first {
+                        
+                        var routeCoordinates = route.coordinates!
+                        let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+                        routeLine.title = "ParkingUnder"
+                        self.mapView.addAnnotation(routeLine)
+//                        let routeLine2 = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+//                        routeLine2.title = "ParkingOver"
+//                        self.mapView.addAnnotation(routeLine2)
+                        self.parkingCoordinates = route.coordinates!
+                        self.addPolyline(to: self.mapView.style!)
+                        self.mapView.userTrackingMode = .followWithCourse
+                        
+                        let annotation = MGLPointAnnotation()
+                        annotation.coordinate = parkingCoordinate
+                        self.mapView.addAnnotation(annotation)
+                        
+                        self.currentBottomHeightAnchor.constant = 354
+                        self.view.bringSubviewToFront(self.currentBottomController.view)
+                        UIView.animate(withDuration: animationOut, animations: {
+                            self.view.layoutIfNeeded()
+                        })
+                        //                    let minute = route.expectedTravelTime / 60
+                        //                            self.holdNavController.view.alpha = 1
+                        //                            self.holdNavController.setupNavigation(route: route)
                     }
                 }
             }
@@ -125,43 +121,80 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     
     @objc func bottomPanned(sender: UIPanGestureRecognizer) {
         let position = -sender.translation(in: self.view).y
-        let highestPosition = phoneHeight - 162
+        let highestHeight = phoneHeight - 150
+        let lowestHeight: CGFloat = 354
         if sender.state == .changed {
-            if (self.currentBottomHeightAnchor.constant < (phoneHeight - 142) && position != 0 && self.currentBottomController.scrollView.isScrollEnabled == false) && self.currentBottomHeightAnchor.constant >= 120 {
-                if position >= -(highestPosition - 200) && position <= (highestPosition - 300) {
-                    if self.currentBottomHeightAnchor.constant >= 120 && self.currentBottomHeightAnchor.constant <= phoneHeight - 172 {
-                        let percent = position/(highestPosition - 200)
-                        UIView.animate(withDuration: 0.05) {
-                            self.currentBottomHeightAnchor.constant = self.previousAnchor + highestPosition * percent
-                            self.view.layoutIfNeeded()
-                        }
-                    } else {
-                        self.previousAnchor = 130
-                        UIView.animate(withDuration: animationIn) {
-                            self.currentBottomHeightAnchor.constant = 130
-                            self.view.layoutIfNeeded()
-                        }
-                        return
-                    }
+            if (self.currentBottomHeightAnchor.constant >= lowestHeight - 40 && self.currentBottomHeightAnchor.constant <= highestHeight + 40) || (self.mainBarHighest == true && self.currentBottomHeightAnchor.constant <= 772) {
+                let difference = position - self.mainBarPreviousPosition
+                self.currentBottomHeightAnchor.constant = self.currentBottomHeightAnchor.constant + difference
+                let percent = (self.currentBottomHeightAnchor.constant - lowestHeight)/highestHeight
+                self.fullBackgroundView.alpha = 1.2 * percent
+                if percent >= 0.2 {
+                    self.delegate?.lightContentStatusBar()
+                    self.delegate?.hideHamburger()
+                } else {
+                    self.delegate?.defaultContentStatusBar()
                 }
             }
         } else if sender.state == .ended {
-            UIView.animate(withDuration: animationOut) {
-                if self.currentBottomHeightAnchor.constant >= highestPosition - 240 && self.currentBottomHeightAnchor.constant <= phoneHeight - 142 {
-                    self.previousAnchor = highestPosition
-                    self.currentBottomHeightAnchor.constant = highestPosition
-                    self.currentBottomController.scrollView.isScrollEnabled = true
-                } else if self.currentBottomHeightAnchor.constant >= phoneHeight - 200 {
-                    
+            let difference = position - self.mainBarPreviousPosition
+            if (self.currentBottomHeightAnchor.constant < highestHeight && self.mainBarHighest == false) || self.currentBottomHeightAnchor.constant <= highestHeight {
+                if self.currentBottomHeightAnchor.constant >= phoneHeight/3 && difference < 0 && self.currentBottomHeightAnchor.constant <= phoneHeight * 2/3 {
+                    self.currentBottomHeightAnchor.constant = lowestHeight
+                    UIView.animate(withDuration: animationOut, animations: {
+                        self.fullBackgroundView.alpha = 0
+                        self.view.layoutIfNeeded()
+                    }) { (success) in
+                        self.mainBarHighest = false
+                        self.delegate?.bringHamburger()
+                        self.delegate?.defaultContentStatusBar()
+                    }
+                } else if self.currentBottomHeightAnchor.constant >= phoneHeight/3 && difference >= 0 {
+                    if self.mainBarHighest == true && self.currentBottomHeightAnchor.constant < highestHeight - 40 {
+                        self.currentBottomHeightAnchor.constant = lowestHeight
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.fullBackgroundView.alpha = 0
+                            self.view.layoutIfNeeded()
+                        }) { (success) in
+                            self.mainBarHighest = false
+                            self.delegate?.bringHamburger()
+                            self.delegate?.defaultContentStatusBar()
+                        }
+                    } else {
+                        self.currentBottomHeightAnchor.constant = highestHeight
+                        self.delegate?.lightContentStatusBar()
+                        self.delegate?.hideHamburger()
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.fullBackgroundView.alpha = 0.7
+                            self.currentSearchLocation.alpha = 0
+                            self.view.layoutIfNeeded()
+                        }) { (success) in
+                            self.currentBottomController.scrollView.isScrollEnabled = false
+                            self.mainBarHighest = true
+                        }
+                    }
                 } else {
-                    if self.currentBottomController.scrollView.isScrollEnabled == false {
-                        self.previousAnchor = 130
-                        self.currentBottomHeightAnchor.constant = 130
+                    self.currentBottomHeightAnchor.constant = lowestHeight
+                    UIView.animate(withDuration: animationOut, animations: {
+                        self.fullBackgroundView.alpha = 0
+                        self.view.layoutIfNeeded()
+                    }) { (success) in
+                        self.mainBarHighest = false
+                        self.delegate?.bringHamburger()
+                        self.delegate?.defaultContentStatusBar()
                     }
                 }
-                self.view.layoutIfNeeded()
+            } else {
+                self.currentBottomHeightAnchor.constant = phoneHeight - statusHeight
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.fullBackgroundView.alpha = 0.9
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.currentBottomController.scrollView.isScrollEnabled = true
+                }
             }
         }
+        self.mainBarPreviousPosition = position
     }
     
     func closeCurrentBooking() {
@@ -173,8 +206,6 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         self.parkingBackButton.removeTarget(nil, action: nil, for: .allEvents)
         self.parkingBackButton.addTarget(self, action: #selector(parkingHidden), for: .touchUpInside)
         UIView.animate(withDuration: animationOut, animations: {
-            self.currentBottomBottomAnchor.constant = 200
-            self.currentTopTopAnchor.constant = -200
             self.parkingBackButtonConfirmAnchor.isActive = false
             self.parkingBackButtonBookAnchor.isActive = true
             self.parkingBackButtonPurchaseAnchor.isActive = false
@@ -206,15 +237,11 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {
                 self.currentSearchLocation.alpha = 1
-                self.currentBottomBottomAnchor.constant = 0
-                self.currentTopTopAnchor.constant = 0
-                self.previousAnchor = 130
-                self.currentBottomHeightAnchor.constant = 130
+                self.previousAnchor = 354
+                self.currentBottomHeightAnchor.constant = 354
                 self.view.layoutIfNeeded()
             }) { (success) in
                 delayWithSeconds(0.2, completion: {
-                    self.delegate?.hideHamburger()
-                    self.delegate?.lightContentStatusBar()
                     self.takeAwayEvents()
                     self.drawCurrentParkingPolyline()
                 })
@@ -223,12 +250,30 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         }
     }
     
-    func minimizeBottomView() {
-        UIView.animate(withDuration: animationOut, animations: {
-            self.previousAnchor = 130
-            self.currentBottomHeightAnchor.constant = 130
+    func maximizeBottomView() {
+        let highestHeight = phoneHeight - 150
+        self.currentBottomHeightAnchor.constant = highestHeight
+        self.delegate?.lightContentStatusBar()
+        self.delegate?.hideHamburger()
+        UIView.animate(withDuration: animationIn, animations: {
+            self.fullBackgroundView.alpha = 0.7
+            self.currentSearchLocation.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.currentBottomController.scrollView.isScrollEnabled = false
+            self.mainBarHighest = true
+        }
+    }
+    
+    func minimizeBottomView() {
+        UIView.animate(withDuration: animationOut, animations: {
+            self.previousAnchor = 354
+            self.currentBottomHeightAnchor.constant = 354
+            self.fullBackgroundView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.bringHamburger()
+            self.delegate?.defaultContentStatusBar()
             self.currentBottomController.scrollView.isScrollEnabled = false
         }
     }

@@ -35,20 +35,33 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Your Vehicles"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
     
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
+        
+        return view
+    }()
+    
     var optionsTableView: UITableView = {
         let view = UITableView()
-        view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(VehicleCell.self, forCellReuseIdentifier: "cellId")
         view.isScrollEnabled = false
-        view.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        view.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = true
         
         return view
     }()
@@ -57,12 +70,14 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
+        view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.layer.shadowRadius = 6
+        view.layer.shadowOpacity = 0.2
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = false
         
         return view
     }()
@@ -89,10 +104,22 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         return button
     }()
     
+    var vehicleGraphic: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        let image = UIImage(named: "gatedGraphic")
+        view.image = image
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
         view.clipsToBounds = true
+        view.backgroundColor = Theme.OFF_WHITE
+        view.layer.cornerRadius = 4
         
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
@@ -107,19 +134,34 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
-    var containerCenterAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
     var currentAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
+        self.view.addSubview(vehicleGraphic)
+        vehicleGraphic.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 60).isActive = true
+        vehicleGraphic.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -60).isActive = true
+        vehicleGraphic.sizeToFit()
+        switch device {
+        case .iphone8:
+            vehicleGraphic.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -32).isActive = true
+        case .iphoneX:
+            vehicleGraphic.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -72).isActive = true
+        }
+        
         self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
-        scrollView.contentSize = .zero
-        containerCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        containerCenterAnchor.isActive = true
+        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: 500).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -136,10 +178,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         
         scrollView.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        optionsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        optionsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48).isActive = true
         optionsTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 60)
-        optionsHeight.isActive = true
+        optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 188)
+            optionsHeight.isActive = true
 
         self.view.addSubview(currentVehicleController.view)
         self.view.bringSubviewToFront(gradientContainer)
@@ -174,26 +216,34 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func bringBackMain() {
-        self.mainLabel.text = "Your Vehicles"
         self.checkSelectedVehicle()
+        self.scrollExpanded()
         self.view.endEditing(true)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.containerCenterAnchor.constant = 0
+        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.mainLabel.text = ""
             self.currentAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
+            self.scrollView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.bringExitButton()
+            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.mainLabel.text = "Your Vehicles"
+            }, completion: nil)
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.optionsHeight.constant = CGFloat(60 * (self.options.count + 1))
+        self.optionsHeight.constant = CGFloat(80 * (self.options.count + 1) - 8)
         return self.options.count + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        if indexPath.row == self.options.count {
+            return 60
+        } else {
+            return 80
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -246,9 +296,24 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
                 let key = self.optionsKey[indexPath.row]
                 self.currentVehicleController.setData(type: title, license: subtitle, key: key)
                 self.currentVehicleController.setupCurrentVehicle()
+                UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                    self.mainLabel.text = ""
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                        self.mainLabel.text = "Edit Vehicle"
+                    }, completion: nil)
+                }
             } else {
-                self.mainLabel.text = "New Vehicle"
                 self.currentVehicleController.setupNewVehicle()
+                UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                    self.mainLabel.text = ""
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                        self.mainLabel.text = "New Vehicle"
+                    }, completion: nil)
+                }
             }
             self.moveToNext()
         }
@@ -321,11 +386,12 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func moveToNext() {
+        self.scrollMinimized()
         UIView.animate(withDuration: animationIn) {
             self.delegate?.hideExitButton()
             self.backButton.alpha = 1
-            self.containerCenterAnchor.constant = -self.view.frame.width/2
             self.currentAnchor.constant = 0
+            self.scrollView.alpha = 0
             self.view.layoutIfNeeded()
         }
     }
@@ -352,12 +418,59 @@ extension UserVehicleViewController: UIScrollViewDelegate {
             let percent = translation/80
             self.gradientHeightAnchor.constant = totalHeight - percent * 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            if self.backgroundCircle.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.gradientContainer.layer.shadowOpacity = 0
+                    self.backgroundCircle.alpha = 1
+                }
+            }
+            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                self.scrollExpanded()
+            }
+        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
+            UIView.animate(withDuration: animationIn) {
+                self.gradientContainer.layer.shadowOpacity = 0.2
+                self.backgroundCircle.alpha = 0
+            }
         } else if translation >= 80 {
             self.gradientHeightAnchor.constant = totalHeight - 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                self.scrollMinimized()
+            }
         } else if translation <= 0 {
             self.gradientHeightAnchor.constant = totalHeight
             self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 75 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        self.delegate?.defaultContentStatusBar()
+        self.scrollView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
+        }
+    }
+    
+    func scrollMinimized() {
+        self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
         }
     }
     

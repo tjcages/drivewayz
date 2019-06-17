@@ -13,6 +13,8 @@ import Mapbox
 protocol handleCheckoutParking {
     func becomeAHost()
     func setDurationPressed(fromDate: Date, totalTime: String)
+    func observeAllHosting(location: String)
+    func confirmPurchasePressed(booking: Bookings)
 }
 
 extension MapKitViewController: handleCheckoutParking {
@@ -53,7 +55,7 @@ extension MapKitViewController: handleCheckoutParking {
         confirmPaymentController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         confirmControllerBottomAnchor = confirmPaymentController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 380)
             confirmControllerBottomAnchor.isActive = true
-        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 328).isActive = true
+        confirmPaymentController.view.heightAnchor.constraint(equalToConstant: 284).isActive = true
         confirmPaymentController.monitorCurrentParking()
         confirmPaymentController.changeButton.addTarget(self, action: #selector(changeFinalDates), for: .touchUpInside)
         
@@ -106,8 +108,15 @@ extension MapKitViewController: handleCheckoutParking {
         self.confirmPaymentController.changeDates(fromDate: fromDate, totalTime: totalTime)
     }
     
+    func observeAllHosting(location: String) {
+        self.observeAllParking(location: location)
+    }
+    
     @objc func bookSpotPressed() {
-        self.purchaseController.saveDates()
+        if let price = self.parkingController.selectedParkingSpot?.parkingCost, let parking = self.parkingController.selectedParkingSpot {
+            let hours = self.purchaseController.totalSelectedTime
+            self.confirmPaymentController.setData(price: Double(price), hours: hours, parking: parking)
+        }
         self.view.bringSubviewToFront(confirmPaymentController.view)
         self.confirmControllerBottomAnchor.constant = 0
         self.parkingControllerBottomAnchor.constant = 420
@@ -116,6 +125,9 @@ extension MapKitViewController: handleCheckoutParking {
         self.parkingBackButtonConfirmAnchor.isActive = true
         UIView.animate(withDuration: animationIn) {
             self.view.layoutIfNeeded()
+        }
+        if let region = ZooomRegion {
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 140, left: 32, bottom: 320, right: 32), animated: true)
         }
     }
 
@@ -133,7 +145,6 @@ extension MapKitViewController: handleCheckoutParking {
         self.parkingBackButtonConfirmAnchor.isActive = false
         self.locatorMainBottomAnchor.isActive = false
         self.locatorParkingBottomAnchor.isActive = true
-        self.mapViewBottomAnchor.constant = -300
         UIView.animate(withDuration: animationIn) {
             self.parkingBackButton.alpha = 1
             self.view.layoutIfNeeded()
@@ -141,19 +152,18 @@ extension MapKitViewController: handleCheckoutParking {
     }
     
     @objc func parkingHidden() {
+        ZooomRegion = nil
         self.shouldBeSearchingForAnnotations = true
-        self.removePolylineAnnotations()
+        self.removeAllMapOverlays(shouldRefresh: true)
         self.parkingControllerBottomAnchor.constant = 420
         self.searchBarController.closeSearchBar()
         self.locatorMainBottomAnchor.isActive = true
         self.locatorParkingBottomAnchor.isActive = false
-        self.mapViewBottomAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
             self.parkingBackButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.bringMainBar()
-            self.removeAllMapOverlays(shouldRefresh: true)
             self.delegate?.bringHamburger()
         }
     }
@@ -168,74 +178,15 @@ extension MapKitViewController: handleCheckoutParking {
         UIView.animate(withDuration: animationIn) {
             self.view.layoutIfNeeded()
         }
+        if let region = ZooomRegion {
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 140, left: 64, bottom: 430, right: 64), animated: true)
+        }
     }
     
     @objc func changeFinalDates() {
         self.backToBooking()
         delayWithSeconds(animationIn) {
             self.changeDatesPressed()
-        }
-    }
-    
-    func removeAllHostLocations() {
-        if let annotations = self.mapView.annotations {
-            self.mapView.removeAnnotations(annotations)
-        }
-    }
-    
-    func removeAllMapOverlays(shouldRefresh: Bool) {
-        ParkingRoutePolyLine = []
-        ZoomMapView = nil
-        CurrentDestinationLocation = nil
-        ClosestParkingLocation = nil
-        DestinationAnnotationLocation = nil
-        self.shouldShowOverlay = false
-        self.quickDestinationController.view.alpha = 0
-        if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-            self.mapView.setCenter(location, zoomLevel: 14, animated: true)
-            self.mapView.userTrackingMode = .follow
-        }
-        self.removePolylineAnnotations()
-        if shouldRefresh == true {
-            if let annotations = self.mapView.annotations {
-                self.mapView.removeAnnotations(annotations)
-                self.placeAllAnnotations()
-            } else {
-                self.placeAllAnnotations()
-            }
-        } else {
-            if let annotations = self.mapView.annotations {
-                self.mapView.removeAnnotations(annotations)
-            }
-        }
-    }
-    
-    func removePolylineAnnotations() {
-        self.shouldShowOverlay = false
-        self.quickDestinationController.view.alpha = 0
-        if self.polylineSecondTimer != nil { self.polylineSecondTimer!.invalidate() }
-        if self.polylineFirstTimer != nil { self.polylineFirstTimer!.invalidate() }
-        if let layers = self.mapView.style?.layers {
-            for layer in layers {
-                if self.polylineLayer != nil && layer == self.polylineLayer {
-                    self.mapView.style?.removeLayer(layer)
-                    self.polylineLayer = nil
-                }
-                if self.polylineSecondLayer != nil && layer == self.polylineSecondLayer {
-                    self.mapView.style?.removeLayer(layer)
-                    self.polylineSecondLayer = nil
-                }
-                if let lastAnnotation = self.mapView.annotations?.last, lastAnnotation.title == "ParkingUnder" {
-                    self.mapView.removeAnnotation(lastAnnotation)
-                }
-                if let annotations = self.mapView.annotations {
-                    for annotation in annotations {
-                        if annotation.title == "ParkingUnder" {
-                            self.mapView.removeAnnotation(annotation)
-                        }
-                    }
-                }
-            }
         }
     }
     

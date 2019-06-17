@@ -47,9 +47,11 @@ class MapSearchViewController: UIViewController {
     
     var currentImageView: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "locationArrow")
-        button.setImage(image, for: .normal)
         button.alpha = 0.7
+        let origImage = UIImage(named: "locationArrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button

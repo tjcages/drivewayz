@@ -86,10 +86,10 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
 
     lazy var exitButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
@@ -241,12 +241,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleBlueColor()
-        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
-        background.zPosition = -10
-        view.layer.addSublayer(background)
         view.alpha = 0
         
         return view
@@ -432,6 +428,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.view.layoutIfNeeded()
         }) { (success) in
             self.mapController.view.bringSubviewToFront(self.mapController.mainBarController.view)
+            self.mapController.view.bringSubviewToFront(self.mapController.currentBottomController.view)
             if eventsAreAllowed == true {
                 self.mapController.eventsControllerHidden()
             }
@@ -490,11 +487,18 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {
+                self.exitButton.tintColor = Theme.DARK_GRAY
                 self.view.layoutIfNeeded()
             }) { (success) in
                 delayWithSeconds(animationIn, completion: {
                     self.delegate?.bringStatusBar()
-                    self.delegate?.lightContentStatusBar()
+                    if self.exitButton.alpha == 1 {
+                        self.delegate?.defaultStatusBar()
+                    } else {
+                        delayWithSeconds(1, completion: {
+                            self.delegate?.lightContentStatusBar()
+                        })
+                    }
                 })
             }
         }
@@ -524,10 +528,16 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     func lightContentStatusBar() {
         self.delegate?.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.exitButton.tintColor = Theme.WHITE
+        }
     }
     
     func defaultContentStatusBar() {
         self.delegate?.defaultStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.exitButton.tintColor = Theme.DARK_GRAY
+        }
     }
     
     func configureOptions() {
@@ -672,6 +682,7 @@ extension TabViewController {
             }, completion: { (success) in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     UIView.animate(withDuration: animationIn, animations: {
+                        self.exitButton.tintColor = Theme.WHITE
                         self.exitButton.alpha = 1
                         self.gradientContainer.alpha = 1
                         self.newParkingAnchor.constant = 0

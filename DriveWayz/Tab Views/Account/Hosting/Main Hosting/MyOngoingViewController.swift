@@ -199,10 +199,6 @@ class MyOngoingViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 6
-        view.layer.shadowOpacity = 0.4
         
         setupViews()
     }

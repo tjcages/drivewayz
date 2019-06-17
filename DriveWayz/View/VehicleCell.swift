@@ -14,9 +14,9 @@ class VehicleCell: UITableViewCell {
     var titleLabel: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
-        view.font = Fonts.SSPRegularH4
+        view.font = Fonts.SSPSemiBoldH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.BLACK
+        view.textColor = Theme.DARK_GRAY
         
         return view
     }()
@@ -24,7 +24,7 @@ class VehicleCell: UITableViewCell {
     var subtitleLabel: UILabel = {
         let view = UILabel()
         view.text = "Some sample text!"
-        view.font = Fonts.SSPLightH5
+        view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         
@@ -34,11 +34,13 @@ class VehicleCell: UITableViewCell {
     var plusButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "Add")
-        button.setImage(image, for: .normal)
         button.isUserInteractionEnabled = false
         button.alpha = 0
         button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        let origImage = UIImage(named: "Add")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE
         
         return button
     }()
@@ -66,28 +68,28 @@ class VehicleCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = Theme.WHITE
+        self.backgroundColor = UIColor.clear
         
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(plusButton)
         addSubview(checkmark)
         
-        titleTopAnchor = titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4)
+        titleTopAnchor = titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 12)
             titleTopAnchor.isActive = true
         titleCenterAnchor = titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
             titleCenterAnchor.isActive = false
-        titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: checkmark.rightAnchor, constant: 12).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
-        subtitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        subtitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16).isActive = true
         subtitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
      
         plusButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        plusButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -24).isActive = true
+        plusButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor).isActive = true
      
