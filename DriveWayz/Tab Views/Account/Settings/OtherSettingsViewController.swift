@@ -13,7 +13,7 @@ class OtherSettingsViewController: UIViewController {
     var delegate: changeSettingsHandler?
     let cellId = "cellId"
     var options: [String] = ["Payment", "Vehicle", "Notifications", "Accessibility", "About Us", "Logout"]
-    var optionsSub: [String] = ["VISA XXXX", "xxxx 2457", "Update your preferences", "Wheelchair Access", "Policies & Agreements", ""]
+    var optionsSub: [String] = ["No payment methods", "No vehicles", "Update your preferences", "Wheelchair Access", "Policies & Agreements", ""]
     var optionsColorsTop: [UIColor] = [Theme.LightRed, Theme.LightPurple, Theme.LightTeal, Theme.LightYellow, Theme.LightBlue, Theme.HARMONY_RED.lighter()!]
     var optionsColorsBottom: [UIColor] = [Theme.DarkRed, Theme.DarkPurple, Theme.DarkTeal, Theme.DarkYellow, Theme.DarkBlue, Theme.HARMONY_RED]
     var optionsIcons: [UIImage] = [UIImage(named: "settingsCard")!, UIImage(named: "settingsVehicle")!, UIImage(named: "settingsNotifications")!, UIImage(named: "settingsAccessibility")!, UIImage(named: "settingsAbout")!, UIImage(named: "settingsLogout")!]

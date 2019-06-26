@@ -304,8 +304,20 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
             cell.endAnimations()
             cell.minimizePrice()
             let parking = parkingSpots[indexPath.row]
-            cell.spotLabel.text = parking.overallAddress
-            if let parkingCost = parking.parkingCost {
+            if let secondaryType = parking.secondaryType, let numberSpots = parking.numberSpots, let streetAddress = parking.streetAddress {
+                cell.secondaryType = secondaryType
+                cell.numberSpots = numberSpots
+                cell.streetAddress = streetAddress
+            }
+            if let totalRating = parking.totalRating, let totalBookings = parking.totalBookings {
+                let averageRating = Double(totalRating)/Double(totalBookings)
+                cell.stars.rating = averageRating
+                cell.starLabel.text = "\(totalBookings)"
+            } else {
+                cell.stars.rating = 5.0
+                cell.starLabel.text = "0"
+            }
+            if let parkingCost = parking.dynamicCost {
                 let cost = String(format: "$%.2f/hour", parkingCost)
                 cell.price = cost
             }

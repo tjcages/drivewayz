@@ -8,16 +8,11 @@
 
 import UIKit
 
-struct HostNotifications {
-    var profileImageURL: UIImage?
-    var title: String?
-    var subtitle: String?
-    var date: String?
-}
-
 class MyNotificationsViewController: UIViewController {
-
-    var notifications: [HostNotifications] = [HostNotifications(profileImageURL: UIImage(named: "background4"), title: "Graham messaged you", subtitle: "Moving my car now", date: "23 min"), HostNotifications(profileImageURL: UIImage(named: "home-1"), title: "Congratulations!", subtitle: "You got 5 stars from Tyler", date: "1 hr"), HostNotifications(profileImageURL: UIImage(named: "dadAndKid"), title: "Tyler messaged you", subtitle: "Great! I am coming that way.", date: "1 hr")]
+    
+    var delegate: handleHostNotifications?
+    var showMoreBool: Bool = true
+    var notifications: [HostNotifications] = []
     
     var container: UIView = {
         let view = UIView()
@@ -35,16 +30,30 @@ class MyNotificationsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.register(NotificationsView.self, forCellReuseIdentifier: "cellId")
-        view.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 110, right: 0)
+        view.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         view.contentOffset = CGPoint.zero
         view.decelerationRate = .fast
         view.showsVerticalScrollIndicator = false
         view.clipsToBounds = false
         view.isScrollEnabled = false
-        view.allowsSelection = false
         
         return view
     }()
+    
+    func setData(parking: ParkingSpots) {
+        self.notifications = []
+        if let parkingID = parking.parkingID {
+            let ref = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications")
+            ref.observe(.childAdded) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    let notification = HostNotifications(dictionary: dictionary)
+                    self.notifications.append(notification)
+                    self.notificationsTableView.reloadData()
+                    self.delegate?.resetNotificationHeight()
+                }
+            }
+        }
+    }
     
 
     override func viewDidLoad() {
@@ -63,6 +72,7 @@ class MyNotificationsViewController: UIViewController {
         setupViews()
     }
     
+    var notificationHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -76,7 +86,8 @@ class MyNotificationsViewController: UIViewController {
         notificationsTableView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
         notificationsTableView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         notificationsTableView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
-        notificationsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        notificationHeightAnchor = notificationsTableView.heightAnchor.constraint(equalToConstant: 70)
+            notificationHeightAnchor.isActive = true
         
     }
 
@@ -86,11 +97,19 @@ class MyNotificationsViewController: UIViewController {
 extension MyNotificationsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.notifications.count + 1
+        if showMoreBool && self.notifications.count > 3 {
+            self.notificationHeightAnchor.constant = CGFloat(self.notifications.count * 70 + 74)
+            self.view.layoutIfNeeded()
+            return self.notifications.count + 1
+        } else {
+            self.notificationHeightAnchor.constant = CGFloat(self.notifications.count * 70 + 24)
+            self.view.layoutIfNeeded()
+            return self.notifications.count
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row < self.notifications.count {
+        if indexPath.row != 3 {
             return 70
         } else {
             return 50
@@ -99,27 +118,36 @@ extension MyNotificationsViewController: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = notificationsTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! NotificationsView
-        cell.selectionStyle = .default
+        cell.selectionStyle = .none
+        tableView.separatorStyle = .none
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         if indexPath.row < self.notifications.count {
-            cell.titleLabel.alpha = 1
-            cell.subTitleLabel.alpha = 1
-            cell.dateLabel.alpha = 1
-            cell.profileImageView.alpha = 1
-            cell.showMoreLabel.alpha = 0
-            cell.titleLabel.text = self.notifications[indexPath.row].title
-            cell.subTitleLabel.text = self.notifications[indexPath.row].subtitle
-            cell.dateLabel.text = self.notifications[indexPath.row].date
-            cell.profileImageView.image = self.notifications[indexPath.row].profileImageURL
-        } else {
-            cell.titleLabel.alpha = 0
-            cell.subTitleLabel.alpha = 0
-            cell.dateLabel.alpha = 0
-            cell.profileImageView.alpha = 0
-            cell.showMoreLabel.alpha = 1
+            if indexPath.row == 3 && showMoreBool {
+                cell.titleLabel.alpha = 0
+                cell.subTitleLabel.alpha = 0
+                cell.dateLabel.alpha = 0
+                cell.profileImageView.alpha = 0
+                cell.showMoreLabel.alpha = 1
+            } else {
+                cell.titleLabel.alpha = 1
+                cell.subTitleLabel.alpha = 1
+                cell.dateLabel.alpha = 1
+                cell.profileImageView.alpha = 1
+                cell.showMoreLabel.alpha = 0
+                cell.titleLabel.text = self.notifications[indexPath.row].title
+                cell.subTitleLabel.text = self.notifications[indexPath.row].subtitle
+                cell.dateLabel.text = self.notifications[indexPath.row].date
+                cell.profileImageView.image = self.notifications[indexPath.row].notificationImage
+            }
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 && showMoreBool {
+            self.delegate?.bringNofiticationsController()
+        }
     }
     
 }
@@ -130,10 +158,10 @@ class NotificationsView: UITableViewCell {
     var profileImageView: UIImageView = {
         let button = UIImageView()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = 25
         button.clipsToBounds = true
         button.contentMode = .scaleAspectFill
-//        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return button
     }()
@@ -195,10 +223,10 @@ class NotificationsView: UITableViewCell {
         
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
         
-        titleLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -2).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: 2).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -48).isActive = true

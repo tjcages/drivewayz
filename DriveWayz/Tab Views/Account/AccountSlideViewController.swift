@@ -11,11 +11,9 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FacebookLogin
-import GoogleSignIn
-import FirebaseInvites
 import Cosmos
 
-class AccountSlideViewController: UIViewController, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, GIDSignInUIDelegate, InviteDelegate, GIDSignInDelegate {
+class AccountSlideViewController: UIViewController, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
@@ -237,7 +235,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 900)
+        scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 860)
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
@@ -361,6 +359,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                         self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
                         self.addShouldShow = false
                     }
+                }
+                if let userRating = dictionary["rating"] as? Double {
+                    self.stars.rating = userRating
+                    self.starLabel.text = String(format:"%.01f", userRating)
+                } else {
+                    self.stars.rating = 5.0
+                    self.starLabel.text = "5.0"
                 }
                 if (dictionary["upcomingParking"] as? [String:AnyObject]) != nil {
                     self.upcomingMark.alpha = 1
@@ -554,72 +559,14 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         }
         ref.observe(.childRemoved) { (snapshot) in
             self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help", "Settings"]
+            self.delegate?.closeAccountView()
+            self.delegate?.hideHostingController()
             self.optionsTableView.reloadData()
         }
     }
     
     func bringBankAccountOptions() {
         self.delegate?.bringBankAccountController()
-    }
-    
-    @objc func inviteNewUser(sender: UITapGestureRecognizer) {
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signIn()
-        GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-    }
-    
-    func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
-        if let error = error {
-            print("Failed: " + error.localizedDescription)
-        } else {
-            guard let currentUser = Auth.auth().currentUser?.uid else {return}
-            let ref = Database.database().reference().child("users").child(currentUser).child("Coupons")
-            ref.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    if (dictionary["invite10"] as? String) != nil {
-                        let alert = UIAlertController(title: "Sorry!", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                        return
-                    } else {
-                        ref.updateChildValues(["invite10": "10% off coupon!"])
-                        let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental!", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                    }
-                }
-            }
-        }
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        // ...
-        if error != nil {
-            // ...
-            return
-        }
-        
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-        guard let prevUser = Auth.auth().currentUser else {return}
-        prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
-            if let invite = Invites.inviteDialog() {
-                invite.setInviteDelegate(self)
-                
-                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
-                invite.setTitle("Drivewayz")
-                //            invite.setDeepLink("app_url")
-                invite.setCallToActionText("Install!")
-                invite.open()
-            }
-        }
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        // Perform any operations when the user disconnects from app here.
-        // ...
     }
 
 

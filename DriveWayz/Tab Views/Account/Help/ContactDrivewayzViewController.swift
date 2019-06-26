@@ -11,6 +11,8 @@ import MessageUI
 
 class ContactDrivewayzViewController: UIViewController {
     
+    var context: String = "Help"
+    
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +27,8 @@ class ContactDrivewayzViewController: UIViewController {
     var message: UITextView = {
         let field = UITextView()
         field.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
-        field.text = "Message"
-        field.textColor = Theme.BLACK
+        field.text = "Contact us"
+        field.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         field.font = Fonts.SSPRegularH5
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 4
@@ -60,6 +62,8 @@ class ContactDrivewayzViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
 //        button.clipsToBounds = true
+        button.alpha = 0.5
+        button.isUserInteractionEnabled = false
         button.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
         
         return button
@@ -74,6 +78,7 @@ class ContactDrivewayzViewController: UIViewController {
         message.delegate = self
 
         setupViews()
+        createKeyboardButton()
     }
     
     func setupViews() {
@@ -104,26 +109,84 @@ class ContactDrivewayzViewController: UIViewController {
         
     }
     
+    func createKeyboardButton() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        keyboardToolbar.isTranslucent = false
+        keyboardToolbar.barTintColor = Theme.BLUE
+        keyboardToolbar.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 45)
+        
+        let addButton = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(sendEmail)
+        )
+        addButton.tintColor = Theme.WHITE
+        addButton.title = "Send"
+        
+        let flexibleSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil)
+        let flexibleSpace2 = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil)
+        
+        keyboardToolbar.items = [flexibleSpace, addButton, flexibleSpace2]
+        message.inputAccessoryView = keyboardToolbar
+    }
+    
 }
 
 extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
     
     @objc func sendEmail() {
-        if MFMailComposeViewController.canSendMail() {
-            if let message = self.message.text {
-                let mail = MFMailComposeViewController()
-                mail.mailComposeDelegate = self
-                mail.setToRecipients(["reese@drivewayz.io"])
-                mail.setMessageBody("<p>\(message)</p>", isHTML: true)
-                mail.setSubject("Drivewayz Help")
-                
-                present(mail, animated: true)
-            } else {
-                self.createSimpleAlert(title: "Please include a custom message", message: "Describe any problems or discrepancies you may have with us.")
+        self.sendButton.alpha = 0.5
+        self.sendButton.isUserInteractionEnabled = false
+        
+        guard let message = self.message.text else { return }
+        if message != "" && message != "Contact us" {
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            let ref = Database.database().reference().child("users").child(userID)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    guard let name = dictionary["name"] as? String else { return }
+                    var email = ""
+                    if let mail = dictionary["email"] as? String {
+                        email = mail
+                    }
+                    let timestamp = Date().timeIntervalSince1970
+                    let messageRef = Database.database().reference().child("DrivewayzMessages").childByAutoId()
+                    messageRef.updateChildValues(["name": name, "email": email, "timestamp": timestamp, "message": message, "context": self.context])
+                    self.view.endEditing(true)
+                    self.createSimpleAlert(title: "Sent!", message: "")
+                    self.message.text = ""
+                    self.sendButton.alpha = 1.0
+                    self.sendButton.isUserInteractionEnabled = true
+                }
             }
         } else {
-            self.createSimpleAlert(title: "Issue sending email", message: "Please check your email account associated with this phone. It does not appear to be linked.")
+            self.createSimpleAlert(title: "No message", message: "")
+            self.sendButton.alpha = 1.0
+            self.sendButton.isUserInteractionEnabled = true
         }
+        
+//        if MFMailComposeViewController.canSendMail() {
+//            if let message = self.message.text {
+//                let mail = MFMailComposeViewController()
+//                mail.mailComposeDelegate = self
+//                mail.setToRecipients(["reese@drivewayz.io"])
+//                mail.setMessageBody("<p>\(message)</p>", isHTML: true)
+//                mail.setSubject("Drivewayz Help")
+//
+//                present(mail, animated: true)
+//            } else {
+//                self.createSimpleAlert(title: "Please include a custom message", message: "Describe any problems or discrepancies you may have with us.")
+//            }
+//        } else {
+//            self.createSimpleAlert(title: "Issue sending email", message: "Please check your email account associated with this phone. It does not appear to be linked.")
+//        }
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
@@ -136,16 +199,20 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
 extension ContactDrivewayzViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.message.text == "Message" {
+        if self.message.text == "Contact us" {
             self.message.text = ""
             self.message.textColor = Theme.BLACK
+            self.sendButton.alpha = 1.0
+            self.sendButton.isUserInteractionEnabled = true
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if self.message.text == "" {
-            self.message.text = "Message"
+            self.message.text = "Contact us"
             self.message.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.sendButton.alpha = 0.5
+            self.sendButton.isUserInteractionEnabled = false
         }
     }
     
@@ -155,8 +222,15 @@ extension ContactDrivewayzViewController: UITextViewDelegate {
     
     func createSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        self.present(alert, animated: true)
+        if message != "" {
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        } else {
+            self.present(alert, animated: true)
+            delayWithSeconds(1) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
 }

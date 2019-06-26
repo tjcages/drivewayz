@@ -88,13 +88,14 @@ struct LocalEvents {
                                                                 for (eventImage, venue) in zip(eventImages, venues) {
                                                                     guard let venueName = venue["name"] as? String else { return }
                                                                     var venueCity = ""
-                                                                    var venueAddress = ""
-                                                                    if let venueCities = venue["city"] as? [String:Any], let venueAddres = venue["address"] as? [String:Any], let venueStates = venue["state"] as? [String:Any] {
+                                                                    var venueAddressString = ""
+//                                                                    let venueAddres = venue["address"] as? [String:Any]
+                                                                    if let venueCities = venue["city"] as? [String:Any], let venueStates = venue["state"] as? [String:Any] {
                                                                         guard let venueSpot = venueCities["name"] as? String else { return }
-                                                                        guard let venueSpotAdd = venueAddres["line1"] as? String else { return }
+//                                                                        guard let venueSpotAdd = venueAddres["line1"] as? String else { return }
                                                                         guard let venueSpotState = venueStates["name"] as? String else { return }
                                                                         venueCity = venueSpot
-                                                                        venueAddress = venueSpotAdd + " " + venueSpot + ", " + venueSpotState
+                                                                        venueAddressString = venueName + " " + venueSpot + ", " + venueSpotState
                                                                     }
                                                                     if let eventImageURL = eventImage["url"] as? String {
                                                                         var venueImageURL: String = ""
@@ -109,7 +110,7 @@ struct LocalEvents {
                                                                                 }
                                                                             }
                                                                         }
-                                                                        let jsonArray = ["name": eventName, "date": localDate, "time": localTime, "imageURL": eventImageURL, "venueName": venueName, "venueImageURL": venueImageURL, "venueParking": venueParking, "hrefEvent": hrefEvent, "city": venueCity, "address": venueAddress]
+                                                                        let jsonArray = ["name": eventName, "date": localDate, "time": localTime, "imageURL": eventImageURL, "venueName": venueName, "venueImageURL": venueImageURL, "venueParking": venueParking, "hrefEvent": hrefEvent, "city": venueCity, "address": venueAddressString]
                                                                         if let eventObject = try? LocalEvents(json: jsonArray) {
                                                                             localEvents.append(eventObject)
                                                                         }

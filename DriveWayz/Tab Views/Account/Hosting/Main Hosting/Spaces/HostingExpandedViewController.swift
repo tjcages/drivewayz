@@ -40,7 +40,6 @@ class HostingExpandedViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -62,7 +61,7 @@ class HostingExpandedViewController: UIViewController {
     var imageContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
         view.layer.cornerRadius = 4
         
@@ -72,12 +71,23 @@ class HostingExpandedViewController: UIViewController {
     var spotLocatingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.text = "1065 University Ave. Boulder, CO"
+        label.textColor = Theme.DARK_GRAY
+        label.text = ""
         label.font = Fonts.SSPSemiBoldH3
         label.isUserInteractionEnabled = false
         label.numberOfLines = 2
         label.textAlignment = .center
+        
+        return label
+    }()
+    
+    var gradientLocatingLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.WHITE
+        label.text = ""
+        label.font = Fonts.SSPSemiBoldH3
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -169,12 +179,20 @@ class HostingExpandedViewController: UIViewController {
         return controller
     }()
     
+    lazy var gradientContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY
+        view.clipsToBounds = true
+        view.alpha = 0
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
-        
-        setupViews()
     }
     
     func setData(hosting: ParkingSpots) {
@@ -183,10 +201,11 @@ class HostingExpandedViewController: UIViewController {
         expandedNumber.setData(hosting: hosting)
         expandedAmenities.setData(hosting: hosting)
         expandedImages.setData(hosting: hosting)
-        if let overallAddress = hosting.overallAddress {
+        if let overallAddress = hosting.overallAddress, let streetAddress = hosting.streetAddress {
             self.spotLocatingLabel.text = overallAddress
+            self.gradientLocatingLabel.text = streetAddress
         }
-//        setupViews()
+        setupViews()
     }
     
     func setupViews() {
@@ -203,9 +222,9 @@ class HostingExpandedViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28 + statusHeight).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48 + statusHeight).isActive = true
         }
         
         scrollView.addSubview(darkView)
@@ -270,6 +289,23 @@ class HostingExpandedViewController: UIViewController {
         height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 750
         scrollView.contentSize = CGSize(width: phoneWidth, height: height)
         
+        scrollView.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        case .iphoneX:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
+        }
+        
+        gradientContainer.addSubview(gradientLocatingLabel)
+        gradientLocatingLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        gradientLocatingLabel.leftAnchor.constraint(equalTo: backButton.rightAnchor, constant: 16).isActive = true
+        gradientLocatingLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        gradientLocatingLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         self.view.addSubview(editCalendar.view)
         editCalendar.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
         editCalendar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -300,10 +336,6 @@ class HostingExpandedViewController: UIViewController {
         editAmenities.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         editAmenities.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-    }
-    
-    @objc func backButtonPressed() {
-        self.delegate?.returnExpandedPressed()
     }
     
 }
@@ -408,11 +440,11 @@ extension HostingExpandedViewController: UIScrollViewDelegate {
         let translation = scrollView.contentOffset.y
         UIView.animate(withDuration: animationIn) {
             if translation >= 180 {
-                self.delegate?.darkContentStatusBar()
-                self.backButton.tintColor = Theme.BLACK
-            } else if translation <= -30.0 {
-                self.backButtonPressed()
+                self.gradientContainer.alpha = 1
+            } else if translation <= -40.0 {
+//                self.backButtonPressed()
             } else {
+                self.gradientContainer.alpha = 0
                 self.delegate?.lightContentStatusBar()
                 self.backButton.tintColor = Theme.WHITE
             }

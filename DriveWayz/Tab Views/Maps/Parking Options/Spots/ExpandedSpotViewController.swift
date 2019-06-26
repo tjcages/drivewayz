@@ -401,7 +401,8 @@ class ExpandedSpotViewController: UIViewController {
                     self.locationLabel.text = publicAddress
 //                    self.infoController.hostMessage.text = hostMessage
                     if let numberRatings = parking.numberRatings, let totalRating = parking.totalRating {
-                        if let ratings = Double(numberRatings), let total = Double(totalRating) {
+                        if let ratings = Double(numberRatings) {
+                            let total = Double(totalRating)
                             let averageRating: Double = total/ratings
                             self.infoController.stars.rating = averageRating
                             self.infoController.starsLabel.text = numberRatings

@@ -21,7 +21,7 @@ extension dynamicPricing {
         if let holiday = Date.newYearDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.3
                 completion(holidayPrice)
             }
         }
@@ -35,21 +35,21 @@ extension dynamicPricing {
         if let holiday = Date.valentineDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.4
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.washingtonBDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.1
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.stPatrickDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.4
                 completion(holidayPrice)
             }
         }
@@ -70,7 +70,7 @@ extension dynamicPricing {
         if let holiday = Date.memorialDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.3
                 completion(holidayPrice)
             }
         }
@@ -84,14 +84,14 @@ extension dynamicPricing {
         if let holiday = Date.independenceDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.4
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.laborDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.3
                 completion(holidayPrice)
             }
         }
@@ -105,7 +105,7 @@ extension dynamicPricing {
         if let holiday = Date.halloweenDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.3
                 completion(holidayPrice)
             }
         }
@@ -126,14 +126,14 @@ extension dynamicPricing {
         if let holiday = Date.christmasDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.3
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.newYearEve(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.4
                 completion(holidayPrice)
             } else {
                 completion(averagePrice)

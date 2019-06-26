@@ -15,7 +15,7 @@ var quadPolylineShadow: CAShapeLayer?
 extension MapKitViewController {
 
     func drawCurvedOverlay(startCoordinate: CLLocationCoordinate2D, endCoordinate: CLLocationCoordinate2D) {
-        
+
         if let line = quadPolyline, let shadowLine = quadPolylineShadow {
             line.removeFromSuperlayer()
             shadowLine.removeFromSuperlayer()
@@ -25,6 +25,13 @@ extension MapKitViewController {
         let raise: CGFloat = 1.0
         var startPoint = CGPoint(x: start.x, y: start.y - raise)
         var endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
+        self.moveQuickControllers(startPoint: start)
+        
+        let distance = startCoordinate.distance(to: endCoordinate)
+//        if distance >= 3218.69 {
+        if distance >= -1 {
+            return
+        }
         
         let lineShadow = CAShapeLayer()
         let linePathShadow = UIBezierPath()
@@ -106,7 +113,7 @@ extension MapKitViewController {
             
             let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
             self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 40, left: 36, bottom: phoneHeight - 260, right: 36), animated: true)
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 36, bottom: phoneHeight - 260, right: 36), animated: true)
             delayWithSeconds(animationOut) {
                 self.drawCurvedOverlay(startCoordinate: first, endCoordinate: second)
             }
@@ -120,5 +127,67 @@ extension MapKitViewController {
 
         return CGPoint(x: controlPointX, y: controlPointY)
     }
+    
+    func moveQuickControllers(startPoint: CGPoint) {
+        if self.quickParkingController.view.alpha == 0 {
+            UIView.animate(withDuration: animationIn) {
+                self.quickParkingController.view.alpha = 1
+            }
+        }
+        if self.quickDestinationController.view.alpha == 0 {
+            UIView.animate(withDuration: animationIn) {
+                self.quickDestinationController.view.alpha = 1
+            }
+        }
+        if startPoint.x >= phoneWidth/2 {
+            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16))
+            self.quickParkingRightAnchor.constant = startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16
+            self.monitorDifference(difference: difference)
+        } else {
+            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16))
+            self.quickParkingRightAnchor.constant = startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16
+            self.monitorDifference(difference: difference)
+        }
+        if startPoint.y >= phoneHeight/4 {
+            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.y - 20))
+            self.quickParkingTopAnchor.constant = startPoint.y - 20
+            self.monitorDifference(difference: difference)
+        } else {
+            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.y + 20))
+            self.quickParkingTopAnchor.constant = startPoint.y + 20
+            self.monitorDifference(difference: difference)
+        }
+        if let destinationCoor = DestinationAnnotationLocation?.coordinate {
+            let destinationPoint = self.mapView.convert(destinationCoor, toPointTo: self.view)
+            if destinationPoint.x >= phoneWidth/2 {
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16))
+                self.quickDestinationRightAnchor.constant = destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
+                self.monitorDifference(difference: difference)
+            } else {
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16))
+                self.quickDestinationRightAnchor.constant = destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
+                self.monitorDifference(difference: difference)
+            }
+            if destinationPoint.y >= phoneHeight/4 {
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y - 20))
+                self.quickDestinationTopAnchor.constant = destinationPoint.y - 20
+                self.monitorDifference(difference: difference)
+            } else {
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y + 20))
+                self.quickDestinationTopAnchor.constant = destinationPoint.y + 20
+                self.monitorDifference(difference: difference)
+            }
+        }
+    }
 
+    func monitorDifference(difference: CGFloat) {
+        if difference >= 40.0 {
+            UIView.animate(withDuration: animationIn) {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
 }

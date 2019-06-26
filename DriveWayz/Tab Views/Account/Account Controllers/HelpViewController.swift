@@ -72,6 +72,7 @@ class HelpViewController: UIViewController, handleHelpControllers {
         let controller = ContactDrivewayzViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
+        controller.context = "Help"
         
         return controller
     }()

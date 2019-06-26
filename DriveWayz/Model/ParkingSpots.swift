@@ -15,9 +15,10 @@ class ParkingSpots: NSObject {
     var hostEmail: String?
     var hostMessage: String?
     var id: String?
-    var parkingCost: CGFloat?
+    var parkingCost: Double?
+    var dynamicCost: Double?
     var parkingID: String?
-    var timestamp: NSNumber?
+    var timestamp: TimeInterval?
     var parkingDistance: Double?
     
     var ParkingType: [String:Any]?
@@ -30,7 +31,7 @@ class ParkingSpots: NSObject {
     var parkingAmenities: [String]?
     
     var ParkingReviews: [String:Any]?
-    var totalRating: String?
+    var totalRating: Int?
     var numberRatings: String?
     
     var ParkingLocation: [String:Any]?
@@ -105,15 +106,28 @@ class ParkingSpots: NSObject {
     
     var isSpotAvailable: Bool = true
     
+    var totalBookings: Int?
+    var totalHours: Double?
+    var totalDistance: Double?
+    var totalProfits: Double?
+    
+    var Bookings: [String]?
+    
     init(dictionary: [String:Any]) {
         super.init()
         
         hostEmail = dictionary["hostEmail"] as? String
         hostMessage = dictionary["hostMessage"] as? String
         id = dictionary["id"] as? String
-        parkingCost = dictionary["parkingCost"] as? CGFloat
+        parkingCost = dictionary["parkingCost"] as? Double
         parkingID = dictionary["parkingID"] as? String
-        timestamp = dictionary["timestamp"] as? NSNumber
+        timestamp = dictionary["timestamp"] as? TimeInterval
+        
+        totalRating = dictionary["totalRating"] as? Int
+        totalBookings = dictionary["totalBookings"] as? Int
+        totalHours = dictionary["totalHours"] as? Double
+        totalDistance = dictionary["totalDistance"] as? Double
+        totalProfits = dictionary["totalProfits"] as? Double
         
         ParkingType = dictionary["Type"] as? [String: Any]
         if let parkingType = ParkingType {
@@ -139,7 +153,6 @@ class ParkingSpots: NSObject {
         
         ParkingReviews = dictionary["Reviews"] as? [String:Any]
         if let parkingReviews = ParkingReviews {
-            totalRating = parkingReviews["totalRating"] as? String
             numberRatings = parkingReviews["numberRatings"] as? String
         }
         
@@ -209,6 +222,17 @@ class ParkingSpots: NSObject {
         
         if let currentBooking = dictionary["CurrentBooking"] as? [String:Any] {
             isSpotAvailable = false
+        }
+        
+        if let currentlyUnavailable = dictionary["ParkingUnavailability"] as? TimeInterval {
+            isSpotAvailable = false
+        }
+        
+        if let bookings = dictionary["Bookings"] as? [String: Any] {
+            Bookings = []
+            for key in bookings.keys {
+                Bookings?.append(key)
+            }
         }
         
         self.appendTimes()

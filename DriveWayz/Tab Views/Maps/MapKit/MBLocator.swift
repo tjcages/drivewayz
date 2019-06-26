@@ -22,9 +22,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         if let region = ZooomRegion {
             self.mapView.userTrackingMode = .none
             if self.parkingControllerBottomAnchor.constant == 0 {
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 140, left: 64, bottom: 430, right: 64), animated: true)
+                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64), animated: true)
             } else {
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: 140, left: 32, bottom: 320, right: 32), animated: true)
+                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 32, bottom: 320, right: 32), animated: true)
             }
         } else {
             if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
@@ -65,8 +65,10 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         
         locationManager.startUpdatingLocation()
         
+        self.observeAllParking()
         if self.searchedForPlace == false {
             if let userLocation = locationManager.location {
+//                self.removeAllMapOverlays(shouldRefresh: true)
                 self.mapView.setCenter(userLocation.coordinate, zoomLevel: 15, animated: false)
                 let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
                 self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
@@ -76,8 +78,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                     geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
                         // Process Response
                         self.processResponse(withPlacemarks: placemarks, error: error, completion: { (city) in
-                            self.observeAllParking(location: city)
-                            dynamicPricing.checkAveragePrices()
+                            delayWithSeconds(1, completion: {
+                                self.monitorCoupons()
+                            })
                         })
                     }
                 }
@@ -107,7 +110,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         self.view.layoutIfNeeded()
         let value = reason.rawValue
         self.userInteractionChange(value: value)
-        if quadPolyline != nil && quadPolylineShadow != nil, let from = quadStartCoordinate, let to = quadEndCoordinate {
+        if DestinationAnnotationLocation != nil, let from = quadStartCoordinate, let to = quadEndCoordinate {
             self.drawCurvedOverlay(startCoordinate: from, endCoordinate: to)
         }
     }
@@ -120,6 +123,8 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             UIView.animate(withDuration: animationOut) {
                 if ZoomMapView != nil {
                     self.polyRouteLocatorButton.alpha = 1
+                } else if isCurrentlyBooked {
+                    self.currentSearchLocation.alpha = 1
                 } else {
                     self.locatorButton.alpha = 1
                 }
@@ -132,98 +137,6 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     @objc func changeFromUserInteraction() {
         self.mapChangedFromUserInteraction = false
     }
-    
-    @objc func mapDragged(sender: UIPanGestureRecognizer) {
-        if let location = DestinationAnnotationLocation {
-            self.checkQuickDestination(annotationLocation: location.coordinate)
-        }
-    }
-    
-    func checkQuickDestination(annotationLocation: CLLocationCoordinate2D) {
-        let position = self.mapView.convert(annotationLocation, toPointTo: self.view)
-        let xDisplacement = position.x
-        let yDisplacement = position.y
-        let previousX: CGFloat = self.quickDestinationRightAnchor.constant
-        let previousY: CGFloat = self.quickDestinationTopAnchor.constant
-        if xDisplacement > self.mapView.frame.width/2 {
-            self.quickDestinationRightAnchor.constant = xDisplacement + 140
-        } else {
-            self.quickDestinationRightAnchor.constant = xDisplacement + self.quickDestinationController.containerWidthAnchor.constant + 140
-        }
-        if (previousX > self.view.frame.width && self.quickDestinationRightAnchor.constant < self.view.frame.width) || (previousX < self.view.frame.width && self.quickDestinationRightAnchor.constant > self.view.frame.width) {
-            UIView.animate(withDuration: animationIn) {
-                self.view.layoutIfNeeded()
-            }
-        }
-        if yDisplacement > self.mapView.frame.height/2 {
-            self.quickDestinationTopAnchor.constant = yDisplacement - 20
-        } else {
-            self.quickDestinationTopAnchor.constant = yDisplacement + 60
-        }
-        if (previousY < self.mapView.frame.height/4 && self.quickDestinationTopAnchor.constant > self.mapView.frame.height/4) || (previousY > self.mapView.frame.height/4 && self.quickDestinationTopAnchor.constant < self.mapView.frame.height/4) {
-            UIView.animate(withDuration: animationIn) {
-                self.view.layoutIfNeeded()
-            }
-        }
-        if DestinationAnnotationLocation != nil {
-            delayWithSeconds(0.5) {
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.quickDestinationController.view.alpha = 1
-                })
-            }
-        }
-        self.view.layoutIfNeeded()
-    }
-    
-//    func mapView(_ mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
-//        self.view.layoutIfNeeded()
-//
-//        if isCurrentlyBooked {
-////            self.drawCurrentParkingPolyline()
-//        }
-//
-//        if let annotations = self.mapView.visibleAnnotations {
-//            for annontation in annotations {
-//                if annontation.subtitle == "Destination" {
-//                    let position = self.mapView.convert(annontation.coordinate, toPointTo: self.view)
-//                    let xDisplacement = position.x
-//                    let yDisplacement = position.y
-//                    let previousX: CGFloat = self.quickDestinationRightAnchor.constant
-//                    let previousY: CGFloat = self.quickDestinationTopAnchor.constant
-//                    if xDisplacement > self.mapView.frame.width/2 {
-//                        self.quickDestinationRightAnchor.constant = xDisplacement + 20
-//                    } else {
-//                        self.quickDestinationRightAnchor.constant = xDisplacement + self.quickDestinationController.containerWidthAnchor.constant + 20
-//                    }
-//                    if (previousX > self.view.frame.width && self.quickDestinationRightAnchor.constant < self.view.frame.width) || (previousX < self.view.frame.width && self.quickDestinationRightAnchor.constant > self.view.frame.width) {
-//                        UIView.animate(withDuration: animationIn) {
-//                            self.view.layoutIfNeeded()
-//                        }
-//                    }
-//                    if yDisplacement > self.mapView.frame.height/2 {
-//                        self.quickDestinationTopAnchor.constant = yDisplacement - 20
-//                    } else {
-//                        self.quickDestinationTopAnchor.constant = yDisplacement + 60
-//                    }
-//                    if (previousY < self.mapView.frame.height/4 && self.quickDestinationTopAnchor.constant > self.mapView.frame.height/4) || (previousY > self.mapView.frame.height/4 && self.quickDestinationTopAnchor.constant < self.mapView.frame.height/4) {
-//                        UIView.animate(withDuration: animationIn) {
-//                            self.view.layoutIfNeeded()
-//                        }
-//                    }
-////                    if DestinationAnnotationLocation != nil {
-////                        delayWithSeconds(0.5) {
-////                            UIView.animate(withDuration: animationIn, animations: {
-////                                self.quickDestinationController.view.alpha = 1
-////                            })
-////                        }
-////                    }
-//                    self.view.layoutIfNeeded()
-//                }
-//            }
-//        } else {
-//            self.quickDestinationController.view.alpha = 0
-//        }
-//    }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true

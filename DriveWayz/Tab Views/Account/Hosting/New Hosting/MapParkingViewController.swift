@@ -16,7 +16,7 @@ class MapParkingViewController: UIViewController {
     
     var latitude: Double?
     var longitude: Double?
-    var dynamicPrice: CGFloat = 1.5
+//    var dynamicPrice: CGFloat = 1.5
     
     var mapView: MKMapView = {
         let view = MKMapView()
@@ -83,10 +83,10 @@ class MapParkingViewController: UIViewController {
             self.mapView.setRegion(region, animated: true)
             self.latitude = location.coordinate.latitude
             self.longitude = location.coordinate.longitude
-            let dynamicLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            dynamicPricing.getDynamicPricing(place: dynamicLocation, state: state, city: city, overallDestination: location.coordinate) { (dynamicPrice: CGFloat) in
-                self.dynamicPrice = dynamicPrice
-            }
+//            let dynamicLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//            dynamicPricing.getDynamicPricing(place: dynamicLocation, state: state, city: city, overallDestination: location.coordinate) { (dynamicPrice: CGFloat) in
+//                self.dynamicPrice = dynamicPrice
+//            }
         }
     }
     

@@ -11,145 +11,199 @@ import CoreLocation
 import Mapbox
 
 var numberOfTotalParkingSpots: Int = 0
+var mapAnnotationID: [String] = []
 
 extension MapKitViewController {
+    
+    func observeAllParking() {
+        mapAnnotationID = []
+        dynamicPricing.readCityCSV()
+        let ref = Database.database().reference().child("ParkingSpots")
+        ref.observe(.childAdded) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                self.removeAllHostLocations()
+                let park = ParkingSpots(dictionary: dictionary)
+                let parkingID = dictionary["parkingID"] as! String
+                self.parkingSpotsDictionary[parkingID] = park
+                self.parkingSpots = Array(self.parkingSpotsDictionary.values)
+                
+                DispatchQueue.main.async {
+                    self.placeAllAnnotations()
+                }
+            }
+        }
+    }
     
     func placeAllAnnotations() {
         for parking in self.parkingSpots {
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 let marker = MGLPointAnnotation()
-                marker.title = parking.overallAddress
                 marker.coordinate = location.coordinate
-                self.mapView.addAnnotation(marker)
-                //                self.mainBarController.parkingState = .foundParking
-            }
-        }
-    }
-
-    func observeAllParking(location: String) {
-        let city = userCity
-        if city != location {
-            userCity = location
-            var parkingSpots: [String] = []
-            if !isCurrentlyBooked {
-                let ref = Database.database().reference().child("ParkingLocations").child(location)
-                ref.observeSingleEvent(of: .value) { (snapshot) in
-                    numberOfTotalParkingSpots = Int(snapshot.childrenCount)
-                    print("number of total parking spots: \(numberOfTotalParkingSpots)")
-                    ref.observe(.childAdded) { (snapshot) in
-                        if let key = snapshot.value as? String {
-                            parkingSpots.append(key)
-                            if parkingSpots.count == numberOfTotalParkingSpots {
-                                for parking in parkingSpots {
-                                    let ref = Database.database().reference().child("ParkingSpots").child(parking)
-                                    ref.observe(.value, with: { (snapshot) in
-                                        if var dictionary = snapshot.value as? [String:AnyObject] {
-                                            let park = ParkingSpots(dictionary: dictionary)
-                                            let parkingID = dictionary["parkingID"] as! String
-                                            self.parkingSpotsDictionary[parkingID] = park
-                                            self.parkingSpots = Array(self.parkingSpotsDictionary.values)
-                                            
-                                            if parking == parkingSpots.last {
-                                                DispatchQueue.main.async {
-                                                    self.organizeAvailableParking()
-                                                }
-                                            }
-                                        }
-                                    }) { (error) in
-                                        print(error.localizedDescription)
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+                    marker.title = ID
+                    mapAnnotationID.append(ID)
+                    self.mapView.addAnnotation(marker)
                 }
             }
-        } else {
-            self.organizeAvailableParking()
         }
     }
     
-    func organizeAvailableParking() {
+    func checkAnnotationsNearDestination(location: CLLocationCoordinate2D) {
+        self.availableParkingSpots = []
+        for parking in self.parkingSpots {
+            if let latitude = parking.latitude, let longitude = parking.longitude {
+                let parkingDestination = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: latitude), longitude: CLLocationDegrees(truncating: longitude))
+                let distance = location.distance(to: parkingDestination)
+                if distance <= 1609.34 { //1 mile walking
+                    parking.parkingDistance = Double(distance)
+                    self.availableParkingSpots.append(parking)
+                }
+            }
+        }
         if let fromDate = bookingFromDate, let toDate = bookingToDate {
-            DynamicParking.getDynamicParking(parkingSpots: self.parkingSpots, dateFrom: fromDate, dateTo: toDate) { (parkingSpots) in
-                self.availableParkingSpots = parkingSpots
-                self.placeAvailableParking(shouldDraw: true)
+            DynamicParking.getDynamicParking(parkingSpots: self.availableParkingSpots, dateFrom: fromDate, dateTo: toDate) { (parking) in
+                self.availableParkingSpots = parking
+                self.removeAllHostLocations()
+                self.placeAvailableParking(location: location)
             }
         }
     }
     
-    func placeAvailableParking(shouldDraw: Bool) {
+    func placeAvailableParking(location: CLLocationCoordinate2D) {
+        var index = 0
+        mapAnnotationID = []
         for parking in self.availableParkingSpots {
             if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 let marker = MGLPointAnnotation()
-                marker.title = parking.overallAddress
                 marker.coordinate = location.coordinate
-                self.mapView.addAnnotation(marker)
-                //                self.mainBarController.parkingState = .foundParking
-                if parking == self.availableParkingSpots.last && shouldDraw == true {
-                    if let destination = DestinationAnnotationLocation {
-                        self.organizeParkingLocation(searchLocation: destination)
+                if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+                    marker.title = ID
+                    mapAnnotationID.append(ID)
+                    self.mapView.addAnnotation(marker)
+                }
+            }
+            if let destination = DestinationAnnotationLocation, let state = parking.stateAddress, let city = parking.cityAddress {
+                dynamicPricing.getDynamicPricing(parking: parking, place: destination.coordinate, state: state, city: city, overallDestination: location) { (dynamicPrice) in
+                    parking.dynamicCost = Double(dynamicPrice)
+                    index += 1
+                
+                    if index == self.availableParkingSpots.count {
+                        print(numberOfTotalParkingSpots)
+                        DispatchQueue.main.async {
+                            self.organizeParkingLocations()
+                        }
                     }
                 }
             }
         }
     }
     
-    func organizeParkingLocation(searchLocation: CLLocation) {
-        var cheapestParkingSpots: [ParkingSpots] = []
-        var closeParkingSpots: [ParkingSpots] = []
-        var bookingSpots: [ParkingSpots] = []
+    func placeAvailable() {
+        mapAnnotationID = []
         if self.availableParkingSpots.count > 0 {
             for parking in self.availableParkingSpots {
-                if let latitude = parking.latitude as? Double, let longitude = parking.longitude as? Double, let state = parking.stateAddress, let city = parking.cityAddress {
-                    let coordinates = CLLocation(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude))
-                    let distance = searchLocation.distance(from: coordinates)
-                    parking.parkingDistance = distance
-                    dynamicPricing.getDynamicPricing(place: coordinates.coordinate, state: state, city: city, overallDestination: searchLocation.coordinate) { (dynamicPrice: CGFloat) in
-                        parking.parkingCost = dynamicPrice
-                        if !cheapestParkingSpots.contains(parking) {
-                            cheapestParkingSpots.append(parking)
-                        }
-                        if cheapestParkingSpots.count == self.availableParkingSpots.count {
-                            DispatchQueue.main.async {
-                                closeParkingSpots = cheapestParkingSpots.sorted(by: { $0.parkingDistance! > $1.parkingDistance! })
-                                if let closestBooking = closeParkingSpots.last {
-                                    bookingSpots.append(closestBooking)
-                                    self.parkingController.parkingSpots = bookingSpots
-                                    
-                                    cheapestParkingSpots = cheapestParkingSpots.dropLast()
-                                    cheapestParkingSpots = cheapestParkingSpots.sorted(by: { $0.parkingCost! > $1.parkingCost! })
-                                    if let cheapestBooking = cheapestParkingSpots.last {
-                                        bookingSpots.append(cheapestBooking)
-                                        cheapestParkingSpots = cheapestParkingSpots.dropLast()
-                                        
-                                        closeParkingSpots = cheapestParkingSpots.sorted(by: { $0.parkingDistance! > $1.parkingDistance! })
-                                        for park in closeParkingSpots {
-                                            bookingSpots.append(park)
-                                        }
-                                        self.parkingController.parkingSpots = bookingSpots
-                                    }
-                                }
-                            }
-                        }
+                if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
+                    let location = CLLocation(latitude: latitude, longitude: longitude)
+                    let marker = MGLPointAnnotation()
+                    marker.coordinate = location.coordinate
+                    if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+                        marker.title = ID
+                        mapAnnotationID.append(ID)
+                        self.mapView.addAnnotation(marker)
                     }
                 }
             }
         } else {
-            delayWithSeconds(2.4) {
-                self.parkingSelected()
-                self.dismissKeyboard()
-                //                    self.parkingController.noBookingFound()
+            delayWithSeconds(1) {
+                self.parkingHidden(showMainBar: true)
+                self.createSimpleAlert(title: "No parking in this area", message: "Sign up to be a host today to help improve your parking community!")
             }
         }
     }
     
-    //if a user taps a parking spot
-    func findParkingNearUserLocation() {
-        if let userLocation = locationManager.location {
-            self.organizeParkingLocation(searchLocation: userLocation)
+    func organizeParkingLocations() {
+        var closeParkingSpots = self.availableParkingSpots.sorted(by: { $0.parkingDistance! < $1.parkingDistance! })
+        var cheapestParkingSpots = self.availableParkingSpots.sorted(by: { $0.parkingCost! < $1.parkingCost! })
+        var bookingSpots: [ParkingSpots] = []
+        if let closestParking = closeParkingSpots.first {
+            bookingSpots.append(closestParking)
+            closeParkingSpots.remove(at: 0)
+            if let cheapIndex = cheapestParkingSpots.index(of: closestParking) {
+                cheapestParkingSpots.remove(at: cheapIndex)
+                if let cheapestParking = cheapestParkingSpots.first {
+                    bookingSpots.append(cheapestParking)
+                    if let closeIndex = closeParkingSpots.index(of: cheapestParking) {
+                        closeParkingSpots.remove(at: closeIndex)
+                        for parking in closeParkingSpots {
+                            bookingSpots.append(parking)
+                        }
+                        self.parkingController.parkingSpots = bookingSpots
+                    }
+                }
+            } else {
+                //no parking
+            }
+        } else {
+            //no parking
+        }
+    }
+    
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        // For better performance, always try to reuse existing annotations.
+        if let title = annotation.title, title == "Destination" {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+            }
+            
+            return annotationImage
+        } else if let title = annotation.title, let parkingID = title, let parking = self.parkingSpotsDictionary[parkingID] {
+            if parking.isSpotAvailable == false {
+                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationUnavailableMarker")
+                
+                // If there is no reusable annotation image available, initialize a new one.
+                if(annotationImage == nil) {
+                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationUnavailableMarker")!, reuseIdentifier: "annotationUnavailableMarker")
+                }
+                
+                return annotationImage
+            } else {
+                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+                
+                // If there is no reusable annotation image available, initialize a new one.
+                if(annotationImage == nil) {
+                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+                }
+                
+                return annotationImage
+            }
+        } else {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+            }
+            
+            return annotationImage
+        }
+    }
+    
+    func createSimpleAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        if message != "" {
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        } else {
+            self.present(alert, animated: true)
+            delayWithSeconds(1) {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
     

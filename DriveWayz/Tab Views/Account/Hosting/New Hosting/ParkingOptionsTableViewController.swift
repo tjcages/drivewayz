@@ -1064,7 +1064,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == sharedlotIconLabel || sender == sharedlotImageView {
-            self.parkingType = "lot"
+            self.parkingType = "apartment"
             UIView.animate(withDuration: 0.1) {
                 self.sharedlotIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.sharedlotIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -1135,7 +1135,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == gatedIconLabel || sender == gatedImageView {
-            self.parkingType = "gated"
+            self.parkingType = "gated spot"
             UIView.animate(withDuration: 0.1) {
                 self.gatedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -1159,7 +1159,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == streetIconLabel || sender == streetImageView {
-            self.parkingType = "street"
+            self.parkingType = "street spot"
             UIView.animate(withDuration: 0.1) {
                 self.streetIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.streetIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
@@ -1229,7 +1229,7 @@ extension ParkingOptionsViewController {
                 self.resetCircular()
             }
         } else if sender == undergroundIconLabel || sender == undergroundImageView {
-            self.parkingType = "underground"
+            self.parkingType = "underground spot"
             UIView.animate(withDuration: 0.1) {
                 self.undergroundIconLabel.setTitleColor(Theme.WHITE, for: .normal)
                 self.undergroundIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2

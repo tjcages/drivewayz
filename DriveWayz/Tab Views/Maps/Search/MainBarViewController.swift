@@ -9,7 +9,6 @@
 import UIKit
 
 protocol handleInviteControllers {
-    func inviteControllerDismissed()
     func openEvents()
 }
 
@@ -134,12 +133,12 @@ class MainBarViewController: UIViewController {
         return button
     }()
     
-    var homeLabel: UILabel = {
-        let label = UILabel()
+    var homeLabel: UIButton = {
+        let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Park today and receive 10% off!"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.setTitle("Park today and receive 10% off!", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH4
         
         return label
     }()
@@ -154,11 +153,11 @@ class MainBarViewController: UIViewController {
         return button
     }()
     
-    var recentLabel: UILabel = {
-        let label = UILabel()
+    var recentLabel: UIButton = {
+        let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH4
         
         return label
     }()
@@ -210,24 +209,6 @@ class MainBarViewController: UIViewController {
         
         return controller
     }()
-    
-    lazy var inviteController: InviteExpandedViewController = {
-        let controller = InviteExpandedViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var quickHostController: QuickHostViewController = {
-        let controller = QuickHostViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.delegate = self
-        
-        return controller
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -247,7 +228,6 @@ class MainBarViewController: UIViewController {
         setupInvite()
         setupEvents()
         setupHosting()
-        setupBannerExpanded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -340,13 +320,18 @@ class MainBarViewController: UIViewController {
         
     }
     
+    var inviteHeightAnchor: NSLayoutConstraint!
+    
     func setupInvite() {
         
         scrollView.addSubview(inviteFriendController.view)
         inviteFriendController.view.topAnchor.constraint(equalTo: worksController.view.bottomAnchor, constant: 4).isActive = true
         inviteFriendController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         inviteFriendController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        inviteFriendController.view.heightAnchor.constraint(equalToConstant: 112).isActive = true
+        inviteHeightAnchor = inviteFriendController.view.heightAnchor.constraint(equalToConstant: 112)
+            inviteHeightAnchor.isActive = true
+        let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
+        inviteFriendController.view.addGestureRecognizer(invite)
         
     }
     
@@ -386,24 +371,6 @@ class MainBarViewController: UIViewController {
         newHostController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         newHostController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         newHostController.view.heightAnchor.constraint(equalToConstant: 140).isActive = true
-        
-    }
-    
-    func setupBannerExpanded() {
-        
-        self.view.addSubview(inviteController.view)
-        inviteController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusHeight).isActive = true
-        inviteController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        inviteController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        inviteController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
-        inviteFriendController.view.addGestureRecognizer(invite)
-        
-        self.view.addSubview(quickHostController.view)
-        quickHostController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusHeight).isActive = true
-        quickHostController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        quickHostController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        quickHostController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         let host = UITapGestureRecognizer(target: self, action: #selector(newHostControllerPressed))
         newHostController.view.addGestureRecognizer(host)
         
@@ -415,7 +382,7 @@ class MainBarViewController: UIViewController {
             var first = firstRecent as! String
             if let dotRange = first.range(of: ",") {
                 first.removeSubrange(dotRange.lowerBound..<first.endIndex)
-                self.homeLabel.text = first
+                self.homeLabel.setTitle(first, for: .normal)
                 self.homeButton.alpha = 1
                 self.homeLabel.alpha = 1
                 let image = UIImage(named: "time")
@@ -423,13 +390,15 @@ class MainBarViewController: UIViewController {
                 self.homeButton.setImage(tintedImage, for: .normal)
                 self.homeButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
                 self.homeButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
+                self.homeLabel.addTarget(self, action: #selector(firstRecentPressed), for: .touchUpInside)
+                self.homeButton.addTarget(self, action: #selector(firstRecentPressed), for: .touchUpInside)
             }
         }
         if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
             var second = secondRecent as! String
             if let dotRange = second.range(of: ",") {
                 second.removeSubrange(dotRange.lowerBound..<second.endIndex)
-                self.recentLabel.text = second
+                self.recentLabel.setTitle(second, for: .normal)
                 self.recentButton.alpha = 1
                 self.recentLabel.alpha = 1
                 let image = UIImage(named: "time")
@@ -437,10 +406,24 @@ class MainBarViewController: UIViewController {
                 self.recentButton.setImage(tintedImage, for: .normal)
                 self.recentButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
                 self.recentButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
+                self.recentLabel.addTarget(self, action: #selector(secondRecentPressed), for: .touchUpInside)
+                self.recentButton.addTarget(self, action: #selector(secondRecentPressed), for: .touchUpInside)
             }
         } else {
             self.recentButton.alpha = 0
             self.recentLabel.alpha = 0
+        }
+    }
+    
+    @objc func firstRecentPressed() {
+        if let text = self.homeLabel.titleLabel?.text {
+            self.delegate?.zoomToSearchLocation(address: text)
+        }
+    }
+    
+    @objc func secondRecentPressed() {
+        if let text = self.recentLabel.titleLabel?.text {
+            self.delegate?.zoomToSearchLocation(address: text)
         }
     }
     
@@ -450,22 +433,34 @@ class MainBarViewController: UIViewController {
 extension MainBarViewController: handleInviteControllers {
     
     @objc func inviteControllerPressed() {
-        shouldDragMainBar = false
-        self.delegate?.expandedMainBar()
-        self.scrollView.isScrollEnabled = false
-        self.inviteController.openController()
+        if self.inviteHeightAnchor.constant == 112 {
+            shouldDragMainBar = false
+            self.delegate?.expandedMainBar()
+            self.scrollView.isScrollEnabled = false
+            self.inviteHeightAnchor.constant = 320
+            self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1348)
+            self.scrollView.setContentOffset(CGPoint(x: 0.0, y: 425.0), animated: true)
+            UIView.animate(withDuration: animationIn) {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            shouldDragMainBar = true
+            self.scrollView.isScrollEnabled = true
+            self.inviteHeightAnchor.constant = 112
+            scrollView.contentSize = CGSize(width: phoneWidth, height: 1140)
+            UIView.animate(withDuration: animationIn) {
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     @objc func newHostControllerPressed() {
-        shouldDragMainBar = false
-        self.delegate?.expandedMainBar()
-        self.scrollView.isScrollEnabled = false
-        self.quickHostController.openController()
-    }
-    
-    func inviteControllerDismissed() {
-        shouldDragMainBar = true
-        self.scrollView.isScrollEnabled = true
+        self.scrollView.setContentOffset(.zero, animated: true)
+        self.delegate?.mainBarWillClose()
+        self.delegate?.becomeANewHost()
+        delayWithSeconds(2) {
+            self.scrollView.isScrollEnabled = false
+        }
     }
     
     func openEvents() {
@@ -484,6 +479,7 @@ extension MainBarViewController: handleInviteControllers {
 extension MainBarViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
         let translation = scrollView.contentOffset.y
         if translation < 0 {
             scrollView.contentOffset.y = 0.0

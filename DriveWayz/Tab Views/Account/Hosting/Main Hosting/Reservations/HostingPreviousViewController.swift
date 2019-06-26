@@ -12,7 +12,7 @@ import Cosmos
 
 class HostingPreviousViewController: UIViewController {
     
-    var delegate: handleHostingReservations?
+    var delegate: handlePreviousBookings?
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -32,7 +32,6 @@ class HostingPreviousViewController: UIViewController {
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -101,13 +100,13 @@ class HostingPreviousViewController: UIViewController {
         let view = CosmosView()
         view.rating = 5
         view.settings.updateOnTouch = false
-        view.settings.fillMode = .full
+        view.settings.fillMode = .precise
         view.settings.starSize = 20
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.BLUE
-        view.settings.emptyBorderColor = Theme.OFF_WHITE
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        view.settings.filledBorderColor = Theme.BLUE
+        view.settings.filledColor = Theme.GOLD
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.GOLD
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -263,7 +262,7 @@ class HostingPreviousViewController: UIViewController {
     var userTotalCharge: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$15.96"
+        label.text = ""
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
@@ -397,17 +396,84 @@ class HostingPreviousViewController: UIViewController {
         
         return view
     }()
+    
+    func setData(booking: Bookings, parking: ParkingSpots) {
+        if let userName = booking.userName, let userDuration = booking.userDuration, let userProfileURL = booking.userProfileURL, let userRating = booking.userRating, let parkingLong = booking.parkingLong, let parkingLat = booking.parkingLat, let destLong = booking.destinationLong, let destLat = booking.destinationLat, let fromDate = booking.fromDate, let streetAddress = parking.streetAddress, let cityAddress = parking.cityAddress, let stateAddress = parking.stateAddress {
+            if let payment = booking.totalCost, let hours = booking.hours, let price = booking.price {
+                self.userTotalCharge.text = String(format:"$%.02f", payment)
+                let hostProfit = hours * price * 0.75
+                let bookingFee = 0.30
+                let processingFee = 0.029 * payment
+                let drivewayzFee = hours * price * 0.25
+                self.userProfit.text = String(format:"$%.02f", hostProfit)
+                self.userBookingFee.text = String(format:"-$%.02f", bookingFee)
+                self.userProcessingFee.text = String(format:"-$%.02f", processingFee)
+                self.userDrivewayzFee.text = String(format:"-$%.02f", drivewayzFee)
+            }
+            self.stars.rating = userRating
+            let nameArray = userName.split(separator: " ")
+            self.nameLabel.text = String(nameArray[0])
+            
+            if userProfileURL == "" {
+                self.profileImageView.image = UIImage(named: "background4")
+            } else {
+                self.profileImageView.loadImageUsingCacheWithUrlString(userProfileURL)
+            }
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E, d MMM yyyy"
+            let fromDay = Date(timeIntervalSince1970: fromDate)
+            let fromString = dateFormatter.string(from: fromDay)
+            self.dateLabel.text = fromString
+            
+            let dates = userDuration.split(separator: "-")
+            self.fromTimeLabel.text = String(dates[0])
+            self.toTimeLabel.text = String(dates[1])
+            
+            let location = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+            var center = location
+            center.latitude = center.latitude + 0.0002
+            center.longitude = center.longitude + 0.0006
+            mapView.setCenter(center, zoomLevel: 16, animated: false)
+            let annotation = MGLPointAnnotation()
+            annotation.coordinate = location
+            mapView.addAnnotation(annotation)
+            
+            let parkingLocation = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+            let destinationLocation = CLLocationCoordinate2D(latitude: destLat, longitude: destLong)
+            let distance = parkingLocation.distance(to: destinationLocation)
+            let minutes = distance/93.87839463552
+            
+            self.quickDestinationController.destinationLabel.text = streetAddress
+            self.quickDestinationController.destinationSecondaryLabel.text = "\(cityAddress), \(stateAddress)"
+            self.quickDestinationController.distanceLabel.text = "\(Int(minutes.rounded())) min"
+            self.quickDestinationController.setupData()
+            
+            if let vehicleID = booking.vehicleID {
+                let ref = Database.database().reference().child("UserVehicles").child(vehicleID)
+                ref.observeSingleEvent(of: .value) { (snapshot) in
+                    if let dictionary = snapshot.value as? [String: Any] {
+                        if let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let licensePlate = dictionary["licensePlate"] as? String {
+                            let vehicle = "\(vehicleYear) \(vehicleMake) \(vehicleModel)"
+                            self.userVehicle.text = vehicle
+                            self.userLicense.text = licensePlate
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        mapView.delegate = self
         
         let url = URL(string: "mapbox://styles/mapbox/streets-v11")
         mapView.styleURL = url
         
         setupViews()
-        
         setupUser()
         setupVehicle()
         setupDuration()
@@ -436,19 +502,10 @@ class HostingPreviousViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28 + statusHeight).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48 + statusHeight).isActive = true
         }
-        
-        let location = CLLocationCoordinate2D(latitude: 40.0150, longitude: -105.2705)
-        var center = location
-        center.latitude = center.latitude + 0.0002
-        center.longitude = center.longitude + 0.0006
-        mapView.setCenter(center, zoomLevel: 16, animated: false)
-        let annotation = MGLPointAnnotation()
-        annotation.coordinate = location
-        mapView.addAnnotation(annotation)
         
     }
     
@@ -551,18 +608,18 @@ class HostingPreviousViewController: UIViewController {
         fromTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         fromTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         fromTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
-        fromTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        fromTimeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(toTimeLabel)
         toTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         toTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         toTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
-        toTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        toTimeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(toLabel)
         toLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         toLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        toLabel.bottomAnchor.constraint(equalTo: fromTimeLabel.bottomAnchor).isActive = true
+        toLabel.bottomAnchor.constraint(equalTo: fromTimeLabel.bottomAnchor, constant: -6).isActive = true
         toLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(lineView2)
@@ -664,7 +721,7 @@ class HostingPreviousViewController: UIViewController {
         lineView5.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(reportUser)
-        reportUser.topAnchor.constraint(equalTo: lineView5.bottomAnchor, constant: 12).isActive = true
+        reportUser.topAnchor.constraint(equalTo: lineView5.bottomAnchor, constant: 8).isActive = true
         reportUser.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         reportUser.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         reportUser.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -676,10 +733,6 @@ class HostingPreviousViewController: UIViewController {
         bottomWhiteView.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
         
     }
-    
-    @objc func backButtonPressed() {
-        self.delegate?.returnReservationsPressed()
-    }
 
 }
 
@@ -689,7 +742,35 @@ extension HostingPreviousViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
         if translation <= -30.0 {
-            self.backButtonPressed()
+//            self.backButtonPressed()
+        }
+    }
+    
+}
+
+
+extension HostingPreviousViewController: MGLMapViewDelegate {
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        // For better performance, always try to reuse existing annotations.
+        if let title = annotation.title, title == "Destination" {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+            }
+            
+            return annotationImage
+        } else {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+            }
+            
+            return annotationImage
         }
     }
     

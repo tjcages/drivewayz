@@ -11,13 +11,11 @@ import Firebase
 
 class HostingOptionsViewController: UIViewController {
     
-    var delegate: handleNewHosting?
     var hostDelegate: handleHostEditing?
 
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
         
         return view
     }()
@@ -36,7 +34,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit availability", for: .normal)
-        button.setTitleColor(Theme.BLACK, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
@@ -71,12 +69,11 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Make spot unavailable", for: .normal)
-        button.setTitleColor(Theme.BLACK, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
-//        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
-//        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.addTarget(self, action: #selector(makeSpotUnavailable), for: .touchUpInside)
         
         return button
     }()
@@ -105,7 +102,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add a new parking spot", for: .normal)
-        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.3), for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.3), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(bringNewHostingController), for: .touchUpInside)
 //        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
@@ -123,6 +120,7 @@ class HostingOptionsViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
 //        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)/////////
         
         return button
@@ -146,18 +144,7 @@ class HostingOptionsViewController: UIViewController {
 //        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
-        
-        return button
-    }()
-    
-    var expandDeleteButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)//////
+        button.addTarget(self, action: #selector(deleteSpotPressed), for: .touchUpInside)
         
         return button
     }()
@@ -242,12 +229,6 @@ class HostingOptionsViewController: UIViewController {
         deleteSpot.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         deleteSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        container.addSubview(expandDeleteButton)
-        expandDeleteButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
-        expandDeleteButton.centerYAnchor.constraint(equalTo: deleteSpot.centerYAnchor).isActive = true
-        expandDeleteButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        expandDeleteButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        
     }
     
     @objc func editAvailabilityPressed() {
@@ -256,9 +237,56 @@ class HostingOptionsViewController: UIViewController {
     
     @objc func makeSpotUnavailable() {
         if markUnavailable.titleLabel?.text == "Make spot unavailable" {
-            let ref = Database.database().reference().child("ParkingUnavailability")
-//            ref.updateChildValues([""])
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+            ref.observeSingleEvent(of: .childAdded) { (snapshot) in
+                let parkingID = snapshot.key
+                let parkingRef = Database.database().reference().child("ParkingSpots").child(parkingID)
+                let timestamp = Date().timeIntervalSince1970
+                parkingRef.updateChildValues(["ParkingUnavailability": timestamp])
+                self.markUnavailable.setTitle("Make spot available", for: .normal)
+                self.markUnavailable.setTitleColor(Theme.BLUE, for: .normal)
+            }
+        } else {
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+            ref.observeSingleEvent(of: .childAdded) { (snapshot) in
+                let parkingID = snapshot.key
+                let parkingRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("ParkingUnavailability")
+                parkingRef.removeValue()
+                self.markUnavailable.setTitle("Make spot unavailable", for: .normal)
+                self.markUnavailable.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                
+            }
         }
+    }
+    
+    @objc func deleteSpotPressed() {
+        let alertController = UIAlertController(title: "Are you sure?", message: "This action cannot be undone. Any earnings in your wallet will be removed.", preferredStyle: .alert)
+        
+        let action1 = UIAlertAction(title: "Confirm", style: .default) { (action: UIAlertAction) in
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+            ref.observeSingleEvent(of: .childAdded) { (snapshot) in
+                let parkingID = snapshot.key
+                let parkingRef = Database.database().reference().child("ParkingSpots").child(parkingID)
+                parkingRef.child("Location").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String: Any] {
+                        if let city = dictionary["cityAddress"] as? String {
+                            let cityRef = Database.database().reference().child("ParkingLocations").child(city).child(parkingID)
+                            cityRef.removeValue()
+                            parkingRef.removeValue()
+                            ref.removeValue()
+                        }
+                    }
+                })
+            }
+        }
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func bringNewHostingController() {

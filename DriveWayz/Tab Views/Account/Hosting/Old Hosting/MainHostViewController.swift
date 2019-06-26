@@ -17,10 +17,6 @@ protocol handleHostingScroll {
     func bringNewHostingController()
 }
 
-protocol handleNewHosting {
-    func bringNewHostingController()
-}
-
 class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHostingScroll {
     
     var delegate: controlsAccountOptions?
@@ -370,6 +366,10 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
     
     func handleScroll(height: CGFloat) {
         self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: height)
+    }
+    
+    func hideHostingController() {
+        self.delegate?.hideHostingController()
     }
     
     func bringNewHostingController() {

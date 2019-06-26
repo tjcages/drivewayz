@@ -15,6 +15,8 @@ import Cosmos
 protocol changeSettingsHandler {
     func changeEmail(text: String)
     func changePhone(text: String)
+    func changeName(text: String)
+    
     func bringBackMain()
     func moveToNext()
     func moveToAbout()
@@ -99,7 +101,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "dadAndKid")
+        let image = UIImage(named: "background4")
         imageView.image = image
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -231,7 +233,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         
         self.view.addSubview(scrollView)
         self.view.addSubview(gradientContainer)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 970)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 975)
         scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -324,6 +326,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         self.view.addSubview(privacyController.view)
         self.view.bringSubviewToFront(gradientContainer)
         self.view.bringSubviewToFront(mainLabel)
+        self.view.bringSubviewToFront(profileImageView)
         
         privacyController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         privacyController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -377,6 +380,11 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                         } else {
                             self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
                         }
+                    }
+                    if let userRating = dictionary["rating"] as? Double {
+                        self.starLabel.text = String(format:"%.01f", userRating)
+                    } else {
+                        self.starLabel.text = "5.0"
                     }
                     if let email = dictionary["email"] as? String {
                         self.accountController.optionsSub.append(email)
@@ -700,19 +708,28 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
         }
         dismiss(animated: true) {
             self.view.layoutIfNeeded()
+            self.delegate?.defaultContentStatusBar()
+            self.backButton.tintColor = Theme.DARK_GRAY
         }
     }
     
     func changeEmail(text: String) {
-        self.accountController.optionsSub.insert(text, at: 0)
-        self.accountController.optionsSub.remove(at: 1)
+        self.accountController.optionsSub.insert(text, at: 1)
+        self.accountController.optionsSub.remove(at: 2)
         self.accountController.optionsTableView.reloadData()
         self.otherController.optionsTableView.reloadData()
     }
     
     func changePhone(text: String) {
-        self.accountController.optionsSub.insert(text, at: 1)
-        self.accountController.optionsSub.remove(at: 2)
+        self.accountController.optionsSub.insert(text, at: 2)
+        self.accountController.optionsSub.remove(at: 3)
+        self.accountController.optionsTableView.reloadData()
+        self.otherController.optionsTableView.reloadData()
+    }
+    
+    func changeName(text: String) {
+        self.accountController.optionsSub.insert(text, at: 0)
+        self.accountController.optionsSub.remove(at: 1)
         self.accountController.optionsTableView.reloadData()
         self.otherController.optionsTableView.reloadData()
     }

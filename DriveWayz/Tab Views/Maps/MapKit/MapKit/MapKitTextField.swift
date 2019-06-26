@@ -74,7 +74,6 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     
     @objc func searchBackButtonPressed() {
         self.view.endEditing(true)
-        self.findParkingNearUserLocation()
     }
     
     func showCurrentLocation() {

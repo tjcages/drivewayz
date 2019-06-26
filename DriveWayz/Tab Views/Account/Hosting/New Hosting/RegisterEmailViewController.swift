@@ -11,6 +11,7 @@ import UIKit
 class RegisterEmailViewController: UIViewController {
     
     var delegate: handleConfigureProcess?
+    var goodToGo: Bool = false
     
     var emailTextField: UITextField = {
         let field = UITextField()
@@ -49,6 +50,8 @@ class RegisterEmailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        emailTextField.delegate = self
 
         setupViews()
     }
@@ -103,4 +106,26 @@ class RegisterEmailViewController: UIViewController {
         self.delegate?.moveToNextController()
     }
 
+    func checkIfGood() {
+        if self.emailTextField.text == "" || self.emailTextField.text == "Enter message" {
+            self.goodToGo = false
+        } else {
+            self.goodToGo = true
+        }
+    }
+    
+}
+
+
+extension RegisterEmailViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        self.checkIfGood()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.checkIfGood()
+    }
+    
 }

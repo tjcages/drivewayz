@@ -34,7 +34,9 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                         let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
                         let center = UNUserNotificationCenter.current()
                         center.setNotificationCategories([category])
-                        self.postToDatabase()
+                        DispatchQueue.main.async {
+                            self.postToDatabase()
+                        }
                     }
                 }
             }

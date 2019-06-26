@@ -42,7 +42,7 @@ class ExpandedCostViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         
@@ -57,7 +57,7 @@ class ExpandedCostViewController: UIViewController {
     
     func setData(hosting: ParkingSpots) {
         if let parkingCost = hosting.parkingCost {
-            self.hourlyRate.text = "$ \(parkingCost)"
+            self.hourlyRate.text = String(format:"$%.02f", parkingCost)
         }
     }
     

@@ -287,7 +287,7 @@ class PurchaseViewController: UIViewController, handleHoursSelected {
             let toDate = fromDate.addingTimeInterval(additionalSeconds)
             bookingFromDate = fromDate
             bookingToDate = toDate
-            self.delegate?.observeAllHosting(location: userCity)
+            self.delegate?.observeAllHosting()
         }
     }
     

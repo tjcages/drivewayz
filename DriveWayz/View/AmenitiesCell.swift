@@ -21,10 +21,13 @@ class AmenitiesCell: UICollectionViewCell {
     
     let cellView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.PACIFIC_BLUE
-        view.layer.cornerRadius = 4
-        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.LIGHT_BLUE)
+        background.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 4
         
         return view
     }()

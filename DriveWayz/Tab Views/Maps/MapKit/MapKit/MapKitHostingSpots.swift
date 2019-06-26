@@ -120,7 +120,6 @@ extension MapKitViewController {
         }
         if isNavigating == false {
             UIView.animate(withDuration: animationIn) {
-                self.navigationLabel.alpha = 0
                 self.view.layoutIfNeeded()
             }
         }

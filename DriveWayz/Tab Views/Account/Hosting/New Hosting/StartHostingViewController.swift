@@ -33,7 +33,7 @@ class StartHostingViewController: UIViewController {
     
     var informationLabel: UILabel = {
         let label = UILabel()
-        label.text = "Make up to an extra $100 a week while helping to improve your parking community"
+        label.text = "Make up to $100 a week while helping to improve your parking community"
         label.textColor = Theme.WHITE.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4

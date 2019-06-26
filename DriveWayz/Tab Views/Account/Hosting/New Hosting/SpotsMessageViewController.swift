@@ -13,6 +13,7 @@ import TextFieldEffects
 class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     
     var delegate: handleConfigureProcess?
+    var goodToGo: Bool = false
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
         let aiv = UIActivityIndicatorView(style: .whiteLarge)
@@ -35,8 +36,8 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var message: UITextView = {
         let field = UITextView()
         field.backgroundColor = Theme.OFF_WHITE
-        field.text = "Message"
-        field.textColor = Theme.BLACK
+        field.text = "Enter message"
+        field.textColor = Theme.BLACK.withAlphaComponent(0.4)
         field.font = Fonts.SSPRegularH4
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 4
@@ -144,21 +145,26 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.message.text == "Message" {
+        if self.message.text == "Enter message" {
             self.message.text = ""
             self.message.textColor = Theme.BLACK
+            self.checkIfGood()
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if self.message.text == "" {
-            self.message.text = "Message"
+            self.message.text = "Enter message"
             self.message.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.checkIfGood()
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newLength = (textView.text?.count)! + text.count - range.length
+        delayWithSeconds(0.1) {
+            self.checkIfGood()
+        }
         if (newLength <= 160) {
             self.characterLabel.textColor = Theme.PACIFIC_BLUE
             self.characterLabel.text = "\(newLength)/160"
@@ -180,6 +186,14 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
             ref.updateChildValues(["message": ""])
         } else {
             ref.updateChildValues(["message": text!])
+        }
+    }
+    
+    func checkIfGood() {
+        if self.message.text == "" || self.message.text == "Enter message" {
+            self.goodToGo = false
+        } else {
+            self.goodToGo = true
         }
     }
 

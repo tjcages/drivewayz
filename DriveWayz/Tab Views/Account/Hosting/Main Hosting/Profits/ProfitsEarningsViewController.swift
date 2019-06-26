@@ -23,7 +23,7 @@ class ProfitsEarningsViewController: UIViewController {
     var earningsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Earnings"
+        label.text = "Lifetime Earnings"
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPSemiBoldH5
         
@@ -63,7 +63,7 @@ class ProfitsEarningsViewController: UIViewController {
     var earningsAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$1959.90"
+        label.text = "$0.00"
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPSemiBoldH5
         label.textAlignment = .right
@@ -74,7 +74,7 @@ class ProfitsEarningsViewController: UIViewController {
     var totalProfitsAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$2230.00"
+        label.text = "$0.00"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
@@ -85,7 +85,7 @@ class ProfitsEarningsViewController: UIViewController {
     var feesAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$69.80"
+        label.text = "$0.00"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
@@ -96,7 +96,7 @@ class ProfitsEarningsViewController: UIViewController {
     var drivewayzAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$206.40"
+        label.text = "$0.00"
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right

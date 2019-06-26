@@ -30,7 +30,7 @@ class UserCell: UITableViewCell {
         didSet {
             setUpParkingSpot()
 //            detailTextLabel?.text = parking?.parkingCost
-            if let seconds = parking?.timestamp?.doubleValue {
+            if let parking = parking, let seconds = parking.timestamp {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm a"

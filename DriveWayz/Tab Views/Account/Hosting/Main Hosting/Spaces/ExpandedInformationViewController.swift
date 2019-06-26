@@ -38,9 +38,9 @@ class ExpandedInformationViewController: UIViewController {
     var dateLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Listed on 1/19/2019"
-        label.font = Fonts.SSPRegularH3
+        label.font = Fonts.SSPRegularH5
         label.backgroundColor = UIColor.clear
         label.isScrollEnabled = false
         label.isUserInteractionEnabled = false
@@ -60,7 +60,7 @@ class ExpandedInformationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         
@@ -70,21 +70,20 @@ class ExpandedInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViews()
     }
     
     func setData(hosting: ParkingSpots) {
         if let primaryType = hosting.mainType, let secondaryType = hosting.secondaryType, let hostMessage = hosting.hostMessage, let timestamp = hosting.timestamp {
             self.residentialLabel.text = "\(primaryType.uppercased())  |  \(secondaryType.capitalizingFirstLetter())"
             self.messageLabel.text = hostMessage
-            let date = Date(timeIntervalSince1970: Double(truncating: timestamp))
+            let date = Date(timeIntervalSince1970: timestamp)
             let dateFormatter = DateFormatter()
             dateFormatter.locale = NSLocale.current
             dateFormatter.dateFormat = "M/dd/yyyy"
             let stringDate = dateFormatter.string(from: date)
             self.dateLabel.text = "Listed on \(stringDate)"
         }
-//        setupViews()
+        setupViews()
     }
     
     func setupViews() {
@@ -103,12 +102,13 @@ class ExpandedInformationViewController: UIViewController {
         
         self.view.addSubview(messageLabel)
         messageLabel.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: -4).isActive = true
-        messageLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        messageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24).isActive = true
+        messageLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
+        messageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
+        messageLabel.sizeToFit()
+//        messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24).isActive = true
         
         self.view.addSubview(dateLabel)
-        dateLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: -10).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 4).isActive = true
         dateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
         dateLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         dateLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true

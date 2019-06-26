@@ -10,7 +10,162 @@ import UIKit
 
 class ProfitsChartViewController: UIViewController {
     
+    var delegate: handleProfitCharts?
+    
     let halfWidth = (phoneWidth - 54)/7
+    var stringDates: [String] = []
+    var dateProfits: [Double] = [] {
+        didSet {
+            if let max = self.dateProfits.max() {
+                if max == 0.0 {
+                    self.maxProfit = 5.0
+                } else {
+                    self.maxProfit = max
+                }
+                self.setupCharts(index: 0)
+            }
+        }
+    }
+    var maxProfit: Double = 5.0
+    var weekProfits: Double = 0.0 {
+        didSet {
+            self.delegate?.setProfits(amount: self.weekProfits)
+        }
+    }
+    var currentDates: [String] = []
+    var currentProfits: [Double] = []
+    var previousIndex: Int = 0
+    
+    func setupCharts(index: Int) {
+        self.weekProfits = 0.0
+        self.previousIndex = index
+        var reversedDates = [String]()
+        for arrayIndex in stride(from: self.stringDates.count - 1, through: 0, by: -1) {
+            reversedDates.append(self.stringDates[arrayIndex])
+        }
+        var reversedProfits = [Double]()
+        for arrayIndex in stride(from: self.dateProfits.count - 1, through: 0, by: -1) {
+            reversedProfits.append(self.dateProfits[arrayIndex])
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        if reversedDates.count > index && reversedProfits.count > index {
+            self.currentDates = []
+            self.currentProfits = []
+            var dateIndex = index
+            if dateIndex < 0 {
+                self.delegate?.disableNextWeek()
+                dateIndex = 0
+            } else if index != 0 {
+                self.delegate?.enableNextWeek()
+            }
+            let firstDate = reversedDates[dateIndex]
+            let price = reversedProfits[dateIndex]
+            self.weekProfits = self.weekProfits + price
+            self.currentDates.append(firstDate)
+            self.currentProfits.append(price)
+            if var date = formatter.date(from: firstDate)?.getDayOfWeekFC() {
+                let firstDay = date
+                delayWithSeconds(animationOut) {
+                    self.programmaticallySelectBar(dayInt: firstDay)
+                }
+                while date != 1 {
+                    dateIndex += 1
+                    self.delegate?.enableLastWeek()
+                    if reversedDates.count > dateIndex {
+                        let value = reversedDates[dateIndex]
+                        let price = reversedProfits[dateIndex]
+                        self.weekProfits = self.weekProfits + price
+                        date = (formatter.date(from: value)?.getDayOfWeekFC())!
+                        self.currentDates.append(value)
+                        self.currentProfits.append(price)
+                        self.previousIndex = dateIndex
+                        if date == 1 {
+                            let firstDateArray = firstDate.split(separator: " ")
+                            let firstDay = firstDateArray[0]
+                            let dateArray = value.split(separator: " ")
+                            let day = dateArray[0]
+                            if firstDay == day {
+                                let weekString = "\(firstDay) \(dateArray[1]) - \(firstDateArray[1])"
+                                self.delegate?.setDates(dateString: weekString.replacingOccurrences(of: ",", with: ""))
+                            } else {
+                                let weekString = "\(day) \(dateArray[1]) - \(firstDay) \(firstDateArray[1])"
+                                self.delegate?.setDates(dateString: weekString.replacingOccurrences(of: ",", with: ""))
+                            }
+                        }
+                    } else {
+                        date = 1
+                        self.delegate?.disableLastWeek()
+                    }
+                }
+            }
+        }
+        self.reloadCharts()
+    }
+    
+    func reloadCharts() {
+        self.sundayHeight.constant = 24
+        self.mondayHeight.constant = 24
+        self.tuesdayHeight.constant = 24
+        self.wednesdayHeight.constant = 24
+        self.thursdayHeight.constant = 24
+        self.fridayHeight.constant = 24
+        self.saturdayHeight.constant = 24
+        var datesArray = [String]()
+        for arrayIndex in stride(from: self.currentDates.count - 1, through: 0, by: -1) {
+            datesArray.append(self.currentDates[arrayIndex])
+        }
+        var profitsArray = [Double]()
+        for arrayIndex in stride(from: self.currentProfits.count - 1, through: 0, by: -1) {
+            profitsArray.append(self.currentProfits[arrayIndex])
+        }
+        var index = 0
+        for (profit, date) in zip(profitsArray, datesArray) {
+            index += 1
+            let height = CGFloat(profit/maxProfit * 110 + 24)
+            if index == 1 {
+                self.sundayHeight.constant = height
+                self.sundayButton.setTitle(date, for: .normal)
+            } else if index == 2 {
+                self.mondayHeight.constant = height
+                self.mondayButton.setTitle(date, for: .normal)
+            } else if index == 3 {
+                self.tuesdayHeight.constant = height
+                self.tuesdayButton.setTitle(date, for: .normal)
+            } else if index == 4 {
+                self.wednesdayHeight.constant = height
+                self.wednesdayButton.setTitle(date, for: .normal)
+            } else if index == 5 {
+                self.thursdayHeight.constant = height
+                self.thursdayButton.setTitle(date, for: .normal)
+            } else if index == 6 {
+                self.fridayHeight.constant = height
+                self.fridayButton.setTitle(date, for: .normal)
+            } else if index == 7 {
+                self.saturdayHeight.constant = height
+                self.saturdayButton.setTitle(date, for: .normal)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func programmaticallySelectBar(dayInt: Int) {
+        if dayInt == 1 {
+            self.dateTapped(sender: self.sundayButton)
+        } else if dayInt == 2 {
+            self.dateTapped(sender: self.mondayButton)
+        } else if dayInt == 3 {
+            self.dateTapped(sender: self.tuesdayButton)
+        } else if dayInt == 4 {
+            self.dateTapped(sender: self.wednesdayButton)
+        } else if dayInt == 5 {
+            self.dateTapped(sender: self.thursdayButton)
+        } else if dayInt == 6 {
+            self.dateTapped(sender: self.fridayButton)
+        } else if dayInt == 7 {
+            self.dateTapped(sender: self.saturdayButton)
+        }
+    }
     
     var selectedView: UIView = {
         let view = UIView()
@@ -21,6 +176,7 @@ class ProfitsChartViewController: UIViewController {
         view.layer.shadowRadius = 2
         view.layer.shadowOpacity = 0
         view.layer.shadowOffset = .zero
+        view.alpha = 0
         
         return view
     }()
@@ -71,7 +227,16 @@ class ProfitsChartViewController: UIViewController {
     
     @objc func dateTapped(sender: UIButton) {
         self.removeAllCenterConstraints()
+        guard let date = sender.titleLabel?.text else { return }
+        if let index = self.currentDates.index(of: date) {
+            let profit = self.currentProfits[index]
+            self.profitsLabel.text = String(format:"$%.02f", profit)
+            let dateArray = date.split(separator: ",")
+            let day = dateArray[0]
+            self.datesLabel.text = String(day)
+        }
         UIView.animate(withDuration: animationOut) {
+            self.selectedView.alpha = 1
             if sender == self.sundayButton {
                 self.selectionCenterSundayAnchor.isActive = true
                 self.selectionTopSundayAnchor.isActive = true
@@ -130,19 +295,19 @@ class ProfitsChartViewController: UIViewController {
         self.selectionCenterSaturdayAnchor.isActive = false
         self.selectionTopSaturdayAnchor.isActive = false
         self.selectionContainerCenterXAnchor.constant = 0
-        self.sundayLabel.alpha = 0.6
+        self.sundayLabel.alpha = 0.3
         self.sundayBar.alpha = 0.5
-        self.mondayLabel.alpha = 0.6
+        self.mondayLabel.alpha = 0.3
         self.mondayBar.alpha = 0.5
-        self.tuesdayLabel.alpha = 0.6
+        self.tuesdayLabel.alpha = 0.3
         self.tuesdayBar.alpha = 0.5
-        self.wednesdayLabel.alpha = 0.6
+        self.wednesdayLabel.alpha = 0.3
         self.wednesdayBar.alpha = 0.5
-        self.thursdayLabel.alpha = 0.6
+        self.thursdayLabel.alpha = 0.3
         self.thursdayBar.alpha = 0.5
-        self.fridayLabel.alpha = 0.6
+        self.fridayLabel.alpha = 0.3
         self.fridayBar.alpha = 0.5
-        self.saturdayLabel.alpha = 0.6
+        self.saturdayLabel.alpha = 0.3
         self.saturdayBar.alpha = 0.5
     }
     
@@ -271,6 +436,14 @@ class ProfitsChartViewController: UIViewController {
         profitsLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
     }
+    
+    var sundayHeight: NSLayoutConstraint!
+    var mondayHeight: NSLayoutConstraint!
+    var tuesdayHeight: NSLayoutConstraint!
+    var wednesdayHeight: NSLayoutConstraint!
+    var thursdayHeight: NSLayoutConstraint!
+    var fridayHeight: NSLayoutConstraint!
+    var saturdayHeight: NSLayoutConstraint!
 
     func setupBarGraphs() {
         
@@ -284,7 +457,8 @@ class ProfitsChartViewController: UIViewController {
         sundayBar.centerXAnchor.constraint(equalTo: sundayLabel.centerXAnchor).isActive = true
         sundayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         sundayBar.bottomAnchor.constraint(equalTo: sundayLabel.topAnchor, constant: -12).isActive = true
-        sundayBar.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        sundayHeight = sundayBar.heightAnchor.constraint(equalToConstant: 24)
+            sundayHeight.isActive = true
         
         self.view.addSubview(saturdayLabel)
         saturdayLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
@@ -296,7 +470,8 @@ class ProfitsChartViewController: UIViewController {
         saturdayBar.centerXAnchor.constraint(equalTo: saturdayLabel.centerXAnchor).isActive = true
         saturdayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         saturdayBar.bottomAnchor.constraint(equalTo: saturdayLabel.topAnchor, constant: -12).isActive = true
-        saturdayBar.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        saturdayHeight = saturdayBar.heightAnchor.constraint(equalToConstant: 24)
+            saturdayHeight.isActive = true
         
         self.view.addSubview(wednesdayLabel)
         wednesdayLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -308,7 +483,8 @@ class ProfitsChartViewController: UIViewController {
         wednesdayBar.centerXAnchor.constraint(equalTo: wednesdayLabel.centerXAnchor).isActive = true
         wednesdayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         wednesdayBar.bottomAnchor.constraint(equalTo: wednesdayLabel.topAnchor, constant: -12).isActive = true
-        wednesdayBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        wednesdayHeight = wednesdayBar.heightAnchor.constraint(equalToConstant: 24)
+            wednesdayHeight.isActive = true
      
         self.view.addSubview(mondayLabel)
         mondayLabel.centerXAnchor.constraint(equalTo: sundayLabel.centerXAnchor, constant: halfWidth).isActive = true
@@ -320,7 +496,8 @@ class ProfitsChartViewController: UIViewController {
         mondayBar.centerXAnchor.constraint(equalTo: mondayLabel.centerXAnchor).isActive = true
         mondayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         mondayBar.bottomAnchor.constraint(equalTo: mondayLabel.topAnchor, constant: -12).isActive = true
-        mondayBar.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        mondayHeight = mondayBar.heightAnchor.constraint(equalToConstant: 24)
+            mondayHeight.isActive = true
         
         self.view.addSubview(tuesdayLabel)
         tuesdayLabel.centerXAnchor.constraint(equalTo: mondayLabel.centerXAnchor, constant: halfWidth).isActive = true
@@ -332,7 +509,8 @@ class ProfitsChartViewController: UIViewController {
         tuesdayBar.centerXAnchor.constraint(equalTo: tuesdayLabel.centerXAnchor).isActive = true
         tuesdayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         tuesdayBar.bottomAnchor.constraint(equalTo: tuesdayLabel.topAnchor, constant: -12).isActive = true
-        tuesdayBar.heightAnchor.constraint(equalToConstant: 130).isActive = true
+        tuesdayHeight = tuesdayBar.heightAnchor.constraint(equalToConstant: 24)
+            tuesdayHeight.isActive = true
         
         self.view.addSubview(thursdayLabel)
         thursdayLabel.centerXAnchor.constraint(equalTo: wednesdayLabel.centerXAnchor, constant: halfWidth).isActive = true
@@ -344,7 +522,8 @@ class ProfitsChartViewController: UIViewController {
         thursdayBar.centerXAnchor.constraint(equalTo: thursdayLabel.centerXAnchor).isActive = true
         thursdayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         thursdayBar.bottomAnchor.constraint(equalTo: thursdayLabel.topAnchor, constant: -12).isActive = true
-        thursdayBar.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        thursdayHeight = thursdayBar.heightAnchor.constraint(equalToConstant: 24)
+            thursdayHeight.isActive = true
         
         self.view.addSubview(fridayLabel)
         fridayLabel.centerXAnchor.constraint(equalTo: thursdayLabel.centerXAnchor, constant: halfWidth).isActive = true
@@ -356,7 +535,8 @@ class ProfitsChartViewController: UIViewController {
         fridayBar.centerXAnchor.constraint(equalTo: fridayLabel.centerXAnchor).isActive = true
         fridayBar.widthAnchor.constraint(equalToConstant: 20).isActive = true
         fridayBar.bottomAnchor.constraint(equalTo: fridayLabel.topAnchor, constant: -12).isActive = true
-        fridayBar.heightAnchor.constraint(equalToConstant: 110).isActive = true
+        fridayHeight = fridayBar.heightAnchor.constraint(equalToConstant: 24)
+            fridayHeight.isActive = true
         
     }
     
@@ -374,6 +554,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -383,6 +564,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -392,6 +574,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -401,6 +584,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -410,6 +594,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -419,6 +604,7 @@ class ProfitsChartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dateTapped(sender:)), for: .touchUpInside)
+        button.setTitleColor(UIColor.clear, for: .normal)
         
         return button
     }()
@@ -438,7 +624,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "S"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -460,7 +646,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "M"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -481,6 +667,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "T"
         label.textColor = Theme.DARK_GRAY
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -502,7 +689,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "W"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -524,7 +711,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "T"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -546,7 +733,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "F"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -568,7 +755,7 @@ class ProfitsChartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "S"
         label.textColor = Theme.DARK_GRAY
-        label.alpha = 0.6
+        label.alpha = 0.3
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         

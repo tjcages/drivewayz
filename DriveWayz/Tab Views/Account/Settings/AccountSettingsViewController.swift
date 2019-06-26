@@ -14,7 +14,7 @@ class AccountSettingsViewController: UIViewController {
     var delegate: changeSettingsHandler?
     let cellId = "cellId"
     var options: [String] = ["Name", "Email", "Phone"]
-    var optionsSub: [String] = ["Samantha Wilson", "samantha@gmail.con", "+62 856 099 849"]
+    var optionsSub: [String] = ["No name", "No email", "No phone number"]
     var optionsColorsTop: [UIColor] = [Theme.LightOrange, Theme.LightPink, Theme.LightGreen]
     var optionsColorsBottom: [UIColor] = [Theme.DarkOrange, Theme.DarkPink, Theme.DarkGreen]
     var optionsIcons: [UIImage] = [UIImage(named: "settingsProfile")!, UIImage(named: "settingsEmail")!, UIImage(named: "settingsPhone")!]

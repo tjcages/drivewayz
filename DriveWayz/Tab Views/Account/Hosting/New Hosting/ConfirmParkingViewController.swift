@@ -55,9 +55,9 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.SEA_BLUE
-        button.setTitle("ALLOW", for: .normal)
+        button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPSemiBoldH2
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(registerForPushNotifications), for: .touchUpInside)
         let background = CAGradientLayer().purpleColor()
@@ -73,9 +73,9 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        button.setTitle("ALLOW", for: .normal)
+        button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPSemiBoldH2
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
         
@@ -124,7 +124,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.backgroundColor = Theme.SEA_BLUE
         button.setTitle("Confirm", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPSemiBoldH2
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         let background = CAGradientLayer().purpleColor()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 120, height: 60)
@@ -198,7 +198,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         sendToNotifications.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(informationAcceptLabel)
-        informationAcceptLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: self.view.frame.height).isActive = true
+        informationAcceptLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: self.view.frame.height + 20).isActive = true
         informationAcceptLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         informationAcceptLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationAcceptLabel.heightAnchor.constraint(equalToConstant: 160).isActive = true

@@ -8,6 +8,9 @@
 
 import UIKit
 import Mapbox
+import MapboxDirections
+import MapboxNavigation
+import MapboxCoreNavigation
 import Cosmos
 
 var check: Bool = false
@@ -15,6 +18,42 @@ var check: Bool = false
 class UserRecentViewController: UIViewController {
     
     var delegate: handleUpcomingConrollers?
+    
+    var secondaryType: String = "driveway" {
+        didSet {
+            if secondaryType == "driveway" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.profileImageView.image = image
+            } else if secondaryType == "parking lot" {
+                let image = UIImage(named: "Parking Lot")
+                self.profileImageView.image = image
+            } else if secondaryType == "apartment" {
+                let image = UIImage(named: "Apartment Parking")
+                self.profileImageView.image = image
+            } else if secondaryType == "alley" {
+                let image = UIImage(named: "Alley Parking")
+                self.profileImageView.image = image
+            } else if secondaryType == "garage" {
+                let image = UIImage(named: "Parking Garage")
+                self.profileImageView.image = image
+            } else if secondaryType == "gated spot" {
+                let image = UIImage(named: "Gated Spot")
+                self.profileImageView.image = image
+            } else if secondaryType == "street spot" {
+                let image = UIImage(named: "Street Parking")
+                self.profileImageView.image = image
+            } else if secondaryType == "underground spot" {
+                let image = UIImage(named: "UnderGround Parking")
+                self.profileImageView.image = image
+            } else if secondaryType == "condo" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.profileImageView.image = image
+            } else if secondaryType == "circular" {
+                let image = UIImage(named: "Other Parking")
+                self.profileImageView.image = image
+            }
+        }
+    }
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -34,13 +73,12 @@ class UserRecentViewController: UIViewController {
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
     }()
     
     lazy var mapView: MGLMapView = {
-        let view = MGLMapView(frame: self.view.bounds)
+        let view = MGLMapView()
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.setCenter(CLLocationCoordinate2D(latitude: 59.31, longitude: 18.06), zoomLevel: 9, animated: false)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +100,7 @@ class UserRecentViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
         view.layer.cornerRadius = 50
-        view.backgroundColor = Theme.WHITE
-        view.image = UIImage(named: "background4")
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -81,13 +118,6 @@ class UserRecentViewController: UIViewController {
         return view
     }()
     
-    var quickDestinationController: HostingQuickViewController = {
-        let controller = HostingQuickViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
-    
     var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -103,13 +133,13 @@ class UserRecentViewController: UIViewController {
         let view = CosmosView()
         view.rating = 5
         view.settings.updateOnTouch = false
-        view.settings.fillMode = .full
+        view.settings.fillMode = .precise
         view.settings.starSize = 20
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.BLUE
-        view.settings.emptyBorderColor = Theme.OFF_WHITE
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        view.settings.filledBorderColor = Theme.BLUE
+        view.settings.filledColor = Theme.GOLD
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.GOLD
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -129,7 +159,7 @@ class UserRecentViewController: UIViewController {
     var userVehicle: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2004 Toyota 4Runner"
+        label.text = "N/A"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -158,7 +188,7 @@ class UserRecentViewController: UIViewController {
     var userLicense: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "312-ZRA"
+        label.text = "N/A"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -195,7 +225,7 @@ class UserRecentViewController: UIViewController {
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Sat Jan 12, 2019"
+        label.text = ""
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
@@ -205,7 +235,7 @@ class UserRecentViewController: UIViewController {
     var fromTimeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2:15 PM"
+        label.text = ""
         label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH0
         
@@ -215,7 +245,7 @@ class UserRecentViewController: UIViewController {
     var toTimeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4:30 PM"
+        label.text = ""
         label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH0
         label.textAlignment = .right
@@ -265,8 +295,8 @@ class UserRecentViewController: UIViewController {
     var userTotalCharge: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$15.96"
-        label.textColor = Theme.BLACK
+        label.text = ""
+        label.textColor = Theme.GREEN_PIGMENT
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -294,7 +324,7 @@ class UserRecentViewController: UIViewController {
     var userBookingFee: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "-$0.32"
+        label.text = ""
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -315,7 +345,7 @@ class UserRecentViewController: UIViewController {
     var userProcessingFee: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "-$1.23"
+        label.text = ""
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -336,7 +366,7 @@ class UserRecentViewController: UIViewController {
     var userDrivewayzFee: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "-$2.80"
+        label.text = ""
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -356,7 +386,7 @@ class UserRecentViewController: UIViewController {
     var profitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Your profit"
+        label.text = "Host profit"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
@@ -366,8 +396,8 @@ class UserRecentViewController: UIViewController {
     var userProfit: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$12.38"
-        label.textColor = Theme.GREEN_PIGMENT
+        label.text = ""
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -400,16 +430,105 @@ class UserRecentViewController: UIViewController {
         return view
     }()
     
+    func setData(booking: Bookings) {
+        if let userName = booking.parkingName, let userDuration = booking.userDuration, let parkingType = booking.parkingType, let userRating = booking.parkingRating, let parkingLong = booking.parkingLong, let parkingLat = booking.parkingLat, let destLong = booking.destinationLong, let destLat = booking.destinationLat, let fromDate = booking.fromDate {
+            if let payment = booking.totalCost, let hours = booking.hours, let price = booking.price {
+                self.userTotalCharge.text = String(format:"$%.02f", payment)
+                let hostProfit = hours * price * 0.75
+                let bookingFee = 0.30
+                let processingFee = 0.029 * payment
+                let drivewayzFee = hours * price * 0.25
+                self.userProfit.text = String(format:"$%.02f", hostProfit)
+                self.userBookingFee.text = String(format:"-$%.02f", bookingFee)
+                self.userProcessingFee.text = String(format:"-$%.02f", processingFee)
+                self.userDrivewayzFee.text = String(format:"-$%.02f", drivewayzFee)
+            }
+            self.stars.rating = userRating
+            self.nameLabel.text = userName
+            
+            self.secondaryType = parkingType
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E, d MMM yyyy"
+            let fromDay = Date(timeIntervalSince1970: fromDate)
+            let fromString = dateFormatter.string(from: fromDay)
+            self.dateLabel.text = fromString
+            
+            let dates = userDuration.split(separator: "-")
+            self.fromTimeLabel.text = String(dates[0])
+            self.toTimeLabel.text = String(dates[1])
+            
+            let location = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+            var center = location
+            center.latitude = center.latitude + 0.0002
+            center.longitude = center.longitude + 0.0006
+            mapView.setCenter(center, zoomLevel: 16, animated: false)
+            let annotation = MGLPointAnnotation()
+            annotation.coordinate = location
+            mapView.addAnnotation(annotation)
+            
+            let parkingLocation = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+            let destinationLocation = CLLocationCoordinate2D(latitude: destLat, longitude: destLong)
+            
+            self.drawRoute(fromLocation: parkingLocation, toLocation: destinationLocation)
+            
+            if let vehicleID = booking.vehicleID {
+                let ref = Database.database().reference().child("UserVehicles").child(vehicleID)
+                ref.observeSingleEvent(of: .value) { (snapshot) in
+                    if let dictionary = snapshot.value as? [String: Any] {
+                        if let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let licensePlate = dictionary["licensePlate"] as? String {
+                            let vehicle = "\(vehicleYear) \(vehicleMake) \(vehicleModel)"
+                            self.userVehicle.text = vehicle
+                            self.userLicense.text = licensePlate
+                            self.userVehicle.sizeToFit()
+                            self.userLicense.sizeToFit()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    lazy var quickDestinationController: QuickDestinationViewController = {
+        let controller = QuickDestinationViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Destination"
+        controller.view.alpha = 1
+        controller.view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        return controller
+    }()
+    
+    lazy var quickParkingController: QuickParkingViewController = {
+        let controller = QuickParkingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Destination"
+        controller.view.alpha = 1
+        controller.view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        return controller
+    }()
+    
+    var quickDestinationWidthAnchor: NSLayoutConstraint!
+    var quickParkingWidthAnchor: NSLayoutConstraint!
+    var quickDestinationRightAnchor: NSLayoutConstraint!
+    var quickDestinationTopAnchor: NSLayoutConstraint!
+    var quickParkingRightAnchor: NSLayoutConstraint!
+    var quickParkingTopAnchor: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        mapView.delegate = self
+        
+        view.backgroundColor = Theme.WHITE
+        view.clipsToBounds = true
         
         let url = URL(string: "mapbox://styles/mapbox/streets-v11")
         mapView.styleURL = url
         
         setupViews()
-        
         setupUser()
         setupVehicle()
         setupDuration()
@@ -419,18 +538,36 @@ class UserRecentViewController: UIViewController {
     
     func setupViews() {
         
+        self.view.addSubview(mapView)
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1000)
+        mapView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: -statusHeight).isActive = true
+        mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        mapView.heightAnchor.constraint(equalToConstant: 280 + statusHeight).isActive = true
+        
+        mapView.addSubview(quickDestinationController.view)
+        quickDestinationRightAnchor = quickDestinationController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
+            quickDestinationRightAnchor.isActive = true
+        quickDestinationTopAnchor = quickDestinationController.view.centerYAnchor.constraint(equalTo: self.view.topAnchor)
+            quickDestinationTopAnchor.isActive = true
+        quickDestinationWidthAnchor = quickDestinationController.view.widthAnchor.constraint(equalToConstant: 100)
+            quickDestinationWidthAnchor.isActive = true
+        quickDestinationController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        mapView.addSubview(quickParkingController.view)
+        quickParkingRightAnchor = quickParkingController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
+            quickParkingRightAnchor.isActive = true
+        quickParkingTopAnchor = quickParkingController.view.centerYAnchor.constraint(equalTo: self.view.topAnchor)
+            quickParkingTopAnchor.isActive = true
+        quickParkingWidthAnchor = quickParkingController.view.widthAnchor.constraint(equalToConstant: 100)
+            quickParkingWidthAnchor.isActive = true
+        quickParkingController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        scrollView.contentSize = CGSize(width: phoneWidth, height: 1060)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        scrollView.addSubview(mapView)
-        mapView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mapView.heightAnchor.constraint(equalToConstant: 220 + statusHeight).isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -438,26 +575,17 @@ class UserRecentViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28 + statusHeight).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 36 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48 + statusHeight).isActive = true
         }
-        
-        let location = CLLocationCoordinate2D(latitude: 40.0150, longitude: -105.2705)
-        var center = location
-        center.latitude = center.latitude + 0.0002
-        center.longitude = center.longitude + 0.0006
-        mapView.setCenter(center, zoomLevel: 16, animated: false)
-        let annotation = MGLPointAnnotation()
-        annotation.coordinate = location
-        mapView.addAnnotation(annotation)
         
     }
     
     func setupUser() {
         
         scrollView.addSubview(profileImageView)
-        profileImageView.centerYAnchor.constraint(equalTo: mapView.bottomAnchor, constant: 8).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: scrollView.topAnchor, constant: 240 + statusHeight).isActive = true
         profileImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
@@ -468,12 +596,6 @@ class UserRecentViewController: UIViewController {
         whiteCircle.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         whiteCircle.widthAnchor.constraint(equalToConstant: 1000).isActive = true
         whiteCircle.heightAnchor.constraint(equalTo: whiteCircle.widthAnchor).isActive = true
-        
-        scrollView.addSubview(quickDestinationController.view)
-        quickDestinationController.view.leftAnchor.constraint(equalTo: mapView.centerXAnchor, constant: -30).isActive = true
-        quickDestinationController.view.centerYAnchor.constraint(equalTo: mapView.centerYAnchor, constant: -20).isActive = true
-        quickDestinationController.view.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        quickDestinationController.view.heightAnchor.constraint(equalToConstant: 45).isActive = true
         
         scrollView.addSubview(nameLabel)
         nameLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -498,14 +620,14 @@ class UserRecentViewController: UIViewController {
         vehicleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(userVehicle)
-        userVehicle.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         userVehicle.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         userVehicle.topAnchor.constraint(equalTo: stars.bottomAnchor, constant: 24).isActive = true
         userVehicle.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        userVehicle.sizeToFit()
         
         scrollView.addSubview(vehicleLine)
         vehicleLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32 + (vehicleLabel.text?.width(withConstrainedHeight: 20, font: Fonts.SSPRegularH4))!).isActive = true
-        vehicleLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32 - (userVehicle.text?.width(withConstrainedHeight: 20, font: Fonts.SSPRegularH4))!).isActive = true
+        vehicleLine.rightAnchor.constraint(equalTo: userVehicle.leftAnchor, constant: -8).isActive = true
         vehicleLine.bottomAnchor.constraint(equalTo: vehicleLabel.bottomAnchor, constant: -2).isActive = true
         vehicleLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
@@ -516,14 +638,14 @@ class UserRecentViewController: UIViewController {
         licenseLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(userLicense)
-        userLicense.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         userLicense.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         userLicense.topAnchor.constraint(equalTo: vehicleLabel.bottomAnchor, constant: 12).isActive = true
         userLicense.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        userLicense.sizeToFit()
         
         scrollView.addSubview(licenseLine)
         licenseLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32 + (licenseLabel.text?.width(withConstrainedHeight: 20, font: Fonts.SSPRegularH4))!).isActive = true
-        licenseLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32 - (userLicense.text?.width(withConstrainedHeight: 20, font: Fonts.SSPRegularH4))!).isActive = true
+        licenseLine.rightAnchor.constraint(equalTo: userLicense.leftAnchor, constant: -8).isActive = true
         licenseLine.bottomAnchor.constraint(equalTo: licenseLabel.bottomAnchor, constant: -2).isActive = true
         licenseLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
@@ -553,18 +675,18 @@ class UserRecentViewController: UIViewController {
         fromTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         fromTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         fromTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
-        fromTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        fromTimeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(toTimeLabel)
         toTimeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         toTimeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         toTimeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 12).isActive = true
-        toTimeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        toTimeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(toLabel)
         toLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         toLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        toLabel.bottomAnchor.constraint(equalTo: fromTimeLabel.bottomAnchor).isActive = true
+        toLabel.bottomAnchor.constraint(equalTo: fromTimeLabel.bottomAnchor, constant: -6).isActive = true
         toLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         scrollView.addSubview(lineView2)
@@ -666,7 +788,7 @@ class UserRecentViewController: UIViewController {
         lineView5.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         scrollView.addSubview(reportUser)
-        reportUser.topAnchor.constraint(equalTo: lineView5.bottomAnchor, constant: 12).isActive = true
+        reportUser.topAnchor.constraint(equalTo: lineView5.bottomAnchor, constant: 8).isActive = true
         reportUser.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         reportUser.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         reportUser.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -679,10 +801,6 @@ class UserRecentViewController: UIViewController {
         
     }
     
-    @objc func backButtonPressed() {
-        self.delegate?.closeRecentController()
-    }
-    
 }
 
 
@@ -690,18 +808,135 @@ extension UserRecentViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
-        if translation <= -30.0 {
-            self.backButtonPressed()
+        if translation <= -20.0 {
+            scrollView.contentOffset.y = -20.0
         }
     }
     
 }
 
 
-
-
-
-
-
-
-
+extension UserRecentViewController: MGLMapViewDelegate {
+    
+    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        // Set the line width for polyline annotations
+        return 5
+    }
+    
+    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+        return Theme.PRUSSIAN_BLUE
+    }
+    
+    func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        return 0.8
+    }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        // For better performance, always try to reuse existing annotations.
+        if let title = annotation.title, title == "Destination" {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+            }
+            
+            return annotationImage
+        } else {
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+            
+            // If there is no reusable annotation image available, initialize a new one.
+            if(annotationImage == nil) {
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+            }
+            
+            return annotationImage
+        }
+    }
+    
+    func drawRoute(fromLocation: CLLocationCoordinate2D, toLocation: CLLocationCoordinate2D) {
+        let directions = Directions.shared
+        let waypoints = [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.latitude, longitude: fromLocation.longitude), name: "Start"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: toLocation.latitude, longitude: toLocation.longitude), name: "Destination"),
+        ]
+        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        options.includesSteps = true
+        
+        _ = directions.calculate(options) { (waypoints, routes, error) in
+            guard error == nil else {
+                print("Error calculating directions: \(error!)")
+                return
+            }
+            if let route = routes?.first {
+                let minute = route.expectedTravelTime / 60
+                self.setupQuickController(minute: minute)
+                if route.coordinateCount > 0 {
+                    
+                    var routeCoordinates = route.coordinates!
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+                    routeLine.title = "reservationsMapViewPolyline"
+                    let ne = routeLine.overlayBounds.ne
+                    let sw = routeLine.overlayBounds.sw
+                    let region = MGLCoordinateBounds(sw: sw, ne: ne)
+                    self.mapView.addAnnotation(routeLine)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 32, left: 32, bottom: 62, right: 32), animated: false)
+                    
+                    delayWithSeconds(animationOut, completion: {
+                        let marker = MGLPointAnnotation()
+                        marker.coordinate = toLocation
+                        marker.title = "Destination"
+                        self.mapView.addAnnotation(marker)
+                        
+                        let marker2 = MGLPointAnnotation()
+                        marker2.coordinate = fromLocation
+                        self.mapView.addAnnotation(marker2)
+                        
+                        self.moveQuickControllers(startCoordinate: fromLocation, endCoordinate: toLocation)
+                    })
+                }
+            }
+        }
+    }
+    
+    func setupQuickController(minute: Double) {
+        let time = minute.rounded(toPlaces: 0)
+        let distanceTime = String(format: "%.0f min", time)
+        let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 44
+        self.quickParkingController.distanceLabel.text = distanceTime
+        self.quickParkingWidthAnchor.constant = distanceWidth
+    
+        self.quickDestinationController.distanceLabel.text = self.nameLabel.text
+        self.quickDestinationWidthAnchor.constant = self.nameLabel.text!.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 24
+        
+        self.view.layoutIfNeeded()
+    }
+    
+    func moveQuickControllers(startCoordinate: CLLocationCoordinate2D, endCoordinate: CLLocationCoordinate2D) {
+        let startPoint = self.mapView.convert(startCoordinate, toPointTo: self.view)
+        let endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
+    
+        if startPoint.x >= phoneWidth/3 {
+            self.quickParkingRightAnchor.constant = startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16
+        } else {
+            self.quickParkingRightAnchor.constant = startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16
+        }
+        if startPoint.y >= 220/4 {
+            self.quickParkingTopAnchor.constant = startPoint.y - 20
+        } else {
+            self.quickParkingTopAnchor.constant = startPoint.y + 20
+        }
+        if endPoint.x >= phoneWidth/3 {
+            self.quickDestinationRightAnchor.constant = endPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
+        } else {
+            self.quickDestinationRightAnchor.constant = endPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
+        }
+        if endPoint.y >= 220/4 {
+            self.quickDestinationTopAnchor.constant = endPoint.y - 20
+        } else {
+            self.quickDestinationTopAnchor.constant = endPoint.y + 20
+        }
+        self.view.layoutIfNeeded()
+    }
+    
+}

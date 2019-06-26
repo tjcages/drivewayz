@@ -67,7 +67,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         setupMainBar()
         setupCurrent()
         setupNavigationControllers()
-        setupCoreMotion()
         checkDayTimeStatus()
         checkNetwork()
     }
@@ -376,27 +375,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return label
     }()
     
-    var navigationLabel: UITextView = {
-        let label = UITextView()
-        label.backgroundColor = Theme.WHITE
-        label.alpha = 0
-        label.text = "Start Navigation"
-        label.font = Fonts.SSPLightH4
-        label.textColor = Theme.BLACK
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.layer.shadowColor = Theme.HARMONY_RED.cgColor
-        label.layer.shadowOffset = CGSize(width: 1, height: 1)
-        label.layer.shadowRadius = 5
-        label.layer.shadowOpacity = 0.8
-//        label.textAlignment = .center
-        label.clipsToBounds = false
-        label.isEditable = false
-        label.isUserInteractionEnabled = false
-        label.contentInset = UIEdgeInsets(top: 36, left: 12, bottom: 24, right: 12)
-        
-        return label
-    }()
-    
     var currentParkingController: CurrentParkingViewController = {
         let controller = CurrentParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -429,6 +407,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     lazy var quickDestinationController: QuickDestinationViewController = {
         let controller = QuickDestinationViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.title = "Destination"
+        
+        return controller
+    }()
+    
+    lazy var quickParkingController: QuickParkingViewController = {
+        let controller = QuickParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Destination"
         
@@ -470,6 +456,74 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         button.alpha = 0
         
         return button
+    }()
+    
+    var successContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 8
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var checkmark: UIButton = {
+        let image = UIImage(named: "Checkmark")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton()
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 60
+        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.imageEdgeInsets = UIEdgeInsets(top: -12, left: -12, bottom: -12, right: -12)
+        button.layer.borderColor = Theme.WHITE.cgColor
+        button.layer.borderWidth = 2
+        button.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
+        return button
+    }()
+    
+    var successLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Booking was successful!"
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPRegularH2
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        
+        return label
+    }()
+    
+    var quickCouponController: QuickCouponsViewController = {
+        let controller = QuickCouponsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
+    var reviewBookingTopAnchor: NSLayoutConstraint!
+    
+    lazy var reviewBookingController: ReviewBookingViewController = {
+        let controller = ReviewBookingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        
+        return controller
+    }()
+    
+    var contactDrivewayzTopAnchor: NSLayoutConstraint!
+    
+    lazy var contactDrivewayzController: ContactReviewsViewController = {
+        let controller = ContactReviewsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        
+        return controller
     }()
     
     var motionManager: CMMotionActivityManager!
@@ -562,7 +616,12 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var quickDestinationRightAnchor: NSLayoutConstraint!
     var quickDestinationTopAnchor: NSLayoutConstraint!
+    var quickParkingRightAnchor: NSLayoutConstraint!
+    var quickParkingTopAnchor: NSLayoutConstraint!
     var navigationTopAnchor: NSLayoutConstraint!
+    
+    var quickDestinationWidthAnchor: NSLayoutConstraint!
+    var quickParkingWidthAnchor: NSLayoutConstraint!
     ///////////////////////////////////////////////////////////////////
     
     func setupViews() {
@@ -575,20 +634,21 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
         mapView.userTrackingMode = .follow
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(mapDragged(sender:)))
-        pan.delegate = self
-        mapView.addGestureRecognizer(pan)
     }
     
     func setupAdditionalViews() {
         
-        self.view.addSubview(navigationLabel)
-        navigationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        navigationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        navigationLabel.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        navigationLabelHeight = navigationLabel.heightAnchor.constraint(equalToConstant: 90)
-            navigationLabelHeight.isActive = true
-    
+        self.view.addSubview(quickCouponController.view)
+        quickCouponController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
+        quickCouponController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        quickCouponController.view.widthAnchor.constraint(equalToConstant: 228).isActive = true
+        switch device {
+        case .iphone8:
+            quickCouponController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            quickCouponController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
+        
     }
     
     func checkDayTimeStatus() {

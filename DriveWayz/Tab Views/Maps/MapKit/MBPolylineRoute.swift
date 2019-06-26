@@ -25,16 +25,19 @@ extension MapKitViewController: MGLMapViewDelegate {
             polylineSource = source
             
             // Add a layer to style our polyline.
-            let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
+            let layers = style.layers
+            for lay in layers {
+                if lay.identifier == "walkingRoute" {
+                    style.removeLayer(lay)
+                }
+            }
+            
+            let layer = MGLLineStyleLayer(identifier: "walkingRoute", source: source)
             layer.lineJoin = NSExpression(forConstantValue: "round")
             layer.lineCap = NSExpression(forConstantValue: "round")
             layer.lineColor = NSExpression(forConstantValue: Theme.PRUSSIAN_BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.4)
             layer.lineDashPattern = NSExpression(forConstantValue: [0, 1.5])
-            layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
-                0: Theme.LIGHT_ORANGE,
-                0.3: Theme.STRAWBERRY_PINK,
-                ])
             
             // The line width should gradually increase based on the zoom level.
             layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
@@ -49,14 +52,24 @@ extension MapKitViewController: MGLMapViewDelegate {
             polylineSource = source
             
             // Add a layer to style our polyline.
-            let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
+            //            let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
+            let layers = style.layers
+            for lay in layers {
+                if lay.identifier == "currentDrivingRoute" {
+                    style.removeLayer(lay)
+                }
+            }
+            
+            // Add a layer to style our polyline.
+//            let layer = MGLLineStyleLayer(identifier: "\(stamp)", source: source)
+            let layer = MGLLineStyleLayer(identifier: "currentDrivingRoute", source: source)
             layer.lineJoin = NSExpression(forConstantValue: "round")
             layer.lineCap = NSExpression(forConstantValue: "round")
             layer.lineColor = NSExpression(forConstantValue: Theme.BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.8)
             layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
-                0: Theme.PACIFIC_BLUE,
-                0.1: Theme.STRAWBERRY_PINK,
+                0: Theme.LIGHT_ORANGE,
+                0.2: Theme.STRAWBERRY_PINK,
                 ])
             
             // The line width should gradually increase based on the zoom level.

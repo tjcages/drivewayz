@@ -22,6 +22,8 @@ protocol mainBarSearchDelegate {
     func expandedMainBar()
     func showCurrentLocation()
     func hideCurrentLocation()
+    func zoomToSearchLocation(address: String)
+    func becomeANewHost()
 }
 
 extension MapKitViewController: mainBarSearchDelegate {
@@ -65,7 +67,7 @@ extension MapKitViewController: mainBarSearchDelegate {
             searchBarController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         let touch = UITapGestureRecognizer(target: self, action: #selector(mainBarWillOpen))
-        searchBarController.view.addGestureRecognizer(touch)
+        quickDestinationController.view.addGestureRecognizer(touch)
 
         self.view.addSubview(locatorButton)
         locatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
@@ -158,6 +160,7 @@ extension MapKitViewController: mainBarSearchDelegate {
     
     func mainBarWillClose() {
         self.view.endEditing(true)
+        self.removeAllMapOverlays(shouldRefresh: true)
         self.summaryTopAnchor.constant = -260
         self.mainBarTopAnchor.constant = 354
         UIView.animate(withDuration: animationOut, animations: {
@@ -292,6 +295,59 @@ extension MapKitViewController: mainBarSearchDelegate {
                 }
             }
             self.mainBarPreviousPosition = position
+        }
+    }
+    
+    func becomeANewHost() {
+        self.delegate?.moveToProfile()
+        self.delegate?.bringNewHostingController()
+        delayWithSeconds(1) {
+            self.delegate?.lightContentStatusBar()
+        }
+    }
+    
+    func monitorCoupons() {
+        if !isCurrentlyBooked {
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            let ref = Database.database().reference().child("users").child(userID).child("CurrentCoupon")
+            ref.observe(.childAdded) { (snapshot) in
+                if let percent = snapshot.value as? Int {
+                    self.quickCouponController.percentage = percent
+                    UIView.animate(withDuration: animationIn, animations: {
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.quickCouponController.view.alpha = 1
+                        }, completion: { (success) in
+                            self.quickCouponController.maximizeController()
+                            self.quickCouponController.expandController()
+                        })
+                    })
+                }
+            }
+            ref.observe(.childRemoved) { (snapshot) in
+                ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if snapshot.childrenCount == 0 {
+                        self.quickCouponController.closeController()
+                        delayWithSeconds(animationOut, completion: {
+                            UIView.animate(withDuration: animationIn, animations: {
+                                self.quickCouponController.view.alpha = 0
+                            })
+                        })
+                    } else {
+                        if let dictionary = snapshot.value as? [String: Any] {
+                            if let coupon = dictionary["coupon"] as? Int {
+                                self.quickCouponController.percentage = coupon
+                            } else if let invite = dictionary["invite"] as? Int {
+                                self.quickCouponController.percentage = invite
+                            }
+                        }
+                        UIView.animate(withDuration: animationIn, animations: {
+                            self.quickCouponController.view.alpha = 1
+                        }, completion: { (success) in
+                            self.quickCouponController.expandController()
+                        })
+                    }
+                })
+            }
         }
     }
     

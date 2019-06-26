@@ -102,11 +102,12 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         }
     }
     
-    func createAccountKey(routingNumber: String, accountNumber: String, birthDay: String, birthMonth: String, birthYear: String, addressLine1: String, addressLine2: String, addressCity: String, addressState: String, addressPostalCode: String, firstName: String, lastName: String, ssnLast4: String, phoneNumber: String) {
+    func createAccountKey(routingNumber: String, accountNumber: String, addressLine1: String, addressCity: String, addressState: String, addressPostalCode: String, firstName: String, lastName: String, ssnLast4: String, phoneNumber: String, email: String, birthDay: String, birthMonth: String, birthYear: String, completion: @escaping(Bool) -> ()) {
         var ipAddress: String = ""
         if let addr = getWiFiAddress() {
             ipAddress = addr
         } else {
+            ipAddress = "1.160.10.240"
             print("No WiFi address")
         }
         
@@ -120,7 +121,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             "birthYear": birthYear,
             
             "addressLine1": addressLine1,
-            "addressLine2": addressLine2,
+//            "addressLine2": addressLine2,
             "addressCity": addressCity,
             "addressState": addressState,
             "addressPostalCode": addressPostalCode,
@@ -132,7 +133,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             
             "ip": ipAddress,
             "api_version": "2018-05-21",
-            "email": userEmail!,
+            "email": email,
             "phoneNumber": phoneNumber
             ])
             
@@ -141,18 +142,21 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
                 switch responseJSON.result {
                 case .success(let json):
                     self.updateUserProfile(userAccount: json as! String)
-                    self.displayAlert(title: "Success!", message: "You have successfully linked up your bank account and can now start accepting payments.")
+                    self.displayAlert(title: "Success!", message: "You have successfully linked up your bank account and can now start transfering money.")
+                    completion(true)
                 case .failure(let error):
                     self.displayAlert(title: "Error", message: "There was a problem linking up your bank account. Please review your submitted information.")
                     print(error, "failure")
+                    completion(false)
                 }
         }
     }
     
 //    var success: String? = "Success"
 //
-    func transferToBank(account: String, funds: Double) {
+    func transferToBank(account: String, funds: Double, completion: @escaping(Bool) -> ()) {
         let amount = Double(funds) * 100
+//        let amount = Double(funds)
         let url = self.backendURL.appendingPathComponent("transfer")
         Alamofire.request(url, method: .post, parameters: [
             "account": account,
@@ -164,11 +168,10 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
                 switch responseJSON.result {
                 case .success(let json):
                     print(json)
-                    self.setFundsToZero()
-                    self.displayAlert(title: "Transfer Complete", message: "The funds have been transfered to your account and should be available within 2-3 days.")
+                    completion(true)
                 case .failure(let error):
                     print(error, "failure")
-                    self.displayAlert(title: "Error", message: "There was a problem sending the funds to your account.")
+                    self.displayAlert(title: "Error", message: "There was a problem sending the funds to your account. Please contact Drivewayz to resolve this issue.")
                 }
         }
     }
@@ -212,26 +215,6 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         let currentUser = Auth.auth().currentUser?.uid
         let userRef = Database.database().reference().child("users").child(currentUser!)
         userRef.updateChildValues(["accountID": userAccount])
-    }
-    
-    var count: Int = 0
-    private func setFundsToZero() {
-        if let currentUser = Auth.auth().currentUser?.uid {
-            let checkRef = Database.database().reference().child("users").child(currentUser)
-            checkRef.observeSingleEvent(of: .value, with: { (snap) in
-                if let dictionary = snap.value as? [String:AnyObject] {
-                    if let oldFunds = dictionary["userFunds"] as? Double {
-                            checkRef.updateChildValues(["userFunds": 0])
-                            checkRef.child("payments").observeSingleEvent(of: .value, with: { (snapshot) in
-                                self.count =  Int(snapshot.childrenCount)
-                                let payRef = checkRef.child("payments").child("\(self.count)")
-                                let timestamp = NSDate().timeIntervalSince1970
-                                payRef.updateChildValues(["deposit": oldFunds, "currentFunds": 0, "hours": 0, "timestamp": timestamp])
-                            }, withCancel: nil)
-                    }
-                }
-            }, withCancel: nil)
-        }
     }
     
     func displayAlert(title: String, message: String) {

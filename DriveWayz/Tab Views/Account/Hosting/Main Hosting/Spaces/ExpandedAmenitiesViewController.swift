@@ -31,7 +31,7 @@ class ExpandedAmenitiesViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.PURPLE.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         
@@ -40,7 +40,7 @@ class ExpandedAmenitiesViewController: UIViewController {
     
     var layout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 12
         
         return layout
@@ -50,10 +50,9 @@ class ExpandedAmenitiesViewController: UIViewController {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
-        view.isScrollEnabled = false
-        view.clipsToBounds = false
         view.register(AmenitiesCell.self, forCellWithReuseIdentifier: "Cell")
         
         return view
@@ -72,8 +71,6 @@ class ExpandedAmenitiesViewController: UIViewController {
         
         amenitiesPicker.delegate = self
         amenitiesPicker.dataSource = self
-        
-        setupViews()
     }
     
     func setData(hosting: ParkingSpots) {
@@ -81,42 +78,42 @@ class ExpandedAmenitiesViewController: UIViewController {
             self.amenities = []
             self.amenitiesName = []
             for i in 0..<amenities.count {
-                if amenities[i] == "covered" {
+                if amenities[i] == "Covered parking" {
                     self.amenities.append(UIImage(named: "coveredParkingIcon-1")!)
                     self.amenitiesName.append("Covered parking")
-                } else if amenities[i] == "charging" {
+                } else if amenities[i] == "Charging station" {
                     self.amenities.append(UIImage(named: "chargingParkingIcon")!)
                     self.amenitiesName.append("Charging station")
-                } else if amenities[i] == "stadium" {
+                } else if amenities[i] == "Stadium parking" {
                     self.amenities.append(UIImage(named: "stadiumParkingIcon")!)
                     self.amenitiesName.append("Stadium parking")
-                } else if amenities[i] == "gated" {
+                } else if amenities[i] == "Gated spot" {
                     self.amenities.append(UIImage(named: "gateParkingIcon")!)
                     self.amenitiesName.append("Gated spot")
-                } else if amenities[i] == "night" {
+                } else if amenities[i] == "Nighttime parking" {
                     self.amenities.append(UIImage(named: "nightParkingIcon")!)
                     self.amenitiesName.append("Nighttime parking")
-                } else if amenities[i] == "airport" {
+                } else if amenities[i] == "Near Airport" {
                     self.amenities.append(UIImage(named: "airportParkingIcon")!)
                     self.amenitiesName.append("Near Airport")
-                } else if amenities[i] == "lighted" {
+                } else if amenities[i] == "Lit space" {
                     self.amenities.append(UIImage(named: "lightingParkingIcon")!)
                     self.amenitiesName.append("Lit space")
-                } else if amenities[i] == "large" {
+                } else if amenities[i] == "Large space" {
                     self.amenities.append(UIImage(named: "largeParkingIcon")!)
                     self.amenitiesName.append("Large space")
-                } else if amenities[i] == "small" {
+                } else if amenities[i] == "Compact space" {
                     self.amenities.append(UIImage(named: "smallParkingIcon")!)
                     self.amenitiesName.append("Compact space")
-                } else if amenities[i] == "easy" {
+                } else if amenities[i] == "Easy to find" {
                     self.amenities.append(UIImage(named: "easyParkingIcon")!)
                     self.amenitiesName.append("Easy to find")
                 }
             }
-            self.amenitiesPicker.reloadData()
             sections = CGFloat(CGFloat(self.amenities.count)/3)
             sections.round(.up)
-//            setupViews()
+            setupViews()
+            self.amenitiesPicker.reloadData()
         }
     }
     
@@ -135,10 +132,10 @@ class ExpandedAmenitiesViewController: UIViewController {
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(amenitiesPicker)
-        amenitiesPicker.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 14).isActive = true
-        amenitiesPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        amenitiesPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        amenitiesPicker.heightAnchor.constraint(equalToConstant: iconHeight * sections).isActive = true
+        amenitiesPicker.topAnchor.constraint(equalTo: residentialLabel.bottomAnchor, constant: 4).isActive = true
+        amenitiesPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        amenitiesPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        amenitiesPicker.heightAnchor.constraint(equalToConstant: iconHeight).isActive = true
         
         self.view.addSubview(lineView)
         lineView.topAnchor.constraint(equalTo: amenitiesPicker.bottomAnchor, constant: 24).isActive = true
@@ -146,7 +143,7 @@ class ExpandedAmenitiesViewController: UIViewController {
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        height = 54 + iconHeight * sections + 36
+        height = 80 + iconHeight
     }
     
 }

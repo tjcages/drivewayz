@@ -44,13 +44,9 @@ class EditSpotsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.WHITE
+        button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: 140, height: 55)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        button.layer.cornerRadius = 55/2
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
         
         return button

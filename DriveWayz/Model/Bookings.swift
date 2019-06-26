@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseDatabase
 
 class Bookings: NSObject {
     
@@ -24,6 +24,20 @@ class Bookings: NSObject {
     var destinationLat: Double?
     var destinationLong: Double?
     
+    var discount: Int?
+    var totalCost: Double?
+    var stringDate: String?
+    
+    var userName: String?
+    var userDuration: String?
+    var userProfileURL: String?
+    var userRating: Double?
+    var userOverstayed: Bool?
+    
+    var parkingName: String?
+    var parkingType: String?
+    var parkingRating: Double?
+    
     init(dictionary: [String:Any]) {
         super.init()
         
@@ -39,6 +53,45 @@ class Bookings: NSObject {
         parkingLong = dictionary["finalParkingLong"] as? Double
         destinationLat = dictionary["finalDestinationLat"] as? Double
         destinationLong = dictionary["finalDestinationLong"] as? Double
+        
+        discount = dictionary["discount"] as? Int
+        totalCost = dictionary["totalCost"] as? Double
+        
+        parkingName = dictionary["parkingName"] as? String
+        parkingType = dictionary["parkingType"] as? String
+        parkingRating = dictionary["parkingRating"] as? Double
+        
+        userName = dictionary["driverName"] as? String
+        userProfileURL = dictionary["driverPicture"] as? String
+        userRating = dictionary["driverRating"] as? Double
+        if userRating == nil {
+            userRating = 5.0
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        guard let from = fromDate else { return }
+        let date = Date(timeIntervalSince1970: from)
+        stringDate = formatter.string(from: date)
+        
+        if let fromInterval = self.fromDate, let toInterval = self.toDate {
+            let today = Date().timeIntervalSince1970
+            if today > fromInterval && today < toInterval {
+                self.userOverstayed = false
+            } else if today > fromInterval && today >= toInterval {
+                self.userOverstayed = true
+            }
+            let fromDate = Date(timeIntervalSince1970: fromInterval)
+            let toDate = Date(timeIntervalSince1970: toInterval)
+            let formatter = DateFormatter()
+            formatter.amSymbol = "am"
+            formatter.pmSymbol = "pm"
+            formatter.dateFormat = "h:mma"
+            let fromString = formatter.string(from: fromDate)
+            let toString = formatter.string(from: toDate)
+            let dates = "\(fromString) - \(toString)"
+            self.userDuration = dates
+        }
         
     }
         

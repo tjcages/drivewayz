@@ -252,9 +252,9 @@ DEPENDENCIES:
   - GooglePlaces
   - GoogleSignIn
   - Mapbox-iOS-SDK
+  - MapboxCoreNavigation
   - MapboxDirections.swift
   - MapboxNavigation
-  - MapboxSpeech
   - MapboxStatic.swift (~> 0.9)
   - NVActivityIndicatorView
   - PushNotifications
@@ -386,6 +386,6 @@ SPEC CHECKSUMS:
   Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
   UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: a97b51ff0e425e0a87ebff5841bc0000c8d4798f
+PODFILE CHECKSUM: 463364be27f2a7a879dec11f356ce5ceb9d4e695
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.2

@@ -22,7 +22,9 @@ extension ConfigureParkingViewController {
         
         let streetAddress = self.locationController.streetField.text
         let cityAddress = self.locationController.cityField.text
-        let stateAddress = self.locationController.stateField.text
+        var stateAddress = self.locationController.stateField.text
+        if let state = stateAddress, state.first == " " { stateAddress = String(state.dropFirst()) }
+        if let state = stateAddress, state.last == " " { stateAddress = String(state.dropLast()) }
         let zipAddress = self.locationController.zipField.text
         let countryAddress = self.locationController.countryField.text
         let overallAddress = self.locationController.newHostAddress
@@ -53,7 +55,7 @@ extension ConfigureParkingViewController {
         let sundayFromTimes = self.timesController.sundayFrom
         let sundayToTimes = self.timesController.sundayTo
         
-        let parkingCost = self.costsController.costParking
+        let parkingCost = self.costsController.costTextField.text?.replacingOccurrences(of: "$ ", with: "")
         let hostMessage = self.messageController.message.text
         let hostEmail = self.emailController.emailTextField.text
         
@@ -65,9 +67,11 @@ extension ConfigureParkingViewController {
             let values = ["parkingID": childKey,
                           "id": userID,
                           "timestamp": timestamp,
-                          "parkingCost": parkingCost,
+                          "parkingCost": Double(parkingCost!) as Any,
                           "hostMessage": hostMessage as Any,
-                          "hostEmail": hostEmail as Any]
+                          "hostEmail": hostEmail as Any,
+                          "totalRating": 5,
+                          "totalBookings": 1]
                 as [String: Any]
             
             childRef.updateChildValues(values) { (error, ref) in
@@ -95,6 +99,11 @@ extension ConfigureParkingViewController {
                                           "latitude": latitude as Any,
                                           "longitude": longitude as Any]
                         as [String: Any]
+                    
+                    if let city = cityAddress {
+                        let parkingLocRef = Database.database().reference().child("ParkingLocations").child(city)
+                        parkingLocRef.updateChildValues([childKey: childKey])
+                    }
                     
                     locationRef.updateChildValues(locationValues) { (error, ref) in
                         if error != nil { print(error ?? ""); return }
@@ -155,10 +164,14 @@ extension ConfigureParkingViewController {
                         userRef.updateChildValues(["email": hostEmail as Any])
                         userRef.child("Hosting Spots").updateChildValues(["\(childKey)": childKey])
                         
+                        let notificationRef = childRef.child("Notifications").childByAutoId()
+                        notificationRef.updateChildValues(["image": "newHost", "title": "Welcome new host!", "subtitle": "Contact us if you have any issues", "timestamp": Date().timeIntervalSince1970])
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.confirmController.endLoading()
                             self.delegate?.hideNewHostingController()
                             self.delegate?.bringHostingController()
+                            self.moveDelegate?.defaultContentStatusBar()
                             self.containerHeightAnchor.constant = 120
                         }
                     }

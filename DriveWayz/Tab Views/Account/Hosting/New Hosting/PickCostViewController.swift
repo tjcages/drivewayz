@@ -9,60 +9,63 @@
 import UIKit
 import CoreLocation
 
-class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class PickCostViewController: UIViewController {
     
-    var costParking: String = "3.00"
-    
-    private var costValues: [String] = ["$1.00","$1.50","$2.00","$2.50","$3.00","$3.50","$4.00","$4.50","$5.00"]
-    
-    var costPicker: UIPickerView = {
-        let cost = UIPickerView()
-        cost.backgroundColor = UIColor.clear
-        cost.tintColor = Theme.WHITE
-        cost.translatesAutoresizingMaskIntoConstraints = false
-        cost.setValue(Theme.WHITE, forKeyPath: "textColor")
-        
-        return cost
-    }()
+    var dynamicPrice: Double = 3.0
     
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
-        label.numberOfLines = 8
+        label.numberOfLines = 9
         label.text = """
-        To take the guesswork out of hourly rates, we utilize a flexible, optimized pricing algorithm influenced by location, proximity to events, time of day, and surge demand.
+        We allow our hosts to choose their hourly price range as long as it is within a certain determined price range based on location.
         
-        This price is subject to change.
+        This price is subject to change based on proximity to events, time of day, and surge demand.
+        
         """
         
         return label
     }()
     
-    var dynamicPrice: Double = 1.5 {
-        didSet {
-            let cost = String(format:"%.02f", dynamicPrice.rounded(toPlaces: 2))
-            self.hourLabel.text = "$\(cost) per hour"
-        }
-    }
-
-    var hourLabel: UILabel = {
-        let label = UILabel()
-        label.text = "$1.50 per hour"
+    var costTextField: UITextField = {
+        let label = UITextField()
+        label.text = ""
+        label.attributedPlaceholder = NSAttributedString(string: "$0.00",
+                                                         attributes: [NSAttributedString.Key.foregroundColor: Theme.WHITE.withAlphaComponent(0.5)])
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
-        label.textAlignment = .center
+        label.keyboardType = .numberPad
+        label.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
         
         return label
     }()
 
+    var hourLabel: UILabel = {
+        let label = UILabel()
+        label.text = "per hour"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPRegularH2
+        
+        return label
+    }()
+    
+    var dynamicPriceButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Set standard rate", for: .normal)
+        button.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
+        
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        costPicker.delegate = self
-        costPicker.dataSource = self
 
         setupCosts()
     }
@@ -80,104 +83,96 @@ class PickCostViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
-        informationHeightAnchor = informationLabel.heightAnchor.constraint(equalToConstant: 160)
-            informationHeightAnchor.isActive = true
+        informationLabel.sizeToFit()
         
-//        self.view.addSubview(costPicker)
-//        costPicker.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
-//        costPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30).isActive = true
-//        costPicker.widthAnchor.constraint(equalToConstant: 160).isActive = true
-//        costPicker.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        self.view.addSubview(costTextField)
+        costTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30).isActive = true
+        costTextField.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
+        costTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        costTextField.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         self.view.addSubview(hourLabel)
-        hourLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        hourLabel.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
-        hourLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        hourLabel.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        hourLabel.leftAnchor.constraint(equalTo: costTextField.rightAnchor, constant: -16).isActive = true
+        hourLabel.centerYAnchor.constraint(equalTo: costTextField.centerYAnchor, constant: -4).isActive = true
+        hourLabel.sizeToFit()
+        
+        self.view.addSubview(dynamicPriceButton)
+        dynamicPriceButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        dynamicPriceButton.topAnchor.constraint(equalTo: costTextField.bottomAnchor, constant: 12).isActive = true
+        dynamicPriceButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        dynamicPriceButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
     func configureCustomPricing(state: String, city: String) {
-//        var stateAbrv = state
-//        if state.first == " " { stateAbrv.removeFirst() }
-//        let ref = Database.database().reference().child("CostLocations")
-//        ref.observeSingleEvent(of: .value) { (snapshot) in
-//            if let dictionary = snapshot.value as? [String:AnyObject] {
-//                if let cities = dictionary["\(stateAbrv)"] as? [String:AnyObject] {
-//                    for cit in cities {
-//                        let key = cit.key
-//                        if key == city {
-//                            if let cost = cit.value as? Double {
-//                                let costValue = NSString(format: "%.2f", cost) as String
-//                                self.costValues = []
-//                                var i = cost - 1
-//                                while i <= cost + 1 {
-//                                    let value = NSString(format: "%.2f", i) as String
-//                                    self.costValues.append("$\(value)")
-//                                    i = i + 0.25
-//                                }
-//                                self.costPicker.reloadAllComponents()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        var stateAbrv = state
+        if state.first == " " { stateAbrv.removeFirst() }
+        let ref = Database.database().reference().child("Average Prices").child("\(stateAbrv)")
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                if let cost = dictionary["\(city)"] as? Double {
+                    let costValue = NSString(format: "%.2f", cost) as String
+                    self.dynamicPrice = cost
+                    self.dynamicPriceButton.setTitle("Set standard rate: $\(costValue)", for: .normal)
+                } else {
+                    if let average = dictionary["Standard"] as? Double {
+                        let costValue = NSString(format: "%.2f", average) as String
+                        self.dynamicPrice = average
+                        self.dynamicPriceButton.setTitle("Set standard rate: $\(costValue)", for: .normal)
+                    }
+                }
+            }
+        }
     }
     
-    func removeTutorial() {
-        self.costPicker.selectRow(4, inComponent: 0, animated: true)
-        self.costPicker.reloadAllComponents()
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        pickerView.subviews.forEach({
-            $0.isHidden = $0.frame.height < 1.0
-        })
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 40
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return 160
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return costValues.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return costValues[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 160, height: 60)
-        
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 0, width: 160, height: 60)
-        label.textAlignment = .center
-        label.textColor = Theme.WHITE
-        label.font = Fonts.SSPSemiBoldH1
-        label.text = costValues[row]
-        view.addSubview(label)
-        
-        return view
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let string = costValues[row]
-        self.costParking = string.replacingOccurrences(of: "$", with: "")
+    @objc func setDynamicPricePressed() {
+        self.view.endEditing(true)
+        let costValue = NSString(format: "$ %.2f", self.dynamicPrice) as String
+        self.costTextField.text = "\(costValue)"
     }
     
     func addPropertiesToDatabase(parkingID: String) {
         let ref = Database.database().reference().child("parking").child(parkingID)
-//        let perHour = "/hour"
-        let cost = self.costParking
+        let cost = self.dynamicPrice
         ref.updateChildValues(["parkingCost": cost])
     }
     
+    @objc func myTextFieldDidChange(_ textField: UITextField) {
+        if let amountString = textField.text?.currencyInputFormatting() {
+            textField.text = amountString
+            textField.sizeToFit()
+        }
+    }
+}
+
+
+extension String {
+    
+    // formatting text for currency textField
+    func currencyInputFormatting() -> String {
+        
+        var number: NSNumber!
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currencyAccounting
+        formatter.currencySymbol = "$ "
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.maximumIntegerDigits = 2
+        
+        var amountWithPrefix = self
+        
+        // remove from String: "$", ".", ","
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+        amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
+        
+        let double = (amountWithPrefix as NSString).doubleValue
+        number = NSNumber(value: (double / 100))
+        
+        // if first number is 0 or all numbers were deleted
+        guard number != 0 as NSNumber else {
+            return ""
+        }
+        
+        return formatter.string(from: number)!
+    }
 }

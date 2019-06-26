@@ -84,7 +84,7 @@ class ParkingOptionViewController: UIViewController {
         let view = CosmosView()
         view.rating = 5
         view.settings.updateOnTouch = false
-        view.settings.fillMode = .full
+        view.settings.fillMode = .precise
         view.settings.starSize = 15
         view.settings.starMargin = 2
         view.settings.filledColor = Theme.LIGHT_BLUE
@@ -150,7 +150,7 @@ class ParkingOptionViewController: UIViewController {
         }
         if let latitude = parking.latitude, let longitude = parking.longitude, let state = parking.stateAddress, let city = parking.cityAddress {
             let location = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: latitude), longitude: CLLocationDegrees(truncating: longitude))
-            dynamicPricing.getDynamicPricing(place: location, state: state, city: city, overallDestination: overallDestination) { (dynamicPrice: CGFloat) in
+            dynamicPricing.getDynamicPricing(parking: parking, place: location, state: state, city: city, overallDestination: overallDestination) { (dynamicPrice: CGFloat) in
                 let price = String(format: "%.2f", dynamicPrice)
                 self.priceLabel.text = "$\(price) per hour"
             }
@@ -222,7 +222,8 @@ class ParkingOptionViewController: UIViewController {
                     self.locationLabel.text = publicAddress
                     self.spotDescription.text = descriptionAddress
                     if let numberRatings = parking.numberRatings, let totalRating = parking.totalRating {
-                        if let ratings = Double(numberRatings), let total = Double(totalRating) {
+                        if let ratings = Double(numberRatings) {
+                            let total = Double(totalRating)
                             let averageRating: Double = total/ratings
                             self.stars.rating = averageRating
                             self.starsLabel.text = numberRatings

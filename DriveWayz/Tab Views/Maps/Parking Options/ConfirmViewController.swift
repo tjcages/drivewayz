@@ -22,8 +22,9 @@ class ConfirmViewController: UIViewController {
     var toDate: Date?
     var price: Double?
     var hours: Double?
+    var discount: Int = 0
     
-    private var paymentContext: STPPaymentContext
+    var paymentContext: STPPaymentContext
     var paymentInProgress: Bool = false {
         didSet {
             UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
@@ -47,13 +48,13 @@ class ConfirmViewController: UIViewController {
         }
     }
     
-    private enum RideRequestState {
+    enum RideRequestState {
         case none
         case requesting
         case active
     }
     
-    private var rideRequestState: RideRequestState = .none {
+    var rideRequestState: RideRequestState = .none {
         didSet {
             reloadRequestRideButton()
         }
@@ -110,9 +111,30 @@ class ConfirmViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.GREEN_PIGMENT
-        label.text = "$54.64"
+        label.text = "$0.00"
         label.font = Fonts.SSPSemiBoldH1
         label.textAlignment = .right
+        
+        return label
+    }()
+    
+    var couponCostLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.PRUSSIAN_BLUE
+        label.text = "$0.00"
+        label.font = Fonts.SSPRegularH3
+        label.textAlignment = .right
+        label.alpha = 0
+        
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        label.addSubview(view)
+        view.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 2).isActive = true
+        view.leftAnchor.constraint(equalTo: label.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: label.rightAnchor).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
         
         return label
     }()
@@ -138,28 +160,6 @@ class ConfirmViewController: UIViewController {
         button.addTarget(self, action: #selector(handlePaymentButtonTapped), for: .touchUpInside)
         
         return button
-    }()
-    
-    var carIcon: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "carIcon")
-//        var image = UIImage(cgImage: img!.cgImage!, scale: 1.0, orientation: UIImage.Orientation.upMirrored)
-        button.setImage(image, for: .normal)
-        button.alpha = 0.7
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
-    
-    var carLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK
-        label.text = "4Runner"
-        label.font = Fonts.SSPSemiBoldH4
-        
-        return label
     }()
     
     var mainButton: UIButton = {
@@ -253,6 +253,9 @@ class ConfirmViewController: UIViewController {
         setupCalendar()
         setupPayment()
     }
+    
+    var normalCostAnchor: NSLayoutConstraint!
+    var couponCostAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -268,11 +271,20 @@ class ConfirmViewController: UIViewController {
         checkmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
         checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
         
+        self.view.addSubview(couponCostLabel)
         self.view.addSubview(totalCostLabel)
-        totalCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        normalCostAnchor = totalCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32)
+            normalCostAnchor.isActive = true
+        couponCostAnchor = totalCostLabel.rightAnchor.constraint(equalTo: couponCostLabel.leftAnchor, constant: -8)
+            couponCostAnchor.isActive = false
         totalCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 12).isActive = true
         totalCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         totalCostLabel.sizeToFit()
+        
+        couponCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        couponCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 16).isActive = true
+        couponCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        couponCostLabel.sizeToFit()
         
         self.view.addSubview(durationLabel)
         durationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
@@ -339,7 +351,7 @@ class ConfirmViewController: UIViewController {
         self.view.addSubview(paymentButton)
         paymentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
         paymentButton.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
-        paymentButton.bottomAnchor.constraint(equalTo: mainButton.bottomAnchor).isActive = true
+        paymentButton.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(line2)
@@ -347,18 +359,6 @@ class ConfirmViewController: UIViewController {
         line2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         line2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         line2.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        self.view.addSubview(carLabel)
-        self.view.addSubview(carIcon)
-        carLabel.leftAnchor.constraint(equalTo: carIcon.rightAnchor, constant: 8).isActive = true
-        carLabel.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
-        carLabel.topAnchor.constraint(equalTo: mainButton.topAnchor, constant: -4).isActive = true
-        carLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        carIcon.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        carIcon.bottomAnchor.constraint(equalTo: carLabel.bottomAnchor, constant: 4).isActive = true
-        carIcon.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        carIcon.heightAnchor.constraint(equalTo: carIcon.widthAnchor).isActive = true
         
     }
     
@@ -387,6 +387,7 @@ class ConfirmViewController: UIViewController {
         let toHour = calendar.component(.minute, from: toDate)
         let nextDiff = toHour.roundedUp(toMultipleOf: 5) - toHour
         if let nextDate = calendar.date(byAdding: .minute, value: nextDiff, to: toDate) {
+            self.toDate = nextDate
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm"
             let fromString = formatter.string(from: fromDate)
@@ -426,27 +427,50 @@ class ConfirmViewController: UIViewController {
     func setData(price: Double, hours: Double, parking: ParkingSpots) {
         self.parking = parking
         self.fromDate = bookingFromDate /////////////////////
-        self.toDate = bookingToDate //////////////////////
+//        self.toDate = bookingToDate //////////////////////
         self.price = price
         self.hours = hours
         
-        let cost = (price * hours).rounded(toPlaces: 2)
-        self.totalCostLabel.text = String(format:"$%.02f", cost)
-        if let userID = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child("users").child(userID)
-            ref.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:Any] {
-                    if let selectedVehicle = dictionary["selectedVehicle"] as? String {
-                        let vehicleRef = Database.database().reference().child("UserVehicles").child(selectedVehicle)
-                        vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                            if let dictionary = snapshot.value as? [String:Any] {
-                                if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String {
-                                    let text = vehicleMake + " " + vehicleModel
-                                    self.carLabel.text = text
-                                }
-                            }
-                        })
+        let cost = (price * hours)
+        let fees = cost * 0.029 + 0.3
+        let endPrice = (cost + fees).rounded(toPlaces: 2)
+        self.totalCostLabel.text = String(format:"$%.02f", endPrice)
+        self.couponCostLabel.text = String(format:"$%.02f", endPrice)
+        
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userID)
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                if (dictionary["CurrentCoupon"] as? [String: Any]) != nil {
+                    ref.child("CurrentCoupon").observe(.childAdded) { (snapshot) in
+                        if let dictionary = snapshot.value as? Int {
+                            self.normalCostAnchor.isActive = false
+                            self.couponCostAnchor.isActive = true
+                            self.discount = dictionary
+                            let discountedCost = endPrice - Double(dictionary)/100 * endPrice
+                            self.totalCostLabel.text = String(format:"$%.02f", discountedCost)
+                            UIView.animate(withDuration: animationIn, animations: {
+                                self.couponCostLabel.alpha = 1
+                                self.view.layoutIfNeeded()
+                            })
+                        } else {
+                            self.normalCostAnchor.isActive = true
+                            self.couponCostAnchor.isActive = false
+                            self.totalCostLabel.text = String(format:"$%.02f", endPrice)
+                            UIView.animate(withDuration: animationIn, animations: {
+                                self.couponCostLabel.alpha = 0
+                                self.view.layoutIfNeeded()
+                            })
+                        }
                     }
+                } else {
+                    self.normalCostAnchor.isActive = true
+                    self.couponCostAnchor.isActive = false
+                    self.totalCostLabel.text = String(format:"$%.02f", endPrice)
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.couponCostLabel.alpha = 0
+                        self.view.layoutIfNeeded()
+                    })
                 }
             }
         }
@@ -485,17 +509,6 @@ class ConfirmViewController: UIViewController {
     
     func minutesToHoursMinutes (minutes : Int) -> (hours : Int , leftMinutes : Int) {
         return (minutes / 60, (minutes % 60))
-    }
-    
-    @objc func confirmPurchasePressed(sender: UIButton) {
-//        self.paymentInProgress = true
-//        self.paymentContext.requestPayment() //////////////////////////PAYMENT NOT SET UP///////////////////////////////////////
-        
-        ///////////fasfasdfasdgfasgahdfg;jhS{LHFla;snf'd
-        
-        self.setupNotifications()
-//        self.postToDatabase()
-//        self.delegate?.confirmPurchasePressed()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -542,122 +555,4 @@ class ConfirmViewController: UIViewController {
         paymentContext.hostViewController = self
     }
 
-}
-
-
-extension ConfirmViewController: STPPaymentContextDelegate {
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
-        let alertController = UIAlertController(
-            title: "Error",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
-            // Need to assign to _ because optional binding loses @discardableResult value
-            // https://bugs.swift.org/browse/SR-1681
-            _ = self.navigationController?.popViewController(animated: true)
-        })
-        let retry = UIAlertAction(title: "Retry", style: .default, handler: { action in
-            self.paymentContext.retryLoading()
-        })
-        alertController.addAction(cancel)
-        alertController.addAction(retry)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
-        // Reload related components
-        reloadPaymentButtonContent()
-        reloadRequestRideButton()
-    }
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
-        guard let text = self.totalCostLabel.text?.replacingOccurrences(of: "$", with: "") else { return }
-        guard let costs = Double(text) else { return }
-        let pennies = Int(costs * 100)
-        print(pennies)
-        paymentContext.paymentAmount = pennies
-        MyAPIClient.sharedClient.completeCharge(paymentResult,
-                                                amount: pennies,
-                                                completion: completion)
-    }
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
-        self.paymentInProgress = false
-        switch status {
-        case .error:
-            print(error?.localizedDescription as Any)
-        case .success:
-            print("SUCCESSS AYAYYA")
-//            self.addCurrentParking()
-//            if reserveSegmentAnchor.isActive == true {
-//                self.reserveParking()
-//            } else if currentSegmentAnchor.isActive == true {
-//                self.updateUserProfileCurrent()
-//            }
-//            UIView.animate(withDuration: animationIn) {
-//                self.view.layoutIfNeeded()
-//            }
-        case .userCancellation:
-            return
-        }
-    }
-    
-    @objc private func handlePaymentButtonTapped() {
-        self.paymentContext.presentPaymentOptionsViewController()
-    }
-    
-    private func reloadPaymentButtonContent() {
-        guard let selectedPaymentMethod = paymentContext.selectedPaymentOption else {
-            // Show default image, text, and color
-            //            paymentButton.setImage(#imageLiteral(resourceName: "Payment"), for: .normal)
-            userInformationNumbers = "No payment linked"
-            userInformationImage = UIImage()
-            paymentButton.setTitle("Payment", for: .normal)
-            paymentButton.setTitleColor(Theme.BLUE, for: .normal)
-            return
-        }
-        
-        // Show selected payment method image, label, and darker color
-        userInformationNumbers = selectedPaymentMethod.label
-        userInformationImage = selectedPaymentMethod.image
-        paymentButton.setImage(selectedPaymentMethod.image, for: .normal)
-        paymentButton.setTitle(selectedPaymentMethod.label, for: .normal)
-        paymentButton.setTitleColor(Theme.BLACK, for: .normal)
-    }
-    
-    func reloadRequestRideButton() {
-        // Show disabled state
-        mainButton.backgroundColor = Theme.DARK_GRAY
-        self.mainButton.setTitle("Purchase Spot", for: .normal)
-        mainButton.setTitleColor(.white, for: .normal)
-        //        requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-        mainButton.isEnabled = false
-        
-        switch rideRequestState {
-        case .none:
-            // Show enabled state
-            mainButton.backgroundColor = Theme.STRAWBERRY_PINK
-            self.mainButton.setTitle("Purchase Spot", for: .normal)
-            mainButton.setTitleColor(.white, for: .normal)
-            //            requestRideButton.setImage(#imageLiteral(resourceName: "Arrow"), for: .normal)
-            mainButton.isEnabled = true
-        case .requesting:
-            // Show loading state
-            mainButton.backgroundColor = Theme.DARK_GRAY
-            mainButton.setTitle("···", for: .normal)
-            mainButton.setTitleColor(.white, for: .normal)
-            mainButton.setImage(nil, for: .normal)
-            mainButton.isEnabled = false
-        case .active:
-            // Show completion state
-            mainButton.backgroundColor = .white
-            mainButton.setTitle("Working", for: .normal)
-            mainButton.setTitleColor(Theme.PACIFIC_BLUE, for: .normal)
-            mainButton.setImage(nil, for: .normal)
-            mainButton.isEnabled = true
-        }
-    }
-    
 }

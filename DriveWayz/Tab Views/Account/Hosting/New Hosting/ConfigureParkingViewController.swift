@@ -16,6 +16,9 @@ protocol handleImageDrawing {
 protocol handleConfigureProcess {
     func moveToNextController()
     func moveBackController()
+    
+    func notGoodToGo(text: String)
+    func goodTogo()
 }
 
 protocol handlePopupTerms {
@@ -157,6 +160,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     lazy var locationController: LocationParkingViewController = {
         let controller = LocationParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
         return controller
     }()
@@ -233,7 +237,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        let background = CAGradientLayer().purpleBlueColor()
+        let background = CAGradientLayer().customColor(topColor: Theme.LIGHT_ORANGE, bottomColor: Theme.STRAWBERRY_PINK)
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2)
         background.zPosition = -10
         view.layer.addSublayer(background)
@@ -251,6 +255,20 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.contentHorizontalAlignment = .right
         button.alpha = 0
         button.addTarget(self, action: #selector(exitNewHost), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var validError: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.HARMONY_RED
+        button.setTitle("Please enter a valid address", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.layer.cornerRadius = 15
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.font = Fonts.SSPRegularH5
+        button.alpha = 0
         
         return button
     }()
@@ -486,6 +504,32 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 94).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
+        containerView.addSubview(validError)
+        validError.centerYAnchor.constraint(equalTo: progressBar.centerYAnchor).isActive = true
+        validError.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        validError.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        validError.widthAnchor.constraint(equalToConstant: (validError.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH5))! + 24).isActive = true
+        
+    }
+    
+    func goodTogo() {
+        UIView.animate(withDuration: animationIn) {
+            self.validError.alpha = 0
+        }
+    }
+    
+    func notGoodToGo(text: String) {
+        self.validError.setTitle(text, for: .normal)
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: animationIn, animations: {
+            self.validError.alpha = 1
+        }) { (success) in
+            delayWithSeconds(2, completion: {
+                UIView.animate(withDuration: animationIn) {
+                    self.validError.alpha = 0
+                }
+            })
+        }
     }
     
     func imageDrawSelected() {
@@ -683,8 +727,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.parkingLabel.text = "Where is the spot located?"
             }
         } else if self.locationControllerAnchor.constant == 0 && self.locationController.view.alpha == 1 {
-            if self.locationController.goodToGo == true && self.locationController.streetField.textColor != Theme.WHITE.withAlphaComponent(0.4) && self.locationController.cityField.textColor != Theme.WHITE.withAlphaComponent(0.4) && self.locationController.stateField.textColor != Theme.WHITE.withAlphaComponent(0.4) {
-                self.locationController.goodTogo()
+            if self.locationController.goodToGo == true  {
                 if let address = self.locationController.newHostAddress, let title = self.locationController.streetField.text, let state = self.locationController.stateField.text, let city = self.locationController.cityField.text {
                     self.mapController.setupAddressMarker(address: address, title: title, city: city, state: state)
                     self.costsController.configureCustomPricing(state: state, city: city)
@@ -700,7 +743,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.parkingLabel.text = "Please confirm location"
                 }
             } else {
-                self.locationController.notGoodToGo()
+                self.notGoodToGo(text: "Please enter a valid address")
             }
         } else if self.mapControllerAnchor.constant == 0 && self.mapController.view.alpha == 1 {
             if self.parkingTypeController.parkingType == "parking lot" {
@@ -715,8 +758,8 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 self.businessPicturesController.lattitude = lattitude
                 self.picturesController.longitude = longitude
                 self.businessPicturesController.longitude = longitude
-                let price = self.mapController.dynamicPrice
-                self.costsController.dynamicPrice = Double(price)
+//                let price = self.mapController.dynamicPrice
+//                self.costsController.dynamicPrice = Double(price)
             }
             UIView.animate(withDuration: animationIn, animations: {
                 self.mapController.view.alpha = 0
@@ -773,9 +816,11 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.view.layoutIfNeeded()
                 })
                 self.parkingLabel.text = "Dynamic pricing"
-                self.costsController.removeTutorial()
             }
         } else if self.costsControllerAnchor.constant == 0 && self.costsController.view.alpha == 1 {
+            if self.costsController.costTextField.text == "" {
+                self.costsController.costTextField.text = String(format:"$%.02f", self.costsController.dynamicPrice)
+            }
             UIView.animate(withDuration: animationIn, animations: {
                 self.costsController.view.alpha = 0
             }) { (success) in
@@ -787,35 +832,43 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 })
                 self.parkingLabel.text = "Write a helpful message"
                 self.messageController.startMessage()
-                self.costsController.removeTutorial()
             }
         } else if self.messageControllerAnchor.constant == 0 && self.messageController.view.alpha == 1 {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.messageController.view.alpha = 0
-            }) { (success) in
+            if self.messageController.goodToGo == true {
                 UIView.animate(withDuration: animationIn, animations: {
-                    self.progressBarWidthAnchor.constant = self.progress * 12
-                    self.emailControllerAnchor.constant = 0
-                    self.emailController.view.alpha = 1
-                    self.view.layoutIfNeeded()
-                })
-                self.parkingLabel.text = "Enter your email address"
-                self.emailController.startMessage()
+                    self.messageController.view.alpha = 0
+                }) { (success) in
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.progressBarWidthAnchor.constant = self.progress * 12
+                        self.emailControllerAnchor.constant = 0
+                        self.emailController.view.alpha = 1
+                        self.view.layoutIfNeeded()
+                    })
+                    self.parkingLabel.text = "Enter your email address"
+                    self.emailController.startMessage()
+                }
+            } else {
+                self.notGoodToGo(text: "Please enter a message")
             }
         } else if self.emailControllerAnchor.constant == 0 && self.emailController.view.alpha == 1 {
-            self.confirmController.checkForPushNotifications()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.emailController.view.alpha = 0
-            }) { (success) in
+            if self.emailController.goodToGo == true {
+                self.confirmController.checkForPushNotifications()
                 UIView.animate(withDuration: animationIn, animations: {
-                    self.progressBar.alpha = 0
-                    self.confirmControllerAnchor.constant = 0
-                    self.confirmController.view.alpha = 1
-                    self.nextButton.alpha = 0
-                    self.darkBlurView.alpha = 0
-                    self.view.layoutIfNeeded()
-                })
-                self.parkingLabel.text = "Save parking"
+                    self.emailController.view.alpha = 0
+                }) { (success) in
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.progressBar.alpha = 0
+                        self.confirmControllerAnchor.constant = 0
+                        self.confirmController.view.alpha = 1
+                        self.nextButton.alpha = 0
+                        self.darkBlurView.alpha = 0
+                        self.view.layoutIfNeeded()
+                    })
+                    self.parkingLabel.text = "Save parking"
+                }
+            } else {
+                self.notGoodToGo(text: "Please enter a valid email")
+                self.emailController.emailTextField.becomeFirstResponder()
             }
         } else if self.confirmControllerAnchor.constant == 0 && self.confirmController.view.alpha == 1 {
             self.saveParkingButtonPressed()
@@ -977,7 +1030,6 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                     self.view.layoutIfNeeded()
                 })
                 self.parkingLabel.text = "Dynamic pricing"
-                self.costsController.removeTutorial()
             }
         } else if self.emailControllerAnchor.constant == 0 && self.emailController.view.alpha == 1 {
             UIView.animate(withDuration: animationIn, animations: {
@@ -1106,7 +1158,7 @@ extension ConfigureParkingViewController: handlePopupTerms {
         popupLabel.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: 12).isActive = true
         popupLabel.rightAnchor.constraint(equalTo: popupContainer.rightAnchor, constant: -12).isActive = true
         popupLabel.topAnchor.constraint(equalTo: popupContainer.topAnchor, constant: 24).isActive = true
-        popupLabel.bottomAnchor.constraint(equalTo: popupContainer.bottomAnchor, constant: -62).isActive = true
+        popupLabel.sizeToFit()
         
         popupContainer.addSubview(popupConfirm)
         popupConfirm.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: -1).isActive = true

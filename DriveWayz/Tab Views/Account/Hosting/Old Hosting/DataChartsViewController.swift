@@ -340,7 +340,7 @@ class DataChartsViewController: UIViewController, ChartViewDelegate {
             checkRef.observeSingleEvent(of: .value, with: { (snap) in
                 if let dictionary = snap.value as? [String:AnyObject] {
                     if let oldFunds = dictionary["userFunds"] as? Double {
-                        MyAPIClient.sharedClient.transferToBank(account: account, funds: oldFunds)
+//                        MyAPIClient.sharedClient.transferToBank(account: account, funds: oldFunds)
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                             self.updateCharts()
                         })

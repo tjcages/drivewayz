@@ -21,6 +21,56 @@ class BookingCell: UICollectionViewCell {
         }
     }
     
+    var numberSpots: String = "2"
+    var streetAddress: String = "1080 14th St.," {
+        didSet {
+            if let spaceRange = streetAddress.range(of: " ") {
+                streetAddress.removeSubrange(streetAddress.startIndex..<spaceRange.upperBound)
+                if let number = Int(numberSpots) {
+                    let wordString = number.asWord
+                    let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
+                    self.spotLabel.text = descriptionAddress
+                }
+            }
+        }
+    }
+    
+    var secondaryType: String = "driveway" {
+        didSet {
+            if secondaryType == "driveway" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.spotIcon.image = image
+            } else if secondaryType == "parking lot" {
+                let image = UIImage(named: "Parking Lot")
+                self.spotIcon.image = image
+            } else if secondaryType == "apartment" {
+                let image = UIImage(named: "Apartment Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "alley" {
+                let image = UIImage(named: "Alley Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "garage" {
+                let image = UIImage(named: "Parking Garage")
+                self.spotIcon.image = image
+            } else if secondaryType == "gated spot" {
+                let image = UIImage(named: "Gated Spot")
+                self.spotIcon.image = image
+            } else if secondaryType == "street spot" {
+                let image = UIImage(named: "Street Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "underground spot" {
+                let image = UIImage(named: "UnderGround Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "condo" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.spotIcon.image = image
+            } else if secondaryType == "circular" {
+                let image = UIImage(named: "Other Parking")
+                self.spotIcon.image = image
+            }
+        }
+    }
+    
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false

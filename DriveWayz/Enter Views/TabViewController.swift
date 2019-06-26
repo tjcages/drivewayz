@@ -131,8 +131,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
 
-    lazy var hostingController: MySpotsViewController = {
-        let controller = MySpotsViewController()
+    lazy var hostingController: UserHostingViewController = {
+        let controller = UserHostingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Hosting"
         controller.delegate = self
@@ -166,8 +166,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
-    lazy var upcomingController: UpcomingViewController = {
-        let controller = UpcomingViewController()
+    lazy var upcomingController: UserUpcomingViewController = {
+        let controller = UserUpcomingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Upcoming"
         controller.delegate = self
@@ -647,10 +647,14 @@ extension TabViewController {
             self.exitButton.alpha = 1
             self.gradientContainer.alpha = 1
         }) { (success) in
-            UIView.animate(withDuration: animationIn) {
+            self.hostingController.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0.0), animated: false)
+            self.hostingController.tabBarButtonPressed(sender: self.hostingController.reservationsTabButton)
+            UIView.animate(withDuration: animationIn, animations: {
                 self.hostingAnchor.constant = 0
                 self.view.layoutIfNeeded()
-            }
+            }, completion: { (success) in
+                self.hostingController.openTabBar()
+            })
         }
     }
     
@@ -889,6 +893,7 @@ extension TabViewController {
     }
     
     func hideHostingController() {
+        self.hostingController.closeTabBar()
         UIView.animate(withDuration: animationOut, animations: {
             self.hostingAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()

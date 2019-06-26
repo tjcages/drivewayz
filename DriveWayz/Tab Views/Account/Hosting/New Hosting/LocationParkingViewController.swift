@@ -22,6 +22,7 @@ protocol handleChangingAddress {
 
 class LocationParkingViewController: UIViewController, handleChangingAddress {
     
+    var delegate: handleConfigureProcess?
     var newHostAddress: String?
     var goodToGo: Bool = false
     
@@ -201,20 +202,6 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         
         return controller
     }()
-
-    var validAddressError: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.HARMONY_RED
-        button.setTitle("Please enter a valid address", for: .normal)
-        button.setTitleColor(Theme.WHITE, for: .normal)
-        button.layer.cornerRadius = 15
-        button.isUserInteractionEnabled = false
-        button.titleLabel?.font = Fonts.SSPRegularH5
-        button.alpha = 0
-        
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -362,12 +349,6 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         locationsSearchResults.view.topAnchor.constraint(equalTo: streetLine.bottomAnchor).isActive = true
         locationsSearchResults.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
-        self.view.addSubview(validAddressError)
-        validAddressError.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -120).isActive = true
-        validAddressError.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        validAddressError.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        validAddressError.widthAnchor.constraint(equalToConstant: (validAddressError.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH5))! + 24).isActive = true
-        
         createToolbar()
     }
     
@@ -514,18 +495,6 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         self.bringOtherOptions()
     }
     
-    func notGoodToGo() {
-        UIView.animate(withDuration: animationIn, animations: {
-            self.validAddressError.alpha = 1
-        }) { (success) in
-            delayWithSeconds(2, completion: {
-                UIView.animate(withDuration: animationIn) {
-                    self.validAddressError.alpha = 0
-                }
-            })
-        }
-    }
-    
     func checkIfGood() {
         if self.streetField.text == "" || self.streetField.text == "123 Kennedy Ave." {
             self.streetLabel.textColor = Theme.HARMONY_RED
@@ -554,12 +523,6 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         } else {
             self.countryLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
             self.goodToGo = true
-        }
-    }
-    
-    func goodTogo() {
-        UIView.animate(withDuration: animationIn) {
-            self.validAddressError.alpha = 0
         }
     }
 

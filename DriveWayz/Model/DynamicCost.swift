@@ -19,48 +19,60 @@ struct dynamicPricing {
         case invalid(String, Any)
     }
 
-    static var dictionaryStates: [String:Any] = [:]
+//    static var dictionaryStates: [String:Any] = [:]
     
-    static func checkAveragePrices() {
-        self.dictionaryStates = [:]
-        let reference = Database.database().reference().child("Average Prices")
-        reference.observe(.value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:Any] {
-                self.dictionaryStates = dictionary
+//    static func checkAveragePrices() {
+//        self.dictionaryStates = [:]
+//        let reference = Database.database().reference().child("Average Prices")
+//        reference.observe(.value) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String:Any] {
+//                self.dictionaryStates = dictionary
+//            }
+//        }
+//    }
+    
+    static func getDynamicPricing(parking: ParkingSpots, place: CLLocationCoordinate2D, state: String, city: String, overallDestination: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
+        if let price = parking.parkingCost {
+            var stateAbrv = state
+            if stateAbrv.first == " " { stateAbrv = String(stateAbrv.dropFirst()) }
+            filterDynamicPricing(place: place, overallDestination: overallDestination, state: stateAbrv, city: city, averagePrice: CGFloat(price)) { (dynamicPrice: CGFloat) in
+                completion(dynamicPrice)
             }
+        } else {
+            completion(3.0)
         }
     }
     
-    static func getDynamicPricing(place: CLLocationCoordinate2D, state: String, city: String, overallDestination: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
-        var stateAbrv = state
-        if stateAbrv.first == " " { stateAbrv = String(stateAbrv.dropFirst()) }
-        if let dictionary = self.dictionaryStates[stateAbrv] as? [String:Any] {
-            for value in dictionary.keys {
-                let valueString = value
-                let count: CGFloat = CGFloat(valueString.count)
-                var counter: CGFloat = 0
-                for characters in city {
-                    if valueString.contains(characters) {
-                        counter += 1
-                    }
-                }
-                if counter/count >= 0.9 {
-                    if let averagePrice = dictionary[valueString] as? CGFloat {
-                        filterDynamicPricing(place: place, overallDestination: overallDestination, state: stateAbrv, city: city, averagePrice: averagePrice) { (dynamicPrice: CGFloat) in
-                            completion(dynamicPrice)
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    static func getDynamicPricing(place: CLLocationCoordinate2D, state: String, city: String, overallDestination: CLLocationCoordinate2D, completion: @escaping(CGFloat) -> ()) {
+//        var stateAbrv = state
+//        if stateAbrv.first == " " { stateAbrv = String(stateAbrv.dropFirst()) }
+//        if let dictionary = self.dictionaryStates[stateAbrv] as? [String:Any] {
+//            for value in dictionary.keys {
+//                let valueString = value
+//                let count: CGFloat = CGFloat(valueString.count)
+//                var counter: CGFloat = 0
+//                for characters in city {
+//                    if valueString.contains(characters) {
+//                        counter += 1
+//                    }
+//                }
+//                if counter/count >= 0.9 {
+//                    if let averagePrice = dictionary[valueString] as? CGFloat {
+//                        filterDynamicPricing(place: place, overallDestination: overallDestination, state: stateAbrv, city: city, averagePrice: averagePrice) { (dynamicPrice: CGFloat) in
+//                            completion(dynamicPrice)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
+    static var checkedAdresses: [String] = []
     static var checkedLocations: [String: CLLocation] = [:]
     
     //filter through all dynamic pricing options to determine a final price
     static func filterDynamicPricing(place: CLLocationCoordinate2D, overallDestination: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
-        let address = "\(city), \(state)"
-        checkLocations(address: address) { (location) in
+        checkLocations(city: city, state: state) { (location) in
             getCityPricing(place: place, geoLocation: location, state: state, city: city, averagePrice: averagePrice, completion: { (cityPricing) in
                 getEventPricing(place: place, geoLocation: location, overallDestination: overallDestination, state: state, city: city, averagePrice: cityPricing, completion: { (eventPricing) in
                     getTimePricing(averagePrice: eventPricing, completion: { (timePricing) in
@@ -75,36 +87,49 @@ struct dynamicPricing {
         }
     }
     
-    static func checkLocations(address: String, completion: @escaping(CLLocation) -> ()) {
-        if checkedLocations[address] == nil {
-            let geoCoder = CLGeocoder()
-            geoCoder.geocodeAddressString(address) { (placemarks, error) in
-                guard
-                    let placemarks = placemarks,
-                    let location = placemarks.first?.location
-                    else {
-                        print(error?.localizedDescription as Any, "\nCannot find dynamic price for location")
-                        completion(CLLocation.init())
-                        return
+    static func checkLocations(city: String, state: String, completion: @escaping(CLLocationCoordinate2D) -> ()) {
+        for stringArray in stringCityArray {
+            if let stateAr = stringArray.first {
+                if stateAr == state {
+                    if let cityAr = stringArray.dropFirst().first {
+                        if cityAr == city {
+                            if let lat = stringArray.dropFirst().dropFirst().first, let long = stringArray.dropFirst().dropFirst().dropFirst().first {
+                                if let latitude = Double(lat), let longitude = Double(long) {
+                                    let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                                    completion(location)
+                                }
+                            }
+                        }
+                    }
                 }
-                checkedLocations.updateValue(location, forKey: address)
-                completion(location)
-            }
-        } else {
-            if let location = checkedLocations[address] {
-                completion(location)
             }
         }
+        
+//        let geoCoder = CLGeocoder()
+//        geoCoder.geocodeAddressString(address) { (placemarks, error) in
+//            guard
+//                let placemarks = placemarks,
+//                let location = placemarks.first?.location
+//                else {
+//                    print(error?.localizedDescription as Any, "\nCannot find dynamic price for location")
+//                    completion(CLLocation.init())
+//                    return
+//            }
+//            completion(location)
+//        }
     }
     
     //change price based on distance to city center
-    static func getCityPricing(place: CLLocationCoordinate2D, geoLocation: CLLocation, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
-        let distance = place.distance(to: geoLocation.coordinate)
-        if distance < 1609.34/4 { //0.25 mile away from center city
+    static func getCityPricing(place: CLLocationCoordinate2D, geoLocation: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
+        let distance = place.distance(to: geoLocation)
+        if distance <= 322 { //0.2 mile away from center city
+            let newAverage = averagePrice + averagePrice * 0.3
+            completion(newAverage)
+        } else if distance <= 644 { //0.4 mile away from center city
             let newAverage = averagePrice + averagePrice * 0.2
             completion(newAverage)
-        } else if distance < 1609.34/2 { //0.5 mile away from center city
-            let newAverage = averagePrice + averagePrice * 0.15
+        } else if distance <= 966 { //0.6 mile away from center city
+            let newAverage = averagePrice + averagePrice * 0.1
             completion(newAverage)
         } else { //1 mile away from center city
             let newAverage = averagePrice - averagePrice * 0.1
@@ -113,17 +138,28 @@ struct dynamicPricing {
     }
     
     //change price if spot is located near an event location
-    static func getEventPricing(place: CLLocationCoordinate2D, geoLocation: CLLocation, overallDestination: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
-        DynamicEvents.checkDistance(userLocation: geoLocation.coordinate) { (results) in
-            if results > 0.0 {
-                let percentage = results * 0.2
-                let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
-                completion(dynamicPrice)
-            } else {
-                let nonDynamicPrice = 0.45 * averagePrice
-                completion(nonDynamicPrice)
-            }
-        }
+    static func getEventPricing(place: CLLocationCoordinate2D, geoLocation: CLLocationCoordinate2D, overallDestination: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat, completion: @escaping(CGFloat) -> ()) {
+        let nonDynamicPrice = 0.45 * averagePrice
+        completion(nonDynamicPrice)
+//        DynamicEvents.eventLookup(userLocation: place, searchCity: city) { (results) in
+//            if results > 0.0 {
+//                let dynamicPrice = averagePrice + averagePrice * CGFloat(results)
+//                completion(dynamicPrice)
+//            } else {
+//                let nonDynamicPrice = 0.45 * averagePrice
+//                completion(nonDynamicPrice)
+//            }
+//        }
+//        DynamicEvents.checkDistance(userLocation: geoLocation.coordinate) { (results) in
+//            if results > 0.0 {
+//                let percentage = results * 0.2
+//                let dynamicPrice = averagePrice + averagePrice * CGFloat(percentage)
+//                completion(dynamicPrice)
+//            } else {
+//                let nonDynamicPrice = 0.45 * averagePrice
+//                completion(nonDynamicPrice)
+//            }
+//        }
     }
     
     //change price based on time of day
@@ -162,7 +198,146 @@ struct dynamicPricing {
         }
     }
     
+    static var stringCityArray: [[String]] = []
+    
+    static func csv(data: String) -> [[String]] {
+        var result: [[String]] = []
+        let rows = data.components(separatedBy: "\n")
+        for row in rows {
+            let columns = row.components(separatedBy: ";")
+            result.append(columns)
+        }
+        return result
+    }
+    
+    static func readDataFromCSV(fileName: String, fileType: String) -> String! {
+        guard let filepath = Bundle.main.path(forResource: fileName, ofType: fileType)
+            else {
+                return nil
+        }
+        do {
+            var contents = try String(contentsOfFile: filepath, encoding: .utf8)
+            contents = cleanRows(file: contents)
+            return contents
+        } catch {
+            print("File Read Error for file \(filepath)")
+            return nil
+        }
+    }
+    
+    
+    static func cleanRows(file: String) -> String {
+        var cleanFile = file
+        cleanFile = cleanFile.replacingOccurrences(of: ",,,", with: "")
+        cleanFile = cleanFile.replacingOccurrences(of: "\r", with: "\n")
+        cleanFile = cleanFile.replacingOccurrences(of: "\n\n", with: "\n")
+        //        cleanFile = cleanFile.replacingOccurrences(of: ";;", with: "")
+        //        cleanFile = cleanFile.replacingOccurrences(of: ";\n", with: "")
+        return cleanFile
+    }
+    
+    static func readCityCSV() {
+//        if var data = readDataFromCSV(fileName: "uscitiesv1.5", fileType: "csv") {
+        if var data = readDataFromCSV(fileName: "cities", fileType: "csv") {
+            data = cleanRows(file: data)
+            let csvRows = csv(data: data)
+            var newRows: [[String]] = []
+            for rows in csvRows {
+                let separator = rows[0]
+                let strings = separator.split(separator: ",")
+                var stringArray: [String] = []
+                for string in strings {
+                    stringArray.append(String(string))
+                }
+                newRows.append(stringArray)
+            }
+            self.stringCityArray = newRows
+        }
+    }
+
 }
+
+
+class CSV: NSObject {
+    
+    var driverID: String?
+    var fromDate: TimeInterval?
+    var hours: Double?
+    var parkingID: String?
+    var vehicleID : String?
+    var price: Double?
+    var toDate: TimeInterval?
+    
+    var parkingLat: Double?
+    var parkingLong: Double?
+    var destinationLat: Double?
+    var destinationLong: Double?
+    
+    var discount: Int?
+    var totalCost: Double?
+    var stringDate: String?
+    
+    var userName: String?
+    var userDuration: String?
+    var userProfileURL: String?
+    var userRating: Double?
+    var userOverstayed: Bool?
+    
+    init(dictionary: [String:Any]) {
+        super.init()
+        
+        driverID = dictionary["driverID"] as? String
+        fromDate = dictionary["fromDate"] as? TimeInterval
+        hours = dictionary["hours"] as? Double
+        parkingID = dictionary["parkingID"] as? String
+        vehicleID = dictionary["vehicleID"] as? String
+        price = dictionary["price"] as? Double
+        toDate = dictionary["toDate"] as? TimeInterval
+        
+        parkingLat = dictionary["finalParkingLat"] as? Double
+        parkingLong = dictionary["finalParkingLong"] as? Double
+        destinationLat = dictionary["finalDestinationLat"] as? Double
+        destinationLong = dictionary["finalDestinationLong"] as? Double
+        
+        discount = dictionary["discount"] as? Int
+        totalCost = dictionary["totalCost"] as? Double
+        
+        userName = dictionary["driverName"] as? String
+        userProfileURL = dictionary["driverPicture"] as? String
+        userRating = dictionary["driverRating"] as? Double
+        if userRating == nil {
+            userRating = 5.0
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        guard let from = fromDate else { return }
+        let date = Date(timeIntervalSince1970: from)
+        stringDate = formatter.string(from: date)
+        
+        if let fromInterval = self.fromDate, let toInterval = self.toDate {
+            let today = Date().timeIntervalSince1970
+            if today > fromInterval && today < toInterval {
+                self.userOverstayed = false
+            } else if today > fromInterval && today >= toInterval {
+                self.userOverstayed = true
+            }
+            let fromDate = Date(timeIntervalSince1970: fromInterval)
+            let toDate = Date(timeIntervalSince1970: toInterval)
+            let formatter = DateFormatter()
+            formatter.amSymbol = "am"
+            formatter.pmSymbol = "pm"
+            formatter.dateFormat = "h:mma"
+            let fromString = formatter.string(from: fromDate)
+            let toString = formatter.string(from: toDate)
+            let dates = "\(fromString) - \(toString)"
+            self.userDuration = dates
+        }
+        
+    }
+    
+}
+
 
 //weather 
 //events /

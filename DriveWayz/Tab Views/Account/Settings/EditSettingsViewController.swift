@@ -120,6 +120,9 @@ class EditSettingsViewController: UIViewController {
             } else if title == "Phone" {
                 ref.updateChildValues(["phone": message])
                 self.delegate?.changePhone(text: message)
+            } else if title == "Name" {
+                ref.updateChildValues(["name": message])
+                self.delegate?.changeName(text: message)
             }
         }
     }

@@ -8,6 +8,16 @@
 
 import UIKit
 
+protocol handleProfitCharts {
+    func setProfits(amount: Double)
+    func setDates(dateString: String)
+    
+    func disableNextWeek()
+    func enableNextWeek()
+    func disableLastWeek()
+    func enableLastWeek()
+}
+
 class ProfitsDateViewController: UIViewController {
     
     let containerWidth = phoneWidth - 24
@@ -25,7 +35,7 @@ class ProfitsDateViewController: UIViewController {
     var profitsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Dec 7-14"
+        label.text = ""
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
@@ -36,7 +46,7 @@ class ProfitsDateViewController: UIViewController {
     var profitsAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "$159.90"
+        label.text = ""
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPBoldH0
         label.textAlignment = .center
@@ -49,10 +59,10 @@ class ProfitsDateViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: -90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveDownWeek), for: .touchUpInside)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         
         return button
     }()
@@ -62,31 +72,20 @@ class ProfitsDateViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveUpWeek), for: .touchUpInside)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        button.alpha = 0
+        button.isUserInteractionEnabled = false
         
         return button
     }()
     
-    lazy var chartController1: ProfitsChartViewController = {
+    lazy var chartController: ProfitsChartViewController = {
         let controller = ProfitsChartViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
-    
-    lazy var chartController2: ProfitsChartViewController = {
-        let controller = ProfitsChartViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return controller
-    }()
-    
-    lazy var chartController3: ProfitsChartViewController = {
-        let controller = ProfitsChartViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
         
         return controller
     }()
@@ -102,8 +101,8 @@ class ProfitsDateViewController: UIViewController {
     var parkersLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Total parkers"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.text = "Total bookings"
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -112,8 +111,8 @@ class ProfitsDateViewController: UIViewController {
     var parkersAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "15"
-        label.textColor = Theme.BLACK
+        label.text = ""
+        label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
         
         return label
@@ -122,8 +121,8 @@ class ProfitsDateViewController: UIViewController {
     var hoursLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Total hours"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.text = "Total time"
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         
@@ -133,8 +132,8 @@ class ProfitsDateViewController: UIViewController {
     var hoursAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "17h 30 min"
-        label.textColor = Theme.BLACK
+        label.text = ""
+        label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
         
         return label
@@ -144,7 +143,7 @@ class ProfitsDateViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Avg. distance"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
         
@@ -154,11 +153,22 @@ class ProfitsDateViewController: UIViewController {
     var distanceAmount: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "0.45 mi"
-        label.textColor = Theme.BLACK
+        label.text = ""
+        label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
         
         return label
+    }()
+    
+    var gradientBackground: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.LIGHT_BLUE)
+        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 100)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        
+        return view
     }()
     
     override func viewDidLoad() {
@@ -175,9 +185,7 @@ class ProfitsDateViewController: UIViewController {
         setupValues()
     }
     
-    var chart1CenterAnchor: NSLayoutConstraint!
-    var chart2CenterAnchor: NSLayoutConstraint!
-    var chart3CenterAnchor: NSLayoutConstraint!
+    var chartCenterAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -211,36 +219,28 @@ class ProfitsDateViewController: UIViewController {
         nextWeekButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         nextWeekButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
         
-        container.addSubview(chartController1.view)
-        chart1CenterAnchor = chartController1.view.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: -containerWidth)
-            chart1CenterAnchor.isActive = true
-        chartController1.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
-        chartController1.view.topAnchor.constraint(equalTo: profitsAmount.bottomAnchor, constant: 32).isActive = true
-        chartController1.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -100).isActive = true
-        
-        container.addSubview(chartController2.view)
-        chart2CenterAnchor = chartController2.view.centerXAnchor.constraint(equalTo: container.centerXAnchor)
-            chart2CenterAnchor.isActive = true
-        chartController2.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
-        chartController2.view.topAnchor.constraint(equalTo: profitsAmount.bottomAnchor, constant: 32).isActive = true
-        chartController2.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -100).isActive = true
-        
-        container.addSubview(chartController3.view)
-        chart3CenterAnchor = chartController3.view.centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: containerWidth)
-            chart3CenterAnchor.isActive = true
-        chartController3.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
-        chartController3.view.topAnchor.constraint(equalTo: profitsAmount.bottomAnchor, constant: 32).isActive = true
-        chartController3.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -100).isActive = true
+        container.addSubview(chartController.view)
+        chartCenterAnchor = chartController.view.centerXAnchor.constraint(equalTo: container.centerXAnchor)
+            chartCenterAnchor.isActive = true
+        chartController.view.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
+        chartController.view.topAnchor.constraint(equalTo: profitsAmount.bottomAnchor, constant: 32).isActive = true
+        chartController.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -100).isActive = true
         
     }
     
     func setupValues() {
         
         container.addSubview(line)
-        line.topAnchor.constraint(equalTo: chartController1.view.bottomAnchor, constant: 24).isActive = true
+        line.topAnchor.constraint(equalTo: chartController.view.bottomAnchor, constant: 24).isActive = true
         line.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
         line.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
         line.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        container.addSubview(gradientBackground)
+        gradientBackground.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
+        gradientBackground.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        gradientBackground.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        gradientBackground.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
         container.addSubview(parkersLabel)
         parkersLabel.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
@@ -278,100 +278,84 @@ class ProfitsDateViewController: UIViewController {
         distanceAmount.topAnchor.constraint(equalTo: distanceLabel.bottomAnchor, constant: 2).isActive = true
         distanceAmount.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(moveUpWeek))
+        leftSwipe.direction = .left
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(moveDownWeek))
+        rightSwipe.direction = .right
+        chartController.view.addGestureRecognizer(leftSwipe)
+        chartController.view.addGestureRecognizer(rightSwipe)
+        
     }
     
     @objc func moveUpWeek() {
-        if chart1CenterAnchor.constant == 0 {
-            self.chart1CenterAnchor.constant = -containerWidth
-            self.chart2CenterAnchor.constant = 0
+        if nextWeekButton.alpha == 1 {
+            let index = self.chartController.previousIndex - 13
+            self.chartCenterAnchor.constant = -phoneWidth
             UIView.animate(withDuration: animationIn, animations: {
+                self.chartController.selectedView.alpha = 0
+                self.chartController.view.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.chartController3.view.isHidden = true
-                self.chart3CenterAnchor.constant = self.containerWidth
+                self.chartController.setupCharts(index: index)
+                self.chartCenterAnchor.constant = 0
                 self.view.layoutIfNeeded()
-                self.chartController3.view.isHidden = false
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.chartController.view.alpha = 1
+                })
             }
-        } else if chart2CenterAnchor.constant == 0 {
-            self.chart2CenterAnchor.constant = -containerWidth
-            self.chart3CenterAnchor.constant = 0
-            UIView.animate(withDuration: animationIn, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.chartController1.view.isHidden = true
-                self.chart1CenterAnchor.constant = self.containerWidth
-                self.view.layoutIfNeeded()
-                self.chartController1.view.isHidden = false
-            }
-        } else if chart3CenterAnchor.constant == 0 {
-            self.chart3CenterAnchor.constant = -containerWidth
-            self.chart1CenterAnchor.constant = 0
-            UIView.animate(withDuration: animationIn, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.chartController2.view.isHidden = true
-                self.chart2CenterAnchor.constant = self.containerWidth
-                self.view.layoutIfNeeded()
-                self.chartController2.view.isHidden = false
-            }
-        }
-        delayWithSeconds(animationIn * 2) {
-            self.chartController1.view.isHidden = false
-            self.chartController1.view.isHidden = false
-            self.chartController1.view.isHidden = false
         }
     }
     
     @objc func moveDownWeek() {
-        if chart1CenterAnchor.constant == 0 {
-            self.chart1CenterAnchor.constant = containerWidth
-            self.chart3CenterAnchor.constant = 0
+        if lastWeekButton.alpha == 1 {
+            let index = self.chartController.previousIndex + 1
+            self.chartCenterAnchor.constant = phoneWidth
             UIView.animate(withDuration: animationIn, animations: {
+                self.chartController.selectedView.alpha = 0
+                self.chartController.view.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.chartController2.view.isHidden = true
-                self.chart2CenterAnchor.constant = -self.containerWidth
+                self.chartController.setupCharts(index: index)
+                self.chartCenterAnchor.constant = 0
                 self.view.layoutIfNeeded()
-                self.chartController2.view.isHidden = false
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.chartController.view.alpha = 1
+                })
             }
-        } else if chart2CenterAnchor.constant == 0 {
-            self.chart2CenterAnchor.constant = containerWidth
-            self.chart1CenterAnchor.constant = 0
-            UIView.animate(withDuration: animationIn, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.chartController3.view.isHidden = true
-                self.chart3CenterAnchor.constant = -self.containerWidth
-                self.view.layoutIfNeeded()
-                self.chartController3.view.isHidden = false
-            }
-        } else if chart3CenterAnchor.constant == 0 {
-            self.chart3CenterAnchor.constant = containerWidth
-            self.chart2CenterAnchor.constant = 0
-            UIView.animate(withDuration: animationIn, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.chartController1.view.isHidden = true
-                self.chart1CenterAnchor.constant = -self.containerWidth
-                self.view.layoutIfNeeded()
-                self.chartController1.view.isHidden = false
-            }
-        }
-        delayWithSeconds(animationIn * 2) {
-            self.chartController1.view.isHidden = false
-            self.chartController1.view.isHidden = false
-            self.chartController1.view.isHidden = false
         }
     }
+    
+}
 
-    func resetCharts() {
-        self.chart1CenterAnchor.constant = -containerWidth
-        self.chart2CenterAnchor.constant = 0
-        self.chart3CenterAnchor.constant = containerWidth
-        self.view.layoutIfNeeded()
-        self.chartController1.view.isHidden = false
-        self.chartController1.view.isHidden = false
-        self.chartController1.view.isHidden = false
+
+extension ProfitsDateViewController: handleProfitCharts {
+    
+    func setProfits(amount: Double) {
+        self.profitsAmount.text = String(format:"$%.02f", amount)
+    }
+    
+    func setDates(dateString: String) {
+        self.profitsLabel.text = dateString
+    }
+    
+    func disableNextWeek() {
+        self.nextWeekButton.isUserInteractionEnabled = false
+        self.nextWeekButton.alpha = 0
+    }
+    
+    func enableNextWeek() {
+        self.nextWeekButton.isUserInteractionEnabled = true
+        self.nextWeekButton.alpha = 1
+    }
+    
+    func disableLastWeek() {
+        self.lastWeekButton.isUserInteractionEnabled = false
+        self.lastWeekButton.alpha = 0
+    }
+    
+    func enableLastWeek() {
+        self.lastWeekButton.isUserInteractionEnabled = true
+        self.lastWeekButton.alpha = 1
     }
     
 }

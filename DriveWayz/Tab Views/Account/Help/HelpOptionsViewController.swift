@@ -80,9 +80,9 @@ extension HelpOptionsViewController: UITableViewDelegate, UITableViewDataSource 
             cell.titleLabel.text = options[indexPath.row]
             cell.subtitleLabel.text = optionsSub[indexPath.row]
             if cell.titleLabel.text == "Contact Drivewayz" {
-                let image = UIImage(named: "DrivewayzIcon")
+                let image = UIImage(named: "DrivewayzTopIcon")
                 cell.iconView.setImage(image, for: .normal)
-                cell.iconView.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                cell.iconView.imageEdgeInsets = UIEdgeInsets(top: 10, left: 8, bottom: 6, right: 8)
             } else if cell.titleLabel.text == "Review last booking" {
                 let image = UIImage(named: "settingsHome")
                 cell.iconView.setImage(image, for: .normal)
