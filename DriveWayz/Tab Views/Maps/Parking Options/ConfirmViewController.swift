@@ -66,7 +66,7 @@ class ConfirmViewController: UIViewController {
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 35
-        let image = UIImage(named: "Apartment Parking")
+        let image = UIImage(named: "Residential Home Parking")
         view.image = image
         
         return view
@@ -437,6 +437,40 @@ class ConfirmViewController: UIViewController {
         self.totalCostLabel.text = String(format:"$%.02f", endPrice)
         self.couponCostLabel.text = String(format:"$%.02f", endPrice)
         
+        if let secondaryType = parking.secondaryType {
+            if secondaryType == "driveway" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.spotIcon.image = image
+            } else if secondaryType == "parking lot" {
+                let image = UIImage(named: "Parking Lot")
+                self.spotIcon.image = image
+            } else if secondaryType == "apartment" {
+                let image = UIImage(named: "Apartment Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "alley" {
+                let image = UIImage(named: "Alley Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "garage" {
+                let image = UIImage(named: "Parking Garage")
+                self.spotIcon.image = image
+            } else if secondaryType == "gated spot" {
+                let image = UIImage(named: "Gated Spot")
+                self.spotIcon.image = image
+            } else if secondaryType == "street spot" {
+                let image = UIImage(named: "Street Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "underground spot" {
+                let image = UIImage(named: "UnderGround Parking")
+                self.spotIcon.image = image
+            } else if secondaryType == "condo" {
+                let image = UIImage(named: "Residential Home Driveway")
+                self.spotIcon.image = image
+            } else if secondaryType == "circular" {
+                let image = UIImage(named: "Other Parking")
+                self.spotIcon.image = image
+            }
+        }
+        
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(userID)
         ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -522,7 +556,7 @@ class ConfirmViewController: UIViewController {
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.full
+        config.requiredBillingAddressFields = STPBillingAddressFields.none
         config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens

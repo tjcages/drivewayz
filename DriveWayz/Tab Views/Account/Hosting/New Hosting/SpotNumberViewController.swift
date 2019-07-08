@@ -21,7 +21,7 @@ class SpotNumberViewController: UIViewController {
     var numberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Number of spots"
         label.font = Fonts.SSPRegularH5
         
@@ -32,7 +32,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "1"
-        view.textColor = Theme.WHITE
+        view.textColor = Theme.DARK_GRAY
         view.font = Fonts.SSPLightH3
         view.tintColor = .clear
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -44,7 +44,7 @@ class SpotNumberViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -52,7 +52,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Does the spot have a number?"
         label.font = Fonts.SSPRegularH5
         
@@ -80,7 +80,7 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
-        view.textColor = Theme.WHITE
+        view.textColor = Theme.DARK_GRAY
         view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -92,7 +92,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -100,7 +100,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Gate code?"
         label.font = Fonts.SSPRegularH5
         
@@ -128,7 +128,7 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPLightH3
-        view.textColor = Theme.WHITE
+        view.textColor = Theme.DARK_GRAY
         view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -140,7 +140,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -340,8 +340,8 @@ class SpotNumberViewController: UIViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.PURPLE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.tintColor = Theme.BLUE
+        toolBar.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

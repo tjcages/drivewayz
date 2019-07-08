@@ -12,11 +12,8 @@ import UserNotifications
 import GoogleMaps
 //import MapboxStatic
 
-var timerStarted: Bool = false
 var currentParking: Bool = false
 var notificationSent: Bool = false
-
- var seconds: Int?
 
 class CurrentParkingViewController: UIViewController {
     
@@ -61,8 +58,8 @@ class CurrentParkingViewController: UIViewController {
                     let refreshTimestamp = dictionary["timestamp"] as? Double
                     let refreshHours = dictionary["hours"] as? Int
                     let currentTimestamp = NSDate().timeIntervalSince1970
-                    seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
-                    seconds = seconds! + (10 * 60)
+//                    seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
+//                    seconds = seconds! + (10 * 60)
                     
                     self.runTimer()
                 }
@@ -175,14 +172,14 @@ class CurrentParkingViewController: UIViewController {
     }
     
     @objc func updateTimer() {
-        if seconds! > 0 {
-            seconds! = seconds! - 1
-            timeRemaining.text = timeString(time: TimeInterval(seconds!))
-            timeRemaining.textColor = Theme.SEA_BLUE
-        } else {
-            timeRemaining.text = "Times up"
-            timeRemaining.textColor = Theme.HARMONY_RED
-        }
+//        if seconds! > 0 {
+//            seconds! = seconds! - 1
+//            timeRemaining.text = timeString(time: TimeInterval(seconds!))
+//            timeRemaining.textColor = Theme.SEA_BLUE
+//        } else {
+//            timeRemaining.text = "Times up"
+//            timeRemaining.textColor = Theme.HARMONY_RED
+//        }
     }
     
     func timeString(time: TimeInterval) -> String {

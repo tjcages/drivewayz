@@ -11,6 +11,7 @@ import FirebaseDatabase
 
 class Bookings: NSObject {
     
+    var bookingID: String?
     var driverID: String?
     var fromDate: TimeInterval?
     var hours: Double?
@@ -27,6 +28,7 @@ class Bookings: NSObject {
     var discount: Int?
     var totalCost: Double?
     var stringDate: String?
+    var walkingTime: Double?
     
     var userName: String?
     var userDuration: String?
@@ -37,10 +39,14 @@ class Bookings: NSObject {
     var parkingName: String?
     var parkingType: String?
     var parkingRating: Double?
+    var destinationName: String?
+    
+    var checkedIn: Bool?
     
     init(dictionary: [String:Any]) {
         super.init()
         
+        bookingID = dictionary["bookingID"] as? String
         driverID = dictionary["driverID"] as? String
         fromDate = dictionary["fromDate"] as? TimeInterval
         hours = dictionary["hours"] as? Double
@@ -56,10 +62,12 @@ class Bookings: NSObject {
         
         discount = dictionary["discount"] as? Int
         totalCost = dictionary["totalCost"] as? Double
+        walkingTime = dictionary["walkingTime"] as? Double
         
         parkingName = dictionary["parkingName"] as? String
         parkingType = dictionary["parkingType"] as? String
         parkingRating = dictionary["parkingRating"] as? Double
+        destinationName = dictionary["destinationName"] as? String
         
         userName = dictionary["driverName"] as? String
         userProfileURL = dictionary["driverPicture"] as? String
@@ -67,6 +75,8 @@ class Bookings: NSObject {
         if userRating == nil {
             userRating = 5.0
         }
+        
+        checkedIn = dictionary["checkedIn"] as? Bool
         
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy"

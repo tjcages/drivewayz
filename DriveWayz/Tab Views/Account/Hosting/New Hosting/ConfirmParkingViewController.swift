@@ -27,7 +27,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.text = """
         Drivewayz would like to send you monthly notifications to verify your status as an active host.
@@ -42,7 +42,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var extraLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.font = Fonts.SSPLightH5
         label.text = "You will also recieve notifications when users park in your spot."
         label.numberOfLines = 2
@@ -56,7 +56,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.SEA_BLUE
         button.setTitle("Allow", for: .normal)
-        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(registerForPushNotifications), for: .touchUpInside)
@@ -98,7 +98,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var informationAcceptLabel: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPLightH3
         button.titleLabel?.numberOfLines = 4
         button.contentHorizontalAlignment = .left
@@ -111,7 +111,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         let attribute = NSMutableAttributedString.init(string: main_string)
         let notRange = (main_string as NSString).range(of: string_to_notColor)
         attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.PACIFIC_BLUE , range: range)
-        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.WHITE , range: notRange)
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.DARK_GRAY , range: notRange)
         attribute.addAttribute(NSAttributedString.Key.font, value: Fonts.SSPSemiBoldH3 , range: range)
         button.setAttributedTitle(attribute, for: .normal)
         

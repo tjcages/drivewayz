@@ -48,7 +48,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     var scheduleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.text = "Tap specific days or days of the week to block out availability on the calendar"
         label.numberOfLines = 2
@@ -61,7 +61,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitle("Show more", for: .normal)
-        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(showMorePressed(sender:)), for: .touchUpInside)
         
@@ -272,7 +272,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
             }
         } else if Int(calendarDay.text!) != nil {
             if(Date().addMonthFC(month: indexPath.section).startOfMonthFC().getDayFC(day: Int(calendarDay.text!)!-1) == selectedDate.getDayFC(day: 0)){
-                calendarDay.layer.borderColor = Theme.WHITE.cgColor
+                calendarDay.layer.borderColor = Theme.DARK_GRAY.cgColor
                 calendarDay.layer.borderWidth = 1
             } else {
                 calendarDay.layer.borderColor = UIColor.clear.cgColor
@@ -281,10 +281,10 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         }
         if self.selectedIndeces.contains(indexPath) {
             cell.cellView.isHidden = false
-            cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+            cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         } else {
             cell.cellView.isHidden = true
-            cell.cellLabel.textColor = Theme.WHITE
+            cell.cellLabel.textColor = Theme.DARK_GRAY
         }
         return cell
     }
@@ -301,7 +301,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                         if let selectedCell = collectionView.cellForItem(at: index) as? CalendarCell {
                             if index != indexPath && selectedCell.cellLabel.text != "" {
                                 selectedCell.cellView.isHidden = false
-                                selectedCell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+                                selectedCell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
                                 self.selectedIndeces.append(index)
                                 let nextCalendarDay = selectedCell.cellLabel
                                 self.addDayOfWeek(indexPath: index, calendarDay: nextCalendarDay)
@@ -310,7 +310,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                         i = i + 7
                     }
                     cell.cellView.isHidden = true
-                    cell.cellLabel.textColor = Theme.WHITE
+                    cell.cellLabel.textColor = Theme.DARK_GRAY
                 } else {
                     self.selectedDay = self.selectedIndeces.filter { $0 != indexPath }
                     var i = indexPath.row
@@ -318,7 +318,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                         let index = IndexPath(row: i, section: indexPath.section)
                         if let selectedCell = collectionView.cellForItem(at: index) as? CalendarCell {
                             selectedCell.cellView.isHidden = true
-                            selectedCell.cellLabel.textColor = Theme.WHITE
+                            selectedCell.cellLabel.textColor = Theme.DARK_GRAY
                             self.selectedIndeces = self.selectedIndeces.filter { $0 != index }
                             let nextCalendarDay = selectedCell.cellLabel
                             self.removeDayOfWeek(indexPath: index, calendarDay: nextCalendarDay)
@@ -330,13 +330,12 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
                 if Int(calendarDay.text!) != nil{
                     if cell.cellView.isHidden == true {
                         cell.cellView.isHidden = false
-                        cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
-                        print(indexPath)
+                        cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
                         self.selectedIndeces.append(indexPath)
                         self.addDayOfWeek(indexPath: indexPath, calendarDay: calendarDay)
                     } else {
                         cell.cellView.isHidden = true
-                        cell.cellLabel.textColor = Theme.WHITE
+                        cell.cellLabel.textColor = Theme.DARK_GRAY
                         self.selectedIndeces = self.selectedIndeces.filter { $0 != indexPath }
                         self.removeDayOfWeek(indexPath: indexPath, calendarDay: calendarDay)
                     }
@@ -453,7 +452,7 @@ class CalendarCell: UICollectionViewCell {
     
     let cellView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.DARK_GRAY
         view.alpha = 0.3
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -463,7 +462,7 @@ class CalendarCell: UICollectionViewCell {
     
     lazy var angleView: UIView = {
         let view = UIView(frame: CGRect(x: 10, y: 10, width: 10, height: self.frame.height * 2))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.PRUSSIAN_BLUE
         view.transform = CGAffineTransform(rotationAngle: CGFloat.pi/5)
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -474,7 +473,7 @@ class CalendarCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.text = "1"
         
@@ -484,7 +483,7 @@ class CalendarCell: UICollectionViewCell {
     lazy var topView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.5))
         //        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
 
         return view
     }()
@@ -492,7 +491,7 @@ class CalendarCell: UICollectionViewCell {
     lazy var leftView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0.5, width: 0.5, height: self.frame.height - 1))
         //        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         
         return view
     }()
@@ -500,7 +499,7 @@ class CalendarCell: UICollectionViewCell {
     lazy var rightView: UIView = {
         let view = UIView(frame: CGRect(x: self.frame.width, y: 0.5, width: 0.5, height: self.frame.height - 1))
         //        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         
         return view
     }()
@@ -508,7 +507,7 @@ class CalendarCell: UICollectionViewCell {
     lazy var bottomView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: self.frame.height, width: self.frame.width, height: 0.5))
         //        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         
         return view
     }()
@@ -557,7 +556,7 @@ class CalendarHeaderCell: UICollectionReusableView {
     
     let cellLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH3
         label.text = "1"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -568,7 +567,7 @@ class CalendarHeaderCell: UICollectionReusableView {
     lazy var bottomView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: self.frame.height - 1, width: self.frame.width, height: 1))
 //        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         
         return view
     }()

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Mapbox
 
 extension MapKitViewController {
     
@@ -30,6 +31,10 @@ extension MapKitViewController {
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, zoomLevel: 14, animated: true)
             self.mapView.userTrackingMode = .follow
+            let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+            self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2)) {
+                self.mapView.isPitchEnabled = false
+            }
         }
         if let line = quadPolyline, let shadowLine = quadPolylineShadow {
             line.removeFromSuperlayer()
@@ -40,6 +45,9 @@ extension MapKitViewController {
         self.removePolylineAnnotations()
         self.quickDestinationController.view.alpha = 0
         self.quickParkingController.view.alpha = 0
+        self.quickDestinationController.view.isUserInteractionEnabled = true
+        self.quickParkingController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        self.quickDestinationController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         if shouldRefresh == true {
             if let annotations = self.mapView.annotations {
                 self.mapView.removeAnnotations(annotations)

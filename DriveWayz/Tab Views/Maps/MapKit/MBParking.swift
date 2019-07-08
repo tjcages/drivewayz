@@ -79,6 +79,7 @@ extension MapKitViewController: handleCheckoutParking {
             quickDestinationTopAnchor.isActive = true
         quickDestinationWidthAnchor = quickDestinationController.view.widthAnchor.constraint(equalToConstant: 100)
             quickDestinationWidthAnchor.isActive = true
+        quickDestinationController.view.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
         quickDestinationController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(quickParkingController.view)
@@ -109,6 +110,34 @@ extension MapKitViewController: handleCheckoutParking {
             self.parkingHidden(showMainBar: true)
         } else if confirmControllerBottomAnchor.constant == 0 {
             self.backToBooking()
+        } else {
+            if self.mainBarTopAnchor.constant != 0 {
+                self.mainBarTopAnchor.constant = 354
+                UIView.animate(withDuration: animationOut, animations: {
+                    self.fullBackgroundView.alpha = 0
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.delegate?.bringHamburger()
+                    self.delegate?.defaultContentStatusBar()
+                    self.mainBarController.scrollView.setContentOffset(.zero, animated: true)
+                    delayWithSeconds(animationOut + animationIn, completion: {
+                        self.mainBarController.scrollView.isScrollEnabled = false
+                    })
+                }
+            } else if self.currentBottomHeightAnchor.constant != 0 {
+                self.currentBottomHeightAnchor.constant = 354
+                UIView.animate(withDuration: animationOut, animations: {
+                    self.fullBackgroundView.alpha = 0
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.delegate?.bringHamburger()
+                    self.delegate?.defaultContentStatusBar()
+                    self.currentBottomController.scrollView.setContentOffset(.zero, animated: true)
+                    delayWithSeconds(animationOut + animationIn, completion: {
+                        self.currentBottomController.scrollView.isScrollEnabled = false
+                    })
+                }
+            }
         }
     }
     
@@ -123,11 +152,12 @@ extension MapKitViewController: handleCheckoutParking {
         self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
         self.parkingController.changeDates(fromDate: fromDate, totalTime: totalTime)
         self.confirmPaymentController.changeDates(fromDate: fromDate, totalTime: totalTime)
+        self.successfulPurchaseController.changeDates(totalTime: totalTime)
     }
     
     func observeAllHosting() {
         if let destination = DestinationAnnotationLocation {
-            self.checkAnnotationsNearDestination(location: destination.coordinate)
+            self.checkAnnotationsNearDestination(location: destination.coordinate, checkDistance: true)
         }
     }
     
@@ -188,6 +218,12 @@ extension MapKitViewController: handleCheckoutParking {
             if showMainBar {
                 self.quickCouponController.maximizeController()
                 self.bringMainBar()
+                delayWithSeconds(1, completion: {
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.quickParkingController.view.alpha = 0
+                        self.quickDestinationController.view.alpha = 0
+                    })
+                })
             }
         }
     }

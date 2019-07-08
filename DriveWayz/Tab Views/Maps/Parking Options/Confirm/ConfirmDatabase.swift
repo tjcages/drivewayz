@@ -23,6 +23,7 @@ extension ConfirmViewController {
                     if let name = dictionary["name"] as? String, let picture = dictionary["picture"] as? String {
                         let ref = Database.database().reference().child("UserBookings")
                         let bookingRef = ref.childByAutoId()
+                        guard let bookingKey = bookingRef.key else { return }
                         var distance: Double = 0.0
                         var rating: Double = 5.0
                         if let userRating = dictionary["rating"] as? Double {
@@ -34,7 +35,7 @@ extension ConfirmViewController {
                         }
                         if let finalDestination = DestinationAnnotationLocation, let parkingLat = parking.latitude, let parkingLong = parking.longitude, var streetAddress = parking.streetAddress, let numberSpots = parking.numberSpots, let secondaryType = parking.secondaryType, let spaceRange = streetAddress.range(of: " ") {
                             streetAddress.removeSubrange(streetAddress.startIndex..<spaceRange.upperBound)
-                            if let number = Int(numberSpots) {
+                            if let number = Int(numberSpots), let walkingTime = WalkingTime {
                                 let wordString = number.asWord
                                 let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
                                 var parkingTotalRating = 5
@@ -44,9 +45,10 @@ extension ConfirmViewController {
                                     parkingTotalBooking = parkingBooking
                                 }
                                 let parkingRating = Double(parkingTotalRating)/Double(parkingTotalBooking)
+                                let destinationName = DestinationAnnotationName ?? ""
                                 
-                                let finalParking = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: parkingLat), longitude: CLLocationDegrees(truncating: parkingLong))
-                                bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating])
+                                let finalParking = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+                                bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating, "walkingTime": walkingTime, "destinationName": destinationName, "bookingID": bookingKey])
                                 distance = finalDestination.coordinate.distance(to: finalParking)
                             }
                         }
@@ -142,19 +144,25 @@ extension ConfirmViewController {
                                             if let latitude = dictionary["latitude"] as? CLLocationDegrees, let longitude = dictionary["longitude"] as? CLLocationDegrees {
                                                 let date = Date().timeIntervalSince1970
                                                 if date >= fromDate {
-                                                    if date < toDate {
-                                                        let seconds = toDate - date
-                                                        self.sendNotifications(latitude: latitude, longitude: longitude, seconds: seconds)
-                                                        let booking = Bookings(dictionary: bookingDictionary)
-                                                        isCurrentlyBooked = true
-                                                        self.delegate?.confirmPurchasePressed(booking: booking)
-                                                        print("sending notifications")
-                                                    } else {
-                                                        ref.removeValue()
-                                                        hostRef.child("CurrentBooking").removeValue()
-                                                        isCurrentlyBooked = false
-                                                        print("reservation has ended")
-                                                    }
+                                                    let seconds = toDate - date
+                                                    self.sendNotifications(latitude: latitude, longitude: longitude, seconds: seconds)
+                                                    let booking = Bookings(dictionary: bookingDictionary)
+                                                    isCurrentlyBooked = true
+                                                    self.delegate?.confirmPurchasePressed(booking: booking)
+                                                    print("sending notifications")
+//                                                    if date < toDate {
+//                                                        let seconds = toDate - date
+//                                                        self.sendNotifications(latitude: latitude, longitude: longitude, seconds: seconds)
+//                                                        let booking = Bookings(dictionary: bookingDictionary)
+//                                                        isCurrentlyBooked = true
+//                                                        self.delegate?.confirmPurchasePressed(booking: booking)
+//                                                        print("sending notifications")
+//                                                    } else {
+////                                                        ref.removeValue()
+////                                                        hostRef.child("CurrentBooking").removeValue()
+////                                                        isCurrentlyBooked = false
+////                                                        print("reservation has ended")
+//                                                    }
                                                 } else {
                                                     print("upcoming reservation")
                                                 }

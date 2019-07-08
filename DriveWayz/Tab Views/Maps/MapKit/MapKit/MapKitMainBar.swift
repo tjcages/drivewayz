@@ -39,6 +39,7 @@ extension MapKitViewController: mainBarSearchDelegate {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarIsScrolling(sender:)))
         mainBarController.view.addGestureRecognizer(pan)
         mainBarController.searchButton.addTarget(self, action: #selector(mainBarWillOpen), for: .touchUpInside)
+        mainBarController.microphoneButton.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
         
         self.view.addSubview(summaryController.view)
         summaryTopAnchor = summaryController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -260)
@@ -160,7 +161,6 @@ extension MapKitViewController: mainBarSearchDelegate {
     
     func mainBarWillClose() {
         self.view.endEditing(true)
-        self.removeAllMapOverlays(shouldRefresh: true)
         self.summaryTopAnchor.constant = -260
         self.mainBarTopAnchor.constant = 354
         UIView.animate(withDuration: animationOut, animations: {
@@ -223,8 +223,16 @@ extension MapKitViewController: mainBarSearchDelegate {
             let position = -sender.translation(in: self.view).y
             let highestHeight = phoneHeight - 150
             let lowestHeight: CGFloat = 354
+            var minimizedHeight: CGFloat = 150
+            switch device {
+            case .iphone8:
+                minimizedHeight = 150
+            case .iphoneX:
+                minimizedHeight = 164
+            }
             if sender.state == .changed {
-                if (self.mainBarTopAnchor.constant >= lowestHeight - 40 && self.mainBarTopAnchor.constant <= highestHeight + 40) || (self.mainBarHighest == true && self.mainBarTopAnchor.constant <= 772) {
+                let difference = position - self.mainBarPreviousPosition
+                if self.mainBarTopAnchor.constant >= lowestHeight - 40 || (self.mainBarHighest == true && self.mainBarTopAnchor.constant <= 772) {
                     let difference = position - self.mainBarPreviousPosition
                     self.mainBarTopAnchor.constant = self.mainBarTopAnchor.constant + difference
                     let percent = (self.mainBarTopAnchor.constant - lowestHeight)/highestHeight
@@ -234,6 +242,22 @@ extension MapKitViewController: mainBarSearchDelegate {
                         self.delegate?.hideHamburger()
                     } else {
                         self.delegate?.defaultContentStatusBar()
+                    }
+                } else if self.mainBarTopAnchor.constant <= lowestHeight - 40 && difference <= 0 {
+                    self.mainBarTopAnchor.constant = minimizedHeight
+                    UIView.animate(withDuration: animationOut) {
+                        self.view.layoutIfNeeded()
+                    }
+                } else if difference <= 0 {
+                    self.mainBarTopAnchor.constant = highestHeight
+//                    self.mainBarController.scrollView.isScrollEnabled = true
+                    UIView.animate(withDuration: animationOut) {
+                        self.view.layoutIfNeeded()
+                    }
+                } else {
+                    self.mainBarTopAnchor.constant = lowestHeight
+                    UIView.animate(withDuration: animationOut) {
+                        self.view.layoutIfNeeded()
                     }
                 }
             } else if sender.state == .ended {
@@ -272,6 +296,16 @@ extension MapKitViewController: mainBarSearchDelegate {
                                 self.mainBarController.scrollView.isScrollEnabled = false
                                 self.mainBarHighest = true
                             }
+                        }
+                    } else if self.mainBarTopAnchor.constant <= minimizedHeight + 20 {
+                        self.mainBarTopAnchor.constant = minimizedHeight
+                        UIView.animate(withDuration: animationOut, animations: {
+                            self.fullBackgroundView.alpha = 0
+                            self.view.layoutIfNeeded()
+                        }) { (success) in
+                            self.mainBarHighest = false
+                            self.delegate?.bringHamburger()
+                            self.delegate?.defaultContentStatusBar()
                         }
                     } else {
                         self.mainBarTopAnchor.constant = lowestHeight
@@ -313,13 +347,13 @@ extension MapKitViewController: mainBarSearchDelegate {
             ref.observe(.childAdded) { (snapshot) in
                 if let percent = snapshot.value as? Int {
                     self.quickCouponController.percentage = percent
+                    self.newMessageTopAnchor.constant = self.newMessageTopAnchor.constant + 62
                     UIView.animate(withDuration: animationIn, animations: {
-                        UIView.animate(withDuration: animationIn, animations: {
-                            self.quickCouponController.view.alpha = 1
-                        }, completion: { (success) in
-                            self.quickCouponController.maximizeController()
-                            self.quickCouponController.expandController()
-                        })
+                        self.quickCouponController.view.alpha = 1
+                        self.view.layoutIfNeeded()
+                    }, completion: { (success) in
+                        self.quickCouponController.maximizeController()
+                        self.quickCouponController.expandController()
                     })
                 }
             }
@@ -328,8 +362,10 @@ extension MapKitViewController: mainBarSearchDelegate {
                     if snapshot.childrenCount == 0 {
                         self.quickCouponController.closeController()
                         delayWithSeconds(animationOut, completion: {
+                            self.newMessageTopAnchor.constant = self.newMessageTopAnchor.constant - 62
                             UIView.animate(withDuration: animationIn, animations: {
                                 self.quickCouponController.view.alpha = 0
+                                self.view.layoutIfNeeded()
                             })
                         })
                     } else {
@@ -340,8 +376,10 @@ extension MapKitViewController: mainBarSearchDelegate {
                                 self.quickCouponController.percentage = invite
                             }
                         }
+                        self.newMessageTopAnchor.constant = self.newMessageTopAnchor.constant + 62
                         UIView.animate(withDuration: animationIn, animations: {
                             self.quickCouponController.view.alpha = 1
+                            self.view.layoutIfNeeded()
                         }, completion: { (success) in
                             self.quickCouponController.expandController()
                         })

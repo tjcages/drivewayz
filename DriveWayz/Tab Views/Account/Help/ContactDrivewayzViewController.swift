@@ -12,6 +12,7 @@ import MessageUI
 class ContactDrivewayzViewController: UIViewController {
     
     var context: String = "Help"
+    var confirmedIDs: [String] = []
     
     var informationLabel: UILabel = {
         let label = UILabel()
@@ -79,6 +80,7 @@ class ContactDrivewayzViewController: UIViewController {
 
         setupViews()
         createKeyboardButton()
+        observeCorrectID()
     }
     
     func setupViews() {
@@ -116,22 +118,17 @@ class ContactDrivewayzViewController: UIViewController {
         keyboardToolbar.barTintColor = Theme.BLUE
         keyboardToolbar.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 45)
         
-        let addButton = UIBarButtonItem(
-            barButtonSystemItem: .done,
-            target: self,
-            action: #selector(sendEmail)
-        )
+        let addButton = UIBarButtonItem(title: "Send", style: .done, target: self, action: #selector(sendEmail))
         addButton.tintColor = Theme.WHITE
-        addButton.title = "Send"
         
         let flexibleSpace = UIBarButtonItem(
             barButtonSystemItem: .flexibleSpace,
-            target: nil,
-            action: nil)
+            target: self,
+            action: #selector(sendEmail))
         let flexibleSpace2 = UIBarButtonItem(
             barButtonSystemItem: .flexibleSpace,
-            target: nil,
-            action: nil)
+            target: self,
+            action: #selector(sendEmail))
         
         keyboardToolbar.items = [flexibleSpace, addButton, flexibleSpace2]
         message.inputAccessoryView = keyboardToolbar
@@ -152,13 +149,22 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
             ref.observeSingleEvent(of: .value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
                     guard let name = dictionary["name"] as? String else { return }
+                    guard let deviceID = dictionary["DeviceID"] as? String else { return }
                     var email = ""
                     if let mail = dictionary["email"] as? String {
                         email = mail
                     }
+                    var picture = ""
+                    if let photo = dictionary["picture"] as? String {
+                        picture = photo
+                    }
                     let timestamp = Date().timeIntervalSince1970
+                    let values = ["name": name, "email": email, "timestamp": timestamp, "message": message, "context": self.context, "deviceID": deviceID, "fromID": userID, "picture": picture, "communicationsStatus": "Recent"] as [String : AnyObject]
+                    
                     let messageRef = Database.database().reference().child("DrivewayzMessages").childByAutoId()
-                    messageRef.updateChildValues(["name": name, "email": email, "timestamp": timestamp, "message": message, "context": self.context])
+                    messageRef.updateChildValues(values)
+                    self.sendMessageWithProperties(toID: userID, properties: values)
+                    
                     self.view.endEditing(true)
                     self.createSimpleAlert(title: "Sent!", message: "")
                     self.message.text = ""
@@ -171,26 +177,75 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
             self.sendButton.alpha = 1.0
             self.sendButton.isUserInteractionEnabled = true
         }
-        
-//        if MFMailComposeViewController.canSendMail() {
-//            if let message = self.message.text {
-//                let mail = MFMailComposeViewController()
-//                mail.mailComposeDelegate = self
-//                mail.setToRecipients(["reese@drivewayz.io"])
-//                mail.setMessageBody("<p>\(message)</p>", isHTML: true)
-//                mail.setSubject("Drivewayz Help")
-//
-//                present(mail, animated: true)
-//            } else {
-//                self.createSimpleAlert(title: "Please include a custom message", message: "Describe any problems or discrepancies you may have with us.")
-//            }
-//        } else {
-//            self.createSimpleAlert(title: "Issue sending email", message: "Please check your email account associated with this phone. It does not appear to be linked.")
-//        }
     }
     
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
+    private func sendMessageWithProperties(toID: String, properties: [String: AnyObject]) {
+        let ref = Database.database().reference()
+        let fromID = Auth.auth().currentUser!.uid
+        let timestamp = Int(Date().timeIntervalSince1970)
+        
+        let childRef = ref.child("messages").childByAutoId()
+        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp, "communicationID": childRef.key as Any] as [String : Any]
+        
+        let userRef = ref.child("users").child(fromID)
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                let userName = dictionary["name"] as? String
+                var fullNameArr = userName?.split(separator: " ")
+                let firstName: String = String(fullNameArr![0])
+                
+                values["name"] = userName
+                self.fetchNewCurrent(name: firstName)
+                
+                values["fromID"] = fromID
+                
+                ref.child("messages").child(fromID).removeValue()
+                
+                properties.forEach({values[$0] = $1})
+                for keys in self.confirmedIDs {
+                    values["toID"] = keys
+                    childRef.updateChildValues(values) { (error, ralf) in
+                        if error != nil {
+                            print(error ?? "")
+                            return
+                        }
+                        if let messageId = childRef.key {
+                            let vals = [messageId: 1] as [String: Int]
+                            
+                            let userMessagesRef = ref.child("user-messages").child(fromID).child(keys)
+                            userMessagesRef.updateChildValues(vals)
+                            
+                            let recipientUserMessagesRef = ref.child("user-messages").child(keys).child(fromID)
+                            recipientUserMessagesRef.updateChildValues(vals)
+                            
+                            self.sendButton.alpha = 1
+                            self.sendButton.isUserInteractionEnabled = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func fetchNewCurrent(name: String) {
+        let sender = PushNotificationSender()
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a MM/dd/yyyy"
+        let time = dateFormatter.string(from: date)
+        for keys in self.confirmedIDs {
+            sender.sendPushNotification(toUser: keys, title: "\(name) sent Drivewayz a message", subtitle: "\(time)")
+        }
+    }
+    
+    func observeCorrectID() {
+        self.confirmedIDs = []
+        let ref = Database.database().reference().child("ConfirmedID")
+        ref.observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                self.confirmedIDs.append(key)
+            }
+        }
     }
     
 }

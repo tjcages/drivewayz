@@ -25,7 +25,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 2
         label.text = "Promote your spot or give any information so the user can better find it."
@@ -35,7 +35,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     
     var message: UITextView = {
         let field = UITextView()
-        field.backgroundColor = Theme.OFF_WHITE
+        field.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
         field.text = "Enter message"
         field.textColor = Theme.BLACK.withAlphaComponent(0.4)
         field.font = Fonts.SSPRegularH4
@@ -63,7 +63,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var exampleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 6
         label.text =
@@ -121,7 +121,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.PURPLE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

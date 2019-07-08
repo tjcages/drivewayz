@@ -42,6 +42,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         label.clearButtonMode = .whileEditing
         label.placeholder = "Toyota"
         label.autocapitalizationType = .words
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -49,7 +50,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var makeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -63,6 +64,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         label.clearButtonMode = .whileEditing
         label.placeholder = "4Runner"
         label.autocapitalizationType = .words
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -70,7 +72,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var modelLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -84,6 +86,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         label.clearButtonMode = .whileEditing
         label.placeholder = "2015"
         label.keyboardType = .numberPad
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -91,7 +94,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var yearLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -104,6 +107,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         label.font = Fonts.SSPRegularH3
         label.clearButtonMode = .whileEditing
         label.placeholder = "000-XXX"
+        label.isUserInteractionEnabled = false
         
         return label
     }()
@@ -111,7 +115,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var licenseLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -159,7 +163,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var currentLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -179,7 +183,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var deleteLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -215,8 +219,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     var grayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2).cgColor
         view.layer.borderWidth = 0.5
         
         return view
@@ -382,6 +386,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.vehicleMakeLabel.becomeFirstResponder()
+        self.vehicleMakeLabel.isUserInteractionEnabled = true
+        self.vehicleModelLabel.isUserInteractionEnabled = true
+        self.vehicleYearLabel.isUserInteractionEnabled = true
+        self.vehicleLicenseLabel.isUserInteractionEnabled = true
     }
     
     func setupCurrentVehicle() {
@@ -396,6 +404,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        self.vehicleMakeLabel.isUserInteractionEnabled = false
+        self.vehicleModelLabel.isUserInteractionEnabled = false
+        self.vehicleYearLabel.isUserInteractionEnabled = false
+        self.vehicleLicenseLabel.isUserInteractionEnabled = false
     }
     
     var doneButton: UIBarButtonItem!
@@ -404,7 +416,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.PRUSSIAN_BLUE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -500,11 +512,13 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
             if currentButton.titleLabel!.text == "Confirm vehicle" {
                 let ref = Database.database().reference().child("UserVehicles")
                 let uid = ref.childByAutoId()
+                userRef.updateChildValues(["selectedVehicle": selectedKey])
                 if let vehicleMake = self.vehicleMakeLabel.text, let vehicleModel = self.vehicleModelLabel.text, let vehicleYear = self.vehicleYearLabel.text, let vehicleLicense = self.vehicleLicenseLabel.text, let uidKey = uid.key {
                     if vehicleMake != "", vehicleModel != "", vehicleYear != "", vehicleLicense != "", uidKey != "" {
                         uid.updateChildValues(["userID": userID, "timestamp": timestamp, "vehicleID": uidKey, "vehicleMake": vehicleMake, "vehicleModel": vehicleModel, "vehicleYear": vehicleYear, "licensePlate": vehicleLicense])
                         userRef.child("Vehicles").updateChildValues([uidKey: uidKey])
                         userRef.updateChildValues(["selectedVehicle": uidKey])
+                        self.scrollView.setContentOffset(.zero, animated: true)
                     }
                 }
             } else if currentButton.titleLabel!.text == "Make current vehicle" {
@@ -513,6 +527,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
                 if let vehicleMake = self.vehicleMakeLabel.text, let vehicleModel = self.vehicleModelLabel.text, let vehicleYear = self.vehicleYearLabel.text, let vehicleLicense = self.vehicleLicenseLabel.text {
                     if vehicleMake != "", vehicleModel != "", vehicleYear != "", vehicleLicense != "", selectedKey != "" {
                         ref.updateChildValues(["vehicleMake": vehicleMake, "vehicleModel": vehicleModel, "vehicleYear": vehicleYear, "licensePlate": vehicleLicense])
+                        self.scrollView.setContentOffset(.zero, animated: true)
                     }
                 }
             }
@@ -526,6 +541,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
             ref.removeValue()
             let vehicleRef = Database.database().reference().child("UserVehicles").child(selectedKey)
             vehicleRef.removeValue()
+            
+            self.scrollView.setContentOffset(.zero, animated: true)
         }
     }
 

@@ -26,7 +26,7 @@ class ExpandedInformationViewController: UIViewController {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
-        label.text = "A secure and affordable parking spot in the heart of downtown Boulder. A quick 5 minute walk to Pearl St. makes this a great location whether you are shopping for the day or have a meeting in the busy area."
+        label.text = ""
         label.font = Fonts.SSPRegularH5
         label.backgroundColor = UIColor.clear
         label.isScrollEnabled = false

@@ -63,7 +63,7 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
             self.view.bringSubviewToFront(self.locationsSearchResults.view)
             self.view.bringSubviewToFront(self.summaryController.view)
             self.view.bringSubviewToFront(self.parkingController.view)
-            if self.parkingControllerBottomAnchor.constant != 0 && self.confirmControllerBottomAnchor.constant != 0 {
+            if self.parkingControllerBottomAnchor.constant != 0 && self.confirmControllerBottomAnchor.constant != 0 && self.summaryTopAnchor.constant != -260 {
                 self.summaryController.searchTextField.becomeFirstResponder()
             }
             UIView.animate(withDuration: animationIn, animations: {

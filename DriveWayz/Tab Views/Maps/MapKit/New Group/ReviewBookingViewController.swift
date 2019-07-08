@@ -25,7 +25,7 @@ class ReviewBookingViewController: UIViewController {
                             let wordString = number.asWord
                             let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
                             self.parkingSpotLabel.text = descriptionAddress
-                            self.parkingSpotWidthAnchor.constant = descriptionAddress.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4) + 24
+                            self.parkingSpotWidthAnchor.constant = descriptionAddress.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4) + 16
                             self.view.layoutIfNeeded()
                         }
                         if let firstImage = parking.firstImage, firstImage != "" {
@@ -478,8 +478,8 @@ class ReviewBookingViewController: UIViewController {
     func removeReview(close: Bool) {
         self.doneButton.alpha = 0.5
         self.doneButton.isUserInteractionEnabled = false
-        guard let message = self.message.text, let parkingID = selectedParking else { return }
-        if message == "Enter your review" { self.message.text = "" }
+        guard var message = self.message.text, let parkingID = selectedParking else { return }
+        if message == "Enter your review" { message = "" }
         if close == true {
             self.delegate?.reviewOptionsDismissed()
         }

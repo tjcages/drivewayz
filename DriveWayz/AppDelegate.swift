@@ -31,9 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     let gcmMessageIDKey = "174551543020"
-    static let NOTIFICATION_URL = "https://gcm-http.googleapis.com/gcm/send"
+    static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
-    static let SERVERKEY = "AAAAKKQVLOw:APA91bG5AIDhJOgJ8KWJe8JqSL0z0UT494O0OKI4ENPJfvN084F5IpOVmiK8ljqewSs0w60Si_uWS1r7XBl0QWKRz_BpzWPg8_LaCWZtJKklvIO956kZsBr6rnFrPqWiCaO5ChQFMPRoyh35lUw8RNf80ewwSmdyoQ"
+    static let SERVERKEY = "AAAAKKQVLOw:APA91bEzWxKfKYZzgQQ59ubBKwFZ__6pZEE489XPJqJUaQmbHsLMPKWSKfvMwbFYw3hL74stguq9xLZTaxOtn5MuUAHkDWFzd50U9eoW5WUrSSbQ-pR8_cTmro44Re72uqKGPAetdXeK"
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -65,33 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         UIApplication.shared.applicationIconBadgeNumber = 0
         UNUserNotificationCenter.current().delegate = self
-        
-//        InstanceID.instanceID().instanceID(handler: { (result, error) in
-//            if error == nil {
-//                if let token = result?.token {
-//                    AppDelegate.DEVICEID = token
-////                    self.connectToFCM()
-//                    guard let currentUser = Auth.auth().currentUser?.uid else { return }
-//                    let ref = Database.database().reference().child("users").child(currentUser)
-//                    ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
-//                }
-//            }
-//        })
-        
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
-        } else {
-        let settings: UIUserNotificationSettings =
-        UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-        application.registerUserNotificationSettings(settings)
-        }
-    
-    application.registerForRemoteNotifications()
         
         return true
     }
@@ -133,6 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
         AppEventsLogger.activate(application)
     }
     
@@ -175,43 +149,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-//        CurrentParkingViewController().stopTimerTest()
         let date = Date()
         UserDefaults.standard.setValue(date, forKey: "lastDateOpened")
         UserDefaults.standard.synchronize()
-    }
-    
-    func applicationWillEnterForeground(_ application: UIApplication) {
-//        timerStarted = false
-//        CurrentParkingViewController().restartDatabaseTimer()
-//        startTimer()
-        if let date = UserDefaults.standard.object(forKey: "lastDateOpened") as? Date {
-            let currentDate = Date()
-            let time = currentDate.minutes(from: date)
-            if time > 30 {
-//                self.restartApplication()
-            }
+        
+        if bookingTimer != nil {
+            bookingTimer!.invalidate()
         }
     }
     
-    func startTimer() {
-        if let userID = Auth.auth().currentUser?.uid {
-            let currentRef = Database.database().reference().child("users").child(userID).child("currentParking")
-            currentRef.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    let key = dictionary.keys
-                    let stampRef = Database.database().reference().child("users").child(userID).child("currentParking").child(key.first!)
-                    stampRef.observeSingleEvent(of: .value, with: { (check) in
-                        if let stamp = check.value as? [String:AnyObject] {
-                            currentParking = true
-                            let refreshTimestamp = stamp["timestamp"] as? Double
-                            let refreshHours = stamp["hours"] as? Int
-                            let currentTimestamp = NSDate().timeIntervalSince1970
-                            seconds = (Int((refreshTimestamp?.rounded())!) + (refreshHours! * 3600)) - Int(currentTimestamp.rounded())
-                        }
-                    }, withCancel: nil)
-                }
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        if timerStarted == true {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "bookingTimerRestart"), object: nil)
             }
         }
     }
@@ -227,14 +177,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 device = .iphone8
             case 1920, 2208:
                 print("iPhone 6+/6S+/7+/8+")
-//                device = .iphonePlus
+                //                device = .iphonePlus
                 device = .iphone8
             case 2436:
                 print("iPhone X")
                 device = .iphoneX
             default:
                 print("unknown")
-//                device = .iPad
+                //                device = .iPad
                 device = .iphone8
             }
         }
@@ -281,9 +231,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MessagingDelegate {
     
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        InstanceID.instanceID().instanceID(handler: { (result, error) in
+            if error == nil {
+                AppDelegate.DEVICEID = (result?.token)!
+                
+                guard let currentUser = Auth.auth().currentUser?.uid else { return }
+                let ref = Database.database().reference().child("users").child(currentUser)
+                ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+            }
+        })
+    }
+    
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
-        
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
         // TODO: If necessary send token to application server.
@@ -292,7 +252,7 @@ extension AppDelegate: MessagingDelegate {
         InstanceID.instanceID().instanceID(handler: { (result, error) in
             if error == nil {
                 AppDelegate.DEVICEID = (result?.token)!
-                self.connectToFCM()
+                
                 guard let currentUser = Auth.auth().currentUser?.uid else { return }
                 let ref = Database.database().reference().child("users").child(currentUser)
                 ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
@@ -300,18 +260,26 @@ extension AppDelegate: MessagingDelegate {
         })
     }
     
-    func connectToFCM() {
-        Messaging.messaging().isAutoInitEnabled = true
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+        InstanceID.instanceID().instanceID(handler: { (result, error) in
+            if error == nil {
+                AppDelegate.DEVICEID = (result?.token)!
+                
+                guard let currentUser = Auth.auth().currentUser?.uid else { return }
+                let ref = Database.database().reference().child("users").child(currentUser)
+                ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+            }
+        })
     }
-
+    
+//    func connectToFCM() {
+//        Messaging.messaging().isAutoInitEnabled = true
+//    }
+    
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-
-    func application(application: UIApplication,
-                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        Messaging.messaging().setAPNSToken(Data(referencing: deviceToken), type: MessagingAPNSTokenType.unknown)
-    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert,.sound])
@@ -319,17 +287,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        UIApplication.shared.applicationIconBadgeNumber = 5
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         completionHandler(.newData)
-    }
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        InstanceID.instanceID().instanceID(handler: { (result, error) in
-            if error == nil {
-                AppDelegate.DEVICEID = (result?.token)!
-            }
-        })
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
@@ -367,6 +327,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+        completionHandler()
     }
     
 }

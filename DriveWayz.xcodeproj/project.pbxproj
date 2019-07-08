@@ -280,14 +280,22 @@
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
 		AC55A9369025DF32651638ED /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1D33AAAD5CCCB602B96922 /* Pods_DriveWayz.framework */; };
+		CA098AD922CFE5E500E45F0F /* MBUserMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */; };
+		CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */; };
+		CA098ADE22CFEF2100E45F0F /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */; };
+		CA098AE022D00AFB00E45F0F /* RespondMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */; };
 		CA19D57122C0822C00337C7F /* ContactReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */; };
 		CA19D57322C1520E00337C7F /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57222C1520E00337C7F /* PushNotifications.swift */; };
-		CA19D57822C1BCFC00337C7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA19D57722C1BCFB00337C7F /* GoogleService-Info.plist */; };
 		CA19D57A22C2B78A00337C7F /* cities.csv in Resources */ = {isa = PBXBuildFile; fileRef = CA19D57922C2B78A00337C7F /* cities.csv */; };
+		CA19D57C22C3D4C200337C7F /* MoveDotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */; };
+		CA19D57E22C5BF0600337C7F /* BookingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57D22C5BF0600337C7F /* BookingReviewsViewController.swift */; };
+		CA19D58022C67C0D00337C7F /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57F22C67C0D00337C7F /* Reviews.swift */; };
+		CA19D58222C68B4000337C7F /* SuccessfulPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */; };
 		CA3C2FC922BDFFA400A2A374 /* HostNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */; };
 		CA3C2FCB22BE663900A2A374 /* UserHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCA22BE663900A2A374 /* UserHostingViewController.swift */; };
 		CA3C2FCD22BE677100A2A374 /* HostProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCC22BE677100A2A374 /* HostProfitsViewController.swift */; };
 		CA3C2FCF22BE717700A2A374 /* HostSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCE22BE717700A2A374 /* HostSpacesViewController.swift */; };
+		CA6F340C22D2C4E200CF8961 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA6F340B22D2C4E200CF8961 /* GoogleService-Info.plist */; };
 		CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA724E5822B7661C00E15858 /* ChatMessageCell.swift */; };
 		CAC0A7EE22B80C8800240857 /* BankNamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC0A7ED22B80C8800240857 /* BankNamesViewController.swift */; };
 		CAC0A7F022B80DC600240857 /* NewBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC0A7EF22B80DC600240857 /* NewBankViewController.swift */; };
@@ -307,6 +315,11 @@
 		CAD9F84722BAC4E10077969B /* QuickCouponsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD9F84622BAC4E10077969B /* QuickCouponsViewController.swift */; };
 		CAD9F84922BAF9D30077969B /* MySpotsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD9F84822BAF9D30077969B /* MySpotsData.swift */; };
 		CAD9F84B22BBF2FA0077969B /* ReservationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD9F84A22BBF2FA0077969B /* ReservationsCell.swift */; };
+		CAF51CD522C7FB2B00B5ECDB /* BookingTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD422C7FB2B00B5ECDB /* BookingTimerViewController.swift */; };
+		CAF51CD722C9559800B5ECDB /* EditContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */; };
+		CAF51CDA22C9980500B5ECDB /* TestMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */; };
+		CAF51CDC22C99DB600B5ECDB /* OngoingMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */; };
+		CAF51CE322C9AF8000B5ECDB /* SendOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -602,15 +615,23 @@
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
 		BFEB4F8967AB57CAF3727B82 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
+		CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBUserMessages.swift; sourceTree = "<group>"; };
+		CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMessageViewController.swift; sourceTree = "<group>"; };
+		CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
+		CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RespondMessageViewController.swift; sourceTree = "<group>"; };
 		CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactReviewsViewController.swift; sourceTree = "<group>"; };
 		CA19D57222C1520E00337C7F /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		CA19D57622C1B81600337C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../../Downloads/drivewayz-master/DriveWayz/Info.plist"; sourceTree = "<group>"; };
-		CA19D57722C1BCFB00337C7F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CA19D57922C2B78A00337C7F /* cities.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cities.csv; sourceTree = SOURCE_ROOT; };
+		CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDotsViewController.swift; sourceTree = "<group>"; };
+		CA19D57D22C5BF0600337C7F /* BookingReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingReviewsViewController.swift; sourceTree = "<group>"; };
+		CA19D57F22C67C0D00337C7F /* Reviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
+		CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessfulPurchaseViewController.swift; sourceTree = "<group>"; };
 		CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostNotifications.swift; sourceTree = "<group>"; };
 		CA3C2FCA22BE663900A2A374 /* UserHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHostingViewController.swift; sourceTree = "<group>"; };
 		CA3C2FCC22BE677100A2A374 /* HostProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostProfitsViewController.swift; sourceTree = "<group>"; };
 		CA3C2FCE22BE717700A2A374 /* HostSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSpacesViewController.swift; sourceTree = "<group>"; };
+		CA6F340B22D2C4E200CF8961 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CA724E5822B7661C00E15858 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		CAC0A7ED22B80C8800240857 /* BankNamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankNamesViewController.swift; sourceTree = "<group>"; };
 		CAC0A7EF22B80DC600240857 /* NewBankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankViewController.swift; sourceTree = "<group>"; };
@@ -630,6 +651,11 @@
 		CAD9F84622BAC4E10077969B /* QuickCouponsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCouponsViewController.swift; sourceTree = "<group>"; };
 		CAD9F84822BAF9D30077969B /* MySpotsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpotsData.swift; sourceTree = "<group>"; };
 		CAD9F84A22BBF2FA0077969B /* ReservationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationsCell.swift; sourceTree = "<group>"; };
+		CAF51CD422C7FB2B00B5ECDB /* BookingTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingTimerViewController.swift; sourceTree = "<group>"; };
+		CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContainerViewController.swift; sourceTree = "<group>"; };
+		CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMessageViewController.swift; sourceTree = "<group>"; };
+		CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingMessageViewController.swift; sourceTree = "<group>"; };
+		CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendOptionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -681,6 +707,7 @@
 				4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */,
 				4DB5CA7B221A73B600A4C6FD /* MBCurrentParking.swift */,
 				4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */,
+				CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */,
 				CA19D57222C1520E00337C7F /* PushNotifications.swift */,
 				4D218BFD22ADDCA700633176 /* MBRemoveAnnotations.swift */,
 				4DCFB9F321D83C4600E910FF /* MapKit */,
@@ -813,6 +840,7 @@
 		4D202CC121EFF48B00F68F13 /* Edit Information */ = {
 			isa = PBXGroup;
 			children = (
+				CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */,
 				4D202CC221EFF4BA00F68F13 /* EditCalendarViewController.swift */,
 				4D202CC421F01FF400F68F13 /* EditInformationViewController.swift */,
 				4D202CC621F026B100F68F13 /* EditCostViewController.swift */,
@@ -907,7 +935,7 @@
 				4D21D33D20CCA485002D7005 /* Storyboards */,
 				4DCCF9EB20CCA66100B70577 /* Assets */,
 				CA19D57622C1B81600337C7F /* Info.plist */,
-				CA19D57722C1BCFB00337C7F /* GoogleService-Info.plist */,
+				CA6F340B22D2C4E200CF8961 /* GoogleService-Info.plist */,
 			);
 			path = DriveWayz;
 			sourceTree = "<group>";
@@ -921,6 +949,7 @@
 				4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */,
 				4D3018762280ECEF007F772B /* Bookings.swift */,
 				CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */,
+				CA19D57F22C67C0D00337C7F /* Reviews.swift */,
 				4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */,
 				4D21D2FC20CC9FF9002D7005 /* Extensions.swift */,
 				4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */,
@@ -944,7 +973,6 @@
 			children = (
 				4D21D2F320CC9FF9002D7005 /* UserCell.swift */,
 				4D53F9A720D97C1800A1C1FA /* CustomMarkerView.swift */,
-				4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */,
 				4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */,
 				CA724E5822B7661C00E15858 /* ChatMessageCell.swift */,
 				4D78BDFB214F03F700631801 /* OptionsCell.swift */,
@@ -956,6 +984,7 @@
 				CAD9F84A22BBF2FA0077969B /* ReservationsCell.swift */,
 				4D6672CE21F2B107002434F8 /* AmenitiesCell.swift */,
 				4D218BF522A0727100633176 /* BookingCell.swift */,
+				4D2DDEA92108B44B005AB485 /* ReviewsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1024,7 +1053,15 @@
 		4D2A2E3A221B4EF30031791A /* Current Spot */ = {
 			isa = PBXGroup;
 			children = (
-				4D437C0122B305E4001C6C4C /* Current Booking */,
+				4D437C0222B305F6001C6C4C /* BookingDurationViewController.swift */,
+				4D437C0422B30D87001C6C4C /* BookingRouteViewController.swift */,
+				4D437C0622B332A7001C6C4C /* BookingImageViewController.swift */,
+				4D437C0D22B45272001C6C4C /* BookingInfoViewController.swift */,
+				4D2A2E3F221B59590031791A /* CurrentAmenitiesViewController.swift */,
+				4D437C0922B448BE001C6C4C /* BookingPaymentViewController.swift */,
+				CA19D57D22C5BF0600337C7F /* BookingReviewsViewController.swift */,
+				4D437C0F22B468C2001C6C4C /* BookingOptionsViewController.swift */,
+				CAF51CD422C7FB2B00B5ECDB /* BookingTimerViewController.swift */,
 				4D437C0822B4426C001C6C4C /* Old Booking */,
 			);
 			path = "Current Spot";
@@ -1090,24 +1127,11 @@
 				4DB62D18228F45D500D967AB /* MainBarViewController.swift */,
 				4DB62D1A228F715400D967AB /* MainBarViews */,
 				4D218BEE229DE08500633176 /* Search */,
+				CA098ADA22CFE61000E45F0F /* Messages */,
 				4D218BF0229DE09A00633176 /* Speech */,
 				4D218BEF229DE09000633176 /* Old */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		4D437C0122B305E4001C6C4C /* Current Booking */ = {
-			isa = PBXGroup;
-			children = (
-				4D437C0222B305F6001C6C4C /* BookingDurationViewController.swift */,
-				4D437C0422B30D87001C6C4C /* BookingRouteViewController.swift */,
-				4D437C0622B332A7001C6C4C /* BookingImageViewController.swift */,
-				4D437C0D22B45272001C6C4C /* BookingInfoViewController.swift */,
-				4D2A2E3F221B59590031791A /* CurrentAmenitiesViewController.swift */,
-				4D437C0922B448BE001C6C4C /* BookingPaymentViewController.swift */,
-				4D437C0F22B468C2001C6C4C /* BookingOptionsViewController.swift */,
-			);
-			path = "Current Booking";
 			sourceTree = "<group>";
 		};
 		4D437C0822B4426C001C6C4C /* Old Booking */ = {
@@ -1180,6 +1204,7 @@
 				4D70E5A921E1CE1200DDC4D0 /* InteractiveModalTransitioningDelegate.swift */,
 				4D70E5AB21E1CE7D00DDC4D0 /* NavigationPresentedViewController.swift */,
 				4D2A2E36221B21D20031791A /* CurrentSpotViewController.swift */,
+				CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */,
 				CAD19A5022BFC6B80002C9A1 /* ReviewBookingViewController.swift */,
 				CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */,
 			);
@@ -1222,7 +1247,6 @@
 			children = (
 				4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */,
 				4D5F126B2176DFF800D9E38E /* HostMessageViewController.swift */,
-				4DFB2674217164B10081502B /* MessageOptionsViewController.swift */,
 				4D4D728E217945FF00D936DB /* ParkingMessageOptionsViewController.swift */,
 				4DD01054217934AA000C0ADD /* HostMessageOptionsViewController.swift */,
 			);
@@ -1266,6 +1290,7 @@
 				4D30466A21AF72C100AF31F9 /* UserVehicleViewController.swift */,
 				4D79A6F42152FA56003D1711 /* UserUpcomingViewController.swift */,
 				4DD06253216DC0510026B600 /* UserMessagesViewController.swift */,
+				CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */,
 				4D0F0B9D21ACF4A10022D1B4 /* HelpViewController.swift */,
 				4D0F0B9921ACC6BC0022D1B4 /* UserSettingsViewController.swift */,
 			);
@@ -1275,10 +1300,9 @@
 		4DB8F12E21509F7600FC11BD /* Vehicle */ = {
 			isa = PBXGroup;
 			children = (
-				4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */,
 				4D30466E21AF7A9300AF31F9 /* CurrentVehicleViewController.swift */,
-				4DFB449720F407CA007A54B1 /* OldVehicleViewController.swift */,
 				4DB8F12F21509F9900FC11BD /* VehicleViewController.swift */,
+				CAF51CD822C97FC600B5ECDB /* Old Vehicle */,
 			);
 			path = Vehicle;
 			sourceTree = "<group>";
@@ -1309,6 +1333,7 @@
 				4DB79B5E2188091800928C7F /* SpotPicturesViewController.swift */,
 				4D4E6931218A75C200E5D18A /* BusinessPicturesViewController.swift */,
 				4DC7219C2191290800E5E2B3 /* DrawSpotViewController.swift */,
+				CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */,
 				4DCFBA0921DB785500E910FF /* CalendarViewController.swift */,
 				4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */,
 				4D035F4721476BB100A380B8 /* PickCostViewController.swift */,
@@ -1425,6 +1450,7 @@
 			isa = PBXGroup;
 			children = (
 				4D1E94A322546CB4002AA426 /* MyOngoingViewController.swift */,
+				CAF51CDD22C9AB3700B5ECDB /* Messages */,
 				4DF7A0CC22695C5A006C171E /* ReservationsTableViewController.swift */,
 				4D202CBA21EEF17900F68F13 /* HostingPreviousViewController.swift */,
 			);
@@ -1496,6 +1522,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CA098ADA22CFE61000E45F0F /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */,
+				CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */,
+				CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
 		CAC0A7E922B80C5400240857 /* Bank Account Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1534,6 +1570,25 @@
 				CAD9F84422B99B4C0077969B /* QuickParkingViewController.swift */,
 			);
 			path = "Map Info";
+			sourceTree = "<group>";
+		};
+		CAF51CD822C97FC600B5ECDB /* Old Vehicle */ = {
+			isa = PBXGroup;
+			children = (
+				4DFB449B20F419BC007A54B1 /* AddANewVehicleViewController.swift */,
+				4DFB449720F407CA007A54B1 /* OldVehicleViewController.swift */,
+			);
+			path = "Old Vehicle";
+			sourceTree = "<group>";
+		};
+		CAF51CDD22C9AB3700B5ECDB /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */,
+				4DFB2674217164B10081502B /* MessageOptionsViewController.swift */,
+				CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1650,12 +1705,12 @@
 				4DE4900D218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf in Resources */,
 				4DE49007218BF09000171BB8 /* SourceSansPro-Regular.ttf in Resources */,
 				4DF8AF3B220D548500CF64FC /* parking_data.csv in Resources */,
+				CA6F340C22D2C4E200CF8961 /* GoogleService-Info.plist in Resources */,
 				4D21D2DD20CC9FC3002D7005 /* Main.storyboard in Resources */,
 				4DE49011218BF09000171BB8 /* SourceSansPro-Italic.ttf in Resources */,
 				4D42F8C920CCA6AA005A95BB /* Default-568h@2x.png in Resources */,
 				CA19D57A22C2B78A00337C7F /* cities.csv in Resources */,
 				4DE49008218BF09000171BB8 /* SourceSansPro-Bold.ttf in Resources */,
-				CA19D57822C1BCFC00337C7F /* GoogleService-Info.plist in Resources */,
 				4D21D31820CC9FF9002D7005 /* Assets.xcassets in Resources */,
 				4DE49009218BF09000171BB8 /* SourceSansPro-LightItalic.ttf in Resources */,
 			);
@@ -1742,6 +1797,8 @@
 				4D70E5AC21E1CE7D00DDC4D0 /* NavigationPresentedViewController.swift in Sources */,
 				4D6672CF21F2B107002434F8 /* AmenitiesCell.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
+				CA19D57C22C3D4C200337C7F /* MoveDotsViewController.swift in Sources */,
+				CAF51CD522C7FB2B00B5ECDB /* BookingTimerViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
 				CAC0A7F022B80DC600240857 /* NewBankViewController.swift in Sources */,
 				4D160083225EC15500510A60 /* MySpacesViewController.swift in Sources */,
@@ -1754,6 +1811,7 @@
 				4D202CC521F01FF400F68F13 /* EditInformationViewController.swift in Sources */,
 				4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */,
 				4D3018792280FAF8007F772B /* ConfirmationPopupViewController.swift in Sources */,
+				CAF51CE322C9AF8000B5ECDB /* SendOptionsViewController.swift in Sources */,
 				4DF7A0CD22695C5A006C171E /* ReservationsTableViewController.swift in Sources */,
 				4DFB449820F407CA007A54B1 /* OldVehicleViewController.swift in Sources */,
 				4D0F0B9C21ACCFE50022D1B4 /* SettingsCell.swift in Sources */,
@@ -1777,6 +1835,7 @@
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D437C0522B30D87001C6C4C /* BookingRouteViewController.swift in Sources */,
 				4D53F9AC20D9837400A1C1FA /* NotificationsViewController.swift in Sources */,
+				CA19D58222C68B4000337C7F /* SuccessfulPurchaseViewController.swift in Sources */,
 				4D3B9DA72253257A00E88396 /* SearchSummaryViewController.swift in Sources */,
 				4D02C65E21CDDC4D00748BA3 /* MBLocator.swift in Sources */,
 				4D74C3CB217F9A96008DC0F9 /* ParkingTypeViewController.swift in Sources */,
@@ -1786,6 +1845,7 @@
 				4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */,
 				4D202CB321EE87AB00F68F13 /* HostingGraphsViewController.swift in Sources */,
 				CAD19A4E22BEE9830002C9A1 /* HostNotificationsViewController.swift in Sources */,
+				CAF51CD722C9559800B5ECDB /* EditContainerViewController.swift in Sources */,
 				CAC0A7F422B8222E00240857 /* BankSecureViewController.swift in Sources */,
 				4D02C66F21D0850E00748BA3 /* MBParking.swift in Sources */,
 				4D2C5F8D211A79AE00364CB6 /* SelectPurchaseViewController.swift in Sources */,
@@ -1866,11 +1926,14 @@
 				4DC676F3222E451F00A75123 /* MBCurvedPolyline.swift in Sources */,
 				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
 				4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */,
+				CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */,
 				4DB79B5D2187DDC800928C7F /* MapParkingViewController.swift in Sources */,
 				4D202CA321ED4F9100F68F13 /* HostingExpandedViewController.swift in Sources */,
 				4D30187222809181007F772B /* PuchaseTimes.swift in Sources */,
 				4D30187D228235B9007F772B /* DynamicParking.swift in Sources */,
+				CA098ADE22CFEF2100E45F0F /* CircularTransition.swift in Sources */,
 				4DBD6D1021C4BC3700C52991 /* LocalEvents.swift in Sources */,
+				CA19D58022C67C0D00337C7F /* Reviews.swift in Sources */,
 				4D79A6F52152FA56003D1711 /* UserUpcomingViewController.swift in Sources */,
 				CAD19A5122BFC6B80002C9A1 /* ReviewBookingViewController.swift in Sources */,
 				4D0F0B9A21ACC6BC0022D1B4 /* UserSettingsViewController.swift in Sources */,
@@ -1919,6 +1982,7 @@
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
 				CAD9F84722BAC4E10077969B /* QuickCouponsViewController.swift in Sources */,
 				4D218BFE22ADDCA700633176 /* MBRemoveAnnotations.swift in Sources */,
+				CA19D57E22C5BF0600337C7F /* BookingReviewsViewController.swift in Sources */,
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
 				4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */,
 				CAC9835522B8467900599FCC /* BankSSNViewController.swift in Sources */,
@@ -1928,6 +1992,7 @@
 				4D437C1022B468C2001C6C4C /* BookingOptionsViewController.swift in Sources */,
 				4D2EAFCC223F2ED400F7B840 /* NavigationTopViewController.swift in Sources */,
 				4D2DDEAC21095F02005AB485 /* ParkingCurrentViewController.swift in Sources */,
+				CAF51CDC22C99DB600B5ECDB /* OngoingMessageViewController.swift in Sources */,
 				CA19D57322C1520E00337C7F /* PushNotifications.swift in Sources */,
 				4D21D32E20CC9FF9002D7005 /* AccountViewController.swift in Sources */,
 				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
@@ -1945,6 +2010,7 @@
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
 				4DC7FA5F22B02375003C5C42 /* AccountSettingsViewController.swift in Sources */,
 				4DB62D122289F67A00D967AB /* OnboardingViewController.swift in Sources */,
+				CAF51CDA22C9980500B5ECDB /* TestMessageViewController.swift in Sources */,
 				4DF1EFD82234B15200210E6B /* PurchaseViewController.swift in Sources */,
 				4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */,
 				4DC7FA6822B0BE78003C5C42 /* DrivewayzPrivacyViewController.swift in Sources */,
@@ -1952,6 +2018,7 @@
 				4D2A2E37221B21D20031791A /* CurrentSpotViewController.swift in Sources */,
 				4DD9768520FE5446002C71BF /* OldPurchaseViewController.swift in Sources */,
 				4D218BF822A074D900633176 /* NoParkingViewController.swift in Sources */,
+				CA098AE022D00AFB00E45F0F /* RespondMessageViewController.swift in Sources */,
 				4DCFB9F521D83C7D00E910FF /* MBPolylineRoute.swift in Sources */,
 				4DB7AE5622330F67000ACEC0 /* ParkingOptionViewController.swift in Sources */,
 				4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */,
@@ -1982,6 +2049,7 @@
 				4D2EAFCA223F249900F7B840 /* NavigationBottomViewController.swift in Sources */,
 				4D53F9A820D97C1800A1C1FA /* CustomMarkerView.swift in Sources */,
 				4D4E6934218B4D6500E5D18A /* BecomeHostViewController.swift in Sources */,
+				CA098AD922CFE5E500E45F0F /* MBUserMessages.swift in Sources */,
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
 				4DD3B6342194CF4E008B1417 /* Global.swift in Sources */,
 				4DB62D142289FFFC00D967AB /* MobileNumberViewController.swift in Sources */,

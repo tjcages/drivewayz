@@ -55,7 +55,8 @@ extension ConfigureParkingViewController {
         let sundayFromTimes = self.timesController.sundayFrom
         let sundayToTimes = self.timesController.sundayTo
         
-        let parkingCost = self.costsController.costTextField.text?.replacingOccurrences(of: "$ ", with: "")
+        var parkingCost = self.costsController.costTextField.text?.replacingOccurrences(of: "$", with: "")
+        parkingCost = parkingCost!.replacingOccurrences(of: " ", with: "")
         let hostMessage = self.messageController.message.text
         let hostEmail = self.emailController.emailTextField.text
         
@@ -69,9 +70,7 @@ extension ConfigureParkingViewController {
                           "timestamp": timestamp,
                           "parkingCost": Double(parkingCost!) as Any,
                           "hostMessage": hostMessage as Any,
-                          "hostEmail": hostEmail as Any,
-                          "totalRating": 5,
-                          "totalBookings": 1]
+                          "hostEmail": hostEmail as Any]
                 as [String: Any]
             
             childRef.updateChildValues(values) { (error, ref) in

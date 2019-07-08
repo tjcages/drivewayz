@@ -179,12 +179,12 @@ class ParkingReviewsViewController: UIViewController, UICollectionViewDelegateFl
         if userName.count != userMessage.count || userName.count != userImage.count || userName.count !=  timestamp.count || userName.count == 0 {
             cell.reviewLabel.text = "There have not been any reviews for this spot yet."
             cell.date.text = "Current"
-            cell.stars.rating = 5
+//            cell.stars.rating = 5
             return cell
         }
         cell.reviewLabel.text = userMessage[indexPath.row]
         cell.date.text = timestamp[indexPath.row]
-        cell.stars.rating = Double(rating[indexPath.row])
+//        cell.stars.rating = Double(rating[indexPath.row])
 
         return cell
     }

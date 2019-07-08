@@ -33,7 +33,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     var moveDelegate: moveControllers?
     
     let activityIndicatorParkingView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(style: .whiteLarge)
+        let aiv = UIActivityIndicatorView(style: .gray)
         aiv.translatesAutoresizingMaskIntoConstraints = false
         aiv.hidesWhenStopped = true
         return aiv
@@ -52,12 +52,12 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         view.translatesAutoresizingMaskIntoConstraints = false
         switch device {
         case .iphone8:
-            let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLACK.withAlphaComponent(0), bottomColor: Theme.BLACK.withAlphaComponent(0.8))
+            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE.withAlphaComponent(0.8))
             background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 72)
             background.zPosition = -10
             view.layer.insertSublayer(background, at: 0)
         case .iphoneX:
-            let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLACK.withAlphaComponent(0), bottomColor: Theme.BLACK.withAlphaComponent(0.8))
+            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE.withAlphaComponent(0.8))
             background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 120)
             background.zPosition = -10
             view.layer.insertSublayer(background, at: 0)
@@ -69,7 +69,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.text = "What kind of parking is it?"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.numberOfLines = 2
@@ -87,10 +87,6 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.backgroundColor = Theme.PACIFIC_BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 1)
-        button.layer.shadowRadius = 6
-        button.layer.shadowOpacity = 0.4
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
         
         return button
@@ -101,7 +97,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(moveBackController), for: .touchUpInside)
         button.alpha = 0
@@ -114,7 +110,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(imageDrawExited), for: .touchUpInside)
         button.alpha = 0
@@ -237,10 +233,24 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
+        view.backgroundColor = Theme.OFF_WHITE
+        
+        let view2 = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2))
         let background = CAGradientLayer().customColor(topColor: Theme.LIGHT_ORANGE, bottomColor: Theme.STRAWBERRY_PINK)
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2)
         background.zPosition = -10
-        view.layer.addSublayer(background)
+        view2.layer.addSublayer(background)
+        view.addSubview(view2)
+        
+        return view
+    }()
+    
+    lazy var progressBarBackground: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        view.alpha = 0
         
         return view
     }()
@@ -250,7 +260,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitle("Exit", for: .normal)
-        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.contentHorizontalAlignment = .right
         button.alpha = 0
@@ -277,11 +287,6 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-        let background = CAGradientLayer().customColor(topColor: Theme.BLACK, bottomColor: Theme.BLACK.withAlphaComponent(0.92))
-        let height = UIApplication.shared.statusBarFrame.height
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height + height)
-        background.zPosition = -10
-        view.layer.addSublayer(background)
 
         setupViews()
     }
@@ -478,9 +483,9 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         imageBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 26).isActive = true
+            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 38).isActive = true
+            imageBackButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
         self.view.addSubview(darkBlurView)
@@ -497,12 +502,24 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         activityIndicatorParkingView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         containerView.addSubview(progressBar)
-        containerView.bringSubviewToFront(locationController.view)
         progressBar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         progressBarWidthAnchor = progressBar.widthAnchor.constraint(equalToConstant: 0)
             progressBarWidthAnchor.isActive = true
-        progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 94).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        switch device {
+        case .iphone8:
+            progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive = true
+        case .iphoneX:
+            progressBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 94).isActive = true
+        }
+        
+        containerView.addSubview(progressBarBackground)
+        containerView.bringSubviewToFront(progressBar)
+        containerView.bringSubviewToFront(locationController.view)
+        progressBarBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        progressBarBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        progressBarBackground.centerYAnchor.constraint(equalTo: progressBar.centerYAnchor).isActive = true
+        progressBarBackground.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         containerView.addSubview(validError)
         validError.centerYAnchor.constraint(equalTo: progressBar.centerYAnchor).isActive = true
@@ -533,7 +550,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     }
     
     func imageDrawSelected() {
-        self.parkingLabel.text = "Drag the dots to highlight the parking space"
+        self.parkingLabel.text = "Drag the corners to highlight the parking space"
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: animationIn) {
             self.nextButton.alpha = 0
@@ -651,6 +668,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
                     self.progressBarWidthAnchor.constant = self.progress * 1
+                    self.progressBarBackground.alpha = 1
                     self.moveDelegate?.hideExitButton()
                     self.parkingTypeControllerAnchor.constant = 0
                     self.parkingLabel.alpha = 1
@@ -858,6 +876,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
                 }) { (success) in
                     UIView.animate(withDuration: animationIn, animations: {
                         self.progressBar.alpha = 0
+                        self.progressBarBackground.alpha = 0
                         self.confirmControllerAnchor.constant = 0
                         self.confirmController.view.alpha = 1
                         self.nextButton.alpha = 0
@@ -890,6 +909,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
                     self.progressBarWidthAnchor.constant = self.progress * 0
+                    self.progressBarBackground.alpha = 0
                     self.moveDelegate?.bringExitButton()
                     self.startHostingController.view.alpha = 1
                     self.view.layoutIfNeeded()
@@ -1051,6 +1071,7 @@ extension ConfigureParkingViewController: handleConfigureProcess {
             }) { (success) in
                 UIView.animate(withDuration: animationIn, animations: {
                     self.progressBar.alpha = 1
+                    self.progressBarBackground.alpha = 1
                     self.progressBarWidthAnchor.constant = self.progress * 12
                     self.emailControllerAnchor.constant = 0
                     self.emailController.view.alpha = 1
@@ -1155,12 +1176,13 @@ extension ConfigureParkingViewController: handlePopupTerms {
         popupContainer.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         popupContainer.addSubview(popupLabel)
+        popupContainer.addSubview(popupConfirm)
         popupLabel.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: 12).isActive = true
         popupLabel.rightAnchor.constraint(equalTo: popupContainer.rightAnchor, constant: -12).isActive = true
         popupLabel.topAnchor.constraint(equalTo: popupContainer.topAnchor, constant: 24).isActive = true
-        popupLabel.sizeToFit()
+        popupLabel.bottomAnchor.constraint(equalTo: popupConfirm.topAnchor).isActive = true
+//        popupLabel.heightAnchor.constraint(equalToConstant: popupLabel.text.height(withConstrainedWidth: phoneWidth - 24, font: Fonts.SSPRegularH3) + 12).isActive = true
         
-        popupContainer.addSubview(popupConfirm)
         popupConfirm.leftAnchor.constraint(equalTo: popupContainer.leftAnchor, constant: -1).isActive = true
         popupConfirm.rightAnchor.constraint(equalTo: popupContainer.rightAnchor, constant: 1).isActive = true
         popupConfirm.bottomAnchor.constraint(equalTo: popupContainer.bottomAnchor, constant: 1).isActive = true

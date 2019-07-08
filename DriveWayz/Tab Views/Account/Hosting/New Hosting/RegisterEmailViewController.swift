@@ -19,7 +19,7 @@ class RegisterEmailViewController: UIViewController {
         field.font = Fonts.SSPLightH2
         field.translatesAutoresizingMaskIntoConstraints = false
         field.tintColor = Theme.PACIFIC_BLUE
-        field.textColor = Theme.WHITE
+        field.textColor = Theme.DARK_GRAY
         field.autocapitalizationType = .none
         field.clearButtonMode = .whileEditing
         field.keyboardType = .emailAddress
@@ -32,7 +32,7 @@ class RegisterEmailViewController: UIViewController {
     var nameLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -40,7 +40,7 @@ class RegisterEmailViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 3
         label.text = "Register your email so Drivewayz may contact you if there are any issues with the parking space."
@@ -83,7 +83,7 @@ class RegisterEmailViewController: UIViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.PURPLE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         

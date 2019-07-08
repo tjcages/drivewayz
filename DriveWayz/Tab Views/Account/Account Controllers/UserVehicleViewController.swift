@@ -34,7 +34,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Your Vehicles"
+        label.text = "Your vehicles"
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPBoldH1
@@ -72,12 +72,11 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 4)
-        view.layer.shadowRadius = 6
-        view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 4
         view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -118,8 +117,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
     
         view.clipsToBounds = true
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.cornerRadius = 4
+        view.backgroundColor = Theme.WHITE
         
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
@@ -228,7 +226,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         }) { (success) in
             self.delegate?.bringExitButton()
             UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Your Vehicles"
+                self.mainLabel.text = "Your vehicles"
             }, completion: nil)
         }
     }
@@ -301,7 +299,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                        self.mainLabel.text = "Edit Vehicle"
+                        self.mainLabel.text = "Your vehicle"
                     }, completion: nil)
                 }
             } else {
@@ -311,8 +309,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
                     self.view.layoutIfNeeded()
                 }) { (success) in
                     UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                        self.mainLabel.text = "New Vehicle"
-                    }, completion: nil)
+                        self.mainLabel.text = "New vehicle"
+                    }, completion: { (success) in
+                        self.currentVehicleController.vehicleMakeLabel.becomeFirstResponder()
+                    })
                 }
             }
             self.moveToNext()
@@ -323,50 +323,56 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         self.options = []
         self.optionsSub = []
         self.optionsKey = []
-        if let userID = Auth.auth().currentUser?.uid {
-            let userRef = Database.database().reference().child("users").child(userID)
-            userRef.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:Any] {
-                    if let vehicleKey = dictionary["selectedVehicle"] as? String {
-                        self.selectedKey = vehicleKey
-                        self.optionsTableView.reloadData()
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userID)
+        ref.child("Vehicles").observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                ref.observeSingleEvent(of: .value) { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:Any] {
+                        if let vehicleKey = dictionary["selectedVehicle"] as? String {
+                            self.selectedKey = vehicleKey
+                            self.optionsTableView.reloadData()
+                        }
+                    }
+                }
+                let vehicleRef = Database.database().reference().child("UserVehicles").child(key)
+                vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String: Any] {
+                        if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleLicensePlate = dictionary["licensePlate"] as? String {
+                            let text = vehicleYear + " " + vehicleMake + " " + vehicleModel
+                            self.options.append(text)
+                            self.optionsSub.append(vehicleLicensePlate)
+                            self.optionsKey.append(snapshot.key)
+                            self.options.reverse()
+                            self.optionsSub.reverse()
+                            self.optionsKey.reverse()
+                            self.optionsTableView.reloadData()
+                        }
+                    }
+                })
+            }
+        }
+        ref.child("Vehicles").observe(.childRemoved) { (snapshot) in
+            if let key = snapshot.value as? String {
+                if let index = self.optionsKey.index(of: key) {
+                    self.options.remove(at: index)
+                    self.optionsSub.remove(at: index)
+                    self.optionsKey.remove(at: index)
+                    self.optionsTableView.reloadData()
+                    
+                    if self.optionsKey.count > 0 {
+                        let selectedKey = self.optionsKey[0]
+                        ref.updateChildValues(["selectedVehicle": selectedKey])
                     }
                 }
             }
-            let ref = Database.database().reference().child("users").child(userID).child("Vehicles")
-            ref.observe(.childAdded) { (snapshot) in
-                let vehicleRef = Database.database().reference().child("UserVehicles").child(snapshot.key)
-                vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let dictionary = snapshot.value as? [String:Any] {
-                        if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleLicensePlate = dictionary["licensePlate"] as? String {
-                            let text = vehicleYear + " " + vehicleMake + " " + vehicleModel
-                            self.options.append(text)
-                            self.optionsSub.append(vehicleLicensePlate)
-                            self.optionsKey.append(snapshot.key)
-                            self.options.reverse()
-                            self.optionsSub.reverse()
-                            self.optionsKey.reverse()
-                            self.optionsTableView.reloadData()
-                        }
-                    }
-                })
-            }
-            ref.observe(.childRemoved) { (snapshot) in
-                let vehicleRef = Database.database().reference().child("UserVehicles").child(snapshot.key)
-                vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let dictionary = snapshot.value as? [String:Any] {
-                        if let vehicleMake = dictionary["vehicleMake"] as? String, let vehicleModel = dictionary["vehicleModel"] as? String, let vehicleYear = dictionary["vehicleYear"] as? String, let vehicleLicensePlate = dictionary["licensePlate"] as? String {
-                            let text = vehicleYear + " " + vehicleMake + " " + vehicleModel
-                            self.options.append(text)
-                            self.optionsSub.append(vehicleLicensePlate)
-                            self.optionsKey.append(snapshot.key)
-                            self.options.reverse()
-                            self.optionsSub.reverse()
-                            self.optionsKey.reverse()
-                            self.optionsTableView.reloadData()
-                        }
-                    }
-                })
+        }
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:Any] {
+                if let vehicleKey = dictionary["selectedVehicle"] as? String {
+                    self.selectedKey = vehicleKey
+                    self.optionsTableView.reloadData()
+                }
             }
         }
     }

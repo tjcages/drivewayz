@@ -20,7 +20,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var messages = [Message]()
+    var messages: [Message] = []
     var messagesDictionary = [String: Message]()
     
     lazy var gradientContainer: UIView = {
@@ -56,27 +56,6 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         return view
     }()
     
-    var currentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
-        view.layer.borderWidth = 0.5
-        
-        let label = UILabel()
-        label.text = "Your current messages"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.font = Fonts.SSPLightH4
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24).isActive = true
-        label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        label.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
-        label.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
-        return view
-    }()
-    
     lazy var backButton: UIButton = {
         let button = UIButton()
         let origImage = UIImage(named: "arrow")
@@ -103,7 +82,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let controller = CurrentMessageViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
-        controller.delegate = self
+//        controller.delegate = self
         
         return controller
     }()
@@ -154,17 +133,11 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                 gradientHeightAnchor.isActive = true
         }
         
-        self.view.addSubview(currentView)
-        currentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: -1).isActive = true
-        currentView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 1).isActive = true
-        currentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        currentView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
         self.view.addSubview(currentMessagesTableView)
         self.view.bringSubviewToFront(gradientContainer)
         currentMessagesTableView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         currentMessagesTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        currentMessagesTableView.topAnchor.constraint(equalTo: currentView.bottomAnchor).isActive = true
+        currentMessagesTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         currentTableHeightAnchor = currentMessagesTableView.heightAnchor.constraint(equalToConstant: 50)
             currentTableHeightAnchor.isActive = true
         
@@ -187,7 +160,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @objc func backButtonPressed(sender: UIButton) {
-        currentMessagesController.resetOptions()
+//        currentMessagesController.resetOptions()
         UIView.animate(withDuration: animationOut, animations: {
             self.backButton.alpha = 0
         }) { (success) in
@@ -236,7 +209,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     @objc func handleReloadTable() {
         self.messages = Array(self.messagesDictionary.values)
         self.messages.sort(by: { (message1, message2) -> Bool in
-            return (message1.timestamp?.intValue)! > (message2.timestamp?.intValue)!
+            return (message1.timestamp)! > (message2.timestamp)!
         })
         DispatchQueue.main.async(execute: {
             self.currentMessagesTableView.reloadData()
@@ -339,7 +312,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                     user.id = chatPartnerID
                     user.name = name
                     user.picture = picture
-                    self.currentMessagesController.setData(userId: chatPartnerID)
+//                    self.currentMessagesController.setData(userId: chatPartnerID)
                 }, withCancel: nil)
             }
         }
@@ -356,10 +329,10 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                         if let hostDict = hostSnap.value as? [String:AnyObject] {
                             if let previousUser = hostDict["previousUser"] as? String {
                                 if previousUser == chatPartnerID {
-                                    self.currentMessagesController.bottomContainer.alpha = 0
-                                    self.currentMessagesController.hostMessageOptionsController.view.alpha = 1
-                                    self.currentMessagesController.isHost = true
-                                    self.currentMessagesController.setHostOptions()
+//                                    self.currentMessagesController.bottomContainer.alpha = 0
+//                                    self.currentMessagesController.hostMessageOptionsController.view.alpha = 1
+//                                    self.currentMessagesController.isHost = true
+//                                    self.currentMessagesController.setHostOptions()
                                     return
                                 }
                             }
@@ -368,10 +341,10 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                 }
             }
         }
-        self.currentMessagesController.bottomContainer.alpha = 1
-        self.currentMessagesController.hostMessageOptionsController.view.alpha = 0
-        self.currentMessagesController.isHost = false
-        self.currentMessagesController.setParkingOptions()
+//        self.currentMessagesController.bottomContainer.alpha = 1
+//        self.currentMessagesController.hostMessageOptionsController.view.alpha = 0
+//        self.currentMessagesController.isHost = false
+//        self.currentMessagesController.setParkingOptions()
     }
     
     func deselectCells() {

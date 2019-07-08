@@ -37,7 +37,7 @@ class AboutUsViewController: UIViewController {
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
         
         setupViews()
     }

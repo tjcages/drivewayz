@@ -185,7 +185,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.full
+        config.requiredBillingAddressFields = STPBillingAddressFields.none
         config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
@@ -546,7 +546,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
                 if let oldHours = dictionary["hours"] as? Int {
                     let newHours = oldHours + hours!
                     helpRef.updateChildValues(["timestamp": timestamp, "hours": newHours, "parkingID": self.parkingId, "cost": self.cost])
-                    seconds! = seconds! + (3600 * hours!)
+//                    seconds! = seconds! + (3600 * hours!)
                 }
             } else {
                 helpRef.updateChildValues(["timestamp": timestamp, "hours": hours!, "parkingID": self.parkingId, "cost": self.cost])

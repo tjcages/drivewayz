@@ -19,7 +19,7 @@ class UserCell: UITableViewCell {
             } else {
                 detailTextLabel?.text = message?.text
             }
-            if let seconds = message?.timestamp?.doubleValue {
+            if let seconds = message?.timestamp {
                 let stringDate = dayDifference(from: seconds)
                 timeLabel.text = stringDate
             }

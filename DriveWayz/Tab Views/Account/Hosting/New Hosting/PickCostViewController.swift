@@ -16,7 +16,7 @@ class PickCostViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 9
         label.text = """
@@ -33,8 +33,8 @@ class PickCostViewController: UIViewController {
         let label = UITextField()
         label.text = ""
         label.attributedPlaceholder = NSAttributedString(string: "$0.00",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: Theme.WHITE.withAlphaComponent(0.5)])
-        label.textColor = Theme.WHITE
+                                                         attributes: [NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY.withAlphaComponent(0.5)])
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.keyboardType = .numberPad
@@ -46,7 +46,7 @@ class PickCostViewController: UIViewController {
     var hourLabel: UILabel = {
         let label = UILabel()
         label.text = "per hour"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         
@@ -57,7 +57,7 @@ class PickCostViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Set standard rate", for: .normal)
-        button.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
         
@@ -86,13 +86,13 @@ class PickCostViewController: UIViewController {
         informationLabel.sizeToFit()
         
         self.view.addSubview(costTextField)
-        costTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30).isActive = true
+        costTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -34).isActive = true
         costTextField.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
         costTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         costTextField.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         self.view.addSubview(hourLabel)
-        hourLabel.leftAnchor.constraint(equalTo: costTextField.rightAnchor, constant: -16).isActive = true
+        hourLabel.leftAnchor.constraint(equalTo: costTextField.rightAnchor, constant: -20).isActive = true
         hourLabel.centerYAnchor.constraint(equalTo: costTextField.centerYAnchor, constant: -4).isActive = true
         hourLabel.sizeToFit()
         
@@ -143,6 +143,11 @@ class PickCostViewController: UIViewController {
             textField.sizeToFit()
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
 }
 
 

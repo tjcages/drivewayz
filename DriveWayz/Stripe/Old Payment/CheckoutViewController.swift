@@ -111,7 +111,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         config.publishableKey = self.stripePublishableKey
         config.appleMerchantIdentifier = self.appleMerchantID
         config.companyName = self.companyName
-        config.requiredBillingAddressFields = STPBillingAddressFields.full
+        config.requiredBillingAddressFields = STPBillingAddressFields.none
         config.additionalPaymentOptions = .all
 
         // Create card sources instead of card tokens

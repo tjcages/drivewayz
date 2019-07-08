@@ -470,7 +470,7 @@ class HostingPreviousViewController: UIViewController {
         scrollView.delegate = self
         mapView.delegate = self
         
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
         mapView.styleURL = url
         
         setupViews()

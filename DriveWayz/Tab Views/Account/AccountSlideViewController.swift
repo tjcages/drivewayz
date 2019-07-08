@@ -18,8 +18,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help", "Settings"]
-    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "inbox")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
+    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Help", "Settings"]
+    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
     let cellId = "cellId"
     
     lazy var container: UIView = {
@@ -97,7 +97,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     var stars: CosmosView = {
         let view = CosmosView()
-        view.rating = 4.65
+        view.rating = 5.0
         view.settings.updateOnTouch = false
         view.settings.fillMode = StarFillMode.precise
         view.settings.starSize = 20
@@ -116,7 +116,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var starLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4.65"
+        label.text = "5.0"
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
@@ -554,11 +554,11 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
         ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Hosted spaces", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
         ref.observe(.childRemoved) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Inbox", "Become a host", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Help", "Settings"]
             self.delegate?.closeAccountView()
             self.delegate?.hideHostingController()
             self.optionsTableView.reloadData()

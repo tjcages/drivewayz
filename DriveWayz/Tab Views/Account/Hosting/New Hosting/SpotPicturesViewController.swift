@@ -46,7 +46,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 1
@@ -92,7 +92,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 2
@@ -138,7 +138,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 3
@@ -184,7 +184,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -230,7 +230,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 1
@@ -276,7 +276,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 2
@@ -322,7 +322,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 3
@@ -368,7 +368,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -410,7 +410,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Additional images (optional)"
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH3
         
         return label
@@ -424,7 +424,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -457,7 +457,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -758,7 +758,6 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     func imageDrawExited() {
         UIView.animate(withDuration: animationIn, animations: {
             self.drawController.view.alpha = 0
-            self.drawController.toColor = true
         })
     }
     
@@ -812,7 +811,7 @@ extension SpotPicturesViewController {
         setupEight()
         
         self.view.addSubview(drawController.view)
-        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -10).isActive = true
+        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -100).isActive = true
         drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true

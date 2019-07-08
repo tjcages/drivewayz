@@ -35,7 +35,7 @@ class QuickCouponsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.STRAWBERRY_PINK
-        view.layer.cornerRadius = 45/2
+        view.layer.cornerRadius = 20
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
@@ -97,7 +97,7 @@ class QuickCouponsViewController: UIViewController {
         
         giftView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         giftView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        giftView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        giftView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         giftView.widthAnchor.constraint(equalTo: giftIcon.heightAnchor).isActive = true
         
         giftIcon.topAnchor.constraint(equalTo: giftView.topAnchor).isActive = true

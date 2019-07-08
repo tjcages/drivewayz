@@ -21,7 +21,6 @@ extension MapKitViewController {
         let ref = Database.database().reference().child("ParkingSpots")
         ref.observe(.childAdded) { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
-                self.removeAllHostLocations()
                 let park = ParkingSpots(dictionary: dictionary)
                 let parkingID = dictionary["parkingID"] as! String
                 self.parkingSpotsDictionary[parkingID] = park
@@ -30,13 +29,13 @@ extension MapKitViewController {
                 DispatchQueue.main.async {
                     self.placeAllAnnotations()
                 }
-            }
+            } 
         }
     }
     
     func placeAllAnnotations() {
         for parking in self.parkingSpots {
-            if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
+            if let latitude = parking.latitude, let longitude = parking.longitude {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 let marker = MGLPointAnnotation()
                 marker.coordinate = location.coordinate
@@ -49,21 +48,26 @@ extension MapKitViewController {
         }
     }
     
-    func checkAnnotationsNearDestination(location: CLLocationCoordinate2D) {
+    func checkAnnotationsNearDestination(location: CLLocationCoordinate2D, checkDistance: Bool) {
         self.availableParkingSpots = []
         for parking in self.parkingSpots {
             if let latitude = parking.latitude, let longitude = parking.longitude {
-                let parkingDestination = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: latitude), longitude: CLLocationDegrees(truncating: longitude))
+                let parkingDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 let distance = location.distance(to: parkingDestination)
-                if distance <= 1609.34 { //1 mile walking
+                if distance <= (1609.34 * 2) && checkDistance { //2 mile walking
+                    parking.parkingDistance = Double(distance)
+                    self.availableParkingSpots.append(parking)
+                } else if distance <= (1609.34 * 6) && !checkDistance {
                     parking.parkingDistance = Double(distance)
                     self.availableParkingSpots.append(parking)
                 }
             }
         }
+        print(self.availableParkingSpots.count)
         if let fromDate = bookingFromDate, let toDate = bookingToDate {
             DynamicParking.getDynamicParking(parkingSpots: self.availableParkingSpots, dateFrom: fromDate, dateTo: toDate) { (parking) in
                 self.availableParkingSpots = parking
+                print(self.availableParkingSpots.count)
                 self.removeAllHostLocations()
                 self.placeAvailableParking(location: location)
             }
@@ -74,7 +78,7 @@ extension MapKitViewController {
         var index = 0
         mapAnnotationID = []
         for parking in self.availableParkingSpots {
-            if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
+            if let latitude = parking.latitude, let longitude = parking.longitude {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
                 let marker = MGLPointAnnotation()
                 marker.coordinate = location.coordinate
@@ -90,12 +94,18 @@ extension MapKitViewController {
                     index += 1
                 
                     if index == self.availableParkingSpots.count {
-                        print(numberOfTotalParkingSpots)
                         DispatchQueue.main.async {
                             self.organizeParkingLocations()
                         }
                     }
                 }
+            }
+        }
+        delayWithSeconds(1) {
+            if self.availableParkingSpots.count == 0 {
+                self.parkingHidden(showMainBar: true)
+                self.createSimpleAlert(title: "No parking in this area", message: "Sign up to be a host today to help improve your parking community!")
+                self.placeAllAnnotations()
             }
         }
     }
@@ -104,7 +114,7 @@ extension MapKitViewController {
         mapAnnotationID = []
         if self.availableParkingSpots.count > 0 {
             for parking in self.availableParkingSpots {
-                if let latitude = parking.latitude as? CLLocationDegrees, let longitude = parking.longitude as? CLLocationDegrees {
+                if let latitude = parking.latitude, let longitude = parking.longitude {
                     let location = CLLocation(latitude: latitude, longitude: longitude)
                     let marker = MGLPointAnnotation()
                     marker.coordinate = location.coordinate
@@ -119,6 +129,7 @@ extension MapKitViewController {
             delayWithSeconds(1) {
                 self.parkingHidden(showMainBar: true)
                 self.createSimpleAlert(title: "No parking in this area", message: "Sign up to be a host today to help improve your parking community!")
+                self.placeAllAnnotations()
             }
         }
     }
@@ -126,7 +137,7 @@ extension MapKitViewController {
     func organizeParkingLocations() {
         var closeParkingSpots = self.availableParkingSpots.sorted(by: { $0.parkingDistance! < $1.parkingDistance! })
         var cheapestParkingSpots = self.availableParkingSpots.sorted(by: { $0.parkingCost! < $1.parkingCost! })
-        var bookingSpots: [ParkingSpots] = []
+        var bookingSpots: [ParkingSpots] = [] 
         if let closestParking = closeParkingSpots.first {
             bookingSpots.append(closestParking)
             closeParkingSpots.remove(at: 0)
@@ -141,8 +152,12 @@ extension MapKitViewController {
                         }
                         self.parkingController.parkingSpots = bookingSpots
                     }
+                } else {
+                    self.parkingController.parkingSpots = bookingSpots
+                    //no parking
                 }
             } else {
+                self.parkingController.parkingSpots = bookingSpots
                 //no parking
             }
         } else {

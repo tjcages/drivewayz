@@ -37,8 +37,8 @@ class ParkingSpots: NSObject {
     var ParkingLocation: [String:Any]?
     var cityAddress: String?
     var countryAddress: String?
-    var latitude: NSNumber?
-    var longitude: NSNumber?
+    var latitude: Double?
+    var longitude: Double?
     var overallAddress: String?
     var stateAddress: String?
     var streetAddress: String?
@@ -143,8 +143,8 @@ class ParkingSpots: NSObject {
         if let parkingLocation = ParkingLocation {
             cityAddress = parkingLocation["cityAddress"] as? String
             countryAddress = parkingLocation["countryAddress"] as? String
-            latitude = parkingLocation["latitude"] as? NSNumber
-            longitude = parkingLocation["longitude"] as? NSNumber
+            latitude = parkingLocation["latitude"] as? Double
+            longitude = parkingLocation["longitude"] as? Double
             overallAddress = parkingLocation["overallAddress"] as? String
             stateAddress = parkingLocation["stateAddress"] as? String
             streetAddress = parkingLocation["streetAddress"] as? String

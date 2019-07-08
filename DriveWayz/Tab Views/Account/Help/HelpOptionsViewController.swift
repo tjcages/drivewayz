@@ -37,8 +37,8 @@ class HelpOptionsViewController: UIViewController {
         
         view.backgroundColor = Theme.OFF_WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 4)
-        view.layer.shadowRadius = 6
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
         view.layer.cornerRadius = 4
         

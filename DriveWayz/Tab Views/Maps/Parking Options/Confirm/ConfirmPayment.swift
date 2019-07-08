@@ -13,15 +13,15 @@ extension ConfirmViewController: STPPaymentContextDelegate {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
         self.paymentInProgress = true
-//        self.paymentContext.requestPayment() /////////////////////////////////////PAYMENT NOT SETUP
+        self.paymentContext.requestPayment() /////////////////////////////////////PAYMENT NOT SETUP
         
-        self.delegate?.expandCheckmark()
-        self.setupNotifications()
-        self.checkCoupons()
-        self.sendPushNotification()
-        delayWithSeconds(2) {
-            self.paymentInProgress = false
-        }
+//        self.delegate?.expandCheckmark()
+//        self.setupNotifications()
+//        self.checkCoupons()
+//        self.sendPushNotification()
+//        delayWithSeconds(2) {
+//            self.paymentInProgress = false
+//        }
     }
     
     func sendPushNotification() {
@@ -72,7 +72,8 @@ extension ConfirmViewController: STPPaymentContextDelegate {
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
         guard let text = self.totalCostLabel.text?.replacingOccurrences(of: "$", with: "") else { return }
         guard let costs = Double(text) else { return }
-        let pennies = Int(costs * 100)
+        let pennies = 50
+//        let pennies = Int(costs * 100)
         paymentContext.paymentAmount = pennies
         MyAPIClient.sharedClient.completeCharge(paymentResult,
                                                 amount: pennies,

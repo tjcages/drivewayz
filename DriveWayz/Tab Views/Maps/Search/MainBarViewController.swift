@@ -110,11 +110,11 @@ class MainBarViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.2)
         button.layer.cornerRadius = 18
-        let origImage = UIImage(named: "searchMicrophone")
+        let origImage = UIImage(named: "calendarIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.STRAWBERRY_PINK
-//        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         return button
     }()

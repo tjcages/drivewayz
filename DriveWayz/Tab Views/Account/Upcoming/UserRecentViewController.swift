@@ -415,7 +415,7 @@ class UserRecentViewController: UIViewController {
     var reportUser: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Report user", for: .normal)
+        button.setTitle("Report parking", for: .normal)
         button.setTitleColor(Theme.HARMONY_RED, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         
@@ -430,8 +430,8 @@ class UserRecentViewController: UIViewController {
         return view
     }()
     
-    func setData(booking: Bookings) {
-        if let userName = booking.parkingName, let userDuration = booking.userDuration, let parkingType = booking.parkingType, let userRating = booking.parkingRating, let parkingLong = booking.parkingLong, let parkingLat = booking.parkingLat, let destLong = booking.destinationLong, let destLat = booking.destinationLat, let fromDate = booking.fromDate {
+    func setData(booking: Bookings, region: MGLCoordinateBounds, route: MGLPolyline, parking: CLLocationCoordinate2D, destination: CLLocationCoordinate2D) {
+        if let userName = booking.parkingName, let userDuration = booking.userDuration, let parkingType = booking.parkingType, let userRating = booking.parkingRating, let fromDate = booking.fromDate {
             if let payment = booking.totalCost, let hours = booking.hours, let price = booking.price {
                 self.userTotalCharge.text = String(format:"$%.02f", payment)
                 let hostProfit = hours * price * 0.75
@@ -458,19 +458,23 @@ class UserRecentViewController: UIViewController {
             self.fromTimeLabel.text = String(dates[0])
             self.toTimeLabel.text = String(dates[1])
             
-            let location = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
-            var center = location
-            center.latitude = center.latitude + 0.0002
-            center.longitude = center.longitude + 0.0006
-            mapView.setCenter(center, zoomLevel: 16, animated: false)
-            let annotation = MGLPointAnnotation()
-            annotation.coordinate = location
-            mapView.addAnnotation(annotation)
+            self.mapView.addAnnotation(route)
+            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 42, left: 64, bottom: 68, right: 64), animated: false)
             
-            let parkingLocation = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
-            let destinationLocation = CLLocationCoordinate2D(latitude: destLat, longitude: destLong)
+            let marker = MGLPointAnnotation()
+            marker.coordinate = destination
+            marker.title = "Destination"
+            self.mapView.addAnnotation(marker)
             
-            self.drawRoute(fromLocation: parkingLocation, toLocation: destinationLocation)
+            let marker2 = MGLPointAnnotation()
+            marker2.coordinate = parking
+            self.mapView.addAnnotation(marker2)
+            
+            let distance = parking.distance(to: destination)
+            let minutes = distance/93.87839463552
+            self.setupQuickController(minute: minutes)
+            
+            self.moveQuickControllers(startCoordinate: parking, endCoordinate: destination)
             
             if let vehicleID = booking.vehicleID {
                 let ref = Database.database().reference().child("UserVehicles").child(vehicleID)
@@ -489,16 +493,6 @@ class UserRecentViewController: UIViewController {
         }
     }
     
-    lazy var quickDestinationController: QuickDestinationViewController = {
-        let controller = QuickDestinationViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Destination"
-        controller.view.alpha = 1
-        controller.view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        
-        return controller
-    }()
-    
     lazy var quickParkingController: QuickParkingViewController = {
         let controller = QuickParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -509,10 +503,7 @@ class UserRecentViewController: UIViewController {
         return controller
     }()
     
-    var quickDestinationWidthAnchor: NSLayoutConstraint!
     var quickParkingWidthAnchor: NSLayoutConstraint!
-    var quickDestinationRightAnchor: NSLayoutConstraint!
-    var quickDestinationTopAnchor: NSLayoutConstraint!
     var quickParkingRightAnchor: NSLayoutConstraint!
     var quickParkingTopAnchor: NSLayoutConstraint!
     
@@ -525,7 +516,7 @@ class UserRecentViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         view.clipsToBounds = true
         
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
         mapView.styleURL = url
         
         setupViews()
@@ -544,15 +535,6 @@ class UserRecentViewController: UIViewController {
         mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         mapView.heightAnchor.constraint(equalToConstant: 280 + statusHeight).isActive = true
-        
-        mapView.addSubview(quickDestinationController.view)
-        quickDestinationRightAnchor = quickDestinationController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
-            quickDestinationRightAnchor.isActive = true
-        quickDestinationTopAnchor = quickDestinationController.view.centerYAnchor.constraint(equalTo: self.view.topAnchor)
-            quickDestinationTopAnchor.isActive = true
-        quickDestinationWidthAnchor = quickDestinationController.view.widthAnchor.constraint(equalToConstant: 100)
-            quickDestinationWidthAnchor.isActive = true
-        quickDestinationController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         mapView.addSubview(quickParkingController.view)
         quickParkingRightAnchor = quickParkingController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
@@ -820,11 +802,11 @@ extension UserRecentViewController: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 5
+        return 3
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        return Theme.PRUSSIAN_BLUE
+        return Theme.BLUE
     }
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -834,68 +816,23 @@ extension UserRecentViewController: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // For better performance, always try to reuse existing annotations.
         if let title = annotation.title, title == "Destination" {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMapHistory")
             
             // If there is no reusable annotation image available, initialize a new one.
             if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMapHistory")!, reuseIdentifier: "destinationMapHistory")
             }
             
             return annotationImage
         } else {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapHistory")
             
             // If there is no reusable annotation image available, initialize a new one.
             if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapHistory")!, reuseIdentifier: "annotationMapHistory")
             }
             
             return annotationImage
-        }
-    }
-    
-    func drawRoute(fromLocation: CLLocationCoordinate2D, toLocation: CLLocationCoordinate2D) {
-        let directions = Directions.shared
-        let waypoints = [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.latitude, longitude: fromLocation.longitude), name: "Start"),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: toLocation.latitude, longitude: toLocation.longitude), name: "Destination"),
-        ]
-        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
-        options.includesSteps = true
-        
-        _ = directions.calculate(options) { (waypoints, routes, error) in
-            guard error == nil else {
-                print("Error calculating directions: \(error!)")
-                return
-            }
-            if let route = routes?.first {
-                let minute = route.expectedTravelTime / 60
-                self.setupQuickController(minute: minute)
-                if route.coordinateCount > 0 {
-                    
-                    var routeCoordinates = route.coordinates!
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
-                    routeLine.title = "reservationsMapViewPolyline"
-                    let ne = routeLine.overlayBounds.ne
-                    let sw = routeLine.overlayBounds.sw
-                    let region = MGLCoordinateBounds(sw: sw, ne: ne)
-                    self.mapView.addAnnotation(routeLine)
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 32, left: 32, bottom: 62, right: 32), animated: false)
-                    
-                    delayWithSeconds(animationOut, completion: {
-                        let marker = MGLPointAnnotation()
-                        marker.coordinate = toLocation
-                        marker.title = "Destination"
-                        self.mapView.addAnnotation(marker)
-                        
-                        let marker2 = MGLPointAnnotation()
-                        marker2.coordinate = fromLocation
-                        self.mapView.addAnnotation(marker2)
-                        
-                        self.moveQuickControllers(startCoordinate: fromLocation, endCoordinate: toLocation)
-                    })
-                }
-            }
         }
     }
     
@@ -905,9 +842,6 @@ extension UserRecentViewController: MGLMapViewDelegate {
         let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 44
         self.quickParkingController.distanceLabel.text = distanceTime
         self.quickParkingWidthAnchor.constant = distanceWidth
-    
-        self.quickDestinationController.distanceLabel.text = self.nameLabel.text
-        self.quickDestinationWidthAnchor.constant = self.nameLabel.text!.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 24
         
         self.view.layoutIfNeeded()
     }
@@ -921,20 +855,10 @@ extension UserRecentViewController: MGLMapViewDelegate {
         } else {
             self.quickParkingRightAnchor.constant = startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16
         }
-        if startPoint.y >= 220/4 {
+        if startPoint.y >= 200 {
             self.quickParkingTopAnchor.constant = startPoint.y - 20
         } else {
             self.quickParkingTopAnchor.constant = startPoint.y + 20
-        }
-        if endPoint.x >= phoneWidth/3 {
-            self.quickDestinationRightAnchor.constant = endPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
-        } else {
-            self.quickDestinationRightAnchor.constant = endPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
-        }
-        if endPoint.y >= 220/4 {
-            self.quickDestinationTopAnchor.constant = endPoint.y - 20
-        } else {
-            self.quickDestinationTopAnchor.constant = endPoint.y + 20
         }
         self.view.layoutIfNeeded()
     }

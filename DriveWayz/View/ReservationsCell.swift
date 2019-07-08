@@ -15,6 +15,11 @@ import Cosmos
 
 class ReservationsView: UITableViewCell {
     
+    var region: MGLCoordinateBounds?
+    var route: MGLPolyline?
+    var parking: CLLocationCoordinate2D?
+    var destination: CLLocationCoordinate2D?
+    
     var secondaryType: String = "driveway" {
         didSet {
             if secondaryType == "driveway" {
@@ -108,7 +113,7 @@ class ReservationsView: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
         label.textColor = Theme.BLACK
-        label.font = Fonts.SSPBoldH4
+        label.font = Fonts.SSPRegularH4
         
         return label
     }()
@@ -154,7 +159,7 @@ class ReservationsView: UITableViewCell {
     var paymentAmount: UILabel = {
         let view = UILabel()
         view.text = ""
-        view.font = Fonts.SSPBoldH3
+        view.font = Fonts.SSPSemiBoldH3
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
         view.textAlignment = .right
@@ -179,7 +184,7 @@ class ReservationsView: UITableViewCell {
         addSubview(paymentLabel)
         addSubview(paymentAmount)
         
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
         mapView.styleURL = url
         
         container.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
@@ -239,11 +244,11 @@ extension ReservationsView: MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 5
+        return 3
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        return Theme.PRUSSIAN_BLUE
+        return Theme.BLUE
     }
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -253,20 +258,20 @@ extension ReservationsView: MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // For better performance, always try to reuse existing annotations.
         if let title = annotation.title, title == "Destination" {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMapHistory")
             
             // If there is no reusable annotation image available, initialize a new one.
             if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMapHistory")!, reuseIdentifier: "destinationMapHistory")
             }
             
             return annotationImage
         } else {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapHistory")
             
             // If there is no reusable annotation image available, initialize a new one.
             if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapHistory")!, reuseIdentifier: "annotationMapHistory")
             }
             
             return annotationImage
@@ -274,6 +279,9 @@ extension ReservationsView: MGLMapViewDelegate {
     }
     
     func drawRoute(fromLocation: CLLocationCoordinate2D, toLocation: CLLocationCoordinate2D) {
+        if let annotations = self.mapView.annotations {
+            self.mapView.removeAnnotations(annotations)
+        }
         let directions = Directions.shared
         let waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.latitude, longitude: fromLocation.longitude), name: "Start"),
@@ -308,6 +316,11 @@ extension ReservationsView: MGLMapViewDelegate {
                         let marker2 = MGLPointAnnotation()
                         marker2.coordinate = fromLocation
                         self.mapView.addAnnotation(marker2)
+                        
+                        self.region = region
+                        self.route = routeLine
+                        self.parking = marker2.coordinate
+                        self.destination = marker.coordinate
                     })
                 }
             }

@@ -30,7 +30,7 @@ class MapParkingViewController: UIViewController {
     var mapLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.text = "This is what people will see when looking for your parking space"
         label.numberOfLines = 2

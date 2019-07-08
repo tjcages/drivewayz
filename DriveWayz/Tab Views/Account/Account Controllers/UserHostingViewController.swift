@@ -9,9 +9,6 @@
 import UIKit
 
 protocol handleHostingControllers {
-    func handleScrollView(translation: CGFloat)
-    func handleEndDragging(translation: CGFloat)
-    
     func defaultContentStatusBar()
     func lightContentStatusBar()
     func bringExitButton()
@@ -40,25 +37,6 @@ class UserHostingViewController: UIViewController {
         view.showsVerticalScrollIndicator = false
         
         return view
-    }()
-    
-    lazy var gradientContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
-        
-        return view
-    }()
-    
-    var mainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Hosted spaces"
-        label.textColor = Theme.DARK_GRAY
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
-        
-        return label
     }()
     
     var backgroundCircle: UIView = {
@@ -252,8 +230,6 @@ class UserHostingViewController: UIViewController {
         observeSpotData()
     }
     
-    var gradientHeightAnchor: NSLayoutConstraint!
-    
     func setupViews() {
         
         self.view.addSubview(backgroundCircle)
@@ -263,30 +239,11 @@ class UserHostingViewController: UIViewController {
         backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
         
         self.view.addSubview(scrollView)
-        self.view.addSubview(gradientContainer)
         scrollView.contentSize = CGSize(width: phoneWidth * 4, height: phoneHeight)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        switch device {
-        case .iphone8:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
-                gradientHeightAnchor.isActive = true
-        case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
-                gradientHeightAnchor.isActive = true
-        }
-        
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
     }
     
@@ -296,26 +253,26 @@ class UserHostingViewController: UIViewController {
     func setupControllers() {
         
         scrollView.addSubview(profitsController.view)
-        profitsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        profitsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         profitsController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         profitsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         profitsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         profitsController.profitsContainer.transferButton.addTarget(self, action: #selector(transferAccountFunds(sender:)), for: .touchUpInside)
         
         scrollView.addSubview(bookingsController.view)
-        bookingsController.view.topAnchor.constraint(equalTo: profitsController.view.topAnchor).isActive = true
+        bookingsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         bookingsController.view.leftAnchor.constraint(equalTo: profitsController.view.rightAnchor).isActive = true
         bookingsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         bookingsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(notificationsController.view)
-        notificationsController.view.topAnchor.constraint(equalTo: profitsController.view.topAnchor).isActive = true
+        notificationsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         notificationsController.view.leftAnchor.constraint(equalTo: bookingsController.view.rightAnchor).isActive = true
         notificationsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         notificationsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(spacesController.view)
-        spacesController.view.topAnchor.constraint(equalTo: profitsController.view.topAnchor).isActive = true
+        spacesController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         spacesController.view.leftAnchor.constraint(equalTo: notificationsController.view.rightAnchor).isActive = true
         spacesController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         spacesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -408,22 +365,18 @@ class UserHostingViewController: UIViewController {
     @objc func tabBarButtonPressed(sender: UIButton) {
         self.resetTabBar()
         if sender == profitsTabButton {
-            self.mainLabel.text = "Your earnings"
             sender.tintColor = Theme.BLUE
             self.profitsTabLabel.textColor = Theme.BLUE
             self.scrollView.setContentOffset(.zero, animated: false)
         } else if sender == reservationsTabButton {
-            self.mainLabel.text = "Your bookings"
             sender.tintColor = Theme.BLUE
             self.reservationsTabLabel.textColor = Theme.BLUE
             self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0.0), animated: false)
         } else if sender == notificationsTabButton {
-            self.mainLabel.text = "Your notifications"
             sender.tintColor = Theme.BLUE
             self.notificationsTabLabel.textColor = Theme.BLUE
             self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 2, y: 0.0), animated: false)
         } else if sender == spacesTabButton {
-            self.mainLabel.text = "Your spaces"
             sender.tintColor = Theme.BLUE
             self.spacesTabLabel.textColor = Theme.BLUE
             self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 3, y: 0.0), animated: false)
@@ -531,87 +484,12 @@ extension UserHostingViewController: handleBankTransfers {
 
 
 extension UserHostingViewController: handleHostingControllers {
-    
-    func handleScrollView(translation: CGFloat) {
-        var totalHeight: CGFloat = 0.0
-        switch device {
-        case .iphone8:
-            totalHeight = 160
-        case .iphoneX:
-            totalHeight = 180
-        }
-        if translation > 0 && translation < 80 {
-            let percent = translation/80
-            self.gradientHeightAnchor.constant = totalHeight - percent * 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            if self.backgroundCircle.alpha == 0 {
-                UIView.animate(withDuration: animationIn) {
-                    self.gradientContainer.layer.shadowOpacity = 0
-                    self.backgroundCircle.alpha = 1
-                }
-            }
-            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
-                self.scrollExpanded()
-            }
-        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
-                self.gradientContainer.layer.shadowOpacity = 0.2
-                self.backgroundCircle.alpha = 0
-            }
-        } else if translation >= 80 {
-            self.gradientHeightAnchor.constant = totalHeight - 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                self.scrollMinimized()
-            }
-        } else if translation <= 0 {
-            if mainLabel.alpha == 1 {
-                self.gradientHeightAnchor.constant = totalHeight
-                self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
-            }
-        }
-    }
-    
-    func handleEndDragging(translation: CGFloat) {
-        if translation >= 75 {
-            self.scrollMinimized()
-        } else {
-            self.scrollExpanded()
-        }
-    }
-    
-    func scrollExpanded() {
-        self.delegate?.defaultContentStatusBar()
-        switch device {
-        case .iphone8:
-            self.gradientHeightAnchor.constant = 160
-        case .iphoneX:
-            self.gradientHeightAnchor.constant = 180
-        }
-        self.resetScrolls()
-        UIView.animate(withDuration: animationIn, animations: {
-            self.backgroundCircle.alpha = 1
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.mainLabel.textColor = Theme.DARK_GRAY
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.resetScrolls()
-        }
-    }
-    
+
     func resetScrolls() {
-        self.profitsController.scrollView.setContentOffset(.zero, animated: false)
-        self.bookingsController.scrollView.setContentOffset(.zero, animated: false)
-        self.spacesController.scrollView.setContentOffset(.zero, animated: false)
-    }
-    
-    func scrollMinimized() {
-        self.delegate?.lightContentStatusBar()
-        UIView.animate(withDuration: animationIn) {
-            self.backgroundCircle.alpha = 0
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.WHITE
-        }
+        self.profitsController.scrollView.setContentOffset(.zero, animated: true)
+        self.bookingsController.scrollView.setContentOffset(.zero, animated: true)
+        self.notificationsController.scrollView.setContentOffset(.zero, animated: true)
+        self.spacesController.scrollView.setContentOffset(.zero, animated: true)
     }
     
     func defaultContentStatusBar() {
@@ -625,23 +503,13 @@ extension UserHostingViewController: handleHostingControllers {
     func bringExitButton() {
         self.scrollView.isScrollEnabled = true
         self.delegate?.bringExitButton()
-        self.scrollExpanded()
         self.openTabBar()
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
-            self.view.layoutIfNeeded()
-        }
     }
     
     func hideExitButton() {
         self.scrollView.isScrollEnabled = false
         self.delegate?.hideExitButton()
         self.closeTabBar()
-        self.gradientHeightAnchor.constant = 0
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0
-            self.view.layoutIfNeeded()
-        }
     }
     
 }
@@ -653,56 +521,24 @@ extension UserHostingViewController: UIScrollViewDelegate {
         let translation = scrollView.contentOffset.x
         if translation == 0 {
             self.resetTabBar()
-            self.mainLabel.text = "Your earnings"
             self.profitsTabButton.tintColor = Theme.BLUE
             self.profitsTabLabel.textColor = Theme.BLUE
-            self.bringMainLabel()
+            self.resetScrolls()
         } else if translation == phoneWidth {
             self.resetTabBar()
-            self.mainLabel.text = "Your bookings"
             self.reservationsTabButton.tintColor = Theme.BLUE
             self.reservationsTabLabel.textColor = Theme.BLUE
-            self.bringMainLabel()
+            self.resetScrolls()
         } else if translation == phoneWidth * 2 {
             self.resetTabBar()
-            self.mainLabel.text = "Your notifications"
             self.notificationsTabButton.tintColor = Theme.BLUE
             self.notificationsTabLabel.textColor = Theme.BLUE
-            self.bringMainLabel()
+            self.resetScrolls()
         } else if translation == phoneWidth * 3 {
             self.resetTabBar()
-            self.mainLabel.text = "Your spaces"
             self.spacesTabButton.tintColor = Theme.BLUE
             self.spacesTabLabel.textColor = Theme.BLUE
-            self.bringMainLabel()
-        } else {
-            UIView.animate(withDuration: animationIn) {
-                self.mainLabel.alpha = 0
-            }
-        }
-    }
-    
-    func bringMainLabel() {
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let translation = scrollView.contentOffset.x
-        if translation == 0 {
-            self.mainLabel.text = "Your earnings"
-        } else if translation == phoneWidth {
-            self.mainLabel.text = "Your bookings"
-        } else if translation == phoneWidth * 2 {
-            self.mainLabel.text = "Your notifications"
-        } else if translation == phoneWidth * 3 {
-            self.mainLabel.text = "Your spaces"
-        }
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
+            self.resetScrolls()
         }
     }
     

@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Mapbox
+import CoreLocation
 
 protocol handleUpcomingConrollers {
     func closeRecentController()
-    func hostingPreviousPressed(booking: Bookings)
+    func hostingPreviousPressed(booking: Bookings, region: MGLCoordinateBounds, route: MGLPolyline, parking: CLLocationCoordinate2D, destination: CLLocationCoordinate2D)
 }
 
 class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
@@ -22,7 +24,7 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         label.text = "Your Bookings"
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
@@ -113,8 +115,8 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         }
     }
     
-    func hostingPreviousPressed(booking: Bookings) {
-        self.recentController.setData(booking: booking)
+    func hostingPreviousPressed(booking: Bookings, region: MGLCoordinateBounds, route: MGLPolyline, parking: CLLocationCoordinate2D, destination: CLLocationCoordinate2D) {
+        self.recentController.setData(booking: booking, region: region, route: route, parking: parking, destination: destination)
         self.recentTopAnchor.constant = -statusHeight
         self.delegate?.defaultContentStatusBar()
         self.delegate?.hideExitButton()

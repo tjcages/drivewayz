@@ -158,7 +158,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             let label = UILabel()
             label.frame = CGRect(x: 0, y: 0, width: 140, height: 80)
             label.textAlignment = .center
-            label.textColor = Theme.WHITE
+            label.textColor = Theme.DARK_GRAY
             label.font = Fonts.SSPRegularH2
             label.text = pmTimeValues[row] as? String
             view.addSubview(label)
@@ -171,7 +171,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             let label = UILabel()
             label.frame = CGRect(x: 0, y: 0, width: 140, height: 80)
             label.textAlignment = .center
-            label.textColor = Theme.WHITE
+            label.textColor = Theme.DARK_GRAY
             label.font = Fonts.SSPRegularH2
             label.text = amTimeValues[row] as? String
             view.addSubview(label)
@@ -217,7 +217,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var mondayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -227,10 +227,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var mondayFromPicker: UIPickerView = {
         let mondayFromPicker = UIPickerView()
         mondayFromPicker.backgroundColor = UIColor.clear
-        mondayFromPicker.tintColor = Theme.WHITE
+        mondayFromPicker.tintColor = Theme.DARK_GRAY
         mondayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         mondayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        mondayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        mondayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return mondayFromPicker
     }()
@@ -238,10 +238,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var mondayToPicker: UIPickerView = {
         let mondayToPicker = UIPickerView()
         mondayToPicker.backgroundColor = UIColor.clear
-        mondayToPicker.tintColor = Theme.WHITE
+        mondayToPicker.tintColor = Theme.DARK_GRAY
         mondayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         mondayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        mondayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        mondayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return mondayToPicker
     }()
@@ -255,7 +255,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -277,7 +277,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var tuesdayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Tuesday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -287,10 +287,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var tuesdayFromPicker: UIPickerView = {
         let tuesdayFromPicker = UIPickerView()
         tuesdayFromPicker.backgroundColor = UIColor.clear
-        tuesdayFromPicker.tintColor = Theme.WHITE
+        tuesdayFromPicker.tintColor = Theme.DARK_GRAY
         tuesdayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         tuesdayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        tuesdayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        tuesdayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return tuesdayFromPicker
     }()
@@ -298,10 +298,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var tuesdayToPicker: UIPickerView = {
         let tuesdayToPicker = UIPickerView()
         tuesdayToPicker.backgroundColor = UIColor.clear
-        tuesdayToPicker.tintColor = Theme.WHITE
+        tuesdayToPicker.tintColor = Theme.DARK_GRAY
         tuesdayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         tuesdayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        tuesdayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        tuesdayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return tuesdayToPicker
     }()
@@ -316,7 +316,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -338,7 +338,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var wednesdayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Wednesday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -348,10 +348,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var wednesdayFromPicker: UIPickerView = {
         let wednesdayFromPicker = UIPickerView()
         wednesdayFromPicker.backgroundColor = UIColor.clear
-        wednesdayFromPicker.tintColor = Theme.WHITE
+        wednesdayFromPicker.tintColor = Theme.DARK_GRAY
         wednesdayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         wednesdayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        wednesdayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        wednesdayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return wednesdayFromPicker
     }()
@@ -359,10 +359,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var wednesdayToPicker: UIPickerView = {
         let wednesdayToPicker = UIPickerView()
         wednesdayToPicker.backgroundColor = UIColor.clear
-        wednesdayToPicker.tintColor = Theme.WHITE
+        wednesdayToPicker.tintColor = Theme.DARK_GRAY
         wednesdayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         wednesdayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        wednesdayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        wednesdayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return wednesdayToPicker
     }()
@@ -377,7 +377,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -399,7 +399,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var thursdayTimeView: UIView = {
         let label = UILabel()
         label.text = "Thursday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -409,10 +409,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var thursdayFromPicker: UIPickerView = {
         let thursdayFromPicker = UIPickerView()
         thursdayFromPicker.backgroundColor = UIColor.clear
-        thursdayFromPicker.tintColor = Theme.WHITE
+        thursdayFromPicker.tintColor = Theme.DARK_GRAY
         thursdayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         thursdayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        thursdayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        thursdayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return thursdayFromPicker
     }()
@@ -420,10 +420,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var thursdayToPicker: UIPickerView = {
         let thursdayToPicker = UIPickerView()
         thursdayToPicker.backgroundColor = UIColor.clear
-        thursdayToPicker.tintColor = Theme.WHITE
+        thursdayToPicker.tintColor = Theme.DARK_GRAY
         thursdayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         thursdayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        thursdayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        thursdayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return thursdayToPicker
     }()
@@ -438,7 +438,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -460,7 +460,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var fridayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Friday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -470,10 +470,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var fridayFromPicker: UIPickerView = {
         let fridayFromPicker = UIPickerView()
         fridayFromPicker.backgroundColor = UIColor.clear
-        fridayFromPicker.tintColor = Theme.WHITE
+        fridayFromPicker.tintColor = Theme.DARK_GRAY
         fridayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         fridayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        fridayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        fridayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return fridayFromPicker
     }()
@@ -481,10 +481,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var fridayToPicker: UIPickerView = {
         let fridayToPicker = UIPickerView()
         fridayToPicker.backgroundColor = UIColor.clear
-        fridayToPicker.tintColor = Theme.WHITE
+        fridayToPicker.tintColor = Theme.DARK_GRAY
         fridayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         fridayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        fridayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        fridayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return fridayToPicker
     }()
@@ -499,7 +499,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -521,7 +521,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var saturdayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Saturday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -531,10 +531,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var saturdayFromPicker: UIPickerView = {
         let saturdayFromPicker = UIPickerView()
         saturdayFromPicker.backgroundColor = UIColor.clear
-        saturdayFromPicker.tintColor = Theme.BLACK
+        saturdayFromPicker.tintColor = Theme.DARK_GRAY
         saturdayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         saturdayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        saturdayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        saturdayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return saturdayFromPicker
     }()
@@ -542,10 +542,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var saturdayToPicker: UIPickerView = {
         let saturdayToPicker = UIPickerView()
         saturdayToPicker.backgroundColor = UIColor.clear
-        saturdayToPicker.tintColor = Theme.WHITE
+        saturdayToPicker.tintColor = Theme.DARK_GRAY
         saturdayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         saturdayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        saturdayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        saturdayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return saturdayToPicker
     }()
@@ -560,7 +560,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center
@@ -582,7 +582,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var sundayTimeView: UILabel = {
         let label = UILabel()
         label.text = "Sunday"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -592,10 +592,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var sundayFromPicker: UIPickerView = {
         let sundayFromPicker = UIPickerView()
         sundayFromPicker.backgroundColor = UIColor.clear
-        sundayFromPicker.tintColor = Theme.BLACK
+        sundayFromPicker.tintColor = Theme.DARK_GRAY
         sundayFromPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         sundayFromPicker.translatesAutoresizingMaskIntoConstraints = false
-        sundayFromPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        sundayFromPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return sundayFromPicker
     }()
@@ -603,10 +603,10 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
     var sundayToPicker: UIPickerView = {
         let sundayToPicker = UIPickerView()
         sundayToPicker.backgroundColor = UIColor.clear
-        sundayToPicker.tintColor = Theme.BLACK
+        sundayToPicker.tintColor = Theme.DARK_GRAY
         sundayToPicker.frame = CGRect(x: 0, y: 0, width: 400, height: 280)
         sundayToPicker.translatesAutoresizingMaskIntoConstraints = false
-        sundayToPicker.setValue(Theme.WHITE, forKeyPath: "textColor")
+        sundayToPicker.setValue(Theme.DARK_GRAY, forKeyPath: "textColor")
         
         return sundayToPicker
     }()
@@ -621,7 +621,7 @@ class SelectTimesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         
         let toLabel = UILabel()
         toLabel.text = "to"
-        toLabel.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        toLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         toLabel.translatesAutoresizingMaskIntoConstraints = false
         toLabel.font = Fonts.SSPLightH4
         toLabel.contentMode = .center

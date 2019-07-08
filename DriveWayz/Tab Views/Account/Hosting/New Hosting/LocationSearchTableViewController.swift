@@ -94,7 +94,7 @@ extension LocationSearchTableViewController {
             let selectedItem = matchingItems[indexPath.row]
             cell.nameTextView.text = selectedItem.attributedFullText.string
         }
-        cell.nameTextView.textColor = Theme.WHITE
+        cell.nameTextView.textColor = Theme.DARK_GRAY
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

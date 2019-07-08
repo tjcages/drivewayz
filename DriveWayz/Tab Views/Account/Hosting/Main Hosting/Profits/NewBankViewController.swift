@@ -392,6 +392,7 @@ extension NewBankViewController {
     }
     
     @objc func backPressed() {
+        self.view.endEditing(true)
         if self.nameCenterAnchor.constant == 0 {
             self.iconController.expandStripe()
             self.nameCenterAnchor.constant = phoneWidth

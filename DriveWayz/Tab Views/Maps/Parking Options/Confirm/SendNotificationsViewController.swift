@@ -56,7 +56,7 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
         let markerOverlay = Marker(
             coordinate: mapboxCoordinate,
             size: .small,
-            iconName: "car"
+            iconName: "home"
         )
         markerOverlay.color = Theme.BLUE
         options.overlays = [markerOverlay]
@@ -71,8 +71,11 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
         let mapboxAccessToken = "pk.eyJ1IjoidGNhZ2xlNzE3IiwiYSI6ImNqam5pNzBqcDJnaW8zcHQ3eTV5OXVuODcifQ.WssB7L7fBh8YdR4G_K2OsQ"
         let snapshot = Snapshot(options: options, accessToken: mapboxAccessToken)
         var startIndex: Int = 0
-        if seconds < 15 * 60 { //under 15 minutes
+        if seconds < 15 * 60 && seconds >= 0 { //under 15 minutes
             startIndex = 1
+        } else if seconds <= 0 {
+            self.sendLateNotification()
+            return
         } else {
             startIndex = 0
         }
@@ -80,8 +83,8 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
             if index == 0 {
                 let endingSeconds = seconds - (15 * 60)
                 
-                firstContent.title = "You have 15 minutes left for your parking space."
-                firstContent.body = "Please move your vehicle soon or extend time in app."
+                firstContent.title = "You have 15 minutes left for your parking space"
+                firstContent.body = "Please move your vehicle soon or extend time in app"
                 firstContent.badge = 0
                 firstContent.sound = UNNotificationSound.default
                 
@@ -97,8 +100,8 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 if let attachment = UNNotificationAttachment.create(identifier: "secondNotificationIdentifier", image: snapshot.image!, options: nil) {
                     secondContent.attachments = [attachment]
                     secondContent.title = "Your current parking spot has expired!"
-                    secondContent.subtitle = "Please move your vehicle or extend time in app."
-                    secondContent.body = "Hold down for quick options."
+                    secondContent.subtitle = "Please move your vehicle or extend time in app"
+                    secondContent.body = "Hold down for quick options"
                     secondContent.badge = 1
                     secondContent.sound = UNNotificationSound.default
                     secondContent.categoryIdentifier = "actionCategory"
@@ -115,9 +118,9 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 let endingSeconds = seconds + (5 * 60)
                 if let attachment = UNNotificationAttachment.create(identifier: "thirdNotificationIdentifier", image: snapshot.image!, options: nil) {
                     thirdContent.attachments = [attachment]
-                    thirdContent.title = "You have overstayed your allotted time."
-                    thirdContent.subtitle = "Please move your vehicle or the rate will double."
-                    thirdContent.body = "Hold down for quick options."
+                    thirdContent.title = "You have overstayed your allotted time"
+                    thirdContent.subtitle = "Please move your vehicle or the rate will double"
+                    thirdContent.body = "Hold down for quick options"
                     thirdContent.badge = 0
                     thirdContent.sound = UNNotificationSound.default
                     thirdContent.categoryIdentifier = "actionCategory"
@@ -134,8 +137,8 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 let endingSeconds = seconds + (15 * 60)
                 if let attachment = UNNotificationAttachment.create(identifier: "fourthNotificationIdentifier", image: snapshot.image!, options: nil) {
                     fourthContent.attachments = [attachment]
-                    fourthContent.title = "The overstay rate has begun."
-                    fourthContent.body = "Please move your vehicle or extend time in app."
+                    fourthContent.title = "The overstay rate has begun"
+                    fourthContent.body = "Please move your vehicle or extend time in app"
                     fourthContent.badge = 0
                     fourthContent.sound = UNNotificationSound.default
                     
@@ -151,8 +154,8 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 let endingSeconds = seconds + (60 * 60)
                 if let attachment = UNNotificationAttachment.create(identifier: "fifthNotificationIdentifier", image: snapshot.image!, options: nil) {
                     fifthContent.attachments = [attachment]
-                    fifthContent.title = "You have overstayed your spot by an hour."
-                    fifthContent.body = "The host has been contacted any may decide to remove your vehicle."
+                    fifthContent.title = "You have overstayed your spot by an hour"
+                    fifthContent.body = "The host has been contacted and may decide to remove your vehicle"
                     fifthContent.badge = 0
                     fifthContent.sound = UNNotificationSound.default
                     
@@ -168,8 +171,8 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 let endingSeconds = seconds + (120 * 60)
                 if let attachment = UNNotificationAttachment.create(identifier: "sixthNotificationIdentifier", image: snapshot.image!, options: nil) {
                     sixthContent.attachments = [attachment]
-                    sixthContent.title = "You have overstayed your spot by two hours."
-                    sixthContent.body = "The host has been contacted any may decide to remove your vehicle."
+                    sixthContent.title = "You have overstayed your spot by two hours"
+                    sixthContent.body = "The host has been contacted and may decide to remove your vehicle"
                     sixthContent.badge = 0
                     sixthContent.sound = UNNotificationSound.default
                     
@@ -187,6 +190,27 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
 //        let identifier = ProcessInfo.processInfo.globallyUniqueString
     }
 
+    func sendLateNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        let endingSeconds = (15 * 60)
+        
+        let firstContent = UNMutableNotificationContent()
+        firstContent.title = "You have overstayed your reservation by 15 minutes"
+        firstContent.body = "Please move your vehicle soon or extend time in app"
+        firstContent.badge = 0
+        firstContent.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
+        let request = UNNotificationRequest(identifier: "extraNotificationIdentifier", content: firstContent, trigger: trigger)
+        center.add(request) { (error) in
+            if error != nil {
+                print("Error sending extra notification: ", error!)
+            }
+        }
+    }
+    
 }
 
 

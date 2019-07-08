@@ -204,6 +204,21 @@ class BankNamesViewController: UIViewController {
 
 extension BankNamesViewController: UITextFieldDelegate {
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.scrollView.scrollRectToVisible(textField.bounds, animated: true)
+        if textField == self.phoneTextField, let text = textField.text {
+            if text.contains("+1 ") {
+                textField.text = textField.text?.replacingOccurrences(of: "+1 ", with: "")
+            }
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == self.phoneTextField, let text = textField.text {
+            textField.text = "+1 " + text
+        }
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == self.phoneTextField {
             var fullString = textField.text ?? ""

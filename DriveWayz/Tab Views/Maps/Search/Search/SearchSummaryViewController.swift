@@ -271,7 +271,7 @@ class SearchSummaryViewController: UIViewController {
         calendarButton.leftAnchor.constraint(equalTo: fromSearchView.leftAnchor).isActive = true
         calendarButton.topAnchor.constraint(equalTo: toSearchView.bottomAnchor, constant: 20).isActive = true
         calendarButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        calendarButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        calendarButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
         
         self.view.addSubview(timeLabel)
         self.view.addSubview(timeButton)

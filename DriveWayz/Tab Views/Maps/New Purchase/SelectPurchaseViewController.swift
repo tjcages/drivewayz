@@ -1004,7 +1004,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
         let config = STPPaymentConfiguration.shared()
         config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.full
+        config.requiredBillingAddressFields = STPBillingAddressFields.none
         config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
@@ -1434,7 +1434,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
                 if let oldHours = dictionary["hours"] as? Int {
                     let newHours = oldHours + self.hours
                     helpRef.updateChildValues(["timestamp": timestamp, "hours": newHours, "parkingID": self.parkingId, "cost": self.cost])
-                    seconds! = seconds! + (3600 * self.hours)
+//                    seconds! = seconds! + (3600 * self.hours)
                 }
             } else {
                 helpRef.updateChildValues(["timestamp": timestamp, "hours": self.hours, "parkingID": self.parkingId, "cost": self.cost])

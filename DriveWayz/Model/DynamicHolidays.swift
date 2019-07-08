@@ -49,42 +49,42 @@ extension dynamicPricing {
         if let holiday = Date.stPatrickDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.4
+                let holidayPrice = averagePrice + averagePrice * 3.4
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.easterHoliday(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 2.2
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.mothersDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 4
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.memorialDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.3
+                let holidayPrice = averagePrice + averagePrice * 2
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.fathersDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 0.6
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.independenceDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.4
+                let holidayPrice = averagePrice + averagePrice * 3.6
                 completion(holidayPrice)
             }
         }
@@ -105,7 +105,7 @@ extension dynamicPricing {
         if let holiday = Date.halloweenDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.3
+                let holidayPrice = averagePrice + averagePrice * 3
                 completion(holidayPrice)
             }
         }
@@ -119,21 +119,21 @@ extension dynamicPricing {
         if let holiday = Date.thanksGivingDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.2
+                let holidayPrice = averagePrice + averagePrice * 2
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.christmasDay(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.3
+                let holidayPrice = averagePrice + averagePrice * 3
                 completion(holidayPrice)
             }
         }
         if let holiday = Date.newYearEve(year: currentYear) {
             let holidayString = formatter.string(from: holiday)
             if holidayString == currentDate {
-                let holidayPrice = averagePrice + averagePrice * 0.4
+                let holidayPrice = averagePrice + averagePrice * 3
                 completion(holidayPrice)
             } else {
                 completion(averagePrice)

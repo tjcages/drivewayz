@@ -126,13 +126,9 @@ class ParkingViewController: UIViewController, handleTestParking {
     var walkingButton: UIButton = {
         let button = UIButton()
         let image = UIImage(named: "locationArrow")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.PRUSSIAN_BLUE
+        button.setImage(image, for: .normal)
         button.layer.cornerRadius = 7
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
     }()
@@ -231,7 +227,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         
         walkingButton.rightAnchor.constraint(equalTo: walkingLabel.leftAnchor, constant: -8).isActive = true
         walkingButton.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -16).isActive = true
-        walkingButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        walkingButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
         walkingButton.widthAnchor.constraint(equalTo: walkingButton.heightAnchor).isActive = true
         
         self.view.addSubview(line)
@@ -309,7 +305,7 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
                 cell.numberSpots = numberSpots
                 cell.streetAddress = streetAddress
             }
-            if let totalRating = parking.totalRating, let totalBookings = parking.totalBookings {
+            if let totalRating = parking.totalRating, let totalBookings = parking.ParkingReviews?.count {
                 let averageRating = Double(totalRating)/Double(totalBookings)
                 cell.stars.rating = averageRating
                 cell.starLabel.text = "\(totalBookings)"

@@ -36,6 +36,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                 delayWithSeconds(animationOut * 2) {
                     self.mapView.isRotateEnabled = false
                     self.mapView.allowsRotating = false
+                    self.mapView.userTrackingMode = .follow
                 }
             }
         }
@@ -73,17 +74,20 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                 let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
                 self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
                 
-                if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
-                    let geocoder = CLGeocoder()
-                    geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
-                        // Process Response
-                        self.processResponse(withPlacemarks: placemarks, error: error, completion: { (city) in
-                            delayWithSeconds(1, completion: {
-                                self.monitorCoupons()
-                            })
-                        })
-                    }
+                delayWithSeconds(1) {
+                    self.mapView.userTrackingMode = .follow
                 }
+//                if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
+//                    let geocoder = CLGeocoder()
+//                    geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
+//                        // Process Response
+//                        self.processResponse(withPlacemarks: placemarks, error: error, completion: { (city) in
+//                            delayWithSeconds(1, completion: {
+//                                self.monitorCoupons()
+//                            })
+//                        })
+//                    }
+//                }
             }
         } else {
             return
@@ -125,6 +129,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                     self.polyRouteLocatorButton.alpha = 1
                 } else if isCurrentlyBooked {
                     self.currentSearchLocation.alpha = 1
+                    self.currentSearchRegion.alpha = 1
                 } else {
                     self.locatorButton.alpha = 1
                 }

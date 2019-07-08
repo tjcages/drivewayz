@@ -296,21 +296,21 @@ var hamburgerView3: UIView = {
 func createHamburgerButton() {
     
     hamburgerButton.addSubview(hamburgerView1)
-    hamburgerView1.topAnchor.constraint(equalTo: hamburgerButton.topAnchor, constant: 6).isActive = true
-    hamburgerView1.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
+    hamburgerView1.topAnchor.constraint(equalTo: hamburgerButton.topAnchor, constant: 22).isActive = true
+    hamburgerView1.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor, constant: 16).isActive = true
+    hamburgerView1.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -24).isActive = true
     hamburgerView1.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView2)
-    hamburgerView2.bottomAnchor.constraint(equalTo: hamburgerButton.bottomAnchor, constant: -6).isActive = true
-    hamburgerView2.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -8).isActive = true
+    hamburgerView2.bottomAnchor.constraint(equalTo: hamburgerButton.bottomAnchor, constant: -22).isActive = true
+    hamburgerView2.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor, constant: 16).isActive = true
+    hamburgerView2.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -24).isActive = true
     hamburgerView2.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
     hamburgerButton.addSubview(hamburgerView3)
     hamburgerView3.centerYAnchor.constraint(equalTo: hamburgerButton.centerYAnchor).isActive = true
-    hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor).isActive = true
-    hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -12)
+    hamburgerView3.leftAnchor.constraint(equalTo: hamburgerButton.leftAnchor, constant: 16).isActive = true
+    hamburgerWidthAnchor = hamburgerView3.rightAnchor.constraint(equalTo: hamburgerButton.rightAnchor, constant: -28)
         hamburgerWidthAnchor.isActive = true
     hamburgerView3.heightAnchor.constraint(equalToConstant: 3.5).isActive = true
     
@@ -654,5 +654,13 @@ extension Date {
     
     func hasSame(_ component: Calendar.Component, as date: Date) -> Bool {
         return self.compare(with: date, only: component) == 0
+    }
+}
+
+
+extension UINavigationController {
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return topViewController?.preferredStatusBarStyle ?? .default
     }
 }

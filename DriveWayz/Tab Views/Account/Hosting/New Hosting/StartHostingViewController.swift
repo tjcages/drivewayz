@@ -13,9 +13,9 @@ class StartHostingViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Become a host"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH0
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
@@ -23,9 +23,9 @@ class StartHostingViewController: UIViewController {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.text = "Follow these easy steps to list your parking space"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH2
+        label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 4
         
         return label
@@ -34,7 +34,7 @@ class StartHostingViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.text = "Make up to $100 a week while helping to improve your parking community"
-        label.textColor = Theme.WHITE.withAlphaComponent(0.7)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 4
@@ -44,11 +44,10 @@ class StartHostingViewController: UIViewController {
     
     var noParkingGraphic: UIImageView = {
         let view = UIImageView()
-        let image = UIImage(named: "noParkingGraphic")
+        let image = UIImage(named: "newHostGraphic")
         view.image = image
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
-        view.alpha = 0.9
         
         return view
     }()
@@ -88,13 +87,13 @@ class StartHostingViewController: UIViewController {
         
         self.view.addSubview(noParkingGraphic)
         noParkingGraphic.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        noParkingGraphic.heightAnchor.constraint(equalToConstant: 260).isActive = true
-        noParkingGraphic.widthAnchor.constraint(equalToConstant: 260).isActive = true
+        noParkingGraphic.heightAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        noParkingGraphic.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         switch device {
         case .iphone8:
-            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 0).isActive = true
+            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: -60).isActive = true
         case .iphoneX:
-            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 100).isActive = true
+            noParkingGraphic.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: -20).isActive = true
         }
         
     }

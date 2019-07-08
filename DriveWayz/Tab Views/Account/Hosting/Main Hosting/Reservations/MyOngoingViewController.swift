@@ -59,7 +59,7 @@ class MyOngoingViewController: UIViewController {
     
     var stars: CosmosView = {
         let view = CosmosView()
-        view.rating = 4.9
+        view.rating = 5.0
         view.settings.updateOnTouch = false
         view.settings.fillMode = .precise
         view.settings.starSize = 16
@@ -77,7 +77,7 @@ class MyOngoingViewController: UIViewController {
     var starsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4.9"
+        label.text = "5.0"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         
@@ -143,12 +143,13 @@ class MyOngoingViewController: UIViewController {
         return button
     }()
     
-    var phoneLabel: UILabel = {
-        let label = UILabel()
+    var phoneLabel: UIButton = {
+        let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Call"
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPBoldH3
+        label.setTitle("Call", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPBoldH3
+        label.contentHorizontalAlignment = .left
         
         return label
     }()
@@ -164,12 +165,13 @@ class MyOngoingViewController: UIViewController {
         return button
     }()
     
-    var chatLabel: UILabel = {
-        let label = UILabel()
+    var chatLabel: UIButton = {
+        let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Chat"
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPBoldH3
+        label.setTitle("Chat", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPBoldH3
+        label.contentHorizontalAlignment = .left
         
         return label
     }()
@@ -185,12 +187,13 @@ class MyOngoingViewController: UIViewController {
         return button
     }()
     
-    var detailsLabel: UILabel = {
-        let label = UILabel()
+    var detailsLabel: UIButton = {
+        let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Details"
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPBoldH3
+        label.setTitle("Details", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPBoldH3
+        label.contentHorizontalAlignment = .left
         
         return label
     }()

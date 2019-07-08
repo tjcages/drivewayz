@@ -125,25 +125,25 @@ class ProfitsChartViewController: UIViewController {
             let height = CGFloat(profit/maxProfit * 110 + 24)
             if index == 1 {
                 self.sundayHeight.constant = height
-                self.sundayButton.setTitle(date, for: .normal)
+//                self.sundayButton.setTitle(date, for: .normal)
             } else if index == 2 {
                 self.mondayHeight.constant = height
-                self.mondayButton.setTitle(date, for: .normal)
+//                self.mondayButton.setTitle(date, for: .normal)
             } else if index == 3 {
                 self.tuesdayHeight.constant = height
-                self.tuesdayButton.setTitle(date, for: .normal)
+//                self.tuesdayButton.setTitle(date, for: .normal)
             } else if index == 4 {
                 self.wednesdayHeight.constant = height
-                self.wednesdayButton.setTitle(date, for: .normal)
+//                self.wednesdayButton.setTitle(date, for: .normal)
             } else if index == 5 {
                 self.thursdayHeight.constant = height
-                self.thursdayButton.setTitle(date, for: .normal)
+//                self.thursdayButton.setTitle(date, for: .normal)
             } else if index == 6 {
                 self.fridayHeight.constant = height
-                self.fridayButton.setTitle(date, for: .normal)
+//                self.fridayButton.setTitle(date, for: .normal)
             } else if index == 7 {
                 self.saturdayHeight.constant = height
-                self.saturdayButton.setTitle(date, for: .normal)
+//                self.saturdayButton.setTitle(date, for: .normal)
             }
             self.view.layoutIfNeeded()
         }

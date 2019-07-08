@@ -25,17 +25,35 @@ class PushNotificationSender {
     
     fileprivate func setupPushNotifications(fromDeviceID: String, toDeviceID: String, toUserID: String, fromUserID: String, title: String, subtitle: String) {
         var headers: HTTPHeaders = HTTPHeaders()
-
         headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
         let notification = ["to": "\(toDeviceID)", "notification": ["body": subtitle, "title": title, "badge": 1, "sound": "default"]] as [String:Any]
-
-        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            if let err = response.error {
-                print(err.localizedDescription, "Error sending Push Notification")
-            }
-            let pushRef = Database.database().reference().child("PushNotifications").child(toUserID).childByAutoId()
-            pushRef.updateChildValues(["fromDeviceID": AppDelegate.DEVICEID, "toDeviceID": toDeviceID, "toUserID": toUserID, "fromUserID": fromUserID, "title": title, "subtitle": subtitle])
-        }
+//        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+//            print(response)
+//            if let err = response.error {
+//                print(err.localizedDescription, "Error sending Push Notification")
+//            }
+//
+//            let currentUser = Auth.auth().currentUser
+//            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+//                if let error = error {
+//                    // Handle error
+//                    return;
+//                }
+//                print(idToken)
+//
+//                let notification2 = ["to": idToken!, "notification": ["body": subtitle, "title": title, "badge": 1, "sound": "default"]] as [String:Any]
+//                Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification2, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+//                    print(response)
+//
+//                }
+//
+//                // Send token to your backend via HTTPS
+//                // ...
+//            }
+//
+//            let pushRef = Database.database().reference().child("PushNotifications").child(toUserID).childByAutoId()
+//            pushRef.updateChildValues(["fromDeviceID": AppDelegate.DEVICEID, "toDeviceID": toDeviceID, "toUserID": toUserID, "fromUserID": fromUserID, "title": title, "subtitle": subtitle])
+//        }
     }
     
 }

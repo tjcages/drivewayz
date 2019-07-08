@@ -211,13 +211,13 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         return controller
     }()
     
-    lazy var userMessagesController: UserMessagesViewController = {
-        let controller = UserMessagesViewController()
+    lazy var userMessagesController: TestMessageViewController = {
+        let controller = TestMessageViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Messages"
-        controller.delegate = self
-        controller.moveDelegate = self
+//        controller.delegate = self
+//        controller.moveDelegate = self
         return controller
     }()
     
@@ -306,14 +306,14 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         createHamburgerButton()
         hamburgerButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
         self.view.addSubview(hamburgerButton)
-        hamburgerButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        hamburgerButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        hamburgerButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        hamburgerButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 8).isActive = true
+        hamburgerButton.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        hamburgerButton.heightAnchor.constraint(equalToConstant: 64).isActive = true
         switch device {
         case .iphone8:
-            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12).isActive = true
         case .iphoneX:
-            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+            hamburgerButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 32).isActive = true
         }
         
         self.view.addSubview(gradientContainer)
@@ -389,7 +389,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             hamburgerView3.backgroundColor = Theme.BLACK
             self.blurView.alpha = 1
             self.mapCenterAnchor.constant = self.view.frame.width/2 + 60
-            hamburgerWidthAnchor.constant = -8
+            hamburgerWidthAnchor.constant = -24
             if self.accountSlideController.hostMarkShouldShow == true {
                 self.accountSlideController.hostingMark.alpha = 1
             } else {
@@ -418,7 +418,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func moveToMap() {
         self.delegate?.bringStatusBar()
         self.mapCenterAnchor.constant = 0
-        hamburgerWidthAnchor.constant = -12
+        hamburgerWidthAnchor.constant = -28
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -492,13 +492,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             }) { (success) in
                 delayWithSeconds(animationIn, completion: {
                     self.delegate?.bringStatusBar()
-                    if self.exitButton.alpha == 1 {
-                        self.delegate?.defaultStatusBar()
-                    } else {
-                        delayWithSeconds(1, completion: {
-                            self.delegate?.lightContentStatusBar()
-                        })
-                    }
+                    self.delegate?.defaultStatusBar()
                 })
             }
         }
@@ -685,8 +679,9 @@ extension TabViewController {
                 self.becomeHostController.view.alpha = 1
             }, completion: { (success) in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.delegate?.defaultStatusBar()
                     UIView.animate(withDuration: animationIn, animations: {
-                        self.exitButton.tintColor = Theme.WHITE
+                        self.exitButton.tintColor = Theme.DARK_GRAY
                         self.exitButton.alpha = 1
                         self.gradientContainer.alpha = 1
                         self.newParkingAnchor.constant = 0
@@ -885,7 +880,7 @@ extension TabViewController {
             self.messagesAnchor.constant = phoneHeight
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.userMessagesController.scrollView.setContentOffset(.zero, animated: true)
+            self.userMessagesController.messagesTableView.setContentOffset(.zero, animated: true)
             self.userMessagesController.willMove(toParent: nil)
             self.userMessagesController.view.removeFromSuperview()
             self.userMessagesController.removeFromParent()

@@ -17,7 +17,9 @@ protocol handleParkingOptions {
 }
 
 var DestinationAnnotationLocation: CLLocation?
+var DestinationAnnotationName: String?
 var ZooomRegion: MGLCoordinateBounds?
+var WalkingTime: Double?
 
 var FinalAnnotationLocation: CLLocationCoordinate2D?
 var FirstAnnotationLocation: CLLocationCoordinate2D?
@@ -55,6 +57,7 @@ extension MapKitViewController: handleParkingOptions {
         self.searchBarController.fromLabel.text = fromText
         self.searchBarController.toLabel.text = address
         self.removeMainBar()
+        DestinationAnnotationName = address
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address) { (placemarks, error) in
             guard
@@ -71,7 +74,7 @@ extension MapKitViewController: handleParkingOptions {
             }
             self.delegate?.hideHamburger()
             DestinationAnnotationLocation = location
-            self.checkAnnotationsNearDestination(location: location.coordinate)
+            self.checkAnnotationsNearDestination(location: location.coordinate, checkDistance: true)
             self.parkingSelected()
             self.mapView.setCenter(location.coordinate, animated: true)
         }
@@ -103,6 +106,7 @@ extension MapKitViewController: handleParkingOptions {
             if let route = routes?.first {
                 let minute = route.expectedTravelTime / 60
                 self.setupQuickController(minute: minute)
+                WalkingTime = minute
                 if route.coordinateCount > 0 {
 //                    firstWalkingRoute = route
                     // Convert the route’s coordinates into a polyline.
@@ -117,7 +121,7 @@ extension MapKitViewController: handleParkingOptions {
                     self.mapView.addAnnotation(routeLine)
                     
                     self.parkingCoordinates = route.coordinates!
-                    self.addPolyline(to: self.mapView.style!)
+                    self.addPolyline(to: self.mapView.style!, isCurrentDriving: false)
                     self.animateFirstPolyline()
 
                     delayWithSeconds(animationOut, completion: {
@@ -153,7 +157,7 @@ extension MapKitViewController: handleParkingOptions {
             let addressArray = address.split(separator: ",")
             if let addressString = addressArray.first {
                 let addy = String(addressString)
-                let addressWidth = addy.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 24
+                let addressWidth = addy.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 16
                 self.quickDestinationController.distanceLabel.text = addy
                 self.quickDestinationWidthAnchor.constant = addressWidth
             }

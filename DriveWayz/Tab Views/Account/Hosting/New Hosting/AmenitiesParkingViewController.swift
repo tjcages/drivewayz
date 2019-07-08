@@ -28,14 +28,14 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
-        button.layer.shadowOpacity = 0
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.2
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
         return button
@@ -44,7 +44,7 @@ class AmenitiesParkingViewController: UIViewController {
     var coveredIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Covered parking", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -56,7 +56,7 @@ class AmenitiesParkingViewController: UIViewController {
     var coveredLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -67,13 +67,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -83,7 +83,7 @@ class AmenitiesParkingViewController: UIViewController {
     var chargingIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Charging station", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -95,7 +95,7 @@ class AmenitiesParkingViewController: UIViewController {
     var chargingLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -106,13 +106,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -122,7 +122,7 @@ class AmenitiesParkingViewController: UIViewController {
     var gatedIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Gated spot", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -134,7 +134,7 @@ class AmenitiesParkingViewController: UIViewController {
     var gatedLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -145,13 +145,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -161,7 +161,7 @@ class AmenitiesParkingViewController: UIViewController {
     var stadiumIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Stadium parking", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -173,7 +173,7 @@ class AmenitiesParkingViewController: UIViewController {
     var stadiumLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -184,13 +184,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -200,7 +200,7 @@ class AmenitiesParkingViewController: UIViewController {
     var nightIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Nighttime parking", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -212,7 +212,7 @@ class AmenitiesParkingViewController: UIViewController {
     var nightLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -223,13 +223,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -239,7 +239,7 @@ class AmenitiesParkingViewController: UIViewController {
     var airportIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Near Airport", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -251,7 +251,7 @@ class AmenitiesParkingViewController: UIViewController {
     var airportLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -262,13 +262,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -278,7 +278,7 @@ class AmenitiesParkingViewController: UIViewController {
     var lightedIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Lit space", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -290,7 +290,7 @@ class AmenitiesParkingViewController: UIViewController {
     var lightedLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -301,13 +301,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -317,7 +317,7 @@ class AmenitiesParkingViewController: UIViewController {
     var largeIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Large space", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -329,7 +329,7 @@ class AmenitiesParkingViewController: UIViewController {
     var largeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -340,13 +340,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -356,7 +356,7 @@ class AmenitiesParkingViewController: UIViewController {
     var smallIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Compact space", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -368,7 +368,7 @@ class AmenitiesParkingViewController: UIViewController {
     var smallLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -379,13 +379,13 @@ class AmenitiesParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 4
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0
         button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
         
@@ -395,7 +395,7 @@ class AmenitiesParkingViewController: UIViewController {
     var easyIconLabel: UIButton = {
         let label = UIButton()
         label.setTitle("Easy to find", for: .normal)
-        label.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
@@ -407,7 +407,7 @@ class AmenitiesParkingViewController: UIViewController {
     var easyLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -415,7 +415,7 @@ class AmenitiesParkingViewController: UIViewController {
     var coveredInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These spots keep cars out of poor weather or the hot sun. Please do not select this amenity if cars will not be completely covered."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -427,7 +427,7 @@ class AmenitiesParkingViewController: UIViewController {
     var chargingInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If selected, a universal car charger must be accessible from the parking spot listed and must be readily available for instant use."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -439,7 +439,7 @@ class AmenitiesParkingViewController: UIViewController {
     var gatedInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "By selecting this option, you agree to abide by our privacy policy regarding access to gated properties. Users will only be able to view the code after paying for the spot."
         label.numberOfLines = 5
         label.font = Fonts.SSPLightH5
@@ -451,7 +451,7 @@ class AmenitiesParkingViewController: UIViewController {
     var stadiumInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be within 1 mile of a stadium or event center."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -463,7 +463,7 @@ class AmenitiesParkingViewController: UIViewController {
     var nightInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be available from 9 PM to 7 AM"
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -475,7 +475,7 @@ class AmenitiesParkingViewController: UIViewController {
     var airportInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be no further than 5 miles from an airport."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -487,7 +487,7 @@ class AmenitiesParkingViewController: UIViewController {
     var lightingInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Well-lit parking spots provide an added form of security, especially at night."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -499,7 +499,7 @@ class AmenitiesParkingViewController: UIViewController {
     var largeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These parking spots must be a minimum of 7 ft. tall, with easy access for a large pickup truck."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -511,7 +511,7 @@ class AmenitiesParkingViewController: UIViewController {
     var smallInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These parking spots are generally used for compact vehicles, with no height minimum."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -523,7 +523,7 @@ class AmenitiesParkingViewController: UIViewController {
     var easyInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If most people can find your location without a hassle or if GPS is able to easily guide individuals to your parking spot, this amenity is highly sought after!"
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
@@ -824,133 +824,133 @@ extension AmenitiesParkingViewController {
 extension AmenitiesParkingViewController {
     @objc func optionTapped(sender: UIButton) {
         if sender == coveredIconLabel {
-            if coveredImageView.tintColor == Theme.WHITE {
+            if coveredImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetHouse()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "covered" }
                 return
             }
             self.selectedAmenities.append("Covered parking")
             UIView.animate(withDuration: 0.1) {
-                self.coveredIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.coveredIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.coveredIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.coveredImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.coveredImageView.tintColor = Theme.WHITE
-                self.coveredImageView.layer.shadowOpacity = 1
+                self.coveredImageView.layer.shadowOpacity = 0.2
                 self.coveredAnchor.constant = 95
                 self.coveredInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == chargingIconLabel {
-            if chargingImageView.tintColor == Theme.WHITE {
+            if chargingImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetApartment()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "charging" }
                 return
             }
             self.selectedAmenities.append("Charging station")
             UIView.animate(withDuration: 0.1) {
-                self.chargingIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.chargingIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.chargingIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.chargingImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.chargingImageView.tintColor = Theme.WHITE
-                self.chargingImageView.layer.shadowOpacity = 1
+                self.chargingImageView.layer.shadowOpacity = 0.2
                 self.chargingAnchor.constant = 95
                 self.chargingInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == stadiumIconLabel {
-            if stadiumImageView.tintColor == Theme.WHITE {
+            if stadiumImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetCovered()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "stadium" }
                 return
             }
             self.selectedAmenities.append("Stadium parking")
             UIView.animate(withDuration: 0.1) {
-                self.stadiumIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.stadiumIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.stadiumIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.stadiumImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.stadiumImageView.tintColor = Theme.WHITE
-                self.stadiumImageView.layer.shadowOpacity = 1
+                self.stadiumImageView.layer.shadowOpacity = 0.2
                 self.stadiumAnchor.constant = 95
                 self.stadiumInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == gatedIconLabel {
-            if gatedImageView.tintColor == Theme.WHITE {
+            if gatedImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetStreet()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "gated" }
                 return
             }
             self.selectedAmenities.append("Gated spot")
             UIView.animate(withDuration: 0.1) {
-                self.gatedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.gatedIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.gatedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.gatedImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.gatedImageView.tintColor = Theme.WHITE
-                self.gatedImageView.layer.shadowOpacity = 1
+                self.gatedImageView.layer.shadowOpacity = 0.2
                 self.gatedAnchor.constant = 115
                 self.gatedInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == nightIconLabel {
-            if nightImageView.tintColor == Theme.WHITE {
+            if nightImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetLot()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "night" }
                 return
             }
             self.selectedAmenities.append("Nighttime parking")
             UIView.animate(withDuration: 0.1) {
-                self.nightIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.nightIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.nightIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.nightImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.nightImageView.tintColor = Theme.WHITE
-                self.nightImageView.layer.shadowOpacity = 1
+                self.nightImageView.layer.shadowOpacity = 0.2
                 self.nightAnchor.constant = 95
                 self.nightInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == airportIconLabel {
-            if airportImageView.tintColor == Theme.WHITE {
+            if airportImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetAlley()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "airport" }
                 return
             }
             self.selectedAmenities.append("Near Airport")
             UIView.animate(withDuration: 0.1) {
-                self.airportIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.airportIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.airportIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.airportImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.airportImageView.tintColor = Theme.WHITE
-                self.airportImageView.layer.shadowOpacity = 1
+                self.airportImageView.layer.shadowOpacity = 0.2
                 self.airportAnchor.constant = 95
                 self.airportInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == lightedIconLabel {
-            if lightedImageView.tintColor == Theme.WHITE {
+            if lightedImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetGated()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "lighted" }
                 return
             }
             self.selectedAmenities.append("Lit space")
             UIView.animate(withDuration: 0.1) {
-                self.lightedIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.lightedIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.lightedIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.lightedImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.lightedImageView.tintColor = Theme.WHITE
-                self.lightedImageView.layer.shadowOpacity = 1
+                self.lightedImageView.layer.shadowOpacity = 0.2
                 self.lightingAnchor.constant = 95
                 self.lightingInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == largeIconLabel {
-            if largeImageView.tintColor == Theme.WHITE {
+            if largeImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetLarge()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "large" }
                 return
@@ -958,18 +958,18 @@ extension AmenitiesParkingViewController {
             self.selectedAmenities.append("Large space")
             self.resetSmall()
             UIView.animate(withDuration: 0.1) {
-                self.largeIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.largeIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.largeIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.largeImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.largeImageView.tintColor = Theme.WHITE
-                self.largeImageView.layer.shadowOpacity = 1
+                self.largeImageView.layer.shadowOpacity = 0.2
                 self.largeAnchor.constant = 95
                 self.largeInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == smallIconLabel {
-            if smallImageView.tintColor == Theme.WHITE {
+            if smallImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetSmall()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "small" }
                 return
@@ -977,29 +977,29 @@ extension AmenitiesParkingViewController {
             self.selectedAmenities.append("Compact space")
             self.resetLarge()
             UIView.animate(withDuration: 0.1) {
-                self.smallIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.smallIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.smallIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.smallImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.smallImageView.tintColor = Theme.WHITE
-                self.smallImageView.layer.shadowOpacity = 1
+                self.smallImageView.layer.shadowOpacity = 0.2
                 self.smallAnchor.constant = 95
                 self.smallInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
         } else if sender == easyIconLabel {
-            if easyImageView.tintColor == Theme.WHITE {
+            if easyImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetEasy()
                 self.selectedAmenities = self.selectedAmenities.filter { $0 != "easy" }
                 return
             }
             self.selectedAmenities.append("Easy to find")
             UIView.animate(withDuration: 0.1) {
-                self.easyIconLabel.setTitleColor(Theme.WHITE, for: .normal)
+                self.easyIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.easyIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
                 self.easyImageView.backgroundColor = Theme.PACIFIC_BLUE
                 self.easyImageView.tintColor = Theme.WHITE
-                self.easyImageView.layer.shadowOpacity = 1
+                self.easyImageView.layer.shadowOpacity = 0.2
                 self.easyAnchor.constant = 95
                 self.easyInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
@@ -1014,10 +1014,10 @@ extension AmenitiesParkingViewController {
 extension AmenitiesParkingViewController {
     func resetHouse() {
         UIView.animate(withDuration: 0.1) {
-            self.coveredIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.coveredIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.coveredIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.coveredImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.coveredImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.coveredImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.coveredImageView.tintColor = Theme.WHITE
             self.coveredImageView.layer.shadowOpacity = 0
             self.coveredAnchor.constant = 35
             self.coveredInformation.alpha = 0
@@ -1028,10 +1028,10 @@ extension AmenitiesParkingViewController {
     
     func resetApartment() {
         UIView.animate(withDuration: 0.1) {
-            self.chargingIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.chargingIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.chargingIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.chargingImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.chargingImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.chargingImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.chargingImageView.tintColor = Theme.WHITE
             self.chargingImageView.layer.shadowOpacity = 0
             self.chargingAnchor.constant = 35
             self.chargingInformation.alpha = 0
@@ -1042,10 +1042,10 @@ extension AmenitiesParkingViewController {
     
     func resetStreet() {
         UIView.animate(withDuration: 0.1) {
-            self.gatedIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.gatedIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.gatedIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.gatedImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.gatedImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.gatedImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.gatedImageView.tintColor = Theme.WHITE
             self.gatedImageView.layer.shadowOpacity = 0
             self.gatedAnchor.constant = 35
             self.gatedInformation.alpha = 0
@@ -1056,10 +1056,10 @@ extension AmenitiesParkingViewController {
     
     func resetCovered() {
         UIView.animate(withDuration: 0.1) {
-            self.stadiumIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.stadiumIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.stadiumIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.stadiumImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.stadiumImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.stadiumImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.stadiumImageView.tintColor = Theme.WHITE
             self.stadiumImageView.layer.shadowOpacity = 0
             self.stadiumImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.stadiumAnchor.constant = 35
@@ -1071,10 +1071,10 @@ extension AmenitiesParkingViewController {
     
     func resetLot() {
         UIView.animate(withDuration: 0.1) {
-            self.nightIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.nightIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.nightIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.nightImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.nightImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.nightImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.nightImageView.tintColor = Theme.WHITE
             self.nightImageView.layer.shadowOpacity = 0
             self.nightAnchor.constant = 35
             self.nightInformation.alpha = 0
@@ -1085,10 +1085,10 @@ extension AmenitiesParkingViewController {
     
     func resetAlley() {
         UIView.animate(withDuration: 0.1) {
-            self.airportIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.airportIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.airportIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.airportImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.airportImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.airportImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.airportImageView.tintColor = Theme.WHITE
             self.airportImageView.layer.shadowOpacity = 0
             self.airportAnchor.constant = 35
             self.airportInformation.alpha = 0
@@ -1099,10 +1099,10 @@ extension AmenitiesParkingViewController {
     
     func resetGated() {
         UIView.animate(withDuration: 0.1) {
-            self.lightedIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.lightedIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.lightedIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.lightedImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.lightedImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.lightedImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.lightedImageView.tintColor = Theme.WHITE
             self.lightedImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.lightingAnchor.constant = 35
             self.lightingInformation.alpha = 0
@@ -1113,10 +1113,10 @@ extension AmenitiesParkingViewController {
     
     func resetLarge() {
         UIView.animate(withDuration: 0.1) {
-            self.largeIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.largeIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.largeIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.largeImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.largeImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.largeImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.largeImageView.tintColor = Theme.WHITE
             self.largeImageView.layer.shadowOpacity = 0
             self.largeAnchor.constant = 35
             self.largeInformation.alpha = 0
@@ -1127,10 +1127,10 @@ extension AmenitiesParkingViewController {
     
     func resetSmall() {
         UIView.animate(withDuration: 0.1) {
-            self.smallIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.smallIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.smallIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.smallImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.smallImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.smallImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.smallImageView.tintColor = Theme.WHITE
             self.smallImageView.layer.shadowOpacity = 0
             self.smallAnchor.constant = 35
             self.smallInformation.alpha = 0
@@ -1141,10 +1141,10 @@ extension AmenitiesParkingViewController {
     
     func resetEasy() {
         UIView.animate(withDuration: 0.1) {
-            self.easyIconLabel.setTitleColor(Theme.WHITE.withAlphaComponent(0.6), for: .normal)
+            self.easyIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
             self.easyIconLabel.titleLabel?.font = Fonts.SSPRegularH2
-            self.easyImageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.easyImageView.tintColor = Theme.WHITE.withAlphaComponent(0.5)
+            self.easyImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.easyImageView.tintColor = Theme.WHITE
             self.easyImageView.layer.shadowOpacity = 0
             self.easyAnchor.constant = 35
             self.easyInformation.alpha = 0

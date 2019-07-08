@@ -40,6 +40,7 @@ struct DynamicParking {
                 completion(finalParking)
             }
         }
+        completion(finalParking)
     }
     
     static func removeBlackoutDays(parkingSpot: ParkingSpots, dateFrom: Date, dateTo: Date) -> Bool {

@@ -67,8 +67,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         setupMainBar()
         setupCurrent()
         setupNavigationControllers()
+        setupUserMessages()
         checkDayTimeStatus()
         checkNetwork()
+        observeCorrectID()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,6 +84,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     }
     
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    var lowestHeight: CGFloat = 354
     
     enum CurrentData {
         case notReserved
@@ -421,10 +425,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
+    var holdNavTopAnchor: NSLayoutConstraint!
+    
     var holdNavController: HoldNavViewController = {
         let controller = HoldNavViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         
         return controller
     }()
@@ -458,49 +463,42 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return button
     }()
     
-    var successContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 8
-        view.alpha = 0
-        
-        return view
-    }()
-    
-    var checkmark: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+    var currentSearchRegion: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "my_route") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 20
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.6
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 60
-        button.backgroundColor = Theme.GREEN_PIGMENT
-        button.imageEdgeInsets = UIEdgeInsets(top: -12, left: -12, bottom: -12, right: -12)
-        button.layer.borderColor = Theme.WHITE.cgColor
-        button.layer.borderWidth = 2
-        button.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        button.addTarget(self, action: #selector(currentLocatorRegionPressed), for: .touchUpInside)
+        button.alpha = 0
         
         return button
-    }()
-    
-    var successLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Booking was successful!"
-        label.textColor = Theme.DARK_GRAY
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH2
-        label.textAlignment = .center
-        label.numberOfLines = 2
-        
-        return label
     }()
     
     var quickCouponController: QuickCouponsViewController = {
         let controller = QuickCouponsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
+        
+        return controller
+    }()
+    
+    var successfulPurchaseTopAnchor: NSLayoutConstraint!
+    
+    lazy var successfulPurchaseController: SuccessfulPurchaseViewController = {
+        let controller = SuccessfulPurchaseViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         
         return controller
     }()
@@ -512,6 +510,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        controller.view.alpha = 0
         
         return controller
     }()
@@ -525,6 +524,45 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         
         return controller
     }()
+    
+    var drivewayzNewMessageButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.PRUSSIAN_BLUE
+        button.layer.cornerRadius = 20
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.4
+        let origImage = UIImage(named: "settingsEmail")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        button.alpha = 0
+        
+        return button
+    }()
+    
+    var drivewayzNewMessageNumber: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.layer.cornerRadius = 10
+        button.setTitle("2", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPSemiBoldH6
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.4
+        button.isUserInteractionEnabled = false
+        
+        return button
+    }()
+    
+    let transition = CircularTransition()
+    var newMessageTopAnchor: NSLayoutConstraint!
     
     var motionManager: CMMotionActivityManager!
     var motionTimer: Timer!
@@ -652,13 +690,27 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     }
     
     func checkDayTimeStatus() {
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
         self.mapView.styleURL = url
         hamburgerView1.backgroundColor = Theme.BLACK
         hamburgerView2.backgroundColor = Theme.BLACK
         hamburgerView3.backgroundColor = Theme.BLACK
         self.parkingBackButton.tintColor = Theme.BLACK
         self.locationsSearchResults.tableView.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
+    }
+    
+    func observeCorrectID() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("ConfirmedID")
+        ref.observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                if key == currentUser {
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.drivewayzNewMessageButton.alpha = 1
+                    })
+                }
+            }
+        }
     }
     
     func sendNewHost() {
@@ -672,6 +724,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }

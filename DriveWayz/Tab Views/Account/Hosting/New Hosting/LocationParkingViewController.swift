@@ -37,7 +37,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Country/Region"
         label.font = Fonts.SSPRegularH5
         
@@ -50,7 +50,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.text = "United States"
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.SEA_BLUE
-        view.textColor = Theme.WHITE
+        view.textColor = Theme.DARK_GRAY
         view.clearButtonMode = .whileEditing
         view.keyboardAppearance = .dark
         
@@ -60,7 +60,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         
         return view
     }()
@@ -68,7 +68,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Street Address"
         label.font = Fonts.SSPRegularH5
         
@@ -81,7 +81,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.text = "123 Kennedy Ave."
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.WHITE.withAlphaComponent(0.4)
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.returnKeyType = .done
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
@@ -93,7 +93,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         
         return view
     }()
@@ -101,7 +101,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "City"
         label.font = Fonts.SSPRegularH5
         
@@ -114,7 +114,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.text = "Philadelphia"
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.WHITE.withAlphaComponent(0.4)
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
@@ -125,7 +125,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         
         return view
     }()
@@ -133,7 +133,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "State"
         label.font = Fonts.SSPRegularH5
         
@@ -146,7 +146,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.text = "Pennsylvania"
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.WHITE.withAlphaComponent(0.4)
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
@@ -157,7 +157,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         
         return view
     }()
@@ -165,7 +165,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Zipcode (optional)"
         label.font = Fonts.SSPRegularH5
         
@@ -178,7 +178,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         view.text = ""
         view.font = Fonts.SSPLightH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.WHITE.withAlphaComponent(0.4)
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.clearButtonMode = .whileEditing
         view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
@@ -189,7 +189,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
         
         return view
     }()
@@ -467,7 +467,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.PURPLE
+        toolBar.tintColor = Theme.BLUE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -500,28 +500,28 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
             self.streetLabel.textColor = Theme.HARMONY_RED
             self.goodToGo = false
         } else {
-            self.streetLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
             self.goodToGo = true
         }
-        if self.cityField.text == "" || self.cityField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+        if self.cityField.text == "" || self.cityField.textColor == Theme.DARK_GRAY.withAlphaComponent(0.4) {
             self.cityLabel.textColor = Theme.HARMONY_RED
             self.goodToGo = false
         } else {
-            self.cityLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
             self.goodToGo = true
         }
-        if self.stateField.text == "" || self.stateField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
+        if self.stateField.text == "" || self.stateField.textColor == Theme.DARK_GRAY.withAlphaComponent(0.4) {
             self.stateLabel.textColor = Theme.HARMONY_RED
             self.goodToGo = false
         } else {
-            self.stateLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
             self.goodToGo = true
         }
         if self.countryField.text == "" {
             self.countryLabel.textColor = Theme.HARMONY_RED
             self.goodToGo = false
         } else {
-            self.countryLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+            self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
             self.goodToGo = true
         }
     }
@@ -537,7 +537,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
                 self.streetLabel.textColor = Theme.HARMONY_RED
                 self.goodToGo = false
             } else {
-                self.streetLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
                 self.goodToGo = true
             }
         }
@@ -546,7 +546,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
                 self.cityLabel.textColor = Theme.HARMONY_RED
                 self.goodToGo = false
             } else {
-                self.cityLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
                 self.goodToGo = true
             }
         }
@@ -555,7 +555,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
                 self.stateLabel.textColor = Theme.HARMONY_RED
                 self.goodToGo = false
             } else {
-                self.stateLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
                 self.goodToGo = true
             }
         }
@@ -564,7 +564,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
                 self.countryLabel.textColor = Theme.HARMONY_RED
                 self.goodToGo = false
             } else {
-                self.countryLabel.textColor = Theme.WHITE.withAlphaComponent(0.8)
+                self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
                 self.goodToGo = true
             }
         }
@@ -579,22 +579,22 @@ extension LocationParkingViewController: UITextFieldDelegate {
         } else if textField == streetField {
             if textField.text == "123 Kennedy Ave." {
                 textField.text = ""
-                textField.textColor = Theme.WHITE
+                textField.textColor = Theme.DARK_GRAY
             }
         } else if textField == cityField {
             if textField.text == "Philadelphia" {
                 textField.text = ""
-                textField.textColor = Theme.WHITE
+                textField.textColor = Theme.DARK_GRAY
             }
         } else if textField == stateField {
             if textField.text == "Pennsylvania" {
                 textField.text = ""
-                textField.textColor = Theme.WHITE
+                textField.textColor = Theme.DARK_GRAY
             }
         } else if textField == zipField {
             if textField.text == "19146" {
                 textField.text = ""
-                textField.textColor = Theme.WHITE
+                textField.textColor = Theme.DARK_GRAY
             }
         }
         self.scrollView.contentOffset = CGPoint.zero
@@ -608,29 +608,29 @@ extension LocationParkingViewController: UITextFieldDelegate {
         } else if textField == streetField {
             if textField.text == "" {
                 textField.text = "123 Kennedy Ave."
-                textField.textColor = Theme.WHITE.withAlphaComponent(0.4)
+                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             }
         } else if textField == cityField {
             if textField.text == "" {
                 textField.text = "Philadelphia"
-                textField.textColor = Theme.WHITE.withAlphaComponent(0.4)
+                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             }
         } else if textField == stateField {
             if textField.text == "" {
                 textField.text = "Pennsylvania"
-                textField.textColor = Theme.WHITE.withAlphaComponent(0.4)
+                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             }
         } else if textField == zipField {
             if textField.text == "" {
                 textField.text = ""
-                textField.textColor = Theme.WHITE.withAlphaComponent(0.4)
+                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             }
         }
     }
     
     func handleStreetAddress(text: String) {
         self.streetField.text = text
-        self.streetField.textColor = Theme.WHITE
+        self.streetField.textColor = Theme.DARK_GRAY
         self.checkIfGood()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.combineAddress()
@@ -639,27 +639,27 @@ extension LocationParkingViewController: UITextFieldDelegate {
     
     func handleCityAddress(text: String) {
         self.cityField.text = text
-        self.cityField.textColor = Theme.WHITE
+        self.cityField.textColor = Theme.DARK_GRAY
     }
     
     func handleStateAddress(text: String) {
         self.stateField.text = text
-        self.stateField.textColor = Theme.WHITE
+        self.stateField.textColor = Theme.DARK_GRAY
     }
     
     func handleZipAddress(text: String) {
         self.zipField.text = text
-        self.zipField.textColor = Theme.WHITE
+        self.zipField.textColor = Theme.DARK_GRAY
     }
     
     func handleCountryAddress(text: String) {
         self.countryField.text = text
-        self.countryField.textColor = Theme.WHITE
+        self.countryField.textColor = Theme.DARK_GRAY
     }
     
     func combineAddress() {
         guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let country = countryField.text else { return }
-        if zipField.textColor != Theme.WHITE {
+        if zipField.textColor != Theme.DARK_GRAY {
             self.newHostAddress = "\(street), \(city), \(state), \(country)"
         } else {
             guard let zip = zipField.text else { return }

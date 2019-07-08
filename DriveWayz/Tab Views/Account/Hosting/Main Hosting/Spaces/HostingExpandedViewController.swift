@@ -73,9 +73,8 @@ class HostingExpandedViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY
         label.text = ""
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPRegularH3
         label.isUserInteractionEnabled = false
-        label.numberOfLines = 2
         label.textAlignment = .center
         
         return label
@@ -137,7 +136,6 @@ class HostingExpandedViewController: UIViewController {
     lazy var editCalendar: EditCalendarViewController = {
         let controller = EditCalendarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         controller.delegate = self
         
         return controller
@@ -146,7 +144,6 @@ class HostingExpandedViewController: UIViewController {
     lazy var editInformation: EditInformationViewController = {
         let controller = EditInformationViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         controller.delegate = self
         
         return controller
@@ -155,7 +152,6 @@ class HostingExpandedViewController: UIViewController {
     lazy var editCost: EditCostViewController = {
         let controller = EditCostViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         controller.delegate = self
         
         return controller
@@ -164,7 +160,6 @@ class HostingExpandedViewController: UIViewController {
     lazy var editSpots: EditSpotsViewController = {
         let controller = EditSpotsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         controller.delegate = self
         
         return controller
@@ -173,7 +168,6 @@ class HostingExpandedViewController: UIViewController {
     lazy var editAmenities: EditAmenitiesViewController = {
         let controller = EditAmenitiesViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
         controller.delegate = self
         
         return controller
@@ -201,30 +195,35 @@ class HostingExpandedViewController: UIViewController {
         expandedNumber.setData(hosting: hosting)
         expandedAmenities.setData(hosting: hosting)
         expandedImages.setData(hosting: hosting)
+        editCost.setData(parking: hosting)
         if let overallAddress = hosting.overallAddress, let streetAddress = hosting.streetAddress {
             self.spotLocatingLabel.text = overallAddress
             self.gradientLocatingLabel.text = streetAddress
         }
         setupViews()
+        setupEditing()
     }
+    
+    var scrollCenterAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        scrollCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+            scrollCenterAnchor.isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48 + statusHeight).isActive = true
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
         scrollView.addSubview(darkView)
@@ -235,49 +234,49 @@ class HostingExpandedViewController: UIViewController {
         
         darkView.addSubview(imageContainer)
         imageContainer.topAnchor.constraint(equalTo: darkView.topAnchor).isActive = true
-        imageContainer.leftAnchor.constraint(equalTo: darkView.leftAnchor).isActive = true
+        imageContainer.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         imageContainer.rightAnchor.constraint(equalTo: darkView.rightAnchor).isActive = true
         imageContainer.bottomAnchor.constraint(equalTo: darkView.bottomAnchor).isActive = true
         
         imageContainer.addSubview(expandedImages.view)
         expandedImages.view.topAnchor.constraint(equalTo: darkView.topAnchor).isActive = true
-        expandedImages.view.leftAnchor.constraint(equalTo: darkView.leftAnchor).isActive = true
+        expandedImages.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         expandedImages.view.rightAnchor.constraint(equalTo: darkView.rightAnchor).isActive = true
         expandedImages.view.bottomAnchor.constraint(equalTo: darkView.bottomAnchor, constant: -50).isActive = true
         
         darkView.addSubview(spotLocatingLabel)
         spotLocatingLabel.bottomAnchor.constraint(equalTo: darkView.bottomAnchor, constant: 0).isActive = true
-        spotLocatingLabel.leftAnchor.constraint(equalTo: darkView.leftAnchor, constant: 12).isActive = true
+        spotLocatingLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         spotLocatingLabel.rightAnchor.constraint(equalTo: darkView.rightAnchor, constant: -12).isActive = true
         spotLocatingLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(expandedInformation.view)
         expandedInformation.view.topAnchor.constraint(equalTo: darkView.bottomAnchor, constant: 0).isActive = true
-        expandedInformation.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        expandedInformation.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedInformation.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.height).isActive = true
         
         scrollView.addSubview(expandedCost.view)
         expandedCost.view.topAnchor.constraint(equalTo: expandedInformation.view.bottomAnchor).isActive = true
-        expandedCost.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        expandedCost.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedCost.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         expandedCost.view.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         scrollView.addSubview(expandedNumber.view)
         expandedNumber.view.topAnchor.constraint(equalTo: expandedCost.view.bottomAnchor).isActive = true
-        expandedNumber.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        expandedNumber.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedNumber.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         expandedNumber.view.heightAnchor.constraint(equalToConstant: 132).isActive = true
         
         scrollView.addSubview(expandedAmenities.view)
         expandedAmenities.view.topAnchor.constraint(equalTo: expandedNumber.view.bottomAnchor).isActive = true
-        expandedAmenities.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        expandedAmenities.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedAmenities.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         expandedAmenities.view.heightAnchor.constraint(equalToConstant: expandedAmenities.height).isActive = true
         
         scrollView.addSubview(expandedOptions.view)
         expandedOptions.view.topAnchor.constraint(equalTo: expandedAmenities.view.bottomAnchor, constant: 20).isActive = true
-        expandedOptions.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        expandedOptions.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         expandedOptions.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         expandedOptions.view.heightAnchor.constraint(equalToConstant: 240).isActive = true
         expandedOptions.seeAvailability.addTarget(self, action: #selector(openCalendar), for: .touchUpInside)
@@ -291,7 +290,7 @@ class HostingExpandedViewController: UIViewController {
         
         scrollView.addSubview(gradientContainer)
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
@@ -306,34 +305,49 @@ class HostingExpandedViewController: UIViewController {
         gradientLocatingLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         gradientLocatingLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
+    }
+    
+    var calendarEditAnchor: NSLayoutConstraint!
+    var informationEditAnchor: NSLayoutConstraint!
+    var costEditAnchor: NSLayoutConstraint!
+    var spotsEditAnchor: NSLayoutConstraint!
+    var amenitiesEditAnchor: NSLayoutConstraint!
+    
+    func setupEditing() {
+        
         self.view.addSubview(editCalendar.view)
         editCalendar.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        editCalendar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        editCalendar.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        calendarEditAnchor = editCalendar.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
+            calendarEditAnchor.isActive = true
+        editCalendar.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editCalendar.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(editInformation.view)
         editInformation.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        editInformation.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        editInformation.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        informationEditAnchor = editInformation.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
+            informationEditAnchor.isActive = true
+        editInformation.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editInformation.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(editCost.view)
         editCost.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        editCost.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        editCost.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        costEditAnchor = editCost.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
+            costEditAnchor.isActive = true
+        editCost.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editCost.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(editSpots.view)
         editSpots.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        editSpots.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        editSpots.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        spotsEditAnchor = editSpots.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
+            spotsEditAnchor.isActive = true
+        editSpots.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editSpots.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(editAmenities.view)
         editAmenities.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        editAmenities.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        editAmenities.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        amenitiesEditAnchor = editAmenities.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
+            amenitiesEditAnchor.isActive = true
+        editAmenities.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         editAmenities.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
     }
@@ -344,80 +358,100 @@ extension HostingExpandedViewController: handleHostEditing {
     
     @objc func openCalendar() {
         self.editCalendar.setupPreviousAvailability()
+        self.calendarEditAnchor.constant = 0
+        self.scrollCenterAnchor.constant = -phoneWidth
         UIView.animate(withDuration: animationOut, animations: {
-            self.editCalendar.view.alpha = 1
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.lightContentStatusBar()
         }
     }
     
     func closeCalendar() {
+        self.calendarEditAnchor.constant = phoneWidth
+        self.scrollCenterAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.editCalendar.view.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.checkStatusBar()
         }
     }
     
     @objc func openInformation() {
+        self.informationEditAnchor.constant = 0
+        self.scrollCenterAnchor.constant = -phoneWidth
         UIView.animate(withDuration: animationOut, animations: {
-            self.editInformation.view.alpha = 1
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.lightContentStatusBar()
         }
     }
     
     func closeInformation() {
+        self.informationEditAnchor.constant = phoneWidth
+        self.scrollCenterAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.editInformation.view.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.checkStatusBar()
         }
     }
     
     @objc func openCost() {
+        self.costEditAnchor.constant = 0
+        self.scrollCenterAnchor.constant = -phoneWidth
         UIView.animate(withDuration: animationOut, animations: {
-            self.editCost.view.alpha = 1
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.lightContentStatusBar()
         }
     }
     
     func closeCost() {
+        self.costEditAnchor.constant = phoneWidth
+        self.scrollCenterAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.editCost.view.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.checkStatusBar()
         }
     }
     
     @objc func openSpots() {
+        self.spotsEditAnchor.constant = 0
+        self.scrollCenterAnchor.constant = -phoneWidth
         UIView.animate(withDuration: animationOut, animations: {
-            self.editSpots.view.alpha = 1
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.lightContentStatusBar()
         }
     }
     
     func closeSpots() {
+        self.spotsEditAnchor.constant = phoneWidth
+        self.scrollCenterAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.editSpots.view.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.checkStatusBar()
         }
     }
     
     @objc func openAmenities() {
+        self.amenitiesEditAnchor.constant = 0
+        self.scrollCenterAnchor.constant = -phoneWidth
         UIView.animate(withDuration: animationOut, animations: {
-            self.editAmenities.view.alpha = 1
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.lightContentStatusBar()
         }
     }
     
     func closeAmenities() {
+        self.amenitiesEditAnchor.constant = phoneWidth
+        self.scrollCenterAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
-            self.editAmenities.view.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
             self.checkStatusBar()
         }

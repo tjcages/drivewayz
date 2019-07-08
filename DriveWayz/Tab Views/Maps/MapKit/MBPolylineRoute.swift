@@ -16,8 +16,8 @@ extension MapKitViewController: MGLMapViewDelegate {
 //        animatePolyline()
     }
     
-    func addPolyline(to style: MGLStyle) {
-        if isCurrentlyBooked == false {
+    func addPolyline(to style: MGLStyle, isCurrentDriving: Bool) {
+        if isCurrentDriving != true {
             self.shouldShowOverlay = true
             let stamp = Date().timeIntervalSince1970
             let source = MGLShapeSource(identifier: "\(stamp)", shape: nil, options: nil)

@@ -74,7 +74,7 @@ class BookingCell: UICollectionViewCell {
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 50
         let image = UIImage(named: "Apartment Parking")
@@ -353,7 +353,7 @@ class BookingCell: UICollectionViewCell {
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.frame = shimmerView.frame
         
-        let angle = 45 * CGFloat.pi/180
+        let angle = 60 * CGFloat.pi/180
         gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
         shimmerView.layer.mask = gradientLayer
         

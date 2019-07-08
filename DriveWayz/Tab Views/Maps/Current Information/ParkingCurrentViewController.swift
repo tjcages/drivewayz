@@ -513,8 +513,8 @@ class ParkingCurrentViewController: UIViewController, UITableViewDelegate, UITab
         timerStarted = false
         notificationSent = false
         currentParking = false
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     func extendTime() {

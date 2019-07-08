@@ -66,13 +66,11 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return label
     }()
     
-    lazy var gradient: UIView = {
-        let view = UIView()
+    lazy var gradient: UIImageView = {
+        let image = UIImage(named: "purpleGradient")
+        let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().purpleBlueColor()
-        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight)
-        background.zPosition = -10
-        view.layer.addSublayer(background)
+        view.contentMode = .scaleAspectFill
         
         return view
     }()
@@ -190,8 +188,8 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             }) { (success) in
                 UIView.animate(withDuration: 0.2, animations: {
                     let width = self.drivewayzLabel.text?.width(withConstrainedHeight: 40, font: Fonts.SSPBoldH0)
-                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.7, y: 0.7)
-                    self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.7, y: 0.7)
+                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
+                    self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
                     self.drivewayzIconLeftAnchor.constant = (-60 - width!)/2
                     self.drivewayzLabel.alpha = 1
                     self.view.layoutIfNeeded()

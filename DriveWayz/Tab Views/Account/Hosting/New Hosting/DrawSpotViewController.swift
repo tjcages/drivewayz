@@ -14,8 +14,26 @@ class DrawSpotViewController: UIViewController {
     
     var delegate: handlePanoImages?
     
+    var parkingLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Make sure the parking space is clearly shown then press the button below to highlight"
+        label.textColor = Theme.DARK_GRAY
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPRegularH3
+        label.numberOfLines = 3
+        label.backgroundColor = UIColor.clear
+        
+        return label
+    }()
+    
     lazy var imageView: UIImageView = {
-        let view = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width))
+        let view = UIImageView()
+        switch device {
+        case .iphone8:
+            view.frame = CGRect(x: 0, y: 84, width: self.view.frame.width, height: self.view.frame.width)
+        case .iphoneX:
+            view.frame = CGRect(x: 0, y: 120, width: self.view.frame.width, height: self.view.frame.width)
+        }
         view.contentMode = .scaleAspectFill
         view.isUserInteractionEnabled = true
         view.clipsToBounds = true
@@ -37,9 +55,9 @@ class DrawSpotViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Confirm image", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PACIFIC_BLUE
-        button.titleLabel?.font = Fonts.SSPSemiBoldH2
-        button.layer.cornerRadius = 12
+        button.backgroundColor = Theme.BLUE
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
+        button.layer.cornerRadius = 8
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
         
@@ -49,15 +67,21 @@ class DrawSpotViewController: UIViewController {
     lazy var hideDotsButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Hide square", for: .normal)
+        button.setTitle("Highlight parking area", for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
-        button.setTitleColor(Theme.WHITE, for: .normal)
-        button.layer.cornerRadius = 4
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.alpha = 1
-        button.addTarget(self, action: #selector(hideButtons(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(highlightImage), for: .touchUpInside)
         button.contentHorizontalAlignment = .left
         
         return button
+    }()
+    
+    var moveDotsController: MoveDotsViewController = {
+        let controller = MoveDotsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return controller
     }()
     
     var panoView: GMSPanoramaView!
@@ -65,17 +89,24 @@ class DrawSpotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.BLACK
+        view.backgroundColor = Theme.WHITE
         
         setupViews()
-        addOverlay()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        startPan()
     }
     
     func setData(image: UIImage, lattitude: Double, longitude: Double) {
+        
+        self.view.addSubview(parkingLabel)
+        parkingLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        parkingLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        parkingLabel.heightAnchor.constraint(equalToConstant: (parkingLabel.text?.height(withConstrainedWidth: phoneWidth - 48, font: Fonts.SSPRegularH2))! + 12).isActive = true
+        switch device {
+        case .iphone8:
+            parkingLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
+        case .iphoneX:
+            parkingLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 4).isActive = true
+        }
+        
         panoView = GMSPanoramaView(frame: .zero)
         panoView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -89,6 +120,13 @@ class DrawSpotViewController: UIViewController {
     
         self.realImageView.image = image
         self.panoView.moveNearCoordinate(CLLocationCoordinate2D(latitude: lattitude, longitude: longitude))
+        
+        imageView.addSubview(moveDotsController.view)
+        moveDotsController.view.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        moveDotsController.view.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+        moveDotsController.view.leftAnchor.constraint(equalTo: imageView.leftAnchor).isActive = true
+        moveDotsController.view.rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true
+        
     }
     
     func setupViews() {
@@ -96,335 +134,85 @@ class DrawSpotViewController: UIViewController {
         self.view.addSubview(imageView)
         
         self.view.addSubview(hideDotsButton)
-        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16).isActive = true
-        hideDotsButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        hideDotsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        hideDotsButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        hideDotsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        switch device {
+        case .iphone8:
+            hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4).isActive = true
+        case .iphoneX:
+            hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12).isActive = true
+        }
         
         self.view.addSubview(confirmButton)
-        confirmButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        confirmButton.topAnchor.constraint(equalTo: hideDotsButton.bottomAnchor, constant: 16).isActive = true
-        confirmButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
-        confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        confirmButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        confirmButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        confirmButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        switch device {
+        case .iphone8:
+            confirmButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
+        case .iphoneX:
+            confirmButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
+        }
         
     }
     
-    var dot1View: UIView!
-    var dot2View: UIView!
-    var dot3View: UIView!
-    var dot4View: UIView!
-    var panView: UIView!
-    
-    func addOverlay() {
-        
-        imageView.layer.addSublayer(shapeLayer)
-        
-        panView = UIView(frame: CGRect(x: 125, y: 125, width: 100, height: 100))
-        panView.backgroundColor = UIColor.clear
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(shapeLayerPanned(sender:)))
-        panView.addGestureRecognizer(panGesture)
-        imageView.addSubview(panView)
-        
-        dot1 = UIButton(frame: CGRect(x: 100, y: 300, width: 12, height: 12))
-        dot1.layer.cornerRadius = 6
-        dot1.backgroundColor = Theme.PACIFIC_BLUE
-        dot1.clipsToBounds = true
-        dot1.translatesAutoresizingMaskIntoConstraints = false
-        let pan1 = UIPanGestureRecognizer(target: self, action: #selector(panButton1(sender:)))
-        dot1.addGestureRecognizer(pan1)
-        
-        dot1View = UIView()
-        dot1View.layer.cornerRadius = 4
-        dot1View.backgroundColor = Theme.PACIFIC_BLUE
-        dot1View.center = dot1.center
-//        dot1View.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(dot1View)
-        imageView.addSubview(dot1)
-        
-        dot1View.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        dot1View.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot1View.centerXAnchor.constraint(equalTo: dot1.centerXAnchor).isActive = true
-        dot1View.centerYAnchor.constraint(equalTo: dot1.centerYAnchor).isActive = true
-        
-        dot1.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        dot1.heightAnchor.constraint(equalToConstant: 12).isActive = true
-//        dot1.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
-//        dot1.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
-        
-        dot2 = UIButton(frame: CGRect(x: 200, y: 300, width: 12, height: 12))
-        dot2.layer.cornerRadius = 6
-        dot2.backgroundColor = Theme.PACIFIC_BLUE
-        dot2.translatesAutoresizingMaskIntoConstraints = false
-        let pan2 = UIPanGestureRecognizer(target: self, action: #selector(panButton2(sender:)))
-        dot2.addGestureRecognizer(pan2)
-        
-        dot2View = UIView()
-        dot2View.layer.cornerRadius = 4
-        dot2View.backgroundColor = Theme.PACIFIC_BLUE
-        dot2View.center = dot1.center
-//        dot2View.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(dot2View)
-        imageView.addSubview(dot2)
-        
-        dot2View.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        dot2View.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot2View.centerXAnchor.constraint(equalTo: dot2.centerXAnchor).isActive = true
-        dot2View.centerYAnchor.constraint(equalTo: dot2.centerYAnchor).isActive = true
-        
-        dot2.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        dot2.heightAnchor.constraint(equalToConstant: 12).isActive = true
-//        dot2.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
-//        dot2.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
-        
-        dot3 = UIButton(frame: CGRect(x: 200, y: 400, width: 12, height: 12))
-        dot3.layer.cornerRadius = 6
-        dot3.backgroundColor = Theme.BLUE
-        dot3.translatesAutoresizingMaskIntoConstraints = false
-        let pan3 = UIPanGestureRecognizer(target: self, action: #selector(panButton3(sender:)))
-        dot3.addGestureRecognizer(pan3)
-        
-        dot3View = UIView()
-        dot3View.layer.cornerRadius = 4
-        dot3View.backgroundColor = Theme.PACIFIC_BLUE
-        dot3View.center = dot3.center
-//        dot3View.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(dot3View)
-        imageView.addSubview(dot3)
-        
-        dot3View.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        dot3View.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot3View.centerXAnchor.constraint(equalTo: dot3.centerXAnchor).isActive = true
-        dot3View.centerYAnchor.constraint(equalTo: dot3.centerYAnchor).isActive = true
-        
-        dot3.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        dot3.heightAnchor.constraint(equalToConstant: 12).isActive = true
-//        dot3.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 200).isActive = true
-//        dot3.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-        
-        dot4 = UIButton(frame: CGRect(x: 100, y: 400, width: 12, height: 12))
-        dot4.layer.cornerRadius = 6
-        dot4.backgroundColor = Theme.BLUE
-        dot4.layer.borderColor = UIColor.clear.cgColor
-        dot4.layer.borderWidth = 4
-        dot4.translatesAutoresizingMaskIntoConstraints = false
-        let pan4 = UIPanGestureRecognizer(target: self, action: #selector(panButton4(sender:)))
-        dot4.addGestureRecognizer(pan4)
-        
-        dot4View = UIView()
-        dot4View.layer.cornerRadius = 4
-        dot4View.backgroundColor = Theme.PACIFIC_BLUE
-        dot4View.center = dot4.center
-//        dot4View.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(dot4View)
-        imageView.addSubview(dot4)
-        
-        dot4View.widthAnchor.constraint(equalToConstant: 8).isActive = true
-        dot4View.heightAnchor.constraint(equalToConstant: 8).isActive = true
-        dot4View.centerXAnchor.constraint(equalTo: dot4.centerXAnchor).isActive = true
-        dot4View.centerYAnchor.constraint(equalTo: dot4.centerYAnchor).isActive = true
-        
-        dot4.widthAnchor.constraint(equalToConstant: 12).isActive = true
-        dot4.heightAnchor.constraint(equalToConstant: 12).isActive = true
-//        dot4.centerXAnchor.constraint(equalTo: view.leftAnchor, constant: 100).isActive = true
-//        dot4.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-        
-        startPan()
-        
+    @objc func highlightImage() {
+        if self.moveDotsController.view.alpha == 1 {
+            UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.parkingLabel.text = ""
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                
+                UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                    self.parkingLabel.text = "Make sure the parking space is clearly shown then press the button below to highlight"
+                    self.moveDotsController.view.alpha = 0
+                    self.hideDotsButton.setTitle("Highlight parking area", for: .normal)
+                }, completion: nil)
+            }
+        } else {
+            UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.parkingLabel.text = ""
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                
+                UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                    self.parkingLabel.text = "Drag the corners of the highlight to outline the parking space and confirm image"
+                    self.moveDotsController.view.alpha = 1
+                    self.hideDotsButton.setTitle("Remove highlight", for: .normal)
+                }, completion: nil)
+            }
+        }
     }
     
     func useGoogleMaps() {
         self.panoView.alpha = 1
         self.realImageView.alpha = 0
-        self.hideDotsButton.alpha = 1
     }
     
     func useRegularImage() {
         self.panoView.alpha = 0
         self.panoView.removeFromSuperview()
         self.realImageView.alpha = 1
-        self.hideDotsButton.alpha = 0
-        self.addOverlay()
-    }
-    
-    var toColor: Bool = true
-    
-    @objc func hideButtons(sender: UIButton) {
-        if self.dot1View.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
-                dot1.backgroundColor = UIColor.clear
-                self.dot1View.alpha = 0
-                self.dot2View.alpha = 0
-                self.dot3View.alpha = 0
-                self.dot4View.alpha = 0
-                self.shapeLayer.fillColor = UIColor.clear.cgColor
-                self.view.layoutIfNeeded()
-            }
-            self.toColor = false
-            self.hideDotsButton.setTitle("Bring square", for: .normal)
-            self.panView.isUserInteractionEnabled = false
-        } else {
-            UIView.animate(withDuration: animationIn) {
-                self.dot1View.alpha = 1
-                self.dot2View.alpha = 1
-                self.dot3View.alpha = 1
-                self.dot4View.alpha = 1
-                self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
-            }
-            self.startPan()
-            self.toColor = true
-            self.hideDotsButton.setTitle("Hide square", for: .normal)
-            self.panView.isUserInteractionEnabled = true
-        }
-        self.moveOverlay()
     }
     
     @objc func confirmButtonPressed(sender: UIButton) {
         let image = self.imageView.takeScreenshot()
         self.delegate?.confirmedImage(image: image)
-    }
-    
-    var previousPan: CGPoint?
-    
-    @objc func shapeLayerPanned(sender: UIPanGestureRecognizer) {
-        let panx = sender.location(in: view).x
-        let pany = sender.location(in: view).y
-        if let pan = self.previousPan {
-            dot1.center.x = dot1.center.x + panx - pan.x
-            dot2.center.x = dot2.center.x + panx - pan.x
-            dot3.center.x = dot3.center.x + panx - pan.x
-            dot4.center.x = dot4.center.x + panx - pan.x
-            dot1.center.y = dot1.center.y + pany - pan.y
-            dot2.center.y = dot2.center.y + pany - pan.y
-            dot3.center.y = dot3.center.y + pany - pan.y
-            dot4.center.y = dot4.center.y + pany - pan.y
-            self.dot1View.center = dot1.center
-            self.dot2View.center = dot2.center
-            self.dot3View.center = dot3.center
-            self.dot4View.center = dot4.center
-            self.moveOverlay()
-        }
-        self.previousPan = sender.view?.center
-    }
-    
-    func shapeLayerMoved() {
-        let x = (dot1.center.x + dot2.center.x + dot3.center.x + dot4.center.x) / 4
-        let y = (dot1.center.y + dot2.center.y + dot3.center.y + dot4.center.y) / 4
-        panView.center = CGPoint(x: x, y: y)
-        dot1.center = dot1View.center
-        dot2.center = dot2View.center
-        dot3.center = dot3View.center
-        dot4.center = dot4View.center
-        self.view.layoutIfNeeded()
-    }
-    
-    func startPan() {
-        let location1 = CGPoint(x: 100, y: 100)
-        let location2 = CGPoint(x: 200, y: 100)
-        let location3 = CGPoint(x: 200, y: 200)
-        let location4 = CGPoint(x: 100, y: 200)
-        dot1.center = location1
-        dot1View.center = location1
-        dot2.center = location2
-        dot2View.center = location2
-        dot3.center = location3
-        dot3View.center = location3
-        dot4.center = location4
-        dot4View.center = location4
-        moveOverlay()
-        
-        UIView.animate(withDuration: animationIn) {
-            self.dot1View.alpha = 1
-            self.dot2View.alpha = 1
-            self.dot3View.alpha = 1
-            self.dot4View.alpha = 1
-            self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
-        }
-        self.toColor = true
-        self.hideDotsButton.setTitle("Hide square", for: .normal)
-        self.panView.isUserInteractionEnabled = true
-    }
-    
-    @objc func panButton1(sender: UIPanGestureRecognizer){
-        if sender.state == .began {
-            //wordButtonCenter = button.center // store old button center
-        } else if sender.state == .ended || sender.state == .failed || sender.state == .cancelled {
-            //button.center = wordButtonCenter // restore button center
-        } else {
-            let location = sender.location(in: view) // get pan location
-            dot1.center = location // set button to where finger is
-            dot1View.center = location
-        }
-        moveOverlay()
-    }
-    
-    @objc func panButton2(sender: UIPanGestureRecognizer){
-        if sender.state == .began {
-            //wordButtonCenter = button.center // store old button center
-        } else if sender.state == .ended || sender.state == .failed || sender.state == .cancelled {
-            //button.center = wordButtonCenter // restore button center
-        } else {
-            let location = sender.location(in: view) // get pan location
-            dot2.center = location // set button to where finger is
-            dot2View.center = location
-        }
-        moveOverlay()
-    }
-    
-    @objc func panButton3(sender: UIPanGestureRecognizer){
-        if sender.state == .began {
-            //wordButtonCenter = button.center // store old button center
-        } else if sender.state == .ended || sender.state == .failed || sender.state == .cancelled {
-            //button.center = wordButtonCenter // restore button center
-        } else {
-            let location = sender.location(in: view) // get pan location
-            dot3.center = location // set button to where finger is
-            dot3View.center = location
-        }
-        moveOverlay()
-    }
-    
-    @objc func panButton4(sender: UIPanGestureRecognizer){
-        if sender.state == .began {
-            //wordButtonCenter = button.center // store old button center
-        } else if sender.state == .ended || sender.state == .failed || sender.state == .cancelled {
-            //button.center = wordButtonCenter // restore button center
-        } else {
-            let location = sender.location(in: view) // get pan location
-            dot4.center = location // set button to where finger is
-            dot4View.center = location
-        }
-        moveOverlay()
-    }
-    
-    let shapeLayer = CAShapeLayer()
-    
-    func moveOverlay() {
-        //        self.view.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-        let width: CGFloat = 640
-        let height: CGFloat = 640
-        
-        shapeLayer.frame = CGRect(x: 0, y: 0,
-                                  width: width, height: height)
-        shapeLayerMoved()
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: dot1.center.x, y: dot1.center.y))
-        path.addLine(to: CGPoint(x: dot2.center.x, y: dot2.center.y))
-        path.addLine(to: CGPoint(x: dot3.center.x, y: dot3.center.y))
-        path.addLine(to: CGPoint(x: dot4.center.x, y: dot4.center.y))
-        path.close()
-        
-        if self.toColor == true {
-            shapeLayer.path = path.cgPath
-            shapeLayer.strokeColor = Theme.PACIFIC_BLUE.cgColor
-            shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
-            shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        } else {
-            shapeLayer.path = path.cgPath
-            shapeLayer.strokeColor = UIColor.clear.cgColor
-            shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
+        delayWithSeconds(1) {
+            self.moveDotsController.startPan()
+            UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                self.parkingLabel.text = ""
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                
+                UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+                    self.parkingLabel.text = "Make sure the parking space is clearly shown then press the button below to highlight"
+                    self.moveDotsController.view.alpha = 0
+                    self.hideDotsButton.setTitle("Highlight parking area", for: .normal)
+                }, completion: nil)
+            }
         }
     }
-    
 
 }
