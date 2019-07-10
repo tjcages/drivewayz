@@ -183,7 +183,6 @@ extension HostProfitsViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.delegate?.defaultContentStatusBar()
         switch device {
         case .iphone8:
             self.gradientHeightAnchor.constant = 160
@@ -191,6 +190,7 @@ extension HostProfitsViewController: UIScrollViewDelegate {
             self.gradientHeightAnchor.constant = 180
         }
         self.resetScrolls()
+        self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: animationIn, animations: {
             self.gradientContainer.backgroundColor = UIColor.clear
             self.mainLabel.textColor = Theme.DARK_GRAY

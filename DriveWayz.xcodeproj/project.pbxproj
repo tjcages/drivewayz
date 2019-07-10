@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A17911B42DAC0BF090245C2 /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F895341C3F3A46634A601672 /* Pods_DriveWayz.framework */; };
 		4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */; };
 		4D02C64921CC4C1800748BA3 /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */; };
 		4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */; };
@@ -279,11 +280,11 @@
 		4DFFC25B210B4F55006D6062 /* UserRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */; };
 		4DFFC25D210B646E006D6062 /* RecentParkingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */; };
 		4DFFC262210C9A7E006D6062 /* LeaveReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */; };
-		AC55A9369025DF32651638ED /* Pods_DriveWayz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1D33AAAD5CCCB602B96922 /* Pods_DriveWayz.framework */; };
 		CA098AD922CFE5E500E45F0F /* MBUserMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */; };
 		CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */; };
 		CA098ADE22CFEF2100E45F0F /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */; };
 		CA098AE022D00AFB00E45F0F /* RespondMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */; };
+		CA10D49D22D520C8005D151E /* EditImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10D49C22D520C8005D151E /* EditImagesViewController.swift */; };
 		CA19D57122C0822C00337C7F /* ContactReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */; };
 		CA19D57322C1520E00337C7F /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57222C1520E00337C7F /* PushNotifications.swift */; };
 		CA19D57A22C2B78A00337C7F /* cities.csv in Resources */ = {isa = PBXBuildFile; fileRef = CA19D57922C2B78A00337C7F /* cities.csv */; };
@@ -296,6 +297,9 @@
 		CA3C2FCD22BE677100A2A374 /* HostProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCC22BE677100A2A374 /* HostProfitsViewController.swift */; };
 		CA3C2FCF22BE717700A2A374 /* HostSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCE22BE717700A2A374 /* HostSpacesViewController.swift */; };
 		CA6F340C22D2C4E200CF8961 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA6F340B22D2C4E200CF8961 /* GoogleService-Info.plist */; };
+		CA6F340E22D2F6F500CF8961 /* DayAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F340D22D2F6F500CF8961 /* DayAvailabilityViewController.swift */; };
+		CA6F341022D3D77700CF8961 /* ConfirmAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F340F22D3D77700CF8961 /* ConfirmAvailabilityViewController.swift */; };
+		CA6F341222D3EF3600CF8961 /* ConfirmCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F341122D3EF3600CF8961 /* ConfirmCalendarViewController.swift */; };
 		CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA724E5822B7661C00E15858 /* ChatMessageCell.swift */; };
 		CAC0A7EE22B80C8800240857 /* BankNamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC0A7ED22B80C8800240857 /* BankNamesViewController.swift */; };
 		CAC0A7F022B80DC600240857 /* NewBankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC0A7EF22B80DC600240857 /* NewBankViewController.swift */; };
@@ -336,7 +340,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2EC6E5D2D384DFEC175323AB /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
+		041CFEF6AE94E8E3BF33AE83 /* Pods-DriveWayz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.release.xcconfig"; path = "Target Support Files/Pods-DriveWayz/Pods-DriveWayz.release.xcconfig"; sourceTree = "<group>"; };
 		4D01DC4F21704D0000846EE6 /* CurrentMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMessageViewController.swift; sourceTree = "<group>"; };
 		4D02C64821CC4C1800748BA3 /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
@@ -372,7 +376,6 @@
 		4D19BB51211804360016F36F /* ProfileBannerAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBannerAdsViewController.swift; sourceTree = "<group>"; };
 		4D1AD4352106B8EF0024612A /* CouponsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponsViewController.swift; sourceTree = "<group>"; };
 		4D1AD455210800C50024612A /* PersonalAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAvailabilityViewController.swift; sourceTree = "<group>"; };
-		4D1D33AAAD5CCCB602B96922 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D1E949F22544E19002AA426 /* MySpotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpotsViewController.swift; sourceTree = "<group>"; };
 		4D1E94A1225455F9002AA426 /* MyProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfitsViewController.swift; sourceTree = "<group>"; };
 		4D1E94A322546CB4002AA426 /* MyOngoingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOngoingViewController.swift; sourceTree = "<group>"; };
@@ -614,11 +617,11 @@
 		4DFFC25A210B4F55006D6062 /* UserRecentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecentViewController.swift; sourceTree = "<group>"; };
 		4DFFC25C210B646E006D6062 /* RecentParkingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentParkingCell.swift; sourceTree = "<group>"; };
 		4DFFC261210C9A7E006D6062 /* LeaveReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveReviewViewController.swift; sourceTree = "<group>"; };
-		BFEB4F8967AB57CAF3727B82 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
 		CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBUserMessages.swift; sourceTree = "<group>"; };
 		CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMessageViewController.swift; sourceTree = "<group>"; };
 		CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
 		CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RespondMessageViewController.swift; sourceTree = "<group>"; };
+		CA10D49C22D520C8005D151E /* EditImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImagesViewController.swift; sourceTree = "<group>"; };
 		CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactReviewsViewController.swift; sourceTree = "<group>"; };
 		CA19D57222C1520E00337C7F /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		CA19D57622C1B81600337C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../../Downloads/drivewayz-master/DriveWayz/Info.plist"; sourceTree = "<group>"; };
@@ -632,6 +635,9 @@
 		CA3C2FCC22BE677100A2A374 /* HostProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostProfitsViewController.swift; sourceTree = "<group>"; };
 		CA3C2FCE22BE717700A2A374 /* HostSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSpacesViewController.swift; sourceTree = "<group>"; };
 		CA6F340B22D2C4E200CF8961 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CA6F340D22D2F6F500CF8961 /* DayAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayAvailabilityViewController.swift; sourceTree = "<group>"; };
+		CA6F340F22D3D77700CF8961 /* ConfirmAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAvailabilityViewController.swift; sourceTree = "<group>"; };
+		CA6F341122D3EF3600CF8961 /* ConfirmCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmCalendarViewController.swift; sourceTree = "<group>"; };
 		CA724E5822B7661C00E15858 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		CAC0A7ED22B80C8800240857 /* BankNamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankNamesViewController.swift; sourceTree = "<group>"; };
 		CAC0A7EF22B80DC600240857 /* NewBankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankViewController.swift; sourceTree = "<group>"; };
@@ -656,6 +662,8 @@
 		CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMessageViewController.swift; sourceTree = "<group>"; };
 		CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingMessageViewController.swift; sourceTree = "<group>"; };
 		CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendOptionsViewController.swift; sourceTree = "<group>"; };
+		D7DD0AA1D6612B1DEA573356 /* Pods-DriveWayz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveWayz.debug.xcconfig"; path = "Target Support Files/Pods-DriveWayz/Pods-DriveWayz.debug.xcconfig"; sourceTree = "<group>"; };
+		F895341C3F3A46634A601672 /* Pods_DriveWayz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriveWayz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -665,7 +673,7 @@
 			files = (
 				4D15FE8020CD9CB8003FBE0A /* FirebaseAuth.framework in Frameworks */,
 				4D8A3E3121667D6F00540905 /* MapKit.framework in Frameworks */,
-				AC55A9369025DF32651638ED /* Pods_DriveWayz.framework in Frameworks */,
+				0A17911B42DAC0BF090245C2 /* Pods_DriveWayz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,8 +683,8 @@
 		14BC9DA8F360E5706DB39DD8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BFEB4F8967AB57CAF3727B82 /* Pods-DriveWayz.debug.xcconfig */,
-				2EC6E5D2D384DFEC175323AB /* Pods-DriveWayz.release.xcconfig */,
+				D7DD0AA1D6612B1DEA573356 /* Pods-DriveWayz.debug.xcconfig */,
+				041CFEF6AE94E8E3BF33AE83 /* Pods-DriveWayz.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -846,6 +854,7 @@
 				4D202CC621F026B100F68F13 /* EditCostViewController.swift */,
 				4D202CC821F0285C00F68F13 /* EditSpotsViewController.swift */,
 				4D202CCA21F02A0200F68F13 /* EditAmenitiesViewController.swift */,
+				CA10D49C22D520C8005D151E /* EditImagesViewController.swift */,
 			);
 			path = "Edit Information";
 			sourceTree = "<group>";
@@ -1335,7 +1344,10 @@
 				4DC7219C2191290800E5E2B3 /* DrawSpotViewController.swift */,
 				CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */,
 				4DCFBA0921DB785500E910FF /* CalendarViewController.swift */,
+				CA6F341122D3EF3600CF8961 /* ConfirmCalendarViewController.swift */,
 				4DC261B52147525E00D6DCD3 /* SelectTimesViewController.swift */,
+				CA6F340D22D2F6F500CF8961 /* DayAvailabilityViewController.swift */,
+				CA6F340F22D3D77700CF8961 /* ConfirmAvailabilityViewController.swift */,
 				4D035F4721476BB100A380B8 /* PickCostViewController.swift */,
 				4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */,
 				4D70E5B121E2F7AC00DDC4D0 /* RegisterEmailViewController.swift */,
@@ -1517,7 +1529,7 @@
 			children = (
 				4D8A3E3021667D6F00540905 /* MapKit.framework */,
 				4D15FE7F20CD9CB8003FBE0A /* FirebaseAuth.framework */,
-				4D1D33AAAD5CCCB602B96922 /* Pods_DriveWayz.framework */,
+				F895341C3F3A46634A601672 /* Pods_DriveWayz.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1598,13 +1610,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4D21D2E620CC9FC4002D7005 /* Build configuration list for PBXNativeTarget "DriveWayz" */;
 			buildPhases = (
-				A33DE9D36605B4C9D5C72BF2 /* [CP] Check Pods Manifest.lock */,
+				75109F094CEB7DDBD608C08A /* [CP] Check Pods Manifest.lock */,
 				4D21D2D020CC9FC3002D7005 /* Sources */,
 				4D21D2D120CC9FC3002D7005 /* Frameworks */,
 				4D21D2D220CC9FC3002D7005 /* Resources */,
 				4DCFE79020FC2A6F00073677 /* Embed App Extensions */,
-				30D555747A8CE232EE52D728 /* [CP] Embed Pods Frameworks */,
-				B77A8CD1757ACC5E21D5218A /* [CP] Copy Pods Resources */,
+				2480508E3F6E5A5B6DA680F7 /* [CP] Embed Pods Frameworks */,
+				778BA99793C9FFCA2CDDD7B3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1627,7 +1639,7 @@
 				TargetAttributes = {
 					4D21D2D320CC9FC3002D7005 = {
 						CreatedOnToolsVersion = 9.4;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1719,7 +1731,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		30D555747A8CE232EE52D728 /* [CP] Embed Pods Frameworks */ = {
+		2480508E3F6E5A5B6DA680F7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1736,7 +1748,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DriveWayz/Pods-DriveWayz-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A33DE9D36605B4C9D5C72BF2 /* [CP] Check Pods Manifest.lock */ = {
+		75109F094CEB7DDBD608C08A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1758,7 +1770,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B77A8CD1757ACC5E21D5218A /* [CP] Copy Pods Resources */ = {
+		778BA99793C9FFCA2CDDD7B3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1826,6 +1838,7 @@
 				4D9363FF2251D0F400EEAC61 /* OldBarViewController.swift in Sources */,
 				CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */,
 				4D21D32020CC9FF9002D7005 /* SettingNavViewController.swift in Sources */,
+				CA6F341222D3EF3600CF8961 /* ConfirmCalendarViewController.swift in Sources */,
 				4DDE160A220F80CF00462047 /* DynamicHolidays.swift in Sources */,
 				4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */,
 				4D67DCB6221C7EEE000BF192 /* PurchaseSpotViewController.swift in Sources */,
@@ -1893,6 +1906,7 @@
 				4D21D32B20CC9FF9002D7005 /* NotificationsNavViewController.swift in Sources */,
 				4D0F0B98219E648A0022D1B4 /* ParkingDetailsViewController.swift in Sources */,
 				CAD9F84022B8ABD00077969B /* BankDOBViewController.swift in Sources */,
+				CA10D49D22D520C8005D151E /* EditImagesViewController.swift in Sources */,
 				4D8EA26621813F6A00F6469C /* LocationSearchTableViewController.swift in Sources */,
 				4D78BDFC214F03F700631801 /* OptionsCell.swift in Sources */,
 				CAD9F83A22B856750077969B /* BankRoutingViewController.swift in Sources */,
@@ -1955,6 +1969,7 @@
 				4D2A2E39221B4ABE0031791A /* CircularView.swift in Sources */,
 				4D01DC5021704D0000846EE6 /* CurrentMessageViewController.swift in Sources */,
 				CA3C2FCB22BE663900A2A374 /* UserHostingViewController.swift in Sources */,
+				CA6F340E22D2F6F500CF8961 /* DayAvailabilityViewController.swift in Sources */,
 				4DA99317223785EB0085D859 /* ConfirmViewController.swift in Sources */,
 				4DD95238218024C10036BB28 /* AmenitiesParkingViewController.swift in Sources */,
 				4DB5CA7C221A73B600A4C6FD /* MBCurrentParking.swift in Sources */,
@@ -2053,6 +2068,7 @@
 				4D21D2D820CC9FC3002D7005 /* AppDelegate.swift in Sources */,
 				4DD3B6342194CF4E008B1417 /* Global.swift in Sources */,
 				4DB62D142289FFFC00D967AB /* MobileNumberViewController.swift in Sources */,
+				CA6F341022D3D77700CF8961 /* ConfirmAvailabilityViewController.swift in Sources */,
 				4DBCC1D1222F93DE008E102E /* FullCostViewController.swift in Sources */,
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4D2A2E40221B59590031791A /* CurrentAmenitiesViewController.swift in Sources */,
@@ -2213,7 +2229,7 @@
 		};
 		4D21D2E720CC9FC4002D7005 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFEB4F8967AB57CAF3727B82 /* Pods-DriveWayz.debug.xcconfig */;
+			baseConfigurationReference = D7DD0AA1D6612B1DEA573356 /* Pods-DriveWayz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -2229,14 +2245,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Drivewayz/drivewayz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		4D21D2E820CC9FC4002D7005 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EC6E5D2D384DFEC175323AB /* Pods-DriveWayz.release.xcconfig */;
+			baseConfigurationReference = 041CFEF6AE94E8E3BF33AE83 /* Pods-DriveWayz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DriveWayz/DriveWayz.entitlements;
@@ -2252,7 +2268,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Drivewayz/drivewayz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

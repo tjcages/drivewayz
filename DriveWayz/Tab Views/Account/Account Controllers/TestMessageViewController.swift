@@ -34,7 +34,7 @@ class TestMessageViewController: UIViewController {
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180

@@ -170,17 +170,17 @@ class HostingViewController: UIViewController, handleCurrentParking, controlsBan
     }
     
     func bringNewHostingController() {
-        self.delegate?.hideHostingController()
+//        self.delegate?.hideHostingController()
         self.delegate?.bringNewHostingController()
     }
     
     func hideNewHostingController() {
-        self.delegate?.hideHostingController()
+//        self.delegate?.hideHostingController()
         self.delegate?.bringHostingController()
     }
     
     func setupBankAccount() {
-        self.delegate?.bringBankAccountController()
+//        self.delegate?.bringBankAccountController()
     }
 
 }

@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 
 class HostingOptionsViewController: UIViewController {
-    
-    var hostDelegate: handleHostEditing?
 
     var container: UIView = {
         let view = UIView()
@@ -36,9 +34,6 @@ class HostingOptionsViewController: UIViewController {
         button.setTitle("Edit availability", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
-        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)
-//        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
-//        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
@@ -52,7 +47,6 @@ class HostingOptionsViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)
         
         return button
     }()
@@ -85,7 +79,6 @@ class HostingOptionsViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)//////
         
         return button
     }()
@@ -105,8 +98,6 @@ class HostingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.3), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(bringNewHostingController), for: .touchUpInside)
-//        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
-//        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         
@@ -121,7 +112,6 @@ class HostingOptionsViewController: UIViewController {
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
-//        button.addTarget(self, action: #selector(editAvailabilityPressed), for: .touchUpInside)/////////
         
         return button
     }()
@@ -140,8 +130,6 @@ class HostingOptionsViewController: UIViewController {
         button.setTitle("Delete parking spot", for: .normal)
         button.setTitleColor(Theme.HARMONY_RED, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
-//        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.2).cgColor
-//        button.layer.borderWidth = 0.5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         button.addTarget(self, action: #selector(deleteSpotPressed), for: .touchUpInside)
@@ -181,12 +169,6 @@ class HostingOptionsViewController: UIViewController {
         expandAvailabilityButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandAvailabilityButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
-//        container.addSubview(lineView1)
-//        lineView1.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
-//        lineView1.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-//        lineView1.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-//        lineView1.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        
         container.addSubview(markUnavailable)
         markUnavailable.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
         markUnavailable.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
@@ -198,12 +180,6 @@ class HostingOptionsViewController: UIViewController {
         expandUnavailableButton.centerYAnchor.constraint(equalTo: markUnavailable.centerYAnchor).isActive = true
         expandUnavailableButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandUnavailableButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        
-//        container.addSubview(lineView2)
-//        lineView2.topAnchor.constraint(equalTo: markUnavailable.bottomAnchor).isActive = true
-//        lineView2.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-//        lineView2.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-//        lineView2.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         container.addSubview(addSpot)
         addSpot.topAnchor.constraint(equalTo: markUnavailable.bottomAnchor).isActive = true
@@ -217,22 +193,12 @@ class HostingOptionsViewController: UIViewController {
         expandSpotButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandSpotButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
-//        container.addSubview(lineView4)
-//        lineView4.topAnchor.constraint(equalTo: addSpot.bottomAnchor).isActive = true
-//        lineView4.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-//        lineView4.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-//        lineView4.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        
         container.addSubview(deleteSpot)
         deleteSpot.topAnchor.constraint(equalTo: addSpot.bottomAnchor).isActive = true
         deleteSpot.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         deleteSpot.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         deleteSpot.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-    }
-    
-    @objc func editAvailabilityPressed() {
-//        self.hostDelegate?.setupEditingCalendar()
     }
     
     @objc func makeSpotUnavailable() {

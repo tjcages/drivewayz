@@ -9,9 +9,9 @@
 import UIKit
 import Firebase
 import GoogleSignIn
-import FirebaseInvites
+//import FirebaseInvites
 
-class BannerAdViewController: UIViewController, GIDSignInUIDelegate, InviteDelegate, GIDSignInDelegate {
+class BannerAdViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
 
     var bannerImageView: UIImageView = {
         let imageView = UIImageView()
@@ -129,15 +129,15 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, InviteDeleg
                                                        accessToken: authentication.accessToken)
         guard let prevUser = Auth.auth().currentUser else {return}
         prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
-            if let invite = Invites.inviteDialog() {
-                invite.setInviteDelegate(self)
-            
-                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
-                invite.setTitle("Drivewayz")
-                //            invite.setDeepLink("app_url")
-                invite.setCallToActionText("Install!")
-                invite.open()
-            }
+//            if let invite = Invites.inviteDialog() {
+//                invite.setInviteDelegate(self)
+//            
+//                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
+//                invite.setTitle("Drivewayz")
+//                //            invite.setDeepLink("app_url")
+//                invite.setCallToActionText("Install!")
+//                invite.open()
+//            }
         }
     }
     

@@ -46,7 +46,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -509,17 +509,9 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             } else if options[indexPath.row] == "Vehicle" {
                 self.openAccountView()
                 self.delegate?.bringVehicleController()
-            } else if options[indexPath.row] == "Inbox" {
-                self.openAccountView()
-                self.delegate?.bringMessagesController()
-            } else if options[indexPath.row] == "Coupons" {
-                self.delegate?.moveToMap()
-                self.delegate?.bringCouponsController()
-            } else if options[indexPath.row] == "Contact us!" {
-                self.delegate?.moveToMap()
-                self.delegate?.bringContactUsController()
             } else if options[indexPath.row] == "Settings" {
-                self.settingSelected()
+                self.openAccountView()
+                self.delegate?.bringSettingsController()
             } else if options[indexPath.row] == "Help" {
                 self.openAccountView()
                 self.delegate?.bringHelpController()
@@ -534,13 +526,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     @objc func goBackToMap() {
         self.delegate?.moveToMap()
-    }
-    
-    @objc func settingSelected() {
-        self.openAccountView()
-        if let image = self.profileImageView.image, let name = self.profileName.text {
-            self.delegate?.bringSettingsController(image: image, name: name)
-        }
     }
     
     func displayAlertMessage(userMessage: String, title: String) {
@@ -560,15 +545,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         ref.observe(.childRemoved) { (snapshot) in
             self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Help", "Settings"]
             self.delegate?.closeAccountView()
-            self.delegate?.hideHostingController()
+//            self.delegate?.hideHostingController()
             self.optionsTableView.reloadData()
         }
     }
-    
-    func bringBankAccountOptions() {
-        self.delegate?.bringBankAccountController()
-    }
-
 
 }
 

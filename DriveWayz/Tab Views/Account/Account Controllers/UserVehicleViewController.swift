@@ -15,6 +15,7 @@ protocol handleChangeVehicle {
 class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, handleChangeVehicle {
     
     var delegate: moveControllers?
+    var statusBarColor = false
     
     var options: [String] = []
     var optionsSub: [String] = []
@@ -42,10 +43,24 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         return label
     }()
     
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -81,28 +96,6 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         return view
     }()
     
-    lazy var currentVehicleController: CurrentVehicleViewController = {
-        let controller = CurrentVehicleViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        controller.delegate = self
-
-        return controller
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "arrow")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0
-        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var vehicleGraphic: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +126,6 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     
     var gradientHeightAnchor: NSLayoutConstraint!
     var optionsHeight: NSLayoutConstraint!
-    var currentAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -154,8 +146,8 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
             vehicleGraphic.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -72).isActive = true
         }
         
-        self.view.addSubview(gradientContainer)
         self.view.addSubview(scrollView)
+        self.view.addSubview(gradientContainer)
         scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
         scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
@@ -180,14 +172,6 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         optionsTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         optionsHeight = optionsTableView.heightAnchor.constraint(equalToConstant: 188)
             optionsHeight.isActive = true
-
-        self.view.addSubview(currentVehicleController.view)
-        self.view.bringSubviewToFront(gradientContainer)
-        currentVehicleController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        currentVehicleController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        currentVehicleController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        currentAnchor = currentVehicleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-        currentAnchor.isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -208,9 +192,17 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    @objc func backButtonPressed(sender: UIButton) {
-        self.currentVehicleController.scrollView.setContentOffset(.zero, animated: true)
-        self.bringBackMain()
+    @objc func backButtonPressed() {
+        
+        //////////////NEED TO FIX
+        
+//        self.currentVehicleController.scrollView.setContentOffset(.zero, animated: true)
+//        self.bringBackMain()
+        
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
+            self.backButton.alpha = 0
+        }
     }
     
     @objc func bringBackMain() {
@@ -219,12 +211,10 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         self.view.endEditing(true)
         UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
             self.mainLabel.text = ""
-            self.currentAnchor.constant = self.view.frame.width
             self.backButton.alpha = 0
             self.scrollView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.delegate?.bringExitButton()
             UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainLabel.text = "Your vehicles"
             }, completion: nil)
@@ -290,32 +280,23 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = optionsTableView.cellForRow(at: indexPath) as! VehicleCell
         if let title = cell.titleLabel.text, let subtitle = cell.subtitleLabel.text {
+            let controller = CurrentVehicleViewController()
             if title != "" && subtitle != "" {
                 let key = self.optionsKey[indexPath.row]
-                self.currentVehicleController.setData(type: title, license: subtitle, key: key)
-                self.currentVehicleController.setupCurrentVehicle()
+                controller.setData(type: title, license: subtitle, key: key)
+                controller.setupCurrentVehicle()
                 UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.mainLabel.text = ""
-                    self.view.layoutIfNeeded()
-                }) { (success) in
-                    UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                        self.mainLabel.text = "Your vehicle"
-                    }, completion: nil)
-                }
+                    controller.mainLabel.text = "Your vehicle"
+                }, completion: nil)
             } else {
-                self.currentVehicleController.setupNewVehicle()
+                controller.setupNewVehicle()
                 UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.mainLabel.text = ""
-                    self.view.layoutIfNeeded()
-                }) { (success) in
-                    UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                        self.mainLabel.text = "New vehicle"
-                    }, completion: { (success) in
-                        self.currentVehicleController.vehicleMakeLabel.becomeFirstResponder()
-                    })
-                }
+                    controller.mainLabel.text = "New vehicle"
+                }, completion: { (success) in
+                    controller.vehicleMakeLabel.becomeFirstResponder()
+                })
             }
-            self.moveToNext()
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
@@ -354,7 +335,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
         }
         ref.child("Vehicles").observe(.childRemoved) { (snapshot) in
             if let key = snapshot.value as? String {
-                if let index = self.optionsKey.index(of: key) {
+                if let index = self.optionsKey.firstIndex(of: key) {
                     self.options.remove(at: index)
                     self.optionsSub.remove(at: index)
                     self.optionsKey.remove(at: index)
@@ -388,17 +369,6 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
                     }
                 }
             }
-        }
-    }
-    
-    func moveToNext() {
-        self.scrollMinimized()
-        UIView.animate(withDuration: animationIn) {
-            self.delegate?.hideExitButton()
-            self.backButton.alpha = 1
-            self.currentAnchor.constant = 0
-            self.scrollView.alpha = 0
-            self.view.layoutIfNeeded()
         }
     }
     
@@ -460,7 +430,7 @@ extension UserVehicleViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.delegate?.defaultContentStatusBar()
+        self.defaultContentStatusBar()
         self.scrollView.setContentOffset(.zero, animated: true)
         UIView.animate(withDuration: animationIn) {
             self.backgroundCircle.alpha = 1
@@ -471,12 +441,34 @@ extension UserVehicleViewController: UIScrollViewDelegate {
     }
     
     func scrollMinimized() {
-        self.delegate?.lightContentStatusBar()
+        self.lightContentStatusBar()
         UIView.animate(withDuration: animationIn) {
             self.backgroundCircle.alpha = 0
             self.gradientContainer.backgroundColor = Theme.DARK_GRAY
             self.backButton.tintColor = Theme.WHITE
             self.mainLabel.textColor = Theme.WHITE
+        }
+    }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: animationIn) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultContentStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: animationIn) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
         }
     }
     

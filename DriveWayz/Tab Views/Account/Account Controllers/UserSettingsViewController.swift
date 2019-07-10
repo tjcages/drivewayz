@@ -17,14 +17,9 @@ protocol changeSettingsHandler {
     func changePhone(text: String)
     func changeName(text: String)
     
-    func bringBackMain()
-    func moveToNext()
     func moveToAbout()
     func editSettings(title: String, subtitle: String)
     func handleLogout()
-    
-    func moveToTerms()
-    func moveToPrivacy()
 }
 
 var userInformationNumbers: String = ""
@@ -33,6 +28,7 @@ var userInformationImage: UIImage = UIImage()
 class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     var delegate: moveControllers?
+    var statusBarColor = false
     var paymentInformation: String = ""
     var pickerParking: UIImagePickerController?
     
@@ -41,10 +37,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0
         
         return view
     }()
@@ -52,11 +44,25 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Settings"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPBoldH1
         
         return label
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
     }()
     
     var stars: CosmosView = {
@@ -91,7 +97,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -140,27 +146,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         return view
     }()
     
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "arrow")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0
-        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    lazy var editSettingsController: EditSettingsViewController = {
-        let controller = EditSettingsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
-    
     lazy var aboutController: AboutUsViewController = {
         let controller = AboutUsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -205,15 +190,17 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
 
         scrollView.delegate = self
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(backButtonPressed))
-        swipeGesture.direction = .right
-        view.addGestureRecognizer(swipeGesture)
-        
         setupViews()
         setupAccount()
         setupControllers()
         observeUserInformation()
         getVersionNumber()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 1
+        }
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
@@ -256,6 +243,17 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
         mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
         
     }
     
@@ -302,13 +300,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     func setupControllers() {
         
-        self.view.addSubview(editSettingsController.view)
-        editSettingsController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        editSettingsController.view.bottomAnchor.constraint(equalTo: accountController.view.bottomAnchor).isActive = true
-        editSettingsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editAnchor = editSettingsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-            editAnchor.isActive = true
-        
         self.view.addSubview(aboutController.view)
         aboutController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         aboutController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -326,6 +317,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         self.view.addSubview(privacyController.view)
         self.view.bringSubviewToFront(gradientContainer)
         self.view.bringSubviewToFront(mainLabel)
+        self.view.bringSubviewToFront(backButton)
         self.view.bringSubviewToFront(profileImageView)
         
         privacyController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
@@ -334,33 +326,15 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         privacyAnchor = privacyController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
             privacyAnchor.isActive = true
         
-        self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        switch device {
-        case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
-        case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
-        }
-        
     }
     
     func editSettings(title: String, subtitle: String) {
-        self.moveToNext()
-        self.scrollMinimized()
-        self.editSettingsController.setData(title: title, subtitle: subtitle)
-        self.editAnchor.constant = 0
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.mainLabel.text = ""
-            self.accountController.view.alpha = 0
-            self.otherController.view.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Edit Account"
-            }, completion: nil)
+        let controller = EditSettingsViewController()
+        controller.delegate = self
+        controller.setData(title: title, subtitle: subtitle)
+        self.navigationController?.pushViewController(controller, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 0
         }
     }
     
@@ -393,6 +367,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                         self.accountController.optionsSub.append(phone)
                     } else { self.accountController.optionsSub.append("No phone number") }
                     self.otherController.optionsSub.append("Payment")
+                    self.accountController.optionsTableView.reloadData()
                     self.otherController.optionsTableView.reloadData()
                     if let vehicle = dictionary["selectedVehicle"] as? String {
                         let vehicleRef = Database.database().reference().child("UserVehicles").child(vehicle)
@@ -416,110 +391,17 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     }
 
     @objc func backButtonPressed() {
-        self.view.endEditing(true)
-        if self.termsAnchor.constant == 0 || self.privacyAnchor.constant == 0 {
-            self.bringBackAbout()
-        } else {
-            self.bringBackMain()
-        }
-    }
-    
-    @objc func bringBackAbout() {
-        self.termsAnchor.constant = phoneWidth
-        self.privacyAnchor.constant = phoneWidth
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.aboutController.view.alpha = 1
-            self.mainLabel.text = ""
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "About Us"
-            }, completion: nil)
-        }
-    }
-    
-    @objc func bringBackMain() {
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.mainLabel.text = ""
-            self.accountController.view.alpha = 1
-            self.otherController.view.alpha = 1
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-            self.editAnchor.constant = self.view.frame.width
-            self.aboutAnchor.constant = self.view.frame.width
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
             self.backButton.alpha = 0
-            self.accountController.view.alpha = 1
-            self.otherController.view.alpha = 1
-            self.profileImageView.alpha = 1
-            self.backgroundCircle.alpha = 1
-            self.stars.alpha = 1
-            self.starLabel.alpha = 1
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.backButton.tintColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.DARK_GRAY
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.defaultContentStatusBar()
-            self.delegate?.bringExitButton()
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Settings"
-            }, completion: nil)
-        }
-    }
-    
-    func hideExitButton() {
-        self.delegate?.hideExitButton()
-    }
-    
-    func moveToNext() {
-        UIView.animate(withDuration: animationIn) {
-            self.delegate?.hideExitButton()
-            self.backButton.alpha = 1
-            self.view.layoutIfNeeded()
         }
     }
     
     func moveToAbout() {
-        self.moveToNext()
-        self.aboutAnchor.constant = 0
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.accountController.view.alpha = 0
-            self.otherController.view.alpha = 0
-            self.mainLabel.text = ""
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "About Us"
-            }, completion: nil)
-        }
-    }
-    
-    func moveToTerms() {
-        self.termsAnchor.constant = 0
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.aboutController.view.alpha = 0
-            self.mainLabel.text = ""
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Terms & Conditions"
-            }, completion: nil)
-        }
-    }
-    
-    func moveToPrivacy() {
-        self.privacyAnchor.constant = 0
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.aboutController.view.alpha = 0
-            self.mainLabel.text = ""
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Privacy Policy"
-            }, completion: nil)
+        let controller = AboutUsViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 0
         }
     }
     
@@ -533,7 +415,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         } catch let logoutError {
             print(logoutError)
         }
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
         UserDefaults.standard.synchronize()
 
@@ -572,8 +454,8 @@ extension UserSettingsViewController: UIScrollViewDelegate {
             self.gradientHeightAnchor.constant = totalHeight - percent * 80
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
             if self.profileImageView.alpha == 0 {
+                self.defaultContentStatusBar()
                 UIView.animate(withDuration: animationIn) {
-                    self.gradientContainer.layer.shadowOpacity = 0
                     self.profileImageView.alpha = 1
                     self.backgroundCircle.alpha = 1
                     self.stars.alpha = 1
@@ -585,7 +467,6 @@ extension UserSettingsViewController: UIScrollViewDelegate {
             }
         } else if translation >= 40 && self.profileImageView.alpha == 1 {
             UIView.animate(withDuration: animationIn) {
-                self.gradientContainer.layer.shadowOpacity = 0.2
                 self.profileImageView.alpha = 0
                 self.backgroundCircle.alpha = 0
                 self.stars.alpha = 0
@@ -613,29 +494,23 @@ extension UserSettingsViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.delegate?.defaultContentStatusBar()
+        self.defaultContentStatusBar()
         self.scrollView.setContentOffset(.zero, animated: true)
         UIView.animate(withDuration: animationIn) {
             self.profileImageView.alpha = 1
             self.backgroundCircle.alpha = 1
             self.stars.alpha = 1
             self.starLabel.alpha = 1
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.backButton.tintColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.DARK_GRAY
         }
     }
     
     func scrollMinimized() {
-        self.delegate?.lightContentStatusBar()
+        self.lightContentStatusBar()
         UIView.animate(withDuration: animationIn) {
             self.profileImageView.alpha = 0
             self.backgroundCircle.alpha = 0
             self.stars.alpha = 0
             self.starLabel.alpha = 0
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
         }
     }
     
@@ -708,8 +583,7 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
         }
         dismiss(animated: true) {
             self.view.layoutIfNeeded()
-            self.delegate?.defaultContentStatusBar()
-            self.backButton.tintColor = Theme.DARK_GRAY
+            self.defaultContentStatusBar()
         }
     }
     
@@ -738,6 +612,34 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
         //First get the nsObject by defining as an optional anyObject
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.versionLabel.text = "Ver. " + version
+        }
+    }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
+            self.gradientContainer.backgroundColor = Theme.BLACK
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultContentStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.BLACK
+            self.mainLabel.textColor = Theme.BLACK
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
         }
     }
     

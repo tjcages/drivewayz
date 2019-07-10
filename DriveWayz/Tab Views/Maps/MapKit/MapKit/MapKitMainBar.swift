@@ -183,7 +183,7 @@ extension MapKitViewController: mainBarSearchDelegate {
     
     func bringMainBar() {
         if let userLocation = locationManager.location {
-            let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+            let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
             self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
         }
         self.mainBarTopAnchor.constant = 354
@@ -333,11 +333,7 @@ extension MapKitViewController: mainBarSearchDelegate {
     }
     
     func becomeANewHost() {
-        self.delegate?.moveToProfile()
         self.delegate?.bringNewHostingController()
-        delayWithSeconds(1) {
-            self.delegate?.lightContentStatusBar()
-        }
     }
     
     func monitorCoupons() {

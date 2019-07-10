@@ -8,7 +8,7 @@
 
 import UIKit
 import GoogleSignIn
-import FirebaseInvites
+//import FirebaseInvites
 
 class ParkingCouponViewController: UIViewController {
     
@@ -258,7 +258,7 @@ extension ParkingCouponViewController: UITextFieldDelegate {
 }
 
 
-extension ParkingCouponViewController: GIDSignInUIDelegate, InviteDelegate, GIDSignInDelegate {
+extension ParkingCouponViewController: GIDSignInUIDelegate, GIDSignInDelegate {
     
     @objc func inviteNewUser() {
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -304,15 +304,15 @@ extension ParkingCouponViewController: GIDSignInUIDelegate, InviteDelegate, GIDS
                                                        accessToken: authentication.accessToken)
         guard let prevUser = Auth.auth().currentUser else {return}
         prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
-            if let invite = Invites.inviteDialog() {
-                invite.setInviteDelegate(self)
-                
-                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n\n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
-                invite.setTitle("Drivewayz")
-                //            invite.setDeepLink("app_url")
-                invite.setCallToActionText("Install!")
-                invite.open()
-            }
+//            if let invite = Invites.inviteDialog() {
+//                invite.setInviteDelegate(self)
+//                
+//                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n\n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
+//                invite.setTitle("Drivewayz")
+//                //            invite.setDeepLink("app_url")
+//                invite.setCallToActionText("Install!")
+//                invite.open()
+//            }
         }
     }
     

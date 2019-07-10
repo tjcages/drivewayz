@@ -601,6 +601,7 @@ extension LocationParkingViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        self.locationsSearchResults.view.alpha = 0
         if textField == countryField {
             if textField.text == "" {
                 textField.text = "United States"

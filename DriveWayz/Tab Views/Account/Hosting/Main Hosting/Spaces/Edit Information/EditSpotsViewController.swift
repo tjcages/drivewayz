@@ -9,8 +9,6 @@
 import UIKit
 
 class EditSpotsViewController: UIViewController {
-
-    var delegate: handleHostEditing?
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
@@ -23,10 +21,10 @@ class EditSpotsViewController: UIViewController {
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit the parking availability"
+        label.text = "Parking info"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -161,11 +159,11 @@ class EditSpotsViewController: UIViewController {
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.closeSpots()
+        self.navigationController?.popViewController(animated: true)
     }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.delegate?.closeSpots()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }

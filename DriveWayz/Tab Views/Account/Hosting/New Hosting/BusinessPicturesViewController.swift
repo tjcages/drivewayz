@@ -17,12 +17,26 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     var lattitude: Double = 1.0
     var longitude: Double = 1.0
     
+    var imageNumber: Int = 2
+    var imagesTaken: Int = 0
+    
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
         
         return view
+    }()
+    
+    var informationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.font = Fonts.SSPLightH5
+        label.numberOfLines = 2
+        label.text = "Any parking images will not be shown until a driver has booked the space"
+        
+        return label
     }()
     
     var additionalLabel: UILabel = {
@@ -345,6 +359,12 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         spotRemove4.widthAnchor.constraint(equalToConstant: 30).isActive = true
         spotRemove4.heightAnchor.constraint(equalTo: spotRemove4.widthAnchor).isActive = true
         
+        scrollView.addSubview(informationLabel)
+        informationLabel.topAnchor.constraint(equalTo: addAnImageButton4.bottomAnchor, constant: 16).isActive = true
+        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        informationLabel.sizeToFit()
+        
         scrollView.addSubview(checkmark)
         
         self.view.addSubview(drawController.view)
@@ -410,6 +430,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     }
     
     @objc func removeImagePressed(sender: UIButton) {
+        self.imagesTaken -= 1
         let image = UIImage(named: "addImageIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         UIView.animate(withDuration: animationIn) {
@@ -494,6 +515,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     }
     
     func confirmedImage(image: UIImage) {
+        self.imagesTaken += 1
         self.currentButton?.setImage(image, for: .normal)
         self.currentButton?.imageEdgeInsets = UIEdgeInsets.zero
         self.configureExited()

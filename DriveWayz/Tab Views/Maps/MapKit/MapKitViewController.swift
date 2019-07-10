@@ -528,7 +528,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var drivewayzNewMessageButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.PRUSSIAN_BLUE
+        button.backgroundColor = Theme.DARK_GRAY
         button.layer.cornerRadius = 20
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
         button.layer.shadowOffset = CGSize(width: 1, height: 1)

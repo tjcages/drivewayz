@@ -141,11 +141,11 @@ extension MapKitViewController {
         if let closestParking = closeParkingSpots.first {
             bookingSpots.append(closestParking)
             closeParkingSpots.remove(at: 0)
-            if let cheapIndex = cheapestParkingSpots.index(of: closestParking) {
+            if let cheapIndex = cheapestParkingSpots.firstIndex(of: closestParking) {
                 cheapestParkingSpots.remove(at: cheapIndex)
                 if let cheapestParking = cheapestParkingSpots.first {
                     bookingSpots.append(cheapestParking)
-                    if let closeIndex = closeParkingSpots.index(of: cheapestParking) {
+                    if let closeIndex = closeParkingSpots.firstIndex(of: cheapestParking) {
                         closeParkingSpots.remove(at: closeIndex)
                         for parking in closeParkingSpots {
                             bookingSpots.append(parking)

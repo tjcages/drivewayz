@@ -48,7 +48,7 @@ extension UserHostingViewController {
         self.monitorCurrentReservation(parking: parking)
         self.bookingsController.reservationsTableContainer.setData(parking: parking)
         self.notificationsController.notificationsContainer.setData(parking: parking)
-        self.spacesController.hostingExpandedContainer.setData(hosting: parking)
+        self.spacesController.expandedController.setData(hosting: parking)
         self.spacesController.hostContainer.setData(parking: parking)
     }
     
@@ -133,7 +133,7 @@ extension UserHostingViewController {
                 let profit = price * hours * 0.75
                 let date = Date(timeIntervalSince1970: timestamp)
                 let stringDate = formatter.string(from: date)
-                if let index = self.stringDates.index(of: stringDate) {
+                if let index = self.stringDates.firstIndex(of: stringDate) {
                     let value = self.dateProfits[index] + profit
                     self.dateProfits.insert(value, at: index)
                     self.dateProfits.remove(at: index + 1)

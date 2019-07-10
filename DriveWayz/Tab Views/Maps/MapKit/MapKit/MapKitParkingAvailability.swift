@@ -82,7 +82,7 @@ extension MapKitViewController {
     
     func openMessages() {
         self.vehicleDelegate?.openAccountView()
-        self.vehicleDelegate?.bringMessagesController()
+//        self.vehicleDelegate?.bringMessagesController()
     }
     
 }

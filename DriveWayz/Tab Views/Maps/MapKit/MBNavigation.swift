@@ -206,7 +206,7 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
                                 self.mapView.isRotateEnabled = true
                                 self.mapView.isPitchEnabled = true
                                 self.mapView.resetNorth()
-                                let camera = MGLMapCamera(lookingAtCenter: parkingCoordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+                                let camera = MGLMapCamera(lookingAtCenter: parkingCoordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
                                 self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
                                 delayWithSeconds(animationOut * 2) {
                                     self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 48, bottom: 300, right: 48), animated: true)

@@ -14,7 +14,6 @@ class EventCell: UICollectionViewCell {
     
     var image: UIImage? {
         didSet {
-            self.eventLabel.sizeToFit()
             image?.getColors({ (colors) in
                 let primaryString = "\(String(describing: colors?.primary))"
                 let values = primaryString.replacingOccurrences(of: "Optional(UIExtendedSRGBColorSpace ", with: "", options: .literal, range: nil)
@@ -80,17 +79,13 @@ class EventCell: UICollectionViewCell {
         return dark
     }()
     
-    let eventLabel: UITextView = {
-        let label = UITextView()
-        label.textAlignment = .left
-        label.isScrollEnabled = false
+    let eventLabel: UILabel = {
+        let label = UILabel()
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
         label.text = "Event"
-        label.isEditable = false
-        label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.clear
+        label.numberOfLines = 2
         
         return label
     }()
@@ -123,7 +118,7 @@ class EventCell: UICollectionViewCell {
         addSubview(cellView)
         cellView.addSubview(backgroundImageView)
         backgroundImageView.addSubview(darkView)
-        cellView.addSubview(eventLabel)
+        self.addSubview(eventLabel)
         cellView.addSubview(date)
         
         cellView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -146,11 +141,10 @@ class EventCell: UICollectionViewCell {
         date.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8).isActive = true
         date.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        eventLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 12).isActive = true
-        eventLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -12).isActive = true
-        eventLabel.bottomAnchor.constraint(equalTo: date.topAnchor, constant: 6).isActive = true
+        eventLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12).isActive = true
+        eventLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        eventLabel.bottomAnchor.constraint(equalTo: date.topAnchor, constant: -6).isActive = true
         eventLabel.sizeToFit()
-//        eventLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
     }
     

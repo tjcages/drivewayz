@@ -31,7 +31,7 @@ extension MapKitViewController {
         if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
             self.mapView.setCenter(location, zoomLevel: 14, animated: true)
             self.mapView.userTrackingMode = .follow
-            let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+            let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
             self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2)) {
                 self.mapView.isPitchEnabled = false
             }

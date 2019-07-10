@@ -32,7 +32,7 @@ class PickCostViewController: UIViewController {
     var costTextField: UITextField = {
         let label = UITextField()
         label.text = ""
-        label.attributedPlaceholder = NSAttributedString(string: "$0.00",
+        label.attributedPlaceholder = NSAttributedString(string: " $ 0.00",
                                                          attributes: [NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY.withAlphaComponent(0.5)])
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,6 +62,18 @@ class PickCostViewController: UIViewController {
         button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
         
         return button
+    }()
+    
+    var standardLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.font = Fonts.SSPLightH5
+        label.numberOfLines = 2
+        label.text = "The standard rate will maximize your profitability while providing competitively priced parking"
+        label.textAlignment = .center
+        
+        return label
     }()
 
     override func viewDidLoad() {
@@ -102,6 +114,12 @@ class PickCostViewController: UIViewController {
         dynamicPriceButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
         dynamicPriceButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
+        self.view.addSubview(standardLabel)
+        standardLabel.topAnchor.constraint(equalTo: dynamicPriceButton.bottomAnchor, constant: 32).isActive = true
+        standardLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        standardLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        standardLabel.sizeToFit()
+        
     }
     
     func configureCustomPricing(state: String, city: String) {
@@ -118,7 +136,7 @@ class PickCostViewController: UIViewController {
                     if let average = dictionary["Standard"] as? Double {
                         let costValue = NSString(format: "%.2f", average) as String
                         self.dynamicPrice = average
-                        self.dynamicPriceButton.setTitle("Set standard rate: $\(costValue)", for: .normal)
+                        self.dynamicPriceButton.setTitle("Set standard rate: $ \(costValue)", for: .normal)
                     }
                 }
             }

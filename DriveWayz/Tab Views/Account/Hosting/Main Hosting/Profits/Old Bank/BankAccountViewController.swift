@@ -846,7 +846,7 @@ class BankAccountViewController: UIViewController, UITextFieldDelegate, UIScroll
     }
     
     @objc func dismissDetails(sender: UIButton) {
-        self.delegate?.hideBankAccountController()
+//        self.delegate?.hideBankAccountController()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

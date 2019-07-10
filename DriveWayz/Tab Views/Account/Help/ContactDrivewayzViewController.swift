@@ -14,6 +14,38 @@ class ContactDrivewayzViewController: UIViewController {
     var context: String = "Help"
     var confirmedIDs: [String] = []
     
+    lazy var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.DARK_GRAY
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Contact Drivewayz"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH1
+        
+        return label
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -85,8 +117,36 @@ class ContactDrivewayzViewController: UIViewController {
     
     func setupViews() {
         
+        self.view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        case .iphoneX:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        }
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
+        
         self.view.addSubview(informationLabel)
-        informationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16).isActive = true
+        informationLabel.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 16).isActive = true
         informationLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -167,6 +227,7 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
                     
                     self.view.endEditing(true)
                     self.createSimpleAlert(title: "Sent!", message: "")
+                    self.backButtonPressed()
                     self.message.text = ""
                     self.sendButton.alpha = 1.0
                     self.sendButton.isUserInteractionEnabled = true
@@ -271,10 +332,6 @@ extension ContactDrivewayzViewController: UITextViewDelegate {
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
     func createSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         if message != "" {
@@ -286,6 +343,18 @@ extension ContactDrivewayzViewController: UITextViewDelegate {
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }

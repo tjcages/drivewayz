@@ -19,11 +19,14 @@
   "ios": {
     "dependencies": {
       "Firebase/Database": [
-        "~> 5.0"
+        "~> 6.0"
       ]
     }
   },
-  "frameworks": "CoreLocation",
+  "frameworks": [
+    "CoreLocation",
+    "FirebaseDatabase"
+  ],
   "requires_arc": true,
   "static_framework": true
 }

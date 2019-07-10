@@ -164,9 +164,6 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         UIView.animate(withDuration: animationOut, animations: {
             self.backButton.alpha = 0
         }) { (success) in
-            UIView.animate(withDuration: animationOut) {
-                self.moveDelegate?.bringExitButton()
-            }
         }
     }
     
@@ -286,7 +283,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
             UIView.animate(withDuration: animationIn, animations: {
                 self.messagesAnchor.constant = -self.view.frame.width/2
                 self.currentMessagesAnchor.constant = 0
-                self.moveDelegate?.hideExitButton()
+                self.moveDelegate?.dismissActiveController()
                 self.backButton.alpha = 1
                 self.view.layoutIfNeeded()
             }) { (success) in

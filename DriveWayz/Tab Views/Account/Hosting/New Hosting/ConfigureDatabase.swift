@@ -40,20 +40,20 @@ extension ConfigureParkingViewController {
         let saturdayUnavailable = self.scheduleController.selectedSaturdays
         let sundayUnavailable = self.scheduleController.selectedSundays
         
-        let mondayFromTimes = self.timesController.mondayFrom
-        let mondayToTimes = self.timesController.mondayTo
-        let tuesdayFromTimes = self.timesController.tuesdayFrom
-        let tuesdayToTimes = self.timesController.tuesdayTo
-        let wednesdayFromTimes = self.timesController.wednesdayFrom
-        let wednesdayToTimes = self.timesController.wednesdayTo
-        let thursdayFromTimes = self.timesController.thursdayFrom
-        let thursdayToTimes = self.timesController.thursdayTo
-        let fridayFromTimes = self.timesController.fridayFrom
-        let fridayToTimes = self.timesController.fridayTo
-        let saturdayFromTimes = self.timesController.saturdayFrom
-        let saturdayToTimes = self.timesController.saturdayTo
-        let sundayFromTimes = self.timesController.sundayFrom
-        let sundayToTimes = self.timesController.sundayTo
+        let mondayFromTimes = self.timesController.mondayAvailabilityController.selectedFromTime
+        let mondayToTimes = self.timesController.mondayAvailabilityController.selectedToTime
+        let tuesdayFromTimes = self.timesController.tuesdayAvailabilityController.selectedFromTime
+        let tuesdayToTimes = self.timesController.tuesdayAvailabilityController.selectedToTime
+        let wednesdayFromTimes = self.timesController.wednesdayAvailabilityController.selectedFromTime
+        let wednesdayToTimes = self.timesController.wednesdayAvailabilityController.selectedToTime
+        let thursdayFromTimes = self.timesController.thursdayAvailabilityController.selectedFromTime
+        let thursdayToTimes = self.timesController.thursdayAvailabilityController.selectedToTime
+        let fridayFromTimes = self.timesController.fridayAvailabilityController.selectedFromTime
+        let fridayToTimes = self.timesController.fridayAvailabilityController.selectedToTime
+        let saturdayFromTimes = self.timesController.saturdayAvailabilityController.selectedFromTime
+        let saturdayToTimes = self.timesController.saturdayAvailabilityController.selectedToTime
+        let sundayFromTimes = self.timesController.sundayAvailabilityController.selectedFromTime
+        let sundayToTimes = self.timesController.sundayAvailabilityController.selectedToTime
         
         var parkingCost = self.costsController.costTextField.text?.replacingOccurrences(of: "$", with: "")
         parkingCost = parkingCost!.replacingOccurrences(of: " ", with: "")
@@ -168,10 +168,12 @@ extension ConfigureParkingViewController {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.confirmController.endLoading()
-                            self.delegate?.hideNewHostingController()
-                            self.delegate?.bringHostingController()
-                            self.moveDelegate?.defaultContentStatusBar()
-                            self.containerHeightAnchor.constant = 120
+//                            self.delegate?.hideNewHostingController()
+                            self.dismiss(animated: true, completion: {
+                                self.delegate?.bringHostingController()
+                                self.moveDelegate?.defaultContentStatusBar()
+                                self.containerHeightAnchor.constant = 120
+                            })
                         }
                     }
                 }
@@ -453,7 +455,7 @@ extension ConfigureParkingViewController {
             UIView.animate(withDuration: 1, animations: {
             }, completion: nil)
             
-            self.delegate?.hideNewHostingController()
+//            self.delegate?.hideNewHostingController()
             self.delegate?.bringHostingController()
             self.view.layoutIfNeeded()
             self.activityIndicatorParkingView.stopAnimating()

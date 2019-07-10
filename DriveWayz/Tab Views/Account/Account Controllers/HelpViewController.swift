@@ -39,10 +39,24 @@ class HelpViewController: UIViewController, handleHelpControllers {
         return label
     }()
     
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -77,19 +91,6 @@ class HelpViewController: UIViewController, handleHelpControllers {
         return controller
     }()
     
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "arrow")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0
-        button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var contactGraphic: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -118,13 +119,15 @@ class HelpViewController: UIViewController, handleHelpControllers {
         
         scrollView.delegate = self
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(bringBackMain))
-        swipeGesture.direction = .right
-        view.addGestureRecognizer(swipeGesture)
-        
         setupViews()
         setupControllers()
         setupTopbar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 1
+        }
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
@@ -139,6 +142,17 @@ class HelpViewController: UIViewController, handleHelpControllers {
         backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
         backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
         backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
         
         self.view.addSubview(contactGraphic)
         contactGraphic.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -225,45 +239,11 @@ class HelpViewController: UIViewController, handleHelpControllers {
         
     }
     
-    @objc func backButtonPressed(sender: UIButton) {
-        self.view.endEditing(true)
-        self.bringBackMain()
-    }
-    
-    @objc func bringBackMain() {
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.mainLabel.text = ""
-            self.delegate?.hideExitButton()
-            self.contactDrivewayzAnchor.constant = self.view.frame.width
-            self.backButton.alpha = 0
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.backButton.tintColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.DARK_GRAY
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.bringExitButton()
-            self.delegate?.defaultContentStatusBar()
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Help"
-            }, completion: nil)
-        }
-    }
-    
     func moveToContact() {
-        UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-            self.mainLabel.text = ""
-            self.delegate?.hideExitButton()
-            self.backButton.alpha = 1
-            self.contactDrivewayzAnchor.constant = 0
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-            UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.mainLabel.text = "Contact Drivewayz"
-            }, completion: nil)
+        let controller = ContactDrivewayzViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 0
         }
     }
     
@@ -338,6 +318,13 @@ extension HelpViewController: UIScrollViewDelegate {
             self.gradientContainer.backgroundColor = Theme.DARK_GRAY
             self.backButton.tintColor = Theme.WHITE
             self.mainLabel.textColor = Theme.WHITE
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
+            self.backButton.alpha = 0
         }
     }
     

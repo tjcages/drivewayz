@@ -71,7 +71,7 @@ class MySpotsViewController: UIViewController {
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -478,7 +478,7 @@ class MySpotsViewController: UIViewController {
         self.notificiationHeightAnchor.constant = self.notificationsContainer.notificationsTableView.contentSize.height
         self.scrollView.setContentOffset(.zero, animated: true)
         self.notificationsContainer.notificationsTableView.reloadData()
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
             self.mainLabel.text = ""
             self.profitsContainer.view.alpha = 0
@@ -507,7 +507,6 @@ class MySpotsViewController: UIViewController {
             self.backButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.delegate?.bringExitButton()
             UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainLabel.text = "Hosted spaces"
                 self.profitsContainer.view.alpha = 1
@@ -572,7 +571,6 @@ extension MySpotsViewController: handleHostingReservations {
         }) { (success) in
             self.scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: true)
             self.delegate?.defaultContentStatusBar()
-            self.delegate?.bringExitButton()
             UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
                 self.mainLabel.text = "Hosted spaces"
                 self.mainLabel.alpha = 1
@@ -592,7 +590,7 @@ extension MySpotsViewController: handleHostingReservations {
         if self.profitsHeightAnchor.constant == 168 {
             self.profitsHeightAnchor.constant = 96
             self.profitsDateTopAnchor.constant = 12
-            self.delegate?.hideExitButton()
+            self.delegate?.dismissActiveController()
             UIView.animate(withDuration: animationOut, animations: {
                 self.reservationsContainer.view.alpha = 0
                 self.notificationsLabel.alpha = 0
@@ -623,7 +621,6 @@ extension MySpotsViewController: handleHostingReservations {
                 self.profitsEarningsContainer.view.alpha = 0
                 self.view.layoutIfNeeded()
             }) { (success) in
-                self.delegate?.bringExitButton()
                 UIView.animate(withDuration: animationIn, animations: {
                     self.reservationsContainer.view.alpha = 1
                     self.notificationsLabel.alpha = 1
@@ -639,7 +636,7 @@ extension MySpotsViewController: handleHostingReservations {
     @objc func expandReservationsContainer() {
         if self.reservationsTopAnchor.constant == phoneHeight {
             self.reservationsTopAnchor.constant = 0
-            self.delegate?.hideExitButton()
+            self.delegate?.dismissActiveController()
             self.scrollView.setContentOffset(.zero, animated: true)
             UIView.animate(withDuration: animationOut, animations: {
                 self.mainLabel.alpha = 0
@@ -664,7 +661,7 @@ extension MySpotsViewController: handleHostingReservations {
         self.hostingPreviousContainer.setData(booking: booking, parking: parking)
         self.hostingPreviousTopAnchor.constant = -statusHeight
         self.delegate?.defaultContentStatusBar()
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         UIView.animate(withDuration: animationOut) {
             self.backButton.alpha = 0
             self.hostingPreviousContainer.view.alpha = 1
@@ -683,7 +680,7 @@ extension MySpotsViewController: handleHostingReservations {
     
     @objc func hostingExpandedPressed() {
         self.hostingExpandedTopAnchor.constant = -statusHeight
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         self.scrollView.isScrollEnabled = false
         UIView.animate(withDuration: animationOut) {
             self.profitsContainer.view.alpha = 0
@@ -713,7 +710,6 @@ extension MySpotsViewController: handleHostingReservations {
             self.hostingExpandedContainer.view.alpha = 0
             self.view.layoutIfNeeded()
         }
-        self.delegate?.bringExitButton()
     }
     
     func openCurrentReservation() {

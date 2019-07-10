@@ -8,11 +8,43 @@
 
 import UIKit
 
-class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     
     var activeTextField = UITextField()
     var delegate: handleChangeVehicle?
     var selectedKey: String = ""
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Your vehicles"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH1
+        
+        return label
+    }()
+    
+    lazy var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.DARK_GRAY
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -244,26 +276,59 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
+        
+        self.title = "Your vehicles"
         
         vehicleMakeLabel.delegate = self
         vehicleModelLabel.delegate = self
         vehicleYearLabel.delegate = self
         vehicleLicenseLabel.delegate = self
-        scrollView.delegate = self
         
         setupViews()
         createToolbar()
     }
     
+    var gradientHeightAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 740)
+        self.view.addSubview(gradientContainer)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 800)
         scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+            gradientHeightAnchor.isActive = true
+        case .iphoneX:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
+            gradientHeightAnchor.isActive = true
+        }
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         scrollView.addSubview(detailLabel)
         detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -380,7 +445,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.currentButton.setTitle("Confirm vehicle", for: .normal)
         self.currentButton.setTitleColor(Theme.BLUE, for: .normal)
         self.detailLabel.text = "Enter details"
-        self.doneButton.title = "Next"
+        self.doneButton?.title = "Next"
         self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -399,7 +464,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.currentButton.setTitle("Make current vehicle", for: .normal)
         self.currentButton.setTitleColor(Theme.BLACK, for: .normal)
         self.detailLabel.text = "Details"
-        self.doneButton.title = "Done"
+        self.doneButton?.title = "Done"
         self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -410,7 +475,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         self.vehicleLicenseLabel.isUserInteractionEnabled = false
     }
     
-    var doneButton: UIBarButtonItem!
+    var doneButton: UIBarButtonItem?
     
     func createToolbar() {
         let toolBar = UIToolbar()
@@ -421,10 +486,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
         toolBar.layer.borderWidth = 0.5
         
         doneButton = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(moveToNext))
-        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
+        doneButton?.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         
-        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.setItems([flexibleSpace, doneButton!], animated: false)
         toolBar.isUserInteractionEnabled = true
         
         self.vehicleMakeLabel.inputAccessoryView = toolBar
@@ -434,7 +499,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     }
     
     @objc func moveToNext() {
-        if doneButton.title == "Done" {
+        if doneButton?.title == "Done" {
             self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
             self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
             self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
@@ -505,7 +570,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     }
     
     @objc func handleCurrentButtonPressed() {
-        self.delegate?.bringBackMain()
+        self.backButtonPressed()
         let timestamp = Date().timeIntervalSince1970
         if let userID = Auth.auth().currentUser?.uid {
             let userRef = Database.database().reference().child("users").child(userID)
@@ -535,15 +600,40 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate, UIScr
     }
     
     @objc func deleteVehiclePressed() {
-        self.delegate?.bringBackMain()
-        if let userID = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child("users").child(userID).child("Vehicles").child(selectedKey)
-            ref.removeValue()
-            let vehicleRef = Database.database().reference().child("UserVehicles").child(selectedKey)
-            vehicleRef.removeValue()
+        if let vehicleMake = self.vehicleMakeLabel.text, let vehicleModel = self.vehicleModelLabel.text, let vehicleYear = self.vehicleYearLabel.text {
+            let vehicle = "\(vehicleYear) \(vehicleMake) \(vehicleModel)"
+            let alert = UIAlertController(title: "Are you sure?", message: "Delete \(vehicle)", preferredStyle: .alert)
             
-            self.scrollView.setContentOffset(.zero, animated: true)
+            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (success) in
+                self.backButtonPressed()
+                if let userID = Auth.auth().currentUser?.uid {
+                    let ref = Database.database().reference().child("users").child(userID).child("Vehicles").child(self.selectedKey)
+                    ref.removeValue()
+                    let vehicleRef = Database.database().reference().child("UserVehicles").child(self.selectedKey)
+                    vehicleRef.removeValue()
+                    
+                    self.scrollView.setContentOffset(.zero, animated: true)
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            self.present(alert, animated: true)
         }
     }
 
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+}
+
+
+extension CurrentVehicleViewController: UINavigationControllerDelegate {
+    
+    
+    
 }

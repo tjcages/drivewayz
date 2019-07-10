@@ -10,8 +10,6 @@ import UIKit
 
 class EditCalendarViewController: UIViewController {
     
-    var delegate: handleHostEditing?
-    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
@@ -23,10 +21,10 @@ class EditCalendarViewController: UIViewController {
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit the parking availability"
+        label.text = "Parking availability"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -270,7 +268,7 @@ class EditCalendarViewController: UIViewController {
                     unavailableSaturday.setValue(saturdayUnavailable)
                     unavailableSunday.setValue(sundayUnavailable)
                     
-                    self.delegate?.closeCalendar()
+                    self.navigationController?.popViewController(animated: true)
                     delayWithSeconds(animationOut * 2, completion: {
                         self.nextButton.alpha = 1
                         self.nextButton.isUserInteractionEnabled = true
@@ -282,11 +280,15 @@ class EditCalendarViewController: UIViewController {
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.closeCalendar()
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.delegate?.closeCalendar()
+        self.navigationController?.popViewController(animated: true)
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 }

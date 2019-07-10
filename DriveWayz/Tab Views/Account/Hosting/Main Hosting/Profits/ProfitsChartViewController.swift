@@ -228,7 +228,7 @@ class ProfitsChartViewController: UIViewController {
     @objc func dateTapped(sender: UIButton) {
         self.removeAllCenterConstraints()
         guard let date = sender.titleLabel?.text else { return }
-        if let index = self.currentDates.index(of: date) {
+        if let index = self.currentDates.firstIndex(of: date) {
             let profit = self.currentProfits[index]
             self.profitsLabel.text = String(format:"$%.02f", profit)
             let dateArray = date.split(separator: ",")

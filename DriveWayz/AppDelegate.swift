@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
-import FirebaseInvites
+//import FirebaseInvites
 import GoogleSignIn
 import GoogleMaps
 import GooglePlaces
@@ -114,22 +114,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let stripeHandled = Stripe.handleURLCallback(with: url)
         if (stripeHandled) {
             return true
-        }
-        else {
-            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
-        }
-    }
-    
-    func application(_ application: UIApplication,
-                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        if GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation) {
-            return true
-        }
-        
-        return Invites.handleUniversalLink(url) { invite, error in
-            // ...
+        } else {
+            return false
+//            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
         }
     }
+//
+//    func application(_ application: UIApplication,
+//                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        if GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation) {
+//            return true
+//        }
+//        
+//        return Invites.handleUniversalLink(url) { invite, error in
+//            // ...
+//        }
+//    }
     
     // This method is where you handle URL opens if you are using univeral link URLs (eg "https://example.com/stripe_ios_callback")
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {

@@ -18,6 +18,39 @@ class AboutUsViewController: UIViewController {
     var optionsColorsBottom: [UIColor] = [Theme.DarkOrange, Theme.DarkTeal]
     var optionsIcons: [UIImage] = [UIImage(named: "settingsAbout")!, UIImage(named: "settingsAbout")!]
     
+    var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.DARK_GRAY
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "About us"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH1
+        label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        return label
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var optionsTableView: UITableView = {
         let view = UITableView()
         view.backgroundColor = UIColor.clear
@@ -42,14 +75,64 @@ class AboutUsViewController: UIViewController {
         setupViews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 1
+        }
+    }
+    
     func setupViews() {
         
+        self.view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        case .iphoneX:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        }
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        
         self.view.addSubview(optionsTableView)
-        optionsTableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12).isActive = true
+        optionsTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
         
+    }
+    
+    func moveToTerms() {
+        let controller = DrivewayzTermsViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 0
+        }
+    }
+    
+    func moveToPrivacy() {
+        let controller = DrivewayzPrivacyViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.mainLabel.alpha = 0
+        }
     }
     
 }
@@ -99,11 +182,19 @@ extension AboutUsViewController: UITableViewDelegate, UITableViewDataSource {
         if options.count > indexPath.row {
             let title = options[indexPath.row]
             if title == "Terms & Conditions" {
-                self.delegate?.moveToTerms()
+                self.moveToTerms()
             } else if title == "Privacy Policy" {
-                self.delegate?.moveToPrivacy()
+                self.moveToPrivacy()
             }
         }
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }

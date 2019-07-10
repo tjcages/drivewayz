@@ -269,7 +269,7 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
             self.containerAnchor.constant = -self.view.frame.width/2
             self.backButton.alpha = 1
             self.allParkingAnchor.constant = 0
-            self.moveDelegate?.hideExitButton()
+            self.moveDelegate?.dismissActiveController()
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {
@@ -294,7 +294,6 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
                 self.containerAnchor.constant = 0
                 self.backButton.alpha = 0
                 self.allParkingAnchor.constant = self.view.frame.width
-                self.moveDelegate?.bringExitButton()
                 self.containerHeightAnchor.constant = 160
                 self.view.layoutIfNeeded()
             }) {(success) in
@@ -369,11 +368,11 @@ class MainHostViewController: UIViewController, UIScrollViewDelegate, handleHost
     }
     
     func hideHostingController() {
-        self.delegate?.hideHostingController()
+//        self.delegate?.hideHostingController()
     }
     
     func bringNewHostingController() {
-        self.delegate?.hideHostingController()
+//        self.delegate?.hideHostingController()
         self.delegate?.bringNewHostingController()
         delayWithSeconds(2) {
             self.scrollView.setContentOffset(.zero, animated: false)

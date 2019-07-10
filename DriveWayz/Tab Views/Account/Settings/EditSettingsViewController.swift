@@ -12,6 +12,38 @@ class EditSettingsViewController: UIViewController {
     
     var delegate: changeSettingsHandler?
     
+    var gradientContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.DARK_GRAY
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Edit Account"
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPBoldH1
+        
+        return label
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var detailLabel: UILabel = {
         let label = UILabel()
         label.text = "Details"
@@ -78,11 +110,39 @@ class EditSettingsViewController: UIViewController {
     }
     
     func setupViews() {
+        
+        self.view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        case .iphoneX:
+            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        }
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
      
         self.view.addSubview(detailLabel)
         detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
         detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        detailLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24).isActive = true
+        detailLabel.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
         detailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(subDetailLabel)
@@ -111,7 +171,7 @@ class EditSettingsViewController: UIViewController {
     
     @objc func updateButtonPressed() {
         self.view.endEditing(true)
-        self.delegate?.bringBackMain()
+        self.navigationController?.popViewController(animated: true)
         if let title = detailLabel.text, let message = subDetailLabel.text, let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID)
             if title == "Email" {
@@ -170,6 +230,14 @@ extension EditSettingsViewController: UITextFieldDelegate {
             number = number.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "($1) $2-$3", options: .regularExpression, range: range)
         }
         return number
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }

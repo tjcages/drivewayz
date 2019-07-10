@@ -294,7 +294,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                         UIView.animate(withDuration: animationIn, animations: {
                             self.view.alpha = 0
                         }) { (success) in
-                            self.delegate?.hideCouponsController()
+//                            self.delegate?.hideCouponsController()
                         }
                     } else {
                         let ref = Database.database().reference().child("users").child(currentUser)
@@ -334,7 +334,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
                                         }
                                     }
                                     
-                                    self.delegate?.hideCouponsController()
+//                                    self.delegate?.hideCouponsController()
                                 } else {
                                     self.sendAlert(title: "Not quite!", message: "You must first become a host by signing up your parking space.")
                                 }
@@ -352,7 +352,7 @@ class CouponsViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     
     @objc func backPressed(sender: UIButton) {
-        self.delegate?.hideCouponsController()
+//        self.delegate?.hideCouponsController()
 //        UIView.animate(withDuration: animationIn, animations: {
 //            self.view.alpha = 0
 //        }) { (success) in

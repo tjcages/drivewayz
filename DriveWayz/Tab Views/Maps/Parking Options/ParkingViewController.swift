@@ -437,7 +437,7 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
         self.closeCellAtIndex(index: percentage - 1)
         self.closeCellAtIndex(index: percentage + 1)
         if let latitude = self.selectedParkingSpot?.latitude, let longitude = self.selectedParkingSpot?.longitude {
-            let location = CLLocation(latitude: latitude as! CLLocationDegrees, longitude: longitude as! CLLocationDegrees)
+            let location = CLLocation(latitude: latitude , longitude: longitude )
             self.parkingDelegate?.drawHostPolyline(fromLocation: location)
         }
     }

@@ -332,7 +332,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc func exitAddParking(sender: UIButton) {
-        self.delegate?.hideNewHostingController()
+//        self.delegate?.hideNewHostingController()
     }
     
     @objc func searchBarSearching() {
@@ -501,7 +501,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
     }
     
     @objc func dismissPano() {
-        self.delegate?.hideNewHostingController()
+//        self.delegate?.hideNewHostingController()
         self.delegate?.bringHostingController()
         self.screenShotView.removeFromSuperview()
     }

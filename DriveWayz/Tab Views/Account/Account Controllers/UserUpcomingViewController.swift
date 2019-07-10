@@ -29,10 +29,24 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         return label
     }()
     
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -59,6 +73,7 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
         
         setupViews()
@@ -91,6 +106,17 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
             mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
         }
         
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
+        
         parkingTableController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         parkingTableController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         parkingTableController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -107,7 +133,6 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
     }
     
     @objc func closeRecentController() {
-        self.delegate?.bringExitButton()
         self.delegate?.defaultContentStatusBar()
         UIView.animate(withDuration: animationOut) {
             self.recentTopAnchor.constant = phoneHeight
@@ -119,10 +144,17 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         self.recentController.setData(booking: booking, region: region, route: route, parking: parking, destination: destination)
         self.recentTopAnchor.constant = -statusHeight
         self.delegate?.defaultContentStatusBar()
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         UIView.animate(withDuration: animationOut) {
             self.recentController.view.alpha = 1
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
+            self.backButton.alpha = 0
         }
     }
     

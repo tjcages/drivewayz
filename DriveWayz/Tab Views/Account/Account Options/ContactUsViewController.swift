@@ -265,7 +265,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
                                 self.accept.alpha = 1
                                 self.accept.isUserInteractionEnabled = true
                             }, completion: nil)
-                            self.delegate?.hideContactUsController()
+//                            self.delegate?.hideContactUsController()
                         }
                     }
                 }
@@ -291,7 +291,7 @@ class ContactUsViewController: UIViewController, UITextViewDelegate, UIScrollVie
     }
 
     @objc func backPressed(sender: UIButton) {
-        self.delegate?.hideContactUsController()
+//        self.delegate?.hideContactUsController()
     }
 
     

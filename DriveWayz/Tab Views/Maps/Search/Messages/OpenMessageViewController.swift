@@ -102,7 +102,7 @@ class OpenMessageViewController: UIViewController {
         messagesDictionaryPrevious.removeAll()
         messagesTableView.reloadData()
 
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.DARK_GRAY
         
         setupViews()
         observeUserMessages()

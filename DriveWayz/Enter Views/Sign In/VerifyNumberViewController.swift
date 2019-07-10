@@ -56,7 +56,7 @@ class VerifyNumberViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH4
-        label.text = "Enter the 6-digit code sent to you at \n+1 (303) 564-4120 via SMS."
+        label.text = "Enter the 6-digit code sent to you at \n+1 (303) 564-4120 via SMS"
         label.numberOfLines = 2
         
         return label

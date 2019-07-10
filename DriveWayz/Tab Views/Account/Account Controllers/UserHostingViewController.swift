@@ -18,6 +18,7 @@ protocol handleHostingControllers {
 class UserHostingViewController: UIViewController {
     
     var delegate: moveControllers?
+    var statusBarColor = false
     
     var userParking: ParkingSpots?
     var userBookings: [Bookings] = [] {
@@ -39,10 +40,24 @@ class UserHostingViewController: UIViewController {
         return view
     }()
     
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.alpha = 0
+        
+        return button
+    }()
+    
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -54,6 +69,7 @@ class UserHostingViewController: UIViewController {
         let controller = HostProfitsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -62,6 +78,7 @@ class UserHostingViewController: UIViewController {
         let controller = HostBookingsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -70,6 +87,7 @@ class UserHostingViewController: UIViewController {
         let controller = HostNotificationsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -78,6 +96,7 @@ class UserHostingViewController: UIViewController {
         let controller = HostSpacesViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -222,6 +241,7 @@ class UserHostingViewController: UIViewController {
         
         scrollView.delegate = self
         
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
 
         setupViews()
@@ -244,6 +264,17 @@ class UserHostingViewController: UIViewController {
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        }
         
     }
     
@@ -418,7 +449,7 @@ extension UserHostingViewController: handleBankTransfers {
     
     @objc func transferAccountFunds(sender: UIButton) {
         self.closeTabBar()
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = false
         self.profitsController.profitsContainer.transferButton.alpha = 0.5
         if let currentUser = Auth.auth().currentUser?.uid {
@@ -427,7 +458,7 @@ extension UserHostingViewController: handleBankTransfers {
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     if let account = dictionary["accountID"] as? String {
                         if let userFunds = dictionary["userFunds"] as? Double {
-                            self.delegate?.hideExitButton()
+                            self.delegate?.dismissActiveController()
                             self.bringTransferCountroller(accountID: account, userFunds: userFunds)
                         } else {
                             self.profitsController.sendAlert(title: "Not yet", message: "You must first earn funds by having users park in your spot before you can transfer money to your account!")
@@ -462,7 +493,6 @@ extension UserHostingViewController: handleBankTransfers {
             self.view.layoutIfNeeded()
         }) { (success) in
             self.openTabBar()
-            self.delegate?.bringExitButton()
             self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = true
             self.profitsController.profitsContainer.transferButton.alpha = 1
             self.delegate?.defaultContentStatusBar()
@@ -492,23 +522,14 @@ extension UserHostingViewController: handleHostingControllers {
         self.spacesController.scrollView.setContentOffset(.zero, animated: true)
     }
     
-    func defaultContentStatusBar() {
-        self.delegate?.defaultContentStatusBar()
-    }
-    
-    func lightContentStatusBar() {
-        self.delegate?.lightContentStatusBar()
-    }
-    
     func bringExitButton() {
         self.scrollView.isScrollEnabled = true
-        self.delegate?.bringExitButton()
         self.openTabBar()
     }
     
     func hideExitButton() {
         self.scrollView.isScrollEnabled = false
-        self.delegate?.hideExitButton()
+        self.delegate?.dismissActiveController()
         self.closeTabBar()
     }
     
@@ -539,6 +560,37 @@ extension UserHostingViewController: UIScrollViewDelegate {
             self.spacesTabButton.tintColor = Theme.BLUE
             self.spacesTabLabel.textColor = Theme.BLUE
             self.resetScrolls()
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
+            self.backButton.alpha = 0
+        }
+    }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.WHITE
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultContentStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.BLACK
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
         }
     }
     

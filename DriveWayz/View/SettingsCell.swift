@@ -106,7 +106,7 @@ class SettingsCell: UITableViewCell {
         subtitleLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         subtitleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
-        paymentButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        paymentButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
         paymentButton.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         paymentButton.sizeToFit()

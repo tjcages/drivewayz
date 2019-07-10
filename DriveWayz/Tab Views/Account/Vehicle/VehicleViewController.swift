@@ -105,7 +105,7 @@ class VehicleViewController: UIViewController, handleNewVehicle {
     }
     
     func bringNewVehicle() {
-        self.delegate?.hideVehicleController()
+//        self.delegate?.hideVehicleController()
     }
     
     func hideNewVehicle() {

@@ -10,7 +10,6 @@ import UIKit
 
 class EditCostViewController: UIViewController {
 
-    var delegate: handleHostEditing?
     var selectedParking: ParkingSpots?
     
     lazy var gradientContainer: UIView = {
@@ -24,10 +23,10 @@ class EditCostViewController: UIViewController {
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit the hourly cost"
+        label.text = "Hourly cost"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -177,16 +176,16 @@ class EditCostViewController: UIViewController {
             let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
             ref.updateChildValues(["parkingCost": Double(parkingCost!) as Any])
             
-            self.delegate?.closeCost()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.closeCost()
+        self.navigationController?.popViewController(animated: true)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
 }

@@ -57,7 +57,7 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH4
-        label.text = "Generate Lorem Ipsum placeholder text for use in your graphic, print."
+        label.text = "Drivewayz will send you a verification code via SMS"
         label.numberOfLines = 2
         
         return label

@@ -9,8 +9,6 @@
 import UIKit
 
 class EditInformationViewController: UIViewController {
-
-    var delegate: handleHostEditing?
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
@@ -23,10 +21,10 @@ class EditInformationViewController: UIViewController {
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Edit the parking availability"
+        label.text = "Parking type"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -116,7 +114,7 @@ class EditInformationViewController: UIViewController {
         self.optionsController.view.alpha = 0
         self.messageController.view.alpha = 0
         self.nextButton.setTitle("Next", for: .normal)
-        self.mainLabel.text = "Edit the parking type"
+        self.mainLabel.text = "Parking type"
     }
     
     func setupViews() {
@@ -214,34 +212,27 @@ class EditInformationViewController: UIViewController {
                     self.messageController.view.alpha = 1
                 })
                 self.nextButton.setTitle("Save", for: .normal)
-                self.mainLabel.text = "Edit the message"
+                self.mainLabel.text = "Parking message"
                 self.view.layoutIfNeeded()
             }
         } else if messageController.view.alpha == 1 {
-            self.delegate?.closeInformation()
+            self.navigationController?.popViewController(animated: true)
             delayWithSeconds(2) {
                 self.typeController.view.alpha = 1
                 self.optionsController.view.alpha = 0
                 self.messageController.view.alpha = 0
                 self.nextButton.setTitle("Next", for: .normal)
-                self.mainLabel.text = "Edit the parking type"
+                self.mainLabel.text = "Parking type"
             }
         }
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
-        self.delegate?.closeInformation()
-        delayWithSeconds(0.6) {
-            self.typeController.view.alpha = 1
-            self.optionsController.view.alpha = 0
-            self.messageController.view.alpha = 0
-            self.nextButton.setTitle("Next", for: .normal)
-            self.mainLabel.text = "Edit the parking type"
-        }
+        self.navigationController?.popViewController(animated: true)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.delegate?.closeInformation()
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
 }

@@ -474,7 +474,7 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath as IndexPath) as! EventCell
-        if collectionView == eventsPicker {
+        if collectionView == eventsPicker && localEvents.count > indexPath.row {
             if localEvents.count == 0 {
                 cell.eventLabel.text = "Event"
                 cell.date.text = ""

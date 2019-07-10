@@ -8,17 +8,10 @@
 
 import UIKit
 
-protocol handleHostEditing {
-    func closeCalendar()
-    func closeInformation()
-    func closeCost()
-    func closeSpots()
-    func closeAmenities()
-}
-
 class HostingExpandedViewController: UIViewController {
     
     var delegate: handleHostingReservations?
+    var statusBarColor = true
     var height: CGFloat = 0
     
     var scrollView: UIScrollView = {
@@ -40,6 +33,7 @@ class HostingExpandedViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -135,40 +129,30 @@ class HostingExpandedViewController: UIViewController {
     
     lazy var editCalendar: EditCalendarViewController = {
         let controller = EditCalendarViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         
         return controller
     }()
     
     lazy var editInformation: EditInformationViewController = {
         let controller = EditInformationViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         
         return controller
     }()
     
     lazy var editCost: EditCostViewController = {
         let controller = EditCostViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         
         return controller
     }()
     
     lazy var editSpots: EditSpotsViewController = {
         let controller = EditSpotsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         
         return controller
     }()
     
     lazy var editAmenities: EditAmenitiesViewController = {
         let controller = EditAmenitiesViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
         
         return controller
     }()
@@ -201,18 +185,14 @@ class HostingExpandedViewController: UIViewController {
             self.gradientLocatingLabel.text = streetAddress
         }
         setupViews()
-        setupEditing()
     }
-    
-    var scrollCenterAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
         self.view.addSubview(scrollView)
-        scrollCenterAnchor = scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-            scrollCenterAnchor.isActive = true
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -statusHeight).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.view.addSubview(backButton)
@@ -294,9 +274,9 @@ class HostingExpandedViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 120).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 76).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 96).isActive = true
         }
         
         gradientContainer.addSubview(gradientLocatingLabel)
@@ -307,154 +287,34 @@ class HostingExpandedViewController: UIViewController {
         
     }
     
-    var calendarEditAnchor: NSLayoutConstraint!
-    var informationEditAnchor: NSLayoutConstraint!
-    var costEditAnchor: NSLayoutConstraint!
-    var spotsEditAnchor: NSLayoutConstraint!
-    var amenitiesEditAnchor: NSLayoutConstraint!
-    
-    func setupEditing() {
-        
-        self.view.addSubview(editCalendar.view)
-        editCalendar.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        calendarEditAnchor = editCalendar.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
-            calendarEditAnchor.isActive = true
-        editCalendar.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editCalendar.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        self.view.addSubview(editInformation.view)
-        editInformation.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        informationEditAnchor = editInformation.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
-            informationEditAnchor.isActive = true
-        editInformation.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editInformation.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        self.view.addSubview(editCost.view)
-        editCost.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        costEditAnchor = editCost.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
-            costEditAnchor.isActive = true
-        editCost.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editCost.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        self.view.addSubview(editSpots.view)
-        editSpots.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        spotsEditAnchor = editSpots.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
-            spotsEditAnchor.isActive = true
-        editSpots.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editSpots.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        self.view.addSubview(editAmenities.view)
-        editAmenities.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: statusHeight).isActive = true
-        amenitiesEditAnchor = editAmenities.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: phoneWidth)
-            amenitiesEditAnchor.isActive = true
-        editAmenities.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        editAmenities.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-    }
-    
 }
 
-extension HostingExpandedViewController: handleHostEditing {
+extension HostingExpandedViewController {
     
     @objc func openCalendar() {
         self.editCalendar.setupPreviousAvailability()
-        self.calendarEditAnchor.constant = 0
-        self.scrollCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-        }
-    }
-    
-    func closeCalendar() {
-        self.calendarEditAnchor.constant = phoneWidth
-        self.scrollCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.checkStatusBar()
-        }
+        self.navigationController?.pushViewController(editCalendar, animated: true)
+        self.lightContentStatusBar()
     }
     
     @objc func openInformation() {
-        self.informationEditAnchor.constant = 0
-        self.scrollCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-        }
-    }
-    
-    func closeInformation() {
-        self.informationEditAnchor.constant = phoneWidth
-        self.scrollCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.checkStatusBar()
-        }
+        self.navigationController?.pushViewController(editInformation, animated: true)
+        self.lightContentStatusBar()
     }
     
     @objc func openCost() {
-        self.costEditAnchor.constant = 0
-        self.scrollCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-        }
-    }
-    
-    func closeCost() {
-        self.costEditAnchor.constant = phoneWidth
-        self.scrollCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.checkStatusBar()
-        }
+        self.navigationController?.pushViewController(editCost, animated: true)
+        self.lightContentStatusBar()
     }
     
     @objc func openSpots() {
-        self.spotsEditAnchor.constant = 0
-        self.scrollCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-        }
-    }
-    
-    func closeSpots() {
-        self.spotsEditAnchor.constant = phoneWidth
-        self.scrollCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.checkStatusBar()
-        }
+        self.navigationController?.pushViewController(editSpots, animated: true)
+        self.lightContentStatusBar()
     }
     
     @objc func openAmenities() {
-        self.amenitiesEditAnchor.constant = 0
-        self.scrollCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.lightContentStatusBar()
-        }
-    }
-    
-    func closeAmenities() {
-        self.amenitiesEditAnchor.constant = phoneWidth
-        self.scrollCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.checkStatusBar()
-        }
+        self.navigationController?.pushViewController(editAmenities, animated: true)
+        self.lightContentStatusBar()
     }
     
     func checkStatusBar() {
@@ -462,7 +322,7 @@ extension HostingExpandedViewController: handleHostEditing {
         if translation >= 180 {
             self.delegate?.darkContentStatusBar()
         } else {
-            self.delegate?.lightContentStatusBar()
+            self.lightContentStatusBar()
         }
     }
     
@@ -475,14 +335,42 @@ extension HostingExpandedViewController: UIScrollViewDelegate {
         UIView.animate(withDuration: animationIn) {
             if translation >= 180 {
                 self.gradientContainer.alpha = 1
-            } else if translation <= -40.0 {
-//                self.backButtonPressed()
+            } else if translation <= -40.0 - statusHeight {
+                self.backButtonPressed()
             } else {
                 self.gradientContainer.alpha = 0
-                self.delegate?.lightContentStatusBar()
+                self.lightContentStatusBar()
                 self.backButton.tintColor = Theme.WHITE
             }
         }
+    }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.WHITE
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultContentStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.tintColor = Theme.BLACK
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

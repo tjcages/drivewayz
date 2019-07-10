@@ -52,13 +52,7 @@ class HostSpacesViewController: UIViewController {
         return controller
     }()
     
-    lazy var hostingExpandedContainer: HostingExpandedViewController = {
-        let controller = HostingExpandedViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        
-        return controller
-    }()
+    var expandedController = HostingExpandedViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +63,6 @@ class HostSpacesViewController: UIViewController {
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
-    var hostingExpandedTopAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -109,41 +102,13 @@ class HostSpacesViewController: UIViewController {
         let hostTap = UITapGestureRecognizer(target: self, action: #selector(hostingExpandedPressed))
         hostContainer.view.addGestureRecognizer(hostTap)
         
-        self.view.addSubview(hostingExpandedContainer.view)
-        hostingExpandedTopAnchor = hostingExpandedContainer.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            hostingExpandedTopAnchor.isActive = true
-        hostingExpandedContainer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        hostingExpandedContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        hostingExpandedContainer.view.heightAnchor.constraint(equalToConstant: phoneHeight + statusHeight).isActive = true
-        hostingExpandedContainer.backButton.addTarget(self, action: #selector(returnExpandedPressed), for: .touchUpInside)
-        
     }
     
     @objc func hostingExpandedPressed() {
         self.scrollView.setContentOffset(.zero, animated: true)
-        delayWithSeconds(animationIn * 2) {
-            self.hostingExpandedTopAnchor.constant = 0
-            self.delegate?.hideExitButton()
-            self.delegate?.lightContentStatusBar()
-            UIView.animate(withDuration: animationOut) {
-                self.hostContainer.view.alpha = 0
-                self.hostingExpandedContainer.view.alpha = 1
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    @objc func returnExpandedPressed() {
-        self.hostingExpandedTopAnchor.constant = phoneHeight
-        self.scrollView.setContentOffset(.zero, animated: false)
-        self.delegate?.bringExitButton()
-        UIView.animate(withDuration: animationOut, animations: {
-            self.hostContainer.view.alpha = 1
-            self.hostingExpandedContainer.view.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.defaultContentStatusBar()
-        }
+        let navigation = UINavigationController(rootViewController: expandedController)
+        navigation.navigationBar.isHidden = true
+        self.present(navigation, animated: true, completion: nil)
     }
 
 }
@@ -166,6 +131,7 @@ extension HostSpacesViewController: UIScrollViewDelegate {
             self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
             if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
                 self.scrollExpanded()
+                self.delegate?.defaultContentStatusBar()
             }
         } else if translation >= 80 {
             self.gradientHeightAnchor.constant = totalHeight - 80

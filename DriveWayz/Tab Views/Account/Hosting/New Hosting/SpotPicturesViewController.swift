@@ -22,12 +22,27 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     var lattitude: Double = 1.0
     var longitude: Double = 1.0
     
+    var imageNumber: Int = 1
+    var imagesTaken: Int = 0
+    
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
         
         return view
+    }()
+    
+    var informationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.font = Fonts.SSPLightH5
+        label.numberOfLines = 2
+        label.text = "Parking images will not be shown until a driver has booked the space"
+        label.textAlignment = .center
+        
+        return label
     }()
     
     var drawController: DrawSpotViewController = {
@@ -524,6 +539,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     var tenthWidthAnchor: NSLayoutConstraint!
     
     func setupImages(number: Int) {
+        self.imageNumber = number
         if number >= 1 {
             self.addAnImageButton1.alpha = 1
             self.additionalAnchorsFalse()
@@ -654,6 +670,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     @objc func removeImagePressed(sender: UIButton) {
+        self.imagesTaken -= 1
         let image = UIImage(named: "addImageIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         UIView.animate(withDuration: animationIn) {
@@ -766,14 +783,15 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     func confirmedImage(image: UIImage) {
+        self.imagesTaken += 1
         self.currentButton?.setImage(image, for: .normal)
         self.currentButton?.imageEdgeInsets = UIEdgeInsets.zero
         self.configureExited()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             UIView.animate(withDuration: animationIn, animations: {
                 self.checkmark.alpha = 1
             }) { (success) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     UIView.animate(withDuration: animationIn, animations: {
                         self.checkmark.alpha = 0
                     })
@@ -1024,6 +1042,13 @@ extension SpotPicturesViewController {
         spotRemove10.topAnchor.constraint(equalTo: addAnImageButton10.topAnchor, constant: 4).isActive = true
         spotRemove10.widthAnchor.constraint(equalToConstant: 30).isActive = true
         spotRemove10.heightAnchor.constraint(equalTo: spotRemove10.widthAnchor).isActive = true
+        
+        scrollView.addSubview(informationLabel)
+        informationLabel.topAnchor.constraint(equalTo: addAnImageButton10.bottomAnchor, constant: 16).isActive = true
+        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        informationLabel.sizeToFit()
+        
     }
     
     func additionalAnchorsFalse() {

@@ -861,16 +861,16 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         self.selectionLine.alpha = 1
                     }
                     if index > 1 {
-                        if let nextIndex = self.daysSelected.index(of: index + 1) {
+                        if let nextIndex = self.daysSelected.firstIndex(of: index + 1) {
                             print(self.daysSelected[nextIndex])
                             self.selectionLineLeft.constant = self.selectionLineLeft.constant - 60
                         }
-                        if let nextIndex = self.daysSelected.index(of: index - 1) {
+                        if let nextIndex = self.daysSelected.firstIndex(of: index - 1) {
                             print(self.daysSelected[nextIndex])
                             self.selectionLineRight.constant = self.selectionLineRight.constant + 60
                         }
                     } else if index == 1 {
-                        if let nextIndex = self.daysSelected.index(of: index + 1) {
+                        if let nextIndex = self.daysSelected.firstIndex(of: index + 1) {
                             self.selectionLineLeft.constant = self.selectionLineLeft.constant - 60
                             print(self.daysSelected[nextIndex])
                         }
@@ -893,16 +893,16 @@ class ReserveViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             let index = sender.tag
             if self.daysSelected.count > 1 {
                 if index > 1 {
-                    if let nextIndex = self.daysSelected.index(of: index + 1) {
+                    if let nextIndex = self.daysSelected.firstIndex(of: index + 1) {
                         print(self.daysSelected[nextIndex])
                         self.selectionLineLeft.constant = self.selectionLineLeft.constant + 60
                     }
-                    if let nextIndex = self.daysSelected.index(of: index - 1) {
+                    if let nextIndex = self.daysSelected.firstIndex(of: index - 1) {
                         print(self.daysSelected[nextIndex])
                         self.selectionLineRight.constant = self.selectionLineRight.constant - 60
                     }
                 } else if index == 1 {
-                    if let nextIndex = self.daysSelected.index(of: index + 1) {
+                    if let nextIndex = self.daysSelected.firstIndex(of: index + 1) {
                         self.selectionLineLeft.constant = self.selectionLineLeft.constant + 60
                         print(self.daysSelected[nextIndex])
                     }

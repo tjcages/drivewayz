@@ -72,7 +72,7 @@ open class CustomDayStyle: Style, InstructionsBannerViewDelegate {
         ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
         ArrivalTimeLabel.appearance().normalTextColor = Theme.WHITE
 
-        BottomBannerContainerView.appearance().backgroundColor = Theme.BLACK
+//        BottomBannerContainerView.appearance().backgroundColor = Theme.BLACK
         BottomBannerView.appearance().backgroundColor = Theme.BLACK
         Button.appearance().textColor = Theme.WHITE
         CancelButton.appearance().tintColor = Theme.WHITE
@@ -111,7 +111,7 @@ open class CustomDayStyle: Style, InstructionsBannerViewDelegate {
         GenericRouteShield.appearance().foregroundColor = .black
         GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = .white
 
-        InstructionsBannerContentView.appearance().backgroundColor = Theme.BLACK
+        InstructionsBannerView.appearance().backgroundColor = Theme.BLACK
         InstructionsBannerView.appearance().backgroundColor = Theme.BLACK
 
         LaneView.appearance().primaryColor = .defaultLaneArrowPrimary
@@ -197,7 +197,7 @@ open class CustomNightStyle: CustomDayStyle {
         ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
         ArrivalTimeLabel.appearance().normalTextColor = Theme.BLACK
 
-        BottomBannerContainerView.appearance().backgroundColor = Theme.OFF_WHITE
+//        BottomBannerContainerView.appearance().backgroundColor = Theme.OFF_WHITE
         BottomBannerView.appearance().backgroundColor = Theme.OFF_WHITE
         Button.appearance().textColor = Theme.BLACK.withAlphaComponent(0.9)
         CancelButton.appearance().tintColor = Theme.BLACK
@@ -236,7 +236,7 @@ open class CustomNightStyle: CustomDayStyle {
         GenericRouteShield.appearance().foregroundColor = Theme.WHITE
         GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = Theme.BLACK
 
-        InstructionsBannerContentView.appearance().backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.9)
+//        InstructionsBannerContentView.appearance().backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.9)
         InstructionsBannerView.appearance().backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.9)
 
         LaneView.appearance().primaryColor = .defaultLaneArrowPrimary
@@ -328,7 +328,7 @@ open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
         ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
         ArrivalTimeLabel.appearance().normalTextColor = UIColor.clear
 
-        BottomBannerContainerView.appearance().backgroundColor = UIColor.clear
+//        BottomBannerContainerView.appearance().backgroundColor = UIColor.clear
         BottomBannerView.appearance().backgroundColor = UIColor.clear
         Button.appearance().textColor = UIColor.clear
         CancelButton.appearance().tintColor = UIColor.clear
@@ -367,7 +367,7 @@ open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
         GenericRouteShield.appearance().foregroundColor = UIColor.clear
         GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = UIColor.clear
 
-        InstructionsBannerContentView.appearance().backgroundColor = UIColor.clear
+//        InstructionsBannerContentView.appearance().backgroundColor = UIColor.clear
         InstructionsBannerView.appearance().backgroundColor = UIColor.clear
 
         LaneView.appearance().primaryColor = .defaultLaneArrowPrimary

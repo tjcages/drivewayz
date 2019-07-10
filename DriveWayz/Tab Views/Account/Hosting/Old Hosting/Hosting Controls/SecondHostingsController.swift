@@ -11,7 +11,7 @@ import UIKit
 class SecondHostingsController: UIViewController {
 
     var delegate: handleHostingScroll?
-    var hostDelegate: handleHostEditing?
+//    var hostDelegate: handleHostEditing?
     var guestsOpened: Bool = false
     
     lazy var mainGuestsView: HostingGuestsViewController = {

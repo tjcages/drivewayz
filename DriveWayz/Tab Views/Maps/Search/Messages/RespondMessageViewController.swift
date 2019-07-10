@@ -25,7 +25,7 @@ class RespondMessageViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
         

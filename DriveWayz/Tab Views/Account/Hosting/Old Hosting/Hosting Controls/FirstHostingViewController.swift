@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 class FirstHostingViewController: UIViewController {
 
     var delegate: handleHostingScroll?
-    var hostDelegate: handleHostEditing?
+//    var hostDelegate: handleHostEditing?
     var guestsOpened: Bool = false
     
     var scrollView: UIScrollView = {

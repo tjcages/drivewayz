@@ -190,7 +190,9 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                     let width = self.drivewayzLabel.text?.width(withConstrainedHeight: 40, font: Fonts.SSPBoldH0)
                     self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
                     self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
-                    self.drivewayzIconLeftAnchor.constant = (-60 - width!)/2
+                    self.drivewayzIconLeftAnchor.constant = (-108 - width!)/2
+                    self.drivewayzTopIcon.alpha = 0
+                    self.drivewayzBottomIcon.alpha = 0
                     self.drivewayzLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 }, completion: { (success) in
@@ -225,36 +227,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                 })
             }
         }
-
-        
-//        UIView.animate(withDuration: animationOut, animations: {
-//            self.drivewayzCarAnchor.constant = 280
-//            self.view.layoutIfNeeded()
-//        }) { (success) in
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-//                UIView.animate(withDuration: animationIn, animations: {
-//                    self.startupAnchor.constant = 0
-//                    if self.controller == true {
-//                        self.logoView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//                        self.startupMapController.view.alpha = 1
-//                    } else {
-//                        switch device {
-//                        case .iphone8:
-//                            self.drivewayzCarTopAnchor.constant = -120
-//                        case .iphoneX:
-//                            self.drivewayzCarTopAnchor.constant = -160
-//                        }
-//                    }
-//                    self.view.layoutIfNeeded()
-//                }, completion: { (success) in
-//                    if self.controller == true {
-//                        UIView.animate(withDuration: animationIn, animations: {
-//                            self.blackView.alpha = 1
-//                        })
-//                    }
-//                })
-//            }
-//        }
     }
     
     var controller: Bool = false

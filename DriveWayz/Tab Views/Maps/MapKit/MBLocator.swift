@@ -31,7 +31,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                 self.mapView.allowsRotating = true
                 self.mapView.isRotateEnabled = true
                 self.mapView.resetNorth()
-                let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
+                let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
                 self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
                 delayWithSeconds(animationOut * 2) {
                     self.mapView.isRotateEnabled = false
@@ -71,8 +71,8 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             if let userLocation = locationManager.location {
 //                self.removeAllMapOverlays(shouldRefresh: true)
                 self.mapView.setCenter(userLocation.coordinate, zoomLevel: 15, animated: false)
-                let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 7200)!, pitch: 0, heading: CLLocationDirection(0))
-                self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
+                let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
+                self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight * 3/4 - 60, right: phoneWidth/2), completionHandler: nil)
                 
                 delayWithSeconds(1) {
                     self.mapView.userTrackingMode = .follow
