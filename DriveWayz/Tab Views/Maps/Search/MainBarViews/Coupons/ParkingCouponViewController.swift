@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import GoogleSignIn
-//import FirebaseInvites
+import FirebaseDynamicLinks
 
 class ParkingCouponViewController: UIViewController {
     
     var couponCodes: [String: Any] = [:]
+    var dynamicLink: URL?
     
     var codeButton: UIButton = {
         let button = UIButton()
@@ -87,7 +87,6 @@ class ParkingCouponViewController: UIViewController {
         button.setTitleColor(Theme.WHITE.withAlphaComponent(0.5), for: .highlighted)
         button.backgroundColor = Theme.BLUE
         button.layer.cornerRadius = 45/2
-        button.addTarget(self, action: #selector(inviteNewUser), for: .touchUpInside)
         
         return button
     }()
@@ -100,6 +99,7 @@ class ParkingCouponViewController: UIViewController {
         setupTextfield()
         setupButtons()
         observeAvailableCoupons()
+        prepareDynamicLink()
     }
     
     var codeTopAnchor: NSLayoutConstraint!
@@ -258,67 +258,37 @@ extension ParkingCouponViewController: UITextFieldDelegate {
 }
 
 
-extension ParkingCouponViewController: GIDSignInUIDelegate, GIDSignInDelegate {
+extension ParkingCouponViewController {
     
-    @objc func inviteNewUser() {
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signIn()
-        GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-    }
-    
-    func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
-        if let error = error {
-            print("Failed: " + error.localizedDescription)
-        } else {
-            guard let currentUser = Auth.auth().currentUser?.uid else {return}
-            let ref = Database.database().reference().child("users").child(currentUser)
-            ref.child("Coupons").observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    if (dictionary["INVITE10"] as? String) != nil {
-                        let alert = UIAlertController(title: "Sorry", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                        return
-                    } else {
-                        ref.child("Coupons").updateChildValues(["INVITE10": "10% off coupon!"])
-                        ref.child("CurrentCoupon").updateChildValues(["invite": 10])
-                        let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental.", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true)
-                    }
-                }
-            }
-        }
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        // ...
-        if error != nil {
-            // ...
-            return
-        }
+    func prepareDynamicLink() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "www.drivewayz.io"
+        components.path = "/invites"
         
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-        guard let prevUser = Auth.auth().currentUser else {return}
-        prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
-//            if let invite = Invites.inviteDialog() {
-//                invite.setInviteDelegate(self)
-//                
-//                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n\n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
-//                invite.setTitle("Drivewayz")
-//                //            invite.setDeepLink("app_url")
-//                invite.setCallToActionText("Install!")
-//                invite.open()
-//            }
+        let idQueryItem = URLQueryItem(name: "inviteID", value: userID)
+        components.queryItems = [idQueryItem]
+        
+        guard let linkParam = components.url else { return }
+        guard let shareLink = DynamicLinkComponents.init(link: linkParam, domainURIPrefix: "https://drivewayz.page.link") else { return }
+        
+        if let bundleID = Bundle.main.bundleIdentifier {
+            shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
         }
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        // Perform any operations when the user disconnects from app here.
-        // ...
+        shareLink.iOSParameters?.appStoreID = "1397265391"
+        shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+        shareLink.socialMetaTagParameters?.title = "Drivewayz on the App Store"
+        shareLink.socialMetaTagParameters?.descriptionText = ""
+        shareLink.socialMetaTagParameters?.imageURL = URL(fileURLWithPath: "https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-9/65676636_363729731000524_5831666724327391232_o.png?_nc_cat=106&_nc_oc=AQlUvN9bk_xNcoAi7HD1sCPDqIBVBP_GBaOnLw5mOb0OU9u-jbMSg_sF8mvxAH68qbM&_nc_ht=scontent-lax3-1.xx&oh=c92befcbf0204b3943b26117b6fd8315&oe=5DBB5DD4")
+        
+        shareLink.shorten { (url, warnings, error) in
+            if let err = error {
+                print("Dynamic link unable to shorten", err.localizedDescription)
+            }
+            guard let url = url else { return }
+            self.dynamicLink = url
+        }
     }
     
 }

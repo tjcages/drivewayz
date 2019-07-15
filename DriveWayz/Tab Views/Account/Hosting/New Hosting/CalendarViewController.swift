@@ -101,7 +101,6 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     var showMoreTopAnchor: NSLayoutConstraint!
-    var showMoreHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
 
@@ -120,8 +119,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
         calendar.addSubview(showMoreButton)
         showMoreButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         showMoreButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        showMoreHeightAnchor = showMoreButton.heightAnchor.constraint(equalToConstant: 40)
-            showMoreHeightAnchor.isActive = true
+        showMoreButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         showMoreTopAnchor = showMoreButton.topAnchor.constraint(equalTo: calendar.topAnchor, constant: calendar.frame.size.width / 7 * 24)
             showMoreTopAnchor.isActive = true
         
@@ -186,7 +184,7 @@ class CalendarViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        self.showMoreTopAnchor.constant = calendar.frame.size.width / 7 * 7.5 * CGFloat(numberOfMonths) + 30
+        self.showMoreTopAnchor.constant = calendar.frame.size.width / 7 * 7.5 * CGFloat(numberOfMonths)
         if numberOfMonths > 11 {
             self.showMoreTopAnchor.constant = self.showMoreTopAnchor.constant - 60
         }

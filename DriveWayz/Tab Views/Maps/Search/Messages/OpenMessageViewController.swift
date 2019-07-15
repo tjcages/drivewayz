@@ -8,46 +8,35 @@
 
 import UIKit
 
+protocol checkReloadTable {
+    func reloadTable()
+}
+
 class OpenMessageViewController: UIViewController {
     
     var delegate: handleRouteNavigation?
     var messagesRecent: [Message] = []
-    var messagesDictionaryRecent = [String: Message]()
-    var messagesPrevious: [Message] = []
-    var messagesDictionaryPrevious = [String: Message]()
+    var messagesDictionary = [String: Message]()
     
     var timer: Timer?
     var previousCell: UserCell?
+    var statusBarColor = false
     
-    var container: UIView = {
+    lazy var gradientContainer: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.clipsToBounds = true
+        view.clipsToBounds = false
         
         return view
     }()
     
-    var mainLabel: UIButton = {
-        let label = UIButton()
-        label.setTitle("Recent", for: .normal)
-        label.setTitleColor(Theme.WHITE, for: .normal)
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Messages"
+        label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.titleLabel?.font = Fonts.SSPBoldH1
-        label.alpha = 0
-        label.addTarget(self, action: #selector(recentButtonPressed), for: .touchUpInside)
-        
-        return label
-    }()
-    
-    var secondLabel: UIButton = {
-        let label = UIButton()
-        label.setTitle("Previous", for: .normal)
-        label.setTitleColor(Theme.WHITE, for: .normal)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.titleLabel?.font = Fonts.SSPBoldH1
-        label.alpha = 0
-        label.addTarget(self, action: #selector(previousButtonPressed), for: .touchUpInside)
+        label.font = Fonts.SSPBoldH1
         
         return label
     }()
@@ -57,13 +46,24 @@ class OpenMessageViewController: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(closeMessages), for: .touchUpInside)
         button.alpha = 0
         
         return button
+    }()
+    
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
+        
+        return view
     }()
     
     var messagesTableView: UITableView = {
@@ -73,17 +73,7 @@ class OpenMessageViewController: UIViewController {
         view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0)
         view.clipsToBounds = true
         view.separatorStyle = .none
-        
-        return view
-    }()
-    
-    var messagesPreviousTableView: UITableView = {
-        let view = UITableView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.register(UserMessages.self, forCellReuseIdentifier: "cellId")
-        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 32, right: 0)
-        view.clipsToBounds = true
-        view.separatorStyle = .none
+        view.backgroundColor = .clear
         
         return view
     }()
@@ -93,44 +83,51 @@ class OpenMessageViewController: UIViewController {
         
         messagesTableView.delegate = self
         messagesTableView.dataSource = self
-        messagesPreviousTableView.delegate = self
-        messagesPreviousTableView.dataSource = self
         
         messagesRecent.removeAll()
-        messagesDictionaryRecent.removeAll()
-        messagesPrevious.removeAll()
-        messagesDictionaryPrevious.removeAll()
+        messagesDictionary.removeAll()
         messagesTableView.reloadData()
 
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.WHITE
         
         setupViews()
         observeUserMessages()
     }
     
-    var containerHeightAnchor: NSLayoutConstraint!
-    var containerCenterAnchor: NSLayoutConstraint!
+    var gradientHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(container)
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        containerHeightAnchor = container.heightAnchor.constraint(equalToConstant: 0)
-            containerHeightAnchor.isActive = true
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
+        self.view.addSubview(messagesTableView)
+        self.view.addSubview(gradientContainer)
+        messagesTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        messagesTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        messagesTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        messagesTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        switch device {
+        case .iphone8:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+                gradientHeightAnchor.isActive = true
+        case .iphoneX:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
+                gradientHeightAnchor.isActive = true
+        }
         
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -16).isActive = true
-        mainLabel.sizeToFit()
-        
-        self.view.addSubview(secondLabel)
-        secondLabel.leftAnchor.constraint(equalTo: mainLabel.rightAnchor, constant: 24).isActive = true
-        secondLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        secondLabel.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -16).isActive = true
-        secondLabel.sizeToFit()
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -143,63 +140,23 @@ class OpenMessageViewController: UIViewController {
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
-        container.addSubview(messagesTableView)
-        messagesTableView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        messagesTableView.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
-        containerCenterAnchor = messagesTableView.centerXAnchor.constraint(equalTo: container.centerXAnchor)
-            containerCenterAnchor.isActive = true
-        messagesTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        container.addSubview(messagesPreviousTableView)
-        messagesPreviousTableView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        messagesPreviousTableView.widthAnchor.constraint(equalTo: container.widthAnchor).isActive = true
-        messagesPreviousTableView.leftAnchor.constraint(equalTo: messagesTableView.rightAnchor).isActive = true
-        messagesPreviousTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-    }
-    
-    @objc func recentButtonPressed() {
-        self.containerCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
-            self.secondLabel.alpha = 0.5
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc func previousButtonPressed() {
-        self.containerCenterAnchor.constant = -phoneWidth
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0.5
-            self.secondLabel.alpha = 1
-            self.view.layoutIfNeeded()
-        }
     }
     
     func openMessages() {
-        switch device {
-        case .iphone8:
-            self.containerHeightAnchor.constant = phoneHeight - 160
-        case .iphoneX:
-            self.containerHeightAnchor.constant = phoneHeight - 180
-        }
         UIView.animate(withDuration: animationOut, animations: {
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationIn, animations: {
                 self.mainLabel.alpha = 1
                 self.backButton.alpha = 1
-                self.secondLabel.alpha = 0.5
             })
         }
     }
     
     @objc func closeMessages() {
-        self.containerHeightAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
             self.mainLabel.alpha = 0
             self.backButton.alpha = 0
-            self.secondLabel.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.dismiss(animated: true, completion: {
@@ -207,19 +164,14 @@ class OpenMessageViewController: UIViewController {
             })
         }
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 
 }
 
 
-extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource {
+extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource, checkReloadTable {
     
     func observeUserMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("user-messages").child(uid)
+        let ref = Database.database().reference().child("DrivewayzMessages")
         ref.observe(.childAdded, with: { (snapshot) in
             let userID = snapshot.key
             ref.child(userID).observe(.childAdded, with: { (snapshot) in
@@ -228,29 +180,20 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
             })
         }, withCancel: nil)
         ref.observe(.childRemoved, with: { (snapshot) in
-            self.messagesDictionaryRecent.removeValue(forKey: snapshot.key)
-            self.messagesDictionaryPrevious.removeValue(forKey: snapshot.key)
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
             self.reloadOfTable()
         }, withCancel: nil)
     }
     
     private func fetchMessages(messageID: String) {
-        let messageRef = Database.database().reference().child("messages").child(messageID)
+        let messageRef = Database.database().reference().child("Messages").child(messageID)
         messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 let message = Message(dictionary: dictionary)
-                if let chatPartnerID = message.chatPartnerID() {
-                    if let status = message.communicationsStatus {
-                        if status == "Recent" {
-                            self.messagesDictionaryRecent[chatPartnerID] = message
-                        } else {
-                           self.messagesDictionaryPrevious[chatPartnerID] = message
-                        }
-                    } else {
-                        self.messagesDictionaryRecent[chatPartnerID] = message
-                    }
+                if let fromID = message.fromID {
+                    self.messagesDictionary[fromID] = message
+                    self.reloadOfTable()
                 }
-                self.reloadOfTable()
             }
         }, withCancel: nil)
     }
@@ -261,20 +204,12 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     @objc func handleReloadTable() {
-        self.messagesRecent = Array(self.messagesDictionaryRecent.values)
+        self.messagesRecent = Array(self.messagesDictionary.values)
         self.messagesRecent.sort(by: { (message1, message2) -> Bool in
             return (message1.timestamp)! > (message2.timestamp)!
         })
         DispatchQueue.main.async(execute: {
             self.messagesTableView.reloadData()
-        })
-        
-        self.messagesPrevious = Array(self.messagesDictionaryPrevious.values)
-        self.messagesPrevious.sort(by: { (message1, message2) -> Bool in
-            return (message1.timestamp)! > (message2.timestamp)!
-        })
-        DispatchQueue.main.async(execute: {
-            self.messagesPreviousTableView.reloadData()
         })
     }
     
@@ -283,9 +218,7 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
         if tableView == self.messagesTableView {
             let message = self.messagesRecent[indexPath.row]
@@ -296,20 +229,7 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
                         print("Failed to delete message.")
                         return
                     }
-                    self.messagesDictionaryRecent.removeValue(forKey: chatPartnerID)
-                    self.reloadOfTable()
-                })
-            }
-        } else if tableView == self.messagesPreviousTableView {
-            let message = self.messagesPrevious[indexPath.row]
-            
-            if let chatPartnerID = message.chatPartnerID() {
-                Database.database().reference().child("user-messages").child(uid).child(chatPartnerID).removeValue(completionBlock: { (error, ref) in
-                    if error != nil {
-                        print("Failed to delete message.")
-                        return
-                    }
-                    self.messagesDictionaryPrevious.removeValue(forKey: chatPartnerID)
+                    self.messagesDictionary.removeValue(forKey: chatPartnerID)
                     self.reloadOfTable()
                 })
             }
@@ -323,8 +243,6 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == messagesTableView {
             return self.messagesRecent.count
-        } else if tableView == messagesPreviousTableView {
-            return self.messagesPrevious.count
         } else {
             return 0
         }
@@ -340,18 +258,14 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.messageTextView.text = message.text
                 cell.dateTextView.text = message.date
                 cell.contextView.text = message.context
+                cell.backgroundColor = UIColor.clear
                 
-                cell.hostTextView.text = message.name
-                if let picture = message.picture {
-                    cell.profileImageView.loadImageUsingCacheWithUrlString(picture)
+                cell.recentRing.alpha = 0
+                if let communicationStatus = message.communicationsStatus {
+                    if communicationStatus == "Recent" {
+                        cell.recentRing.alpha = 1
+                    }
                 }
-            }
-        } else if tableView == self.messagesPreviousTableView {
-            if self.messagesPrevious.count > indexPath.row {
-                let message = self.messagesPrevious[indexPath.row]
-                cell.messageTextView.text = message.text
-                cell.dateTextView.text = message.date
-                cell.contextView.text = message.context
                 
                 cell.hostTextView.text = message.name
                 if let picture = message.picture {
@@ -367,20 +281,123 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource 
         if tableView == self.messagesTableView {
             let message = self.messagesRecent[indexPath.row]
             let controller = RespondMessageViewController()
-            controller.setData(message: message)
+            guard let id = message.fromID else { return }
+            controller.setData(userID: id)
+            controller.delegate = self
+            if let picture = message.picture {
+                if picture != "" {
+                    controller.profileImageView.loadImageUsingCacheWithUrlString(picture)
+                } else {
+                    controller.profileImageView.image = UIImage(named: "background4")
+                }
+            }
+            if let name = message.name {
+                controller.mainLabel.text = name
+            }
             self.navigationController?.pushViewController(controller, animated: true)
             delayWithSeconds(animationOut) {
                 controller.openMessageBar()
-                
             }
-        } else if tableView == self.messagesPreviousTableView {
-            let message = self.messagesPrevious[indexPath.row]
-            let controller = RespondMessageViewController()
-            controller.setData(message: message)
-            self.navigationController?.pushViewController(controller, animated: true)
-            delayWithSeconds(animationOut) {
-                controller.openMessageBar()
+        }
+    }
+    
+}
+
+
+extension OpenMessageViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var totalHeight: CGFloat = 0.0
+        switch device {
+        case .iphone8:
+            totalHeight = 160
+        case .iphoneX:
+            totalHeight = 180
+        }
+        let translation = scrollView.contentOffset.y
+        if translation > 0 && translation < 80 {
+            let percent = translation/80
+            self.gradientHeightAnchor.constant = totalHeight - percent * 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            if self.backgroundCircle.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.gradientContainer.layer.shadowOpacity = 0
+                    self.backgroundCircle.alpha = 1
+                }
             }
+            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                self.scrollExpanded()
+            }
+        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
+            UIView.animate(withDuration: animationIn) {
+                self.gradientContainer.layer.shadowOpacity = 0.2
+                self.backgroundCircle.alpha = 0
+            }
+        } else if translation >= 80 {
+            self.gradientHeightAnchor.constant = totalHeight - 80
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                self.scrollMinimized()
+            }
+        } else if translation <= 0 {
+            self.gradientHeightAnchor.constant = totalHeight
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 75 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        self.defaultContentStatusBar()
+        self.messagesTableView.setContentOffset(.zero, animated: true)
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 1
+            self.gradientContainer.backgroundColor = UIColor.clear
+            self.backButton.tintColor = Theme.DARK_GRAY
+            self.mainLabel.textColor = Theme.DARK_GRAY
+        }
+    }
+    
+    func scrollMinimized() {
+        self.lightContentStatusBar()
+        UIView.animate(withDuration: animationIn) {
+            self.backgroundCircle.alpha = 0
+            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.backButton.tintColor = Theme.WHITE
+            self.mainLabel.textColor = Theme.WHITE
+        }
+    }
+    
+    func reloadTable() {
+        self.observeUserMessages()
+    }
+    
+    func lightContentStatusBar() {
+        self.statusBarColor = true
+        UIView.animate(withDuration: animationIn) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    func defaultContentStatusBar() {
+        self.statusBarColor = false
+        UIView.animate(withDuration: animationIn) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if statusBarColor == true {
+            return .lightContent
+        } else {
+            return .default
         }
     }
     

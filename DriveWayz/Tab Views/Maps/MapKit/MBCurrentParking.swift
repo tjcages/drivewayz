@@ -112,8 +112,12 @@ extension MapKitViewController: handleMinimizingFullController {
                 }
             }, completion: { (success) in
                 self.view.bringSubviewToFront(self.mainBarController.view)
-                self.delegate?.bringHamburger()
-                self.delegate?.defaultContentStatusBar()
+                if self.mainBarTopAnchor.constant == self.lowestHeight {
+                    self.delegate?.bringHamburger()
+                    self.delegate?.defaultContentStatusBar()
+                } else {
+                    self.delegate?.lightContentStatusBar()
+                }
             })
         }
     }
@@ -176,7 +180,7 @@ extension MapKitViewController: handleMinimizingFullController {
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {
-                self.mainBarTopAnchor.constant = 354
+                self.mainBarTopAnchor.constant = self.lowestHeight
                 self.view.layoutIfNeeded()
             })
             self.mapView.resetNorth()

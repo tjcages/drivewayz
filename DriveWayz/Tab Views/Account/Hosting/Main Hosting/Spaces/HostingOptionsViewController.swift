@@ -59,6 +59,29 @@ class HostingOptionsViewController: UIViewController {
         return view
     }()
     
+    var seeCalendar: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Edit calendar", for: .normal)
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH5
+        button.contentHorizontalAlignment = .left
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        
+        return button
+    }()
+    
+    var expandCalanderButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
     var markUnavailable: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -169,8 +192,20 @@ class HostingOptionsViewController: UIViewController {
         expandAvailabilityButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandAvailabilityButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
+        container.addSubview(seeCalendar)
+        seeCalendar.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
+        seeCalendar.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        seeCalendar.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
+        seeCalendar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        container.addSubview(expandCalanderButton)
+        expandCalanderButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -24).isActive = true
+        expandCalanderButton.centerYAnchor.constraint(equalTo: seeCalendar.centerYAnchor).isActive = true
+        expandCalanderButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandCalanderButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        
         container.addSubview(markUnavailable)
-        markUnavailable.topAnchor.constraint(equalTo: seeAvailability.bottomAnchor).isActive = true
+        markUnavailable.topAnchor.constraint(equalTo: seeCalendar.bottomAnchor).isActive = true
         markUnavailable.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         markUnavailable.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         markUnavailable.heightAnchor.constraint(equalToConstant: 50).isActive = true

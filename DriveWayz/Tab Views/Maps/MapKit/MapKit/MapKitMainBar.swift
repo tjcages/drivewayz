@@ -33,7 +33,7 @@ extension MapKitViewController: mainBarSearchDelegate {
         self.view.addSubview(mainBarController.view)
         mainBarController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         mainBarController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mainBarTopAnchor = mainBarController.view.heightAnchor.constraint(equalToConstant: 354)
+        mainBarTopAnchor = mainBarController.view.heightAnchor.constraint(equalToConstant: self.lowestHeight)
             mainBarTopAnchor.isActive = true
         mainBarController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarIsScrolling(sender:)))
@@ -162,7 +162,7 @@ extension MapKitViewController: mainBarSearchDelegate {
     func mainBarWillClose() {
         self.view.endEditing(true)
         self.summaryTopAnchor.constant = -260
-        self.mainBarTopAnchor.constant = 354
+        self.mainBarTopAnchor.constant = self.lowestHeight
         UIView.animate(withDuration: animationOut, animations: {
             self.locationResultsHeightAnchor.constant = 0
             self.mainBarController.scrollView.alpha = 1
@@ -186,7 +186,7 @@ extension MapKitViewController: mainBarSearchDelegate {
             let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
             self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
         }
-        self.mainBarTopAnchor.constant = 354
+        self.mainBarTopAnchor.constant = self.lowestHeight
         UIView.animate(withDuration: animationOut, animations: {
             self.mainBarController.scrollView.alpha = 1
             self.mainBarController.view.backgroundColor = UIColor.clear
@@ -222,20 +222,12 @@ extension MapKitViewController: mainBarSearchDelegate {
         if shouldDragMainBar {
             let position = -sender.translation(in: self.view).y
             let highestHeight = phoneHeight - 150
-            let lowestHeight: CGFloat = 354
-            var minimizedHeight: CGFloat = 150
-            switch device {
-            case .iphone8:
-                minimizedHeight = 150
-            case .iphoneX:
-                minimizedHeight = 164
-            }
             if sender.state == .changed {
                 let difference = position - self.mainBarPreviousPosition
-                if self.mainBarTopAnchor.constant >= lowestHeight - 40 || (self.mainBarHighest == true && self.mainBarTopAnchor.constant <= 772) {
+                if self.mainBarTopAnchor.constant >= self.lowestHeight - 40 || (self.mainBarHighest == true && self.mainBarTopAnchor.constant <= 772) {
                     let difference = position - self.mainBarPreviousPosition
                     self.mainBarTopAnchor.constant = self.mainBarTopAnchor.constant + difference
-                    let percent = (self.mainBarTopAnchor.constant - lowestHeight)/highestHeight
+                    let percent = (self.mainBarTopAnchor.constant - self.lowestHeight)/highestHeight
                     self.fullBackgroundView.alpha = 1.2 * percent
                     if percent >= 0.2 {
                         self.delegate?.lightContentStatusBar()
@@ -243,8 +235,8 @@ extension MapKitViewController: mainBarSearchDelegate {
                     } else {
                         self.delegate?.defaultContentStatusBar()
                     }
-                } else if self.mainBarTopAnchor.constant <= lowestHeight - 40 && difference <= 0 {
-                    self.mainBarTopAnchor.constant = minimizedHeight
+                } else if self.mainBarTopAnchor.constant <= self.lowestHeight - 40 && difference <= 0 {
+                    self.mainBarTopAnchor.constant = self.minimizedHeight
                     UIView.animate(withDuration: animationOut) {
                         self.view.layoutIfNeeded()
                     }
@@ -255,7 +247,7 @@ extension MapKitViewController: mainBarSearchDelegate {
                         self.view.layoutIfNeeded()
                     }
                 } else {
-                    self.mainBarTopAnchor.constant = lowestHeight
+                    self.mainBarTopAnchor.constant = self.lowestHeight
                     UIView.animate(withDuration: animationOut) {
                         self.view.layoutIfNeeded()
                     }
@@ -264,7 +256,7 @@ extension MapKitViewController: mainBarSearchDelegate {
                 let difference = position - self.mainBarPreviousPosition
                 if (self.mainBarTopAnchor.constant < highestHeight && self.mainBarHighest == false) || self.mainBarTopAnchor.constant <= highestHeight {
                     if self.mainBarTopAnchor.constant >= phoneHeight/3 && difference < 0 && self.mainBarTopAnchor.constant <= phoneHeight * 2/3 {
-                        self.mainBarTopAnchor.constant = lowestHeight
+                        self.mainBarTopAnchor.constant = self.lowestHeight
                         UIView.animate(withDuration: animationOut, animations: {
                             self.fullBackgroundView.alpha = 0
                             self.view.layoutIfNeeded()
@@ -275,7 +267,7 @@ extension MapKitViewController: mainBarSearchDelegate {
                         }
                     } else if self.mainBarTopAnchor.constant >= phoneHeight/3 && difference >= 0 {
                         if self.mainBarHighest == true && self.mainBarTopAnchor.constant < highestHeight - 40 {
-                            self.mainBarTopAnchor.constant = lowestHeight
+                            self.mainBarTopAnchor.constant = self.lowestHeight
                             UIView.animate(withDuration: animationIn, animations: {
                                 self.fullBackgroundView.alpha = 0
                                 self.view.layoutIfNeeded()
@@ -297,8 +289,8 @@ extension MapKitViewController: mainBarSearchDelegate {
                                 self.mainBarHighest = true
                             }
                         }
-                    } else if self.mainBarTopAnchor.constant <= minimizedHeight + 20 {
-                        self.mainBarTopAnchor.constant = minimizedHeight
+                    } else if self.mainBarTopAnchor.constant <= self.minimizedHeight + 20 {
+                        self.mainBarTopAnchor.constant = self.minimizedHeight
                         UIView.animate(withDuration: animationOut, animations: {
                             self.fullBackgroundView.alpha = 0
                             self.view.layoutIfNeeded()
@@ -308,7 +300,7 @@ extension MapKitViewController: mainBarSearchDelegate {
                             self.delegate?.defaultContentStatusBar()
                         }
                     } else {
-                        self.mainBarTopAnchor.constant = lowestHeight
+                        self.mainBarTopAnchor.constant = self.lowestHeight
                         UIView.animate(withDuration: animationOut, animations: {
                             self.fullBackgroundView.alpha = 0
                             self.view.layoutIfNeeded()
@@ -349,7 +341,6 @@ extension MapKitViewController: mainBarSearchDelegate {
                         self.view.layoutIfNeeded()
                     }, completion: { (success) in
                         self.quickCouponController.maximizeController()
-                        self.quickCouponController.expandController()
                     })
                 }
             }
@@ -377,7 +368,7 @@ extension MapKitViewController: mainBarSearchDelegate {
                             self.quickCouponController.view.alpha = 1
                             self.view.layoutIfNeeded()
                         }, completion: { (success) in
-                            self.quickCouponController.expandController()
+                            self.quickCouponController.maximizeController()
                         })
                     }
                 })

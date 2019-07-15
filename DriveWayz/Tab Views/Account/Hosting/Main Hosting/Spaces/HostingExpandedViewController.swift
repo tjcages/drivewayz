@@ -8,9 +8,14 @@
 
 import UIKit
 
-class HostingExpandedViewController: UIViewController {
+protocol handleHostEditing {
+    func resetParking()
+}
+
+class HostingExpandedViewController: UIViewController, handleHostEditing {
     
     var delegate: handleHostingReservations?
+    var selectedParking: ParkingSpots?
     var statusBarColor = true
     var height: CGFloat = 0
     
@@ -127,32 +132,44 @@ class HostingExpandedViewController: UIViewController {
         return controller
     }()
     
+    lazy var editAvailability: EditAvailabilityViewController = {
+        let controller = EditAvailabilityViewController()
+        controller.delegate = self
+        
+        return controller
+    }()
+    
     lazy var editCalendar: EditCalendarViewController = {
         let controller = EditCalendarViewController()
+        controller.delegate = self
         
         return controller
     }()
     
     lazy var editInformation: EditInformationViewController = {
         let controller = EditInformationViewController()
+        controller.delegate = self
         
         return controller
     }()
     
     lazy var editCost: EditCostViewController = {
         let controller = EditCostViewController()
+        controller.delegate = self
         
         return controller
     }()
     
     lazy var editSpots: EditSpotsViewController = {
         let controller = EditSpotsViewController()
+        controller.delegate = self
         
         return controller
     }()
     
     lazy var editAmenities: EditAmenitiesViewController = {
         let controller = EditAmenitiesViewController()
+        controller.delegate = self
         
         return controller
     }()
@@ -171,21 +188,29 @@ class HostingExpandedViewController: UIViewController {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        
+        setupViews()
     }
     
     func setData(hosting: ParkingSpots) {
+        self.selectedParking = hosting
         expandedInformation.setData(hosting: hosting)
         expandedCost.setData(hosting: hosting)
         expandedNumber.setData(hosting: hosting)
         expandedAmenities.setData(hosting: hosting)
         expandedImages.setData(hosting: hosting)
         editCost.setData(parking: hosting)
+        editSpots.setData(parking: hosting)
+        editAmenities.setData(parking: hosting)
+        editInformation.setData(parking: hosting)
+        editAvailability.setData(parking: hosting)
         if let overallAddress = hosting.overallAddress, let streetAddress = hosting.streetAddress {
             self.spotLocatingLabel.text = overallAddress
             self.gradientLocatingLabel.text = streetAddress
         }
-        setupViews()
     }
+    
+    var expandedInformationAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -234,7 +259,8 @@ class HostingExpandedViewController: UIViewController {
         expandedInformation.view.topAnchor.constraint(equalTo: darkView.bottomAnchor, constant: 0).isActive = true
         expandedInformation.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedInformation.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.height).isActive = true
+        expandedInformationAnchor = expandedInformation.view.heightAnchor.constraint(equalToConstant: expandedInformation.height)
+            expandedInformationAnchor.isActive = true
         
         scrollView.addSubview(expandedCost.view)
         expandedCost.view.topAnchor.constraint(equalTo: expandedInformation.view.bottomAnchor).isActive = true
@@ -252,20 +278,21 @@ class HostingExpandedViewController: UIViewController {
         expandedAmenities.view.topAnchor.constraint(equalTo: expandedNumber.view.bottomAnchor).isActive = true
         expandedAmenities.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 12).isActive = true
         expandedAmenities.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        expandedAmenities.view.heightAnchor.constraint(equalToConstant: expandedAmenities.height).isActive = true
+        expandedAmenities.view.heightAnchor.constraint(equalToConstant: 215).isActive = true
         
         scrollView.addSubview(expandedOptions.view)
         expandedOptions.view.topAnchor.constraint(equalTo: expandedAmenities.view.bottomAnchor, constant: 20).isActive = true
         expandedOptions.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         expandedOptions.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         expandedOptions.view.heightAnchor.constraint(equalToConstant: 240).isActive = true
-        expandedOptions.seeAvailability.addTarget(self, action: #selector(openCalendar), for: .touchUpInside)
+        expandedOptions.seeAvailability.addTarget(self, action: #selector(openAvailability), for: .touchUpInside)
+        expandedOptions.seeCalendar.addTarget(self, action: #selector(openCalendar), for: .touchUpInside)
         expandedInformation.editInformation.addTarget(self, action: #selector(openInformation), for: .touchUpInside)
         expandedCost.editInformation.addTarget(self, action: #selector(openCost), for: .touchUpInside)
         expandedNumber.editInformation.addTarget(self, action: #selector(openSpots), for: .touchUpInside)
         expandedAmenities.editInformation.addTarget(self, action: #selector(openAmenities), for: .touchUpInside)
         
-        height = expandedInformation.height + 100 + 132 + expandedAmenities.height + 750
+        height = expandedInformation.height + 100 + 132 + 215 + 800
         scrollView.contentSize = CGSize(width: phoneWidth, height: height)
         
         scrollView.addSubview(gradientContainer)
@@ -287,9 +314,31 @@ class HostingExpandedViewController: UIViewController {
         
     }
     
+    func resetParking() {
+        if let hosting = self.selectedParking, let parkingID = hosting.parkingID {
+            let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String:Any] {
+                    let parking = ParkingSpots(dictionary: dictionary)
+                    self.setData(hosting: parking)
+                    if let hostMessage = parking.hostMessage {
+                        let height = 120 + hostMessage.height(withConstrainedWidth: self.view.frame.width - 48, font: Fonts.SSPRegularH5)
+                        self.expandedInformationAnchor.constant = height
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 extension HostingExpandedViewController {
+    
+    @objc func openAvailability() {
+        self.navigationController?.pushViewController(editAvailability, animated: true)
+        self.lightContentStatusBar()
+    }
     
     @objc func openCalendar() {
         self.editCalendar.setupPreviousAvailability()
@@ -335,7 +384,7 @@ extension HostingExpandedViewController: UIScrollViewDelegate {
         UIView.animate(withDuration: animationIn) {
             if translation >= 180 {
                 self.gradientContainer.alpha = 1
-            } else if translation <= -40.0 - statusHeight {
+            } else if translation <= -60.0 - statusHeight {
                 self.backButtonPressed()
             } else {
                 self.gradientContainer.alpha = 0

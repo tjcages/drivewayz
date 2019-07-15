@@ -45,6 +45,8 @@ protocol controlsAccountOptions {
     func bringVehicleController()
     func bringSettingsController()
     func bringHelpController()
+    func bringFeedbackController()
+    func bringAnalyticsController()
 }
 
 class TabViewController: UIViewController, UNUserNotificationCenterDelegate, controlsAccountOptions, moveControllers {
@@ -401,6 +403,43 @@ extension TabViewController {
         }
     }
     
+    func bringFeedbackController() {
+        let controller = ContactDrivewayzViewController()
+        controller.delegate = self
+        controller.context = "Feedback"
+        controller.mainLabel.text = "Give feedback"
+        controller.informationLabel.text = "Please reach out to us if you have any suggestions, questions, or concerns"
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isHidden = true
+        UIView.animate(withDuration: animationIn, animations: {
+            self.gradientContainer.alpha = 1
+        }) { (success) in
+            self.present(navigation, animated: true) {
+                UIView.animate(withDuration: animationIn) {
+                    controller.backButton.alpha = 1
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
+    }
+    
+    func bringAnalyticsController() {
+        let controller = AnalyticsViewController()
+        controller.delegate = self
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isHidden = true
+        UIView.animate(withDuration: animationIn, animations: {
+            self.gradientContainer.alpha = 1
+        }) { (success) in
+            self.present(navigation, animated: true) {
+                UIView.animate(withDuration: animationIn) {
+                    controller.backButton.alpha = 1
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
+    }
+    
     @objc func handleLogout() {
         UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
         UserDefaults.standard.synchronize()
@@ -429,6 +468,10 @@ extension TabViewController {
     
     func defaultContentStatusBar() {
         self.delegate?.defaultStatusBar()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
     }
     
 }

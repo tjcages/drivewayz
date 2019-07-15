@@ -67,7 +67,6 @@ extension MapKitViewController {
         if let fromDate = bookingFromDate, let toDate = bookingToDate {
             DynamicParking.getDynamicParking(parkingSpots: self.availableParkingSpots, dateFrom: fromDate, dateTo: toDate) { (parking) in
                 self.availableParkingSpots = parking
-                print(self.availableParkingSpots.count)
                 self.removeAllHostLocations()
                 self.placeAvailableParking(location: location)
             }
@@ -164,7 +163,6 @@ extension MapKitViewController {
             //no parking
         }
     }
-    
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // For better performance, always try to reuse existing annotations.

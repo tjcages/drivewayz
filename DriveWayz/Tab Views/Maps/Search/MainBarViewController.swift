@@ -29,31 +29,7 @@ class MainBarViewController: UIViewController {
     var shouldRefresh: Bool = true
     var parkingState: ParkingState = .foundParking {
         didSet {
-//            if self.searchBarHeightAnchor.constant == 89 || self.searchBarHeightAnchor.constant == 63 {
-//                if parkingState == .foundParking && self.alreadyFoundParking == false {
-//                    self.alreadyFoundParking = true
-//                    self.endSearching(status: parkingState)
-//                    delayWithSeconds(0.4) {
-//                        self.alreadyZoomedIn = false
-//                    }
-//                } else if parkingState == .zoomIn && self.alreadyZoomedIn == false {
-//                    self.alreadyZoomedIn = true
-//                    self.endSearching(status: parkingState)
-//                    delayWithSeconds(0.4) {
-//                        self.alreadyFoundParking = false
-//                    }
-//                } else if parkingState == .noParking && self.shouldRefresh == true {
-//                    self.shouldRefresh = false
-//                    self.endSearching(status: parkingState)
-//                    delayWithSeconds(0.4) {
-//                        self.alreadyFoundParking = false
-//                        self.alreadyZoomedIn = false
-//                        delayWithSeconds(2, completion: {
-//                            self.shouldRefresh = true
-//                        })
-//                    }
-//                }
-//            }
+
         }
     }
     
@@ -74,6 +50,7 @@ class MainBarViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.layer.cornerRadius = 3
+//        view.alpha = 0
         
         return view
     }()
@@ -165,6 +142,7 @@ class MainBarViewController: UIViewController {
     lazy var worksController: HowItWorksController = {
         let controller = HowItWorksController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
         
         return controller
     }()
@@ -192,20 +170,32 @@ class MainBarViewController: UIViewController {
         let controller = EventsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.mainDelegate = self
+        self.addChild(controller)
         
         return controller
     }()
     
-    var newHostController: NewHostBannerViewController = {
+    lazy var newHostController: NewHostBannerViewController = {
         let controller = NewHostBannerViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
         
         return controller
     }()
     
-    var inviteFriendController: InviteBannerViewController = {
+    lazy var inviteFriendController: InviteBannerViewController = {
         let controller = InviteBannerViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        
+        return controller
+    }()
+    
+    lazy var contactBannerController: BannerMessageViewController = {
+        let controller = BannerMessageViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.view.alpha = 0
         
         return controller
     }()
@@ -233,6 +223,9 @@ class MainBarViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.eventsController.checkEvents()
     }
+    
+    var contactBannerHeightAnchor: NSLayoutConstraint!
+    var searchButtonTopAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -249,15 +242,24 @@ class MainBarViewController: UIViewController {
         scrollBar.widthAnchor.constraint(equalToConstant: 40).isActive = true
         scrollBar.heightAnchor.constraint(equalToConstant: 6).isActive = true
         
+        scrollView.addSubview(contactBannerController.view)
+        contactBannerController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contactBannerController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        contactBannerController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        contactBannerHeightAnchor = contactBannerController.view.heightAnchor.constraint(equalToConstant: 0)
+            contactBannerHeightAnchor.isActive = true
+        
     }
     
     func setupSearch() {
         
         scrollView.addSubview(searchView)
         scrollView.bringSubviewToFront(scrollBar)
+        scrollView.bringSubviewToFront(contactBannerController.view)
         
         searchView.addSubview(searchButton)
-        searchButton.topAnchor.constraint(equalTo: scrollBar.bottomAnchor, constant: 16).isActive = true
+        searchButtonTopAnchor = searchButton.topAnchor.constraint(equalTo: contactBannerController.view.bottomAnchor, constant: 34)
+            searchButtonTopAnchor.isActive = true
         searchButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         searchButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         searchButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -332,6 +334,7 @@ class MainBarViewController: UIViewController {
             inviteHeightAnchor.isActive = true
         let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
         inviteFriendController.view.addGestureRecognizer(invite)
+        inviteFriendController.parkingController.inviteButton.addTarget(self, action: #selector(inviteNewUser), for: .touchUpInside)
         
     }
     
@@ -473,6 +476,35 @@ extension MainBarViewController: handleInviteControllers {
         }
     }
     
+    @objc func inviteNewUser() {
+        if let url = self.inviteFriendController.parkingController.dynamicLink {
+            let promoText = "Check out Drivewayz the parking rental app!"
+            let activityVC = UIActivityViewController(activityItems: [promoText, url], applicationActivities: nil)
+            present(activityVC, animated: true, completion: nil)
+            
+            delayWithSeconds(4) {
+                guard let currentUser = Auth.auth().currentUser?.uid else {return}
+                let ref = Database.database().reference().child("users").child(currentUser)
+                ref.child("Coupons").observeSingleEvent(of: .value) { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:AnyObject] {
+                        if (dictionary["INVITE10"] as? String) != nil {
+                            let alert = UIAlertController(title: "Sorry", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                            self.present(alert, animated: true)
+                            return
+                        } else {
+                            ref.child("Coupons").updateChildValues(["INVITE10": "10% off coupon!"])
+                            ref.child("CurrentCoupon").updateChildValues(["invite": 10])
+                            let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 
@@ -480,6 +512,7 @@ extension MainBarViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.view.endEditing(true)
+        shouldDragMainBar = true
         let translation = scrollView.contentOffset.y
         if translation < 0 {
             scrollView.contentOffset.y = 0.0

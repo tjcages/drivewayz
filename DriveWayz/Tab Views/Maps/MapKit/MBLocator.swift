@@ -77,17 +77,6 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
                 delayWithSeconds(1) {
                     self.mapView.userTrackingMode = .follow
                 }
-//                if self.currentActive == false && self.searchedForPlace == false && alreadyLoadedSpots == false {
-//                    let geocoder = CLGeocoder()
-//                    geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
-//                        // Process Response
-//                        self.processResponse(withPlacemarks: placemarks, error: error, completion: { (city) in
-//                            delayWithSeconds(1, completion: {
-//                                self.monitorCoupons()
-//                            })
-//                        })
-//                    }
-//                }
             }
         } else {
             return

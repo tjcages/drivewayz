@@ -1224,11 +1224,17 @@ extension ConfigureParkingViewController: handleConfigureProcess {
     }
     
     @objc func exitNewHost() {
-        self.dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true) {
-            self.resetParking()
-            self.moveDelegate?.dismissActiveController()
-        }
+        let alert = UIAlertController(title: "Are you sure you want to exit?", message: "Your information will not be saved.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (success) in
+            self.dismiss(animated: true) {
+                self.resetParking()
+                self.moveDelegate?.dismissActiveController()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true)
     }
     
 }

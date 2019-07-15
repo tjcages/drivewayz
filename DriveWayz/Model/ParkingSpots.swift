@@ -119,7 +119,7 @@ class ParkingSpots: NSObject {
         hostEmail = dictionary["hostEmail"] as? String
         hostMessage = dictionary["hostMessage"] as? String
         id = dictionary["id"] as? String
-        parkingCost = dictionary["parkingCost"] as? Double
+        parkingCost = dictionary["parkingCost"] as? Double; if parkingCost == nil { parkingCost = 5.0 }
         parkingID = dictionary["parkingID"] as? String
         timestamp = dictionary["timestamp"] as? TimeInterval
         
@@ -340,6 +340,49 @@ class ParkingSpots: NSObject {
                 sundayUnavailable = false
                 sundayAvailable = [fromDate, toDate]
                 return
+            }
+        }
+        self.removeBlackoutDays()
+    }
+    
+    func removeBlackoutDays() {
+        let date = Date()
+        if let dayOfTheWeek = date.dayOfWeek() {
+            if dayOfTheWeek == "Monday" {
+                let unavailableDay = self.mondayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Tuesday" {
+                let unavailableDay = self.tuesdayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Wednesday" {
+                let unavailableDay = self.wednesdayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Thursday" {
+                let unavailableDay = self.thursdayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Friday" {
+                let unavailableDay = self.fridayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Saturday" {
+                let unavailableDay = self.saturdayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
+            } else if dayOfTheWeek == "Sunday" {
+                let unavailableDay = self.sundayUnavailable
+                if unavailableDay == true {
+                    self.isSpotAvailable = false
+                }
             }
         }
     }

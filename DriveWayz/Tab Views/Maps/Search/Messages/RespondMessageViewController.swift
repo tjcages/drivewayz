@@ -10,9 +10,10 @@ import UIKit
 
 class RespondMessageViewController: UIViewController {
     
+    var delegate: checkReloadTable?
     var shouldCheckID: String = ""
+    var canCheck: Bool = true
     var messageID: String?
-    var shouldMakePrevious: Bool = false
     var messages = [Message]()
     var userID: String = ""
     var previousScrollPosition: CGFloat = 0.0
@@ -23,11 +24,25 @@ class RespondMessageViewController: UIViewController {
     var startingImageView: UIImageView?
     var keyboardHeight: CGFloat = 1.0
     
+    var recentTimestamp: TimeInterval?
+    var timer: Timer?
+    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
+        
+        return view
+    }()
+    
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.15).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
         
         return view
     }()
@@ -157,21 +172,34 @@ class RespondMessageViewController: UIViewController {
         return view
     }()
     
-    func setData(message: Message) {
-        if let fromID = message.fromID, let name = message.name, let date = message.date, let picture = message.picture {
-            self.userID = fromID
-            self.mainLabel.text = name
-            if picture != "" {
-                self.profileImageView.loadImageUsingCacheWithUrlString(picture)
-            }
-            var duration = date.replacingOccurrences(of: "sec", with: "seconds ago")
-            duration = duration.replacingOccurrences(of: "min", with: "minutes ago")
-            duration = duration.replacingOccurrences(of: "hrs", with: "hours ago")
-            duration = duration.replacingOccurrences(of: "yrs", with: "years ago")
-            self.durationLabel.text = duration
-            
-            self.shouldMakePrevious = true
-            self.observeMessages(toID: fromID)
+    func setData(userID: String) {
+        self.canCheck = true
+        self.userID = userID
+        let ref = Database.database().reference().child("DrivewayzMessages").child(userID)
+        ref.observe(.childAdded) { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else { return }
+            DispatchQueue.main.async(execute: {
+                let message = Message(dictionary: dictionary)
+                self.messages.append(message)
+                self.collectionView.reloadData()
+                let indexPath = NSIndexPath(item: self.messages.count - 1, section: 0)
+                self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
+                delayWithSeconds(animationIn) {
+                    self.previousScrollPosition = self.collectionView.contentOffset.y
+                    if let date = message.date, let timestamp = message.timestamp {
+                        self.setDuration(date: date)
+                        self.recentTimestamp = timestamp
+                        self.updateTime()
+                    }
+                    if self.canCheck {
+                        let chatRef = Database.database().reference().child("Messages").child(snapshot.key)
+                        chatRef.updateChildValues(["communicationsStatus": "Previous"])
+                        ref.child(snapshot.key).updateChildValues(["communicationsStatus": "Previous"], withCompletionBlock: { (error, ref) in
+                            self.delegate?.reloadTable()
+                        })
+                    }
+                }
+            })
         }
     }
     
@@ -202,6 +230,12 @@ class RespondMessageViewController: UIViewController {
         case .iphoneX:
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
+        
+        gradientContainer.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -292,7 +326,7 @@ class RespondMessageViewController: UIViewController {
     }
     
     @objc func backButtonDismissed() {
-        self.shouldMakePrevious = false
+        self.canCheck = false
         self.closeMessageBar()
         self.navigationController?.popViewController(animated: true)
     }
@@ -305,10 +339,22 @@ class RespondMessageViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.canCheck = false
+    }
+    
 }
 
 
 extension RespondMessageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func setDuration(date: String) {
+        var duration = date.replacingOccurrences(of: "sec", with: "seconds ago")
+        duration = duration.replacingOccurrences(of: "min", with: "minutes ago")
+        duration = duration.replacingOccurrences(of: "hrs", with: "hours ago")
+        duration = duration.replacingOccurrences(of: "yrs", with: "years ago")
+        self.durationLabel.text = duration
+    }
     
     @objc func handleSend(sender: UIButton) {
         guard let message = self.messageTextView.text else { return }
@@ -333,106 +379,35 @@ extension RespondMessageViewController: UIImagePickerControllerDelegate, UINavig
     }
     
     private func sendMessageWithProperties(properties: [String: AnyObject]) {
-        self.shouldMakePrevious = false
-        let ref = Database.database().reference()
-        let toID = self.userID
-        let fromID = Auth.auth().currentUser!.uid
+        guard let fromID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("DrivewayzMessages").child(self.userID).childByAutoId()
         let timestamp = Int(Date().timeIntervalSince1970)
         
-        let childRef = ref.child("messages").childByAutoId()
-        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp, "communicationsStatus": "Previous"] as [String : Any]
+        var values = ["timestamp": timestamp,
+                      "context": "Reply",
+                      "deviceID": AppDelegate.DEVICEID,
+                      "fromID": fromID,
+                      "communicationsStatus": "Recent"] as [String : Any]
         
-        let userRef = ref.child("users").child(fromID)
-        userRef.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let userName = dictionary["name"] as? String
-                var fullNameArr = userName?.split(separator: " ")
-                let firstName: String = String(fullNameArr![0])
-                values["name"] = userName
-                if let picture = dictionary["picture"] as? String {
-                    values["picture"] = picture
-                }
-                
-                self.fetchNewCurrent(key: toID, name: firstName)
-                
-                ref.child("messages").child(fromID).removeValue()
-                
-                properties.forEach({values[$0] = $1})
-                childRef.updateChildValues(values) { (error, ralf) in
-                    if error != nil {
-                        print(error ?? "")
-                        return
-                    }
-                    if let messageId = childRef.key {
-                        let vals = [messageId: 1] as [String: Int]
-                        
-                        let userMessagesRef = ref.child("user-messages").child(fromID).child(toID)
-                        userMessagesRef.updateChildValues(vals)
-                        
-                        let recipientUserMessagesRef = ref.child("user-messages").child(toID).child(fromID)
-                        recipientUserMessagesRef.updateChildValues(vals)
-                        
-                        self.sendButton.alpha = 1
-                        self.sendButton.isUserInteractionEnabled = true
-                    }
-                }
+        properties.forEach({values[$0] = $1})
+        ref.updateChildValues(values) { (error, ralf) in
+            if error != nil {
+                print(error ?? "")
+                return
+            }
+            if let key = ralf.key {
+                let childRef = Database.database().reference().child("Messages").child(key)
+                childRef.updateChildValues(values, withCompletionBlock: { (error, success) in
+                    let userRef = Database.database().reference().child("users").child(self.userID).child("PersonalMessages")
+                    userRef.updateChildValues(["Drivewayz": key])
+                    
+                    self.sendButton.alpha = 1
+                    self.sendButton.isUserInteractionEnabled = true
+                })
             }
         }
     }
-    
-    func fetchNewCurrent(key: String, name: String) {
-        Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let fromDevice = dictionary["DeviceID"] as? String
-                self.setupPushNotifications(fromDevice: fromDevice!, name: name)
-            }
-        }
-    }
-    
-    fileprivate func setupPushNotifications(fromDevice: String, name: String) {
-        
-    }
-    
-    func observeMessages(toID: String) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid).child(toID)
-        userMessagesRef.observe(.childAdded, with: { (snapshot) in
-            let messageId = snapshot.key
-            
-            if self.shouldMakePrevious {
-                let ref = Database.database().reference().child("messages").child(messageId)
-                ref.updateChildValues(["communicationsStatus": "Previous"])
-            }
-            
-            if self.shouldCheckID != messageId {
-                self.shouldCheckID = messageId
-                let messagesRef = Database.database().reference().child("messages").child(messageId)
-                messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    guard let dictionary = snapshot.value as? [String: AnyObject] else {
-                        return
-                    }
-//                    if (dictionary["communicationsStatus"] as? String) != nil {
-//                        if (dictionary["communicationsId"] as? String) != nil {} else {
-//                            messagesRef.updateChildValues(["communicationsId": messageId])
-//                            self.messageID = messageId
-//                        }
-//                    }
-                    DispatchQueue.main.async(execute: {
-                        self.messages.append(Message(dictionary: dictionary))
-                        self.collectionView.reloadData()
-                        let indexPath = NSIndexPath(item: self.messages.count - 1, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
-                        delayWithSeconds(animationIn) {
-                            self.previousScrollPosition = self.collectionView.contentOffset.y
-                        }
-                    })
-                }, withCancel: nil)
-            }
-        }, withCancel: nil)
-    }
-    
+  
     @objc func selectImageView(sender: UIButton) {
         let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertController.Style.actionSheet)
         alert.addAction(UIAlertAction(title: "Camera Roll", style: UIAlertAction.Style.default, handler: { action in
@@ -525,7 +500,7 @@ extension RespondMessageViewController: UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! ChatMessageCell
-        cell.chatLogController = self
+//        cell.chatLogController = self
         
         let message = messages[indexPath.item]
         cell.message = message
@@ -563,23 +538,10 @@ extension RespondMessageViewController: UICollectionViewDelegate, UICollectionVi
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: Fonts.SSPRegularH5], context: nil)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: Fonts.SSPRegularH4], context: nil)
     }
     
     fileprivate func setupCell(cell: ChatMessageCell, message: Message) {
-        let ref = Database.database().reference().child("users").child(self.userID)
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let userPicture = dictionary["picture"] as? String {
-                    if userPicture != "" {
-                        self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
-                    } else {
-                        let image = UIImage(named: "profileprofile")
-                        self.profileImageView.image = image
-                    }
-                }
-            }
-        }
         if message.fromID == Auth.auth().currentUser?.uid {
             cell.bubbleView.backgroundColor = Theme.BLUE
             cell.textView.textColor = UIColor.white
@@ -724,7 +686,7 @@ extension RespondMessageViewController: UITextViewDelegate {
             let newPosition = textView.beginningOfDocument
             textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
         }
-        self.messageFieldHeightAnchor.constant = textView.text.height(withConstrainedWidth: textView.bounds.width - 58, font: Fonts.SSPRegularH5) + 20
+        self.messageFieldHeightAnchor.constant = textView.text.height(withConstrainedWidth: textView.bounds.width - 58, font: Fonts.SSPRegularH4) + 20
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 42)
         UIView.animate(withDuration: animationIn) {
             self.view.layoutIfNeeded()
@@ -736,6 +698,73 @@ extension RespondMessageViewController: UITextViewDelegate {
         let difference = self.previousScrollPosition - translation
         if difference >= 24 && self.messageBarBottomAnchor.constant == -keyboardHeight {
             self.view.endEditing(true)
+        }
+    }
+    
+    func updateTime() {
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(updateDate), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateDate() {
+        if let timeInterval = self.recentTimestamp {
+            let today = Date()
+            let date = Date(timeIntervalSince1970: timeInterval)
+            if let differenceSec = date.totalDistance(from: today, resultIn: .second),
+                let differenceMin = date.totalDistance(from: today, resultIn: .minute),
+                let differenceHour = date.totalDistance(from: today, resultIn: .hour),
+                let differenceDays = date.totalDistance(from: today, resultIn: .day),
+                let differenceMonths = date.totalDistance(from: today, resultIn: .month),
+                let differenceYears = date.totalDistance(from: today, resultIn: .year) {
+                if differenceSec >= 60 {
+                    if differenceMin >= 60 {
+                        if differenceHour >= 24 {
+                            if differenceDays >= 30 {
+                                if differenceMonths >= 12 {
+                                    if differenceYears == 1 {
+                                        self.durationLabel.text = "\(differenceYears) year ago"
+                                    } else {
+                                        self.durationLabel.text = "\(differenceYears) years ago"
+                                    }
+                                } else {
+                                    if differenceMonths == 1 {
+                                        self.durationLabel.text = "\(differenceMonths) month ago"
+                                    } else {
+                                        self.durationLabel.text = "\(differenceMonths) months ago"
+                                    }
+                                }
+                            } else {
+                                if differenceDays == 1 {
+                                    self.durationLabel.text = "\(differenceDays) day ago"
+                                } else {
+                                    self.durationLabel.text = "\(differenceDays) days ago"
+                                }
+                            }
+                        } else {
+                            if differenceHour == 1 {
+                                self.durationLabel.text = "\(differenceHour) hour ago"
+                            } else {
+                                self.durationLabel.text = "\(differenceHour) hours ago"
+                            }
+                        }
+                    } else {
+                        if differenceMin == 1 {
+                            self.durationLabel.text = "\(differenceMin) minute ago"
+                        } else {
+                            self.durationLabel.text = "\(differenceMin) minutes ago"
+                        }
+                    }
+                } else {
+                    if differenceSec == 0 {
+                        self.durationLabel.text = "1 second ago"
+                    } else {
+                        if differenceSec == 1 {
+                            self.durationLabel.text = "\(differenceSec) second ago"
+                        } else {
+                            self.durationLabel.text = "\(differenceSec) seconds ago"
+                        }
+                    }
+                }
+            }
         }
     }
     

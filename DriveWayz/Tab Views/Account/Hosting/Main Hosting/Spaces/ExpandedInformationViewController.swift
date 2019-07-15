@@ -60,7 +60,7 @@ class ExpandedInformationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         
@@ -105,7 +105,6 @@ class ExpandedInformationViewController: UIViewController {
         messageLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         messageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
         messageLabel.sizeToFit()
-//        messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 24).isActive = true
         
         self.view.addSubview(dateLabel)
         dateLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 4).isActive = true
@@ -119,7 +118,7 @@ class ExpandedInformationViewController: UIViewController {
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        height = 54 + 40 + messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 24, font: Fonts.SSPRegularH5) + 34
+        height = 120 + messageLabel.text.height(withConstrainedWidth: self.view.frame.width - 48, font: Fonts.SSPRegularH5)
         
     }
 

@@ -22,6 +22,18 @@ class UserMessages: UITableViewCell {
         return imageView
     }()
     
+    var recentRing: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.WHITE
+        view.layer.cornerRadius = 29
+        view.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+        view.layer.borderWidth = 2
+        view.alpha = 0
+        
+        return view
+    }()
+    
     var hostTextView: UILabel = {
         let view = UILabel()
         view.text = "Host"
@@ -69,6 +81,7 @@ class UserMessages: UITableViewCell {
         
         self.backgroundColor = Theme.WHITE
         
+        addSubview(recentRing)
         addSubview(profileImageView)
         addSubview(hostTextView)
         addSubview(messageTextView)
@@ -79,6 +92,11 @@ class UserMessages: UITableViewCell {
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        recentRing.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
+        recentRing.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        recentRing.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        recentRing.widthAnchor.constraint(equalToConstant: 58).isActive = true
         
         hostTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -8).isActive = true
         hostTextView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 12).isActive = true

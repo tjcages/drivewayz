@@ -10,6 +10,8 @@ import UIKit
 
 class EditCalendarViewController: UIViewController {
     
+    var delegate: handleHostEditing?
+    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
@@ -21,23 +23,12 @@ class EditCalendarViewController: UIViewController {
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Parking availability"
+        label.text = "Parking calendar"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH1
         
         return label
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
-        
-        return view
     }()
     
     lazy var backButton: UIButton = {
@@ -80,6 +71,7 @@ class EditCalendarViewController: UIViewController {
     lazy var scheduleController: CalendarViewController = {
         let controller = CalendarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.calendar.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 200, right: 0)
         
         return controller
     }()
@@ -96,13 +88,6 @@ class EditCalendarViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -113,16 +98,14 @@ class EditCalendarViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
         
-        scrollView.addSubview(scheduleController.view)
-        scheduleController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        scheduleController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
+        self.view.addSubview(scheduleController.view)
+        scheduleController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        scheduleController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scheduleController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scheduleController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        scheduleController.showMoreHeightAnchor.constant = 100
-        scheduleController.showMoreButton.titleEdgeInsets = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
         scheduleController.view.layoutIfNeeded()
         
-        scrollView.addSubview(darkBlurView)
+        self.view.addSubview(darkBlurView)
         darkBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         darkBlurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         darkBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -236,7 +219,6 @@ class EditCalendarViewController: UIViewController {
     @objc func saveButtonPressed() {
         self.nextButton.alpha = 0.5
         self.nextButton.isUserInteractionEnabled = false
-        self.nextButton.setTitle("Saving...", for: .normal)
         if let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
             ref.observeSingleEvent(of: .childAdded) { (snapshot) in
@@ -268,22 +250,18 @@ class EditCalendarViewController: UIViewController {
                     unavailableSaturday.setValue(saturdayUnavailable)
                     unavailableSunday.setValue(sundayUnavailable)
                     
-                    self.navigationController?.popViewController(animated: true)
-                    delayWithSeconds(animationOut * 2, completion: {
+                    self.delegate?.resetParking()
+                    delayWithSeconds(0.8) {
                         self.nextButton.alpha = 1
                         self.nextButton.isUserInteractionEnabled = true
-                        self.nextButton.setTitle("Save", for: .normal)
-                    })
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
     }
     
     @objc func exitButtonPressed(sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.navigationController?.popViewController(animated: true)
     }
 

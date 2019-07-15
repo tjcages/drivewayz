@@ -63,8 +63,8 @@ class ChatMessageCell: UICollectionViewCell {
     
     let textView: UITextView = {
         let tv = UITextView()
-        tv.text = "SAMPLE"
-        tv.font = Fonts.SSPRegularH5
+        tv.text = ""
+        tv.font = Fonts.SSPRegularH4
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.backgroundColor = UIColor.clear
         tv.textColor = UIColor.white

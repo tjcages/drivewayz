@@ -18,9 +18,13 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Help", "Settings"]
-    var optionsImages: [UIImage] = [UIImage(named: "location")!, UIImage(named: "calendar")!, UIImage(named: "car")!, UIImage(named: "home-1")!, UIImage(named: "tool")!, UIImage(named: "gear")!]
+    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Help", "Settings"]
     let cellId = "cellId"
+    var selectedIndex: Int = 0 {
+        didSet {
+            self.optionsTableView.reloadData()
+        }
+    }
     
     lazy var container: UIView = {
         let view = UIView()
@@ -46,10 +50,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
-        view.layer.cornerRadius = 180
+        view.layer.cornerRadius = 170
         
         return view
     }()
@@ -128,6 +132,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.alpha = 0
         
         return view
     }()
@@ -138,7 +143,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
-        view.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 110, right: 0)
+        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
         view.contentOffset = CGPoint.zero
         view.decelerationRate = .fast
         view.showsVerticalScrollIndicator = false
@@ -170,36 +175,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         
         return view
     }()
-    
-    var hostingMark: UIButton = {
-        let mark = UIButton()
-        let image = UIImage(named: "Mark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        mark.setImage(tintedImage, for: .normal)
-        mark.tintColor = Theme.WHITE
-        mark.backgroundColor = Theme.HARMONY_RED
-        mark.layer.cornerRadius = 10
-        mark.alpha = 0
-        mark.translatesAutoresizingMaskIntoConstraints = false
-        mark.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 0, bottom: 2, right: 0)
-        
-        return mark
-    }()
-    
-    var upcomingMark: UIButton = {
-        let mark = UIButton()
-        let image = UIImage(named: "Mark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        mark.setImage(tintedImage, for: .normal)
-        mark.tintColor = Theme.WHITE
-        mark.backgroundColor = Theme.HARMONY_RED
-        mark.layer.cornerRadius = 10
-        mark.alpha = 0
-        mark.translatesAutoresizingMaskIntoConstraints = false
-        mark.imageEdgeInsets = UIEdgeInsets.init(top: 2, left: 0, bottom: 2, right: 0)
-        
-        return mark
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -212,9 +187,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         setupMainView()
         setupTopView()
         fetchUser()
-        checkForMarks()
-        checkForUpcoming()
         configureHosts()
+        observeCorrectID()
     }
 
     override func didReceiveMemoryWarning() {
@@ -234,18 +208,17 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         container.widthAnchor.constraint(equalToConstant: phoneWidth/2 + 80).isActive = true
         container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         
+        self.view.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: container.topAnchor, constant: 120).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 380).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
+        
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 860)
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        
-        scrollView.addSubview(backgroundCircle)
-        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        backgroundCircle.centerYAnchor.constraint(equalTo: scrollView.topAnchor, constant: 60).isActive = true
-        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
         
     }
     
@@ -257,9 +230,11 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         switch device {
         case .iphone8:
-            profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 70).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 96 - statusHeight).isActive = true
+            scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 860)
         case .iphoneX:
-            profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 60).isActive = true
+            profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 116 - statusHeight).isActive = true
+            scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 960)
         }
         
         scrollView.addSubview(profileName)
@@ -313,26 +288,11 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             whiteBlurView2.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         }
         
-        scrollView.addSubview(upcomingMark)
-        upcomingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 57.5).isActive = true
-        upcomingMark.rightAnchor.constraint(equalTo: optionsTableView.rightAnchor, constant: -20).isActive = true
-        upcomingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        upcomingMark.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        scrollView.addSubview(hostingMark)
-        hostingMark.topAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: 102.5).isActive = true
-        hostingMark.rightAnchor.constraint(equalTo: optionsTableView.rightAnchor, constant: -20).isActive = true
-        hostingMark.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        hostingMark.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
     }
     
     func openAccountView() {
         self.delegate?.openAccountView()
     }
-    
-    var addShouldShow: Bool = false
-    var upcomingMarkShouldShow: Bool = false
     
     func fetchUser() {
         if let isUserName: String = UserDefaults.standard.object(forKey: "userName") as? String {
@@ -354,10 +314,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                 if let userPicture = dictionary["picture"] as? String {
                     if userPicture == "" {
                         self.profileImageView.image = UIImage(named: "background4")
-                        self.addShouldShow = true
                     } else {
                         self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
-                        self.addShouldShow = false
                     }
                 }
                 if let userRating = dictionary["rating"] as? Double {
@@ -366,13 +324,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                 } else {
                     self.stars.rating = 5.0
                     self.starLabel.text = "5.0"
-                }
-                if (dictionary["upcomingParking"] as? [String:AnyObject]) != nil {
-                    self.upcomingMark.alpha = 1
-                    self.upcomingMarkShouldShow = true
-                } else {
-                    self.upcomingMark.alpha = 0
-                    self.upcomingMarkShouldShow = false
                 }
             }
         }, withCancel: nil)
@@ -391,46 +342,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         })
     }
     
-    var hostMarkShouldShow: Bool = false
-    
-    func checkForMarks() {
-        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference()
-        ref.child("users").child(currentUser).child("Parking").observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                if let parkingId = dictionary["parkingID"] as? String {
-                    let parkingRef = ref.child("parking").child(parkingId).child("Current")
-                    parkingRef.observe(.childAdded, with: { (park) in
-                        self.hostingMark.alpha = 1
-                        self.hostMarkShouldShow = true
-                    })
-                    parkingRef.observe(.childRemoved, with: { (park) in
-                        self.hostingMark.alpha = 0
-                        self.hostMarkShouldShow = false
-                    })
-
-                }
-            }
-        }
-    }
-    
-    func checkForUpcoming() {
-        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(currentUser).child("upcomingParking")
-        ref.observe(.childAdded) { (snapshot) in
-            self.upcomingMark.alpha = 1
-            self.upcomingMarkShouldShow = true
-            return
-        }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.upcomingMark.alpha = 0
-            self.upcomingMarkShouldShow = false
-            return
-        }
-        self.upcomingMark.alpha = 0
-        self.upcomingMarkShouldShow = false
-    }
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -446,11 +357,12 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
         cell.message = options[indexPath.row]
-//        cell.profileImageView.setImage(optionsImages[indexPath.row], for: .normal)
-        let image = optionsImages[indexPath.row]
-        let tintedImage = image.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        cell.profileImageView.setImage(tintedImage, for: .normal)
-        cell.profileImageView.tintColor = Theme.BLACK
+        if cell.message == "Contact us" {
+            cell.openSubText()
+            cell.subTextView.text = "Share your feedback"
+        } else {
+            cell.closeSubText()
+        }
         cell.selectionStyle = .none
         if self.selectedIndex == indexPath.row {
             cell.animate()
@@ -473,54 +385,48 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        self.selectedIndex = indexPath.row
-        tableView.reloadData()
-        delayWithSeconds(animationOut) {
-            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
-        }
-//        cell.profileImageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+//        self.selectedIndex = indexPath.row
+//        tableView.reloadData()
+//        delayWithSeconds(animationOut) {
+//            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+//            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
+//        }
     }
     
-//    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-//        let cell = optionsTableView.cellForRow(at: indexPath) as! OptionsCell
-//        cell.messageTextView.textColor = Theme.BLACK
-//        cell.profileImageView.tintColor = Theme.BLACK
-//    }
-    
     var analControllerAnchor: NSLayoutConstraint!
-    var selectedIndex: Int = 0
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIView.animate(withDuration: animationIn) {
-            self.hostingMark.alpha = 0
-            self.upcomingMark.alpha = 0
-        }
-        if tableView == optionsTableView {
-            if options[indexPath.row] == "My bookings" {
-                self.openAccountView()
-                self.delegate?.bringUpcomingController()
-            } else if options[indexPath.row] == "Hosted spaces" {
-                self.openAccountView()
-                self.delegate?.bringHostingController()
-            } else if options[indexPath.row] == "Become a host" {
-                self.openAccountView()
-                self.delegate?.bringNewHostingController()
-            } else if options[indexPath.row] == "Vehicle" {
-                self.openAccountView()
-                self.delegate?.bringVehicleController()
-            } else if options[indexPath.row] == "Settings" {
-                self.openAccountView()
-                self.delegate?.bringSettingsController()
-            } else if options[indexPath.row] == "Help" {
-                self.openAccountView()
-                self.delegate?.bringHelpController()
-            } else if options[indexPath.row] == "Book a spot" {
+        self.selectedIndex = indexPath.row
+        delayWithSeconds(animationIn) {
+            if tableView == self.optionsTableView {
+                if self.options[indexPath.row] == "My bookings" {
+                    self.openAccountView()
+                    self.delegate?.bringUpcomingController()
+                } else if self.options[indexPath.row] == "Hosted spaces" {
+                    self.openAccountView()
+                    self.delegate?.bringHostingController()
+                } else if self.options[indexPath.row] == "Become a host" {
+                    self.openAccountView()
+                    self.delegate?.bringNewHostingController()
+                } else if self.options[indexPath.row] == "Vehicle" {
+                    self.openAccountView()
+                    self.delegate?.bringVehicleController()
+                } else if self.options[indexPath.row] == "Settings" {
+                    self.openAccountView()
+                    self.delegate?.bringSettingsController()
+                } else if self.options[indexPath.row] == "Help" {
+                    self.openAccountView()
+                    self.delegate?.bringHelpController()
+                } else if self.options[indexPath.row] == "Book a spot" {
+                    self.delegate?.moveToMap()
+                } else if self.options[indexPath.row] == "Contact us" {
+                    self.delegate?.bringFeedbackController()
+                } else if self.options[indexPath.row] == "Analytics" {
+                    self.delegate?.bringAnalyticsController()
+                }
+            } else {
                 self.delegate?.moveToMap()
             }
-        } else {
-            self.delegate?.moveToMap()
-//            self.delegate?.bringTermsController()
         }
     }
     
@@ -539,14 +445,32 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
         ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Contact us", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
         ref.observe(.childRemoved) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Help", "Settings"]
             self.delegate?.closeAccountView()
 //            self.delegate?.hideHostingController()
             self.optionsTableView.reloadData()
+        }
+    }
+    
+    func observeCorrectID() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("ConfirmedID")
+        ref.observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                if key == currentUser {
+                    if self.options.contains("Become a host") {
+                        self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Analytics", "Help", "Settings"]
+                        self.optionsTableView.reloadData()
+                    } else {
+                        self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Contact us", "Analytics", "Help", "Settings"]
+                        self.optionsTableView.reloadData()
+                    }
+                }
+            }
         }
     }
 

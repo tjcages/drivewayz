@@ -112,7 +112,7 @@ extension MapKitViewController: handleCheckoutParking {
             self.backToBooking()
         } else {
             if self.mainBarTopAnchor.constant != 0 {
-                self.mainBarTopAnchor.constant = 354
+                self.mainBarTopAnchor.constant = self.lowestHeight
                 UIView.animate(withDuration: animationOut, animations: {
                     self.fullBackgroundView.alpha = 0
                     self.view.layoutIfNeeded()
@@ -125,7 +125,7 @@ extension MapKitViewController: handleCheckoutParking {
                     })
                 }
             } else if self.currentBottomHeightAnchor.constant != 0 {
-                self.currentBottomHeightAnchor.constant = 354
+                self.currentBottomHeightAnchor.constant = self.lowestHeight
                 UIView.animate(withDuration: animationOut, animations: {
                     self.fullBackgroundView.alpha = 0
                     self.view.layoutIfNeeded()
@@ -156,9 +156,9 @@ extension MapKitViewController: handleCheckoutParking {
     }
     
     func observeAllHosting() {
-        if let destination = DestinationAnnotationLocation {
-            self.checkAnnotationsNearDestination(location: destination.coordinate, checkDistance: true)
-        }
+//        if let destination = DestinationAnnotationLocation {
+//            self.checkAnnotationsNearDestination(location: destination.coordinate, checkDistance: true)
+//        }
     }
     
     @objc func bookSpotPressed() {

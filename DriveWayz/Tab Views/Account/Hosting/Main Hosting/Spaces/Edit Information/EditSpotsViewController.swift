@@ -10,6 +10,9 @@ import UIKit
 
 class EditSpotsViewController: UIViewController {
     
+    var delegate: handleHostEditing?
+    var selectedParking: ParkingSpots?
+    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
@@ -27,17 +30,6 @@ class EditSpotsViewController: UIViewController {
         label.font = Fonts.SSPSemiBoldH1
         
         return label
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
-        
-        return view
     }()
     
     lazy var backButton: UIButton = {
@@ -61,6 +53,7 @@ class EditSpotsViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
+        button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
         
         return button
     }()
@@ -83,6 +76,46 @@ class EditSpotsViewController: UIViewController {
         return controller
     }()
     
+    func setData(parking: ParkingSpots) {
+        self.selectedParking = parking
+        if let spots = parking.numberSpots, let type = parking.mainType {
+            if type == "residential" {
+                self.numberController.numberOfSpots = 8
+            } else if type == "apartment" {
+                self.numberController.numberOfSpots = 8
+            } else if type == "street" {
+                self.numberController.numberOfSpots = 3
+            } else if type == "covered" {
+                self.numberController.numberOfSpots = 60
+            } else if type == "parking lot" {
+                self.numberController.numberOfSpots = 100
+            } else if type == "alley" {
+                self.numberController.numberOfSpots = 3
+            } else if type == "gated" {
+                self.numberController.numberOfSpots = 60
+            }
+            self.numberController.numberField.text = spots
+        }
+        if var parkingNumber = parking.parkingNumber {
+            if parkingNumber == "" {
+                parkingNumber = "• • • •"
+                self.numberController.checkmarkPressed(bool: false, sender: self.numberController.spotNumberCheckmark)
+            } else {
+                self.numberController.checkmarkPressed(bool: true, sender: self.numberController.spotNumberCheckmark)
+            }
+            self.numberController.spotNumberField.text = parkingNumber
+        }
+        if var code = parking.gateNumber {
+            if code == "" {
+                code = "• • • •"
+                self.numberController.checkmarkPressed(bool: false, sender: self.numberController.gateCodeCheckmark)
+            } else {
+                self.numberController.checkmarkPressed(bool: true, sender: self.numberController.gateCodeCheckmark)
+            }
+            self.numberController.gateCodeField.text = code
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,13 +128,6 @@ class EditSpotsViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -112,9 +138,9 @@ class EditSpotsViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
         
-        scrollView.addSubview(numberController.view)
-        numberController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        numberController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
+        self.view.addSubview(numberController.view)
+        numberController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        numberController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         numberController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         numberController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
@@ -156,6 +182,27 @@ class EditSpotsViewController: UIViewController {
             nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
         }
         
+    }
+    
+    @objc func savePressed() {
+        self.nextButton.alpha = 0.5
+        self.nextButton.isUserInteractionEnabled = false
+        if let parking = self.selectedParking, let parkingID = parking.parkingID {
+            let ref = Database.database().reference().child("ParkingSpots").child(parkingID).child("Type")
+            let numberSpots = self.numberController.numberField.text
+            var parkingNumber = self.numberController.spotNumberField.text; if parkingNumber == "• • • •" { parkingNumber = "" }
+            var gateNumber = self.numberController.gateCodeField.text; if gateNumber == "• • • •" { gateNumber = "" }
+            let values = ["numberSpots": numberSpots as Any,
+                          "parkingNumber": parkingNumber as Any,
+                          "gateNumber": gateNumber as Any]
+            ref.updateChildValues(values)
+            self.delegate?.resetParking()
+            delayWithSeconds(0.8) {
+                self.nextButton.alpha = 1
+                self.nextButton.isUserInteractionEnabled = true
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     @objc func exitButtonPressed(sender: UIButton) {

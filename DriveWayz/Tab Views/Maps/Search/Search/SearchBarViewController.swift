@@ -76,7 +76,7 @@ class SearchBarViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.PRUSSIAN_BLUE
-        label.text = "16th Avenue, 4th Cross Street, London"
+        label.text = ""
         label.font = Fonts.SSPRegularH5
         
         return label

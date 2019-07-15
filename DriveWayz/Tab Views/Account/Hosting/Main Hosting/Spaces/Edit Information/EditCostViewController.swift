@@ -10,6 +10,7 @@ import UIKit
 
 class EditCostViewController: UIViewController {
 
+    var delegate: handleHostEditing?
     var selectedParking: ParkingSpots?
     
     lazy var gradientContainer: UIView = {
@@ -29,17 +30,6 @@ class EditCostViewController: UIViewController {
         label.font = Fonts.SSPSemiBoldH1
         
         return label
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
-        
-        return view
     }()
     
     lazy var backButton: UIButton = {
@@ -106,13 +96,6 @@ class EditCostViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -123,9 +106,9 @@ class EditCostViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
         
-        scrollView.addSubview(costController.view)
-        costController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
-        costController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
+        self.view.addSubview(costController.view)
+        costController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        costController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         costController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         costController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
@@ -170,13 +153,20 @@ class EditCostViewController: UIViewController {
     }
     
     @objc func savePressed() {
+        self.nextButton.alpha = 0.5
+        self.nextButton.isUserInteractionEnabled = false
         if let parking = self.selectedParking, let parkingID = parking.parkingID {
             var parkingCost = self.costController.costTextField.text?.replacingOccurrences(of: "$", with: "")
             parkingCost = parkingCost!.replacingOccurrences(of: " ", with: "")
             let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
             ref.updateChildValues(["parkingCost": Double(parkingCost!) as Any])
             
-            self.navigationController?.popViewController(animated: true)
+            self.delegate?.resetParking()
+            delayWithSeconds(0.8) {
+                self.nextButton.alpha = 1
+                self.nextButton.isUserInteractionEnabled = true
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
-//import FirebaseInvites
+import FirebaseDynamicLinks
 import GoogleSignIn
 import GoogleMaps
 import GooglePlaces
@@ -63,8 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Theme.PACIFIC_BLUE
         
         Messaging.messaging().delegate = self
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        UNUserNotificationCenter.current().delegate = self
+        
+        if #available(iOS 10, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            UIApplication.shared.applicationIconBadgeNumber = 0
+            UNUserNotificationCenter.current().delegate = self
+            application.registerForRemoteNotifications()
+        }
         
         return true
     }
@@ -111,28 +116,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        let stripeHandled = Stripe.handleURLCallback(with: url)
-        if (stripeHandled) {
-            return true
+        if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
+            self.handleIncomingDynamicLink(dynamicLink)
         } else {
-            return false
-//            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
+            let stripeHandled = Stripe.handleURLCallback(with: url)
+            if (stripeHandled) {
+                return true
+            } else {
+                return false
+                //            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
+            }
+        }
+        return false
+    }
+    
+    func handleIncomingDynamicLink(_ dynamicLink: DynamicLink) {
+        guard let url = dynamicLink.url else { return }
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        let ref = Database.database().reference().child("users").child(currentUser)
+        ref.child("Coupons").observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                if (dictionary["INVITE10"] as? String) != nil {
+//                    let alert = UIAlertController(title: "Sorry", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+//                    self.present(alert, animated: true)
+                    return
+                } else {
+                    ref.child("Coupons").updateChildValues(["INVITE10": "10% off coupon!"])
+                    ref.child("CurrentCoupon").updateChildValues(["invite": 10])
+//                    let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental.", preferredStyle: .alert)
+//                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+//                    self.present(alert, animated: true)
+                }
+            }
         }
     }
-//
-//    func application(_ application: UIApplication,
-//                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//        if GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation) {
-//            return true
-//        }
-//        
-//        return Invites.handleUniversalLink(url) { invite, error in
-//            // ...
-//        }
-//    }
     
     // This method is where you handle URL opens if you are using univeral link URLs (eg "https://example.com/stripe_ios_callback")
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        if let incomingURL = userActivity.webpageURL {
+            let linkHandled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { (dynamicLink, error) in
+                if let err = error {
+                    print(err.localizedDescription)
+                }
+                if let dynamicLink = dynamicLink {
+                    self.handleIncomingDynamicLink(dynamicLink)
+                }
+            }
+        }
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             if let url = userActivity.webpageURL {
                 let stripeHandled = Stripe.handleURLCallback(with: url)
@@ -178,14 +209,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case 1920, 2208:
                 print("iPhone 6+/6S+/7+/8+")
                 //                device = .iphonePlus
-                device = .iphone8
+                device = .iphoneX
             case 2436:
                 print("iPhone X")
                 device = .iphoneX
             default:
                 print("unknown")
                 //                device = .iPad
-                device = .iphone8
+                device = .iphoneX
             }
         }
         let locationManager = CLLocationManager()
@@ -244,7 +275,7 @@ extension AppDelegate: MessagingDelegate {
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        let dataDict:[String: String] = ["token": fcmToken]
+        let dataDict: [String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
@@ -273,6 +304,12 @@ extension AppDelegate: MessagingDelegate {
         })
     }
     
+    // Called when APNs failed to register the device for push notifications
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Print the error to console (you should alert the user that registration failed)
+        print("APNs registration failed: \(error)")
+    }
+    
 //    func connectToFCM() {
 //        Messaging.messaging().isAutoInitEnabled = true
 //    }
@@ -282,6 +319,7 @@ extension AppDelegate: MessagingDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
         completionHandler([.alert,.sound])
     }
     
@@ -293,17 +331,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        // If you are receiving a notification message while your app is in the background,
-        // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
         
         // Print full message.
         print(userInfo)
@@ -311,22 +340,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // If you are receiving a notification message while your app is in the background,
-        // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        
         // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
+         Messaging.messaging().appDidReceiveMessage(userInfo)
+        UIApplication.shared.applicationIconBadgeNumber += 1
+
         // Print full message.
         print(userInfo)
         
-        completionHandler(UIBackgroundFetchResult.newData)
+        completionHandler(.newData)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {

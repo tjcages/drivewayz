@@ -232,7 +232,7 @@ class ParkingTypeViewController: UIViewController {
     var streetAnchor: NSLayoutConstraint!
     var coveredAnchor: NSLayoutConstraint!
     var parkingLotAnchor: NSLayoutConstraint!
-    var alleyAnchor: NSLayoutConstraint!
+    var otherAnchor: NSLayoutConstraint!
     var gatedAnchor: NSLayoutConstraint!
     
     func setupViews() {
@@ -316,8 +316,8 @@ class ParkingTypeViewController: UIViewController {
         scrollView.addSubview(otherLine)
         otherLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         otherLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        alleyAnchor = otherLine.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor, constant: 35)
-        alleyAnchor.isActive = true
+        otherAnchor = otherLine.topAnchor.constraint(equalTo: otherIconLabel.bottomAnchor, constant: 35)
+        otherAnchor.isActive = true
         otherLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         setupExtraInformation()
@@ -410,7 +410,7 @@ class ParkingTypeViewController: UIViewController {
                 self.otherButton.backgroundColor = Theme.PACIFIC_BLUE
                 self.otherButton.tintColor = Theme.WHITE
                 self.otherButton.layer.shadowOpacity = 0.2
-                self.alleyAnchor.constant = 80
+                self.otherAnchor.constant = 80
                 self.otherInformation.alpha = 1
                 self.view.layoutIfNeeded()
                 
@@ -467,7 +467,7 @@ class ParkingTypeViewController: UIViewController {
             self.otherButton.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
             self.otherButton.tintColor = Theme.WHITE
             self.otherButton.layer.shadowOpacity = 0
-            self.alleyAnchor.constant = 35
+            self.otherAnchor.constant = 35
             self.otherInformation.alpha = 0
             self.view.layoutIfNeeded()
         }

@@ -38,8 +38,6 @@ class ExpandedImageViewController: UIViewController {
             view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300)
         }
         view.clipsToBounds = true
-        let image = UIImage(named: "background3")
-        view.image = image
         
         return view
     }()
@@ -55,8 +53,6 @@ class ExpandedImageViewController: UIViewController {
             view.frame = CGRect(x: scrollView.frame.width * 1, y: 0, width: self.view.frame.width, height: 300)
         }
         view.clipsToBounds = true
-        let image = UIImage(named: "background2")
-        view.image = image
         
         return view
     }()

@@ -10,6 +10,9 @@ import UIKit
 
 class EditAmenitiesViewController: UIViewController {
     
+    var delegate: handleHostEditing?
+    var selectedParking: ParkingSpots?
+    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
@@ -27,17 +30,6 @@ class EditAmenitiesViewController: UIViewController {
         label.font = Fonts.SSPSemiBoldH1
         
         return label
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
-        
-        return view
     }()
     
     lazy var backButton: UIButton = {
@@ -61,6 +53,7 @@ class EditAmenitiesViewController: UIViewController {
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
+        button.addTarget(self, action: #selector(savePressed), for: .touchUpInside)
         
         return button
     }()
@@ -83,6 +76,44 @@ class EditAmenitiesViewController: UIViewController {
         return controller
     }()
     
+    func setData(parking: ParkingSpots) {
+        self.selectedParking = parking
+        if let amenities = parking.parkingAmenities {
+            let cont = self.amenitiesController
+            if amenities.contains("Covered parking") {
+                self.amenitiesController.selectedAmenities = amenities
+                self.selectAmenity(button: cont.coveredImageView, label: cont.coveredIconLabel, anchor: cont.coveredAnchor, information: cont.coveredInformation)
+            }
+            if amenities.contains("Charging station") {
+                self.selectAmenity(button: cont.chargingImageView, label: cont.chargingIconLabel, anchor: cont.chargingAnchor, information: cont.chargingInformation)
+            }
+            if amenities.contains("Stadium parking") {
+                self.selectAmenity(button: cont.stadiumImageView, label: cont.stadiumIconLabel, anchor: cont.stadiumAnchor, information: cont.stadiumInformation)
+            }
+            if amenities.contains("Gated spot") {
+                self.selectAmenity(button: cont.gatedImageView, label: cont.gatedIconLabel, anchor: cont.gatedAnchor, information: cont.gatedInformation)
+            }
+            if amenities.contains("Nighttime parking") {
+                self.selectAmenity(button: cont.nightImageView, label: cont.nightIconLabel, anchor: cont.nightAnchor, information: cont.nightInformation)
+            }
+            if amenities.contains("Near Airport") {
+                self.selectAmenity(button: cont.airportImageView, label: cont.airportIconLabel, anchor: cont.airportAnchor, information: cont.airportInformation)
+            }
+            if amenities.contains("Lit space") {
+                self.selectAmenity(button: cont.lightedImageView, label: cont.lightedIconLabel, anchor: cont.lightingAnchor, information: cont.lightingInformation)
+            }
+            if amenities.contains("Large space") {
+                self.selectAmenity(button: cont.largeImageView, label: cont.largeIconLabel, anchor: cont.largeAnchor, information: cont.largeInformation)
+            }
+            if amenities.contains("Compact space") {
+                self.selectAmenity(button: cont.smallImageView, label: cont.smallIconLabel, anchor: cont.smallAnchor, information: cont.smallInformation)
+            }
+            if amenities.contains("Easy to find") {
+                self.selectAmenity(button: cont.easyImageView, label: cont.easyIconLabel, anchor: cont.easyAnchor, information: cont.easyInformation)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,13 +126,6 @@ class EditAmenitiesViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -112,11 +136,12 @@ class EditAmenitiesViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
         
-        scrollView.addSubview(amenitiesController.view)
-        amenitiesController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        amenitiesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
+        self.view.addSubview(amenitiesController.view)
+        amenitiesController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        amenitiesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         amenitiesController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         amenitiesController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        amenitiesController.scrollView.contentSize.height = amenitiesController.scrollView.contentSize.height - 300
         
         self.view.addSubview(darkBlurView)
         darkBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -156,6 +181,34 @@ class EditAmenitiesViewController: UIViewController {
             nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
         }
         
+    }
+    
+    @objc func savePressed() {
+        self.nextButton.alpha = 0.5
+        self.nextButton.isUserInteractionEnabled = false
+        if let parking = self.selectedParking, let parkingID = parking.parkingID {
+            let ref = Database.database().reference().child("ParkingSpots").child(parkingID).child("Type").child("Amenities")
+            ref.removeValue()
+            ref.setValue(self.amenitiesController.selectedAmenities)
+            
+            self.delegate?.resetParking()
+            delayWithSeconds(0.8) {
+                self.nextButton.alpha = 1
+                self.nextButton.isUserInteractionEnabled = true
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    func selectAmenity(button: UIButton, label: UIButton, anchor: NSLayoutConstraint, information: UILabel) {
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH2
+        button.backgroundColor = Theme.PACIFIC_BLUE
+        button.tintColor = Theme.WHITE
+        button.layer.shadowOpacity = 0.2
+        anchor.constant = 95
+        information.alpha = 1
+        self.amenitiesController.scrollView.contentSize.height = self.amenitiesController.scrollView.contentSize.height + 95
     }
     
     @objc func exitButtonPressed(sender: UIButton) {

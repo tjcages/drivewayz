@@ -60,7 +60,7 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
         view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
@@ -193,12 +193,6 @@ class UserVehicleViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func backButtonPressed() {
-        
-        //////////////NEED TO FIX
-        
-//        self.currentVehicleController.scrollView.setContentOffset(.zero, animated: true)
-//        self.bringBackMain()
-        
         self.delegate?.dismissActiveController()
         self.dismiss(animated: true) {
             self.backButton.alpha = 0

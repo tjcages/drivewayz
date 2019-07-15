@@ -39,10 +39,21 @@ class OptionsCell: UITableViewCell {
     
     var messageTextView: UILabel = {
         let view = UILabel()
-        view.text = "Some sample text!"
+        view.text = ""
         view.font = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
+        
+        return view
+    }()
+    
+    var subTextView: UILabel = {
+        let view = UILabel()
+        view.text = ""
+        view.font = Fonts.SSPRegularH5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = Theme.GREEN_PIGMENT
+        view.alpha = 0
         
         return view
     }()
@@ -57,26 +68,28 @@ class OptionsCell: UITableViewCell {
     }()
     
     var selectionLeftAnchor: NSLayoutConstraint!
+    var messageTopAnchor: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.clipsToBounds = false
-        self.backgroundColor = Theme.WHITE
-        
-//        addSubview(profileImageView)
+        self.backgroundColor = UIColor.clear
+    
         addSubview(messageTextView)
         addSubview(selectionLine)
+        addSubview(subTextView)
         
-//        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24).isActive = true
-//        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-//        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        messageTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        messageTopAnchor = messageTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            messageTopAnchor.isActive = true
         messageTextView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
-        messageTextView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        messageTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         messageTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        
+        subTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 16).isActive = true
+        subTextView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
+        subTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        subTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         
         selectionLine.centerYAnchor.constraint(equalTo: messageTextView.centerYAnchor).isActive = true
         selectionLine.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
@@ -84,6 +97,18 @@ class OptionsCell: UITableViewCell {
         selectionLeftAnchor = selectionLine.leftAnchor.constraint(equalTo: messageTextView.leftAnchor)
             selectionLeftAnchor.isActive = true
     
+    }
+    
+    func openSubText() {
+        self.messageTopAnchor.constant = -8
+        self.subTextView.alpha = 1
+        self.layoutIfNeeded()
+    }
+    
+    func closeSubText() {
+        self.messageTopAnchor.constant = 0
+        self.subTextView.alpha = 0
+        self.layoutIfNeeded()
     }
     
     func animate() {

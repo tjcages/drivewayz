@@ -208,7 +208,7 @@ class BookingRouteViewController: UIViewController {
     var destinationLocationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "16th Avenue, 4th Cross"
+        label.text = ""
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH4
         

@@ -177,7 +177,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
             self.drivewayzBottomIcon.alpha = 0.5
             self.view.layoutIfNeeded()
         }) { (success) in
-            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.drivewayzIconTopAnchor.constant = 0
                 var transform = CGAffineTransform.identity
                 transform = transform.scaledBy(x: 1.0, y: 1.0)
@@ -186,42 +186,44 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                 self.drivewayzBottomIcon.alpha = 1
                 self.view.layoutIfNeeded()
             }) { (success) in
-                UIView.animate(withDuration: 0.2, animations: {
-                    let width = self.drivewayzLabel.text?.width(withConstrainedHeight: 40, font: Fonts.SSPBoldH0)
-                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
-                    self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
-                    self.drivewayzIconLeftAnchor.constant = (-108 - width!)/2
-                    self.drivewayzTopIcon.alpha = 0
-                    self.drivewayzBottomIcon.alpha = 0
-                    self.drivewayzLabel.alpha = 1
-                    self.view.layoutIfNeeded()
-                }, completion: { (success) in
-                    delayWithSeconds(0.4, completion: {
-                        UIView.animate(withDuration: animationIn, animations: {
-                            self.startupAnchor.constant = 0
-                            if self.controller == true {
-                                self.drivewayzLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                self.drivewayzLabel.alpha = 0
-                                self.drivewayzTopIcon.alpha = 0
-                                self.drivewayzBottomIcon.alpha = 0
-                                self.startupMapController.view.alpha = 1
-                            } else {
-                                self.drivewayzIconTopAnchor.constant = -200
-                                self.drivewayzBottomIcon.transform = CGAffineTransform(translationX: 0.0, y: -200)
-                                self.drivewayzLabel.alpha = 0
-                                self.drivewayzTopIcon.alpha = 0
-                                self.drivewayzBottomIcon.alpha = 0
-                                self.startupOnboardingController.circularView.alpha = 1
-                            }
-                            self.view.layoutIfNeeded()
-                        }, completion: { (success) in
-                            if self.controller == true {
-                                UIView.animate(withDuration: animationIn, animations: {
-                                    self.blackView.alpha = 1
-                                })
-                            }
+                delayWithSeconds(0.3, completion: {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        let width = self.drivewayzLabel.text?.width(withConstrainedHeight: 40, font: Fonts.SSPBoldH0)
+                        self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
+                        self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
+                        self.drivewayzIconLeftAnchor.constant = (-108 - width!)/2
+                        self.drivewayzTopIcon.alpha = 0
+                        self.drivewayzBottomIcon.alpha = 0
+                        self.drivewayzLabel.alpha = 1
+                        self.view.layoutIfNeeded()
+                    }, completion: { (success) in
+                        delayWithSeconds(0.4, completion: {
+                            UIView.animate(withDuration: animationIn, animations: {
+                                self.startupAnchor.constant = 0
+                                if self.controller == true {
+                                    self.drivewayzLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                                    self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                                    self.drivewayzLabel.alpha = 0
+                                    self.drivewayzTopIcon.alpha = 0
+                                    self.drivewayzBottomIcon.alpha = 0
+                                    self.startupMapController.view.alpha = 1
+                                } else {
+                                    self.drivewayzIconTopAnchor.constant = -200
+                                    self.drivewayzBottomIcon.transform = CGAffineTransform(translationX: 0.0, y: -200)
+                                    self.drivewayzLabel.alpha = 0
+                                    self.drivewayzTopIcon.alpha = 0
+                                    self.drivewayzBottomIcon.alpha = 0
+                                    self.startupOnboardingController.circularView.alpha = 1
+                                }
+                                self.view.layoutIfNeeded()
+                            }, completion: { (success) in
+                                if self.controller == true {
+                                    UIView.animate(withDuration: animationIn, animations: {
+                                        self.blackView.alpha = 1
+                                    })
+                                }
+                            })
                         })
                     })
                 })

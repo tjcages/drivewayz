@@ -610,7 +610,7 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
     
     func getVersionNumber() {
         //First get the nsObject by defining as an optional anyObject
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
             self.versionLabel.text = "Ver. " + version
         }
     }

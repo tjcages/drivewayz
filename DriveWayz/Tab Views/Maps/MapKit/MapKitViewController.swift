@@ -70,7 +70,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         setupUserMessages()
         checkDayTimeStatus()
         checkNetwork()
-        observeCorrectID()
+        monitorCoupons()
+        observeUserDrivewayzMessages()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -86,6 +87,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     var lowestHeight: CGFloat = 354
+    var minimizedHeight: CGFloat = 150
     
     enum CurrentData {
         case notReserved
@@ -159,6 +161,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = MainBarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -167,6 +170,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = SearchSummaryViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -175,6 +179,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = SearchBarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
 //        controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -183,6 +188,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = CurrentSpotViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -191,6 +197,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = ExpandedSpotViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -247,6 +254,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = MapSearchViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -256,6 +264,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Events"
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -264,6 +273,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = CheckEventsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Check Events"
+        self.addChild(controller)
         
         return controller
     }()
@@ -276,6 +286,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.navigationDelegate = self
         controller.locatorDelegate = self
         controller.parkingDelegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -285,6 +296,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Purchase"
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -294,6 +306,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -303,6 +316,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -314,6 +328,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.title = "Purchase Controller"
 //        controller.delegate = self
         controller.saveDelegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -325,6 +340,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.title = "Information Controller"
         controller.hostDelegate = self
 //        controller.navigationDelegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -379,9 +395,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return label
     }()
     
-    var currentParkingController: CurrentParkingViewController = {
+    lazy var currentParkingController: CurrentParkingViewController = {
         let controller = CurrentParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        
         return controller
     }()
     
@@ -413,6 +431,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = QuickDestinationViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Destination"
+        self.addChild(controller)
         
         return controller
     }()
@@ -421,15 +440,17 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = QuickParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Destination"
+        self.addChild(controller)
         
         return controller
     }()
     
     var holdNavTopAnchor: NSLayoutConstraint!
     
-    var holdNavController: HoldNavViewController = {
+    lazy var holdNavController: HoldNavViewController = {
         let controller = HoldNavViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
         
         return controller
     }()
@@ -438,6 +459,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let controller = NavigationBottomViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        self.addChild(controller)
         
         return controller
     }()
@@ -484,10 +506,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return button
     }()
     
-    var quickCouponController: QuickCouponsViewController = {
+    lazy var quickCouponController: QuickCouponsViewController = {
         let controller = QuickCouponsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
+        self.addChild(controller)
         
         return controller
     }()
@@ -499,6 +522,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        self.addChild(controller)
         
         return controller
     }()
@@ -511,6 +535,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.delegate = self
         controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         controller.view.alpha = 0
+        self.addChild(controller)
         
         return controller
     }()
@@ -523,42 +548,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         self.addChild(controller)
         
         return controller
-    }()
-    
-    var drivewayzNewMessageButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
-        button.layer.cornerRadius = 20
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowOffset = CGSize(width: 1, height: 1)
-        button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.4
-        let origImage = UIImage(named: "settingsEmail")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        button.alpha = 0
-        
-        return button
-    }()
-    
-    var drivewayzNewMessageNumber: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
-        button.layer.cornerRadius = 10
-        button.setTitle("2", for: .normal)
-        button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPSemiBoldH6
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        button.layer.shadowOffset = CGSize(width: 1, height: 1)
-        button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.4
-        button.isUserInteractionEnabled = false
-        
-        return button
     }()
     
     let transition = CircularTransition()
@@ -671,7 +660,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
         mapView.userTrackingMode = .follow
+        mapView.delegate = self
         
+        // Add a single tap gesture recognizer. This gesture requires the built-in MGLMapView tap gestures (such as those for zoom and annotation selection) to fail.
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(sender:)))
+        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
+            singleTap.require(toFail: recognizer)
+        }
+        mapView.addGestureRecognizer(singleTap)
     }
     
     func setupAdditionalViews() {
@@ -697,20 +693,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         hamburgerView3.backgroundColor = Theme.BLACK
         self.parkingBackButton.tintColor = Theme.BLACK
         self.locationsSearchResults.tableView.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
-    }
-    
-    func observeCorrectID() {
-        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("ConfirmedID")
-        ref.observe(.childAdded) { (snapshot) in
-            if let key = snapshot.value as? String {
-                if key == currentUser {
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.drivewayzNewMessageButton.alpha = 1
-                    })
-                }
-            }
-        }
     }
     
     func sendNewHost() {

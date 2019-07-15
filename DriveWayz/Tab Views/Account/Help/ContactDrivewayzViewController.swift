@@ -11,6 +11,7 @@ import MessageUI
 
 class ContactDrivewayzViewController: UIViewController {
     
+    var delegate: moveControllers?
     var context: String = "Help"
     var confirmedIDs: [String] = []
     
@@ -18,7 +19,7 @@ class ContactDrivewayzViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.clipsToBounds = true
         
         return view
     }()
@@ -44,6 +45,17 @@ class ContactDrivewayzViewController: UIViewController {
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         return button
+    }()
+    
+    var backgroundCircle: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY
+        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.15).cgColor
+        view.layer.borderWidth = 80
+        view.layer.cornerRadius = 180
+        
+        return view
     }()
     
     var informationLabel: UILabel = {
@@ -127,6 +139,12 @@ class ContactDrivewayzViewController: UIViewController {
         case .iphoneX:
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
+        
+        gradientContainer.addSubview(backgroundCircle)
+        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
+        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -221,16 +239,30 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
                     let timestamp = Date().timeIntervalSince1970
                     let values = ["name": name, "email": email, "timestamp": timestamp, "message": message, "context": self.context, "deviceID": deviceID, "fromID": userID, "picture": picture, "communicationsStatus": "Recent"] as [String : AnyObject]
                     
-                    let messageRef = Database.database().reference().child("DrivewayzMessages").childByAutoId()
+                    let messageRef = Database.database().reference().child("DrivewayzMessages").child(userID).childByAutoId()
                     messageRef.updateChildValues(values)
-                    self.sendMessageWithProperties(toID: userID, properties: values)
                     
-                    self.view.endEditing(true)
-                    self.createSimpleAlert(title: "Sent!", message: "")
-                    self.backButtonPressed()
-                    self.message.text = ""
-                    self.sendButton.alpha = 1.0
-                    self.sendButton.isUserInteractionEnabled = true
+                    messageRef.updateChildValues(values, withCompletionBlock: { (error, snap) in
+                        if let key = snap.key {
+                            let childRef = Database.database().reference().child("Messages").child(key)
+                            childRef.updateChildValues(values, withCompletionBlock: { (error, success) in
+                                self.sendButton.alpha = 1
+                                self.sendButton.isUserInteractionEnabled = true
+                                self.view.endEditing(true)
+                                self.createSimpleAlert(title: "Sent!", message: "")
+                                self.backButtonPressed()
+                                self.message.text = ""
+                            })
+                        }
+                    })
+//                    self.sendMessageWithProperties(toID: userID, properties: values)
+//
+//                    self.view.endEditing(true)
+//                    self.createSimpleAlert(title: "Sent!", message: "")
+//                    self.backButtonPressed()
+//                    self.message.text = ""
+//                    self.sendButton.alpha = 1.0
+//                    self.sendButton.isUserInteractionEnabled = true
                 }
             }
         } else {
@@ -241,51 +273,51 @@ extension ContactDrivewayzViewController: MFMailComposeViewControllerDelegate {
     }
     
     private func sendMessageWithProperties(toID: String, properties: [String: AnyObject]) {
-        let ref = Database.database().reference()
-        let fromID = Auth.auth().currentUser!.uid
-        let timestamp = Int(Date().timeIntervalSince1970)
-        
-        let childRef = ref.child("messages").childByAutoId()
-        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp, "communicationID": childRef.key as Any] as [String : Any]
-        
-        let userRef = ref.child("users").child(fromID)
-        userRef.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                let userName = dictionary["name"] as? String
-                var fullNameArr = userName?.split(separator: " ")
-                let firstName: String = String(fullNameArr![0])
-                
-                values["name"] = userName
-                self.fetchNewCurrent(name: firstName)
-                
-                values["fromID"] = fromID
-                
-                ref.child("messages").child(fromID).removeValue()
-                
-                properties.forEach({values[$0] = $1})
-                for keys in self.confirmedIDs {
-                    values["toID"] = keys
-                    childRef.updateChildValues(values) { (error, ralf) in
-                        if error != nil {
-                            print(error ?? "")
-                            return
-                        }
-                        if let messageId = childRef.key {
-                            let vals = [messageId: 1] as [String: Int]
-                            
-                            let userMessagesRef = ref.child("user-messages").child(fromID).child(keys)
-                            userMessagesRef.updateChildValues(vals)
-                            
-                            let recipientUserMessagesRef = ref.child("user-messages").child(keys).child(fromID)
-                            recipientUserMessagesRef.updateChildValues(vals)
-                            
-                            self.sendButton.alpha = 1
-                            self.sendButton.isUserInteractionEnabled = true
-                        }
-                    }
-                }
-            }
-        }
+//        let ref = Database.database().reference()
+//        let fromID = Auth.auth().currentUser!.uid
+//        let timestamp = Int(Date().timeIntervalSince1970)
+//
+//        let childRef = ref.child("messages").childByAutoId()
+//        var values = ["status": "Sent", "deviceID": AppDelegate.DEVICEID, "toID": toID, "fromID": fromID, "timestamp": timestamp, "communicationID": childRef.key as Any] as [String : Any]
+//
+//        let userRef = ref.child("users").child(fromID)
+//        userRef.observeSingleEvent(of: .value) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                let userName = dictionary["name"] as? String
+//                var fullNameArr = userName?.split(separator: " ")
+//                let firstName: String = String(fullNameArr![0])
+//
+//                values["name"] = userName
+//                self.fetchNewCurrent(name: firstName)
+//
+//                values["fromID"] = fromID
+//
+//                ref.child("messages").child(fromID).removeValue()
+//
+//                properties.forEach({values[$0] = $1})
+//                for keys in self.confirmedIDs {
+//                    values["toID"] = keys
+//                    childRef.updateChildValues(values) { (error, ralf) in
+//                        if error != nil {
+//                            print(error ?? "")
+//                            return
+//                        }
+//                        if let messageId = childRef.key {
+//                            let vals = [messageId: 1] as [String: Int]
+//
+//                            let userMessagesRef = ref.child("user-messages").child(fromID).child(keys)
+//                            userMessagesRef.updateChildValues(vals)
+//
+//                            let recipientUserMessagesRef = ref.child("user-messages").child(keys).child(fromID)
+//                            recipientUserMessagesRef.updateChildValues(vals)
+//
+//                            self.sendButton.alpha = 1
+//                            self.sendButton.isUserInteractionEnabled = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     func fetchNewCurrent(name: String) {
@@ -346,7 +378,14 @@ extension ContactDrivewayzViewController: UITextViewDelegate {
     }
     
     @objc func backButtonPressed() {
-        self.navigationController?.popViewController(animated: true)
+        if context != "Feedback" {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            self.delegate?.dismissActiveController()
+            self.dismiss(animated: true) {
+                self.backButton.alpha = 0
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

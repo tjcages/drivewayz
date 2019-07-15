@@ -56,7 +56,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.SEA_BLUE
         button.setTitle("Allow", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(registerForPushNotifications), for: .touchUpInside)

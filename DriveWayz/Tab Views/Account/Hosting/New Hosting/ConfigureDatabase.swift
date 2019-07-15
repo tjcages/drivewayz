@@ -132,13 +132,27 @@ extension ConfigureParkingViewController {
                         let availableSaturday = availableRef.child("Saturday")
                         let availableSunday = availableRef.child("Sunday")
                         
-                        availableMonday.updateChildValues(["From": mondayFromTimes, "To": mondayToTimes])
-                        availableTuesday.updateChildValues(["From": tuesdayFromTimes, "To": tuesdayToTimes])
-                        availableWednesday.updateChildValues(["From": wednesdayFromTimes, "To": wednesdayToTimes])
-                        availableThursday.updateChildValues(["From": thursdayFromTimes, "To": thursdayToTimes])
-                        availableFriday.updateChildValues(["From": fridayFromTimes, "To": fridayToTimes])
-                        availableSaturday.updateChildValues(["From": saturdayFromTimes, "To": saturdayToTimes])
-                        availableSunday.updateChildValues(["From": sundayFromTimes, "To": sundayToTimes])
+                        if self.timesController.mondayAvailabilityController.dayAvailable == 1 {
+                            availableMonday.updateChildValues(["From": mondayFromTimes, "To": mondayToTimes])
+                        }
+                        if self.timesController.tuesdayAvailabilityController.dayAvailable == 1 {
+                            availableTuesday.updateChildValues(["From": tuesdayFromTimes, "To": tuesdayToTimes])
+                        }
+                        if self.timesController.wednesdayAvailabilityController.dayAvailable == 1 {
+                            availableWednesday.updateChildValues(["From": wednesdayFromTimes, "To": wednesdayToTimes])
+                        }
+                        if self.timesController.thursdayAvailabilityController.dayAvailable == 1 {
+                            availableThursday.updateChildValues(["From": thursdayFromTimes, "To": thursdayToTimes])
+                        }
+                        if self.timesController.fridayAvailabilityController.dayAvailable == 1 {
+                            availableFriday.updateChildValues(["From": fridayFromTimes, "To": fridayToTimes])
+                        }
+                        if self.timesController.saturdayAvailabilityController.dayAvailable == 1 {
+                            availableSaturday.updateChildValues(["From": saturdayFromTimes, "To": saturdayToTimes])
+                        }
+                        if self.timesController.sundayAvailabilityController.dayAvailable == 1 {
+                            availableSunday.updateChildValues(["From": sundayFromTimes, "To": sundayToTimes])
+                        }
                         
                         let parkAvailRef = Database.database().reference().child("ParkingAvailability")
                         let monAvailRef = parkAvailRef.child("Monday").child(childKey)

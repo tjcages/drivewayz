@@ -42,7 +42,7 @@ class ExpandedCostViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         

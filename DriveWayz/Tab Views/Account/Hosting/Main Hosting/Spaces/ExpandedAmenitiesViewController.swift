@@ -15,7 +15,6 @@ class ExpandedAmenitiesViewController: UIViewController {
     let iconHeight: CGFloat = 135
     private let itemsPerRow: CGFloat = 3
     var sections: CGFloat = 1
-    var height: CGFloat = 0
     
     var residentialLabel: UILabel = {
         let label = UILabel()
@@ -31,7 +30,7 @@ class ExpandedAmenitiesViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(Theme.LIGHT_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.contentHorizontalAlignment = .right
         
@@ -143,7 +142,6 @@ class ExpandedAmenitiesViewController: UIViewController {
         lineView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
         lineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        height = 80 + iconHeight
     }
     
 }

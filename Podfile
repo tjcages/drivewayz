@@ -20,8 +20,8 @@ target 'DriveWayz' do
 	pod 'Firebase/Database'
 	pod 'Firebase/Storage'
     	pod 'Firebase/Analytics'
+	pod 'Firebase/DynamicLinks'
 
-	#pod 'Firebase/Invites'
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
 	pod 'GooglePlaces'

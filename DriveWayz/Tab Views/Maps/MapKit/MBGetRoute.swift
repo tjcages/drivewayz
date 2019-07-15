@@ -46,6 +46,7 @@ var quadEndCoordinate: CLLocationCoordinate2D?
 extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
+        didTapParking = false
         if !mainSearchTextField {
             mainSearchTextField = true
             self.summaryController.fromSearchBar.text = address
@@ -84,18 +85,22 @@ extension MapKitViewController: handleParkingOptions {
 //        self.removeAllHostLocations()
         self.removePolylineAnnotations()
         if let location = DestinationAnnotationLocation {
-            self.drawRoute(fromLocation: fromLocation, toLocation: location)
+            if didTapParking {
+                self.drawRoute(fromLocation: fromLocation, toLocation: location, identifier: .automobileAvoidingTraffic)
+            } else {
+                self.drawRoute(fromLocation: fromLocation, toLocation: location, identifier: .walking)
+            }
 //            self.placeAvailableParking(location: location.coordinate)
         }
     }
     
-    func drawRoute(fromLocation: CLLocation, toLocation: CLLocation) {
+    func drawRoute(fromLocation: CLLocation, toLocation: CLLocation, identifier: MBDirectionsProfileIdentifier) {
         let directions = Directions.shared
         let waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), name: "Start"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: toLocation.coordinate.latitude, longitude: toLocation.coordinate.longitude), name: "Destination"),
         ]
-        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: identifier)
         options.includesSteps = true
             
         _ = directions.calculate(options) { (waypoints, routes, error) in

@@ -37,7 +37,15 @@ extension MapKitViewController: MGLMapViewDelegate {
             layer.lineCap = NSExpression(forConstantValue: "round")
             layer.lineColor = NSExpression(forConstantValue: Theme.PRUSSIAN_BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.4)
-            layer.lineDashPattern = NSExpression(forConstantValue: [0, 1.5])
+            
+            if !didTapParking {
+                layer.lineDashPattern = NSExpression(forConstantValue: [0, 1.5])
+            } else {
+                layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
+                    0: Theme.LIGHT_ORANGE,
+                    0.2: Theme.STRAWBERRY_PINK,
+                ])
+            }
             
             // The line width should gradually increase based on the zoom level.
             layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
@@ -70,7 +78,7 @@ extension MapKitViewController: MGLMapViewDelegate {
             layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
                 0: Theme.LIGHT_ORANGE,
                 0.2: Theme.STRAWBERRY_PINK,
-                ])
+            ])
             
             // The line width should gradually increase based on the zoom level.
             layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])

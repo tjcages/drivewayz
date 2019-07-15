@@ -10,6 +10,10 @@ import UIKit
 
 class EditInformationViewController: UIViewController {
     
+    var delegate: handleHostEditing?
+    var selectedParking: ParkingSpots?
+    var selectedType: String = ""
+    
     lazy var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
@@ -29,17 +33,6 @@ class EditInformationViewController: UIViewController {
         return label
     }()
     
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
-        
-        return view
-    }()
-    
     lazy var backButton: UIButton = {
         let button = UIButton()
         let origImage = UIImage(named: "arrow")
@@ -47,7 +40,7 @@ class EditInformationViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(exitButtonPressed(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(exitButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -100,6 +93,56 @@ class EditInformationViewController: UIViewController {
         return controller
     }()
     
+    func setData(parking: ParkingSpots) {
+        self.selectedParking = parking
+        if let mainType = parking.mainType, let secondType = parking.secondaryType, let hostMessage = parking.hostMessage {
+            self.messageController.message.text = hostMessage
+            self.messageController.characterLabel.text = "\(hostMessage.count)/160"
+            self.messageController.message.textColor = Theme.BLACK
+            let type = self.typeController
+            type.parkingType = mainType
+            self.selectedType = mainType
+            if self.typeController.parkingType == "parking lot" || self.typeController.parkingType == "other" {
+                self.optionsController.onlyShowBusinessOptions()
+            } else {
+                self.optionsController.onlyShowRegularOptions()
+            }
+            self.reset()
+            if mainType == "residential" {
+                self.selectType(button: type.houseButton, label: type.houseIconLabel, anchor: type.houseAnchor, information: type.houseInformation)
+            } else if mainType == "apartment" {
+                self.selectType(button: type.apartmentButton, label: type.apartmentIconLabel, anchor: type.apartmentAnchor, information: type.apartmentInformation)
+            } else if mainType == "parking lot" {
+                self.selectType(button: type.lotButton, label: type.lotIconLabel, anchor: type.parkingLotAnchor, information: type.lotInformation)
+            } else if mainType == "other" {
+                self.selectType(button: type.otherButton, label: type.otherIconLabel, anchor: type.otherAnchor, information: type.otherInformation)
+            }
+            let second = self.optionsController
+            second.parkingType = secondType
+            if secondType == "driveway" {
+                self.selectType(button: second.drivewayImageView, label: second.drivewayIconLabel, anchor: second.drivewayAnchor, information: second.drivewayInformation)
+            } else if secondType == "apartment" {
+                self.selectType(button: second.sharedlotImageView, label: second.sharedlotIconLabel, anchor: second.sharedlotAnchor, information: second.sharedlotInformation)
+            } else if secondType == "alley" {
+                self.selectType(button: second.alleyImageView, label: second.alleyIconLabel, anchor: second.alleyAnchor, information: second.alleyInformation)
+            } else if secondType == "garage" {
+                self.selectType(button: second.garageImageView, label: second.garageIconLabel, anchor: second.garageAnchor, information: second.garageInformation)
+            } else if secondType == "gated spot" {
+                self.selectType(button: second.gatedImageView, label: second.gatedIconLabel, anchor: second.gatedAnchor, information: second.gatedInformation)
+            } else if secondType == "street spot" {
+                self.selectType(button: second.streetImageView, label: second.streetIconLabel, anchor: second.streetAnchor, information: second.streetInformation)
+            } else if secondType == "lot" {
+                self.selectType(button: second.parkinglotImageView, label: second.parkinglotIconLabel, anchor: second.parkinglotAnchor, information: second.parkinglotInformation)
+            } else if secondType == "underground spot" {
+                self.selectType(button: second.undergroundImageView, label: second.undergroundIconLabel, anchor: second.undergroundAnchor, information: second.undergroundInformation)
+            } else if secondType == "condo" {
+                self.selectType(button: second.condoImageView, label: second.condoIconLabel, anchor: second.condoAnchor, information: second.condoInformation)
+            } else if secondType == "circular" {
+                self.selectType(button: second.circularImageView, label: second.circularIconLabel, anchor: second.circularAnchor, information: second.circularInformation)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -120,13 +163,6 @@ class EditInformationViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -137,25 +173,25 @@ class EditInformationViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
         }
         
-        scrollView.addSubview(typeController.view)
-        typeController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        self.view.addSubview(typeController.view)
+        typeController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
         typeController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         typeController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         typeController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        scrollView.addSubview(optionsController.view)
-        optionsController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        self.view.addSubview(optionsController.view)
+        optionsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
         optionsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         optionsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         optionsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        scrollView.addSubview(messageController.view)
-        messageController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
+        self.view.addSubview(messageController.view)
+        messageController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 48).isActive = true
         messageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         messageController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         messageController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
-        scrollView.addSubview(darkBlurView)
+        self.view.addSubview(darkBlurView)
         darkBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         darkBlurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         darkBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -195,8 +231,48 @@ class EditInformationViewController: UIViewController {
         
     }
     
+    func selectType(button: UIButton, label: UIButton, anchor: NSLayoutConstraint, information: UILabel) {
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.titleLabel?.font = Fonts.SSPSemiBoldH2
+        button.backgroundColor = Theme.PACIFIC_BLUE
+        button.tintColor = Theme.WHITE
+        button.layer.shadowOpacity = 0.2
+        anchor.constant = 95
+        information.alpha = 1
+    }
+    
+    func savePressed() {
+        self.nextButton.alpha = 0.5
+        self.nextButton.isUserInteractionEnabled = false
+        if let parking = self.selectedParking, let parkingID = parking.parkingID {
+            let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
+            let hostMessage = self.messageController.message.text
+            let mainType = self.typeController.parkingType
+            let secondaryType = self.optionsController.parkingType
+            
+            ref.updateChildValues(["hostMessage": hostMessage as Any])
+            let values = ["mainType": mainType as Any,
+                          "secondaryType": secondaryType as Any]
+            ref.child("Type").updateChildValues(values)
+            self.delegate?.resetParking()
+            delayWithSeconds(0.8) {
+                self.nextButton.alpha = 1
+                self.nextButton.isUserInteractionEnabled = true
+                self.exitButtonPressed()
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
     @objc func nextButtonPressed(sender: UIButton) {
         if typeController.view.alpha == 1 {
+            if self.typeController.parkingType != self.selectedType {
+                if self.typeController.parkingType == "parking lot" || self.typeController.parkingType == "other" {
+                    self.optionsController.onlyShowBusinessOptions()
+                } else {
+                    self.optionsController.onlyShowRegularOptions()
+                }
+            }
             UIView.animate(withDuration: animationIn, animations: {
                 self.typeController.view.alpha = 0
             }) { (success) in
@@ -216,19 +292,39 @@ class EditInformationViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }
         } else if messageController.view.alpha == 1 {
-            self.navigationController?.popViewController(animated: true)
-            delayWithSeconds(2) {
-                self.typeController.view.alpha = 1
-                self.optionsController.view.alpha = 0
-                self.messageController.view.alpha = 0
-                self.nextButton.setTitle("Next", for: .normal)
-                self.mainLabel.text = "Parking type"
-            }
+            self.savePressed()
         }
     }
     
-    @objc func exitButtonPressed(sender: UIButton) {
+    func reset() {
+        self.typeController.resetHouse()
+        self.typeController.resetApartment()
+        self.typeController.resetLot()
+        self.typeController.resetAlley()
+        self.optionsController.resetDriveway()
+        self.optionsController.resetSharedLot()
+        self.optionsController.resetSharedCover()
+        self.optionsController.resetStreet()
+        self.optionsController.resetAlley()
+        self.optionsController.resetStreet()
+        self.optionsController.resetParkingLot()
+        self.optionsController.resetGarage()
+        self.optionsController.resetUnderground()
+        self.optionsController.resetCondo()
+        self.optionsController.resetCircular()
+        self.optionsController.resetGated()
+    }
+    
+    @objc func exitButtonPressed() {
+        self.view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
+        delayWithSeconds(animationOut) {
+            self.typeController.view.alpha = 1
+            self.optionsController.view.alpha = 0
+            self.messageController.view.alpha = 0
+            self.nextButton.setTitle("Next", for: .normal)
+            self.mainLabel.text = "Parking type"
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

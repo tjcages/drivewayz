@@ -826,7 +826,7 @@ extension AmenitiesParkingViewController {
         if sender == coveredIconLabel {
             if coveredImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetHouse()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "covered" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Covered parking" }
                 return
             }
             self.selectedAmenities.append("Covered parking")
@@ -844,7 +844,7 @@ extension AmenitiesParkingViewController {
         } else if sender == chargingIconLabel {
             if chargingImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetApartment()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "charging" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Charging station" }
                 return
             }
             self.selectedAmenities.append("Charging station")
@@ -862,7 +862,7 @@ extension AmenitiesParkingViewController {
         } else if sender == stadiumIconLabel {
             if stadiumImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetCovered()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "stadium" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Stadium parking" }
                 return
             }
             self.selectedAmenities.append("Stadium parking")
@@ -880,7 +880,7 @@ extension AmenitiesParkingViewController {
         } else if sender == gatedIconLabel {
             if gatedImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetStreet()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "gated" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Gated spot" }
                 return
             }
             self.selectedAmenities.append("Gated spot")
@@ -898,7 +898,7 @@ extension AmenitiesParkingViewController {
         } else if sender == nightIconLabel {
             if nightImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetLot()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "night" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Nighttime parking" }
                 return
             }
             self.selectedAmenities.append("Nighttime parking")
@@ -916,7 +916,7 @@ extension AmenitiesParkingViewController {
         } else if sender == airportIconLabel {
             if airportImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetAlley()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "airport" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Near Airport" }
                 return
             }
             self.selectedAmenities.append("Near Airport")
@@ -934,7 +934,7 @@ extension AmenitiesParkingViewController {
         } else if sender == lightedIconLabel {
             if lightedImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetGated()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "lighted" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Lit space" }
                 return
             }
             self.selectedAmenities.append("Lit space")
@@ -952,7 +952,7 @@ extension AmenitiesParkingViewController {
         } else if sender == largeIconLabel {
             if largeImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetLarge()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "large" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Large space" }
                 return
             }
             self.selectedAmenities.append("Large space")
@@ -971,7 +971,7 @@ extension AmenitiesParkingViewController {
         } else if sender == smallIconLabel {
             if smallImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetSmall()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "small" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Compact space" }
                 return
             }
             self.selectedAmenities.append("Compact space")
@@ -990,7 +990,7 @@ extension AmenitiesParkingViewController {
         } else if sender == easyIconLabel {
             if easyImageView.backgroundColor == Theme.PACIFIC_BLUE {
                 self.resetEasy()
-                self.selectedAmenities = self.selectedAmenities.filter { $0 != "easy" }
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Easy to find" }
                 return
             }
             self.selectedAmenities.append("Easy to find")
@@ -1152,4 +1152,5 @@ extension AmenitiesParkingViewController {
             self.view.layoutIfNeeded()
         }
     }
+    
 }

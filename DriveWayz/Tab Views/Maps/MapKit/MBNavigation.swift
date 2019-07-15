@@ -130,7 +130,7 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
                             annotation.coordinate = parkingCoordinate
                             self.mapView.addAnnotation(annotation)
                             
-                            self.currentBottomHeightAnchor.constant = 354
+                            self.currentBottomHeightAnchor.constant = self.lowestHeight
                             UIView.animate(withDuration: animationOut, animations: {
                                 self.view.layoutIfNeeded()
                             })
