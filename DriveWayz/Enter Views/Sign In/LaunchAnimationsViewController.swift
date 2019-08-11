@@ -140,16 +140,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         delayWithSeconds(0.4) {
             self.animate()
         }
-        
-        delayWithSeconds(1) {
-            let controller = UserHostingViewController()
-            controller.exitButton.alpha = 1
-            let navigation = UINavigationController(rootViewController: controller)
-            navigation.navigationBar.isHidden = true
-            self.present(navigation, animated: true, completion: {
-                controller.setData()
-            })
-        }
     }
     
     func animate() {

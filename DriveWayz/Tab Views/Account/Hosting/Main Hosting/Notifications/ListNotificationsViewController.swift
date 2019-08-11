@@ -195,8 +195,7 @@ class NotificationsCell: UITableViewCell {
                 self.layoutIfNeeded()
                 if let mainColors = colors.first {
                     let topColor = mainColors.key
-                    let bottomColor = mainColors.value
-                    self.gradientView.layer.removeFromSuperlayer()
+                    let bottomColor = mainColors.value 
                     let background = CAGradientLayer().customColor(topColor: topColor, bottomColor: bottomColor)
                     background.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
                     background.zPosition = -10
