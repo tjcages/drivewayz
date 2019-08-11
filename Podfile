@@ -21,6 +21,7 @@ target 'DriveWayz' do
 	pod 'Firebase/Storage'
     	pod 'Firebase/Analytics'
 	pod 'Firebase/DynamicLinks'
+	pod 'Firebase/RemoteConfig'
 
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
@@ -48,12 +49,13 @@ target 'DriveWayz' do
 
 	pod 'ClusterKit/Mapbox'
 	pod 'Cosmos'
-	pod 'TOMSMorphingLabel', '~> 0.5'
+	#pod 'TOMSMorphingLabel', '~> 0.5'
 	pod 'Charts', '~> 3.2.0'
 	pod 'NVActivityIndicatorView'
 	pod 'TextFieldEffects'
 	pod 'AFNetworking'
 	pod 'UIImageColors'
 	pod 'Solar'
+	pod 'CHIPageControl', '~> 0.1.3'
 
 end

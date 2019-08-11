@@ -152,6 +152,15 @@ class ParkingViewController: UIViewController, handleTestParking {
         return view
     }()
     
+    lazy var expandedBookingController: BookingExpandedViewController = {
+        let controller = BookingExpandedViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.view.alpha = 0
+        
+        return controller
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -202,7 +211,14 @@ class ParkingViewController: UIViewController, handleTestParking {
         bookingSliderController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         bookingSliderController.view.bottomAnchor.constraint(equalTo: bookingPicker.topAnchor).isActive = true
         
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(parkingPanned(sender:)))
+        self.view.addGestureRecognizer(pan)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(expandBookingPressed))
+        bookingPicker.addGestureRecognizer(tap)
+        
     }
+    
+    var expandedBookingTopAnchor: NSLayoutConstraint!
     
     func setupCalendar() {
         
@@ -236,6 +252,160 @@ class ParkingViewController: UIViewController, handleTestParking {
         line.rightAnchor.constraint(equalTo: mainButton.rightAnchor).isActive = true
         line.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        self.view.addSubview(expandedBookingController.view)
+        expandedBookingController.view.bottomAnchor.constraint(equalTo: line.topAnchor).isActive = true
+        expandedBookingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        expandedBookingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        expandedBookingTopAnchor = expandedBookingController.view.topAnchor.constraint(equalTo: bookingPicker.topAnchor)
+            expandedBookingTopAnchor.isActive = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(minimizeBookingPressed))
+        expandedBookingController.view.addGestureRecognizer(tap)
+        
+    }
+    
+    var parkingPreviousLocation: CGFloat = 0.0
+    var parkingExpandedPreviousHeight: CGFloat = 0.0
+    
+    @objc func parkingPanned(sender: UIPanGestureRecognizer) {
+        let translation = sender.location(in: self.view).y
+        let state = sender.state
+        let difference = self.parkingPreviousLocation - translation
+        if state == .began {
+            self.parkingPreviousLocation = translation
+        } else if state == .changed {
+            let velocity = sender.velocity(in: self.view).y
+            if velocity >= 800 {
+                self.expandedBookingController.changeHeight(amount: 0, state: state)
+                self.expandedBookingTopAnchor.constant = 0
+                self.parkingExpandedPreviousHeight = self.expandedBookingTopAnchor.constant
+                self.delegate?.hideExpandedBooking()
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.delegate?.changeParkingOptionsHeight(fade: 0)
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.expandedBookingController.view.alpha = 0
+                    self.bookingPicker.alpha = 1
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.bookingSliderController.view.alpha = 1
+                    })
+                }
+            }
+            let percentage = difference/140 * 0.2
+            if difference >= 10 {
+                if self.expandedBookingTopAnchor.constant > -140 {
+                    self.expandedBookingController.changeHeight(amount: difference, state: state)
+                    if self.bookingSliderController.view.alpha == 1 {
+                        UIView.animate(withDuration: animationIn) {
+                            self.bookingSliderController.view.alpha = 0
+                        }
+                    }
+                    self.delegate?.changeParkingOptionsHeight(fade: percentage)
+                    self.expandedBookingController.view.alpha = 1
+                    self.bookingPicker.alpha = 0
+                    self.expandedBookingTopAnchor.constant = self.parkingExpandedPreviousHeight - difference
+                    self.view.layoutIfNeeded()
+                } else {
+                    return
+                }
+            } else if difference <= -10 {
+                if self.expandedBookingTopAnchor.constant < 0 {
+                    self.expandedBookingController.changeHeight(amount: difference + 140, state: state)
+                    self.delegate?.changeParkingOptionsHeight(fade: 0.2 + percentage)
+                    self.expandedBookingTopAnchor.constant = self.parkingExpandedPreviousHeight - difference - 12
+                    self.view.layoutIfNeeded()
+                } else {
+                    return
+                }
+            }
+        } else if state == .ended {
+            if self.expandedBookingTopAnchor.constant <= -60 {
+                self.bookingSliderController.scrollView.isScrollEnabled = false
+                self.expandedBookingController.changeHeight(amount: 140, state: state)
+                self.expandedBookingTopAnchor.constant = -140
+                self.parkingExpandedPreviousHeight = self.expandedBookingTopAnchor.constant
+                UIView.animate(withDuration: animationOut, animations: {
+                    self.delegate?.changeParkingOptionsHeight(fade: 0.2)
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.delegate?.bringExpandedBooking()
+                }
+            } else {
+                self.bookingSliderController.scrollView.isScrollEnabled = true
+                self.expandedBookingController.changeHeight(amount: 0, state: state)
+                self.expandedBookingTopAnchor.constant = 0
+                self.parkingExpandedPreviousHeight = self.expandedBookingTopAnchor.constant
+                self.delegate?.hideExpandedBooking()
+                if let parking = self.selectedParkingSpot, let index = self.parkingSpots.firstIndex(of: parking) {
+                    self.bookingSliderController.translation = phoneWidth * CGFloat(Int(index))
+                    if index == 0 {
+                        self.bookingSliderController.firstIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        self.bookingSliderController.firstIcon.alpha = 1
+                    } else if index == 1 {
+                        self.bookingSliderController.secondIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        self.bookingSliderController.secondIcon.alpha = 1
+                    } else {
+                        self.bookingSliderController.translation = phoneWidth * 2
+                    }
+                }
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.delegate?.changeParkingOptionsHeight(fade: 0)
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.expandedBookingController.view.alpha = 0
+                    self.bookingPicker.alpha = 1
+                    UIView.animate(withDuration: animationIn, animations: {
+                        self.bookingSliderController.view.alpha = 1
+                    })
+                }
+            }
+        }
+    }
+    
+    @objc func expandBookingPressed() {
+        self.bookingSliderController.scrollView.isScrollEnabled = false
+        self.expandedBookingController.view.alpha = 1
+        self.bookingPicker.alpha = 0
+        self.expandedBookingTopAnchor.constant = -140
+        self.parkingExpandedPreviousHeight = self.expandedBookingTopAnchor.constant
+        self.expandedBookingController.changeHeight(amount: 140, state: UIPanGestureRecognizer.State.ended)
+        UIView.animate(withDuration: animationOut, animations: {
+            self.bookingSliderController.view.alpha = 0
+            self.delegate?.changeParkingOptionsHeight(fade: 0.4)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.bringExpandedBooking()
+        }
+    }
+    
+    @objc func minimizeBookingPressed() {
+        self.bookingSliderController.scrollView.isScrollEnabled = true
+        self.expandedBookingTopAnchor.constant = 0
+        self.parkingExpandedPreviousHeight = 0
+        self.delegate?.hideExpandedBooking()
+        self.expandedBookingController.changeHeight(amount: 0, state: UIPanGestureRecognizer.State.ended)
+        if let parking = self.selectedParkingSpot, let index = self.parkingSpots.firstIndex(of: parking) {
+            self.bookingSliderController.translation = phoneWidth * CGFloat(Int(index))
+            if index == 0 {
+                self.bookingSliderController.firstIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                self.bookingSliderController.firstIcon.alpha = 1
+            } else if index == 1 {
+                self.bookingSliderController.secondIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                self.bookingSliderController.secondIcon.alpha = 1
+            } else {
+                self.bookingSliderController.translation = phoneWidth * 2
+            }
+        }
+        UIView.animate(withDuration: animationIn, animations: {
+            self.expandedBookingController.quickBookingController.view.alpha = 0
+            self.delegate?.changeParkingOptionsHeight(fade: 0)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.expandedBookingController.view.alpha = 0
+            self.bookingPicker.alpha = 1
+            UIView.animate(withDuration: animationIn, animations: {
+                self.bookingSliderController.view.alpha = 1
+            })
+        }
     }
     
     func loadBookings() {
@@ -433,6 +603,7 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func checkPolyline(percentage: Int) {
         self.selectedParkingSpot = parkingSpots[percentage]
+        self.expandedBookingController.setData(parking: parkingSpots[percentage])
         self.getCellAtIndex(index: percentage)
         self.closeCellAtIndex(index: percentage - 1)
         self.closeCellAtIndex(index: percentage + 1)

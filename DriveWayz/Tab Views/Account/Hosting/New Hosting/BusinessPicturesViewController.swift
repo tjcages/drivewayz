@@ -81,13 +81,13 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     
     var spotRemove1: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -127,13 +127,13 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     
     var spotRemove2: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -173,13 +173,13 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     
     var spotRemove3: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -219,13 +219,13 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     
     var spotRemove4: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -272,7 +272,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: (self.view.frame.width*5/12)*4)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -280,7 +280,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         scrollView.addSubview(additionalLabel)
         additionalLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         additionalLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        additionalLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        additionalLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         additionalLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(addAnImageButton1)

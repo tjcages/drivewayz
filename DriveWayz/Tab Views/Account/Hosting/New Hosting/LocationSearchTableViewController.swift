@@ -20,8 +20,13 @@ class LocationSearchTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.clear
-        tableView.backgroundColor = UIColor.clear
+        tableView.backgroundColor = Theme.WHITE
+        tableView.layer.cornerRadius = 24
+        tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        tableView.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        tableView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        tableView.layer.shadowRadius = 3
+        tableView.layer.shadowOpacity = 0.2
 
         self.placesClient = GMSPlacesClient()
         
@@ -90,8 +95,10 @@ extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ResultsCell
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         if matchingItems.count > indexPath.row {
             let selectedItem = matchingItems[indexPath.row]
+            cell.matchingItem = selectedItem
             cell.nameTextView.text = selectedItem.attributedFullText.string
         }
         cell.nameTextView.textColor = Theme.DARK_GRAY
@@ -104,48 +111,97 @@ extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! ResultsCell
-        guard let address = cell.nameTextView.text else { return }
-        self.matchingItems = []
-        let splitAddress = address.split(separator: ",")
-        if splitAddress.count == 4 {
-            if let street = splitAddress.first {
-                self.delegate?.handleStreetAddress(text: String(street))
-            }
-            if let city = splitAddress.dropFirst().first {
-                self.delegate?.handleCityAddress(text: String(city.dropFirst()))
-            }
-            guard let extraAddress = splitAddress.dropFirst().dropFirst().first else {
-                if let state = splitAddress.dropFirst().dropFirst().first {
-                    self.delegate?.handleStateAddress(text: String(state))
-                }
-                if let zip = splitAddress.dropFirst().dropFirst().dropFirst().first {
-                    self.delegate?.handleZipAddress(text: String(zip))
-                }
-                return
-            }
-            let extraSplit = extraAddress.split(separator: " ")
-            if extraSplit.count == 2 {
-                if let state = extraSplit.first {
-                    self.delegate?.handleStateAddress(text: String(state))
-                }
-                if let zip = extraSplit.dropFirst().first {
-                    self.delegate?.handleZipAddress(text: String(zip))
-                }
-            } else {
-                if let state = splitAddress.dropFirst().dropFirst().first {
-                    self.delegate?.handleStateAddress(text: String(state))
-                }
-//                if let zip = splitAddress.dropFirst().dropFirst().first {
-//                    print(splitAddress)
-//                    self.delegate?.handleZipAddress(text: String(zip))
-//                }
-            }
-            if let country = splitAddress.dropFirst().dropFirst().dropFirst().first {
-                self.delegate?.handleCountryAddress(text: String(country.dropFirst()))
-            }
-        } else {
-            self.delegate?.handleStreetAddress(text: address)
+        if let matchingItem = cell.matchingItem {
+            let placeID = matchingItem.placeID
+            let street = matchingItem.attributedPrimaryText.string
+            self.delegate?.handleStreetAddress(text: street)
+            self.organizeAddress(placeID: placeID)
         }
+        self.matchingItems = []
         self.delegate?.dismissKeyboard()
     }
+    
+    func organizeAddress(placeID: String) {
+        placesClient!.lookUpPlaceID(placeID) { (place, error) in
+            if let error = error {
+                print("lookup place id query error: \(error.localizedDescription)")
+                return
+            }
+            if let place = place {
+                guard let components = place.addressComponents else { return }
+                for component in components {
+                    for type in component.types {
+                        let address = component.name
+                        if type == "locality" {
+                            self.delegate?.handleCityAddress(text: address)
+                        } else if type == "administrative_area_level_1" {
+                            self.delegate?.handleStateAddress(text: address)
+                        } else if type == "postal_code" {
+                            self.delegate?.handleZipAddress(text: address)
+                        } else if type == "country" {
+                            self.delegate?.handleCountryAddress(text: address)
+                        }
+                    }
+                }
+            } else {
+                print("No place details for \(placeID)")
+            }
+        }
+    }
+    
+}
+
+
+class ResultsCell: UITableViewCell {
+    
+    var fullAddress: String?
+    var matchingItem: GMSAutocompletePrediction?
+    
+    var pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(named: "locationParkingIcon")
+        imageView.image = image
+        imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        
+        return imageView
+    }()
+    
+    var nameTextView: UILabel = {
+        let view = UILabel()
+        view.text = ""
+        view.font = Fonts.SSPRegularH4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = Theme.DARK_GRAY
+        
+        return view
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.backgroundColor = Theme.WHITE
+        
+        addSubview(pinImageView)
+        addSubview(nameTextView)
+        
+        pinImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4).isActive = true
+        pinImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        pinImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        pinImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        nameTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        nameTextView.leftAnchor.constraint(equalTo: pinImageView.rightAnchor, constant: 4).isActive = true
+        nameTextView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        nameTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12).isActive = true
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
 }

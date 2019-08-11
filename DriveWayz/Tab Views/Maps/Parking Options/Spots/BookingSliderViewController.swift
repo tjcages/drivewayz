@@ -130,7 +130,6 @@ class BookingSliderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
         view.clipsToBounds = true
         

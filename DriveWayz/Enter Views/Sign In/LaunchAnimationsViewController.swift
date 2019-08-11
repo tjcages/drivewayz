@@ -89,7 +89,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         let controller = TabViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
+        controller.delegate = self ////////////////////////////////////////////////?NEED TO SETUP OTHER LOCATION MANAGER DELAY
         
         return controller
     }()
@@ -139,6 +139,16 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         self.checkViews()
         delayWithSeconds(0.4) {
             self.animate()
+        }
+        
+        delayWithSeconds(1) {
+            let controller = UserHostingViewController()
+            controller.exitButton.alpha = 1
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.navigationBar.isHidden = true
+            self.present(navigation, animated: true, completion: {
+                controller.setData()
+            })
         }
     }
     
@@ -279,7 +289,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         self.addChild(self.startupMapController)
         self.startupMapController.willMove(toParent: self)
         delayWithSeconds(4) {
-            self.startupMapController.mapController.setupLocationManager()
+//            self.startupMapController.mapController.setupLocationManager()//////////////////////////////////////////////////////////////////////////
         }
         startupMapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         startupMapController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
@@ -347,16 +357,5 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }
-    
-//    func checkDayTimeStatus() {
-//        switch solar {
-//        case .day:
-//            self.defaultStatusBar()
-//        case .night:
-////            self.lightContentStatusBar()
-//            self.defaultStatusBar()
-//        }
-//        self.setNeedsStatusBarAppearanceUpdate()
-//    }
 
 }

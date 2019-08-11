@@ -583,7 +583,7 @@ class DayAvailabilityViewController: UIViewController {
     var firstHidden: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.PRUSSIAN_BLUE
@@ -595,7 +595,7 @@ class DayAvailabilityViewController: UIViewController {
     var secondHidden: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.PRUSSIAN_BLUE
@@ -607,7 +607,7 @@ class DayAvailabilityViewController: UIViewController {
     var thirdHidden: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.PRUSSIAN_BLUE

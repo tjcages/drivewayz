@@ -18,25 +18,35 @@ class SpotNumberViewController: UIViewController {
     var numbers = [1]
     var selectedDay: String?
     
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
+        
+        return view
+    }()
+    
     var numberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Number of spots"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var numberField: UITextField = {
-        let view = UITextField()
+    var numberField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "1"
         view.textColor = Theme.DARK_GRAY
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = .clear
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return view
     }()
@@ -44,7 +54,7 @@ class SpotNumberViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -52,7 +62,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Does the spot have a number?"
         label.font = Fonts.SSPRegularH5
         
@@ -66,25 +76,26 @@ class SpotNumberViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 25/2
         button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.OFF_WHITE
         button.addTarget(self, action: #selector(checkmarkPressed(sender:)), for: .touchUpInside)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
     }()
     
-    var spotNumberField: UITextField = {
-        let view = UITextField()
+    var spotNumberField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.textColor = Theme.DARK_GRAY
         view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return view
     }()
@@ -92,7 +103,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -100,7 +111,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Gate code?"
         label.font = Fonts.SSPRegularH5
         
@@ -114,25 +125,26 @@ class SpotNumberViewController: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 25/2
         button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.OFF_WHITE
         button.addTarget(self, action: #selector(checkmarkPressed(sender:)), for: .touchUpInside)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
     }()
     
-    var gateCodeField: UITextField = {
-        let view = UITextField()
+    var gateCodeField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.textColor = Theme.DARK_GRAY
         view.tintColor = Theme.PACIFIC_BLUE
         view.keyboardType = .numberPad
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
         view.keyboardAppearance = .dark
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return view
     }()
@@ -140,13 +152,29 @@ class SpotNumberViewController: UIViewController {
     var gateCodeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
     
+    var informationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.font = Fonts.SSPLightH5
+        label.numberOfLines = 3
+        label.text = "Any spot number or gate code provided will be hidden until a motorist books the parking space."
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         view.backgroundColor = UIColor.clear
         
@@ -155,88 +183,103 @@ class SpotNumberViewController: UIViewController {
         gateCodeField.delegate = self
         
         setupViews()
+        setupNumber()
+        setupCode()
     }
-    
-    var spotNumberTypingAnchor: NSLayoutConstraint!
-    var spotNumberNotAnchor: NSLayoutConstraint!
-    var gateCodeTypingAnchor: NSLayoutConstraint!
-    var gateCodeNotAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(numberInformation)
-        numberInformation.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.view.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: phoneWidth, height: phoneHeight - 100)
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        scrollView.addGestureRecognizer(tap)
+        
+        scrollView.addSubview(numberInformation)
+        numberInformation.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         numberInformation.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         numberInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         numberInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        self.view.addSubview(numberField)
-        numberField.topAnchor.constraint(equalTo: numberInformation.bottomAnchor).isActive = true
-        numberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        scrollView.addSubview(numberField)
+        numberField.topAnchor.constraint(equalTo: numberInformation.bottomAnchor, constant: 8).isActive = true
+        numberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         numberField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        numberField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        numberField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
-        self.view.addSubview(numberLine)
+        scrollView.addSubview(numberLine)
         numberLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        numberLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        numberLine.topAnchor.constraint(equalTo: numberField.bottomAnchor, constant: 10).isActive = true
-        numberLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        numberLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        numberLine.bottomAnchor.constraint(equalTo: numberField.bottomAnchor).isActive = true
+        numberLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+    
+    }
+    
+    func setupNumber() {
         
-        self.view.addSubview(spotNumberInformation)
+        scrollView.addSubview(spotNumberInformation)
         spotNumberInformation.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         spotNumberInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         spotNumberInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        spotNumberNotAnchor = spotNumberInformation.topAnchor.constraint(equalTo: numberLine.bottomAnchor, constant: 30)
-            spotNumberNotAnchor.isActive = true
-        spotNumberTypingAnchor = spotNumberInformation.topAnchor.constraint(equalTo: numberInformation.topAnchor)
-            spotNumberTypingAnchor.isActive = false
+        spotNumberInformation.topAnchor.constraint(equalTo: numberLine.bottomAnchor, constant: 30).isActive = true
         
-        self.view.addSubview(spotNumberCheckmark)
+        scrollView.addSubview(spotNumberCheckmark)
         spotNumberCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         spotNumberCheckmark.centerYAnchor.constraint(equalTo: spotNumberInformation.centerYAnchor).isActive = true
-        spotNumberCheckmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        spotNumberCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
         spotNumberCheckmark.heightAnchor.constraint(equalTo: spotNumberCheckmark.widthAnchor).isActive = true
         
-        self.view.addSubview(spotNumberField)
-        spotNumberField.topAnchor.constraint(equalTo: spotNumberInformation.bottomAnchor).isActive = true
-        spotNumberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        scrollView.addSubview(spotNumberField)
+        spotNumberField.topAnchor.constraint(equalTo: spotNumberInformation.bottomAnchor, constant: 8).isActive = true
+        spotNumberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         spotNumberField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        spotNumberField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        spotNumberField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
-        self.view.addSubview(spotNumberLine)
+        scrollView.addSubview(spotNumberLine)
         spotNumberLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        spotNumberLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        spotNumberLine.topAnchor.constraint(equalTo: spotNumberInformation.bottomAnchor, constant: 50).isActive = true
-        spotNumberLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        spotNumberLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        spotNumberLine.bottomAnchor.constraint(equalTo: spotNumberField.bottomAnchor).isActive = true
+        spotNumberLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.view.addSubview(gateCodeInformation)
+    }
+    
+    func setupCode() {
+        
+        scrollView.addSubview(gateCodeInformation)
         gateCodeInformation.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         gateCodeInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         gateCodeInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        gateCodeNotAnchor = gateCodeInformation.topAnchor.constraint(equalTo: spotNumberLine.bottomAnchor, constant: 30)
-            gateCodeNotAnchor.isActive = true
-        gateCodeTypingAnchor = gateCodeInformation.topAnchor.constraint(equalTo: numberInformation.topAnchor)
-            gateCodeTypingAnchor.isActive = false
+        gateCodeInformation.topAnchor.constraint(equalTo: spotNumberLine.bottomAnchor, constant: 30).isActive = true
         
-        self.view.addSubview(gateCodeCheckmark)
+        scrollView.addSubview(gateCodeCheckmark)
         gateCodeCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         gateCodeCheckmark.centerYAnchor.constraint(equalTo: gateCodeInformation.centerYAnchor).isActive = true
-        gateCodeCheckmark.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        gateCodeCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
         gateCodeCheckmark.heightAnchor.constraint(equalTo: gateCodeCheckmark.widthAnchor).isActive = true
         
-        self.view.addSubview(gateCodeField)
-        gateCodeField.topAnchor.constraint(equalTo: gateCodeInformation.bottomAnchor).isActive = true
-        gateCodeField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        scrollView.addSubview(gateCodeField)
+        gateCodeField.topAnchor.constraint(equalTo: gateCodeInformation.bottomAnchor, constant: 8).isActive = true
+        gateCodeField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         gateCodeField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        gateCodeField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        gateCodeField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
-        self.view.addSubview(gateCodeLine)
+        scrollView.addSubview(gateCodeLine)
         gateCodeLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        gateCodeLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        gateCodeLine.topAnchor.constraint(equalTo: gateCodeInformation.bottomAnchor, constant: 50).isActive = true
-        gateCodeLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-    
+        gateCodeLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        gateCodeLine.bottomAnchor.constraint(equalTo: gateCodeField.bottomAnchor).isActive = true
+        gateCodeLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+        scrollView.addSubview(informationLabel)
+        informationLabel.topAnchor.constraint(equalTo: gateCodeLine.bottomAnchor, constant: 32).isActive = true
+        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        informationLabel.sizeToFit()
+        
         createNumberPicker()
+        
     }
     
     @objc func checkmarkPressed(sender: UIButton) {
@@ -265,82 +308,20 @@ class SpotNumberViewController: UIViewController {
         }
     }
     
-    @objc func hideOtherOptions(sender: UITextField) {
-        if sender == numberField {
-            UIView.animate(withDuration: animationIn) {
-                self.spotNumberInformation.alpha = 0
-                self.spotNumberField.alpha = 0
-                self.spotNumberCheckmark.alpha = 0
-                self.spotNumberLine.alpha = 0
-                self.gateCodeInformation.alpha = 0
-                self.gateCodeField.alpha = 0
-                self.gateCodeCheckmark.alpha = 0
-                self.gateCodeLine.alpha = 0
-            }
-        } else if sender == spotNumberField {
-            UIView.animate(withDuration: animationIn) {
-                self.numberInformation.alpha = 0
-                self.numberField.alpha = 0
-                self.numberLine.alpha = 0
-                self.gateCodeField.alpha = 0
-                self.gateCodeInformation.alpha = 0
-                self.gateCodeCheckmark.alpha = 0
-                self.gateCodeLine.alpha = 0
-                self.spotNumberNotAnchor.isActive = false
-                self.spotNumberTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        } else if sender == gateCodeField {
-            UIView.animate(withDuration: animationIn) {
-                self.spotNumberInformation.alpha = 0
-                self.spotNumberField.alpha = 0
-                self.spotNumberCheckmark.alpha = 0
-                self.spotNumberLine.alpha = 0
-                self.numberInformation.alpha = 0
-                self.numberField.alpha = 0
-                self.numberLine.alpha = 0
-                self.gateCodeNotAnchor.isActive = false
-                self.gateCodeTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    func bringOtherOptions() {
-        UIView.animate(withDuration: animationIn) {
-            self.numberLine.alpha = 1
-            self.numberInformation.alpha = 1
-            self.numberField.alpha = 1
-            self.spotNumberInformation.alpha = 1
-            self.spotNumberField.alpha = 1
-            self.spotNumberCheckmark.alpha = 1
-            self.spotNumberLine.alpha = 1
-            self.gateCodeInformation.alpha = 1
-            self.gateCodeField.alpha = 1
-            self.gateCodeCheckmark.alpha = 1
-            self.gateCodeLine.alpha = 1
-            self.spotNumberTypingAnchor.isActive = false
-            self.gateCodeTypingAnchor.isActive = false
-            self.spotNumberNotAnchor.isActive = true
-            self.gateCodeNotAnchor.isActive = true
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     func createNumberPicker() {
         let numberPicker = UIPickerView()
         numberPicker.delegate = self
         numberPicker.backgroundColor = Theme.OFF_WHITE
         numberField.inputView = numberPicker
+        
         createToolbar()
     }
-    
-    
+
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.BLUE
+        toolBar.tintColor = Theme.WHITE
         toolBar.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -364,18 +345,16 @@ class SpotNumberViewController: UIViewController {
     }
     
     @objc func dismissKeyboard() {
-        view.endEditing(true)
-        bringOtherOptions()
+        self.view.endEditing(true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        bringOtherOptions()
     }
 }
 
 
-extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource, UITextViewDelegate {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -409,32 +388,71 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         return label
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.text == "• • • •" {
-            textField.text = ""
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "• • • •" {
+            textView.text = ""
+        }
+        if textView == self.spotNumberField {
+            self.spotNumberField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.spotNumberLine.backgroundColor = Theme.BLUE
+        } else if textView == self.numberField {
+            self.numberField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.numberLine.backgroundColor = Theme.BLUE
+        } else if textView == self.gateCodeField {
+            self.gateCodeField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.gateCodeLine.backgroundColor = Theme.BLUE
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text == "" {
-            textField.text = "• • • •"
-            if textField == spotNumberField {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "• • • •"
+            if textView == spotNumberField {
                 self.checkmarkPressed(bool: false, sender: self.spotNumberCheckmark)
-            } else if textField == gateCodeField {
+            } else if textView == gateCodeField {
                 self.checkmarkPressed(bool: false, sender: self.gateCodeCheckmark)
             }
         }
+        if textView == self.spotNumberField {
+            self.spotNumberField.backgroundColor = UIColor.clear
+            self.spotNumberLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.numberField {
+            self.numberField.backgroundColor = UIColor.clear
+            self.numberLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.gateCodeField {
+            self.gateCodeField.backgroundColor = UIColor.clear
+            self.gateCodeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        }
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == numberField {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == numberField {
             return false
         }
-        if textField == spotNumberField {
+        if textView == spotNumberField {
             self.checkmarkPressed(bool: true, sender: self.spotNumberCheckmark)
-        } else if textField == gateCodeField {
+        } else if textView == gateCodeField {
             self.checkmarkPressed(bool: true, sender: self.gateCodeCheckmark)
         }
         return true
     }
+    
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            self.scrollView.contentInset = .zero
+        } else {
+            self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+        }
+        
+        self.scrollView.scrollIndicatorInsets = self.scrollView.contentInset
+        
+        //        let selectedRange = self.supportTextView.selectedRange
+        //        self.supportTextView.scrollRangeToVisible(selectedRange)
+    }
+    
 }

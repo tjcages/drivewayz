@@ -39,7 +39,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.numberOfLines = 2
-        label.text = "Parking images will not be shown until a driver has booked the space"
+        label.text = "Parking images will not be shown until a driver has booked the space."
         label.textAlignment = .center
         
         return label
@@ -85,13 +85,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove1: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -131,13 +131,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove2: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -177,13 +177,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove3: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -223,13 +223,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove4: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -269,13 +269,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove5: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -315,13 +315,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove6: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -361,13 +361,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove7: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -407,13 +407,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove8: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -450,13 +450,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove9: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -483,13 +483,13 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     var spotRemove10: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.OFF_WHITE
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
         button.addTarget(self, action: #selector(removeImagePressed(sender:)), for: .touchUpInside)
@@ -814,7 +814,7 @@ extension SpotPicturesViewController {
     func setupViews() {
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: (self.view.frame.width*5/12)*3)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -829,7 +829,7 @@ extension SpotPicturesViewController {
         setupEight()
         
         self.view.addSubview(drawController.view)
-        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -100).isActive = true
+        drawController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         drawController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         drawController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         drawController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -838,7 +838,7 @@ extension SpotPicturesViewController {
     func setupOne() {
         scrollView.addSubview(addAnImageButton1)
         addAnImageButton1.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/14).isActive = true
-        addAnImageButton1.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        addAnImageButton1.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         firstWidthAnchor = addAnImageButton1.widthAnchor.constraint(equalToConstant: self.view.frame.width*5/12)
         firstWidthAnchor.isActive = true
         addAnImageButton1.heightAnchor.constraint(equalTo: addAnImageButton1.widthAnchor).isActive = true
@@ -1045,8 +1045,8 @@ extension SpotPicturesViewController {
         
         scrollView.addSubview(informationLabel)
         informationLabel.topAnchor.constraint(equalTo: addAnImageButton10.bottomAnchor, constant: 16).isActive = true
-        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         informationLabel.sizeToFit()
         
     }

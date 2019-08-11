@@ -11,7 +11,6 @@ import UIKit
 class AnalyticsViewController: UIViewController {
 
     var delegate: moveControllers?
-    var statusBarColor = false
     let transition = CircularTransition()
     
     var unreadMessages: Int = 0 {
@@ -26,9 +25,22 @@ class AnalyticsViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        
+        return view
+    }()
+    
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
         
         return view
     }()
@@ -36,19 +48,19 @@ class AnalyticsViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Analytics"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -62,39 +74,19 @@ class AnalyticsViewController: UIViewController {
         let origImage = UIImage(named: "settingsEmail")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
         button.addTarget(self, action: #selector(drivewayzMessagePressed), for: .touchUpInside)
-        button.backgroundColor = Theme.WHITE
         
         return button
     }()
-    
-    var backgroundCircle: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
-        view.layer.borderWidth = 80
-        view.layer.cornerRadius = 180
-        
-        return view
-    }()
-    
-    var scrollView: UIScrollView = {
-        let scroll = UIScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.showsHorizontalScrollIndicator = false
-        
-        return scroll
-    }()
-    
+
     var newMessageNumber: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.STRAWBERRY_PINK
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 8
         button.setTitle("", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH6
@@ -105,43 +97,6 @@ class AnalyticsViewController: UIViewController {
         return button
     }()
     
-//    lazy var retentionController: RetentionViewController = {
-//        let controller = RetentionViewController()
-//        self.addChild(controller)
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.title = "Retention"
-//
-//        return controller
-//    }()
-//
-//    lazy var newUsersController: NewUsersViewController = {
-//        let controller = NewUsersViewController()
-//        self.addChild(controller)
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.title = "New Users"
-//
-//        return controller
-//    }()
-//
-//    var newUsersLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = "New Users"
-//        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-//        label.font = Fonts.SSPRegularH2
-//
-//        return label
-//    }()
-//
-//    lazy var profitsController: ProfitsViewController = {
-//        let controller = ProfitsViewController()
-//        self.addChild(controller)
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.title = "Profits"
-//
-//        return controller
-//    }()
-//
     var totalUsersLabel: UILabel = {
         let label = UILabel()
         label.text = "Total users"
@@ -164,6 +119,13 @@ class AnalyticsViewController: UIViewController {
         return label
     }()
     
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -172,6 +134,7 @@ class AnalyticsViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         
         setupViews()
+        setupInfo()
         setData()
         observeUnreadMessages()
     }
@@ -185,31 +148,31 @@ class AnalyticsViewController: UIViewController {
     
     func setupViews() {
         
-        self.view.addSubview(backgroundCircle)
-        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
-        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
-        
         self.view.addSubview(scrollView)
         self.view.addSubview(gradientContainer)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 600)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: 500).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
-                gradientHeightAnchor.isActive = true
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 140)
+            gradientHeightAnchor.isActive = true
         case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
-                gradientHeightAnchor.isActive = true
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+            gradientHeightAnchor.isActive = true
         }
+        
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 975)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        
+        self.view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -222,7 +185,17 @@ class AnalyticsViewController: UIViewController {
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
-        self.view.addSubview(notificationButton)
+        gradientContainer.addSubview(loadingLine)
+        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        
+    }
+    
+    func setupInfo() {
+        
+        gradientContainer.addSubview(notificationButton)
         notificationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
         notificationButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
         notificationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -233,12 +206,6 @@ class AnalyticsViewController: UIViewController {
         newMessageNumber.centerXAnchor.constraint(equalTo: notificationButton.leftAnchor, constant: 4).isActive = true
         newMessageNumber.widthAnchor.constraint(equalToConstant: 20).isActive = true
         newMessageNumber.heightAnchor.constraint(equalTo: newMessageNumber.widthAnchor).isActive = true
-        
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         scrollView.addSubview(totalUsersLabel)
         totalUsersLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -255,6 +222,7 @@ class AnalyticsViewController: UIViewController {
     }
     
     func observeUnreadMessages() {
+        self.loadingLine.startAnimating()
         let ref = Database.database().reference().child("Messages")
         ref.observe(.childAdded) { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
@@ -272,6 +240,7 @@ class AnalyticsViewController: UIViewController {
         ref.child("users").observeSingleEvent(of: .value) { (snapshot) in
             let count = snapshot.childrenCount
             self.totalUsersLabel.text = "Total users: \(count)"
+            self.loadingLine.endAnimating()
         }
         ref.child("ParkingSpots").observeSingleEvent(of: .value) { (snapshot) in
             let count = snapshot.childrenCount
@@ -280,6 +249,7 @@ class AnalyticsViewController: UIViewController {
     }
     
     @objc func backButtonPressed() {
+        self.loadingLine.endAnimating()
         self.delegate?.dismissActiveController()
         self.dismiss(animated: true) {
             self.backButton.alpha = 0
@@ -292,15 +262,13 @@ class AnalyticsViewController: UIViewController {
 extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
     
     @objc func drivewayzMessagePressed() {
-        let secondVC = OpenMessageViewController()
-//        secondVC.delegate = self
-        let navigation = UINavigationController(rootViewController: secondVC)
+        let controller = OpenMessageViewController()
+        let navigation = UINavigationController(rootViewController: controller)
         navigation.transitioningDelegate = self
         navigation.modalPresentationStyle = .custom
         navigation.navigationBar.isHidden = true
         self.present(navigation, animated: true) {
-            self.lightContentStatusBar()
-            secondVC.openMessages()
+            controller.openMessages()
             self.unreadMessages = 0
             self.newMessageNumber.alpha = 0
         }
@@ -309,7 +277,7 @@ extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .present
         transition.startingPoint = notificationButton.center
-        transition.circleColor = Theme.WHITE
+        transition.circleColor = Theme.DARK_GRAY
         
         return transition
     }
@@ -317,7 +285,7 @@ extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .dismiss
         transition.startingPoint = notificationButton.center
-        transition.circleColor = Theme.WHITE
+        transition.circleColor = Theme.DARK_GRAY
         delayWithSeconds(animationOut) {
             self.delegate?.defaultContentStatusBar()
         }
@@ -331,47 +299,41 @@ extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
 extension AnalyticsViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        let state = scrollView.panGestureRecognizer.state
         var totalHeight: CGFloat = 0.0
         switch device {
         case .iphone8:
-            totalHeight = 160
+            totalHeight = 140
         case .iphoneX:
-            totalHeight = 180
+            totalHeight = 160
         }
-        let translation = scrollView.contentOffset.y
-        if translation > 0 && translation < 80 {
-            let percent = translation/80
-            self.gradientHeightAnchor.constant = totalHeight - percent * 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            if self.backgroundCircle.alpha == 0 {
-                UIView.animate(withDuration: animationIn) {
-                    self.gradientContainer.layer.shadowOpacity = 0
-                    self.backgroundCircle.alpha = 1
-                }
+        if state == .changed {
+            if translation > 0 && translation < 60 {
+                let percent = translation/60
+                self.gradientHeightAnchor.constant = totalHeight - percent * 60
+                self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
             }
-            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+        } else {
+            let translation = scrollView.contentOffset.y
+            if translation < 0 && self.gradientHeightAnchor.constant != totalHeight {
                 self.scrollExpanded()
             }
-        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
-                self.gradientContainer.layer.shadowOpacity = 0.2
-                self.backgroundCircle.alpha = 0
-            }
-        } else if translation >= 80 {
-            self.gradientHeightAnchor.constant = totalHeight - 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                self.scrollMinimized()
-            }
-        } else if translation <= 0 {
-            self.gradientHeightAnchor.constant = totalHeight
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let translation = scrollView.contentOffset.y
-        if translation >= 75 {
+        if translation >= 55 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 55 {
             self.scrollMinimized()
         } else {
             self.scrollExpanded()
@@ -379,49 +341,42 @@ extension AnalyticsViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.defaultContentStatusBar()
-        self.scrollView.setContentOffset(.zero, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.backgroundCircle.alpha = 1
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.backButton.tintColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.DARK_GRAY
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 140
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 160
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
     func scrollMinimized() {
-        self.lightContentStatusBar()
-        UIView.animate(withDuration: animationIn) {
-            self.backgroundCircle.alpha = 0
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 80
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 100
         }
-    }
-    
-    func lightContentStatusBar() {
-        self.statusBarColor = true
-        UIView.animate(withDuration: animationIn) {
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    func defaultContentStatusBar() {
-        self.statusBarColor = false
-        UIView.animate(withDuration: animationIn) {
-            self.setNeedsStatusBarAppearanceUpdate()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if statusBarColor == true {
-            return .lightContent
-        } else {
-            return .default
-        }
+        return .lightContent
     }
     
 }
+
+
 
 
 

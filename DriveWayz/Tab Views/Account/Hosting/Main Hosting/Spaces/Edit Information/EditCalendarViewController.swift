@@ -68,8 +68,8 @@ class EditCalendarViewController: UIViewController {
         return view
     }()
     
-    lazy var scheduleController: CalendarViewController = {
-        let controller = CalendarViewController()
+    lazy var scheduleController: NewCalendarViewController = {
+        let controller = NewCalendarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.calendar.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 200, right: 0)
         
@@ -93,9 +93,9 @@ class EditCalendarViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
         self.view.addSubview(scheduleController.view)

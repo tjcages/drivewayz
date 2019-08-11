@@ -103,6 +103,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         self.view.layoutIfNeeded()
         let value = reason.rawValue
         self.userInteractionChange(value: value)
+        self.checkMapForAnnotations()
         if DestinationAnnotationLocation != nil, let from = quadStartCoordinate, let to = quadEndCoordinate {
             self.drawCurvedOverlay(startCoordinate: from, endCoordinate: to)
         }

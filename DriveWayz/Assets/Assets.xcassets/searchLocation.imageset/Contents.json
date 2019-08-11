@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "navigation.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Group 16.png",
+      "filename" : "navigation@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "navigation@3x.png",
       "scale" : "3x"
     }
   ],

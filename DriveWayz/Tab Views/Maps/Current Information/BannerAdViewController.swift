@@ -61,7 +61,9 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDe
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let imageURL = dictionary["inviteFriends"] as? String {
-                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL)
+                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL) { (bool) in
+                        
+                    }
                     self.view.layoutIfNeeded()
                 }
             }
@@ -118,27 +120,7 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDe
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        // ...
-        if error != nil {
-            // ...
-            return
-        }
-        
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-        guard let prevUser = Auth.auth().currentUser else {return}
-        prevUser.linkAndRetrieveData(with: credential) { (authResult, error) in
-//            if let invite = Invites.inviteDialog() {
-//                invite.setInviteDelegate(self)
-//            
-//                invite.setMessage("Check out Drivewayz! The best new way to find parking. \n -\(GIDSignIn.sharedInstance().currentUser.profile.name!)")
-//                invite.setTitle("Drivewayz")
-//                //            invite.setDeepLink("app_url")
-//                invite.setCallToActionText("Install!")
-//                invite.open()
-//            }
-        }
+
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {

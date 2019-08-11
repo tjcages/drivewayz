@@ -233,7 +233,9 @@ class ParkingOptionViewController: UIViewController {
                         self.starsLabel.text = ""
                     }
                     if let firstPhoto = parking.firstImage {
-                        self.spotImageView.loadImageUsingCacheWithUrlString(firstPhoto)
+                        self.spotImageView.loadImageUsingCacheWithUrlString(firstPhoto) { (bool) in
+                            
+                        }
                     }
                 }
             }

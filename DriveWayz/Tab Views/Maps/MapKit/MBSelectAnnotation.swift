@@ -18,6 +18,8 @@ extension MapKitViewController {
     
     func mapViewDidSelectAnnotation(didSelect annotation: MGLAnnotation) {
         didTapParking = true
+        self.quickParkingController.walkingIcon.alpha = 0
+        self.quickParkingController.carIcon.alpha = 1
         if let title = annotation.title, let parkingID = title {
             self.searchBarController.toLabel.text = "Current location "
             if let parking = self.parkingSpotsDictionary[parkingID] {

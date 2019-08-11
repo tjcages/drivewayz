@@ -13,26 +13,25 @@ class RegisterEmailViewController: UIViewController {
     var delegate: handleConfigureProcess?
     var goodToGo: Bool = false
     
-    var emailTextField: UITextField = {
-        let field = UITextField()
-        field.backgroundColor = UIColor.clear
-        field.font = Fonts.SSPLightH2
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.tintColor = Theme.PACIFIC_BLUE
-        field.textColor = Theme.DARK_GRAY
-        field.autocapitalizationType = .none
-        field.clearButtonMode = .whileEditing
-        field.keyboardType = .emailAddress
-        field.spellCheckingType = .no
-        field.keyboardAppearance = .dark
+    var messageTextView: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        view.tintColor = Theme.BLUE
+        view.font = Fonts.SSPRegularH3
+        view.textColor = Theme.BLACK
+        view.isScrollEnabled = false
+        view.keyboardAppearance = .dark
+        view.autocapitalizationType = .none
         
-        return field
+        return view
     }()
     
-    var nameLine: UIView = {
+    var messageTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -42,8 +41,8 @@ class RegisterEmailViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
-        label.numberOfLines = 3
-        label.text = "Register your email so Drivewayz may contact you if there are any issues with the parking space."
+        label.numberOfLines = 8
+        label.text = "Drivewayz will send you an email verification to confirm your status as a host. \n\n You must have a valid email address for your spot to be listed."
         
         return label
     }()
@@ -51,81 +50,92 @@ class RegisterEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.delegate = self
+        messageTextView.delegate = self
 
         setupViews()
+        createToolbar()
     }
     
     func setupViews() {
         
-        self.view.addSubview(emailTextField)
-        emailTextField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
-        emailTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        emailTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        self.view.addSubview(messageTextView)
+        messageTextView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+        messageTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        messageTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        messageTextView.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
-        self.view.addSubview(nameLine)
-        nameLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        nameLine.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
-        nameLine.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
-        nameLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        self.view.addSubview(messageTextLine)
+        messageTextLine.leftAnchor.constraint(equalTo: messageTextView.leftAnchor).isActive = true
+        messageTextLine.rightAnchor.constraint(equalTo: messageTextView.rightAnchor).isActive = true
+        messageTextLine.bottomAnchor.constraint(equalTo: messageTextView.bottomAnchor).isActive = true
+        messageTextLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         self.view.addSubview(informationLabel)
-        informationLabel.topAnchor.constraint(equalTo: nameLine.bottomAnchor, constant: 20).isActive = true
+        informationLabel.topAnchor.constraint(equalTo: messageTextLine.bottomAnchor, constant: 20).isActive = true
         informationLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         informationLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
-        informationLabel.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        informationLabel.sizeToFit()
         
-        createToolbar()
     }
     
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.BLUE
+        toolBar.tintColor = Theme.WHITE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
-        let doneButton = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(dismissKeyboard))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
         doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         
         toolBar.setItems([flexibleSpace, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
-        self.emailTextField.inputAccessoryView = toolBar
+        self.messageTextView.inputAccessoryView = toolBar
     }
     
     func startMessage() {
-        self.emailTextField.becomeFirstResponder()
+        self.messageTextView.becomeFirstResponder()
     }
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
-        self.delegate?.moveToNextController()
     }
 
     func checkIfGood() {
-        if self.emailTextField.text == "" || self.emailTextField.text == "Enter message" {
+        guard let title = self.messageTextView.text else { return }
+        if title == "" || title == "Enter message" {
             self.goodToGo = false
         } else {
-            self.goodToGo = true
+            if title.contains("@") && title.contains(".") {
+                self.goodToGo = true
+            } else {
+                self.goodToGo = false
+            }
         }
     }
     
 }
 
 
-extension RegisterEmailViewController: UITextFieldDelegate {
+extension RegisterEmailViewController: UITextViewDelegate {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        self.checkIfGood()
-        return true
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+        self.messageTextLine.backgroundColor = Theme.BLUE
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        self.messageTextLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         self.checkIfGood()
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        self.checkIfGood()
+        return true
     }
     
 }

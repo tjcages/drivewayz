@@ -37,22 +37,23 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Country/Region"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var countryField: UITextField = {
-        let view = UITextField()
+    var countryField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "United States"
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = Theme.SEA_BLUE
         view.textColor = Theme.DARK_GRAY
-        view.clearButtonMode = .whileEditing
         view.keyboardAppearance = .dark
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        view.text = "USA"
+        view.autocapitalizationType = .words
         
         return view
     }()
@@ -60,7 +61,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -68,24 +69,23 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "Street Address"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var streetField: UITextField = {
-        let view = UITextField()
+    var streetField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "123 Kennedy Ave."
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.DARK_GRAY
         view.returnKeyType = .done
-        view.clearButtonMode = .whileEditing
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
+        view.autocapitalizationType = .words
         
         return view
     }()
@@ -93,7 +93,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -101,23 +101,22 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "City"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var cityField: UITextField = {
-        let view = UITextField()
+    var cityField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "Philadelphia"
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        view.clearButtonMode = .whileEditing
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.textColor = Theme.DARK_GRAY
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
+        view.autocapitalizationType = .words
         
         return view
     }()
@@ -125,7 +124,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -133,23 +132,22 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.text = "State"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var stateField: UITextField = {
-        let view = UITextField()
+    var stateField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "Pennsylvania"
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        view.clearButtonMode = .whileEditing
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.textColor = Theme.DARK_GRAY
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
+        view.autocapitalizationType = .words
         
         return view
     }()
@@ -157,7 +155,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -165,23 +163,23 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Zipcode (optional)"
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.text = "Zipcode"
         label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var zipField: UITextField = {
-        let view = UITextField()
+    var zipField: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = ""
-        view.font = Fonts.SSPLightH3
+        view.font = Fonts.SSPRegularH3
         view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        view.clearButtonMode = .whileEditing
-        view.addTarget(self, action: #selector(hideOtherOptions(sender:)), for: .editingDidBegin)
+        view.textColor = Theme.DARK_GRAY
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
+        view.keyboardType = .numberPad
+        view.autocapitalizationType = .words
         
         return view
     }()
@@ -189,7 +187,20 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        
+        return view
+    }()
+    
+    lazy var searchContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.WHITE
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        view.alpha = 0
         
         return view
     }()
@@ -212,23 +223,13 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         stateField.delegate = self
         zipField.delegate = self
         
-        streetField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        
         setupViews()
+        setupStreet()
+        setupCity()
+        setupState()
+        setupZip()
+        setupSearch()
     }
-    
-    @objc func textFieldDidChange(textField: UITextField){
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil, userInfo: ["text":textField.text!])
-    }
-    
-    var streetTypingAnchor: NSLayoutConstraint!
-    var streetNotAnchor: NSLayoutConstraint!
-    var cityTypingAnchor: NSLayoutConstraint!
-    var cityNotAnchor: NSLayoutConstraint!
-    var stateTypingAnchor: NSLayoutConstraint!
-    var stateNotAnchor: NSLayoutConstraint!
-    var zipTypingAnchor: NSLayoutConstraint!
-    var zipNotAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -236,238 +237,142 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
         scrollView.addGestureRecognizer(gesture)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: 750)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(countryLabel)
-        countryLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        countryLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         countryLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         countryLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        countryLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        countryLabel.sizeToFit()
         
         scrollView.addSubview(countryField)
-        countryField.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 10).isActive = true
-        countryField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        countryField.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 8).isActive = true
+        countryField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         countryField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        countryField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        countryField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         scrollView.addSubview(countryLine)
         countryLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        countryLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        countryLine.topAnchor.constraint(equalTo: countryField.bottomAnchor, constant: 10).isActive = true
-        countryLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        countryLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        countryLine.topAnchor.constraint(equalTo: countryField.bottomAnchor).isActive = true
+        countryLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+
+    }
+    
+    func setupStreet() {
         
         scrollView.addSubview(streetLabel)
         streetLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         streetLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        streetLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        streetNotAnchor = streetLabel.topAnchor.constraint(equalTo: countryLine.topAnchor, constant: 20)
-            streetNotAnchor.isActive = true
-        streetTypingAnchor = streetLabel.topAnchor.constraint(equalTo: scrollView.topAnchor)
-            streetTypingAnchor.isActive = false
+        streetLabel.topAnchor.constraint(equalTo: countryLine.topAnchor, constant: 24).isActive = true
+        streetLabel.sizeToFit()
         
         scrollView.addSubview(streetField)
-        streetField.topAnchor.constraint(equalTo: streetLabel.bottomAnchor, constant: 10).isActive = true
-        streetField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        streetField.topAnchor.constraint(equalTo: streetLabel.bottomAnchor, constant: 8).isActive = true
+        streetField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         streetField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        streetField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        streetField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         scrollView.addSubview(streetLine)
         streetLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        streetLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        streetLine.topAnchor.constraint(equalTo: streetField.bottomAnchor, constant: 10).isActive = true
-        streetLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        streetLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        streetLine.topAnchor.constraint(equalTo: streetField.bottomAnchor).isActive = true
+        streetLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+    }
+    
+    func setupCity() {
         
         scrollView.addSubview(cityLabel)
         cityLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         cityLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        cityLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        cityNotAnchor = cityLabel.topAnchor.constraint(equalTo: streetLine.topAnchor, constant: 20)
-            cityNotAnchor.isActive = true
-        cityTypingAnchor = cityLabel.topAnchor.constraint(equalTo: scrollView.topAnchor)
-            cityTypingAnchor.isActive = false
+        cityLabel.topAnchor.constraint(equalTo: streetLine.topAnchor, constant: 24).isActive = true
+        cityLabel.sizeToFit()
         
         scrollView.addSubview(cityField)
-        cityField.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 10).isActive = true
-        cityField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        cityField.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 8).isActive = true
+        cityField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         cityField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        cityField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        cityField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         scrollView.addSubview(cityLine)
         cityLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        cityLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        cityLine.topAnchor.constraint(equalTo: cityField.bottomAnchor, constant: 10).isActive = true
-        cityLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        cityLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        cityLine.topAnchor.constraint(equalTo: cityField.bottomAnchor).isActive = true
+        cityLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+    }
+    
+    func setupState() {
         
         scrollView.addSubview(stateLabel)
         stateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         stateLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        stateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        stateNotAnchor = stateLabel.topAnchor.constraint(equalTo: cityLine.topAnchor, constant: 20)
-            stateNotAnchor.isActive = true
-        stateTypingAnchor = stateLabel.topAnchor.constraint(equalTo: scrollView.topAnchor)
-            stateTypingAnchor.isActive = false
+        stateLabel.topAnchor.constraint(equalTo: cityLine.topAnchor, constant: 24).isActive = true
+        stateLabel.sizeToFit()
         
         scrollView.addSubview(stateField)
-        stateField.topAnchor.constraint(equalTo: stateLabel.bottomAnchor, constant: 10).isActive = true
-        stateField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        stateField.topAnchor.constraint(equalTo: stateLabel.bottomAnchor, constant: 8).isActive = true
+        stateField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         stateField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        stateField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        stateField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         scrollView.addSubview(stateLine)
         stateLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        stateLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        stateLine.topAnchor.constraint(equalTo: stateField.bottomAnchor, constant: 10).isActive = true
-        stateLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        stateLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        stateLine.topAnchor.constraint(equalTo: stateField.bottomAnchor).isActive = true
+        stateLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+    }
+    
+    func setupZip() {
         
         scrollView.addSubview(zipLabel)
         zipLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         zipLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        zipLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        zipNotAnchor = zipLabel.topAnchor.constraint(equalTo: stateLine.topAnchor, constant: 20)
-            zipNotAnchor.isActive = true
-        zipTypingAnchor = zipLabel.topAnchor.constraint(equalTo: scrollView.topAnchor)
-            zipTypingAnchor.isActive = false
+        zipLabel.topAnchor.constraint(equalTo: stateLine.topAnchor, constant: 24).isActive = true
+        zipLabel.sizeToFit()
         
         scrollView.addSubview(zipField)
-        zipField.topAnchor.constraint(equalTo: zipLabel.bottomAnchor, constant: 10).isActive = true
-        zipField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        zipField.topAnchor.constraint(equalTo: zipLabel.bottomAnchor, constant: 8).isActive = true
+        zipField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         zipField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        zipField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        zipField.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
         scrollView.addSubview(zipLine)
         zipLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        zipLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
-        zipLine.topAnchor.constraint(equalTo: zipField.bottomAnchor, constant: 10).isActive = true
-        zipLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        zipLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        zipLine.topAnchor.constraint(equalTo: zipField.bottomAnchor).isActive = true
+        zipLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.view.addSubview(locationsSearchResults.view)
-        locationsSearchResults.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        locationsSearchResults.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        locationsSearchResults.view.topAnchor.constraint(equalTo: streetLine.bottomAnchor).isActive = true
-        locationsSearchResults.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+    }
+    
+    func setupSearch() {
+        
+        self.view.addSubview(searchContainer)
+        searchContainer.leftAnchor.constraint(equalTo: streetLine.leftAnchor).isActive = true
+        searchContainer.rightAnchor.constraint(equalTo: streetLine.rightAnchor).isActive = true
+        searchContainer.topAnchor.constraint(equalTo: streetLine.bottomAnchor).isActive = true
+        searchContainer.heightAnchor.constraint(equalToConstant: 199).isActive = true
+        
+        searchContainer.addSubview(locationsSearchResults.view)
+        locationsSearchResults.view.topAnchor.constraint(equalTo: searchContainer.topAnchor).isActive = true
+        locationsSearchResults.view.leftAnchor.constraint(equalTo: searchContainer.leftAnchor).isActive = true
+        locationsSearchResults.view.rightAnchor.constraint(equalTo: searchContainer.rightAnchor).isActive = true
+        locationsSearchResults.view.bottomAnchor.constraint(equalTo: searchContainer.bottomAnchor).isActive = true
         
         createToolbar()
-    }
-    
-    @objc func hideOtherOptions(sender: UITextField) {
-        if sender == streetField {
-            UIView.animate(withDuration: animationIn) {
-                self.countryLabel.alpha = 0
-                self.countryField.alpha = 0
-                self.countryLine.alpha = 0
-                self.cityLabel.alpha = 0
-                self.cityField.alpha = 0
-                self.cityLine.alpha = 0
-                self.stateLabel.alpha = 0
-                self.stateField.alpha = 0
-                self.stateLine.alpha = 0
-                self.zipLabel.alpha = 0
-                self.zipField.alpha = 0
-                self.zipLine.alpha = 0
-                self.streetNotAnchor.isActive = false
-                self.streetTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        } else if sender == cityField {
-            UIView.animate(withDuration: animationIn) {
-                self.countryLabel.alpha = 0
-                self.countryField.alpha = 0
-                self.countryLine.alpha = 0
-                self.streetLabel.alpha = 0
-                self.streetField.alpha = 0
-                self.streetLine.alpha = 0
-                self.stateLabel.alpha = 0
-                self.stateField.alpha = 0
-                self.stateLine.alpha = 0
-                self.zipLabel.alpha = 0
-                self.zipField.alpha = 0
-                self.zipLine.alpha = 0
-                self.cityNotAnchor.isActive = false
-                self.cityTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        } else if sender == stateField {
-            UIView.animate(withDuration: animationIn) {
-                self.countryLabel.alpha = 0
-                self.countryField.alpha = 0
-                self.countryLine.alpha = 0
-                self.streetLabel.alpha = 0
-                self.streetField.alpha = 0
-                self.streetLine.alpha = 0
-                self.cityLabel.alpha = 0
-                self.cityField.alpha = 0
-                self.cityLine.alpha = 0
-                self.zipLabel.alpha = 0
-                self.zipField.alpha = 0
-                self.zipLine.alpha = 0
-                self.stateNotAnchor.isActive = false
-                self.stateTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        } else if sender == zipField {
-            UIView.animate(withDuration: animationIn) {
-                self.countryLabel.alpha = 0
-                self.countryField.alpha = 0
-                self.countryLine.alpha = 0
-                self.streetLabel.alpha = 0
-                self.streetField.alpha = 0
-                self.streetLine.alpha = 0
-                self.cityLabel.alpha = 0
-                self.cityField.alpha = 0
-                self.cityLine.alpha = 0
-                self.stateLabel.alpha = 0
-                self.stateField.alpha = 0
-                self.stateLine.alpha = 0
-                self.zipNotAnchor.isActive = false
-                self.zipTypingAnchor.isActive = true
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    func bringOtherOptions() {
-        UIView.animate(withDuration: animationIn) {
-            self.countryLabel.alpha = 1
-            self.countryField.alpha = 1
-            self.countryLine.alpha = 1
-            self.streetLabel.alpha = 1
-            self.streetField.alpha = 1
-            self.streetLine.alpha = 1
-            self.cityLabel.alpha = 1
-            self.cityField.alpha = 1
-            self.cityLine.alpha = 1
-            self.stateLabel.alpha = 1
-            self.stateField.alpha = 1
-            self.stateLine.alpha = 1
-            self.stateLabel.alpha = 1
-            self.stateField.alpha = 1
-            self.stateLine.alpha = 1
-            self.zipLabel.alpha = 1
-            self.zipField.alpha = 1
-            self.zipLine.alpha = 1
-            self.locationsSearchResults.view.alpha = 0
-            if self.streetTypingAnchor != nil {
-                self.streetNotAnchor.isActive = true
-                self.streetTypingAnchor.isActive = false
-                self.cityNotAnchor.isActive = true
-                self.cityTypingAnchor.isActive = false
-                self.stateNotAnchor.isActive = true
-                self.stateTypingAnchor.isActive = false
-                self.zipNotAnchor.isActive = true
-                self.zipTypingAnchor.isActive = false
-                self.view.layoutIfNeeded()
-            }
-        }
+        
     }
     
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         toolBar.barTintColor = Theme.DARK_GRAY
-        toolBar.tintColor = Theme.BLUE
+        toolBar.tintColor = Theme.WHITE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -487,185 +392,134 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
-        self.bringOtherOptions()
     }
 
     @objc func scrollViewTapped() {
         self.view.endEditing(true)
-        self.bringOtherOptions()
     }
     
-    func checkIfGood() {
-        if self.streetField.text == "" || self.streetField.text == "123 Kennedy Ave." {
+    func checkIfGood() -> Bool {
+        if self.streetField.text == "" {
             self.streetLabel.textColor = Theme.HARMONY_RED
-            self.goodToGo = false
-        } else {
-            self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-            self.goodToGo = true
+            self.streetLine.backgroundColor = Theme.HARMONY_RED
+            return false
         }
-        if self.cityField.text == "" || self.cityField.textColor == Theme.DARK_GRAY.withAlphaComponent(0.4) {
+        if self.cityField.text == "" {
             self.cityLabel.textColor = Theme.HARMONY_RED
-            self.goodToGo = false
-        } else {
-            self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-            self.goodToGo = true
+            self.cityLine.backgroundColor = Theme.HARMONY_RED
+            return false
         }
-        if self.stateField.text == "" || self.stateField.textColor == Theme.DARK_GRAY.withAlphaComponent(0.4) {
+        if self.stateField.text == "" {
             self.stateLabel.textColor = Theme.HARMONY_RED
-            self.goodToGo = false
-        } else {
-            self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-            self.goodToGo = true
+            self.stateLine.backgroundColor = Theme.HARMONY_RED
+            return false
         }
         if self.countryField.text == "" {
             self.countryLabel.textColor = Theme.HARMONY_RED
-            self.goodToGo = false
-        } else {
-            self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-            self.goodToGo = true
+            self.countryLine.backgroundColor = Theme.HARMONY_RED
+            return false
         }
+        if self.zipField.text == "" {
+            self.zipLabel.textColor = Theme.HARMONY_RED
+            self.zipLine.backgroundColor = Theme.HARMONY_RED
+            return false
+        }
+        self.combineAddress()
+        return true
     }
 
 }
 
 
-extension LocationParkingViewController: UITextFieldDelegate {
+extension LocationParkingViewController: UITextViewDelegate {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == self.streetField {
-            if self.streetField.text == "" || self.streetField.text == "123 Kennedy Ave." {
-                self.streetLabel.textColor = Theme.HARMONY_RED
-                self.goodToGo = false
-            } else {
-                self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-                self.goodToGo = true
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == self.streetField {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil, userInfo: ["text": textView.text!])
+            if self.searchContainer.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.searchContainer.alpha = 1
+                }
             }
         }
-        if textField == self.cityField {
-            if self.cityField.text == "" || self.cityField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
-                self.cityLabel.textColor = Theme.HARMONY_RED
-                self.goodToGo = false
-            } else {
-                self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-                self.goodToGo = true
-            }
-        }
-        if textField == self.stateField {
-            if self.stateField.text == "" || self.stateField.textColor == Theme.WHITE.withAlphaComponent(0.4) {
-                self.stateLabel.textColor = Theme.HARMONY_RED
-                self.goodToGo = false
-            } else {
-                self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-                self.goodToGo = true
-            }
-        }
-        if textField == self.countryField {
-            if self.countryField.text == "" {
-                self.countryLabel.textColor = Theme.HARMONY_RED
-                self.goodToGo = false
-            } else {
-                self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-                self.goodToGo = true
-            }
-        }
-        return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == countryField {
-            if textField.text == "United States" {
-                textField.text = ""
-            }
-        } else if textField == streetField {
-            if textField.text == "123 Kennedy Ave." {
-                textField.text = ""
-                textField.textColor = Theme.DARK_GRAY
-            }
-        } else if textField == cityField {
-            if textField.text == "Philadelphia" {
-                textField.text = ""
-                textField.textColor = Theme.DARK_GRAY
-            }
-        } else if textField == stateField {
-            if textField.text == "Pennsylvania" {
-                textField.text = ""
-                textField.textColor = Theme.DARK_GRAY
-            }
-        } else if textField == zipField {
-            if textField.text == "19146" {
-                textField.text = ""
-                textField.textColor = Theme.DARK_GRAY
-            }
-        }
-        self.scrollView.contentOffset = CGPoint.zero
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         self.locationsSearchResults.view.alpha = 0
-        if textField == countryField {
-            if textField.text == "" {
-                textField.text = "United States"
-            }
-        } else if textField == streetField {
-            if textField.text == "" {
-                textField.text = "123 Kennedy Ave."
-                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            }
-        } else if textField == cityField {
-            if textField.text == "" {
-                textField.text = "Philadelphia"
-                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            }
-        } else if textField == stateField {
-            if textField.text == "" {
-                textField.text = "Pennsylvania"
-                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            }
-        } else if textField == zipField {
-            if textField.text == "" {
-                textField.text = ""
-                textField.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            }
+        self.searchContainer.alpha = 0
+        if textView == self.countryField {
+            self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.countryField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.countryLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: countryLabel, animated: true, offset: 16)
+        } else if textView == self.streetField {
+            self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.streetField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.streetLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: streetLabel, animated: true, offset: 16)
+        } else if textView == self.cityField {
+            self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.cityField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.cityLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: cityLabel, animated: true, offset: 16)
+        } else if textView == self.stateField {
+            self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.stateField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.stateLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: stateLabel, animated: true, offset: 16)
+        } else if textView == self.zipField {
+            self.zipLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.zipField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+            self.zipLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: zipLabel, animated: true, offset: 16)
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.locationsSearchResults.view.alpha = 0
+        self.searchContainer.alpha = 0
+        if textView == self.countryField {
+            self.countryField.backgroundColor = UIColor.clear
+            self.countryLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.streetField {
+            self.streetField.backgroundColor = UIColor.clear
+            self.streetLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.cityField {
+            self.cityField.backgroundColor = UIColor.clear
+            self.cityLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.stateField {
+            self.stateField.backgroundColor = UIColor.clear
+            self.stateLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        } else if textView == self.zipField {
+            self.zipField.backgroundColor = UIColor.clear
+            self.zipLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         }
     }
     
     func handleStreetAddress(text: String) {
         self.streetField.text = text
-        self.streetField.textColor = Theme.DARK_GRAY
-        self.checkIfGood()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.combineAddress()
-        }
     }
     
     func handleCityAddress(text: String) {
         self.cityField.text = text
-        self.cityField.textColor = Theme.DARK_GRAY
     }
     
     func handleStateAddress(text: String) {
         self.stateField.text = text
-        self.stateField.textColor = Theme.DARK_GRAY
     }
     
     func handleZipAddress(text: String) {
         self.zipField.text = text
-        self.zipField.textColor = Theme.DARK_GRAY
     }
     
     func handleCountryAddress(text: String) {
         self.countryField.text = text
-        self.countryField.textColor = Theme.DARK_GRAY
+        self.scrollView.setContentOffset(.zero, animated: true)
     }
     
     func combineAddress() {
-        guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let country = countryField.text else { return }
-        if zipField.textColor != Theme.DARK_GRAY {
-            self.newHostAddress = "\(street), \(city), \(state), \(country)"
-        } else {
-            guard let zip = zipField.text else { return }
-            self.newHostAddress = "\(street), \(city), \(state) \(zip), \(country)"
-        }
+        guard let street = streetField.text, let city = cityField.text, let state = stateField.text, let zip = zipField.text, let country = countryField.text else { return }
+        self.newHostAddress = "\(street), \(city), \(state) \(zip), \(country)"
     }
 
 }

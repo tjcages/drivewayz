@@ -11,7 +11,52 @@ import CoreLocation
 
 class PickCostViewController: UIViewController {
     
-    var dynamicPrice: Double = 3.0
+    var minPrice: Double = 1.32
+    var selectedPrice: Double = 3.0
+    var dynamicPrice: Double = 3.0 {
+        didSet {
+            let standardValue = NSString(format: "$%.2f", self.dynamicPrice) as String
+            let maxCostValue = NSString(format: "$%.2f", (self.dynamicPrice * 2)) as String
+            let minCostValue = "$\(self.minPrice)"
+            
+            let standardString = "Set standard rate: \(standardValue)"
+            let maxString = "Set max rate: \(maxCostValue)"
+            let minString = "Set min rate: \(minCostValue)"
+            
+            let standardRange = (standardString as NSString).range(of: standardValue)
+            let maxRange = (maxString as NSString).range(of: maxCostValue)
+            let minRange = (minString as NSString).range(of: minCostValue)
+            
+            let standardStringRange = (standardString as NSString).range(of: standardString)
+            let maxStringRange = (maxString as NSString).range(of: maxString)
+            let minStringRange = (minString as NSString).range(of: minString)
+            
+            let standardAttribution = NSMutableAttributedString(string: standardString)
+            let maxAttribution = NSMutableAttributedString(string: maxString)
+            let minAttribution = NSMutableAttributedString(string: minString)
+            
+            standardAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: standardStringRange)
+            standardAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: standardRange)
+            maxAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: maxStringRange)
+            maxAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: maxRange)
+            minAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: minStringRange)
+            minAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: minRange)
+            
+            self.dynamicPriceButton.setAttributedTitle(standardAttribution, for: .normal)
+            self.maxPriceButton.setAttributedTitle(maxAttribution, for: .normal)
+            self.minPriceButton.setAttributedTitle(minAttribution, for: .normal)
+        }
+    }
+    
+    lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentSize = CGSize(width: self.view.frame.width, height: 800)
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        
+        return view
+    }()
     
     var informationLabel: UILabel = {
         let label = UILabel()
@@ -39,18 +84,37 @@ class PickCostViewController: UIViewController {
         label.font = Fonts.SSPRegularH2
         label.keyboardType = .numberPad
         label.addTarget(self, action: #selector(myTextFieldDidChange), for: .editingChanged)
+        label.keyboardAppearance = .dark
         
         return label
     }()
 
-    var hourLabel: UILabel = {
-        let label = UILabel()
-        label.text = "per hour"
-        label.textColor = Theme.DARK_GRAY
+    var hourLabel: UIButton = {
+        let label = UIButton()
+        label.setTitle("per hour", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH2
-        
+        label.titleLabel?.font = Fonts.SSPRegularH3
+        label.contentHorizontalAlignment = .right
+        label.addTarget(self, action: #selector(hourLabelTapped), for: .touchUpInside)
+
         return label
+    }()
+    
+    var costBackground: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        
+        return view
+    }()
+    
+    var costLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        
+        return view
     }()
     
     var dynamicPriceButton: UIButton = {
@@ -60,6 +124,31 @@ class PickCostViewController: UIViewController {
         button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
+        button.contentHorizontalAlignment = .left
+        
+        return button
+    }()
+    
+    var maxPriceButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Set max rate", for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
+        button.contentHorizontalAlignment = .left
+        
+        return button
+    }()
+    
+    var minPriceButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Set min rate", for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(setDynamicPricePressed), for: .touchUpInside)
+        button.contentHorizontalAlignment = .left
         
         return button
     }()
@@ -70,7 +159,7 @@ class PickCostViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.numberOfLines = 2
-        label.text = "The standard rate will maximize your profitability while providing competitively priced parking"
+        label.text = "The standard rate will maximize your profitability while providing competitively priced parking."
         label.textAlignment = .center
         
         return label
@@ -78,8 +167,11 @@ class PickCostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        costTextField.delegate = self
 
         setupCosts()
+        createToolbar()
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,31 +183,65 @@ class PickCostViewController: UIViewController {
     
     func setupCosts() {
         
-        self.view.addSubview(informationLabel)
+        self.view.addSubview(scrollView)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        let price = self.dynamicPrice
+        self.dynamicPrice = price
+        
+        scrollView.addSubview(informationLabel)
         informationLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         informationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        informationLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -20).isActive = true
+        informationLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         informationLabel.sizeToFit()
         
-        self.view.addSubview(costTextField)
-        costTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -34).isActive = true
-        costTextField.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 20).isActive = true
-        costTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        costTextField.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        scrollView.addSubview(costBackground)
+        scrollView.addSubview(costTextField)
+        scrollView.addSubview(hourLabel)
         
-        self.view.addSubview(hourLabel)
-        hourLabel.leftAnchor.constraint(equalTo: costTextField.rightAnchor, constant: -20).isActive = true
-        hourLabel.centerYAnchor.constraint(equalTo: costTextField.centerYAnchor, constant: -4).isActive = true
+        costTextField.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -12).isActive = true
+        costTextField.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 24).isActive = true
+        costTextField.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        costTextField.sizeToFit()
+        
+        hourLabel.leftAnchor.constraint(equalTo: costTextField.rightAnchor, constant: 12).isActive = true
+        hourLabel.centerYAnchor.constraint(equalTo: costTextField.centerYAnchor).isActive = true
         hourLabel.sizeToFit()
         
-        self.view.addSubview(dynamicPriceButton)
-        dynamicPriceButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        dynamicPriceButton.topAnchor.constraint(equalTo: costTextField.bottomAnchor, constant: 12).isActive = true
-        dynamicPriceButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
-        dynamicPriceButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        costBackground.leftAnchor.constraint(equalTo: costTextField.leftAnchor, constant: -12).isActive = true
+        costBackground.rightAnchor.constraint(equalTo: hourLabel.rightAnchor, constant: 12).isActive = true
+        costBackground.topAnchor.constraint(equalTo: costTextField.topAnchor, constant: -8).isActive = true
+        costBackground.bottomAnchor.constraint(equalTo: costTextField.bottomAnchor, constant: 4).isActive = true
+
+        scrollView.addSubview(costLine)
+        costLine.leftAnchor.constraint(equalTo: costBackground.leftAnchor).isActive = true
+        costLine.rightAnchor.constraint(equalTo: costBackground.rightAnchor).isActive = true
+        costLine.topAnchor.constraint(equalTo: costBackground.bottomAnchor).isActive = true
+        costLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
-        self.view.addSubview(standardLabel)
-        standardLabel.topAnchor.constraint(equalTo: dynamicPriceButton.bottomAnchor, constant: 32).isActive = true
+        scrollView.addSubview(dynamicPriceButton)
+        dynamicPriceButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        dynamicPriceButton.topAnchor.constraint(equalTo: costTextField.bottomAnchor, constant: 24).isActive = true
+        dynamicPriceButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        dynamicPriceButton.sizeToFit()
+        
+        scrollView.addSubview(maxPriceButton)
+        maxPriceButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        maxPriceButton.topAnchor.constraint(equalTo: dynamicPriceButton.bottomAnchor, constant: 0).isActive = true
+        maxPriceButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        maxPriceButton.sizeToFit()
+        
+        scrollView.addSubview(minPriceButton)
+        minPriceButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        minPriceButton.topAnchor.constraint(equalTo: maxPriceButton.bottomAnchor, constant: 0).isActive = true
+        minPriceButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        minPriceButton.sizeToFit()
+        
+        scrollView.addSubview(standardLabel)
+        standardLabel.topAnchor.constraint(equalTo: minPriceButton.bottomAnchor, constant: 32).isActive = true
         standardLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         standardLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         standardLabel.sizeToFit()
@@ -124,29 +250,43 @@ class PickCostViewController: UIViewController {
     
     func configureCustomPricing(state: String, city: String) {
         var stateAbrv = state
-        if state.first == " " { stateAbrv.removeFirst() }
+        stateAbrv = stateAbrv.replacingOccurrences(of: " ", with: "")
+        if state.count > 2 {
+            if let state = statesDictionary[stateAbrv] {
+                stateAbrv = state
+            }
+        }
         let ref = Database.database().reference().child("Average Prices").child("\(stateAbrv)")
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 if let cost = dictionary["\(city)"] as? Double {
-                    let costValue = NSString(format: "%.2f", cost) as String
                     self.dynamicPrice = cost
-                    self.dynamicPriceButton.setTitle("Set standard rate: $\(costValue)", for: .normal)
                 } else {
                     if let average = dictionary["Standard"] as? Double {
-                        let costValue = NSString(format: "%.2f", average) as String
                         self.dynamicPrice = average
-                        self.dynamicPriceButton.setTitle("Set standard rate: $ \(costValue)", for: .normal)
                     }
                 }
             }
         }
     }
     
-    @objc func setDynamicPricePressed() {
-        self.view.endEditing(true)
-        let costValue = NSString(format: "$ %.2f", self.dynamicPrice) as String
-        self.costTextField.text = "\(costValue)"
+    @objc func setDynamicPricePressed(sender: UIButton) {
+        if sender == self.dynamicPriceButton {
+            self.view.endEditing(true)
+            let costValue = NSString(format: "$ %.2f", self.dynamicPrice) as String
+            self.costTextField.text = "\(costValue)"
+            self.selectedPrice = self.dynamicPrice
+        } else if sender == self.maxPriceButton {
+            self.view.endEditing(true)
+            let costValue = NSString(format: "$ %.2f", self.dynamicPrice * 2) as String
+            self.costTextField.text = "\(costValue)"
+            self.selectedPrice = self.dynamicPrice * 2
+        } else if sender == self.minPriceButton {
+            self.view.endEditing(true)
+            let costValue = NSString(format: "$ %.2f", self.minPrice) as String
+            self.costTextField.text = "\(costValue)"
+            self.selectedPrice = self.minPrice
+        }
     }
     
     func addPropertiesToDatabase(parkingID: String) {
@@ -155,15 +295,59 @@ class PickCostViewController: UIViewController {
         ref.updateChildValues(["parkingCost": cost])
     }
     
-    @objc func myTextFieldDidChange(_ textField: UITextField) {
-        if let amountString = textField.text?.currencyInputFormatting() {
-            textField.text = amountString
-            textField.sizeToFit()
-        }
+    @objc func hourLabelTapped() {
+        self.costTextField.becomeFirstResponder()
+    }
+    
+    func createToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.WHITE
+        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderWidth = 0.5
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        self.costTextField.inputAccessoryView = toolBar
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+}
+
+
+extension PickCostViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.costBackground.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+        self.costLine.backgroundColor = Theme.BLUE
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.costBackground.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        self.costLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+    }
+    
+    @objc func myTextFieldDidChange(_ textField: UITextField) {
+        if let amountString = textField.text?.currencyInputFormatting() {
+            if let cost = Double(amountString.replacingOccurrences(of: "$ ", with: "")) {
+                self.selectedPrice = cost
+            }
+            textField.text = amountString
+            textField.sizeToFit()
+        }
     }
     
 }

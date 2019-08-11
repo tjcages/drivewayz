@@ -22,7 +22,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var drivewayImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "drivewayParkingIcon");
+        let origImage = UIImage(named: "newHostDriveway");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -72,7 +72,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var sharedlotImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "parkinglotIcon");
+        let origImage = UIImage(named: "newHostLot");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -123,7 +123,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var sharedCoverImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "coveredParkingIcon");
+        let origImage = UIImage(named: "newHostGarage");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -174,7 +174,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var alleyImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "alleyParkingIcon");
+        let origImage = UIImage(named: "newHostAlley");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -225,7 +225,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var gatedImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "gatedParkingIcon");
+        let origImage = UIImage(named: "newHostGate");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -276,7 +276,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var streetImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "streetParkingIcon");
+        let origImage = UIImage(named: "newHostStreet");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -329,7 +329,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var parkinglotImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "parkinglotIcon");
+        let origImage = UIImage(named: "newHostLot");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -379,7 +379,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var garageImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "coveredParkingIcon");
+        let origImage = UIImage(named: "newHostGarage");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -430,7 +430,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var undergroundImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "undergroundParkingIcon");
+        let origImage = UIImage(named: "newHostUnderground");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -481,7 +481,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var condoImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "condoParkingIcon");
+        let origImage = UIImage(named: "newHostCondo");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -532,7 +532,7 @@ class ParkingOptionsViewController: UIViewController {
     
     var circularImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "circularParkingIcon");
+        let origImage = UIImage(named: "newHostCircular")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -741,13 +741,13 @@ extension ParkingOptionsViewController {
         
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 1.5)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(drivewayImageView)
-        drivewayImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15).isActive = true
+        drivewayImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         drivewayImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         drivewayImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         drivewayImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true

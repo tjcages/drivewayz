@@ -37,7 +37,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         label.text = "Messages"
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -58,7 +58,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY

@@ -10,7 +10,6 @@ import UIKit
 
 class HelpOptionsViewController: UIViewController {
 
-    var delegate: handleHelpControllers?
     let cellId = "cellId"
     var options: [String] = ["Contact Drivewayz", "Review last booking", "Someone is in my spot"]
     var optionsSub: [String] = ["", "", ""]
@@ -123,7 +122,7 @@ extension HelpOptionsViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = optionsTableView.cellForRow(at: indexPath) as! SettingsCell
         if let title = cell.titleLabel.text {
             if title == "Contact Drivewayz" {
-                self.delegate?.moveToContact()
+//                self.delegate?.moveToContact()
             }
         }
     }

@@ -20,10 +20,10 @@ class ParkingTypeViewController: UIViewController {
     
     var houseButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "home-1")
+        let origImage = UIImage(named: "newHostResidential")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.PACIFIC_BLUE
@@ -59,7 +59,7 @@ class ParkingTypeViewController: UIViewController {
     
     var apartmentButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "apartmentIcon");
+        let origImage = UIImage(named: "newHostApartment");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -98,7 +98,7 @@ class ParkingTypeViewController: UIViewController {
     
     var lotButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "parkinglotIcon");
+        let origImage = UIImage(named: "newHostLot");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -137,7 +137,7 @@ class ParkingTypeViewController: UIViewController {
     
     var otherButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "otherParkingIcon");
+        let origImage = UIImage(named: "newHostOther");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -239,13 +239,13 @@ class ParkingTypeViewController: UIViewController {
         
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.width * 1.2)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(houseButton)
-        houseButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15).isActive = true
+        houseButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         houseButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         houseButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         houseButton.widthAnchor.constraint(equalToConstant: 50).isActive = true

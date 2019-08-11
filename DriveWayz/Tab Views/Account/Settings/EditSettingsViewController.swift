@@ -16,7 +16,10 @@ class EditSettingsViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -26,7 +29,7 @@ class EditSettingsViewController: UIViewController {
         label.text = "Edit Account"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -109,6 +112,8 @@ class EditSettingsViewController: UIViewController {
         setupViews()
     }
     
+    var gradientHeightAnchor: CGFloat = 160
+    
     func setupViews() {
         
         self.view.addSubview(gradientContainer)
@@ -117,9 +122,9 @@ class EditSettingsViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         }
         
         self.view.addSubview(mainLabel)
@@ -158,10 +163,10 @@ class EditSettingsViewController: UIViewController {
         subLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         self.view.addSubview(updateButton)
-        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 48).isActive = true
+        updateButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         updateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
-        updateButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 60).isActive = true
         
     }
     

@@ -618,6 +618,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var locatorParkingBottomAnchor: NSLayoutConstraint!
     
     var parkingControllerBottomAnchor: NSLayoutConstraint!
+    var parkingControllerHeightAnchor: NSLayoutConstraint!
     var purchaseControllerBottomAnchor: NSLayoutConstraint!
     var confirmControllerBottomAnchor: NSLayoutConstraint!
     var shouldFlipGradient: Bool = false

@@ -74,7 +74,9 @@ class ParkingImageViewController: UIViewController {
         self.pageControl.numberOfPages = Int(self.numberOfSpots)
         scrollView.contentSize = CGSize(width: (self.view.frame.width) * self.numberOfSpots, height: self.view.frame.width)
         
-        parkingImageView1.loadImageUsingCacheWithUrlString(imageURL)
+        parkingImageView1.loadImageUsingCacheWithUrlString(imageURL) { (bool) in
+            
+        }
     }
     
     func setupViews() {

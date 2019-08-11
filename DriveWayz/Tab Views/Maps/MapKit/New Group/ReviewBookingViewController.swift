@@ -29,7 +29,9 @@ class ReviewBookingViewController: UIViewController {
                             self.view.layoutIfNeeded()
                         }
                         if let firstImage = parking.firstImage, firstImage != "" {
-                            self.spotImageView.loadImageUsingCacheWithUrlString(firstImage)
+                            self.spotImageView.loadImageUsingCacheWithUrlString(firstImage) { (bool) in
+                                
+                            }
                         }
                     }
                 }

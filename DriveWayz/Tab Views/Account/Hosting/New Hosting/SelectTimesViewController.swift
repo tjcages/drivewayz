@@ -109,13 +109,13 @@ class SelectTimesViewController: UIViewController {
         self.view.addSubview(scrollView)
         scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(scheduleLabel)
         scheduleLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         scheduleLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        scheduleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
+        scheduleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         scheduleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         scrollView.addSubview(sundayAvailabilityController.view)

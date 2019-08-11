@@ -412,7 +412,9 @@ class ExpandedSpotViewController: UIViewController {
                         self.infoController.starsLabel.text = ""
                     }
                     if let firstPhoto = parking.firstImage {
-                        self.parkingImageView.loadImageUsingCacheWithUrlString(firstPhoto)
+                        self.parkingImageView.loadImageUsingCacheWithUrlString(firstPhoto) { (bool) in
+                            
+                        }
                     }
                 }
             }

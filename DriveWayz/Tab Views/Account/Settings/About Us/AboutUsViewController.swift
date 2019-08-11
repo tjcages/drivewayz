@@ -12,17 +12,16 @@ class AboutUsViewController: UIViewController {
 
     var delegate: changeSettingsHandler?
     let cellId = "cellId"
-    var options: [String] = ["Terms & Conditions", "Privacy Policy"]
-    var optionsSub: [String] = ["", ""]
-    var optionsColorsTop: [UIColor] = [Theme.LightOrange, Theme.LightTeal]
-    var optionsColorsBottom: [UIColor] = [Theme.DarkOrange, Theme.DarkTeal]
-    var optionsIcons: [UIImage] = [UIImage(named: "settingsAbout")!, UIImage(named: "settingsAbout")!]
+    var options: [String] = ["Frequently Asked Questions", "Host Policies", "Host Regulations","Terms & Conditions", "Privacy Policy"]
     
     var gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -32,7 +31,7 @@ class AboutUsViewController: UIViewController {
         label.text = "About us"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
         return label
@@ -57,9 +56,9 @@ class AboutUsViewController: UIViewController {
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.register(SettingsCell.self, forCellReuseIdentifier: "cellId")
-        view.isScrollEnabled = false
-        //        view.allowsSelection = false
+        view.register(BookingIssuesCell.self, forCellReuseIdentifier: "cellId")
+        view.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 48, right: 0)
+        view.separatorColor = .clear
         
         return view
     }()
@@ -75,11 +74,7 @@ class AboutUsViewController: UIViewController {
         setupViews()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
-        }
-    }
+    var gradientHeightAnchor: CGFloat = 160
     
     func setupViews() {
         
@@ -89,9 +84,9 @@ class AboutUsViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 90).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         }
         
         self.view.addSubview(backButton)
@@ -109,30 +104,44 @@ class AboutUsViewController: UIViewController {
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         self.view.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
     }
     
     func moveToTerms() {
-        let controller = DrivewayzTermsViewController()
+        let controller = ReadPoliciesViewController()
+        controller.Url = URL(string: "http://www.drivewayz.io/terms.html")
         self.navigationController?.pushViewController(controller, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0
-        }
     }
     
     func moveToPrivacy() {
-        let controller = DrivewayzPrivacyViewController()
+        let controller = ReadPoliciesViewController()
+        controller.Url = URL(string: "http://www.drivewayz.io/privacy.html")
         self.navigationController?.pushViewController(controller, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0
-        }
+    }
+    
+    func moveToFAQ() {
+        let controller = ReadPoliciesViewController()
+        controller.Url = URL(string: "http://www.drivewayz.io/faqs.html")
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func moveToHostPolicies() {
+        let controller = ReadPoliciesViewController()
+        controller.Url = URL(string: "http://www.drivewayz.io/host-policies.html")
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func moveToHostRegulations() {
+        let controller = ReadPoliciesViewController()
+        controller.Url = URL(string: "http://www.drivewayz.io/rules--regulations.html")
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
 }
@@ -145,11 +154,11 @@ extension AboutUsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 55
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
+        let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! BookingIssuesCell
         cell.selectionStyle = .none
         tableView.separatorStyle = .singleLine
         cell.separatorInset = UIEdgeInsets(top: 0, left: 58, bottom: 0, right: 0)
@@ -158,21 +167,8 @@ extension AboutUsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         if options.count > indexPath.row {
             cell.titleLabel.text = options[indexPath.row]
-            cell.subtitleLabel.text = optionsSub[indexPath.row]
-            cell.iconView.setImage(optionsIcons[indexPath.row], for: .normal)
-            
-            let background = CAGradientLayer().customVerticalColor(topColor: optionsColorsTop[indexPath.row], bottomColor: optionsColorsBottom[indexPath.row])
-            background.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            background.zPosition = -10
-            cell.iconView.layer.addSublayer(background)
-            
-            if optionsSub[indexPath.row] == "" {
-                cell.titleLabelTopAnchor.isActive = false
-                cell.titleLabelCenterAnchor.isActive = true
-            } else {
-                cell.titleLabelTopAnchor.isActive = true
-                cell.titleLabelCenterAnchor.isActive = false
-            }
+            cell.titleLabel.font = Fonts.SSPRegularH3
+            cell.expandButton.alpha = 1
         }
         
         return cell
@@ -185,6 +181,12 @@ extension AboutUsViewController: UITableViewDelegate, UITableViewDataSource {
                 self.moveToTerms()
             } else if title == "Privacy Policy" {
                 self.moveToPrivacy()
+            } else if title == "Frequently Asked Questions" {
+                self.moveToFAQ()
+            } else if title == "Host Policies" {
+                self.moveToHostPolicies()
+            } else if title == "Host Regulations" {
+                self.moveToHostRegulations()
             }
         }
     }

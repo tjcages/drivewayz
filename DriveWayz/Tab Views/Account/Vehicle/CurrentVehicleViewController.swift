@@ -19,7 +19,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         label.text = "Your vehicles"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -28,7 +28,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -51,6 +54,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
+        view.clipsToBounds = false
         
         return view
     }()
@@ -75,6 +80,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         label.placeholder = "Toyota"
         label.autocapitalizationType = .words
         label.isUserInteractionEnabled = false
+        label.keyboardAppearance = .dark
         
         return label
     }()
@@ -82,7 +88,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var makeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -97,6 +103,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         label.placeholder = "4Runner"
         label.autocapitalizationType = .words
         label.isUserInteractionEnabled = false
+        label.keyboardAppearance = .dark
         
         return label
     }()
@@ -104,7 +111,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var modelLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -119,6 +126,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         label.placeholder = "2015"
         label.keyboardType = .numberPad
         label.isUserInteractionEnabled = false
+        label.keyboardAppearance = .dark
         
         return label
     }()
@@ -126,7 +134,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var yearLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -140,6 +148,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         label.clearButtonMode = .whileEditing
         label.placeholder = "000-XXX"
         label.isUserInteractionEnabled = false
+        label.keyboardAppearance = .dark
         
         return label
     }()
@@ -147,7 +156,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var licenseLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -155,9 +164,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var makeLabel: UILabel = {
         let label = UILabel()
         label.text = "Make"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -165,9 +174,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var modelLabel: UILabel = {
         let label = UILabel()
         label.text = "Model"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -175,9 +184,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var yearLabel: UILabel = {
         let label = UILabel()
         label.text = "Year"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -185,9 +194,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var licenseLabel: UILabel = {
         let label = UILabel()
         label.text = "Plate"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPLightH4
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -210,14 +219,6 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         button.addTarget(self, action: #selector(handleCurrentButtonPressed), for: .touchUpInside)
         
         return button
-    }()
-    
-    var deleteLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
-        
-        return view
     }()
     
     var deleteButton: UIButton = {
@@ -251,9 +252,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var grayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2).cgColor
-        view.layer.borderWidth = 0.5
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         
         return view
     }()
@@ -276,9 +275,9 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        scrollView.delegate = self
         
-        self.title = "Your vehicles"
+        view.backgroundColor = Theme.WHITE
         
         vehicleMakeLabel.delegate = self
         vehicleModelLabel.delegate = self
@@ -289,6 +288,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         createToolbar()
     }
     
+    var gradientHeight: CGFloat = 140
     var gradientHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
@@ -304,14 +304,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        switch device {
-        case .iphone8:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+        gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeight)
             gradientHeightAnchor.isActive = true
-        case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
-            gradientHeightAnchor.isActive = true
-        }
         
         self.view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
@@ -373,7 +367,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         makeLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         makeLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         makeLine.topAnchor.constraint(equalTo: vehicleMakeLabel.bottomAnchor, constant: 10).isActive = true
-        makeLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        makeLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         vehicleModelLabel.leftAnchor.constraint(equalTo: modelLabel.leftAnchor).isActive = true
         vehicleModelLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
@@ -384,7 +378,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         modelLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         modelLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         modelLine.topAnchor.constraint(equalTo: vehicleModelLabel.bottomAnchor, constant: 10).isActive = true
-        modelLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        modelLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         vehicleYearLabel.leftAnchor.constraint(equalTo: yearLabel.leftAnchor).isActive = true
         vehicleYearLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
@@ -395,7 +389,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         yearLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         yearLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         yearLine.topAnchor.constraint(equalTo: vehicleYearLabel.bottomAnchor, constant: 10).isActive = true
-        yearLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        yearLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
         vehicleLicenseLabel.leftAnchor.constraint(equalTo: licenseLabel.leftAnchor).isActive = true
         vehicleLicenseLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
@@ -409,21 +403,15 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         grayView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         scrollView.addSubview(currentButton)
-        currentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        currentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        currentButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         currentButton.topAnchor.constraint(equalTo: grayView.bottomAnchor).isActive = true
         currentButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        scrollView.addSubview(deleteLine)
-        deleteLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        deleteLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        deleteLine.topAnchor.constraint(equalTo: currentButton.bottomAnchor).isActive = true
-        deleteLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        
+
         scrollView.addSubview(deleteButton)
-        deleteButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        deleteButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        deleteButton.topAnchor.constraint(equalTo: deleteLine.bottomAnchor).isActive = true
+        deleteButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        deleteButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        deleteButton.topAnchor.constraint(equalTo: currentButton.bottomAnchor).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         scrollView.addSubview(checkmark)
@@ -436,7 +424,6 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     
     func setupNewVehicle() {
         self.deleteButton.alpha = 0
-        self.deleteLine.alpha = 0
         self.checkmark.alpha = 0
         self.vehicleMakeLabel.text = ""
         self.vehicleModelLabel.text = ""
@@ -446,10 +433,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         self.currentButton.setTitleColor(Theme.BLUE, for: .normal)
         self.detailLabel.text = "Enter details"
         self.doneButton?.title = "Next"
-        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.vehicleMakeLabel.becomeFirstResponder()
         self.vehicleMakeLabel.isUserInteractionEnabled = true
         self.vehicleModelLabel.isUserInteractionEnabled = true
@@ -459,16 +446,15 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     
     func setupCurrentVehicle() {
         self.deleteButton.alpha = 1
-        self.deleteLine.alpha = 1
         self.checkmark.alpha = 1
         self.currentButton.setTitle("Make current vehicle", for: .normal)
         self.currentButton.setTitleColor(Theme.BLACK, for: .normal)
         self.detailLabel.text = "Details"
         self.doneButton?.title = "Done"
-        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.vehicleMakeLabel.isUserInteractionEnabled = false
         self.vehicleModelLabel.isUserInteractionEnabled = false
         self.vehicleYearLabel.isUserInteractionEnabled = false
@@ -480,8 +466,8 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.WHITE
-        toolBar.tintColor = Theme.BLUE
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.WHITE
         toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
@@ -500,14 +486,14 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     
     @objc func moveToNext() {
         if doneButton?.title == "Done" {
-            self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.makeLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.modelLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.yearLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.licenseLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
             self.view.endEditing(true)
         } else if self.activeTextField == vehicleMakeLabel {
             self.vehicleModelLabel.becomeFirstResponder()
@@ -516,41 +502,41 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         } else if self.activeTextField == vehicleYearLabel {
             self.vehicleLicenseLabel.becomeFirstResponder()
         } else if self.activeTextField == vehicleLicenseLabel {
-            self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-            self.makeLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.modelLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.yearLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.licenseLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
             self.view.endEditing(true)
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.makeLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.modelLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.yearLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.licenseLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         self.view.endEditing(true)
         scrollView.endEditing(true)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeTextField = textField
-        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.makeLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.modelLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.yearLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.licenseLine.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.makeLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
         if textField == vehicleYearLabel {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: self.view.frame.height * 0.2), animated: true)
             self.yearLabel.textColor = Theme.BLUE
@@ -624,16 +610,86 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     @objc func backButtonPressed() {
         self.navigationController?.popViewController(animated: true)
     }
+
+}
+
+
+extension CurrentVehicleViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        let state = scrollView.panGestureRecognizer.state
+        var totalHeight: CGFloat = 0.0
+        switch device {
+        case .iphone8:
+            totalHeight = 140
+        case .iphoneX:
+            totalHeight = 160
+        }
+        if state == .changed {
+            if translation > 0 && translation < 60 {
+                let percent = translation/60
+                self.gradientHeightAnchor.constant = totalHeight - percent * 60
+                self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            }
+        } else {
+            let translation = scrollView.contentOffset.y
+            if translation < 0 && self.gradientHeightAnchor.constant != totalHeight {
+                self.scrollExpanded()
+            }
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 55 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 55 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollExpanded() {
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 140
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 160
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
+        }
+    }
+    
+    func scrollMinimized() {
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 80
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 100
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
+        }
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-}
-
-
-extension CurrentVehicleViewController: UINavigationControllerDelegate {
-    
-    
     
 }

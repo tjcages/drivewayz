@@ -51,7 +51,9 @@ class ProfileBannerAdsViewController: UIViewController {
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let imageURL = dictionary["parkingReimagined"] as? String {
-                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL)
+                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL) { (bool) in
+                        
+                    }
                     self.view.layoutIfNeeded()
                 }
             }

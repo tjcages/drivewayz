@@ -101,13 +101,13 @@ class EditCostViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
         self.view.addSubview(costController.view)
-        costController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        costController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 32).isActive = true
         costController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         costController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         costController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true

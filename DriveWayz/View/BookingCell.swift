@@ -98,7 +98,6 @@ class BookingCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY
-//        view.layer.cornerRadius = 13
         
         return view
     }()
@@ -206,7 +205,6 @@ class BookingCell: UICollectionViewCell {
         beginAnimations()
         setupViews()
         setupDetails()
-//        setupStars()
         setupShimmer()
         setupShimmerIcon()
     }
@@ -247,15 +245,6 @@ class BookingCell: UICollectionViewCell {
             spotWidthAnchor.isActive = true
         spotLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-//        destinationIcon.rightAnchor.constraint(equalTo: destinationLabel.leftAnchor, constant: -4).isActive = true
-//        destinationIcon.topAnchor.constraint(equalTo: spotLabel.bottomAnchor).isActive = true
-//        destinationIcon.widthAnchor.constraint(equalToConstant: 18).isActive = true
-//        destinationIcon.heightAnchor.constraint(equalTo: destinationIcon.widthAnchor).isActive = true
-//
-//        destinationLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 11).isActive = true
-//        destinationLabel.centerYAnchor.constraint(equalTo: destinationIcon.centerYAnchor).isActive = true
-//        destinationLabel.sizeToFit()
-        
         stars.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8).isActive = true
         stars.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -12).isActive = true
         stars.sizeToFit()
@@ -263,28 +252,6 @@ class BookingCell: UICollectionViewCell {
         starLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
         starLabel.leftAnchor.constraint(equalTo: stars.rightAnchor, constant: 6).isActive = true
         starLabel.sizeToFit()
-        
-    }
-    
-    func setupStars() {
-        
-        addSubview(starView)
-        addSubview(stars)
-        addSubview(starLabel)
-        
-        stars.centerYAnchor.constraint(equalTo: starLabel.centerYAnchor).isActive = true
-        stars.rightAnchor.constraint(equalTo: starLabel.leftAnchor, constant: -6).isActive = true
-        stars.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        stars.heightAnchor.constraint(equalTo: stars.widthAnchor).isActive = true
-        
-        starLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 12).isActive = true
-        starLabel.rightAnchor.constraint(equalTo: spotIcon.leftAnchor, constant: 12).isActive = true
-        starLabel.sizeToFit()
-        
-        starView.topAnchor.constraint(equalTo: starLabel.topAnchor, constant: -8).isActive = true
-        starView.leftAnchor.constraint(equalTo: stars.leftAnchor, constant: -4).isActive = true
-        starView.rightAnchor.constraint(equalTo: starLabel.rightAnchor, constant: 4).isActive = true
-        starView.bottomAnchor.constraint(equalTo: starLabel.bottomAnchor, constant: 8).isActive = true
         
     }
     

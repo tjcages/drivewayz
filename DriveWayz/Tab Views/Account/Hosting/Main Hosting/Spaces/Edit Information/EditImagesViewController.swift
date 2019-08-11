@@ -9,6 +9,9 @@
 import UIKit
 
 class EditImagesViewController: UIViewController {
+    
+    var delegate: handleHostEditing?
+    var selectedParking: ParkingSpots?
 
     lazy var gradientContainer: UIView = {
         let view = UIView()
@@ -82,6 +85,11 @@ class EditImagesViewController: UIViewController {
         
         return controller
     }()
+    
+    func setData(parking: ParkingSpots) {
+        self.selectedParking = parking
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -134,12 +134,12 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.layer.cornerRadius = 4
-        let origImage = UIImage(named: "Delete")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         button.alpha = 0
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)
         
         return button

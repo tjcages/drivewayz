@@ -53,26 +53,13 @@ class DrawSpotViewController: UIViewController {
     lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Confirm image", for: .normal)
+        button.setTitle("Highlight parking area", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 4
         button.clipsToBounds = true
-        button.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    lazy var hideDotsButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Highlight parking area", for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
-        button.setTitleColor(Theme.BLUE, for: .normal)
-        button.alpha = 1
         button.addTarget(self, action: #selector(highlightImage), for: .touchUpInside)
-        button.contentHorizontalAlignment = .left
         
         return button
     }()
@@ -132,18 +119,6 @@ class DrawSpotViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(imageView)
-        
-        self.view.addSubview(hideDotsButton)
-        hideDotsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        hideDotsButton.widthAnchor.constraint(equalToConstant: 240).isActive = true
-        hideDotsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4).isActive = true
-        case .iphoneX:
-            hideDotsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12).isActive = true
-        }
-        
         self.view.addSubview(confirmButton)
         confirmButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         confirmButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
@@ -158,30 +133,32 @@ class DrawSpotViewController: UIViewController {
     }
     
     @objc func highlightImage() {
-        if self.moveDotsController.view.alpha == 1 {
+        self.confirmButton.removeTarget(self, action: #selector(highlightImage), for: .touchUpInside)
+        self.confirmButton.addTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
+        UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.parkingLabel.text = ""
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.confirmButton.setTitle("Confirm image", for: .normal)
             UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.parkingLabel.text = ""
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                
-                UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.parkingLabel.text = "Make sure the parking space is clearly shown then press the button below to highlight"
-                    self.moveDotsController.view.alpha = 0
-                    self.hideDotsButton.setTitle("Highlight parking area", for: .normal)
-                }, completion: nil)
-            }
-        } else {
+                self.parkingLabel.text = "Drag the corners of the highlight to outline the parking space and confirm image"
+                self.moveDotsController.view.alpha = 1
+            }, completion: nil)
+        }
+    }
+    
+    func removeHighlight() {
+        self.confirmButton.removeTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
+        self.confirmButton.addTarget(self, action: #selector(highlightImage), for: .touchUpInside)
+        UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
+            self.parkingLabel.text = ""
+            self.view.layoutIfNeeded()
+        }) { (success) in
             UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                self.parkingLabel.text = ""
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                
-                UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.parkingLabel.text = "Drag the corners of the highlight to outline the parking space and confirm image"
-                    self.moveDotsController.view.alpha = 1
-                    self.hideDotsButton.setTitle("Remove highlight", for: .normal)
-                }, completion: nil)
-            }
+                self.parkingLabel.text = "Make sure the parking space is clearly shown then press the button below to highlight"
+                self.moveDotsController.view.alpha = 0
+                self.confirmButton.setTitle("Highlight parking area", for: .normal)
+            }, completion: nil)
         }
     }
     
@@ -197,6 +174,8 @@ class DrawSpotViewController: UIViewController {
     }
     
     @objc func confirmButtonPressed(sender: UIButton) {
+        self.confirmButton.removeTarget(self, action: #selector(confirmButtonPressed(sender:)), for: .touchUpInside)
+        self.confirmButton.addTarget(self, action: #selector(highlightImage), for: .touchUpInside)
         let image = self.imageView.takeScreenshot()
         self.delegate?.confirmedImage(image: image)
         delayWithSeconds(1) {
@@ -205,11 +184,10 @@ class DrawSpotViewController: UIViewController {
                 self.parkingLabel.text = ""
                 self.view.layoutIfNeeded()
             }) { (success) in
-                
                 UIView.transition(with: self.parkingLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
                     self.parkingLabel.text = "Make sure the parking space is clearly shown then press the button below to highlight"
                     self.moveDotsController.view.alpha = 0
-                    self.hideDotsButton.setTitle("Highlight parking area", for: .normal)
+                    self.confirmButton.setTitle("Highlight parking area", for: .normal)
                 }, completion: nil)
             }
         }

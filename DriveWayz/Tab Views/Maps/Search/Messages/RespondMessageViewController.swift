@@ -16,6 +16,7 @@ class RespondMessageViewController: UIViewController {
     var messageID: String?
     var messages = [Message]()
     var userID: String = ""
+    var userPicture: String?
     var previousScrollPosition: CGFloat = 0.0
     
     var pickerParking: UIImagePickerController?
@@ -180,6 +181,9 @@ class RespondMessageViewController: UIViewController {
             guard let dictionary = snapshot.value as? [String: AnyObject] else { return }
             DispatchQueue.main.async(execute: {
                 let message = Message(dictionary: dictionary)
+                if let picture = message.picture, self.userPicture == nil {
+                    self.userPicture = picture
+                }
                 self.messages.append(message)
                 self.collectionView.reloadData()
                 let indexPath = NSIndexPath(item: self.messages.count - 1, section: 0)
@@ -382,11 +386,15 @@ extension RespondMessageViewController: UIImagePickerControllerDelegate, UINavig
         guard let fromID = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("DrivewayzMessages").child(self.userID).childByAutoId()
         let timestamp = Int(Date().timeIntervalSince1970)
+        let picture: String = self.userPicture ?? ""
         
         var values = ["timestamp": timestamp,
                       "context": "Reply",
                       "deviceID": AppDelegate.DEVICEID,
                       "fromID": fromID,
+                      "toID": self.userID,
+                      "name": "Drivewayz support",
+                      "picture": picture,
                       "communicationsStatus": "Recent"] as [String : Any]
         
         properties.forEach({values[$0] = $1})
@@ -564,7 +572,9 @@ extension RespondMessageViewController: UICollectionViewDelegate, UICollectionVi
             }
         }
         if let messageImageURL = message.imageURL {
-            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL)
+            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL) { (bool) in
+                
+            }
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
         } else {

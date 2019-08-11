@@ -22,9 +22,10 @@ extension MapKitViewController {
         ref.observe(.childAdded) { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let park = ParkingSpots(dictionary: dictionary)
-                let parkingID = dictionary["parkingID"] as! String
-                self.parkingSpotsDictionary[parkingID] = park
-                self.parkingSpots = Array(self.parkingSpotsDictionary.values)
+                if let parkingID = dictionary["parkingID"] as? String {
+                    self.parkingSpotsDictionary[parkingID] = park
+                    self.parkingSpots = Array(self.parkingSpotsDictionary.values)
+                }
                 
                 DispatchQueue.main.async {
                     self.placeAllAnnotations()
@@ -204,6 +205,12 @@ extension MapKitViewController {
             }
             
             return annotationImage
+        }
+    }
+    
+    func checkMapForAnnotations() {
+        if let annotations = self.mapView.visibleAnnotations {
+            print(annotations.count)
         }
     }
     

@@ -47,6 +47,8 @@ extension MapKitViewController: handleParkingOptions {
     
     func zoomToSearchLocation(address: String) {
         didTapParking = false
+        self.quickParkingController.walkingIcon.alpha = 1
+        self.quickParkingController.carIcon.alpha = 0
         if !mainSearchTextField {
             mainSearchTextField = true
             self.summaryController.fromSearchBar.text = address

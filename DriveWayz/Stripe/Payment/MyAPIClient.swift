@@ -102,7 +102,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         }
     }
     
-    func createAccountKey(routingNumber: String, accountNumber: String, addressLine1: String, addressCity: String, addressState: String, addressPostalCode: String, firstName: String, lastName: String, ssnLast4: String, phoneNumber: String, email: String, birthDay: String, birthMonth: String, birthYear: String, completion: @escaping(Bool) -> ()) {
+    func createAccountKey(routingNumber: String, accountNumber: String, addressLine1: String, addressCity: String, addressState: String, addressPostalCode: String, firstName: String, lastName: String, ssnLast4: String, email: String, birthDay: String, birthMonth: String, birthYear: String, completion: @escaping(Bool) -> ()) {
         var ipAddress: String = ""
         if let addr = getWiFiAddress() {
             ipAddress = addr
@@ -110,9 +110,9 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             ipAddress = "1.160.10.240"
             print("No WiFi address")
         }
-        
+
         let url = self.backendURL.appendingPathComponent("account_keys")
-        Alamofire.request(url, method: .post, parameters: [
+        var values = [
             "routingNumber": routingNumber,
             "accountNumber": accountNumber,
             
@@ -121,7 +121,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             "birthYear": birthYear,
             
             "addressLine1": addressLine1,
-//            "addressLine2": addressLine2,
+            //            "addressLine2": addressLine2,
             "addressCity": addressCity,
             "addressState": addressState,
             "addressPostalCode": addressPostalCode,
@@ -134,14 +134,25 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             "ip": ipAddress,
             "api_version": "2018-05-21",
             "email": email,
-            "phoneNumber": phoneNumber
-            ])
-            
+            //            "phoneNumber": phoneNumber
+        ]
+        
+        Alamofire.request(url, method: .post, parameters: values)
             .validate(statusCode: 200..<300)
             .responseJSON { responseJSON in
                 switch responseJSON.result {
                 case .success(let json):
-                    self.updateUserProfile(userAccount: json as! String)
+                    if let accountNumber = values["accountNumber"], let routingNumber = values["routingNumber"] {
+                        let account = String(accountNumber.suffix(4))
+                        let routing = String(routingNumber.suffix(4))
+                        values["accountNumber"] = account
+                        values["routingNumber"] = routing
+                        let timestamp = Date().timeIntervalSince1970
+                        values["timestamp"] = "\(timestamp)"
+                        values["accountID"] = (json as! String)
+                        values.removeValue(forKey: "ip")
+                        self.updateUserProfile(userAccount: json as! String, values: values)
+                    }
                     self.displayAlert(title: "Success!", message: "You have successfully linked up your bank account and can now start transfering money.")
                     completion(true)
                 case .failure(let error):
@@ -211,10 +222,22 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         return address
     }
     
-    private func updateUserProfile(userAccount: String) {
+    private func updateUserProfile(userAccount: String, values: [String: String]) {
         let currentUser = Auth.auth().currentUser?.uid
         let userRef = Database.database().reference().child("users").child(currentUser!)
-        userRef.updateChildValues(["accountID": userAccount])
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                if (dictionary["Accounts"] as? [String: Any]) != nil {
+                    userRef.child("Accounts").updateChildValues(["secondaryAccountID": userAccount])
+                    let ref = Database.database().reference().child("PayoutAccounts").child(userAccount)
+                    ref.updateChildValues(values)
+                } else {
+                    userRef.child("Accounts").updateChildValues(["accountID": userAccount])
+                    let ref = Database.database().reference().child("PayoutAccounts").child(userAccount)
+                    ref.updateChildValues(values)
+                }
+            }
+        }
     }
     
     func displayAlert(title: String, message: String) {

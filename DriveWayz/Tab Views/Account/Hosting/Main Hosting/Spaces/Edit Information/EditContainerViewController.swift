@@ -39,8 +39,8 @@ class EditContainerViewController: UIViewController {
         return view
     }()
     
-    lazy var contactDrivewayzController: ContactDrivewayzViewController = {
-        let controller = ContactDrivewayzViewController()
+    lazy var contactDrivewayzController: UserContactViewController = {
+        let controller = UserContactViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
         controller.context = "Review"

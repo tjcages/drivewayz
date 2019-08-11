@@ -72,6 +72,7 @@ class EditAmenitiesViewController: UIViewController {
     lazy var amenitiesController: AmenitiesParkingViewController = {
         let controller = AmenitiesParkingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.scrollView.contentSize.height = controller.scrollView.contentSize.height + 200
         
         return controller
     }()
@@ -80,8 +81,8 @@ class EditAmenitiesViewController: UIViewController {
         self.selectedParking = parking
         if let amenities = parking.parkingAmenities {
             let cont = self.amenitiesController
+            self.amenitiesController.selectedAmenities = amenities
             if amenities.contains("Covered parking") {
-                self.amenitiesController.selectedAmenities = amenities
                 self.selectAmenity(button: cont.coveredImageView, label: cont.coveredIconLabel, anchor: cont.coveredAnchor, information: cont.coveredInformation)
             }
             if amenities.contains("Charging station") {
@@ -89,6 +90,9 @@ class EditAmenitiesViewController: UIViewController {
             }
             if amenities.contains("Stadium parking") {
                 self.selectAmenity(button: cont.stadiumImageView, label: cont.stadiumIconLabel, anchor: cont.stadiumAnchor, information: cont.stadiumInformation)
+            }
+            if amenities.contains("Beach parking") {
+                self.selectAmenity(button: cont.beachImageView, label: cont.beachIconLabel, anchor: cont.beachAnchor, information: cont.beachInformation)
             }
             if amenities.contains("Gated spot") {
                 self.selectAmenity(button: cont.gatedImageView, label: cont.gatedIconLabel, anchor: cont.gatedAnchor, information: cont.gatedInformation)
@@ -131,9 +135,9 @@ class EditAmenitiesViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
         self.view.addSubview(amenitiesController.view)

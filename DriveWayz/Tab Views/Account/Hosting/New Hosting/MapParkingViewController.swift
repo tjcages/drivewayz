@@ -5,18 +5,18 @@
 //  Created by Tyler Jordan Cagle on 10/29/18.
 //  Copyright © 2018 COAD. All rights reserved.
 //
-
 import UIKit
 import MapKit
 
 class MapParkingViewController: UIViewController {
     
+    var delegate: handleImageDrawing?
     var locationManager = CLLocationManager()
     var typeOfParking = "house"
     
     var latitude: Double?
     var longitude: Double?
-//    var dynamicPrice: CGFloat = 1.5
+    //    var dynamicPrice: CGFloat = 1.5
     
     var mapView: MKMapView = {
         let view = MKMapView()
@@ -37,13 +37,13 @@ class MapParkingViewController: UIViewController {
         
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locationManager.delegate = self
         mapView.delegate = self
-
+        
         setupViews()
         locationAuthStatus()
     }
@@ -76,17 +76,9 @@ class MapParkingViewController: UIViewController {
                     print("Becoming a host could not find a location")
                     return
             }
-            marker.title = title
-            marker.coordinate = location.coordinate
-            self.mapView.addAnnotation(marker)
-            let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            self.mapView.setRegion(region, animated: true)
             self.latitude = location.coordinate.latitude
             self.longitude = location.coordinate.longitude
-//            let dynamicLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//            dynamicPricing.getDynamicPricing(place: dynamicLocation, state: state, city: city, overallDestination: location.coordinate) { (dynamicPrice: CGFloat) in
-//                self.dynamicPrice = dynamicPrice
-//            }
+            self.delegate?.setImageCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         }
     }
     
@@ -94,7 +86,7 @@ class MapParkingViewController: UIViewController {
         let markers = self.mapView.annotations
         self.mapView.removeAnnotations(markers)
     }
-
+    
 }
 
 

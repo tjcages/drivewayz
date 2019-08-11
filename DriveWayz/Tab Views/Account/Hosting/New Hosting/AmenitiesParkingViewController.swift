@@ -24,7 +24,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var coveredImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "coveredParkingIcon-1")
+        let origImage = UIImage(named: "newHostCovered")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -63,7 +63,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var chargingImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "chargingParkingIcon")
+        let origImage = UIImage(named: "newHostCharging")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -102,7 +102,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var gatedImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "gateParkingIcon")
+        let origImage = UIImage(named: "newHostGate")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -141,7 +141,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var stadiumImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "stadiumParkingIcon")
+        let origImage = UIImage(named: "newHostStadium")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -178,9 +178,48 @@ class AmenitiesParkingViewController: UIViewController {
         return view
     }()
     
+    var beachImageView: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "newHostBeach")
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0
+        button.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var beachIconLabel: UIButton = {
+        let label = UIButton()
+        label.setTitle("Beach parking", for: .normal)
+        label.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
+        label.titleLabel?.font = Fonts.SSPRegularH2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.addTarget(self, action: #selector(optionTapped(sender:)), for: .touchUpInside)
+        label.contentHorizontalAlignment = .left
+        
+        return label
+    }()
+    
+    var beachLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        
+        return view
+    }()
+    
     var nightImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "nightParkingIcon")
+        let origImage = UIImage(named: "newHostNight")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -219,7 +258,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var airportImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "airportParkingIcon")
+        let origImage = UIImage(named: "newHostAirport")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -258,7 +297,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var lightedImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "lightingParkingIcon")
+        let origImage = UIImage(named: "newHostLight")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -297,7 +336,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var largeImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "largeParkingIcon")
+        let origImage = UIImage(named: "newHostLarge")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -336,7 +375,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var smallImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "smallParkingIcon")
+        let origImage = UIImage(named: "newHostSmall")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -375,7 +414,7 @@ class AmenitiesParkingViewController: UIViewController {
     
     var easyImageView: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "easyParkingIcon")
+        let origImage = UIImage(named: "newHostEasy")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -460,6 +499,18 @@ class AmenitiesParkingViewController: UIViewController {
         return label
     }()
     
+    var beachInformation: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.text = "Your parking spot must be within 1 mile of a public beach area."
+        label.numberOfLines = 4
+        label.font = Fonts.SSPLightH5
+        label.alpha = 0
+        
+        return label
+    }()
+    
     var nightInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -476,7 +527,7 @@ class AmenitiesParkingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Your parking spot must be no further than 5 miles from an airport."
+        label.text = "Your parking spot must be no further than 2 miles from an airport."
         label.numberOfLines = 4
         label.font = Fonts.SSPLightH5
         label.alpha = 0
@@ -542,6 +593,7 @@ class AmenitiesParkingViewController: UIViewController {
     var chargingAnchor: NSLayoutConstraint!
     var gatedAnchor: NSLayoutConstraint!
     var stadiumAnchor: NSLayoutConstraint!
+    var beachAnchor: NSLayoutConstraint!
     var nightAnchor: NSLayoutConstraint!
     var airportAnchor: NSLayoutConstraint!
     var lightingAnchor: NSLayoutConstraint!
@@ -557,13 +609,13 @@ extension AmenitiesParkingViewController {
         
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1050)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -5).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         scrollView.addSubview(coveredImageView)
-        coveredImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15).isActive = true
+        coveredImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         coveredImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         coveredImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         coveredImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
@@ -638,8 +690,27 @@ extension AmenitiesParkingViewController {
         stadiumAnchor.isActive = true
         stadiumLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
+        scrollView.addSubview(beachImageView)
+        beachImageView.topAnchor.constraint(equalTo: stadiumLine.bottomAnchor, constant: 15).isActive = true
+        beachImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        beachImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        beachImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        scrollView.addSubview(beachIconLabel)
+        beachIconLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        beachIconLabel.topAnchor.constraint(equalTo: beachImageView.topAnchor).isActive = true
+        beachIconLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        beachIconLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        scrollView.addSubview(beachLine)
+        beachLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        beachLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40).isActive = true
+        beachAnchor = beachLine.topAnchor.constraint(equalTo: beachIconLabel.bottomAnchor, constant: 35)
+            beachAnchor.isActive = true
+        beachLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
         scrollView.addSubview(nightImageView)
-        nightImageView.topAnchor.constraint(equalTo: stadiumLine.bottomAnchor, constant: 15).isActive = true
+        nightImageView.topAnchor.constraint(equalTo: beachLine.bottomAnchor, constant: 15).isActive = true
         nightImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         nightImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         nightImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
@@ -781,6 +852,12 @@ extension AmenitiesParkingViewController {
         stadiumInformation.topAnchor.constraint(equalTo: stadiumIconLabel.bottomAnchor).isActive = true
         stadiumInformation.bottomAnchor.constraint(equalTo: stadiumLine.topAnchor, constant: -12).isActive = true
         
+        scrollView.addSubview(beachInformation)
+        beachInformation.leftAnchor.constraint(equalTo: beachIconLabel.leftAnchor).isActive = true
+        beachInformation.rightAnchor.constraint(equalTo: beachImageView.leftAnchor, constant: -10).isActive = true
+        beachInformation.topAnchor.constraint(equalTo: beachIconLabel.bottomAnchor).isActive = true
+        beachInformation.bottomAnchor.constraint(equalTo: beachLine.topAnchor, constant: -12).isActive = true
+        
         scrollView.addSubview(nightInformation)
         nightInformation.leftAnchor.constraint(equalTo: nightIconLabel.leftAnchor).isActive = true
         nightInformation.rightAnchor.constraint(equalTo: nightImageView.leftAnchor, constant: -10).isActive = true
@@ -874,6 +951,24 @@ extension AmenitiesParkingViewController {
                 self.stadiumImageView.layer.shadowOpacity = 0.2
                 self.stadiumAnchor.constant = 95
                 self.stadiumInformation.alpha = 1
+                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
+                self.view.layoutIfNeeded()
+            }
+        } else if sender == beachIconLabel {
+            if beachImageView.backgroundColor == Theme.PACIFIC_BLUE {
+                self.resetBeach()
+                self.selectedAmenities = self.selectedAmenities.filter { $0 != "Beach parking" }
+                return
+            }
+            self.selectedAmenities.append("Beach parking")
+            UIView.animate(withDuration: 0.1) {
+                self.beachIconLabel.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                self.beachIconLabel.titleLabel?.font = Fonts.SSPSemiBoldH2
+                self.beachImageView.backgroundColor = Theme.PACIFIC_BLUE
+                self.beachImageView.tintColor = Theme.WHITE
+                self.beachImageView.layer.shadowOpacity = 0.2
+                self.beachAnchor.constant = 95
+                self.beachInformation.alpha = 1
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 95
                 self.view.layoutIfNeeded()
             }
@@ -1064,6 +1159,21 @@ extension AmenitiesParkingViewController {
             self.stadiumImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.stadiumAnchor.constant = 35
             self.stadiumInformation.alpha = 0
+            self.scrollView.contentSize.height = self.scrollView.contentSize.height - 95
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func resetBeach() {
+        UIView.animate(withDuration: 0.1) {
+            self.beachIconLabel.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.6), for: .normal)
+            self.beachIconLabel.titleLabel?.font = Fonts.SSPRegularH2
+            self.beachImageView.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+            self.beachImageView.tintColor = Theme.WHITE
+            self.beachImageView.layer.shadowOpacity = 0
+            self.beachImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.beachAnchor.constant = 35
+            self.beachInformation.alpha = 0
             self.scrollView.contentSize.height = self.scrollView.contentSize.height - 95
             self.view.layoutIfNeeded()
         }

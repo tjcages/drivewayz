@@ -24,14 +24,14 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         label.text = "Your Bookings"
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.DARK_GRAY
@@ -54,8 +54,8 @@ class UserUpcomingViewController: UIViewController, handleUpcomingConrollers {
         return view
     }()
     
-    lazy var parkingTableController: UpcomingViewController = {
-        let controller = UpcomingViewController()
+    lazy var parkingTableController: MainUpcomingViewController = {
+        let controller = MainUpcomingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         

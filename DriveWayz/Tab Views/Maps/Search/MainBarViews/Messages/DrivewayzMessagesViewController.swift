@@ -60,7 +60,7 @@ class DrivewayzMessagesViewController: UIViewController {
         label.text = "Drivewayz support"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPSemiBoldH1
         label.alpha = 0
         
         return label
@@ -572,7 +572,9 @@ extension DrivewayzMessagesViewController: UICollectionViewDelegate, UICollectio
             }
         }
         if let messageImageURL = message.imageURL {
-            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL)
+            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL) { (bool) in
+                
+            }
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = UIColor.clear
         } else {

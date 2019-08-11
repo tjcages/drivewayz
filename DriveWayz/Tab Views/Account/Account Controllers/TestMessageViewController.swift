@@ -26,7 +26,7 @@ class TestMessageViewController: UIViewController {
         label.text = "Your messages"
         label.textColor = Theme.DARK_GRAY
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()

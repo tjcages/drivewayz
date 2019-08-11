@@ -14,7 +14,10 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -24,7 +27,7 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
         label.text = "Terms & Conditions"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
         return label
@@ -80,6 +83,7 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
     }
     
     var agreementHeight: CGFloat!
+    var gradientHeightAnchor: CGFloat = 160
     
     func setupViews() {
         
@@ -89,9 +93,9 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 90).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeightAnchor).isActive = true
         }
         
         self.view.addSubview(backButton)
@@ -109,7 +113,7 @@ class DrivewayzTermsViewController: UIViewController, UIScrollViewDelegate {
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        mainLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         agreementHeight = agreement.text?.height(withConstrainedWidth: phoneWidth - 24, font: Fonts.SSPRegularH6)
         

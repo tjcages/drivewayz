@@ -133,9 +133,9 @@ class EditSpotsViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
         self.view.addSubview(numberController.view)

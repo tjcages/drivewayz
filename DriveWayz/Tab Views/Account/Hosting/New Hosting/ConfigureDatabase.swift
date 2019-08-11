@@ -57,8 +57,8 @@ extension ConfigureParkingViewController {
         
         var parkingCost = self.costsController.costTextField.text?.replacingOccurrences(of: "$", with: "")
         parkingCost = parkingCost!.replacingOccurrences(of: " ", with: "")
-        let hostMessage = self.messageController.message.text
-        let hostEmail = self.emailController.emailTextField.text
+        let hostMessage = self.messageController.messageTextView.text
+        let hostEmail = self.emailController.messageTextView.text
         
         let ref = Database.database().reference().child("ParkingSpots")
         let childRef = ref.childByAutoId()
@@ -177,16 +177,13 @@ extension ConfigureParkingViewController {
                         userRef.updateChildValues(["email": hostEmail as Any])
                         userRef.child("Hosting Spots").updateChildValues(["\(childKey)": childKey])
                         
-                        let notificationRef = childRef.child("Notifications").childByAutoId()
-                        notificationRef.updateChildValues(["image": "newHost", "title": "Welcome new host!", "subtitle": "Contact us if you have any issues", "timestamp": Date().timeIntervalSince1970])
-                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.confirmController.endLoading()
+                            self.hostDelegate?.closeBackground()
 //                            self.delegate?.hideNewHostingController()
                             self.dismiss(animated: true, completion: {
                                 self.delegate?.bringHostingController()
                                 self.moveDelegate?.defaultContentStatusBar()
-                                self.containerHeightAnchor.constant = 120
                             })
                         }
                     }

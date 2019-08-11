@@ -14,13 +14,14 @@ let imageCache = NSCache<NSString, AnyObject>()
 
 extension UIImageView {
     
-    func loadImageUsingCacheWithUrlString(_ urlString: String) {
+    func loadImageUsingCacheWithUrlString(_ urlString: String, completion: @escaping(Bool) -> ()) {
         
         self.image = nil
         
         //check cache for image first
         if let cachedImage = imageCache.object(forKey: urlString as NSString) as? UIImage {
             self.image = cachedImage
+            completion(true)
             return
         }
         
@@ -28,6 +29,7 @@ extension UIImageView {
         let url = URL(string: urlString)
         if url == nil {
             self.image = UIImage(named: "profileprofile")
+            completion(false)
             return
         } else {
             URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
@@ -35,16 +37,20 @@ extension UIImageView {
                 //download hit an error so lets return out
                 if let error = error {
                     print(error)
+                    completion(false)
                     return
                 }
                 
                 DispatchQueue.main.async(execute: {
-                    
                     if let downloadedImage = UIImage(data: data!) {
                         imageCache.setObject(downloadedImage, forKey: urlString as NSString)
                         
                         self.image = downloadedImage
-                    } else {return}
+                        completion(true)
+                    } else {
+                        completion(false)
+                        return
+                    }
                 })
                 
             }).resume()
@@ -109,6 +115,12 @@ extension String {
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
         
         return ceil(boundingBox.width)
+    }
+}
+
+extension Array where Element: Comparable {
+    func containsSameElements(as other: [Element]) -> Bool {
+        return self.count == other.count && self.sorted() == other.sorted()
     }
 }
 
@@ -678,4 +690,67 @@ class UnderlinedLabel: UILabel {
             self.attributedText = attributedText
         }
     }
+}
+
+extension Date {
+    func isInSameWeek(date: Date) -> Bool {
+        return Calendar.current.isDate(self, equalTo: date, toGranularity: .weekOfYear)
+    }
+    func isInSameMonth(date: Date) -> Bool {
+        return Calendar.current.isDate(self, equalTo: date, toGranularity: .month)
+    }
+    func isInSameYear(date: Date) -> Bool {
+        return Calendar.current.isDate(self, equalTo: date, toGranularity: .year)
+    }
+    func isInSameDay(date: Date) -> Bool {
+        return Calendar.current.isDate(self, equalTo: date, toGranularity: .day)
+    }
+    var isInThisWeek: Bool {
+        return isInSameWeek(date: Date())
+    }
+    var isInYesterday: Bool {
+        return Calendar.current.isDateInYesterday(self)
+    }
+    var isInToday: Bool {
+        return Calendar.current.isDateInToday(self)
+    }
+    var isInTomorrow: Bool {
+        return Calendar.current.isDateInTomorrow(self)
+    }
+    var isInTheFuture: Bool {
+        return Date() < self
+    }
+    var isInThePast: Bool {
+        return self < Date()
+    }
+}
+
+
+extension UIScrollView {
+    
+    // Scroll to a specific view so that it's top is at the top our scrollview
+    func scrollToView(view:UIView, animated: Bool, offset: CGFloat) {
+        if let origin = view.superview {
+            // Get the Y position of your child view
+            let childStartPoint = origin.convert(view.frame.origin, to: self)
+            // Scroll to a rectangle starting at the Y of your subview, with a height of the scrollview
+//            self.scrollRectToVisible(CGRect(x:0, y:childStartPoint.y,width: 1,height: self.frame.height), animated: animated)
+            self.setContentOffset(CGPoint(x: 0, y: childStartPoint.y - offset), animated: animated)
+        }
+    }
+    
+    // Bonus: Scroll to top
+    func scrollToTop(animated: Bool) {
+        let topOffset = CGPoint(x: 0, y: -contentInset.top)
+        setContentOffset(topOffset, animated: animated)
+    }
+    
+    // Bonus: Scroll to bottom
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+        if(bottomOffset.y > 0) {
+            setContentOffset(bottomOffset, animated: true)
+        }
+    }
+    
 }

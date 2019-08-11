@@ -180,6 +180,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        self.inputView?.endEditing(true)
+        
         let date = Date()
         UserDefaults.standard.setValue(date, forKey: "lastDateOpened")
         UserDefaults.standard.synchronize()

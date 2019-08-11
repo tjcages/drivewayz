@@ -28,15 +28,17 @@ var userInformationImage: UIImage = UIImage()
 class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     var delegate: moveControllers?
-    var statusBarColor = false
     var paymentInformation: String = ""
     var pickerParking: UIImagePickerController?
     
-    var gradientContainer: UIView = {
+    lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -44,19 +46,19 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Settings"
-        label.textColor = Theme.BLACK
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -67,11 +69,11 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     var stars: CosmosView = {
         let view = CosmosView()
-        view.rating = 4
+        view.rating = 5
+        view.settings.totalStars = 1
         view.settings.updateOnTouch = false
-        view.settings.fillMode = StarFillMode.precise
-        view.settings.starSize = 20
-        view.settings.starMargin = 0
+        view.settings.starSize = 14
+        view.settings.starMargin = 2
         view.settings.filledColor = Theme.GOLD
         view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.settings.filledBorderColor = Theme.GOLD
@@ -79,19 +81,14 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
+        view.settings.filledImage = UIImage(named: "Star Filled")?.withRenderingMode(.alwaysOriginal)
+        view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
+        view.text = "5.0"
+        view.semanticContentAttribute = .forceRightToLeft
+        view.settings.textColor = Theme.WHITE
+        view.settings.textFont = Fonts.SSPSemiBoldH6
         
         return view
-    }()
-    
-    var starLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4.65"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH5
-        label.textAlignment = .right
-        
-        return label
     }()
     
     var backgroundCircle: UIView = {
@@ -146,31 +143,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         return view
     }()
     
-    lazy var aboutController: AboutUsViewController = {
-        let controller = AboutUsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var termsController: DrivewayzTermsViewController = {
-        let controller = DrivewayzTermsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var privacyController: DrivewayzPrivacyViewController = {
-        let controller = DrivewayzPrivacyViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
     var versionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -182,6 +154,13 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         return label
     }()
 
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -192,51 +171,33 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         
         setupViews()
         setupAccount()
-        setupControllers()
         observeUserInformation()
         getVersionNumber()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 1
-        }
-    }
-    
     var gradientHeightAnchor: NSLayoutConstraint!
-    var optionsHeight: NSLayoutConstraint!
-    var editAnchor: NSLayoutConstraint!
-    var aboutAnchor: NSLayoutConstraint!
-    var termsAnchor: NSLayoutConstraint!
-    var privacyAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
-        self.view.addSubview(backgroundCircle)
-        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
-        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
-        
         self.view.addSubview(scrollView)
         self.view.addSubview(gradientContainer)
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 975)
-        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 140)
                 gradientHeightAnchor.isActive = true
         case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
                 gradientHeightAnchor.isActive = true
         }
+        
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 975)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -255,11 +216,17 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
+        gradientContainer.addSubview(loadingLine)
+        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        
     }
     
     func setupAccount() {
         
-        self.view.addSubview(profileImageView)
+        gradientContainer.addSubview(profileImageView)
         profileImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         profileImageView.topAnchor.constraint(equalTo: mainLabel.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 90).isActive = true
@@ -267,28 +234,22 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         let tap = UITapGestureRecognizer(target: self, action: #selector(editProfile))
         profileImageView.addGestureRecognizer(tap)
         
-        self.view.addSubview(stars)
-        stars.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -16).isActive = true
-        stars.rightAnchor.constraint(equalTo: profileImageView.leftAnchor, constant: 8).isActive = true
-        stars.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        self.view.addSubview(starLabel)
-        starLabel.centerYAnchor.constraint(equalTo: stars.centerYAnchor).isActive = true
-        starLabel.rightAnchor.constraint(equalTo: stars.leftAnchor, constant: -2).isActive = true
-        starLabel.sizeToFit()
+        gradientContainer.addSubview(stars)
+        stars.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: 4).isActive = true
+        stars.rightAnchor.constraint(equalTo: profileImageView.leftAnchor, constant: 4).isActive = true
+        stars.sizeToFit()
         
         scrollView.addSubview(accountController.view)
-        accountController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 48).isActive = true
-        accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        accountController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        accountController.view.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        accountController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
+        accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        accountController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        accountController.view.heightAnchor.constraint(equalToConstant: 240).isActive = true
         
         scrollView.addSubview(otherController.view)
-        otherController.view.topAnchor.constraint(equalTo: accountController.view.bottomAnchor, constant: 20).isActive = true
-        otherController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        otherController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        otherController.view.heightAnchor.constraint(equalToConstant: 540).isActive = true
+        otherController.view.topAnchor.constraint(equalTo: accountController.view.bottomAnchor, constant: 16).isActive = true
+        otherController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
+        otherController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        otherController.view.heightAnchor.constraint(equalToConstant: 480).isActive = true
 
         scrollView.addSubview(versionLabel)
         versionLabel.topAnchor.constraint(equalTo: otherController.view.bottomAnchor, constant: 16).isActive = true
@@ -298,47 +259,17 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         
     }
     
-    func setupControllers() {
-        
-        self.view.addSubview(aboutController.view)
-        aboutController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        aboutController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        aboutController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        aboutAnchor = aboutController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-            aboutAnchor.isActive = true
-        
-        self.view.addSubview(termsController.view)
-        termsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        termsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        termsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
-        termsAnchor = termsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-            termsAnchor.isActive = true
-        
-        self.view.addSubview(privacyController.view)
-        self.view.bringSubviewToFront(gradientContainer)
-        self.view.bringSubviewToFront(mainLabel)
-        self.view.bringSubviewToFront(backButton)
-        self.view.bringSubviewToFront(profileImageView)
-        
-        privacyController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        privacyController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        privacyController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -24).isActive = true
-        privacyAnchor = privacyController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: self.view.frame.width)
-            privacyAnchor.isActive = true
-        
-    }
-    
     func editSettings(title: String, subtitle: String) {
         let controller = EditSettingsViewController()
         controller.delegate = self
         controller.setData(title: title, subtitle: subtitle)
+        controller.gradientHeightAnchor = self.gradientHeightAnchor.constant
+        controller.mainLabel.transform = self.mainLabel.transform
         self.navigationController?.pushViewController(controller, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0
-        }
     }
     
     func observeUserInformation() {
+        self.loadingLine.startAnimating()
         if let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID)
             ref.observeSingleEvent(of: .value) { (snapshot) in
@@ -352,13 +283,18 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                         if userPicture == "" {
                             self.profileImageView.image = UIImage(named: "background4")
                         } else {
-                            self.profileImageView.loadImageUsingCacheWithUrlString(userPicture)
+                            self.profileImageView.loadImageUsingCacheWithUrlString(userPicture) { (bool) in
+                                self.loadingLine.endAnimating()
+                                if !bool {
+                                    self.profileImageView.image = UIImage(named: "background4")
+                                }
+                            }
                         }
                     }
                     if let userRating = dictionary["rating"] as? Double {
-                        self.starLabel.text = String(format:"%.01f", userRating)
+                        self.stars.text = String(format:"%.01f", userRating)
                     } else {
-                        self.starLabel.text = "5.0"
+                        self.stars.text = "5.0"
                     }
                     if let email = dictionary["email"] as? String {
                         self.accountController.optionsSub.append(email)
@@ -373,6 +309,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                         let vehicleRef = Database.database().reference().child("UserVehicles").child(vehicle)
                         vehicleRef.observeSingleEvent(of: .value, with: { (snapshot) in
                             if let dictionary = snapshot.value as? [String:Any] {
+                                self.loadingLine.endAnimating()
                                 if let vehicleLicensePlate = dictionary["licensePlate"] as? String {
                                     self.otherController.optionsSub.append(vehicleLicensePlate)
                                 } else {
@@ -399,10 +336,10 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     func moveToAbout() {
         let controller = AboutUsViewController()
+        controller.delegate = self
+        controller.gradientHeightAnchor = self.gradientHeightAnchor.constant
+        controller.mainLabel.transform = self.mainLabel.transform
         self.navigationController?.pushViewController(controller, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.mainLabel.alpha = 0
-        }
     }
     
     var startupAnchor: NSLayoutConstraint!
@@ -441,52 +378,58 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
 extension UserSettingsViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        let state = scrollView.panGestureRecognizer.state
         var totalHeight: CGFloat = 0.0
         switch device {
         case .iphone8:
-            totalHeight = 160
+            totalHeight = 140
         case .iphoneX:
-            totalHeight = 180
+            totalHeight = 160
         }
-        let translation = scrollView.contentOffset.y
-        if translation > 0 && translation < 80 {
-            let percent = translation/80
-            self.gradientHeightAnchor.constant = totalHeight - percent * 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            if self.profileImageView.alpha == 0 {
-                self.defaultContentStatusBar()
-                UIView.animate(withDuration: animationIn) {
-                    self.profileImageView.alpha = 1
-                    self.backgroundCircle.alpha = 1
-                    self.stars.alpha = 1
-                    self.starLabel.alpha = 1
+        if state == .changed {
+            if translation > 0 && translation < 60 {
+                let percent = translation/60
+                self.gradientHeightAnchor.constant = totalHeight - percent * 60
+                self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+                if translation > 20 {
+                    if self.profileImageView.alpha == 1 {
+                        UIView.animate(withDuration: animationIn) {
+                            self.profileImageView.alpha = 0
+                            self.backgroundCircle.alpha = 0
+                            self.stars.alpha = 0
+                        }
+                    }
+                } else {
+                    if self.profileImageView.alpha == 0 {
+                        UIView.animate(withDuration: animationIn) {
+                            self.profileImageView.alpha = 1
+                            self.backgroundCircle.alpha = 1
+                            self.stars.alpha = 1
+                        }
+                    }
                 }
             }
-            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+        } else {
+            let translation = scrollView.contentOffset.y
+            if translation < 0 && self.gradientHeightAnchor.constant != totalHeight {
                 self.scrollExpanded()
             }
-        } else if translation >= 40 && self.profileImageView.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
-                self.profileImageView.alpha = 0
-                self.backgroundCircle.alpha = 0
-                self.stars.alpha = 0
-                self.starLabel.alpha = 0
-            }
-        } else if translation >= 80 {
-            self.gradientHeightAnchor.constant = totalHeight - 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                self.scrollMinimized()
-            }
-        } else if translation <= 0 {
-            self.gradientHeightAnchor.constant = totalHeight
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let translation = scrollView.contentOffset.y
-        if translation >= 75 {
+        if translation >= 55 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 55 {
             self.scrollMinimized()
         } else {
             self.scrollExpanded()
@@ -494,23 +437,38 @@ extension UserSettingsViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.defaultContentStatusBar()
-        self.scrollView.setContentOffset(.zero, animated: true)
-        UIView.animate(withDuration: animationIn) {
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 140
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 160
+        }
+        UIView.animate(withDuration: animationOut, animations: {
             self.profileImageView.alpha = 1
             self.backgroundCircle.alpha = 1
             self.stars.alpha = 1
-            self.starLabel.alpha = 1
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
     func scrollMinimized() {
-        self.lightContentStatusBar()
-        UIView.animate(withDuration: animationIn) {
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 80
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 100
+        }
+        UIView.animate(withDuration: animationOut, animations: {
             self.profileImageView.alpha = 0
             self.backgroundCircle.alpha = 0
             self.stars.alpha = 0
-            self.starLabel.alpha = 0
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
@@ -583,7 +541,6 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
         }
         dismiss(animated: true) {
             self.view.layoutIfNeeded()
-            self.defaultContentStatusBar()
         }
     }
     
@@ -610,37 +567,13 @@ extension UserSettingsViewController: UIImagePickerControllerDelegate, UINavigat
     
     func getVersionNumber() {
         //First get the nsObject by defining as an optional anyObject
-        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            self.versionLabel.text = "Ver. " + version
-        }
-    }
-    
-    func lightContentStatusBar() {
-        self.statusBarColor = true
-        UIView.animate(withDuration: animationIn) {
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
-            self.gradientContainer.backgroundColor = Theme.BLACK
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    func defaultContentStatusBar() {
-        self.statusBarColor = false
-        UIView.animate(withDuration: animationIn) {
-            self.backButton.tintColor = Theme.BLACK
-            self.mainLabel.textColor = Theme.BLACK
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.setNeedsStatusBarAppearanceUpdate()
+        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String, let build = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            self.versionLabel.text = "Ver. " + version + "." + build
         }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if statusBarColor == true {
-            return .lightContent
-        } else {
-            return .default
-        }
+        return .lightContent
     }
     
 }

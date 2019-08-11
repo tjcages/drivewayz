@@ -13,12 +13,24 @@ protocol handleHostingControllers {
     func lightContentStatusBar()
     func bringExitButton()
     func hideExitButton()
+    
+    func moveToProfits()
+    func moveToBookings()
+    func moveToInbox()
+    func moveToNotifications()
+    func moveToSpaces()
+    
+    func openTabBar()
+    func closeTabBar()
 }
 
 class UserHostingViewController: UIViewController {
     
     var delegate: moveControllers?
-    var statusBarColor = false
+    var statusBarColor = true
+    var spacing: CGFloat = 0.0
+    var previousSelection: CGFloat = 0.0
+    var previousSelectionCenter: CGFloat = 0.0
     
     var userParking: ParkingSpots?
     var userBookings: [Bookings] = [] {
@@ -36,16 +48,63 @@ class UserHostingViewController: UIViewController {
         view.isPagingEnabled = true
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
+        view.isScrollEnabled = false
         
         return view
     }()
     
-    lazy var backButton: UIButton = {
+    lazy var profitsController: HostProfitsViewController = {
+        let controller = HostProfitsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var bookingsController: HostBookingsViewController = {
+        let controller = HostBookingsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var inboxController: HostInboxViewController = {
+        let controller = HostInboxViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var notificationsController: HostNotificationsViewController = {
+        let controller = HostNotificationsViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var spacesController: HostSpacesViewController = {
+        let controller = HostSpacesViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    lazy var exitButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -54,68 +113,24 @@ class UserHostingViewController: UIViewController {
         return button
     }()
     
-    var backgroundCircle: UIView = {
+    lazy var tabBarBackground: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
-        view.layer.borderWidth = 80
-        view.layer.cornerRadius = 180
+        view.backgroundColor = Theme.WHITE
+        view.clipsToBounds = true
+        
+        let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 0.75))
+        line.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        view.addSubview(line)
         
         return view
     }()
     
-    lazy var profitsController: HostProfitsViewController = {
-        let controller = HostProfitsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var bookingsController: HostBookingsViewController = {
-        let controller = HostBookingsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var notificationsController: HostNotificationsViewController = {
-        let controller = HostNotificationsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var spacesController: HostSpacesViewController = {
-        let controller = HostSpacesViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var tabBarBackground: UIView = {
+    var tabBarSelector: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.6)
-        
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 100)
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(blurEffectView)
-        
-        let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 0.5))
-        line.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
-        view.addSubview(line)
+        view.backgroundColor = Theme.BLUE
+        view.layer.cornerRadius = 3
         
         return view
     }()
@@ -127,22 +142,24 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostProfits")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return button
     }()
     
-    var profitsTabLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Earnings"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    var profitsTabSelected: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostProfitsSelected")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE.withAlphaComponent(0.4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.alpha = 0
         
-        return label
+        return button
     }()
     
     var reservationsTabButton: UIButton = {
@@ -153,21 +170,50 @@ class UserHostingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLUE
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return button
     }()
     
-    var reservationsTabLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Bookings"
-        label.textColor = Theme.BLUE
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    var reservationTabSelected: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostBookingSelected")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE.withAlphaComponent(0.4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.alpha = 0
         
-        return label
+        return button
+    }()
+    
+    var inboxTabButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostInbox")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        
+        return button
+    }()
+    
+    var inboxTabSelected: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostInboxSelected")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE.withAlphaComponent(0.4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.alpha = 0
+        
+        return button
     }()
     
     var notificationsTabButton: UIButton = {
@@ -177,22 +223,24 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostNotification")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
     }()
     
-    var notificationsTabLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Notifications"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    var notificationsTabSelected: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostNofiticationSelected")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE.withAlphaComponent(0.4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.alpha = 0
         
-        return label
+        return button
     }()
     
     var spacesTabButton: UIButton = {
@@ -202,39 +250,33 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostSpaces")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
         
         return button
     }()
     
-    var spacesTabLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Spaces"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        label.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    var spacesTabSelected: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tabBarButtonPressed(sender:)), for: .touchUpInside)
+        let origImage = UIImage(named: "hostSpacesSelected")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.BLUE.withAlphaComponent(0.4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
+        button.alpha = 0
         
-        return label
+        return button
     }()
     
-    lazy var bankController: NewBankViewController = {
-        let controller = NewBankViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var transferController: TransferMoneyViewController = {
-        let controller = TransferMoneyViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
+    func setData() {
+        self.profitsController.observeData()
+        self.bookingsController.observeData()
+        self.bookingsController.observeData()
+        self.notificationsController.observeData()
+        self.spacesController.observeData()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -247,33 +289,113 @@ class UserHostingViewController: UIViewController {
         setupViews()
         setupControllers()
         setupTabBar()
-        observeSpotData()
+        monitorForDeletion()
     }
     
+    var gradientHeightAnchor: NSLayoutConstraint!
+    
     func setupViews() {
-        
-        self.view.addSubview(backgroundCircle)
-        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
-        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
-        
+
         self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth * 4, height: phoneHeight)
+        scrollView.contentSize = CGSize(width: phoneWidth * 5, height: phoneHeight)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+
+    }
+    
+    var tabBarBottomAnchor: NSLayoutConstraint!
+    var selectionLineCenterAnchor: NSLayoutConstraint!
+    
+    func setupTabBar() {
         
-        self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.view.addSubview(tabBarBackground)
+        tabBarBottomAnchor = tabBarBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 100)
+        tabBarBottomAnchor.isActive = true
+        tabBarBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        tabBarBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+            tabBarBackground.heightAnchor.constraint(equalToConstant: 64).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+            tabBarBackground.heightAnchor.constraint(equalToConstant: 76).isActive = true
+        }
+        
+        spacing = (phoneWidth - 40 * 5)/6
+        
+        tabBarBackground.addSubview(profitsTabSelected)
+        profitsTabSelected.topAnchor.constraint(equalTo: tabBarBackground.topAnchor, constant: 12).isActive = true
+        profitsTabSelected.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: spacing).isActive = true
+        profitsTabSelected.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        profitsTabSelected.heightAnchor.constraint(equalTo: profitsTabSelected.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(profitsTabButton)
+        profitsTabButton.topAnchor.constraint(equalTo: tabBarBackground.topAnchor, constant: 12).isActive = true
+        profitsTabButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: spacing).isActive = true
+        profitsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        profitsTabButton.heightAnchor.constraint(equalTo: profitsTabButton.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(reservationTabSelected)
+        reservationTabSelected.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        reservationTabSelected.leftAnchor.constraint(equalTo: profitsTabButton.rightAnchor, constant: spacing).isActive = true
+        reservationTabSelected.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        reservationTabSelected.heightAnchor.constraint(equalTo: reservationTabSelected.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(reservationsTabButton)
+        reservationsTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        reservationsTabButton.leftAnchor.constraint(equalTo: profitsTabButton.rightAnchor, constant: spacing).isActive = true
+        reservationsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        reservationsTabButton.heightAnchor.constraint(equalTo: reservationsTabButton.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(inboxTabSelected)
+        inboxTabSelected.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        inboxTabSelected.leftAnchor.constraint(equalTo: reservationsTabButton.rightAnchor, constant: spacing).isActive = true
+        inboxTabSelected.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        inboxTabSelected.heightAnchor.constraint(equalTo: inboxTabSelected.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(inboxTabButton)
+        inboxTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        inboxTabButton.leftAnchor.constraint(equalTo: reservationsTabButton.rightAnchor, constant: spacing).isActive = true
+        inboxTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        inboxTabButton.heightAnchor.constraint(equalTo: inboxTabButton.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(notificationsTabSelected)
+        notificationsTabSelected.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        notificationsTabSelected.leftAnchor.constraint(equalTo: inboxTabButton.rightAnchor, constant: spacing).isActive = true
+        notificationsTabSelected.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        notificationsTabSelected.heightAnchor.constraint(equalTo: notificationsTabSelected.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(notificationsTabButton)
+        notificationsTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        notificationsTabButton.leftAnchor.constraint(equalTo: inboxTabButton.rightAnchor, constant: spacing).isActive = true
+        notificationsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        notificationsTabButton.heightAnchor.constraint(equalTo: notificationsTabButton.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(spacesTabSelected)
+        spacesTabSelected.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        spacesTabSelected.leftAnchor.constraint(equalTo: notificationsTabButton.rightAnchor, constant: spacing).isActive = true
+        spacesTabSelected.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        spacesTabSelected.heightAnchor.constraint(equalTo: spacesTabSelected.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(spacesTabButton)
+        spacesTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
+        spacesTabButton.leftAnchor.constraint(equalTo: notificationsTabButton.rightAnchor, constant: spacing).isActive = true
+        spacesTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        spacesTabButton.heightAnchor.constraint(equalTo: spacesTabButton.widthAnchor).isActive = true
+        
+        tabBarBackground.addSubview(tabBarSelector)
+        tabBarSelector.centerYAnchor.constraint(equalTo: tabBarBackground.topAnchor).isActive = true
+        selectionLineCenterAnchor = tabBarSelector.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: spacing + 20)
+            selectionLineCenterAnchor.isActive = true
+        tabBarSelector.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        tabBarSelector.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 3, y: 0.0), animated: false)
+        
+        delayWithSeconds(2) {
+//            self.delegate?.lightContentStatusBar()
+            self.openTabBar()
         }
         
     }
@@ -288,7 +410,6 @@ class UserHostingViewController: UIViewController {
         profitsController.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
         profitsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         profitsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        profitsController.profitsContainer.transferButton.addTarget(self, action: #selector(transferAccountFunds(sender:)), for: .touchUpInside)
         
         scrollView.addSubview(bookingsController.view)
         bookingsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -296,9 +417,15 @@ class UserHostingViewController: UIViewController {
         bookingsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         bookingsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
+        scrollView.addSubview(inboxController.view)
+        inboxController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        inboxController.view.leftAnchor.constraint(equalTo: bookingsController.view.rightAnchor).isActive = true
+        inboxController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
+        inboxController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
         scrollView.addSubview(notificationsController.view)
         notificationsController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        notificationsController.view.leftAnchor.constraint(equalTo: bookingsController.view.rightAnchor).isActive = true
+        notificationsController.view.leftAnchor.constraint(equalTo: inboxController.view.rightAnchor).isActive = true
         notificationsController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         notificationsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
@@ -308,129 +435,72 @@ class UserHostingViewController: UIViewController {
         spacesController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         spacesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(bankController.view)
-        bankCenterAnchor = bankController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
-            bankCenterAnchor.isActive = true
-        bankController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        bankController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        bankController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        bankController.dismissButton.addTarget(self, action: #selector(dismissTransferController), for: .touchUpInside)
-        
-        
-        self.view.addSubview(transferController.view)
-        transferCenterAnchor = transferController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: phoneHeight)
-            transferCenterAnchor.isActive = true
-        transferController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        transferController.view.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        transferController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        transferController.backButton.addTarget(self, action: #selector(dismissTransferController), for: .touchUpInside)
-        
-    }
-    
-    var tabBarBottomAnchor: NSLayoutConstraint!
-    
-    func setupTabBar() {
-        
-        self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0.0), animated: false)
-        
-        self.view.addSubview(tabBarBackground)
-        tabBarBottomAnchor = tabBarBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 100)
-            tabBarBottomAnchor.isActive = true
-        tabBarBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        tabBarBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.view.addSubview(exitButton)
+        exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        exitButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        exitButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            tabBarBackground.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            tabBarBackground.heightAnchor.constraint(equalToConstant: 92).isActive = true
+            exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
-        
-        let spacing = (phoneWidth - 40 * 4)/5
-        
-        tabBarBackground.addSubview(profitsTabButton)
-        profitsTabButton.topAnchor.constraint(equalTo: tabBarBackground.topAnchor, constant: 12).isActive = true
-        profitsTabButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: spacing).isActive = true
-        profitsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        profitsTabButton.heightAnchor.constraint(equalTo: profitsTabButton.widthAnchor).isActive = true
-        
-        tabBarBackground.addSubview(profitsTabLabel)
-        profitsTabLabel.centerXAnchor.constraint(equalTo: profitsTabButton.centerXAnchor).isActive = true
-        profitsTabLabel.topAnchor.constraint(equalTo: profitsTabButton.bottomAnchor, constant: -2).isActive = true
-        profitsTabLabel.sizeToFit()
-        
-        tabBarBackground.addSubview(reservationsTabButton)
-        reservationsTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
-        reservationsTabButton.leftAnchor.constraint(equalTo: profitsTabButton.rightAnchor, constant: spacing).isActive = true
-        reservationsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        reservationsTabButton.heightAnchor.constraint(equalTo: reservationsTabButton.widthAnchor).isActive = true
-        
-        tabBarBackground.addSubview(reservationsTabLabel)
-        reservationsTabLabel.centerXAnchor.constraint(equalTo: reservationsTabButton.centerXAnchor).isActive = true
-        reservationsTabLabel.topAnchor.constraint(equalTo: reservationsTabButton.bottomAnchor, constant: -2).isActive = true
-        reservationsTabLabel.sizeToFit()
-        
-        tabBarBackground.addSubview(notificationsTabButton)
-        notificationsTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
-        notificationsTabButton.leftAnchor.constraint(equalTo: reservationsTabButton.rightAnchor, constant: spacing).isActive = true
-        notificationsTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        notificationsTabButton.heightAnchor.constraint(equalTo: notificationsTabButton.widthAnchor).isActive = true
-        
-        tabBarBackground.addSubview(notificationsTabLabel)
-        notificationsTabLabel.centerXAnchor.constraint(equalTo: notificationsTabButton.centerXAnchor).isActive = true
-        notificationsTabLabel.topAnchor.constraint(equalTo: notificationsTabButton.bottomAnchor, constant: -2).isActive = true
-        notificationsTabLabel.sizeToFit()
-        
-        tabBarBackground.addSubview(spacesTabButton)
-        spacesTabButton.topAnchor.constraint(equalTo: profitsTabButton.topAnchor).isActive = true
-        spacesTabButton.leftAnchor.constraint(equalTo: notificationsTabButton.rightAnchor, constant: spacing).isActive = true
-        spacesTabButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        spacesTabButton.heightAnchor.constraint(equalTo: spacesTabButton.widthAnchor).isActive = true
-        
-        tabBarBackground.addSubview(spacesTabLabel)
-        spacesTabLabel.centerXAnchor.constraint(equalTo: spacesTabButton.centerXAnchor).isActive = true
-        spacesTabLabel.topAnchor.constraint(equalTo: spacesTabButton.bottomAnchor, constant: -2).isActive = true
-        spacesTabLabel.sizeToFit()
         
     }
     
     @objc func tabBarButtonPressed(sender: UIButton) {
-        self.resetTabBar()
-        if sender == profitsTabButton {
-            sender.tintColor = Theme.BLUE
-            self.profitsTabLabel.textColor = Theme.BLUE
-            self.scrollView.setContentOffset(.zero, animated: false)
-        } else if sender == reservationsTabButton {
-            sender.tintColor = Theme.BLUE
-            self.reservationsTabLabel.textColor = Theme.BLUE
-            self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0.0), animated: false)
-        } else if sender == notificationsTabButton {
-            sender.tintColor = Theme.BLUE
-            self.notificationsTabLabel.textColor = Theme.BLUE
-            self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 2, y: 0.0), animated: false)
-        } else if sender == spacesTabButton {
-            sender.tintColor = Theme.BLUE
-            self.spacesTabLabel.textColor = Theme.BLUE
-            self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 3, y: 0.0), animated: false)
-        }
-        delayWithSeconds(animationIn) {
-            self.resetScrolls()
+        UIView.animate(withDuration: animationIn) {
+            self.resetTabBar()
+            if sender == self.profitsTabButton {
+                sender.tintColor = Theme.BLUE
+                self.profitsTabSelected.alpha = 1
+                self.scrollView.setContentOffset(.zero, animated: false)
+                self.selectionLineCenterAnchor.constant = self.spacing - 5
+            } else if sender == self.reservationsTabButton {
+                sender.tintColor = Theme.BLUE
+                self.reservationTabSelected.alpha = 1
+                self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0.0), animated: false)
+                self.selectionLineCenterAnchor.constant = self.spacing * 2 + 35
+            } else if sender == self.inboxTabButton {
+                sender.tintColor = Theme.BLUE
+                self.inboxTabSelected.alpha = 1
+                self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 2, y: 0.0), animated: false)
+                self.selectionLineCenterAnchor.constant = self.spacing * 3 + 75
+            } else if sender == self.notificationsTabButton {
+                sender.tintColor = Theme.BLUE
+                self.notificationsTabSelected.alpha = 1
+                self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 3, y: 0.0), animated: false)
+                self.selectionLineCenterAnchor.constant = self.spacing * 4 + 115
+            } else if sender == self.spacesTabButton {
+                sender.tintColor = Theme.BLUE
+                self.spacesTabSelected.alpha = 1
+                self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 4, y: 0.0), animated: false)
+                self.selectionLineCenterAnchor.constant = self.spacing * 5 + 155
+            }
+            delayWithSeconds(animationIn) {
+                self.resetScrolls()
+            }
+            self.view.layoutIfNeeded()
         }
     }
     
     func resetTabBar() {
-        self.profitsTabButton.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.reservationsTabButton.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.notificationsTabButton.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.spacesTabButton.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.profitsTabLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.reservationsTabLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.notificationsTabLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        self.spacesTabLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        self.profitsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.reservationsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.inboxTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.notificationsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.spacesTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.profitsTabSelected.alpha = 0
+        self.reservationTabSelected.alpha = 0
+        self.inboxTabSelected.alpha = 0
+        self.notificationsTabSelected.alpha = 0
+        self.spacesTabSelected.alpha = 0
     }
     
     func openTabBar() {
         self.tabBarBottomAnchor.constant = 0
         UIView.animate(withDuration: animationOut) {
+            self.exitButton.alpha = 1
             self.view.layoutIfNeeded()
         }
     }
@@ -438,99 +508,57 @@ class UserHostingViewController: UIViewController {
     func closeTabBar() {
         self.tabBarBottomAnchor.constant = 100
         UIView.animate(withDuration: animationOut) {
+            self.exitButton.alpha = 0
             self.view.layoutIfNeeded()
         }
     }
     
 }
-
-
-extension UserHostingViewController: handleBankTransfers {
-    
-    @objc func transferAccountFunds(sender: UIButton) {
-        self.closeTabBar()
-        self.delegate?.dismissActiveController()
-        self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = false
-        self.profitsController.profitsContainer.transferButton.alpha = 0.5
-        if let currentUser = Auth.auth().currentUser?.uid {
-            let checkRef = Database.database().reference().child("users").child(currentUser)
-            checkRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    if let account = dictionary["accountID"] as? String {
-                        if let userFunds = dictionary["userFunds"] as? Double {
-                            self.delegate?.dismissActiveController()
-                            self.bringTransferCountroller(accountID: account, userFunds: userFunds)
-                        } else {
-                            self.profitsController.sendAlert(title: "Not yet", message: "You must first earn funds by having users park in your spot before you can transfer money to your account!")
-                            self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = true
-                            self.profitsController.profitsContainer.transferButton.alpha = 1
-                        }
-                    } else {
-                        self.bringBankAccountController()
-                    }
-                }
-            }, withCancel: nil)
-        }
-    }
-    
-    func bringTransferCountroller(accountID: String, userFunds: Double) {
-        self.transferController.setupAccount(accountID: accountID, userFunds: userFunds)
-        self.transferCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationIn, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = true
-            self.profitsController.profitsContainer.transferButton.alpha = 1
-            self.delegate?.defaultContentStatusBar()
-        }
-    }
-    
-    @objc func dismissTransferController() {
-        self.bankCenterAnchor.constant = phoneHeight
-        self.transferCenterAnchor.constant = phoneHeight
-        self.scrollView.setContentOffset(.zero, animated: false)
-        UIView.animate(withDuration: animationIn, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.openTabBar()
-            self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = true
-            self.profitsController.profitsContainer.transferButton.alpha = 1
-            self.delegate?.defaultContentStatusBar()
-        }
-    }
-    
-    func bringBankAccountController() {
-        self.bankCenterAnchor.constant = 0
-        UIView.animate(withDuration: animationIn, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.profitsController.profitsContainer.transferButton.isUserInteractionEnabled = true
-            self.profitsController.profitsContainer.transferButton.alpha = 1
-            self.delegate?.defaultContentStatusBar()
-        }
-    }
-    
-}
-
 
 extension UserHostingViewController: handleHostingControllers {
 
     func resetScrolls() {
-        self.profitsController.scrollView.setContentOffset(.zero, animated: true)
-        self.bookingsController.scrollView.setContentOffset(.zero, animated: true)
+        self.profitsController.profitsChart.scrollView.setContentOffset(.zero, animated: true)
+        self.profitsController.profitsRefund.scrollView.setContentOffset(.zero, animated: true)
+        self.profitsController.profitsWallet.scrollView.setContentOffset(.zero, animated: true)
+        self.bookingsController.upcomingBookings.scrollView.setContentOffset(.zero, animated: true)
+        self.bookingsController.previousBookings.scrollView.setContentOffset(.zero, animated: true)
+        self.bookingsController.hostCalendar.scrollView.setContentOffset(.zero, animated: true)
+        self.inboxController.messagesTable.setContentOffset(.zero, animated: true)
         self.notificationsController.scrollView.setContentOffset(.zero, animated: true)
         self.spacesController.scrollView.setContentOffset(.zero, animated: true)
     }
     
+    func moveToProfits() {
+        self.scrollView.setContentOffset(.zero, animated: true)
+    }
+    
+    func moveToBookings() {
+        self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0), animated: true)
+    }
+    
+    func moveToInbox() {
+        self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 2, y: 0), animated: true)
+    }
+    
+    func moveToNotifications() {
+        self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 3, y: 0), animated: true)
+    }
+    
+    func moveToSpaces() {
+        self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 4, y: 0), animated: true)
+    }
+    
     func bringExitButton() {
-        self.scrollView.isScrollEnabled = true
-        self.openTabBar()
+        UIView.animate(withDuration: animationIn) {
+            self.exitButton.alpha = 1
+        }
     }
     
     func hideExitButton() {
-        self.scrollView.isScrollEnabled = false
-        self.delegate?.dismissActiveController()
-        self.closeTabBar()
+        UIView.animate(withDuration: animationIn) {
+            self.exitButton.alpha = 0
+        }
     }
     
 }
@@ -539,41 +567,84 @@ extension UserHostingViewController: handleHostingControllers {
 extension UserHostingViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let translation = scrollView.contentOffset.x
-        if translation == 0 {
-            self.resetTabBar()
-            self.profitsTabButton.tintColor = Theme.BLUE
-            self.profitsTabLabel.textColor = Theme.BLUE
+        if scrollView == self.scrollView {
+            self.bookingsController.hostCalendar.closeScheduleView()
+            if self.profitsController.mainLabel.text == "Payout method" { self.profitsController.backButtonPressed() }
+            let translation = scrollView.contentOffset.x
+            let percentage = (translation - self.previousSelection)/phoneWidth
+            let difference = (self.spacing * 2 + 35) - (self.spacing - 5)
+            self.selectionLineCenterAnchor.constant = self.previousSelectionCenter + percentage * difference
+            self.view.layoutIfNeeded()
             self.resetScrolls()
-        } else if translation == phoneWidth {
-            self.resetTabBar()
-            self.reservationsTabButton.tintColor = Theme.BLUE
-            self.reservationsTabLabel.textColor = Theme.BLUE
-            self.resetScrolls()
-        } else if translation == phoneWidth * 2 {
-            self.resetTabBar()
-            self.notificationsTabButton.tintColor = Theme.BLUE
-            self.notificationsTabLabel.textColor = Theme.BLUE
-            self.resetScrolls()
-        } else if translation == phoneWidth * 3 {
-            self.resetTabBar()
-            self.spacesTabButton.tintColor = Theme.BLUE
-            self.spacesTabLabel.textColor = Theme.BLUE
-            self.resetScrolls()
+            UIView.animate(withDuration: animationIn) {
+                if translation == 0 {
+                    self.resetTabBar()
+                    self.profitsTabButton.tintColor = Theme.BLUE
+                    self.profitsTabSelected.alpha = 1
+                    self.selectionLineCenterAnchor.constant = self.spacing - 5
+                    self.previousSelection = 0
+                    self.previousSelectionCenter = self.selectionLineCenterAnchor.constant
+                } else if translation == phoneWidth {
+                    self.resetTabBar()
+                    self.reservationsTabButton.tintColor = Theme.BLUE
+                    self.reservationTabSelected.alpha = 1
+                    self.selectionLineCenterAnchor.constant = self.spacing * 2 + 35
+                    self.previousSelection = phoneWidth
+                    self.previousSelectionCenter = self.selectionLineCenterAnchor.constant
+                } else if translation == phoneWidth * 2 {
+                    self.resetTabBar()
+                    self.inboxTabButton.tintColor = Theme.BLUE
+                    self.inboxTabSelected.alpha = 1
+                    self.selectionLineCenterAnchor.constant = self.spacing * 3 + 75
+                    self.previousSelection = phoneWidth * 2
+                    self.previousSelectionCenter = self.selectionLineCenterAnchor.constant
+                } else if translation == phoneWidth * 3 {
+                    self.resetTabBar()
+                    self.notificationsTabButton.tintColor = Theme.BLUE
+                    self.notificationsTabSelected.alpha = 1
+                    self.selectionLineCenterAnchor.constant = self.spacing * 4 + 115
+                    self.previousSelection = phoneWidth * 3
+                    self.previousSelectionCenter = self.selectionLineCenterAnchor.constant
+                } else if translation == phoneWidth * 4 {
+                    self.resetTabBar()
+                    self.spacesTabButton.tintColor = Theme.BLUE
+                    self.spacesTabSelected.alpha = 1
+                    self.selectionLineCenterAnchor.constant = self.spacing * 5 + 155
+                    self.previousSelection = phoneWidth * 4
+                    self.previousSelectionCenter = self.selectionLineCenterAnchor.constant
+                }
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     @objc func backButtonPressed() {
+        self.profitsController.loadingLine.endAnimating()
+        self.bookingsController.loadingLine.endAnimating()
+        self.inboxController.loadingLine.endAnimating()
+        self.notificationsController.loadingLine.endAnimating()
+        self.spacesController.loadingLine.endAnimating()
+        
         self.delegate?.dismissActiveController()
         self.dismiss(animated: true) {
-            self.backButton.alpha = 0
+
+        }
+    }
+    
+    func monitorForDeletion() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+        ref.observe(.childRemoved) { (snapshot) in
+            self.backButtonPressed()
+            self.dismiss(animated: true, completion: {
+                self.dismiss(animated: true, completion: nil)
+            })
         }
     }
     
     func lightContentStatusBar() {
         self.statusBarColor = true
         UIView.animate(withDuration: animationIn) {
-            self.backButton.tintColor = Theme.WHITE
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
@@ -581,7 +652,6 @@ extension UserHostingViewController: UIScrollViewDelegate {
     func defaultContentStatusBar() {
         self.statusBarColor = false
         UIView.animate(withDuration: animationIn) {
-            self.backButton.tintColor = Theme.BLACK
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }

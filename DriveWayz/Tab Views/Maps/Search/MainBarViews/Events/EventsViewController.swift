@@ -482,10 +482,14 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
             }
             let venueImage = localEvents[indexPath.row].venueImageURL
             if venueImage != "" {
-                cell.backgroundImageView.loadImageUsingCacheWithUrlString(venueImage)
+                cell.backgroundImageView.loadImageUsingCacheWithUrlString(venueImage) { (bool) in
+                    
+                }
                 cell.image = cell.backgroundImageView.image
             } else {
-                cell.backgroundImageView.loadImageUsingCacheWithUrlString(localEvents[indexPath.row].imageURL)
+                cell.backgroundImageView.loadImageUsingCacheWithUrlString(localEvents[indexPath.row].imageURL) { (bool) in
+                    
+                }
                 cell.image = cell.backgroundImageView.image
             }
             if localEvents.count > indexPath.row {
@@ -505,12 +509,16 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
             if localEvents.count > indexPath.row {
                 let venueImage = localEvents[indexPath.row].venueImageURL
                 if venueImage != "" {
-                    cell.backgroundImageView.loadImageUsingCacheWithUrlString(venueImage)
+                    cell.backgroundImageView.loadImageUsingCacheWithUrlString(venueImage) { (bool) in
+                        
+                    }
                     cell.image = cell.backgroundImageView.image
                 } else {
                     if localEvents.count > indexPath.row {
                         let string = localEvents[indexPath.row].imageURL
-                        cell.backgroundImageView.loadImageUsingCacheWithUrlString(string)
+                        cell.backgroundImageView.loadImageUsingCacheWithUrlString(string) { (bool) in
+                            
+                        }
                         cell.image = cell.backgroundImageView.image
                     }
                 }

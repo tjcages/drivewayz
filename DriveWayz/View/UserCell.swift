@@ -45,7 +45,11 @@ class UserCell: UITableViewCell {
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     if let profileImageURL = dictionary["picture"] as? String {
-                        self.profileImageView.loadImageUsingCacheWithUrlString(profileImageURL)
+                        self.profileImageView.loadImageUsingCacheWithUrlString(profileImageURL) { (bool) in
+                            if !bool {
+                                self.profileImageView.image = UIImage(named: "background4")
+                            }
+                        }
                     }
                     if let name = dictionary["name"] as? String {
                         var fullNameArr = name.split(separator: " ")

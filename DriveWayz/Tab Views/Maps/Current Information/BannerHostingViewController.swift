@@ -53,7 +53,9 @@ class BannerHostingViewController: UIViewController {
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let imageURL = dictionary["becomeAHost"] as? String {
-                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL)
+                    self.bannerImageView.loadImageUsingCacheWithUrlString(imageURL) { (bool) in
+                        
+                    }
                 }
             }
         }

@@ -96,9 +96,9 @@ class EditInformationViewController: UIViewController {
     func setData(parking: ParkingSpots) {
         self.selectedParking = parking
         if let mainType = parking.mainType, let secondType = parking.secondaryType, let hostMessage = parking.hostMessage {
-            self.messageController.message.text = hostMessage
+            self.messageController.messageTextView.text = hostMessage
             self.messageController.characterLabel.text = "\(hostMessage.count)/160"
-            self.messageController.message.textColor = Theme.BLACK
+            self.messageController.messageTextView.textColor = Theme.BLACK
             let type = self.typeController
             type.parkingType = mainType
             self.selectedType = mainType
@@ -168,9 +168,9 @@ class EditInformationViewController: UIViewController {
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 140).isActive = true
         case .iphoneX:
-            gradientContainer.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
         self.view.addSubview(typeController.view)
@@ -246,7 +246,7 @@ class EditInformationViewController: UIViewController {
         self.nextButton.isUserInteractionEnabled = false
         if let parking = self.selectedParking, let parkingID = parking.parkingID {
             let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
-            let hostMessage = self.messageController.message.text
+            let hostMessage = self.messageController.messageTextView.text
             let mainType = self.typeController.parkingType
             let secondaryType = self.optionsController.parkingType
             

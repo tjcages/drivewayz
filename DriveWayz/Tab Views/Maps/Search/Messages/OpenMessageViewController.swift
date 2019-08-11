@@ -24,46 +24,48 @@ class OpenMessageViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        
+        return view
+    }()
+    
+    var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.decelerationRate = .fast
         
         return view
     }()
     
     var mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Messages"
-        label.textColor = Theme.DARK_GRAY
+        label.text = "Inbox"
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
+        let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(closeMessages), for: .touchUpInside)
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         button.alpha = 0
         
         return button
-    }()
-    
-    var backgroundCircle: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
-        view.layer.borderWidth = 80
-        view.layer.cornerRadius = 180
-        
-        return view
     }()
     
     var messagesTableView: UITableView = {
@@ -74,6 +76,13 @@ class OpenMessageViewController: UIViewController {
         view.clipsToBounds = true
         view.separatorStyle = .none
         view.backgroundColor = .clear
+        
+        return view
+    }()
+    
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
@@ -92,36 +101,32 @@ class OpenMessageViewController: UIViewController {
         
         setupViews()
         observeUserMessages()
+        loadingLine.startAnimating()
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
-        self.view.addSubview(backgroundCircle)
-        backgroundCircle.centerXAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        backgroundCircle.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
-        backgroundCircle.widthAnchor.constraint(equalToConstant: 360).isActive = true
-        backgroundCircle.heightAnchor.constraint(equalTo: backgroundCircle.widthAnchor).isActive = true
-        
-        self.view.addSubview(messagesTableView)
+        self.view.addSubview(scrollView)
         self.view.addSubview(gradientContainer)
-        messagesTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        messagesTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        messagesTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        messagesTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
-                gradientHeightAnchor.isActive = true
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 140)
+            gradientHeightAnchor.isActive = true
         case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
-                gradientHeightAnchor.isActive = true
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
+            gradientHeightAnchor.isActive = true
         }
+        
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 975)
+        scrollView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         self.view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -139,6 +144,18 @@ class OpenMessageViewController: UIViewController {
         case .iphoneX:
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
+        
+        self.view.addSubview(messagesTableView)
+        messagesTableView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        messagesTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        messagesTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        messagesTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        gradientContainer.addSubview(loadingLine)
+        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
     }
     
@@ -162,6 +179,13 @@ class OpenMessageViewController: UIViewController {
             self.dismiss(animated: true, completion: {
                 self.delegate?.defaultContentStatusBar()
             })
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.loadingLine.endAnimating()
+        self.dismiss(animated: true) {
+            //
         }
     }
 
@@ -193,6 +217,7 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource,
                 if let fromID = message.fromID {
                     self.messagesDictionary[fromID] = message
                     self.reloadOfTable()
+                    self.loadingLine.endAnimating()
                 }
             }
         }, withCancel: nil)
@@ -269,7 +294,11 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource,
                 
                 cell.hostTextView.text = message.name
                 if let picture = message.picture {
-                    cell.profileImageView.loadImageUsingCacheWithUrlString(picture)
+                    cell.profileImageView.loadImageUsingCacheWithUrlString(picture) { (bool) in
+                        if !bool {
+                            cell.profileImageView.image = UIImage(named: "background4")
+                        }
+                    }
                 }
             }
         }
@@ -286,7 +315,11 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource,
             controller.delegate = self
             if let picture = message.picture {
                 if picture != "" {
-                    controller.profileImageView.loadImageUsingCacheWithUrlString(picture)
+                    controller.profileImageView.loadImageUsingCacheWithUrlString(picture) { (bool) in
+                        if !bool {
+                            controller.profileImageView.image = UIImage(named: "background4")
+                        }
+                    }
                 } else {
                     controller.profileImageView.image = UIImage(named: "background4")
                 }
@@ -307,47 +340,41 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource,
 extension OpenMessageViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        let state = scrollView.panGestureRecognizer.state
         var totalHeight: CGFloat = 0.0
         switch device {
         case .iphone8:
-            totalHeight = 160
+            totalHeight = 140
         case .iphoneX:
-            totalHeight = 180
+            totalHeight = 160
         }
-        let translation = scrollView.contentOffset.y
-        if translation > 0 && translation < 80 {
-            let percent = translation/80
-            self.gradientHeightAnchor.constant = totalHeight - percent * 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            if self.backgroundCircle.alpha == 0 {
-                UIView.animate(withDuration: animationIn) {
-                    self.gradientContainer.layer.shadowOpacity = 0
-                    self.backgroundCircle.alpha = 1
-                }
+        if state == .changed {
+            if translation > 0 && translation < 60 {
+                let percent = translation/60
+                self.gradientHeightAnchor.constant = totalHeight - percent * 60
+                self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
             }
-            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+        } else {
+            let translation = scrollView.contentOffset.y
+            if translation < 0 && self.gradientHeightAnchor.constant != totalHeight {
                 self.scrollExpanded()
             }
-        } else if translation >= 40 && self.backgroundCircle.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
-                self.gradientContainer.layer.shadowOpacity = 0.2
-                self.backgroundCircle.alpha = 0
-            }
-        } else if translation >= 80 {
-            self.gradientHeightAnchor.constant = totalHeight - 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                self.scrollMinimized()
-            }
-        } else if translation <= 0 {
-            self.gradientHeightAnchor.constant = totalHeight
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let translation = scrollView.contentOffset.y
-        if translation >= 75 {
+        if translation >= 55 {
+            self.scrollMinimized()
+        } else {
+            self.scrollExpanded()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.y
+        if translation >= 55 {
             self.scrollMinimized()
         } else {
             self.scrollExpanded()
@@ -355,23 +382,32 @@ extension OpenMessageViewController: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        self.defaultContentStatusBar()
-        self.messagesTableView.setContentOffset(.zero, animated: true)
-        UIView.animate(withDuration: animationIn) {
-            self.backgroundCircle.alpha = 1
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.backButton.tintColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.DARK_GRAY
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 140
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 160
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
     func scrollMinimized() {
-        self.lightContentStatusBar()
-        UIView.animate(withDuration: animationIn) {
-            self.backgroundCircle.alpha = 0
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.backButton.tintColor = Theme.WHITE
-            self.mainLabel.textColor = Theme.WHITE
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 80
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 100
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
         }
     }
     
@@ -379,26 +415,8 @@ extension OpenMessageViewController: UIScrollViewDelegate {
         self.observeUserMessages()
     }
     
-    func lightContentStatusBar() {
-        self.statusBarColor = true
-        UIView.animate(withDuration: animationIn) {
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    func defaultContentStatusBar() {
-        self.statusBarColor = false
-        UIView.animate(withDuration: animationIn) {
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if statusBarColor == true {
-            return .lightContent
-        } else {
-            return .default
-        }
+        return .lightContent
     }
     
 }

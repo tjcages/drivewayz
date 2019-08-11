@@ -1,28 +1,36 @@
 //
-//  HostBookingsViewController.swift
+//  TestHostBookingsViewController.swift
 //  DriveWayz
 //
-//  Created by Tyler J. Cagle on 6/22/19.
+//  Created by Tyler J. Cagle on 7/26/19.
 //  Copyright © 2019 COAD. All rights reserved.
 //
 
 import UIKit
 
-protocol handlePreviousBookings {
-    func hostingPreviousPressed(booking: Bookings, parking: ParkingSpots)
-    func dismissOngoingMessages()
+protocol handleBookingInformation {
+    func expandBooking()
+    func bookingInformation()
+    func hideOrganizer()
+    func bringOrganizer()
+    func beginLoading()
+    func endLoading()
+    
+    func closeBackground()
 }
 
 class HostBookingsViewController: UIViewController {
     
     var delegate: handleHostingControllers?
-    var noUpcoming: Bool = true
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -30,9 +38,9 @@ class HostBookingsViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Bookings"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPBoldH1
+        label.font = Fonts.SSPSemiBoldH1
         
         return label
     }()
@@ -43,133 +51,125 @@ class HostBookingsViewController: UIViewController {
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
+        view.isPagingEnabled = true
         
         return view
     }()
     
-    var reservationsContainer: MyOngoingViewController = {
-        let controller = MyOngoingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 1
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.alpha = 0
+        //        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
-        return controller
-    }()
-
-    lazy var reservationsTableContainer: ReservationsTableViewController = {
-        let controller = ReservationsTableViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.delegate = self
-        
-        return controller
+        return button
     }()
     
-    lazy var hostingPreviousContainer: HostingPreviousViewController = {
-        let controller = HostingPreviousViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var messageContainer: OngoingMessageViewController = {
-        let controller = OngoingMessageViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    var noUpcomingParking: UIView = {
+    lazy var dimmingView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 4
         view.alpha = 0
-        
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "You haven't had any bookings"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH4
-        label.textAlignment = .center
-        view.addSubview(label)
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        label.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        label.sizeToFit()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
     
-    var seeMoreParking: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 0
+    lazy var profitsOrganizer: ProfitsOrganizerViewController = {
+        let controller = ProfitsOrganizerViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.firstOption.setTitle("UPCOMING", for: .normal)
+        controller.secondOption.setTitle("PREVIOUS", for: .normal)
+        controller.thirdOption.setTitle("CALENDAR", for: .normal)
+        controller.setupViews()
         
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "See more"
-        label.textColor = Theme.BLUE
-        label.font = Fonts.SSPRegularH4
-        label.textAlignment = .center
-        view.addSubview(label)
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -12).isActive = true
-        label.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        label.sizeToFit()
+        return controller
+    }()
+    
+    lazy var upcomingBookings: UpcomingViewController = {
+        let controller = UpcomingViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        controller.bookingDelegate = self
+        
+        return controller
+    }()
+    
+    lazy var previousBookings: PreviousViewController = {
+        let controller = PreviousViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        controller.bookingDelegate = self
+        
+        return controller
+    }()
+    
+    lazy var hostCalendar: CalendarViewController = {
+        let controller = CalendarViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
+        controller.bookingDelegate = self
+        
+        return controller
+    }()
+    
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
-
+    
+    func observeData() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
         
+        view.backgroundColor = Theme.OFF_WHITE
+        
         setupViews()
+        setupControllers()
     }
     
     var gradientHeightAnchor: NSLayoutConstraint!
-    var openReservationAnchor: NSLayoutConstraint!
-    var closeReservationAnchor: NSLayoutConstraint!
-    
-    var reservationsTopAnchor: NSLayoutConstraint!
-    var hostingPreviousTopAnchor: NSLayoutConstraint!
-    var messageTopAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
         self.view.addSubview(scrollView)
         self.view.addSubview(gradientContainer)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 842)
-        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
+            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 140)
+            gradientHeightAnchor.isActive = true
+        case .iphoneX:
             gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
             gradientHeightAnchor.isActive = true
-            self.scrollView.contentInset = UIEdgeInsets(top: 160, left: 0, bottom: 0, right: 0)
+        }
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 180)
-            gradientHeightAnchor.isActive = true
-            self.scrollView.contentInset = UIEdgeInsets(top: 180, left: 0, bottom: 0, right: 0)
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         
         self.view.addSubview(mainLabel)
@@ -178,201 +178,196 @@ class HostBookingsViewController: UIViewController {
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
         mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
-        scrollView.addSubview(noUpcomingParking)
-        scrollView.addSubview(reservationsContainer.view)
-        reservationsContainer.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 4).isActive = true
-        reservationsContainer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        reservationsContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        openReservationAnchor = reservationsContainer.view.heightAnchor.constraint(equalToConstant: 204)
-            openReservationAnchor.isActive = false
-        closeReservationAnchor = reservationsContainer.view.heightAnchor.constraint(equalToConstant: 128)
-            closeReservationAnchor.isActive = true
+        scrollView.contentSize = CGSize(width: phoneWidth * 3, height: phoneHeight - 180)
+        scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        noUpcomingParking.topAnchor.constraint(equalTo: reservationsContainer.view.topAnchor).isActive = true
-        noUpcomingParking.widthAnchor.constraint(equalTo: reservationsContainer.view.widthAnchor, constant: -24).isActive = true
-        noUpcomingParking.heightAnchor.constraint(equalToConstant: 85).isActive = true
-        noUpcomingParking.centerXAnchor.constraint(equalTo: reservationsContainer.view.centerXAnchor).isActive = true
+        gradientContainer.addSubview(loadingLine)
+        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
-        self.view.addSubview(seeMoreParking)
-        seeMoreParking.topAnchor.constraint(equalTo: reservationsContainer.view.bottomAnchor, constant: 16).isActive = true
-        seeMoreParking.widthAnchor.constraint(equalTo: reservationsContainer.view.widthAnchor, constant: -24).isActive = true
-        seeMoreParking.heightAnchor.constraint(equalToConstant: 65).isActive = true
-        seeMoreParking.centerXAnchor.constraint(equalTo: reservationsContainer.view.centerXAnchor).isActive = true
-        let reservationsTap = UITapGestureRecognizer(target: self, action: #selector(expandReservationsContainer))
-        seeMoreParking.addGestureRecognizer(reservationsTap)
+    }
+    
+    func setupControllers() {
         
-        self.view.addSubview(reservationsTableContainer.view)
-        reservationsTopAnchor = reservationsTableContainer.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            reservationsTopAnchor.isActive = true
-        reservationsTableContainer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        reservationsTableContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        reservationsTableContainer.view.heightAnchor.constraint(equalToConstant: phoneHeight - 120).isActive = true
-        reservationsTableContainer.backButton.addTarget(self, action: #selector(minimizeReservationsContainer), for: .touchUpInside)
+        scrollView.addSubview(upcomingBookings.view)
+        upcomingBookings.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        upcomingBookings.view.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        upcomingBookings.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        upcomingBookings.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(hostingPreviousContainer.view)
-        hostingPreviousTopAnchor = hostingPreviousContainer.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            hostingPreviousTopAnchor.isActive = true
-        hostingPreviousContainer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        hostingPreviousContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        hostingPreviousContainer.view.heightAnchor.constraint(equalToConstant: phoneHeight + statusHeight).isActive = true
-        hostingPreviousContainer.backButton.addTarget(self, action: #selector(returnReservationsPressed), for: .touchUpInside)
+        scrollView.addSubview(previousBookings.view)
+        previousBookings.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        previousBookings.view.leftAnchor.constraint(equalTo: upcomingBookings.view.rightAnchor).isActive = true
+        previousBookings.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        previousBookings.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        self.view.addSubview(messageContainer.view)
-        messageTopAnchor = messageContainer.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            messageTopAnchor.isActive = true
-        messageContainer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        messageContainer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        messageContainer.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        self.reservationsContainer.chatIcon.addTarget(self, action: #selector(openOngoingMessages), for: .touchUpInside)
-        self.reservationsContainer.chatLabel.addTarget(self, action: #selector(openOngoingMessages), for: .touchUpInside)
+        scrollView.addSubview(hostCalendar.view)
+        hostCalendar.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        hostCalendar.view.leftAnchor.constraint(equalTo: previousBookings.view.rightAnchor).isActive = true
+        hostCalendar.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        hostCalendar.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        minimizeReservationsContainer()
+        self.view.addSubview(profitsOrganizer.view)
+        profitsOrganizer.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        profitsOrganizer.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        profitsOrganizer.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        profitsOrganizer.view.heightAnchor.constraint(equalToConstant: 52).isActive = true
+        profitsOrganizer.firstOption.addTarget(self, action: #selector(moveOrganizer(sender:)), for: .touchUpInside)
+        profitsOrganizer.secondOption.addTarget(self, action: #selector(moveOrganizer(sender:)), for: .touchUpInside)
+        profitsOrganizer.thirdOption.addTarget(self, action: #selector(moveOrganizer(sender:)), for: .touchUpInside)
+        
+        self.view.addSubview(dimmingView)
+        dimmingView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        dimmingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        dimmingView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        dimmingView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+    }
+    
+    @objc func moveOrganizer(sender: UIButton) {
+        if sender == self.profitsOrganizer.firstOption {
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+            self.hostCalendar.closeScheduleView()
+        } else if sender == self.profitsOrganizer.secondOption {
+            self.scrollView.setContentOffset(CGPoint(x: phoneWidth, y: 0), animated: true)
+            self.hostCalendar.closeScheduleView()
+        } else {
+            self.scrollView.setContentOffset(CGPoint(x: phoneWidth * 2, y: 0), animated: true)
+            delayWithSeconds(animationOut) {
+                self.hostCalendar.openScheduleView()
+            }
+        }
+    }
+    
+    func hideOrganizer() {
+        UIView.animate(withDuration: animationIn) {
+            self.profitsOrganizer.view.alpha = 0
+        }
+    }
+    
+    func bringOrganizer() {
+        UIView.animate(withDuration: animationIn) {
+            self.profitsOrganizer.view.alpha = 1
+        }
+    }
+    
+    func closeBackground() {
+        self.delegate?.openTabBar()
+        UIView.animate(withDuration: animationOut) {
+            self.dimmingView.alpha = 0
+        }
+    }
+    
+    func beginLoading() {
+        self.loadingLine.startAnimating()
+    }
+    
+    func endLoading() {
+        self.loadingLine.endAnimating()
     }
     
 }
 
 
-extension HostBookingsViewController: handlePreviousBookings {
+extension HostBookingsViewController: handleBookingInformation {
     
-    @objc func openOngoingMessages() {
-        self.scrollView.isScrollEnabled = false
-        self.delegate?.hideExitButton()
-        self.delegate?.lightContentStatusBar()
-        self.messageTopAnchor.constant = 0
+    // Open options to information on each booking
+    func expandBooking() {
+        self.delegate?.closeTabBar()
         UIView.animate(withDuration: animationIn, animations: {
-            self.messageContainer.view.alpha = 1
-            self.view.layoutIfNeeded()
+            self.dimmingView.alpha = 0.6
         }) { (success) in
-            self.messageContainer.openMessageBar()
+            let controller = ExpandedBookingsViewController()
+            controller.delegate = self
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.navigationBar.isHidden = true
+            navigation.modalPresentationStyle = .overCurrentContext
+            self.present(navigation, animated: true, completion: nil)
         }
     }
     
-    func dismissOngoingMessages() {
-        self.scrollView.isScrollEnabled = true
-        self.delegate?.bringExitButton()
-        self.delegate?.defaultContentStatusBar()
-        self.messageContainer.closeMessageBar()
-        self.messageTopAnchor.constant = phoneHeight
-        UIView.animate(withDuration: animationIn) {
-            self.messageContainer.view.alpha = 0
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func openCurrentReservation() {
-        self.openReservationAnchor.isActive = true
-        self.closeReservationAnchor.isActive = false
-        UIView.animate(withDuration: animationIn) {
-            self.seeMoreParking.alpha = 1
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func closeCurrentReservation() {
-        self.openReservationAnchor.isActive = false
-        self.closeReservationAnchor.isActive = true
-        self.reservationsContainer.reservationLabel.text = "Previous booking"
-        self.reservationsContainer.reservationLabel.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.7)
-        UIView.animate(withDuration: animationIn) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc func expandReservationsContainer() {
-        self.scrollView.setContentOffset(.zero, animated: true)
-        delayWithSeconds(animationIn * 2) {
-            self.reservationsTopAnchor.constant = 0
-            self.scrollView.isScrollEnabled = false
-            self.delegate?.hideExitButton()
-            UIView.animate(withDuration: animationOut, animations: {
-                self.reservationsTableContainer.view.alpha = 1
-                self.reservationsContainer.view.alpha = 0
-                self.noUpcomingParking.alpha = 0
-                self.seeMoreParking.alpha = 0
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                
-            }
-        }
-    }
-    
-    @objc func minimizeReservationsContainer() {
-        self.reservationsTopAnchor.constant = phoneHeight
-        self.scrollView.isScrollEnabled = true
-        self.delegate?.bringExitButton()
-        UIView.animate(withDuration: animationOut, animations: {
-            self.reservationsTableContainer.view.alpha = 0
-            if self.noUpcoming == true {
-                self.noUpcomingParking.alpha = 1
-                self.seeMoreParking.alpha = 0
-            } else {
-                self.reservationsContainer.view.alpha = 1
-                self.seeMoreParking.alpha = 1
-            }
-            self.view.layoutIfNeeded()
+    @objc func bookingInformation() {
+        self.delegate?.closeTabBar()
+        UIView.animate(withDuration: animationIn, animations: {
+            self.dimmingView.alpha = 0.6
         }) { (success) in
-
+            let controller = UpcomingStatusViewController()
+            controller.delegate = self
+            controller.modalPresentationStyle = .overCurrentContext
+            self.present(controller, animated: true, completion: nil)
         }
     }
-    
-    func hostingPreviousPressed(booking: Bookings, parking: ParkingSpots) {
-        self.hostingPreviousContainer.setData(booking: booking, parking: parking)
-        self.hostingPreviousTopAnchor.constant = -statusHeight
-        self.delegate?.defaultContentStatusBar()
-        self.delegate?.hideExitButton()
-        UIView.animate(withDuration: animationOut) {
-            self.hostingPreviousContainer.view.alpha = 1
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc func returnReservationsPressed() {
-        self.hostingPreviousTopAnchor.constant = phoneHeight
-        UIView.animate(withDuration: animationOut) {
-            self.hostingPreviousContainer.view.alpha = 0
-            self.view.layoutIfNeeded()
-        }
-    }
-
     
 }
 
 
-extension HostBookingsViewController: UIScrollViewDelegate {
+extension HostBookingsViewController: UIScrollViewDelegate, handleHostScrolling {
+    
+    func openTabBar() {
+        self.delegate?.openTabBar()
+    }
+    
+    func closeTabBar() {
+        self.delegate?.closeTabBar()
+    }
+    
+    func resetScrolls() {
+        //        self.profitsWallet.scrollView.setContentOffset(.zero, animated: true)
+        //        self.profitsChart.scrollView.setContentOffset(.zero, animated: true)
+        //        self.profitsRefund.scrollView.setContentOffset(.zero, animated: true)
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.contentOffset.x
+        self.profitsOrganizer.translation = translation
+        let percentage = translation/phoneWidth
+        let isInteger = floor(percentage) == percentage
+        if isInteger {
+            self.scrollExpanded()
+        }
+    }
+    
+    func makeScrollViewScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
+        let state = scrollView.panGestureRecognizer.state
         var totalHeight: CGFloat = 0.0
         switch device {
         case .iphone8:
-            totalHeight = 160
+            totalHeight = 140
         case .iphoneX:
-            totalHeight = 180
+            totalHeight = 160
         }
-        if translation > 0 && translation < 80 {
-            let percent = translation/80
-            self.gradientHeightAnchor.constant = totalHeight - percent * 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            if self.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+        if state == .changed {
+            if translation >= 20 && self.profitsOrganizer.view.alpha == 1 {
+                UIView.animate(withDuration: animationIn) {
+                    self.profitsOrganizer.view.alpha = 0
+                }
+            } else if translation <= 20 && self.profitsOrganizer.view.alpha == 0 {
+                UIView.animate(withDuration: animationIn) {
+                    self.profitsOrganizer.view.alpha = 1
+                }
+            }
+            if translation > 0 && translation < 60 {
+                let percent = translation/60
+                self.gradientHeightAnchor.constant = totalHeight - percent * 60
+                self.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
+            }
+        } else {
+            let translation = scrollView.contentOffset.y
+            if translation < 0 && self.gradientHeightAnchor.constant != totalHeight {
                 self.scrollExpanded()
-            }
-        } else if translation >= 80 {
-            self.gradientHeightAnchor.constant = totalHeight - 80
-            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            if self.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                self.scrollMinimized()
-            }
-        } else if translation <= 0 {
-            if mainLabel.alpha == 1 {
-                self.gradientHeightAnchor.constant = totalHeight
-                self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
             }
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func makeScrollViewEnd(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
-        if translation >= 75 {
+        if translation >= 55 {
             self.scrollMinimized()
         } else {
             self.scrollExpanded()
@@ -382,30 +377,44 @@ extension HostBookingsViewController: UIScrollViewDelegate {
     func scrollExpanded() {
         switch device {
         case .iphone8:
-            self.gradientHeightAnchor.constant = 160
+            self.gradientHeightAnchor.constant = 140
         case .iphoneX:
-            self.gradientHeightAnchor.constant = 180
+            self.gradientHeightAnchor.constant = 160
         }
         self.resetScrolls()
-        self.delegate?.defaultContentStatusBar()
-        UIView.animate(withDuration: animationIn, animations: {
-            self.gradientContainer.backgroundColor = UIColor.clear
-            self.mainLabel.textColor = Theme.DARK_GRAY
+        UIView.animate(withDuration: animationOut, animations: {
+            if self.hostCalendar.undoButton.alpha == 0 {
+                self.profitsOrganizer.view.alpha = 1
+            }
+            self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.resetScrolls()
+            
         }
-    }
-    
-    func resetScrolls() {
-        self.scrollView.setContentOffset(.zero, animated: true)
     }
     
     func scrollMinimized() {
-        self.delegate?.lightContentStatusBar()
-        UIView.animate(withDuration: animationIn) {
-            self.gradientContainer.backgroundColor = Theme.DARK_GRAY
-            self.mainLabel.textColor = Theme.WHITE
+        switch device {
+        case .iphone8:
+            self.gradientHeightAnchor.constant = 80
+        case .iphoneX:
+            self.gradientHeightAnchor.constant = 100
+        }
+        UIView.animate(withDuration: animationOut, animations: {
+            self.profitsOrganizer.view.alpha = 0
+            self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
+        }
+    }
+    
+    func dismissAll() {
+        delayWithSeconds(0.4) {
+            self.closeBackground()
+            self.dismiss(animated: true, completion: {
+                self.dismiss(animated: true, completion: nil)
+            })
         }
     }
     

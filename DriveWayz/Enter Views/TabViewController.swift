@@ -73,11 +73,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 16
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize.zero
-        view.layer.shadowRadius = 5
-        view.layer.shadowOpacity = 0.6
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -104,7 +104,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
 
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.alpha = 0
         
@@ -195,11 +195,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         UIView.animate(withDuration: animationIn, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.shadowView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            self.mapController.view.layer.cornerRadius = 8
+            self.mapController.view.layer.cornerRadius = 16
             self.mapController.fullBackgroundView.alpha = 0.2
-            hamburgerView1.backgroundColor = Theme.BLACK
-            hamburgerView2.backgroundColor = Theme.BLACK
-            hamburgerView3.backgroundColor = Theme.BLACK
+            hamburgerButton.alpha = 0
             self.blurView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -216,6 +214,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
             self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.mapController.view.layer.cornerRadius = 0
             self.mapController.fullBackgroundView.alpha = 0
+            hamburgerButton.alpha = 1
             self.blurView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -243,11 +242,13 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     func closeAccountView() {
         closeProfileOptions()
         self.delegate?.hideStatusBar()
-        UIView.animate(withDuration: animationIn, animations: {
-            self.gradientContainer.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.defaultStatusBar()
+        delayWithSeconds(animationIn) {
+            UIView.animate(withDuration: animationIn, animations: {
+                self.gradientContainer.alpha = 0
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.delegate?.defaultStatusBar()
+            }
         }
     }
     
@@ -328,8 +329,9 @@ extension TabViewController {
         }) { (success) in
             self.present(controller, animated: true) {
                 controller.openTabBar()
+                controller.setData()
                 UIView.animate(withDuration: animationIn) {
-                    controller.backButton.alpha = 1
+//                    controller.backButton.alpha = 1 /////////////////////////////////////////////////////
                     self.view.layoutIfNeeded()
                 }
             }
@@ -340,12 +342,14 @@ extension TabViewController {
         let controller = ConfigureParkingViewController()
         controller.delegate = self
         controller.moveDelegate = self
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isHidden = true
         UIView.animate(withDuration: animationIn, animations: {
             self.gradientContainer.alpha = 1
         }) { (success) in
-            self.present(controller, animated: true) {
+            self.present(navigation, animated: true) {
                 UIView.animate(withDuration: animationIn) {
-                    controller.backButton.alpha = 1
+                    controller.startHostingController.backButton.alpha = 1
                     self.view.layoutIfNeeded()
                 }
             }
@@ -387,7 +391,7 @@ extension TabViewController {
     }
     
     func bringHelpController() {
-        let controller = HelpViewController()
+        let controller = UserHelpViewController()
         controller.delegate = self
         let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isHidden = true
@@ -404,7 +408,7 @@ extension TabViewController {
     }
     
     func bringFeedbackController() {
-        let controller = ContactDrivewayzViewController()
+        let controller = UserContactViewController()
         controller.delegate = self
         controller.context = "Feedback"
         controller.mainLabel.text = "Give feedback"

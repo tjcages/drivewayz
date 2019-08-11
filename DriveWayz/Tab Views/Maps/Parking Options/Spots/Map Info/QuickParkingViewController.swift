@@ -35,6 +35,21 @@ class QuickParkingViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
+        button.isUserInteractionEnabled = false
+        
+        return button
+    }()
+    
+    var carIcon: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let origImage = UIImage(named: "vehicle");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.WHITE
+        button.alpha = 0
+        button.isUserInteractionEnabled = false
+        button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
         return button
     }()
@@ -81,6 +96,12 @@ class QuickParkingViewController: UIViewController {
         walkingIcon.topAnchor.constraint(equalTo: darkContainer.topAnchor, constant: 2).isActive = true
         walkingIcon.widthAnchor.constraint(equalToConstant: 26).isActive = true
         walkingIcon.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+        darkContainer.addSubview(carIcon)
+        carIcon.centerXAnchor.constraint(equalTo: lightContainer.centerXAnchor).isActive = true
+        carIcon.topAnchor.constraint(equalTo: darkContainer.topAnchor, constant: 2).isActive = true
+        carIcon.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        carIcon.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
         darkContainer.addSubview(distanceLabel)
         distanceLabel.leftAnchor.constraint(equalTo: lightContainer.rightAnchor, constant: 8).isActive = true

@@ -18,16 +18,6 @@ class OtherSettingsViewController: UIViewController {
     var optionsColorsBottom: [UIColor] = [Theme.DarkRed, Theme.DarkPurple, Theme.DarkTeal, Theme.DarkYellow, Theme.DarkBlue, Theme.HARMONY_RED]
     var optionsIcons: [UIImage] = [UIImage(named: "settingsCard")!, UIImage(named: "settingsVehicle")!, UIImage(named: "settingsNotifications")!, UIImage(named: "settingsAccessibility")!, UIImage(named: "settingsAbout")!, UIImage(named: "settingsLogout")!]
     
-    var mainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Other Settings"
-        label.textColor = Theme.DARK_GRAY
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
-        
-        return label
-    }()
-    
     var optionsTableView: UITableView = {
         let view = UITableView()
         view.backgroundColor = UIColor.clear
@@ -49,26 +39,21 @@ class OtherSettingsViewController: UIViewController {
         
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 4)
-        view.layer.shadowRadius = 6
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 8
         
         setupViews()
     }
     
     func setupViews() {
         
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16).isActive = true
-        mainLabel.sizeToFit()
-        
         self.view.addSubview(optionsTableView)
-        optionsTableView.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 12).isActive = true
-        optionsTableView.leftAnchor.constraint(equalTo: mainLabel.leftAnchor).isActive = true
+        optionsTableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12).isActive = true
+        optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
     }
     
@@ -135,8 +120,6 @@ extension OtherSettingsViewController: UITableViewDelegate, UITableViewDataSourc
         if cell.titleLabel.text == "Logout" {
             cell.titleLabel.textColor = Theme.HARMONY_RED
             cell.nextButton.alpha = 0
-        } else if cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Terms" || cell.titleLabel.text == "" {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: self.view.frame.width, bottom: 0, right: self.view.frame.width)
         } else {
             cell.titleLabel.textColor = Theme.BLACK
         }

@@ -179,6 +179,30 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
+    @objc func customTripleColor(topColor: UIColor, middleColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        
+        return gradientLayer
+    }
+    
+    @objc func customFifthColor(topColor: UIColor, middleColor: UIColor, secondMiddleColor: UIColor, thirdMiddleColor: UIColor, fourthMiddleColor: UIColor, fifthMiddleColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, secondMiddleColor.cgColor, thirdMiddleColor.cgColor, fourthMiddleColor.cgColor, fifthMiddleColor.cgColor, bottomColor.cgColor]
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        
+        return gradientLayer
+    }
+    
     @objc func customVerticalColor(topColor: UIColor, bottomColor: UIColor) -> CAGradientLayer {
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
