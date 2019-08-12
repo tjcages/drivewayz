@@ -60,7 +60,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var messageTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -179,7 +179,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.messageTextLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.messageTextLine.backgroundColor = lineColor
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

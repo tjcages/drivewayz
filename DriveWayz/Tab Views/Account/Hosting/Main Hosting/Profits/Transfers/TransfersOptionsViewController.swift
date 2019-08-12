@@ -84,7 +84,7 @@ class TransfersOptionsViewController: UIViewController {
     var messageLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         view.alpha = 0
         
         return view

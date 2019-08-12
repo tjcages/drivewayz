@@ -98,7 +98,7 @@ class UpcomingStatusViewController: UIViewController {
     var firstLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -106,7 +106,7 @@ class UpcomingStatusViewController: UIViewController {
     var secondLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -114,7 +114,7 @@ class UpcomingStatusViewController: UIViewController {
     var thirdLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -122,7 +122,7 @@ class UpcomingStatusViewController: UIViewController {
     var fourthLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -130,7 +130,7 @@ class UpcomingStatusViewController: UIViewController {
     var fifthLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()

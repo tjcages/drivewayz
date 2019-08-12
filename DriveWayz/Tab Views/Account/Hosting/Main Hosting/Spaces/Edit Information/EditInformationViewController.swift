@@ -18,7 +18,10 @@ class EditInformationViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -174,19 +177,19 @@ class EditInformationViewController: UIViewController {
         }
         
         self.view.addSubview(typeController.view)
-        typeController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        typeController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         typeController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         typeController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         typeController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         self.view.addSubview(optionsController.view)
-        optionsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        optionsController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         optionsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         optionsController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         optionsController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
         self.view.addSubview(messageController.view)
-        messageController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 48).isActive = true
+        messageController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         messageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -24).isActive = true
         messageController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         messageController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true

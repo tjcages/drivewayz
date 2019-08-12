@@ -10,6 +10,18 @@ import UIKit
 
 class BannerMessageViewController: UIViewController {
     
+    var container: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let background = CAGradientLayer().customColor(topColor: Theme.GREEN_PIGMENT, bottomColor: Theme.DarkGreen)
+        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 100)
+        background.zPosition = -10
+        view.layer.addSublayer(background)
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
     var newMessageButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +43,7 @@ class BannerMessageViewController: UIViewController {
         label.text = "Drivewayz sent you a message"
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
+        label.numberOfLines = 2
         
         return label
     }()
@@ -38,9 +51,9 @@ class BannerMessageViewController: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Tap to view"
+        label.text = "Tap to open"
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPRegularH6
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -48,16 +61,18 @@ class BannerMessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.GREEN_PIGMENT
-//        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-//        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-//        view.layer.shadowRadius = 6
-//        view.layer.shadowOpacity = 0.2
+        view.backgroundColor = lineColor
         
         setupViews()
     }
     
     func setupViews() {
+        
+        self.view.addSubview(container)
+        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 4).isActive = true
         
         self.view.addSubview(newMessageButton)
         newMessageButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -67,15 +82,14 @@ class BannerMessageViewController: UIViewController {
         
         self.view.addSubview(newMessageLabel)
         newMessageLabel.leftAnchor.constraint(equalTo: newMessageButton.rightAnchor, constant: 24).isActive = true
-        newMessageLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 14).isActive = true
+        newMessageLabel.topAnchor.constraint(equalTo: newMessageButton.topAnchor, constant: -6).isActive = true
         newMessageLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        newMessageLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        newMessageLabel.sizeToFit()
         
         self.view.addSubview(subLabel)
         subLabel.leftAnchor.constraint(equalTo: newMessageButton.rightAnchor, constant: 24).isActive = true
-        subLabel.topAnchor.constraint(equalTo: newMessageLabel.bottomAnchor, constant: -2).isActive = true
-        subLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        subLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        subLabel.topAnchor.constraint(equalTo: newMessageLabel.bottomAnchor, constant: 0).isActive = true
+        subLabel.sizeToFit()
         
     }
 

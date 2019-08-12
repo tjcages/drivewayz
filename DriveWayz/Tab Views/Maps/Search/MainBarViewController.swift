@@ -39,7 +39,8 @@ class MainBarViewController: UIViewController {
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = 16
+        view.backgroundColor = lineColor
         view.isScrollEnabled = false
         
         return view
@@ -48,7 +49,7 @@ class MainBarViewController: UIViewController {
     var scrollBar: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = lineColor
         view.layer.cornerRadius = 3
 //        view.alpha = 0
         
@@ -203,10 +204,12 @@ class MainBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
+        view.layer.cornerRadius = 16
 
         scrollView.delegate = self
         
@@ -223,9 +226,6 @@ class MainBarViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.eventsController.checkEvents()
     }
-    
-    var contactBannerHeightAnchor: NSLayoutConstraint!
-    var searchButtonTopAnchor: NSLayoutConstraint!
 
     func setupViews() {
         
@@ -242,13 +242,6 @@ class MainBarViewController: UIViewController {
         scrollBar.widthAnchor.constraint(equalToConstant: 40).isActive = true
         scrollBar.heightAnchor.constraint(equalToConstant: 6).isActive = true
         
-        scrollView.addSubview(contactBannerController.view)
-        contactBannerController.view.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        contactBannerController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        contactBannerController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        contactBannerHeightAnchor = contactBannerController.view.heightAnchor.constraint(equalToConstant: 0)
-            contactBannerHeightAnchor.isActive = true
-        
     }
     
     func setupSearch() {
@@ -258,8 +251,7 @@ class MainBarViewController: UIViewController {
         scrollView.bringSubviewToFront(contactBannerController.view)
         
         searchView.addSubview(searchButton)
-        searchButtonTopAnchor = searchButton.topAnchor.constraint(equalTo: contactBannerController.view.bottomAnchor, constant: 34)
-            searchButtonTopAnchor.isActive = true
+        searchButton.topAnchor.constraint(equalTo: scrollBar.bottomAnchor, constant: 16).isActive = true
         searchButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         searchButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         searchButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -310,12 +302,21 @@ class MainBarViewController: UIViewController {
         searchView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         searchView.bottomAnchor.constraint(equalTo: homeButton.bottomAnchor, constant: 24).isActive = true
         
+        scrollView.addSubview(contactBannerController.view)
+        contactBannerController.view.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
+        contactBannerController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        contactBannerController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        contactBannerHeightAnchor = contactBannerController.view.heightAnchor.constraint(equalToConstant: 0)
+            contactBannerHeightAnchor.isActive = true
+        
     }
+    
+    var contactBannerHeightAnchor: NSLayoutConstraint!
     
     func setupWorks() {
         
         scrollView.addSubview(worksController.view)
-        worksController.view.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 4).isActive = true
+        worksController.view.topAnchor.constraint(equalTo: contactBannerController.view.bottomAnchor, constant: 4).isActive = true
         worksController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         worksController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         worksController.view.heightAnchor.constraint(equalToConstant: 384).isActive = true

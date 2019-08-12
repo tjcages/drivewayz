@@ -43,7 +43,7 @@ class NewHostBannerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
 
         setupViews()
     }

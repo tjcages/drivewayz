@@ -31,7 +31,7 @@ class RegisterEmailViewController: UIViewController {
     var messageTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -39,7 +39,7 @@ class RegisterEmailViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 8
         label.text = "Drivewayz will send you an email verification to confirm your status as a host. \n\n You must have a valid email address for your spot to be listed."
@@ -129,7 +129,7 @@ extension RegisterEmailViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.messageTextLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.messageTextLine.backgroundColor = lineColor
         self.checkIfGood()
     }
     

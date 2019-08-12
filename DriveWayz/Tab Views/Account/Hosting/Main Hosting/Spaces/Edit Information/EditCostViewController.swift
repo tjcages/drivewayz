@@ -17,7 +17,10 @@ class EditCostViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -107,7 +110,7 @@ class EditCostViewController: UIViewController {
         }
         
         self.view.addSubview(costController.view)
-        costController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 32).isActive = true
+        costController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         costController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         costController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         costController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true

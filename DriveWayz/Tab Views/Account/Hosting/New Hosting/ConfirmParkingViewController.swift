@@ -105,7 +105,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        button.backgroundColor = lineColor
         button.setTitle("Confirm", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -130,7 +130,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         check.style = .tick
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        check.uncheckedBorderColor = lineColor
         check.checkmarkColor = Theme.BLUE
         check.addTarget(self, action: #selector(onCheckBoxValueChange(_:)), for: .valueChanged)
         
@@ -172,7 +172,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         check.style = .tick
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        check.uncheckedBorderColor = lineColor
         check.checkmarkColor = Theme.BLUE
         check.addTarget(self, action: #selector(onCheckBoxValueChange(_:)), for: .valueChanged)
         
@@ -394,7 +394,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
             self.confirmButton.setTitleColor(Theme.WHITE, for: .normal)
             self.confirmButton.isUserInteractionEnabled = true
         } else {
-            self.confirmButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.confirmButton.backgroundColor = lineColor
             self.confirmButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
             self.confirmButton.isUserInteractionEnabled = false
         }

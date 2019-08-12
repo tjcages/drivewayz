@@ -13,9 +13,9 @@ extension ConfirmViewController: STPPaymentContextDelegate {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
         self.paymentInProgress = true
-        self.paymentContext.requestPayment() /////////////////////////////////////PAYMENT NOT SETUP
+        self.paymentContext.requestPayment()
         
-//        self.delegate?.expandCheckmark()
+//        self.delegate?.expandCheckmark() /////////////////////////////////////PAYMENT NOT SETUP
 //        self.setupNotifications()
 //        self.checkCoupons()
 //        self.sendPushNotification()

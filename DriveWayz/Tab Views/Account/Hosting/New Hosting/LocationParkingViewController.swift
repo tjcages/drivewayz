@@ -61,7 +61,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -93,7 +93,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -124,7 +124,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -155,7 +155,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -187,7 +187,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -480,19 +480,19 @@ extension LocationParkingViewController: UITextViewDelegate {
         self.searchContainer.alpha = 0
         if textView == self.countryField {
             self.countryField.backgroundColor = UIColor.clear
-            self.countryLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.countryLine.backgroundColor = lineColor
         } else if textView == self.streetField {
             self.streetField.backgroundColor = UIColor.clear
-            self.streetLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.streetLine.backgroundColor = lineColor
         } else if textView == self.cityField {
             self.cityField.backgroundColor = UIColor.clear
-            self.cityLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.cityLine.backgroundColor = lineColor
         } else if textView == self.stateField {
             self.stateField.backgroundColor = UIColor.clear
-            self.stateLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.stateLine.backgroundColor = lineColor
         } else if textView == self.zipField {
             self.zipField.backgroundColor = UIColor.clear
-            self.zipLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.zipLine.backgroundColor = lineColor
         }
     }
     

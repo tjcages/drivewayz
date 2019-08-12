@@ -13,6 +13,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     var currentButton: UIButton?
     var pickerParking: UIImagePickerController?
     var delegate: handleImageDrawing?
+    var editDelegate: editImagesHandler?
     
     var lattitude: Double = 1.0
     var longitude: Double = 1.0
@@ -43,7 +44,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "General images (4 max)"
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPLightH3
         
         return label
@@ -494,6 +495,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         drawController.setData(image: image, lattitude: self.lattitude, longitude: self.longitude)
         self.view.layoutIfNeeded()
         self.delegate?.imageDrawSelected()
+        self.editDelegate?.imageDrawSelected()
         UIView.animate(withDuration: animationIn) {
             self.drawController.view.alpha = 1
         }
@@ -512,6 +514,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     
     func configureExited() {
         self.delegate?.imageDrawExited()
+        self.editDelegate?.imageDrawExited()
     }
     
     func confirmedImage(image: UIImage) {

@@ -67,7 +67,6 @@ class MapParkingViewController: UIViewController {
     func setupAddressMarker(address: String, title: String, city: String, state: String) {
         self.removeAllMarkers()
         let geoCoder = CLGeocoder()
-        let marker = MKPointAnnotation()
         geoCoder.geocodeAddressString(address) { (placemarks, error) in
             guard
                 let placemarks = placemarks,

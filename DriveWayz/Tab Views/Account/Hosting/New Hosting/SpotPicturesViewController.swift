@@ -18,6 +18,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     var currentButton: UIButton?
     var pickerParking: UIImagePickerController?
     var delegate: handleImageDrawing?
+    var editDelegate: editImagesHandler?
     
     var lattitude: Double = 1.0
     var longitude: Double = 1.0
@@ -29,6 +30,8 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
         
         return view
     }()
@@ -762,6 +765,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         drawController.setData(image: image, lattitude: self.lattitude, longitude: self.longitude)
         self.view.layoutIfNeeded()
         self.delegate?.imageDrawSelected()
+        self.editDelegate?.imageDrawSelected()
         UIView.animate(withDuration: animationIn) {
             self.drawController.view.alpha = 1
         }
@@ -780,6 +784,7 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
     
     func configureExited() {
         self.delegate?.imageDrawExited()
+        self.editDelegate?.imageDrawExited()
     }
     
     func confirmedImage(image: UIImage) {
@@ -787,15 +792,15 @@ class SpotPicturesViewController: UIViewController, UIImagePickerControllerDeleg
         self.currentButton?.setImage(image, for: .normal)
         self.currentButton?.imageEdgeInsets = UIEdgeInsets.zero
         self.configureExited()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        delayWithSeconds(animationIn) {
             UIView.animate(withDuration: animationIn, animations: {
                 self.checkmark.alpha = 1
             }) { (success) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                delayWithSeconds(1, completion: {
                     UIView.animate(withDuration: animationIn, animations: {
                         self.checkmark.alpha = 0
                     })
-                }
+                })
             }
         }
     }
@@ -840,7 +845,7 @@ extension SpotPicturesViewController {
         addAnImageButton1.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: self.view.frame.width/14).isActive = true
         addAnImageButton1.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         firstWidthAnchor = addAnImageButton1.widthAnchor.constraint(equalToConstant: self.view.frame.width*5/12)
-        firstWidthAnchor.isActive = true
+            firstWidthAnchor.isActive = true
         addAnImageButton1.heightAnchor.constraint(equalTo: addAnImageButton1.widthAnchor).isActive = true
         
         addAnImageButton1.addSubview(spotLabel1)
@@ -859,7 +864,7 @@ extension SpotPicturesViewController {
     func setupTwo() {
         scrollView.addSubview(addAnImageButton2)
         addAnImageButton2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -self.view.frame.width/14).isActive = true
-        addAnImageButton2.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        addAnImageButton2.topAnchor.constraint(equalTo: addAnImageButton1.topAnchor).isActive = true
         secondWidthAnchor = addAnImageButton2.widthAnchor.constraint(equalToConstant: self.view.frame.width*5/12)
         secondWidthAnchor.isActive = true
         addAnImageButton2.heightAnchor.constraint(equalTo: addAnImageButton2.widthAnchor).isActive = true

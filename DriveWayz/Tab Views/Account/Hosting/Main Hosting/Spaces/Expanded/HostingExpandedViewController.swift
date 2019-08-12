@@ -162,15 +162,6 @@ class HostingExpandedViewController: UIViewController, handleHostEditing {
 
 extension HostingExpandedViewController {
     
-    @objc func openImages() {
-        let controller = EditImagesViewController()
-        controller.delegate = self
-        if let hosting = self.selectedParking {
-            controller.setData(parking: hosting)
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-    
     @objc func openAvailability() {
         let controller = EditAvailabilityViewController()
         controller.delegate = self

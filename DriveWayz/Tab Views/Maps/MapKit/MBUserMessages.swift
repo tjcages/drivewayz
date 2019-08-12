@@ -38,8 +38,7 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(userID).child("PersonalMessages")
         ref.observe(.childAdded) { (snapshot) in
-            self.mainBarController.contactBannerHeightAnchor.constant = 70
-            self.mainBarController.searchButtonTopAnchor.constant = 16
+            self.mainBarController.contactBannerHeightAnchor.constant = 84
             UIView.animate(withDuration: animationIn, animations: {
                 self.mainBarController.contactBannerController.view.alpha = 1
                 self.view.layoutIfNeeded()
@@ -59,7 +58,6 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
         }
         ref.observe(.childRemoved) { (snapshot) in
             self.mainBarController.contactBannerHeightAnchor.constant = 0
-            self.mainBarController.searchButtonTopAnchor.constant = 34
             UIView.animate(withDuration: animationIn, animations: {
                 self.mainBarController.contactBannerController.view.alpha = 0
                 self.view.layoutIfNeeded()

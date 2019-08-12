@@ -13,6 +13,8 @@ import Foundation
 let animationIn = 0.2
 let animationOut = 0.3
 
+let lineColor = Theme.GRAY
+
 let statesDictionary = ["Alabama": "AL",
                         "Alaska": "AK",
                         "Arizona": "AZ",

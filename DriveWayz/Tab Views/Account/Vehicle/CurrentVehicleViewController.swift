@@ -88,7 +88,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var makeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -111,7 +111,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var modelLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -134,7 +134,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var yearLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -156,7 +156,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var licenseLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -252,7 +252,7 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
     var grayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -490,10 +490,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
             self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.makeLine.backgroundColor = lineColor
+            self.modelLine.backgroundColor = lineColor
+            self.yearLine.backgroundColor = lineColor
+            self.licenseLine.backgroundColor = lineColor
             self.view.endEditing(true)
         } else if self.activeTextField == vehicleMakeLabel {
             self.vehicleModelLabel.becomeFirstResponder()
@@ -506,10 +506,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
             self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
             self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-            self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-            self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.makeLine.backgroundColor = lineColor
+            self.modelLine.backgroundColor = lineColor
+            self.yearLine.backgroundColor = lineColor
+            self.licenseLine.backgroundColor = lineColor
             self.view.endEditing(true)
         }
     }
@@ -519,10 +519,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.makeLine.backgroundColor = lineColor
+        self.modelLine.backgroundColor = lineColor
+        self.yearLine.backgroundColor = lineColor
+        self.licenseLine.backgroundColor = lineColor
         self.view.endEditing(true)
         scrollView.endEditing(true)
     }
@@ -533,10 +533,10 @@ class CurrentVehicleViewController: UIViewController, UITextFieldDelegate {
         self.modelLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.yearLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         self.licenseLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        self.makeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.modelLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.yearLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
-        self.licenseLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.makeLine.backgroundColor = lineColor
+        self.modelLine.backgroundColor = lineColor
+        self.yearLine.backgroundColor = lineColor
+        self.licenseLine.backgroundColor = lineColor
         if textField == vehicleYearLabel {
             self.scrollView.setContentOffset(CGPoint(x: 0, y: self.view.frame.height * 0.2), animated: true)
             self.yearLabel.textColor = Theme.BLUE

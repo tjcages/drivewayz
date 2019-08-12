@@ -252,7 +252,7 @@ class NotificationsCell: UITableViewCell {
         view.titleLabel?.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitleColor(Theme.WHITE, for: .normal)
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
@@ -337,7 +337,7 @@ class NotificationsHeader: UIView {
     var topLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()

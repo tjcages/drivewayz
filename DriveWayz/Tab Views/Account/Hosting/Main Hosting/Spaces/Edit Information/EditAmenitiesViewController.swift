@@ -17,7 +17,10 @@ class EditAmenitiesViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -77,6 +80,13 @@ class EditAmenitiesViewController: UIViewController {
         return controller
     }()
     
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     func setData(parking: ParkingSpots) {
         self.selectedParking = parking
         if let amenities = parking.parkingAmenities {
@@ -129,7 +139,11 @@ class EditAmenitiesViewController: UIViewController {
     
     func setupViews() {
         
+        self.view.addSubview(amenitiesController.view)
+        self.view.addSubview(darkBlurView)
         self.view.addSubview(gradientContainer)
+        gradientContainer.addSubview(loadingLine)
+        
         gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -140,14 +154,17 @@ class EditAmenitiesViewController: UIViewController {
             gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         }
         
-        self.view.addSubview(amenitiesController.view)
-        amenitiesController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        
+        amenitiesController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         amenitiesController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         amenitiesController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         amenitiesController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         amenitiesController.scrollView.contentSize.height = amenitiesController.scrollView.contentSize.height - 300
         
-        self.view.addSubview(darkBlurView)
         darkBlurView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         darkBlurView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         darkBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
@@ -188,7 +205,9 @@ class EditAmenitiesViewController: UIViewController {
     }
     
     @objc func savePressed() {
-        self.nextButton.alpha = 0.5
+        self.loadingLine.startAnimating()
+        self.nextButton.backgroundColor = lineColor
+        self.nextButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
         self.nextButton.isUserInteractionEnabled = false
         if let parking = self.selectedParking, let parkingID = parking.parkingID {
             let ref = Database.database().reference().child("ParkingSpots").child(parkingID).child("Type").child("Amenities")
@@ -197,7 +216,9 @@ class EditAmenitiesViewController: UIViewController {
             
             self.delegate?.resetParking()
             delayWithSeconds(0.8) {
-                self.nextButton.alpha = 1
+                self.loadingLine.endAnimating()
+                self.nextButton.backgroundColor = Theme.BLUE
+                self.nextButton.setTitleColor(Theme.WHITE, for: .normal)
                 self.nextButton.isUserInteractionEnabled = true
                 self.navigationController?.popViewController(animated: true)
             }

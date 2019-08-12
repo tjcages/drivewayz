@@ -95,7 +95,6 @@ extension MapKitViewController: mainBarSearchDelegate {
         self.mainBarTopAnchor.constant = 0
         UIView.animate(withDuration: animationOut, animations: {
             self.mainBarController.scrollView.alpha = 1
-            self.mainBarController.view.backgroundColor = UIColor.clear
             self.fullBackgroundView.alpha = 0
             self.locationResultsHeightAnchor.constant = 0
             self.view.layoutIfNeeded()
@@ -128,7 +127,6 @@ extension MapKitViewController: mainBarSearchDelegate {
             self.summaryController.searchTextField.text = ""
             UIView.animate(withDuration: animationOut, animations: {
                 self.mainBarController.scrollView.alpha = 0
-                self.mainBarController.view.backgroundColor = Theme.WHITE
                 self.fullBackgroundView.alpha = 0.4
                 self.view.layoutIfNeeded()
             }) { (success) in
@@ -166,7 +164,6 @@ extension MapKitViewController: mainBarSearchDelegate {
         UIView.animate(withDuration: animationOut, animations: {
             self.locationResultsHeightAnchor.constant = 0
             self.mainBarController.scrollView.alpha = 1
-            self.mainBarController.view.backgroundColor = UIColor.clear
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
@@ -189,7 +186,6 @@ extension MapKitViewController: mainBarSearchDelegate {
         self.mainBarTopAnchor.constant = self.lowestHeight
         UIView.animate(withDuration: animationOut, animations: {
             self.mainBarController.scrollView.alpha = 1
-            self.mainBarController.view.backgroundColor = UIColor.clear
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }, completion: { (success) in

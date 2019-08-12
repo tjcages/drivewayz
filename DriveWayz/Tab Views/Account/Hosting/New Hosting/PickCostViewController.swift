@@ -112,7 +112,7 @@ class PickCostViewController: UIViewController {
     var costLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -337,7 +337,7 @@ extension PickCostViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         self.costBackground.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.costLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.costLine.backgroundColor = lineColor
     }
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {

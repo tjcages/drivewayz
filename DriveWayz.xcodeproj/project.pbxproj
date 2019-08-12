@@ -369,7 +369,6 @@
 		CAEF813E22DC4AFE00CEE853 /* BookingExpandedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEF813D22DC4AFE00CEE853 /* BookingExpandedViewController.swift */; };
 		CAEF814022DD52C400CEE853 /* QuickBookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEF813F22DD52C400CEE853 /* QuickBookingViewController.swift */; };
 		CAF51CD522C7FB2B00B5ECDB /* BookingTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD422C7FB2B00B5ECDB /* BookingTimerViewController.swift */; };
-		CAF51CD722C9559800B5ECDB /* EditContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */; };
 		CAF51CDA22C9980500B5ECDB /* TestMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */; };
 		CAF51CDC22C99DB600B5ECDB /* OngoingMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */; };
 		CAF51CE322C9AF8000B5ECDB /* SendOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */; };
@@ -756,7 +755,6 @@
 		CAEF813D22DC4AFE00CEE853 /* BookingExpandedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingExpandedViewController.swift; sourceTree = "<group>"; };
 		CAEF813F22DD52C400CEE853 /* QuickBookingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickBookingViewController.swift; sourceTree = "<group>"; };
 		CAF51CD422C7FB2B00B5ECDB /* BookingTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingTimerViewController.swift; sourceTree = "<group>"; };
-		CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContainerViewController.swift; sourceTree = "<group>"; };
 		CAF51CD922C9980500B5ECDB /* TestMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMessageViewController.swift; sourceTree = "<group>"; };
 		CAF51CDB22C99DB600B5ECDB /* OngoingMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingMessageViewController.swift; sourceTree = "<group>"; };
 		CAF51CE222C9AF8000B5ECDB /* SendOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendOptionsViewController.swift; sourceTree = "<group>"; };
@@ -949,7 +947,6 @@
 		4D202CC121EFF48B00F68F13 /* Edit Information */ = {
 			isa = PBXGroup;
 			children = (
-				CAF51CD622C9559800B5ECDB /* EditContainerViewController.swift */,
 				4D202CC221EFF4BA00F68F13 /* EditCalendarViewController.swift */,
 				CA10D49E22D64794005D151E /* EditAvailabilityViewController.swift */,
 				4D202CC421F01FF400F68F13 /* EditInformationViewController.swift */,
@@ -2129,7 +2126,6 @@
 				4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */,
 				4D202CB321EE87AB00F68F13 /* HostingGraphsViewController.swift in Sources */,
 				CAD19A4E22BEE9830002C9A1 /* OldHostNotificationsViewController.swift in Sources */,
-				CAF51CD722C9559800B5ECDB /* EditContainerViewController.swift in Sources */,
 				CAB8976822FF585D007A7518 /* MapParkingViewController.swift in Sources */,
 				CAC0A7F422B8222E00240857 /* BankSecureViewController.swift in Sources */,
 				4D02C66F21D0850E00748BA3 /* MBParking.swift in Sources */,

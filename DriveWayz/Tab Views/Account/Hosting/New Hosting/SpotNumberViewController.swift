@@ -54,7 +54,7 @@ class SpotNumberViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -103,7 +103,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -152,7 +152,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -415,13 +415,13 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         }
         if textView == self.spotNumberField {
             self.spotNumberField.backgroundColor = UIColor.clear
-            self.spotNumberLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.spotNumberLine.backgroundColor = lineColor
         } else if textView == self.numberField {
             self.numberField.backgroundColor = UIColor.clear
-            self.numberLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.numberLine.backgroundColor = lineColor
         } else if textView == self.gateCodeField {
             self.gateCodeField.backgroundColor = UIColor.clear
-            self.gateCodeLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.gateCodeLine.backgroundColor = lineColor
         }
     }
     

@@ -39,9 +39,7 @@ class AnimateMySpacesViewController: UIViewController {
         view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.layer.cornerRadius =  12
-        let image = UIImage(named: "exampleParking")
-        view.image = image
+        view.layer.cornerRadius =  4
         
         return view
     }()

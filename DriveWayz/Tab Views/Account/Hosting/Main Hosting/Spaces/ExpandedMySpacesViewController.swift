@@ -93,6 +93,18 @@ class ExpandedMySpacesViewController: UIViewController {
         return view
     }()
     
+    var editInformation: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Edit", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH6
+        button.contentHorizontalAlignment = .right
+        button.addTarget(self, action: #selector(openImages), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var spotLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -343,6 +355,7 @@ class ExpandedMySpacesViewController: UIViewController {
         scrollView.addSubview(gradientContainer)
         scrollView.addSubview(whiteView)
         scrollView.addSubview(spacesPicker)
+        scrollView.addSubview(editInformation)
         scrollView.addSubview(spotLabel)
         scrollView.addSubview(destinationIcon)
         scrollView.addSubview(locationLabel)
@@ -384,6 +397,11 @@ class ExpandedMySpacesViewController: UIViewController {
         spacesPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         spacesPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         spacesPicker.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        
+        editInformation.bottomAnchor.constraint(equalTo: spacesPicker.bottomAnchor, constant: -12).isActive = true
+        editInformation.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     
@@ -483,6 +501,16 @@ class ExpandedMySpacesViewController: UIViewController {
                 self.makeActiveButton()
                 self.delegate?.observeData()
             }
+        }
+    }
+    
+    @objc func openImages() {
+        let controller = EditImagesViewController()
+        controller.delegate = self
+        if let hosting = self.selectedParking {
+            controller.setData(parking: hosting)
+            controller.parkingImages = self.parkingImages
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     

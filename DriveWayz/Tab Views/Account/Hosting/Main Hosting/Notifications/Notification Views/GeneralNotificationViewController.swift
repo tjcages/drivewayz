@@ -226,7 +226,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
     var verificationTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         view.alpha = 0
         
         return view
@@ -442,7 +442,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
         self.verificationTextLine.alpha = 1
         self.loadingLine.alpha = 1
         self.generalButton.setTitle("Check verification code", for: .normal)
-        self.generalButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.generalButton.backgroundColor = lineColor
         self.generalButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
         self.generalButton.isUserInteractionEnabled = false
         self.verificationTextView.tintColor = self.mainColor
@@ -560,7 +560,7 @@ extension GeneralNotificationViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         self.shouldDismiss = true
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.verificationTextLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.verificationTextLine.backgroundColor = lineColor
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -574,7 +574,7 @@ extension GeneralNotificationViewController: UITextViewDelegate {
                 self.generalButton.setTitleColor(Theme.WHITE, for: .normal)
                 self.generalButton.isUserInteractionEnabled = true
             } else {
-                self.generalButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+                self.generalButton.backgroundColor = lineColor
                 self.generalButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
                 self.generalButton.isUserInteractionEnabled = false
             }

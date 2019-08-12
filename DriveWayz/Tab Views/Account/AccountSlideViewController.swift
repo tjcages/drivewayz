@@ -104,7 +104,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        line.backgroundColor = lineColor
         view.addSubview(line)
         line.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         line.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -270,7 +270,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return 58
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -301,15 +301,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-//        self.selectedIndex = indexPath.row
-//        tableView.reloadData()
-//        delayWithSeconds(animationOut) {
-//            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-//            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
-//        }
     }
     
     var analControllerAnchor: NSLayoutConstraint!

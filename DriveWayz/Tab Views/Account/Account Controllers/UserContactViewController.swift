@@ -98,7 +98,7 @@ class UserContactViewController: UIViewController {
     var supportTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -122,7 +122,7 @@ class UserContactViewController: UIViewController {
     var supportButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        button.backgroundColor = lineColor
         button.isUserInteractionEnabled = false
         button.setTitle("Contact support", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
@@ -251,7 +251,7 @@ class UserContactViewController: UIViewController {
 extension UserContactViewController: MFMailComposeViewControllerDelegate {
     
     @objc func sendEmail() {
-        self.supportButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.supportButton.backgroundColor = lineColor
         self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
         self.supportButton.isUserInteractionEnabled = false
         self.loadingLine.startAnimating()
@@ -282,7 +282,7 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
                         if let key = snap.key {
                             let childRef = Database.database().reference().child("Messages").child(key)
                             childRef.updateChildValues(values, withCompletionBlock: { (error, success) in
-                                self.supportButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+                                self.supportButton.backgroundColor = lineColor
                                 self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
                                 self.supportButton.isUserInteractionEnabled = true
                                 self.loadingLine.endAnimating()
@@ -297,7 +297,7 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
             }
         } else {
             self.createSimpleAlert(title: "No message", message: "")
-            self.supportButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.supportButton.backgroundColor = lineColor
             self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
             self.supportButton.isUserInteractionEnabled = true
             self.loadingLine.endAnimating()
@@ -337,7 +337,7 @@ extension UserContactViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.supportTextLine.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+        self.supportTextLine.backgroundColor = lineColor
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -350,7 +350,7 @@ extension UserContactViewController: UITextViewDelegate {
             self.supportButton.setTitleColor(Theme.WHITE, for: .normal)
             self.supportButton.isUserInteractionEnabled = true
         } else {
-            self.supportButton.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.4)
+            self.supportButton.backgroundColor = lineColor
             self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
             self.supportButton.isUserInteractionEnabled = false
         }

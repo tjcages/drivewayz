@@ -17,7 +17,10 @@ class EditSpotsViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -139,7 +142,7 @@ class EditSpotsViewController: UIViewController {
         }
         
         self.view.addSubview(numberController.view)
-        numberController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
+        numberController.view.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
         numberController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         numberController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         numberController.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true

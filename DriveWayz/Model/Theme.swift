@@ -49,6 +49,7 @@ class Theme {
     static let DARK_GRAY = UIColor(red: 29/255, green: 29/255, blue: 39/255, alpha: 1)
 //    static let DARK_GRAY = UIColor(red: 31/255, green: 33/255, blue: 36/255, alpha: 1)
     static let LIGHT_GRAY = UIColor(red: 197/255, green: 196/255, blue: 203/255, alpha: 1)
+    static let GRAY = UIColor(red: 231/255, green: 231/255, blue: 234/255, alpha: 1)
     static let ASH_GRAY = UIColor(red: 42/255, green: 42/255, blue: 42/255, alpha: 1)
     static let BLACK = UIColor(red: 25/255, green: 25/255, blue: 25/255, alpha: 1)
     static let HOST_BLUE = UIColor(red: 28/255, green: 22/255, blue: 46/255, alpha: 1)

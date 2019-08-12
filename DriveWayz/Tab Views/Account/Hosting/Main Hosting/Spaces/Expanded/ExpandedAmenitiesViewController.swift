@@ -130,7 +130,7 @@ class ExpandedAmenitiesViewController: UIViewController {
         self.view.addSubview(editInformation)
         editInformation.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
         editInformation.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        editInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -8).isActive = true
         editInformation.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.view.addSubview(amenitiesPicker)
