@@ -12,37 +12,35 @@ import Stripe
 extension ConfirmViewController: STPPaymentContextDelegate {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
-        self.paymentInProgress = true
-        self.paymentContext.requestPayment()
+//        self.paymentInProgress = true
+//        self.paymentContext.requestPayment()
         
-//        self.delegate?.expandCheckmark() /////////////////////////////////////PAYMENT NOT SETUP
-//        self.setupNotifications()
-//        self.checkCoupons()
-//        self.sendPushNotification()
-//        delayWithSeconds(2) {
-//            self.paymentInProgress = false
-//        }
-    }
-    
-    func sendPushNotification() {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        if let parkingUserID = parking?.id, let type = parking?.mainType {
-            let ref = Database.database().reference().child("users").child(userID)
-            ref.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String: Any] {
-                    guard let name = dictionary["name"] as? String else { return }
-                    let nameArray = name.split(separator: " ")
-                    if let firstName = nameArray.first {
-                        let title = "\(String(firstName)) has parked in your \(type) parking space"
-                        let subtitle = "Open to see more details"
-                        
-                        let sender = PushNotificationSender()
-                        sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
-                    }
-                }
-            }
+        self.paymentInProgress = true /////////////////////////////////////PAYMENT NOT SETUP
+        self.setupNotifications()
+        delayWithSeconds(2) {
+            self.paymentInProgress = false
         }
     }
+    
+//    func sendPushNotification() {
+//        guard let userID = Auth.auth().currentUser?.uid else { return }
+//        if let parkingUserID = parking?.id, let type = parking?.mainType {
+//            let ref = Database.database().reference().child("users").child(userID)
+//            ref.observeSingleEvent(of: .value) { (snapshot) in
+//                if let dictionary = snapshot.value as? [String: Any] {
+//                    guard let name = dictionary["name"] as? String else { return }
+//                    let nameArray = name.split(separator: " ")
+//                    if let firstName = nameArray.first {
+//                        let title = "\(String(firstName)) has parked in your \(type) parking space"
+//                        let subtitle = "Open to see more details"
+//
+//                        let sender = PushNotificationSender()
+//                        sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
         let alertController = UIAlertController(
@@ -87,10 +85,7 @@ extension ConfirmViewController: STPPaymentContextDelegate {
             print(error?.localizedDescription as Any)
             self.sendAlert(title: "Error", message: "The payment could not be proccessed. Please try again later.")
         case .success:
-            self.delegate?.expandCheckmark()
             self.setupNotifications()
-            self.checkCoupons()
-            self.sendPushNotification()
         case .userCancellation:
             return
         }

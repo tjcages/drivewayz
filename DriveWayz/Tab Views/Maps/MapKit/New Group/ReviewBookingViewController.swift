@@ -515,20 +515,20 @@ class ReviewBookingViewController: UIViewController {
                                     title = "Congratulations!"
                                     subtitle = "You got a \(rating) star rating from \(String(firstName))"
                                     let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["image": "leftReviewGood", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970])
+                                    notificationRef.updateChildValues(["notificationType": "leftReviewGood", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "mild", "parkingID": parkingID])
                                 } else if self.stars.rating <= 2.0 {
                                     title = "\(String(firstName)) gave you a \(rating) star rating"
                                     subtitle = "We will reach out to see why"
                                     let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["image": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970])
+                                    notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
                                 } else {
                                     title = "\(String(firstName)) gave you a \(rating) star rating"
                                     subtitle = "We will reach out if this continues"
                                     let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["image": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970])
+                                    notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
                                 }
-                                let sender = PushNotificationSender()
-                                sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
+//                                let sender = PushNotificationSender()
+//                                sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
                             }
                         }
                     }

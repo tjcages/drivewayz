@@ -63,7 +63,7 @@ class NewHostBannerViewController: UIViewController {
         subLabel.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
         self.view.addSubview(hostGraphic)
-        hostGraphic.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        hostGraphic.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 12).isActive = true
         hostGraphic.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         hostGraphic.heightAnchor.constraint(equalToConstant: 90).isActive = true
         hostGraphic.leftAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true

@@ -150,10 +150,10 @@ class ParkingOptionViewController: UIViewController {
         }
         if let latitude = parking.latitude, let longitude = parking.longitude, let state = parking.stateAddress, let city = parking.cityAddress {
             let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            dynamicPricing.getDynamicPricing(parking: parking, place: location, state: state, city: city, overallDestination: overallDestination) { (dynamicPrice: CGFloat) in
-                let price = String(format: "%.2f", dynamicPrice)
-                self.priceLabel.text = "$\(price) per hour"
-            }
+//            DynamicPricing.getDynamicPricing(parking: parking, place: location, state: state, city: city, overallDestination: overallDestination) { (dynamicPrice: CGFloat) in
+//                let price = String(format: "%.2f", dynamicPrice)
+//                self.priceLabel.text = "$\(price) per hour"
+//            }
         }
     }
     

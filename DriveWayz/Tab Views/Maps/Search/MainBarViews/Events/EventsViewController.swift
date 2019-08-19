@@ -9,8 +9,6 @@
 import UIKit
 import MapKit
 
-var eventsAreAllowed: Bool = false
-
 class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, CLLocationManagerDelegate {
     
     let identifier = "identifier"
@@ -376,9 +374,8 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
             if localEvents.count > 0 {
                 DispatchQueue.main.async {
                     self.eventsPicker.reloadData()
-                    self.smallEventsPicker.reloadData()
-                    eventsAreAllowed = true
-                    self.mainDelegate?.openEvents()
+                    self.smallEventsPicker.reloadData() 
+//                    self.mainDelegate?.openEvents()
                     self.view.layoutIfNeeded()
                 }
             }

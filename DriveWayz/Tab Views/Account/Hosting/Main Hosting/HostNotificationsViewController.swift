@@ -188,7 +188,6 @@ class HostNotificationsViewController: UIViewController, handleHostNotifications
                 })
             }
         }
-        
     }
 
     override func viewDidLoad() {

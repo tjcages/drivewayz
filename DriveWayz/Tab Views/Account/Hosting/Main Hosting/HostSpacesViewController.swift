@@ -439,7 +439,7 @@ class SpacesCell: UICollectionViewCell {
         view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.layer.cornerRadius =  12
+        view.layer.cornerRadius =  4
         let image = UIImage(named: "exampleParking")
         view.image = image
         
@@ -535,6 +535,7 @@ class SpacesCell: UICollectionViewCell {
     var stars: CosmosView = {
         let view = CosmosView()
         view.rating = 5
+        view.settings.fillMode = .precise
         view.settings.updateOnTouch = false
         view.settings.starSize = 14
         view.settings.starMargin = 2

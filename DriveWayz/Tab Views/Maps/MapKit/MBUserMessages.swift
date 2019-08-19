@@ -12,33 +12,35 @@ import UIKit
 extension MapKitViewController: UIViewControllerTransitioningDelegate {
     
     func setupUserMessages() {
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(drivewayzMessagePressed))
         mainBarController.contactBannerController.view.addGestureRecognizer(tap)
-        
     }
     
     @objc func drivewayzMessagePressed() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        let secondVC = DrivewayzMessagesViewController()
-        secondVC.setData(userID: userID)
-        secondVC.transitioningDelegate = self
-        secondVC.modalPresentationStyle = .custom
-        self.present(secondVC, animated: true) {
+        let controller = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
+        controller.setData(userID: userID)
+        controller.sendingFromDrivewayz = false
+        controller.gradientController.setExitButton()
+        controller.modalPresentationStyle = .overCurrentContext
+        self.present(controller, animated: true) {
             self.lightContentStatusBar()
-            secondVC.openMessageBar()
             delayWithSeconds(1, completion: {
-                let ref = Database.database().reference().child("users").child(userID).child("PersonalMessages")
-                ref.removeValue()
+                let ref = Database.database().reference().child("users").child(userID)
+                ref.child("PersonalMessages").removeValue()
+                
+                let timestamp = Date().timeIntervalSince1970
+                ref.child("previousMessages").updateChildValues(["timestamp": timestamp])
             })
         }
     }
     
     func observeUserDrivewayzMessages() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(userID).child("PersonalMessages")
-        ref.observe(.childAdded) { (snapshot) in
-            self.mainBarController.contactBannerHeightAnchor.constant = 84
+        let ref = Database.database().reference().child("users").child(userID)
+        ref.child("PersonalMessages").observe(.childAdded) { (snapshot) in
+            self.mainBarController.setupContact(0, last: false)
+            self.mainBarController.contactBannerController.currentMessage()
             UIView.animate(withDuration: animationIn, animations: {
                 self.mainBarController.contactBannerController.view.alpha = 1
                 self.view.layoutIfNeeded()
@@ -56,10 +58,10 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
                 })
             })
         }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.mainBarController.contactBannerHeightAnchor.constant = 0
+        ref.child("previousMessages").observe(.childAdded) { (snapshot) in
+            self.mainBarController.setupContact(2, last: false)
+            self.mainBarController.contactBannerController.previousMessage()
             UIView.animate(withDuration: animationIn, animations: {
-                self.mainBarController.contactBannerController.view.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
                 self.lowestHeight = 354
@@ -78,23 +80,23 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
     }
     
     
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .present
-        transition.startingPoint = self.mainBarController.contactBannerController.newMessageButton.center
-        transition.circleColor = Theme.DARK_GRAY
-        
-        return transition
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .dismiss
-        transition.startingPoint = self.mainBarController.contactBannerController.newMessageButton.center
-        transition.circleColor = Theme.DARK_GRAY
-        delayWithSeconds(animationOut) {
-            self.delegate?.defaultContentStatusBar()
-        }
-        
-        return transition
-    }
-    
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        transition.transitionMode = .present
+//        transition.startingPoint = self.mainBarController.contactBannerController.newMessageButton.center
+//        transition.circleColor = Theme.DARK_GRAY
+//
+//        return transition
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        transition.transitionMode = .dismiss
+//        transition.startingPoint = self.mainBarController.contactBannerController.newMessageButton.center
+//        transition.circleColor = Theme.DARK_GRAY
+//        delayWithSeconds(animationOut) {
+//            self.delegate?.defaultContentStatusBar()
+//        }
+//
+//        return transition
+//    }
+//
 }

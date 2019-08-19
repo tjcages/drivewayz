@@ -180,6 +180,9 @@ class EditAvailabilityViewController: UIViewController {
         controller.selectedToTime = to
         controller.secondSelection.alpha = 1
         controller.dayAvailable = 1
+        if from == "All day" || to == "All day" {
+            controller.customPressed()
+        }
     }
     
     @objc func saveButtonPressed() {

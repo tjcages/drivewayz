@@ -16,7 +16,7 @@ class ParkingSpots: NSObject {
     var hostMessage: String?
     var id: String?
     var parkingCost: Double?
-    var dynamicCost: Double?
+    var dynamicCost: CGFloat?
     var parkingID: String?
     var timestamp: TimeInterval?
     var parkingDistance: Double?
@@ -95,6 +95,7 @@ class ParkingSpots: NSObject {
     var fridayAvailable: [Date]?
     var saturdayAvailable: [Date]?
     var sundayAvailable: [Date]?
+    var CurrentDurationAvailable: [Date]?
     
     var mondayUnavailable: Bool = false
     var tuesdayUnavailable: Bool = false
@@ -105,6 +106,7 @@ class ParkingSpots: NSObject {
     var sundayUnavailable: Bool = false
     
     var isSpotAvailable: Bool = true
+    var unavailableReason: String = "This spot is marked inactive"
     
     var totalBookings: Int?
     var totalHours: Double?
@@ -220,12 +222,13 @@ class ParkingSpots: NSObject {
             SundayUnavailable = unavailableDays["Sunday"] as? [String]
         }
         
-        if let currentBooking = dictionary["CurrentBooking"] as? [String:Any] {
+//        if let currentBooking = dictionary["CurrentBooking"] as? [String:Any] {
+//            isSpotAvailable = false
+//        }
+//
+        if (dictionary["ParkingUnavailability"] as? TimeInterval) != nil {
             isSpotAvailable = false
-        }
-        
-        if let currentlyUnavailable = dictionary["ParkingUnavailability"] as? TimeInterval {
-            isSpotAvailable = false
+            unavailableReason = "This spot is marked inactive"
         }
         
         if let bookings = dictionary["Bookings"] as? [String: Any] {
@@ -250,7 +253,7 @@ class ParkingSpots: NSObject {
                 if let from = times.first, let to = times.last {
                     if from == "All day" || to == "All day" {
                         let fromToday = todayString + " 12:00 AM"
-                        let tomorrowString = formatter.string(from: today.tomorrow)
+                        let tomorrowString = formatter.string(from: today.tomorrow.tomorrow)
                         let toToday = tomorrowString + " 12:00 AM"
                         self.sendFinalTimes(fromDateString: fromToday, toDateString: toToday, day: day)
                     } else if from == "Unavailable" {
@@ -275,6 +278,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 mondayUnavailable = true
                 mondayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 mondayUnavailable = false
@@ -285,6 +289,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 tuesdayUnavailable = true
                 tuesdayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 tuesdayUnavailable = false
@@ -295,6 +300,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 wednesdayUnavailable = true
                 wednesdayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 wednesdayUnavailable = false
@@ -305,6 +311,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 thursdayUnavailable = true
                 thursdayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 thursdayUnavailable = false
@@ -315,6 +322,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 fridayUnavailable = true
                 fridayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 fridayUnavailable = false
@@ -325,6 +333,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 saturdayUnavailable = true
                 saturdayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 saturdayUnavailable = false
@@ -335,6 +344,7 @@ class ParkingSpots: NSObject {
             if fromDateString == "Unavailable" && toDateString == "Unavailable" {
                 sundayUnavailable = true
                 sundayAvailable = []
+                unavailableReason = "The spot is unavailable this day"
                 return
             } else if let fromDate = formatter2.date(from: fromDateString), let toDate = formatter2.date(from: toDateString) {
                 sundayUnavailable = false
@@ -468,25 +478,6 @@ class ParkingSpots: NSObject {
         } else {
             return [""]
         }
-    }
-    
-    private func checkStrings(dayArray: [String], today: String, array: [Date]?, fromTime: String, toTime: String) -> [Date] {
-//        for day in dayArray {
-//            if day == today {
-//                isSpotAvailable = false
-//                return []
-//            }
-//        }
-//
-//        let result = nextWeekdays.map { weekday -> Date in
-//            let components = DateComponents(weekday: weekday)
-//            let nextOccurrence = calendar.nextDate(after: currentDate, matching: components, matchingPolicy: .nextTime)!
-//            currentDate = nextOccurrence
-//            return nextOccurrence
-//        }
-//        print(result)
-//
-        return []
     }
     
 }

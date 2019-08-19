@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension PurchaseViewController {
+extension DurationViewController {
     
     func updateTimes(hours: Int, minutes: Int) {
 //        let formatter = DateFormatter()
@@ -89,14 +89,14 @@ extension PurchaseViewController {
         let APm = apFormatter.string(from: self.fromDate)
         if APm == "AM" {
             self.amPm = "AM"
-            self.amButton.backgroundColor = Theme.STRAWBERRY_PINK
+            self.amButton.backgroundColor = Theme.BLUE
             self.pmButton.backgroundColor = UIColor.clear
             self.amButton.setTitleColor(Theme.WHITE, for: .normal)
             self.pmButton.setTitleColor(Theme.BLACK, for: .normal)
         } else {
             self.amPm = "PM"
             self.amButton.backgroundColor = UIColor.clear
-            self.pmButton.backgroundColor = Theme.STRAWBERRY_PINK
+            self.pmButton.backgroundColor = Theme.BLUE
             self.amButton.setTitleColor(Theme.BLACK, for: .normal)
             self.pmButton.setTitleColor(Theme.WHITE, for: .normal)
         }

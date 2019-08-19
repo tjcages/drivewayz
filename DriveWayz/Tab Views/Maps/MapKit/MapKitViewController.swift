@@ -16,24 +16,24 @@ import AVFoundation
 import Mapbox
 import MapboxDirections
 import MapboxNavigation
-import MapboxCoreNavigation
-import CoreMotion
+//import MapboxCoreNavigation
+//import CoreMotion
 
 var userLocation: CLLocation?
 var alreadyLoadedSpots: Bool = false
 
-var finalWalkingRoute: Route?
-var firstWalkingRoute: Route?
-var secondWalkingRoute: Route?
-var thirdWalkingRoute: Route?
-var finalParkingRoute: Route?
-var firstParkingRoute: Route?
-var secondParkingRoute: Route?
-var thirdParkingRoute: Route?
-var finalPolyline: MGLPolyline?
-var firstPolyline: MGLPolyline?
-var secondPolyline: MGLPolyline?
-var thirdPolyline: MGLPolyline?
+//var finalWalkingRoute: Route?
+//var firstWalkingRoute: Route?
+//var secondWalkingRoute: Route?
+//var thirdWalkingRoute: Route?
+//var finalParkingRoute: Route?
+//var firstParkingRoute: Route?
+//var secondParkingRoute: Route?
+//var thirdParkingRoute: Route?
+//var finalPolyline: MGLPolyline?
+//var firstPolyline: MGLPolyline?
+//var secondPolyline: MGLPolyline?
+//var thirdPolyline: MGLPolyline?
 
 var destinationFinalCoordinates: [CLLocationCoordinate2D] = []
 var destinationFirstCoordinates: [CLLocationCoordinate2D] = []
@@ -50,27 +50,34 @@ var secondPurchaseMapView: MGLCoordinateBounds?
 var thirdPurchaseMapView: MGLCoordinateBounds?
 
 class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
+    
+    var mainViewState: MainViewState = .none {
+        didSet {
+            self.reloadRequestedViews()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.clipsToBounds = true
-        
-        speechSythensizer.delegate = self
+   
+        monitorSurge()
         
         setupViews()
-        setupParking()
-        setupNetworkConnection()
-        setupAdditionalViews()
-        setupViewController()
+        setupDimmingViews()
+        setupMainViews()
+        setupMapButtons()
+        setupSearch()
+        setupLocator()
+        
+        setupCurrentViews()
         setupPurchaseStatus()
-        setupMainBar()
-        setupCurrent()
         setupNavigationControllers()
         setupUserMessages()
-        checkDayTimeStatus()
-        checkNetwork()
-        monitorCoupons()
+
+        setupCoupons()
+        setupNetworkConnection()
         observeUserDrivewayzMessages()
     }
     
@@ -193,16 +200,16 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    lazy var expandedSpotController: ExpandedSpotViewController = {
-        let controller = ExpandedSpotViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
+//    lazy var expandedSpotController: ExpandedSpotViewController = {
+//        let controller = ExpandedSpotViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self
+//        self.addChild(controller)
+//
+//        return controller
+//    }()
     
-    var expandedSpotBottomAnchor: NSLayoutConstraint!
+//    var expandedSpotBottomAnchor: NSLayoutConstraint!
     
     var currentTopAnchor: NSLayoutConstraint!
     var currentHeightAnchor: NSLayoutConstraint!
@@ -291,8 +298,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    lazy var purchaseController: PurchaseViewController = {
-        let controller = PurchaseViewController()
+    lazy var durationController: DurationViewController = {
+        let controller = DurationViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.title = "Purchase"
         controller.delegate = self
@@ -515,17 +522,17 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    var successfulPurchaseTopAnchor: NSLayoutConstraint!
+//    var successfulPurchaseTopAnchor: NSLayoutConstraint!
     
-    lazy var successfulPurchaseController: SuccessfulPurchaseViewController = {
-        let controller = SuccessfulPurchaseViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        self.addChild(controller)
-        
-        return controller
-    }()
+//    lazy var successfulPurchaseController: SuccessfulPurchaseViewController = {
+//        let controller = SuccessfulPurchaseViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self
+//        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+//        self.addChild(controller)
+//
+//        return controller
+//    }()
     
     var reviewBookingTopAnchor: NSLayoutConstraint!
     
@@ -540,21 +547,21 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    var contactDrivewayzTopAnchor: NSLayoutConstraint!
+//    var contactDrivewayzTopAnchor: NSLayoutConstraint!
     
-    lazy var contactDrivewayzController: ContactReviewsViewController = {
-        let controller = ContactReviewsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        
-        return controller
-    }()
+//    lazy var contactDrivewayzController: ContactReviewsViewController = {
+//        let controller = ContactReviewsViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        self.addChild(controller)
+//
+//        return controller
+//    }()
     
-    let transition = CircularTransition()
+//    let transition = CircularTransition()
     var newMessageTopAnchor: NSLayoutConstraint!
     
-    var motionManager: CMMotionActivityManager!
-    var motionTimer: Timer!
+//    var motionManager: CMMotionActivityManager!
+//    var motionTimer: Timer!
     var shouldUpdatePolyline: Bool = true
     
     var currentBottomHeightAnchor: NSLayoutConstraint!
@@ -568,7 +575,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var canChangeLocatorButtonTint: Bool = true
     var destinationString: String = "Arrived at destination"
     var annotationSelected: MGLAnnotation?
-    var currentActive: Bool = false
     var shouldShowOverlay: Bool = false
     
     var currentCoordinate: CLLocationCoordinate2D?
@@ -619,7 +625,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var parkingControllerBottomAnchor: NSLayoutConstraint!
     var parkingControllerHeightAnchor: NSLayoutConstraint!
-    var purchaseControllerBottomAnchor: NSLayoutConstraint!
+    var durationControllerBottomAnchor: NSLayoutConstraint!
     var confirmControllerBottomAnchor: NSLayoutConstraint!
     var shouldFlipGradient: Bool = false
 
@@ -662,6 +668,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
         mapView.userTrackingMode = .follow
         mapView.delegate = self
+        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
+        self.mapView.styleURL = url
         
         // Add a single tap gesture recognizer. This gesture requires the built-in MGLMapView tap gestures (such as those for zoom and annotation selection) to fail.
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(sender:)))
@@ -669,31 +677,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             singleTap.require(toFail: recognizer)
         }
         mapView.addGestureRecognizer(singleTap)
-    }
-    
-    func setupAdditionalViews() {
-        
-        self.view.addSubview(quickCouponController.view)
-        quickCouponController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        quickCouponController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        quickCouponController.view.widthAnchor.constraint(equalToConstant: 228).isActive = true
-        switch device {
-        case .iphone8:
-            quickCouponController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
-        case .iphoneX:
-            quickCouponController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
-        }
-        
-    }
-    
-    func checkDayTimeStatus() {
-        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
-        self.mapView.styleURL = url
-        hamburgerView1.backgroundColor = Theme.BLACK
-        hamburgerView2.backgroundColor = Theme.BLACK
-        hamburgerView3.backgroundColor = Theme.BLACK
-        self.parkingBackButton.tintColor = Theme.BLACK
-        self.locationsSearchResults.tableView.backgroundColor = Theme.WHITE.withAlphaComponent(0.5)
     }
     
     func sendNewHost() {
@@ -720,7 +703,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 
 protocol controlSaveLocation {
     func zoomToSearchLocation(address: String)
-    func saveUserCurrentLocation()
     func mainBarWillClose()
 }
 

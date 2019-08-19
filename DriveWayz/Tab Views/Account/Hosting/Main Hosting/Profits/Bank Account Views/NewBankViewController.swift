@@ -361,7 +361,7 @@ extension NewBankViewController {
                 self.view.layoutIfNeeded()
             }) { (success) in
                 UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.mainLabel.text = "Please enter your \nSocial Security Number"
+                    self.mainLabel.text = "Please enter the last 4 of your Social Security Number"
                 }, completion: nil)
             }
         } else if self.ssnCenterAnchor.constant == 0 {
@@ -439,7 +439,7 @@ extension NewBankViewController {
                 self.view.layoutIfNeeded()
             }) { (success) in
                 UIView.transition(with: self.mainLabel, duration: animationIn, options: .transitionCrossDissolve, animations: {
-                    self.mainLabel.text = "Please enter your \nSocial Security Number"
+                    self.mainLabel.text = "Please enter the last 4 of your Social Security Number"
                 }, completion: nil)
             }
         }

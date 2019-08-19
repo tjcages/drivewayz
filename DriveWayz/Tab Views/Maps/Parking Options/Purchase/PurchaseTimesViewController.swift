@@ -72,12 +72,14 @@ class PurchaseTimesViewController: UIViewController {
             }
         }
         self.timesPicker.reloadData()
-        let date = self.datesArray[self.selectedTime]
-        self.delegate?.changeStartDate(date: date)
-        delayWithSeconds(0.2) {
-            let indexPath = self.timesPicker.indexPathsForSelectedItems?.first ?? IndexPath(item: 0, section: 0)
-            self.timesPicker.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-            self.collectionView(self.timesPicker, didSelectItemAt: indexPath)
+        if self.datesArray.count > self.selectedTime {
+            let date = self.datesArray[self.selectedTime]
+            self.delegate?.changeStartDate(date: date)
+            delayWithSeconds(0.2) {
+                let indexPath = self.timesPicker.indexPathsForSelectedItems?.first ?? IndexPath(item: 0, section: 0)
+                self.timesPicker.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+                self.collectionView(self.timesPicker, didSelectItemAt: indexPath)
+            }
         }
     }
     
@@ -139,7 +141,7 @@ extension PurchaseTimesViewController : UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! PurchaseTimes
         cell.iconLabel.text = timesArray[indexPath.row]
         if indexPath.row == self.selectedTime {
-            cell.cellView.backgroundColor = Theme.STRAWBERRY_PINK
+            cell.cellView.backgroundColor = Theme.BLUE
             cell.iconLabel.textColor = Theme.WHITE
             cell.cellView.alpha = 1
         } else {
@@ -159,7 +161,7 @@ extension PurchaseTimesViewController : UICollectionViewDataSource, UICollection
             previousCell.cellView.alpha = 0.8
         }
         if let cell = collectionView.cellForItem(at: indexPath) as? PurchaseTimes {
-            cell.cellView.backgroundColor = Theme.STRAWBERRY_PINK
+            cell.cellView.backgroundColor = Theme.BLUE
             cell.iconLabel.textColor = Theme.WHITE
             cell.cellView.alpha = 1
             if let text = cell.iconLabel.text {
@@ -169,6 +171,11 @@ extension PurchaseTimesViewController : UICollectionViewDataSource, UICollection
             var date = self.datesArray[indexPath.row]
             if indexPath.row == 0 {
                 date = beginningDate
+            }
+            if cell.iconLabel.text == "Now" {
+                self.delegate?.changeToBooking()
+            } else {
+                self.delegate?.changeToReservation()
             }
             self.delegate?.changeStartDate(date: date)
             self.timesPicker.reloadData()

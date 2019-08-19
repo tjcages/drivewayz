@@ -22,6 +22,7 @@ class ConfirmViewController: UIViewController {
     var toDate: Date?
     var price: Double?
     var hours: Double?
+    var totalTime: String?
     var discount: Int = 0
     
     var paymentContext: STPPaymentContext
@@ -245,9 +246,10 @@ class ConfirmViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
+        view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
-        view.layer.cornerRadius = 8
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(monitorCurrentParking), name: NSNotification.Name(rawValue: "confirmBookingCheck"), object: nil)
         
         setupViews()
         setupCalendar()
@@ -365,7 +367,9 @@ class ConfirmViewController: UIViewController {
     func changeDates(fromDate: Date, totalTime: String) {
         var hours: Int = 0
         var minutes: Int = 0
+        self.totalTime = totalTime
         let timeArray = totalTime.split(separator: " ")
+        print(timeArray)
         if let hourString = timeArray.dropFirst().first, hourString.contains("h") {
             if let timeHours = timeArray.first {
                 if let intHours = Int(timeHours) {
@@ -373,10 +377,20 @@ class ConfirmViewController: UIViewController {
                 }
             }
         }
-        if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
-            if let timeMinutes = timeArray.dropFirst().dropFirst().first {
-                if let intMinutes = Int(timeMinutes) {
-                    minutes = intMinutes
+        if timeArray.count == 2 {
+            if let minuteString = timeArray.dropFirst().first, minuteString.contains("m") {
+                if let timeMinutes = timeArray.first {
+                    if let intMinutes = Int(timeMinutes) {
+                        minutes = intMinutes
+                    }
+                }
+            }
+        } else {
+            if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
+                if let timeMinutes = timeArray.dropFirst().dropFirst().first {
+                    if let intMinutes = Int(timeMinutes) {
+                        minutes = intMinutes
+                    }
                 }
             }
         }

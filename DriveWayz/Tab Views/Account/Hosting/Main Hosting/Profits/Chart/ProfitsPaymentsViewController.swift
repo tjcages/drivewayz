@@ -14,17 +14,12 @@ class ProfitsPaymentsViewController: UIViewController {
     var delegate: handleHostTransfers?
     var transferDelegate: handlePaymentTransfers?
     
-    // Payouts already transferred to bank
-    var totalPayouts: Double = 0.0 {
-        didSet {
-            self.delegate?.changePaymentAmount(total: self.totalPayouts, transit: self.transitPayouts)
-        }
-    }
+    // Data variable to track our sorted data
+    var data = [TableSection: [Bookings]]()
     
-    // Payouts in transit to the bank
-    var transitPayouts: Double = 0.0 {
+    var bookings: [Bookings] = [] {
         didSet {
-            self.delegate?.changePaymentAmount(total: self.totalPayouts, transit: self.transitPayouts)
+            self.paymentsTable.reloadData()
         }
     }
     
@@ -37,45 +32,6 @@ class ProfitsPaymentsViewController: UIViewController {
     
     // This is the size of our header sections that we will use later on.
     let SectionHeaderHeight: CGFloat = 40
-    
-    // Data variable to track our sorted data
-    var data = [TableSection: [Payouts]]()
-    
-    // Helper method to sort our data
-    func sortData() {
-        data[.today] = payouts.filter({ $0.section == .today })
-        data[.yesterday] = payouts.filter({ $0.section == .yesterday })
-        data[.week] = payouts.filter({ $0.section == .week })
-        data[.month] = payouts.filter({ $0.section == .month })
-        data[.earlier] = payouts.filter({ $0.section == .earlier })
-    }
-    
-    // Payout variable to hold all data and string to specify section
-    var payouts: [Payouts] = [] {
-        didSet {
-            // Reload data each time our observer appends a new Payout value
-            self.sortData()
-            self.paymentsTable.reloadData()
-            
-            // Add payment to either transitPayouts or totalPayouts based on the initiated day
-            for payout in self.payouts {
-                guard let amount = payout.transferAmount, let section = payout.section else { return }
-                if section == .today {
-                    self.transitPayouts = self.transitPayouts + amount
-                } else if section == .yesterday {
-                    self.transitPayouts = self.transitPayouts + amount
-                } else if section == .week {
-                    self.totalPayouts = self.totalPayouts + amount
-                } else if section == .month {
-                    self.totalPayouts = self.totalPayouts + amount
-                } else if section == .earlier {
-                    self.totalPayouts = self.totalPayouts + amount
-                } else {
-                    self.totalPayouts = self.totalPayouts + amount
-                }
-            }
-        }
-    }
     
     var container: UIView = {
         let view = UIView()
@@ -133,7 +89,7 @@ class ProfitsPaymentsViewController: UIViewController {
 extension ProfitsPaymentsViewController: UITableViewDelegate, UITableViewDataSource, UserHeaderTableViewCellDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        self.height = CGFloat(70 * self.payouts.count)
+        self.height = CGFloat(70 * self.bookings.count)
         
         // As long as `total` is the last case in our TableSection enum,
         // this method will always be dynamically correct no mater how many table sections we add or remove.
@@ -144,29 +100,24 @@ extension ProfitsPaymentsViewController: UITableViewDelegate, UITableViewDataSou
         let view = PaymentsHeader()
         view.delegate = self
         
-        // Determine the section title based on our original enum
-        if let tableSection = TableSection(rawValue: section) {
-            switch tableSection {
-            case .today:
-                view.titleLabel.text = "TODAY"
-            case .yesterday:
-                view.titleLabel.text = "YESTERDAY"
-            case .week:
-                view.titleLabel.text = "THIS WEEK"
-            case .month:
-                view.titleLabel.text = "THIS MONTH"
-            case .earlier:
-                view.titleLabel.text = "EARLIER"
-            default:
-                view.titleLabel.text = ""
-            }
+        if section == 0 {
+            view.titleLabel.text = "TODAY"
+        } else if section == 1 {
+            view.titleLabel.text = "YESTERDAY"
+        } else if section == 2 {
+            view.titleLabel.text = "THIS WEEK"
+        } else if section == 3 {
+            view.titleLabel.text = "THIS MONTH"
+        } else {
+            view.titleLabel.text = "EARLIER"
         }
-        
         return view
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let tableSection = TableSection(rawValue: section), let payoutData = data[tableSection], payoutData.count > 0 {
+        // First check if there is a valid section of table
+        // Then we check that for the section there is more than 1 row
+        if let tableSection = TableSection(rawValue: section), let notificationData = data[tableSection], notificationData.count > 0 {
             self.height = self.height + 40.0
             
             return SectionHeaderHeight
@@ -177,9 +128,9 @@ extension ProfitsPaymentsViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Using Swift's optional lookup we first check if there is a valid section of table
         // Then we check that for the section there is data that goes with
-        if let tableSection = TableSection(rawValue: section), let payoutData = data[tableSection] {
+        if let tableSection = TableSection(rawValue: section), let notificationData = data[tableSection] {
             
-            return payoutData.count
+            return notificationData.count
         }
         return 0
     }
@@ -188,26 +139,75 @@ extension ProfitsPaymentsViewController: UITableViewDelegate, UITableViewDataSou
         return 70
     }
     
-    func didSelectUserHeaderTableViewCell(Selected: Bool, UserHeader: PaymentsHeader) {
-        self.transferDelegate?.transferOptions()
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = paymentsTable.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! PaymentsCell
         cell.separatorInset = UIEdgeInsets(top: 0, left: phoneWidth, bottom: 0, right: 0)
         cell.selectionStyle = .none
         
+        // First check if there is a valid section of table
+        // Then we check that for the section there is a row
+        if let tableSection = TableSection(rawValue: indexPath.section), let notification = data[tableSection]?[indexPath.row] {
+            cell.booking = notification
+        }
+        
         return cell
     }
     
+    func didSelectUserHeaderTableViewCell(Selected: Bool, UserHeader: PaymentsHeader) {
+//        self.delegate?.bookingInformation()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let cell = paymentsTable.cellForRow(at: indexPath) as! PaymentsCell
+        // First check if there is a valid section of table
+        // Then we check that for the section there is a row
+        if let tableSection = TableSection(rawValue: indexPath.section), let notification = data[tableSection]?[indexPath.row] {
+//            self.delegate?.expandBooking(booking: notification, image: cell.profileImageView.image!)
+        }
     }
     
 }
 
 
 class PaymentsCell: UITableViewCell {
+    
+    var booking: Bookings? {
+        didSet {
+            if let booking = self.booking {
+                self.contextLabel.text = booking.context
+                if let name = booking.userName {
+                    let split = name.split(separator: " ")
+                    if let first = split.first, let last = split.dropFirst().first?.first {
+                        self.titleLabel.text = "\(first) \(last.uppercased())."
+                    }
+                }
+                if let fromTime = booking.fromDate, let toTime = booking.toDate {
+                    let fromDate = Date(timeIntervalSince1970: fromTime)
+                    let toDate = Date(timeIntervalSince1970: toTime)
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "h:mm a"
+                    let fromString = formatter.string(from: fromDate)
+                    let toString = formatter.string(from: toDate)
+                    self.durationLabel.text = "\(fromString) - \(toString)"
+                }
+                if let hours = booking.hours, let price = booking.price {
+                    let cost = hours * price
+                    self.amountLabel.text = NSString(format: "+$%.2f", cost) as String
+                }
+                if let profileURL = booking.userProfileURL, profileURL != "" {
+                    self.profileImageView.loadImageUsingCacheWithUrlString(profileURL) { (success) in
+                        if success != true {
+                            let image = UIImage(named: "background4")
+                            self.profileImageView.image = image
+                        } else {
+                            let image = resizeImage(image: self.profileImageView.image!, targetSize: CGSize(width: 200, height: 200))
+                            self.profileImageView.image = image
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     var profileImageView: UIImageView = {
         let button = UIImageView()

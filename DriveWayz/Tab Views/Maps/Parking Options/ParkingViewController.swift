@@ -23,29 +23,71 @@ class ParkingViewController: UIViewController, handleTestParking {
     let identifier = "cellID"
     let cellHeight: CGFloat = 242
     let cellWidth: CGFloat = phoneWidth
-    var selectedParkingSpot: ParkingSpots?
+    
+    var spotIsAvailable: Bool = false {
+        didSet {
+            if let parking = self.selectedParkingSpot {
+                let incorrectDuration = parking.unavailableReason
+                self.bubbleWidthAnchor.constant = incorrectDuration.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH5) + 24
+                self.bubbleArrow.message = incorrectDuration
+            }
+            UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
+                if self.spotIsAvailable {
+                    self.mainButton.backgroundColor = Theme.STRAWBERRY_PINK
+                    self.mainButton.setTitleColor(Theme.WHITE, for: .normal)
+                    self.mainButton.isUserInteractionEnabled = true
+                    self.bubbleArrow.alpha = 0
+                }
+                else {
+                    self.mainButton.backgroundColor = lineColor
+                    self.mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.mainButton.isUserInteractionEnabled = false
+                    self.bubbleArrow.alpha = 1
+                }
+            }, completion: nil)
+        }
+    }
+    
+    var selectedParkingSpot: ParkingSpots? {
+        didSet {
+            if let parking = self.selectedParkingSpot {
+                let isAvailable = parking.isSpotAvailable
+                if isAvailable {
+                    if let availableTimes = parking.CurrentDurationAvailable {
+                        if let fromTime = availableTimes.first, let toTime = availableTimes.last {
+                            if fromTime <= bookingFromDate && toTime >= bookingToDate {
+                                self.spotIsAvailable = true
+                            } else {
+                                self.spotIsAvailable = false
+                            }
+                        } else {
+                            self.spotIsAvailable = false
+                        }
+                    } else {
+                        self.spotIsAvailable = false
+                    }
+                } else {
+                    self.spotIsAvailable = false
+                }
+            }
+        }
+    }
+    
     var parkingSpots: [ParkingSpots] = [] {
         didSet {
             self.selectedParkingSpot = parkingSpots.first
-            self.bookingPicker.reloadData()
-            delayWithSeconds(animationIn) {
-                self.bookingPicker.alpha = 1
-                self.loadingPicker.alpha = 0
-                self.bookingSliderController.view.alpha = 1
-                self.view.layoutIfNeeded()
+            self.bookingSliderController.view.alpha = 1
+
+            for parking in self.parkingSpots {
+                DynamicPricing.getDynamicPricing(parking: parking) { (dynamicCost) in
+                    parking.dynamicCost = dynamicCost
+                    self.bookingPicker.reloadData()
+                }
             }
         }
     }
     
     var bookingLayout: UICollectionViewLayout = {
-        let layout = UICollectionViewFlowLayout.init()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 0
-        
-        return layout
-    }()
-    
-    var loadingLayout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout.init()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
@@ -62,21 +104,6 @@ class ParkingViewController: UIViewController, handleTestParking {
         picker.register(BookingCell.self, forCellWithReuseIdentifier: identifier)
         picker.decelerationRate = .fast
         picker.isPagingEnabled = true
-        picker.alpha = 0
-        
-        return picker
-    }()
-    
-    lazy var loadingPicker: UICollectionView = {
-        let picker = UICollectionView(frame: CGRect.zero, collectionViewLayout: loadingLayout)
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.backgroundColor = UIColor.clear
-        picker.showsHorizontalScrollIndicator = false
-        picker.showsVerticalScrollIndicator = false
-        picker.register(BookingCell.self, forCellWithReuseIdentifier: identifier)
-        picker.decelerationRate = .fast
-        picker.isPagingEnabled = true
-        picker.alpha = 1
         
         return picker
     }()
@@ -161,20 +188,29 @@ class ParkingViewController: UIViewController, handleTestParking {
         return controller
     }()
     
+    var bubbleArrow: BubbleArrow = {
+        let view = BubbleArrow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = 0.2
+        view.alpha = 0
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         bookingPicker.delegate = self
         bookingPicker.dataSource = self
-        loadingPicker.delegate = self
-        loadingPicker.dataSource = self
         
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
+        view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
-        view.layer.cornerRadius = 8
         
         setupViews()
         setupCalendar()
@@ -189,17 +225,11 @@ class ParkingViewController: UIViewController, handleTestParking {
         self.view.addSubview(mainButton)
         self.view.addSubview(bookingPicker)
         self.view.addSubview(bookingSliderController.view)
-        self.view.addSubview(loadingPicker)
         
         bookingPicker.heightAnchor.constraint(equalToConstant: cellHeight).isActive = true
         bookingPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         bookingPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         bookingPicker.bottomAnchor.constraint(equalTo: mainButton.topAnchor).isActive = true
-        
-        loadingPicker.heightAnchor.constraint(equalToConstant: cellHeight).isActive = true
-        loadingPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        loadingPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        loadingPicker.bottomAnchor.constraint(equalTo: mainButton.topAnchor).isActive = true
         
         mainButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -28).isActive = true
         mainButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -219,6 +249,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     }
     
     var expandedBookingTopAnchor: NSLayoutConstraint!
+    var bubbleWidthAnchor: NSLayoutConstraint!
     
     func setupCalendar() {
         
@@ -260,6 +291,13 @@ class ParkingViewController: UIViewController, handleTestParking {
             expandedBookingTopAnchor.isActive = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(minimizeBookingPressed))
         expandedBookingController.view.addGestureRecognizer(tap)
+        
+        self.view.addSubview(bubbleArrow)
+        bubbleArrow.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        bubbleArrow.bottomAnchor.constraint(equalTo: timeButton.topAnchor, constant: -12).isActive = true
+        bubbleWidthAnchor = bubbleArrow.widthAnchor.constraint(equalToConstant: phoneWidth * 0.66)
+            bubbleWidthAnchor.isActive = true
+        bubbleArrow.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
     }
     
@@ -369,6 +407,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         self.parkingExpandedPreviousHeight = self.expandedBookingTopAnchor.constant
         self.expandedBookingController.changeHeight(amount: 140, state: UIPanGestureRecognizer.State.ended)
         UIView.animate(withDuration: animationOut, animations: {
+            self.bubbleArrow.alpha = 0
             self.bookingSliderController.view.alpha = 0
             self.delegate?.changeParkingOptionsHeight(fade: 0.4)
             self.view.layoutIfNeeded()
@@ -409,8 +448,6 @@ class ParkingViewController: UIViewController, handleTestParking {
     }
     
     func loadBookings() {
-        self.bookingPicker.alpha = 0
-        self.loadingPicker.alpha = 1
         self.bookingSliderController.view.alpha = 0
         self.view.layoutIfNeeded()
     }
@@ -441,15 +478,15 @@ extension ParkingViewController: UICollectionViewDelegate, UICollectionViewDataS
             let contentSize = collectionView.contentSize
             self.bookingSliderController.scrollView.contentSize = contentSize
             if parkingSpots.count > 0 {
-                self.bookingPicker.alpha = 1
-                self.loadingPicker.alpha = 0
                 self.bookingSliderController.view.alpha = 1
+                self.bookingPicker.alpha = 1
                 self.view.layoutIfNeeded()
                 delayWithSeconds(animationIn) {
                     self.checkPolyline(percentage: 0)
                     self.getCellAtIndex(index: 0)
                 }
             }
+            print(parkingSpots.count)
             return parkingSpots.count
         } else {
             return 1

@@ -100,17 +100,17 @@ class TransfersOptionsViewController: UIViewController {
         return button
     }()
     
-    lazy var messageBottomBar: MessageBottomBarViewController = {
-        let controller = MessageBottomBarViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        self.addChild(controller)
-        controller.sendButton.addTarget(self, action: #selector(sendMessage(sender:)), for: .touchUpInside)
-        controller.imageIcon.alpha = 0
-        controller.microphoneIcon.alpha = 0
-        
-        return controller
-    }()
+//    lazy var messageBottomBar: MessageBottomBarViewController = {
+//        let controller = MessageBottomBarViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.view.alpha = 0
+//        self.addChild(controller)
+//        controller.sendButton.addTarget(self, action: #selector(sendMessage(sender:)), for: .touchUpInside)
+//        controller.imageIcon.alpha = 0
+//        controller.microphoneIcon.alpha = 0
+//
+//        return controller
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,11 +168,11 @@ class TransfersOptionsViewController: UIViewController {
         messageBottomAnchor = messageTextView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50)
             messageBottomAnchor.isActive = true
         
-        self.view.addSubview(messageBottomBar.view)
-        messageBottomBar.view.topAnchor.constraint(equalTo: messageTextView.bottomAnchor).isActive = true
-        messageBottomBar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        messageBottomBar.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        messageBottomBar.view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        self.view.addSubview(messageBottomBar.view)
+//        messageBottomBar.view.topAnchor.constraint(equalTo: messageTextView.bottomAnchor).isActive = true
+//        messageBottomBar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        messageBottomBar.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+//        messageBottomBar.view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.previousMessageHeight = messageTextView.text.height(withConstrainedWidth: phoneWidth - 46, font: Fonts.SSPSemiBoldH4)
     }
@@ -181,14 +181,14 @@ class TransfersOptionsViewController: UIViewController {
         self.messageTextView.alpha = 1
         self.messageLine.alpha = 1
         self.messageIcon.alpha = 1
-        self.messageBottomBar.view.alpha = 1
+//        self.messageBottomBar.view.alpha = 1
     }
     
     func noMessage() {
         self.messageTextView.alpha = 0
         self.messageLine.alpha = 0
         self.messageIcon.alpha = 0
-        self.messageBottomBar.view.alpha = 0
+//        self.messageBottomBar.view.alpha = 0
     }
     
     @objc func dismissEditing() {

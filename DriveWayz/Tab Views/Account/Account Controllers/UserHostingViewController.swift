@@ -273,7 +273,6 @@ class UserHostingViewController: UIViewController {
     func setData() {
         self.profitsController.observeData()
         self.bookingsController.observeData()
-        self.bookingsController.observeData()
         self.notificationsController.observeData()
         self.spacesController.observeData()
     }
@@ -619,7 +618,7 @@ extension UserHostingViewController: UIScrollViewDelegate {
     }
     
     @objc func backButtonPressed() {
-        self.profitsController.loadingLine.endAnimating()
+        self.profitsController.profitsChart.loadingLine.endAnimating()
         self.bookingsController.loadingLine.endAnimating()
         self.inboxController.loadingLine.endAnimating()
         self.notificationsController.loadingLine.endAnimating()

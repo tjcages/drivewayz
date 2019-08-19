@@ -103,6 +103,13 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         
         phoneHeight = self.view.frame.height
         phoneWidth = self.view.frame.width
+        
+        switch device {
+        case .iphone8:
+            gradientHeight = 140
+        case .iphoneX:
+            gradientHeight = 160
+        }
 
         self.view.addSubview(gradient)
         gradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true

@@ -11,6 +11,64 @@ import UIKit
 class ChartViewController: UIViewController {
     
     var delegate: handleHostScrolling?
+    
+    var reservationKeys: [String] = []
+    var keysArray: [String] = [] {
+        didSet {
+            if self.testTimer != nil {
+                self.testTimer?.invalidate()
+            }
+            self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(checkKeys), userInfo: nil, repeats: false)
+        }
+    }
+    
+    var testTimer: Timer?
+    var testNotifications: [Bookings] = [] {
+        didSet {
+            if self.testTimer != nil {
+                self.testTimer?.invalidate()
+            }
+            self.testTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(endLoading), userInfo: nil, repeats: false)
+        }
+    }
+    
+    @objc func endLoading() {
+        self.loadingLine.endAnimating()
+        self.notifications = self.testNotifications
+    }
+    
+    // Data variable to track our sorted data
+    var data = [TableSection: [Bookings]]()
+    
+    // Helper method to sort our data
+    func sortData() {
+        data[.today] = notifications.filter({ $0.section == .today })
+        data[.yesterday] = notifications.filter({ $0.section == .yesterday })
+        data[.week] = notifications.filter({ $0.section == .week })
+        data[.month] = notifications.filter({ $0.section == .month })
+        data[.earlier] = notifications.filter({ $0.section == .earlier })
+    }
+    
+    // Notification variable to hold all data and string to specify section
+    var notifications: [Bookings] = [] {
+        didSet {
+            if self.notifications.count > 0 {
+                self.noBookingsController.view.alpha = 0
+                self.profitsPayments.view.alpha = 1
+            } else {
+                self.noBookingsController.view.alpha = 1
+                self.profitsPayments.view.alpha = 0
+            }
+            
+            self.notifications = self.notifications.sorted { $0.fromDate! > $1.fromDate! }
+            
+            // Reload data each time our observer appends a new Notification value
+            self.sortData()
+            
+            self.profitsPayments.data = self.data
+            self.profitsPayments.bookings = self.notifications
+        }
+    }
 
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -48,6 +106,57 @@ class ChartViewController: UIViewController {
         
         return controller
     }()
+    
+    var loadingLine: LoadingLine = {
+        let view = LoadingLine()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    // Observe Notifications data
+    func observeData() {
+        self.loadingLine.startAnimating()
+        self.keysArray = []
+        self.notifications = []
+        self.testNotifications = []
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")
+        ref.observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                let hostRef = Database.database().reference().child("ParkingSpots").child(key).child("Bookings")
+                hostRef.observe(.childAdded, with: { (snapshot) in
+                    let key = snapshot.key
+                    self.keysArray.append(key)
+                })
+                let hostRes = Database.database().reference().child("ParkingSpots").child(key).child("Reservations")
+                hostRes.observe(.childAdded, with: { (snapshot) in
+                    let key = snapshot.key
+                    self.keysArray.append(key)
+                    self.reservationKeys.append(key)
+                })
+            }
+        }
+    }
+    
+    @objc func checkKeys() {
+        for key in keysArray {
+            let ref = Database.database().reference().child("UserBookings").child(key)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    
+                    let notification = Bookings(dictionary: dictionary)
+                    notification.key = snapshot.key
+                    if self.reservationKeys.contains(snapshot.key) {
+                        notification.context = "Reservation"
+                    }
+                    self.testNotifications.append(notification)
+                    
+                    self.loadingLine.endAnimating()
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,21 +196,29 @@ class ChartViewController: UIViewController {
         paymentsHeight = profitsPayments.view.heightAnchor.constraint(equalToConstant: 0)
             paymentsHeight.isActive = true
         
+        self.view.addSubview(loadingLine)
+        loadingLine.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        
     }
 }
 
 
 extension ChartViewController: handleHostTransfers {
     
-    func changePaymentAmount(total: Double, transit: Double) {
-        
-    }
-    
     func expandTransferHeight(height: CGFloat) {
+        let size = phoneWidth * 0.82 + height + 240
+        self.scrollView.contentSize = CGSize(width: phoneWidth, height: size)
         self.paymentsHeight.constant = height
         self.view.layoutIfNeeded()
     }
     
+    func changePaymentAmount(total: Double, transit: Double) {
+        
+    }
+
     func closeBackground() {
         self.delegate?.closeBackground()
     }

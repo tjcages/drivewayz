@@ -304,16 +304,16 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
         }
     }
     
-    func fetchNewCurrent(name: String) {
-        let sender = PushNotificationSender()
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a MM/dd/yyyy"
-        let time = dateFormatter.string(from: date)
-        for keys in self.confirmedIDs {
-            sender.sendPushNotification(toUser: keys, title: "\(name) sent Drivewayz a message", subtitle: "\(time)")
-        }
-    }
+//    func fetchNewCurrent(name: String) {
+//        let sender = PushNotificationSender()
+//        let date = Date()
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "h:mm a MM/dd/yyyy"
+//        let time = dateFormatter.string(from: date)
+//        for keys in self.confirmedIDs {
+//            sender.sendPushNotification(toUser: keys, title: "\(name) sent Drivewayz a message", subtitle: "\(time)")
+//        }
+//    }
     
     func observeCorrectID() {
         self.confirmedIDs = []
@@ -416,14 +416,18 @@ extension UserContactViewController: UITextViewDelegate {
     }
     
     @objc func backButtonPressed() {
-        if context != "Feedback" {
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            self.delegate?.dismissActiveController()
-            self.dismiss(animated: true) {
-                self.backButton.alpha = 0
-            }
+        self.delegate?.dismissActiveController()
+        self.dismiss(animated: true) {
+            self.backButton.alpha = 0
         }
+//        if context != "Feedback" {
+//            self.navigationController?.popViewController(animated: true)
+//        } else {
+//            self.delegate?.dismissActiveController()
+//            self.dismiss(animated: true) {
+//                self.backButton.alpha = 0
+//            }
+//        }
     }
     
     @objc func dismissKeyboard() {

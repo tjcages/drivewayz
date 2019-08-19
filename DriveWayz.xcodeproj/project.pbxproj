@@ -13,17 +13,12 @@
 		4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */; };
 		4D02C64E21CD83D700748BA3 /* OldOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64D21CD83D700748BA3 /* OldOnboardingViewController.swift */; };
 		4D02C65021CD94D500748BA3 /* LocationServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */; };
-		4D02C65221CDD89A00748BA3 /* MapKitMainBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */; };
-		4D02C65421CDD9E900748BA3 /* MapKitEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */; };
-		4D02C65621CDDA7900748BA3 /* MapKitNetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */; };
-		4D02C65821CDDADE00748BA3 /* MapKitHostingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */; };
-		4D02C65A21CDDB3E00748BA3 /* MapKitPurchaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */; };
-		4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */; };
+		4D02C65221CDD89A00748BA3 /* MainBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65121CDD89A00748BA3 /* MainBar.swift */; };
+		4D02C65621CDDA7900748BA3 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65521CDDA7900748BA3 /* NetworkConnection.swift */; };
+		4D02C65821CDDADE00748BA3 /* DimmingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65721CDDADE00748BA3 /* DimmingViews.swift */; };
+		4D02C65A21CDDB3E00748BA3 /* PurchaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65921CDDB3E00748BA3 /* PurchaseStatus.swift */; };
+		4D02C65C21CDDBD300748BA3 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65B21CDDBD300748BA3 /* SearchBar.swift */; };
 		4D02C65E21CDDC4D00748BA3 /* MBLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */; };
-		4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */; };
-		4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */; };
-		4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66321CDDD6800748BA3 /* MapKitMap.swift */; };
-		4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */; };
 		4D02C66F21D0850E00748BA3 /* MBParking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D02C66E21D0850D00748BA3 /* MBParking.swift */; };
 		4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4721476BB100A380B8 /* PickCostViewController.swift */; };
 		4D035F4A21477DB500A380B8 /* SpotsMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */; };
@@ -105,7 +100,6 @@
 		4D2EAFCA223F249900F7B840 /* NavigationBottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EAFC9223F249900F7B840 /* NavigationBottomViewController.swift */; };
 		4D2EAFCC223F2ED400F7B840 /* NavigationTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EAFCB223F2ED400F7B840 /* NavigationTopViewController.swift */; };
 		4D2EB5BA2101527A004AEA54 /* SaveParkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */; };
-		4D2EB5C221016EED004AEA54 /* ParkingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5C121016EED004AEA54 /* ParkingStatus.swift */; };
 		4D2EB5C421038F34004AEA54 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5C321038F34004AEA54 /* InformationViewController.swift */; };
 		4D2EB5C621039486004AEA54 /* ParkingImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5C521039486004AEA54 /* ParkingImageViewController.swift */; };
 		4D2EB5C821062F88004AEA54 /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2EB5C721062F88004AEA54 /* WalkthroughViewController.swift */; };
@@ -253,7 +247,7 @@
 		4DE6443F224857E2004EEAE7 /* AnnotationsStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */; };
 		4DE78F58216C5D8D00B99835 /* SendNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */; };
 		4DF19BF72118ABBC007D3310 /* BannerHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */; };
-		4DF1EFD82234B15200210E6B /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1EFD72234B15200210E6B /* PurchaseViewController.swift */; };
+		4DF1EFD82234B15200210E6B /* DurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1EFD72234B15200210E6B /* DurationViewController.swift */; };
 		4DF1EFDA2234B6B300210E6B /* PurchaseTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1EFD92234B6B300210E6B /* PurchaseTimesViewController.swift */; };
 		4DF1EFDC2234D99600210E6B /* PurchaseSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1EFDB2234D99600210E6B /* PurchaseSliderViewController.swift */; };
 		4DF7A0CA2269530B006C171E /* ProfitsEarningsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF7A0C92269530B006C171E /* ProfitsEarningsViewController.swift */; };
@@ -274,7 +268,6 @@
 		CA098AD922CFE5E500E45F0F /* MBUserMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */; };
 		CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */; };
 		CA098ADE22CFEF2100E45F0F /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */; };
-		CA098AE022D00AFB00E45F0F /* RespondMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */; };
 		CA10D49D22D520C8005D151E /* EditImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10D49C22D520C8005D151E /* EditImagesViewController.swift */; };
 		CA10D49F22D64794005D151E /* EditAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10D49E22D64794005D151E /* EditAvailabilityViewController.swift */; };
 		CA10D4A222D6B293005D151E /* BannerMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10D4A122D6B293005D151E /* BannerMessageViewController.swift */; };
@@ -285,7 +278,6 @@
 		CA11C3DF22EB890D008CB9D9 /* TransfersInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3DE22EB890D008CB9D9 /* TransfersInformationViewController.swift */; };
 		CA11C3E122EBA64B008CB9D9 /* TransfersStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3E022EBA64B008CB9D9 /* TransfersStatusViewController.swift */; };
 		CA11C3E322EBBED6008CB9D9 /* TransfersOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3E222EBBED6008CB9D9 /* TransfersOptionsViewController.swift */; };
-		CA11C3E522EBD8A1008CB9D9 /* MessageBottomBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3E422EBD8A1008CB9D9 /* MessageBottomBarViewController.swift */; };
 		CA11C3E722EBEDBB008CB9D9 /* HostNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3E622EBEDBB008CB9D9 /* HostNotificationsViewController.swift */; };
 		CA11C3E922EBF784008CB9D9 /* HostBookingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3E822EBF784008CB9D9 /* HostBookingsViewController.swift */; };
 		CA11C3EC22EBF94C008CB9D9 /* QuickNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3EB22EBF94C008CB9D9 /* QuickNotificationsViewController.swift */; };
@@ -294,7 +286,6 @@
 		CA11C3F722EE4172008CB9D9 /* HostResponsibilitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3F622EE4172008CB9D9 /* HostResponsibilitiesViewController.swift */; };
 		CA11C3F922EE78B3008CB9D9 /* HostSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3F822EE78B3008CB9D9 /* HostSpacesViewController.swift */; };
 		CA19D57122C0822C00337C7F /* ContactReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */; };
-		CA19D57322C1520E00337C7F /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57222C1520E00337C7F /* PushNotifications.swift */; };
 		CA19D57A22C2B78A00337C7F /* cities.csv in Resources */ = {isa = PBXBuildFile; fileRef = CA19D57922C2B78A00337C7F /* cities.csv */; };
 		CA19D57C22C3D4C200337C7F /* MoveDotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */; };
 		CA19D57E22C5BF0600337C7F /* BookingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57D22C5BF0600337C7F /* BookingReviewsViewController.swift */; };
@@ -332,6 +323,18 @@
 		CA6F341022D3D77700CF8961 /* ConfirmAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F340F22D3D77700CF8961 /* ConfirmAvailabilityViewController.swift */; };
 		CA6F341222D3EF3600CF8961 /* ConfirmCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F341122D3EF3600CF8961 /* ConfirmCalendarViewController.swift */; };
 		CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA724E5822B7661C00E15858 /* ChatMessageCell.swift */; };
+		CA8A1FDE23010F9D0028A132 /* MainSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FDD23010F9D0028A132 /* MainSearchViewController.swift */; };
+		CA8A1FE0230123FE0028A132 /* MainEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FDF230123FE0028A132 /* MainEventsViewController.swift */; };
+		CA8A1FEC230398DD0028A132 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FEB230398DD0028A132 /* CommentInputAccessoryView.swift */; };
+		CA8A1FEE230398EF0028A132 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FED230398EF0028A132 /* CommentInputTextView.swift */; };
+		CA8A1FF02303A7DC0028A132 /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FEF2303A7DC0028A132 /* CommentsController.swift */; };
+		CA8A1FF32303AD470028A132 /* GradientContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FF22303AD470028A132 /* GradientContainerViewController.swift */; };
+		CA8A1FFA23078B2A0028A132 /* HandleMainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FF923078B2A0028A132 /* HandleMainViews.swift */; };
+		CA8A1FFC230795E10028A132 /* CouponStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FFB230795E10028A132 /* CouponStatus.swift */; };
+		CA8A1FFE2309F7460028A132 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FFD2309F7460028A132 /* BubbleView.swift */; };
+		CA8A2000230A0AB90028A132 /* BubbleArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A1FFF230A0AB90028A132 /* BubbleArrow.swift */; };
+		CA8A2002230A0B8B0028A132 /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A2001230A0B8B0028A132 /* TriangleView.swift */; };
+		CA8A2004230A0BA10028A132 /* HamburgerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8A2003230A0BA10028A132 /* HamburgerMenu.swift */; };
 		CA8AC73B22E413CB00A1D337 /* HostProfitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC73A22E413CB00A1D337 /* HostProfitsViewController.swift */; };
 		CA8AC73D22E4199F00A1D337 /* ProfitsOrganizerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC73C22E4199F00A1D337 /* ProfitsOrganizerViewController.swift */; };
 		CA8AC74022E6C37C00A1D337 /* ProfitsChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC73F22E6C37C00A1D337 /* ProfitsChartsViewController.swift */; };
@@ -394,17 +397,12 @@
 		4D02C64B21CC79AF00748BA3 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
 		4D02C64D21CD83D700748BA3 /* OldOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldOnboardingViewController.swift; sourceTree = "<group>"; };
 		4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServicesViewController.swift; sourceTree = "<group>"; };
-		4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMainBar.swift; sourceTree = "<group>"; };
-		4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitEvents.swift; sourceTree = "<group>"; };
-		4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitNetworkConnection.swift; sourceTree = "<group>"; };
-		4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitHostingSpots.swift; sourceTree = "<group>"; };
-		4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitPurchaseStatus.swift; sourceTree = "<group>"; };
-		4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitTextField.swift; sourceTree = "<group>"; };
+		4D02C65121CDD89A00748BA3 /* MainBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBar.swift; sourceTree = "<group>"; };
+		4D02C65521CDDA7900748BA3 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
+		4D02C65721CDDADE00748BA3 /* DimmingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimmingViews.swift; sourceTree = "<group>"; };
+		4D02C65921CDDB3E00748BA3 /* PurchaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStatus.swift; sourceTree = "<group>"; };
+		4D02C65B21CDDBD300748BA3 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBLocator.swift; sourceTree = "<group>"; };
-		4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingSpots.swift; sourceTree = "<group>"; };
-		4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitCurrentParking.swift; sourceTree = "<group>"; };
-		4D02C66321CDDD6800748BA3 /* MapKitMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitMap.swift; sourceTree = "<group>"; };
-		4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitParkingAvailability.swift; sourceTree = "<group>"; };
 		4D02C66E21D0850D00748BA3 /* MBParking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBParking.swift; sourceTree = "<group>"; };
 		4D035F4721476BB100A380B8 /* PickCostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickCostViewController.swift; sourceTree = "<group>"; };
 		4D035F4921477DB500A380B8 /* SpotsMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsMessageViewController.swift; sourceTree = "<group>"; };
@@ -487,7 +485,6 @@
 		4D2EAFC9223F249900F7B840 /* NavigationBottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBottomViewController.swift; sourceTree = "<group>"; };
 		4D2EAFCB223F2ED400F7B840 /* NavigationTopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTopViewController.swift; sourceTree = "<group>"; };
 		4D2EB5B92101527A004AEA54 /* SaveParkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveParkingViewController.swift; sourceTree = "<group>"; };
-		4D2EB5C121016EED004AEA54 /* ParkingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingStatus.swift; sourceTree = "<group>"; };
 		4D2EB5C321038F34004AEA54 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		4D2EB5C521039486004AEA54 /* ParkingImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingImageViewController.swift; sourceTree = "<group>"; };
 		4D2EB5C721062F88004AEA54 /* WalkthroughViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughViewController.swift; sourceTree = "<group>"; };
@@ -638,7 +635,7 @@
 		4DE6443E224857E2004EEAE7 /* AnnotationsStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsStatusViewController.swift; sourceTree = "<group>"; };
 		4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNotificationsViewController.swift; sourceTree = "<group>"; };
 		4DF19BF62118ABBC007D3310 /* BannerHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHostingViewController.swift; sourceTree = "<group>"; };
-		4DF1EFD72234B15200210E6B /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
+		4DF1EFD72234B15200210E6B /* DurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationViewController.swift; sourceTree = "<group>"; };
 		4DF1EFD92234B6B300210E6B /* PurchaseTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTimesViewController.swift; sourceTree = "<group>"; };
 		4DF1EFDB2234D99600210E6B /* PurchaseSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSliderViewController.swift; sourceTree = "<group>"; };
 		4DF7A0C92269530B006C171E /* ProfitsEarningsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitsEarningsViewController.swift; sourceTree = "<group>"; };
@@ -659,7 +656,6 @@
 		CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBUserMessages.swift; sourceTree = "<group>"; };
 		CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMessageViewController.swift; sourceTree = "<group>"; };
 		CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
-		CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RespondMessageViewController.swift; sourceTree = "<group>"; };
 		CA10D49C22D520C8005D151E /* EditImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImagesViewController.swift; sourceTree = "<group>"; };
 		CA10D49E22D64794005D151E /* EditAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAvailabilityViewController.swift; sourceTree = "<group>"; };
 		CA10D4A122D6B293005D151E /* BannerMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerMessageViewController.swift; sourceTree = "<group>"; };
@@ -670,7 +666,6 @@
 		CA11C3DE22EB890D008CB9D9 /* TransfersInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersInformationViewController.swift; sourceTree = "<group>"; };
 		CA11C3E022EBA64B008CB9D9 /* TransfersStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersStatusViewController.swift; sourceTree = "<group>"; };
 		CA11C3E222EBBED6008CB9D9 /* TransfersOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersOptionsViewController.swift; sourceTree = "<group>"; };
-		CA11C3E422EBD8A1008CB9D9 /* MessageBottomBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBottomBarViewController.swift; sourceTree = "<group>"; };
 		CA11C3E622EBEDBB008CB9D9 /* HostNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostNotificationsViewController.swift; sourceTree = "<group>"; };
 		CA11C3E822EBF784008CB9D9 /* HostBookingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostBookingsViewController.swift; sourceTree = "<group>"; };
 		CA11C3EB22EBF94C008CB9D9 /* QuickNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickNotificationsViewController.swift; sourceTree = "<group>"; };
@@ -679,7 +674,6 @@
 		CA11C3F622EE4172008CB9D9 /* HostResponsibilitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostResponsibilitiesViewController.swift; sourceTree = "<group>"; };
 		CA11C3F822EE78B3008CB9D9 /* HostSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSpacesViewController.swift; sourceTree = "<group>"; };
 		CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactReviewsViewController.swift; sourceTree = "<group>"; };
-		CA19D57222C1520E00337C7F /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		CA19D57622C1B81600337C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../../Downloads/drivewayz-master/DriveWayz/Info.plist"; sourceTree = "<group>"; };
 		CA19D57922C2B78A00337C7F /* cities.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cities.csv; sourceTree = SOURCE_ROOT; };
 		CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDotsViewController.swift; sourceTree = "<group>"; };
@@ -718,6 +712,18 @@
 		CA6F340F22D3D77700CF8961 /* ConfirmAvailabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmAvailabilityViewController.swift; sourceTree = "<group>"; };
 		CA6F341122D3EF3600CF8961 /* ConfirmCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmCalendarViewController.swift; sourceTree = "<group>"; };
 		CA724E5822B7661C00E15858 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		CA8A1FDD23010F9D0028A132 /* MainSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchViewController.swift; sourceTree = "<group>"; };
+		CA8A1FDF230123FE0028A132 /* MainEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsViewController.swift; sourceTree = "<group>"; };
+		CA8A1FEB230398DD0028A132 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
+		CA8A1FED230398EF0028A132 /* CommentInputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
+		CA8A1FEF2303A7DC0028A132 /* CommentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsController.swift; sourceTree = "<group>"; };
+		CA8A1FF22303AD470028A132 /* GradientContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientContainerViewController.swift; sourceTree = "<group>"; };
+		CA8A1FF923078B2A0028A132 /* HandleMainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleMainViews.swift; sourceTree = "<group>"; };
+		CA8A1FFB230795E10028A132 /* CouponStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponStatus.swift; sourceTree = "<group>"; };
+		CA8A1FFD2309F7460028A132 /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		CA8A1FFF230A0AB90028A132 /* BubbleArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleArrow.swift; sourceTree = "<group>"; };
+		CA8A2001230A0B8B0028A132 /* TriangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
+		CA8A2003230A0BA10028A132 /* HamburgerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenu.swift; sourceTree = "<group>"; };
 		CA8AC73A22E413CB00A1D337 /* HostProfitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostProfitsViewController.swift; sourceTree = "<group>"; };
 		CA8AC73C22E4199F00A1D337 /* ProfitsOrganizerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitsOrganizerViewController.swift; sourceTree = "<group>"; };
 		CA8AC73F22E6C37C00A1D337 /* ProfitsChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitsChartsViewController.swift; sourceTree = "<group>"; };
@@ -812,9 +818,8 @@
 				4DB5CA7B221A73B600A4C6FD /* MBCurrentParking.swift */,
 				4D5A0EF021E0009700EB38A1 /* MBNavigation.swift */,
 				CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */,
-				CA19D57222C1520E00337C7F /* PushNotifications.swift */,
 				4D218BFD22ADDCA700633176 /* MBRemoveAnnotations.swift */,
-				4DCFB9F321D83C4600E910FF /* MapKit */,
+				4DCFB9F321D83C4600E910FF /* Main Views */,
 				4D70E5A821E1CDFD00DDC4D0 /* Current Route Guidance */,
 			);
 			path = MapKit;
@@ -824,7 +829,7 @@
 			isa = PBXGroup;
 			children = (
 				4DB7AE5322330F44000ACEC0 /* ParkingViewController.swift */,
-				4DF1EFD72234B15200210E6B /* PurchaseViewController.swift */,
+				4DF1EFD72234B15200210E6B /* DurationViewController.swift */,
 				4DA99316223785EB0085D859 /* ConfirmViewController.swift */,
 				4D2EAFC9223F249900F7B840 /* NavigationBottomViewController.swift */,
 				4D2A2E3A221B4EF30031791A /* Current Spot */,
@@ -841,6 +846,7 @@
 				4DC7FA6222B04820003C5C42 /* HelpOptionsViewController.swift */,
 				CA5C508622F3E8AB00B0AC7D /* BookingIssueViewController.swift */,
 				CA5C508D22F6812400B0AC7D /* SendBookingIssuesViewController.swift */,
+				CA5A7F2F22DFA8DB001004B6 /* Policies */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -870,7 +876,7 @@
 				CA11C3E622EBEDBB008CB9D9 /* HostNotificationsViewController.swift */,
 				CA11C3F822EE78B3008CB9D9 /* HostSpacesViewController.swift */,
 				4D160084225ED10100510A60 /* Profits */,
-				4DF7A0CB22695C42006C171E /* Reservations */,
+				4DF7A0CB22695C42006C171E /* Bookings */,
 				CA5C507622F28EAE00B0AC7D /* Inbox */,
 				CAD19A4F22BEEAF70002C9A1 /* Notifications */,
 				4DF7A0CE226FDA2C006C171E /* Spaces */,
@@ -987,6 +993,7 @@
 		4D218BEE229DE08500633176 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				CA8A1FDD23010F9D0028A132 /* MainSearchViewController.swift */,
 				4D3B9DA62253257A00E88396 /* SearchSummaryViewController.swift */,
 				4D218BFB22A83DEC00633176 /* SearchBarViewController.swift */,
 				4DD3B63521960CC7008B1417 /* MapSearchViewController.swift */,
@@ -1036,6 +1043,11 @@
 				4DD370B620F2C362005154C2 /* drivewayz-Bridging-Header.h */,
 				4D21D2D720CC9FC3002D7005 /* AppDelegate.swift */,
 				4DCA492520F0186700F00B3B /* Stripe */,
+				CA8A1FEA2303988B0028A132 /* Accessory Views */,
+				CA8A1FF723048E770028A132 /* Styles */,
+				CA8A1FF623048E520028A132 /* Dynamic Handlers */,
+				CA8A1FF523048E300028A132 /* Utility */,
+				CA8A1FF423048E140028A132 /* Extensions */,
 				4D21D33420CCA0B3002D7005 /* Model */,
 				4D21D33520CCA0D7002D7005 /* View */,
 				4D21D33620CCA111002D7005 /* Enter Views */,
@@ -1052,7 +1064,6 @@
 			isa = PBXGroup;
 			children = (
 				4D21D2EC20CC9FF9002D7005 /* Users.swift */,
-				4DD3B6332194CF4E008B1417 /* Global.swift */,
 				4D21D2F020CC9FF9002D7005 /* Message.swift */,
 				CA11C3DB22EA9588008CB9D9 /* PayoutAccount.swift */,
 				4D26EE5C20E5A23E00E369EF /* ParkingSpots.swift */,
@@ -1060,23 +1071,7 @@
 				CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */,
 				CA19D57F22C67C0D00337C7F /* Reviews.swift */,
 				4DCF0C6E20D7409F00C6D1AB /* Vehicles.swift */,
-				4D21D2FC20CC9FF9002D7005 /* Extensions.swift */,
-				4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */,
-				4DE49012218BF1AD00171BB8 /* Utility.swift */,
-				4D6A5A7320CD976C00F404A7 /* Theme.swift */,
-				4D2A2E38221B4ABE0031791A /* CircularView.swift */,
-				4D2EB5C121016EED004AEA54 /* ParkingStatus.swift */,
-				4DBD6D0F21C4BC3700C52991 /* LocalEvents.swift */,
-				4DBD6D1721C8840900C52991 /* Reachability.swift */,
-				4D5A0EF221E03D1C00EB38A1 /* CustomDayStyle.swift */,
-				4DF8AF38220D544F00CF64FC /* DynamicCost.swift */,
-				4DDE1607220E762B00462047 /* DynamicEvents.swift */,
-				4DDE1609220F80CF00462047 /* DynamicHolidays.swift */,
-				4D30187C228235B9007F772B /* DynamicParking.swift */,
 				CA5C508F22F7683800B0AC7D /* FAQs.swift */,
-				CA5C509122F778E900B0AC7D /* LoadingLine.swift */,
-				CA5C509322FB968E00B0AC7D /* ABLoaderView.swift */,
-				CAB8976922FF6701007A7518 /* Checkmark.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1213,6 +1208,7 @@
 		4D353C2221C9BE2600AE07B4 /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				CA8A1FDF230123FE0028A132 /* MainEventsViewController.swift */,
 				4DBD6D1121C4BC7D00C52991 /* EventsViewController.swift */,
 				4DBD6D1521C74D8600C52991 /* CheckEventsViewController.swift */,
 			);
@@ -1447,7 +1443,6 @@
 				4D70E5B121E2F7AC00DDC4D0 /* RegisterEmailViewController.swift */,
 				4D70E5AF21E2ED5B00DDC4D0 /* ConfirmParkingViewController.swift */,
 				4D202C8421E4263C00F68F13 /* ConfigureDatabase.swift */,
-				CA5A7F2F22DFA8DB001004B6 /* Policies */,
 				4D202C8621E4264900F68F13 /* Old Hosting */,
 			);
 			path = "New Hosting";
@@ -1498,21 +1493,18 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		4DCFB9F321D83C4600E910FF /* MapKit */ = {
+		4DCFB9F321D83C4600E910FF /* Main Views */ = {
 			isa = PBXGroup;
 			children = (
-				4D02C65121CDD89A00748BA3 /* MapKitMainBar.swift */,
-				4D02C65B21CDDBD300748BA3 /* MapKitTextField.swift */,
-				4D02C65321CDD9E900748BA3 /* MapKitEvents.swift */,
-				4D02C65521CDDA7900748BA3 /* MapKitNetworkConnection.swift */,
-				4D02C65721CDDADE00748BA3 /* MapKitHostingSpots.swift */,
-				4D02C65921CDDB3E00748BA3 /* MapKitPurchaseStatus.swift */,
-				4D02C66121CDDD3D00748BA3 /* MapKitCurrentParking.swift */,
-				4D02C66321CDDD6800748BA3 /* MapKitMap.swift */,
-				4D02C66521CDDE0700748BA3 /* MapKitParkingAvailability.swift */,
-				4D02C65F21CDDCEE00748BA3 /* MapKitParkingSpots.swift */,
+				CA8A1FF923078B2A0028A132 /* HandleMainViews.swift */,
+				4D02C65121CDD89A00748BA3 /* MainBar.swift */,
+				CA8A1FFB230795E10028A132 /* CouponStatus.swift */,
+				4D02C65B21CDDBD300748BA3 /* SearchBar.swift */,
+				4D02C65721CDDADE00748BA3 /* DimmingViews.swift */,
+				4D02C65921CDDB3E00748BA3 /* PurchaseStatus.swift */,
+				4D02C65521CDDA7900748BA3 /* NetworkConnection.swift */,
 			);
-			path = MapKit;
+			path = "Main Views";
 			sourceTree = "<group>";
 		};
 		4DD9768320FE5433002C71BF /* Payment */ = {
@@ -1553,7 +1545,7 @@
 			path = Source_Sans_Pro;
 			sourceTree = "<group>";
 		};
-		4DF7A0CB22695C42006C171E /* Reservations */ = {
+		4DF7A0CB22695C42006C171E /* Bookings */ = {
 			isa = PBXGroup;
 			children = (
 				CA5C507022F2747500B0AC7D /* UpcomingViewController.swift */,
@@ -1563,7 +1555,7 @@
 				CA5C507A22F2912200B0AC7D /* Calendar */,
 				CA5C506D22F265BB00B0AC7D /* Old Reservations */,
 			);
-			path = Reservations;
+			path = Bookings;
 			sourceTree = "<group>";
 		};
 		4DF7A0CE226FDA2C006C171E /* Spaces */ = {
@@ -1630,9 +1622,6 @@
 			isa = PBXGroup;
 			children = (
 				CA098ADB22CFE63500E45F0F /* OpenMessageViewController.swift */,
-				CA098ADF22D00AFB00E45F0F /* RespondMessageViewController.swift */,
-				CA11C3E422EBD8A1008CB9D9 /* MessageBottomBarViewController.swift */,
-				CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -1763,6 +1752,82 @@
 			);
 			name = "Old Hosting";
 			path = "Main Hosting/Old Hosting";
+			sourceTree = "<group>";
+		};
+		CA8A1FEA2303988B0028A132 /* Accessory Views */ = {
+			isa = PBXGroup;
+			children = (
+				CA8A1FF12303AD260028A132 /* Gradient Container */,
+				CA8A1FF823048F220028A132 /* Messages */,
+			);
+			path = "Accessory Views";
+			sourceTree = "<group>";
+		};
+		CA8A1FF12303AD260028A132 /* Gradient Container */ = {
+			isa = PBXGroup;
+			children = (
+				CA8A1FF22303AD470028A132 /* GradientContainerViewController.swift */,
+				CA5C509122F778E900B0AC7D /* LoadingLine.swift */,
+				CA5C509322FB968E00B0AC7D /* ABLoaderView.swift */,
+			);
+			path = "Gradient Container";
+			sourceTree = "<group>";
+		};
+		CA8A1FF423048E140028A132 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4D21D2FC20CC9FF9002D7005 /* Extensions.swift */,
+				4D6A5A5C20CD8C0F00F404A7 /* CAGradientLayer.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CA8A1FF523048E300028A132 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				4DE49012218BF1AD00171BB8 /* Utility.swift */,
+				4D6A5A7320CD976C00F404A7 /* Theme.swift */,
+				4DD3B6332194CF4E008B1417 /* Global.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		CA8A1FF623048E520028A132 /* Dynamic Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				4D30187C228235B9007F772B /* DynamicParking.swift */,
+				4DF8AF38220D544F00CF64FC /* DynamicCost.swift */,
+				4DBD6D1721C8840900C52991 /* Reachability.swift */,
+				4DBD6D0F21C4BC3700C52991 /* LocalEvents.swift */,
+				4DDE1607220E762B00462047 /* DynamicEvents.swift */,
+				4DDE1609220F80CF00462047 /* DynamicHolidays.swift */,
+			);
+			path = "Dynamic Handlers";
+			sourceTree = "<group>";
+		};
+		CA8A1FF723048E770028A132 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				4D5A0EF221E03D1C00EB38A1 /* CustomDayStyle.swift */,
+				4D2A2E38221B4ABE0031791A /* CircularView.swift */,
+				CA8A1FFD2309F7460028A132 /* BubbleView.swift */,
+				CA8A1FFF230A0AB90028A132 /* BubbleArrow.swift */,
+				CAB8976922FF6701007A7518 /* Checkmark.swift */,
+				CA098ADD22CFEF2100E45F0F /* CircularTransition.swift */,
+				CA8A2001230A0B8B0028A132 /* TriangleView.swift */,
+				CA8A2003230A0BA10028A132 /* HamburgerMenu.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		CA8A1FF823048F220028A132 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				CA8A1FEF2303A7DC0028A132 /* CommentsController.swift */,
+				CA8A1FED230398EF0028A132 /* CommentInputTextView.swift */,
+				CA8A1FEB230398DD0028A132 /* CommentInputAccessoryView.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 		CA8AC74922E932D700A1D337 /* Wallet */ = {
@@ -2068,10 +2133,13 @@
 				CA5C507122F2747500B0AC7D /* UpcomingViewController.swift in Sources */,
 				4DD3B63621960CC7008B1417 /* MapSearchViewController.swift in Sources */,
 				4D70E5AC21E1CE7D00DDC4D0 /* NavigationPresentedViewController.swift in Sources */,
+				CA8A1FEE230398EF0028A132 /* CommentInputTextView.swift in Sources */,
 				CA10D49F22D64794005D151E /* EditAvailabilityViewController.swift in Sources */,
 				4D6672CF21F2B107002434F8 /* AmenitiesCell.swift in Sources */,
 				4DD370AF20F198DB005154C2 /* ParkingInfoViewController.swift in Sources */,
 				CA10D4A422D7B7EA005D151E /* DrivewayzMessagesViewController.swift in Sources */,
+				CA8A1FE0230123FE0028A132 /* MainEventsViewController.swift in Sources */,
+				CA8A1FEC230398DD0028A132 /* CommentInputAccessoryView.swift in Sources */,
 				CA19D57C22C3D4C200337C7F /* MoveDotsViewController.swift in Sources */,
 				CAF51CD522C7FB2B00B5ECDB /* BookingTimerViewController.swift in Sources */,
 				4DC886FD20F8E0FD000540D6 /* CurrentParkingViewController.swift in Sources */,
@@ -2100,6 +2168,7 @@
 				CA11C3E122EBA64B008CB9D9 /* TransfersStatusViewController.swift in Sources */,
 				CAD9F84B22BBF2FA0077969B /* ReservationsCell.swift in Sources */,
 				4D1AD4362106B8EF0024612A /* CouponsViewController.swift in Sources */,
+				CA8A1FDE23010F9D0028A132 /* MainSearchViewController.swift in Sources */,
 				4D219C48222A4211006ED717 /* FullInfoViewController.swift in Sources */,
 				4D9363FF2251D0F400EEAC61 /* OldBarViewController.swift in Sources */,
 				CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */,
@@ -2109,7 +2178,6 @@
 				4D4E6932218A75C200E5D18A /* BusinessPicturesViewController.swift in Sources */,
 				4D67DCB6221C7EEE000BF192 /* PurchaseSpotViewController.swift in Sources */,
 				4DB62D20228F8AB100D967AB /* EnterNameViewController.swift in Sources */,
-				4D02C66421CDDD6800748BA3 /* MapKitMap.swift in Sources */,
 				4DD06254216DC0510026B600 /* UserMessagesViewController.swift in Sources */,
 				4D8EA26421811D5400F6469C /* LocationParkingViewController.swift in Sources */,
 				4D437C0522B30D87001C6C4C /* BookingRouteViewController.swift in Sources */,
@@ -2153,9 +2221,9 @@
 				4DC261B4214710DC00D6DCD3 /* ScheduleAvailabilityViewController.swift in Sources */,
 				CA10D4A622D7C97B005D151E /* AnalyticsViewController.swift in Sources */,
 				4DBD6D1621C74D8600C52991 /* CheckEventsViewController.swift in Sources */,
+				CA8A1FFC230795E10028A132 /* CouponStatus.swift in Sources */,
 				4D67DCBA221CDB84000BF192 /* PurchaseDurationViewController.swift in Sources */,
 				4DDC010B220934AC007CDBD6 /* MBParkingOptions.swift in Sources */,
-				4D2EB5C221016EED004AEA54 /* ParkingStatus.swift in Sources */,
 				4DBC151B2142FEE3003CBED7 /* NotifyUpcomingViewController.swift in Sources */,
 				4D0AD44E22040C5E00A3911D /* MBSelectAnnotation.swift in Sources */,
 				CA11C3F722EE4172008CB9D9 /* HostResponsibilitiesViewController.swift in Sources */,
@@ -2176,7 +2244,6 @@
 				4DA9931B2238717F0085D859 /* ExpandedReviewsViewController.swift in Sources */,
 				CA8AC75522E963C000A1D337 /* TransferAllViewController.swift in Sources */,
 				4DF1EFDC2234D99600210E6B /* PurchaseSliderViewController.swift in Sources */,
-				4D02C65421CDD9E900748BA3 /* MapKitEvents.swift in Sources */,
 				4DC7FA6322B04820003C5C42 /* HelpOptionsViewController.swift in Sources */,
 				4D0F0B98219E648A0022D1B4 /* ParkingDetailsViewController.swift in Sources */,
 				CAD9F84022B8ABD00077969B /* BankDOBViewController.swift in Sources */,
@@ -2189,12 +2256,14 @@
 				CA3C2FC922BDFFA400A2A374 /* HostNotifications.swift in Sources */,
 				CA8AC75722EA41A300A1D337 /* ExpandedWalletViewController.swift in Sources */,
 				4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */,
+				CA8A1FFA23078B2A0028A132 /* HandleMainViews.swift in Sources */,
 				4DFC29112134989200013FC3 /* MainUpcomingViewController.swift in Sources */,
 				4D02C64C21CC79AF00748BA3 /* VerificationCodeViewController.swift in Sources */,
 				4D437C0A22B448BE001C6C4C /* BookingPaymentViewController.swift in Sources */,
 				4D202CAB21ED5FD300F68F13 /* ExpandedAmenitiesViewController.swift in Sources */,
 				4D218BF622A0727100633176 /* BookingCell.swift in Sources */,
 				CA8AC74422E9312000A1D337 /* ProfitsWalletViewController.swift in Sources */,
+				CA8A2000230A0AB90028A132 /* BubbleArrow.swift in Sources */,
 				4D202CB121ED8A9400F68F13 /* HostingOptionsViewController.swift in Sources */,
 				CAEF813E22DC4AFE00CEE853 /* BookingExpandedViewController.swift in Sources */,
 				4D202C9D21ED297C00F68F13 /* HostingUsersViewController.swift in Sources */,
@@ -2207,7 +2276,7 @@
 				CA5C509422FB968E00B0AC7D /* ABLoaderView.swift in Sources */,
 				CA11C3DA22EA7BE6008CB9D9 /* PayoutOptionsViewController.swift in Sources */,
 				4DC7FA6122B035BC003C5C42 /* OtherSettingsViewController.swift in Sources */,
-				4D02C65A21CDDB3E00748BA3 /* MapKitPurchaseStatus.swift in Sources */,
+				4D02C65A21CDDB3E00748BA3 /* PurchaseStatus.swift in Sources */,
 				4D437C0322B305F6001C6C4C /* BookingDurationViewController.swift in Sources */,
 				4DC261B12145E05B00D6DCD3 /* ConfigureParkingViewController.swift in Sources */,
 				4D30466B21AF72C100AF31F9 /* UserVehicleViewController.swift in Sources */,
@@ -2220,7 +2289,7 @@
 				4D21D31A20CC9FF9002D7005 /* UserCell.swift in Sources */,
 				4DC676F3222E451F00A75123 /* MBCurvedPolyline.swift in Sources */,
 				4DFB449E20F419D0007A54B1 /* AddANewParkingSpotViewController.swift in Sources */,
-				4D02C65C21CDDBD300748BA3 /* MapKitTextField.swift in Sources */,
+				4D02C65C21CDDBD300748BA3 /* SearchBar.swift in Sources */,
 				CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */,
 				4D202CA321ED4F9100F68F13 /* HostingExpandedViewController.swift in Sources */,
 				4D30187222809181007F772B /* PuchaseTimes.swift in Sources */,
@@ -2238,9 +2307,9 @@
 				4D202C8D21EC273800F68F13 /* MainHostViewController.swift in Sources */,
 				4DB62D1E228F73E900D967AB /* InviteBannerViewController.swift in Sources */,
 				4D45073721370E85005CD8D7 /* RetentionViewController.swift in Sources */,
+				CA8A2002230A0B8B0028A132 /* TriangleView.swift in Sources */,
 				4DCFBA0A21DB785500E910FF /* NewCalendarViewController.swift in Sources */,
 				4D218BFA22A34DC200633176 /* BookingSliderViewController.swift in Sources */,
-				4D02C66021CDDCEE00748BA3 /* MapKitParkingSpots.swift in Sources */,
 				CAD19A4C22BEB4E10002C9A1 /* OldHostBookingsViewController.swift in Sources */,
 				4DB79B5F2188091800928C7F /* SpotPicturesViewController.swift in Sources */,
 				4DE6443F224857E2004EEAE7 /* AnnotationsStatusViewController.swift in Sources */,
@@ -2257,6 +2326,7 @@
 				4DD95238218024C10036BB28 /* AmenitiesParkingViewController.swift in Sources */,
 				4DB5CA7C221A73B600A4C6FD /* MBCurrentParking.swift in Sources */,
 				4D202CB921EEC37900F68F13 /* HostingGuestsViewController.swift in Sources */,
+				CA8A1FFE2309F7460028A132 /* BubbleView.swift in Sources */,
 				4D21D31720CC9FF9002D7005 /* Message.swift in Sources */,
 				4D2EB5CE21068731004AEA54 /* TermsViewController.swift in Sources */,
 				4D5F126C2176DFF800D9E38E /* HostMessageViewController.swift in Sources */,
@@ -2266,6 +2336,7 @@
 				CAD9F83C22B85CFF0077969B /* BankTransferViewController.swift in Sources */,
 				CA11C3E322EBBED6008CB9D9 /* TransfersOptionsViewController.swift in Sources */,
 				CA8AC75022E9592500A1D337 /* TransferViewController.swift in Sources */,
+				CA8A1FF02303A7DC0028A132 /* CommentsController.swift in Sources */,
 				4D30466D21AF781E00AF31F9 /* VehicleCell.swift in Sources */,
 				4D8CFF352158433400FE22A5 /* RegisterViewController.swift in Sources */,
 				4D202CBF21EF007100F68F13 /* HostingQuickViewController.swift in Sources */,
@@ -2287,7 +2358,6 @@
 				CA19D57E22C5BF0600337C7F /* BookingReviewsViewController.swift in Sources */,
 				CA11C3EE22EC1070008CB9D9 /* ListNotificationsViewController.swift in Sources */,
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
-				4D02C66221CDDD3D00748BA3 /* MapKitCurrentParking.swift in Sources */,
 				CAC9835522B8467900599FCC /* BankSSNViewController.swift in Sources */,
 				CA8AC74C22E93E9500A1D337 /* WalletOptionsViewController.swift in Sources */,
 				4D3018772280ECEF007F772B /* Bookings.swift in Sources */,
@@ -2296,11 +2366,11 @@
 				4D437C1022B468C2001C6C4C /* BookingOptionsViewController.swift in Sources */,
 				CA8AC74222E9027300A1D337 /* ProfitsPaymentsViewController.swift in Sources */,
 				4D2EAFCC223F2ED400F7B840 /* NavigationTopViewController.swift in Sources */,
+				CA8A1FF32303AD470028A132 /* GradientContainerViewController.swift in Sources */,
 				CA8AC73D22E4199F00A1D337 /* ProfitsOrganizerViewController.swift in Sources */,
 				CA8AC75922EA460700A1D337 /* ExpandedOptionsWalletViewController.swift in Sources */,
 				4D2DDEAC21095F02005AB485 /* ParkingCurrentViewController.swift in Sources */,
 				CAF51CDC22C99DB600B5ECDB /* OngoingMessageViewController.swift in Sources */,
-				CA19D57322C1520E00337C7F /* PushNotifications.swift in Sources */,
 				4D21D32E20CC9FF9002D7005 /* AccountViewController.swift in Sources */,
 				4DD370B120F198F7005154C2 /* ParkingAvailabilityViewController.swift in Sources */,
 				4D2B28FA2155B1960083F588 /* SignInViewController.swift in Sources */,
@@ -2312,7 +2382,7 @@
 				CA5C506922EF8F9700B0AC7D /* ExpandedMySpacesViewController.swift in Sources */,
 				CA5C507E22F292BF00B0AC7D /* CalendarOptionsViewController.swift in Sources */,
 				4D202C8521E4263C00F68F13 /* ConfigureDatabase.swift in Sources */,
-				4D02C65821CDDADE00748BA3 /* MapKitHostingSpots.swift in Sources */,
+				4D02C65821CDDADE00748BA3 /* DimmingViews.swift in Sources */,
 				CA11C3EC22EBF94C008CB9D9 /* QuickNotificationsViewController.swift in Sources */,
 				CAC0A7F222B819F200240857 /* BankIconsViewController.swift in Sources */,
 				4D1600882260224900510A60 /* ProfitsChartViewController.swift in Sources */,
@@ -2323,9 +2393,8 @@
 				4DB62D122289F67A00D967AB /* OnboardingViewController.swift in Sources */,
 				CAF51CDA22C9980500B5ECDB /* TestMessageViewController.swift in Sources */,
 				CA5C508B22F3EA7500B0AC7D /* UpcomingStatusViewController.swift in Sources */,
-				4DF1EFD82234B15200210E6B /* PurchaseViewController.swift in Sources */,
+				4DF1EFD82234B15200210E6B /* DurationViewController.swift in Sources */,
 				CA5C506722EF833600B0AC7D /* AnimateMySpacesViewController.swift in Sources */,
-				4D02C66621CDDE0700748BA3 /* MapKitParkingAvailability.swift in Sources */,
 				CA11C3F922EE78B3008CB9D9 /* HostSpacesViewController.swift in Sources */,
 				4DC7FA6822B0BE78003C5C42 /* DrivewayzPrivacyViewController.swift in Sources */,
 				CA8AC75B22EA534100A1D337 /* EditWalletViewController.swift in Sources */,
@@ -2334,7 +2403,6 @@
 				4DD9768520FE5446002C71BF /* OldPurchaseViewController.swift in Sources */,
 				4D218BF822A074D900633176 /* NoParkingViewController.swift in Sources */,
 				CA8AC75222E9599300A1D337 /* ProfitsTransfersViewController.swift in Sources */,
-				CA098AE022D00AFB00E45F0F /* RespondMessageViewController.swift in Sources */,
 				4DCFB9F521D83C7D00E910FF /* MBPolylineRoute.swift in Sources */,
 				4DB7AE5622330F67000ACEC0 /* ParkingOptionViewController.swift in Sources */,
 				4D035F4821476BB100A380B8 /* PickCostViewController.swift in Sources */,
@@ -2355,7 +2423,6 @@
 				4D202C8B21E6D25A00F68F13 /* MBAnnotations.swift in Sources */,
 				CA3C2FCD22BE677100A2A374 /* OldHostProfitsViewController.swift in Sources */,
 				4D202CC721F026B100F68F13 /* EditCostViewController.swift in Sources */,
-				CA11C3E522EBD8A1008CB9D9 /* MessageBottomBarViewController.swift in Sources */,
 				4DBD6D1421C4CD0700C52991 /* EventCell.swift in Sources */,
 				4DF1EFDA2234B6B300210E6B /* PurchaseTimesViewController.swift in Sources */,
 				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
@@ -2379,14 +2446,15 @@
 				4DFB449A20F407D6007A54B1 /* UserParkingViewController.swift in Sources */,
 				4D2A2E40221B59590031791A /* CurrentAmenitiesViewController.swift in Sources */,
 				4D202CC921F0285C00F68F13 /* EditSpotsViewController.swift in Sources */,
+				CA8A2004230A0BA10028A132 /* HamburgerMenu.swift in Sources */,
 				4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */,
 				4DD3B63821961C26008B1417 /* SpeechRecognitionViewController.swift in Sources */,
 				CA11C3DF22EB890D008CB9D9 /* TransfersInformationViewController.swift in Sources */,
 				4D202CAF21ED6E1F00F68F13 /* HostingReviewsViewController.swift in Sources */,
-				4D02C65621CDDA7900748BA3 /* MapKitNetworkConnection.swift in Sources */,
+				4D02C65621CDDA7900748BA3 /* NetworkConnection.swift in Sources */,
 				4D0F0BA021AD0CF80022D1B4 /* UserContactViewController.swift in Sources */,
 				4DC9847521F7F222006744F4 /* FirstHostingViewController.swift in Sources */,
-				4D02C65221CDD89A00748BA3 /* MapKitMainBar.swift in Sources */,
+				4D02C65221CDD89A00748BA3 /* MainBar.swift in Sources */,
 				4DB06D0B2138CD26008A30ED /* HeatMapViewController.swift in Sources */,
 				4DB62D1C228F717100D967AB /* NewHostBannerViewController.swift in Sources */,
 				4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */,

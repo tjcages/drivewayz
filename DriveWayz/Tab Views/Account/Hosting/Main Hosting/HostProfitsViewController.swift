@@ -130,25 +130,10 @@ class HostProfitsViewController: UIViewController {
         return controller
     }()
     
-    var loadingLine: LoadingLine = {
-        let view = LoadingLine()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     func observeData() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        self.loadingLine.startAnimating()
         self.profitsWallet.setData(userID: userID)
-        let ref = Database.database().reference().child("users").child(userID)
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: Any] {
-                let hosting = ParkingSpots(dictionary: dictionary)
-                
-                self.loadingLine.endAnimating()
-            }
-        }
+        self.profitsChart.observeData()
     }
 
     override func viewDidLoad() {
@@ -202,12 +187,6 @@ class HostProfitsViewController: UIViewController {
         scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-        gradientContainer.addSubview(loadingLine)
-        loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
     }
     

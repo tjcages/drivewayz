@@ -19,11 +19,13 @@ extension MapKitViewController {
     }
     
     func removeAllMapOverlays(shouldRefresh: Bool) {
-        ParkingRoutePolyLine = []
         ZoomMapView = nil
         CurrentDestinationLocation = nil
         ClosestParkingLocation = nil
         DestinationAnnotationLocation = nil
+        TappedDestinationAnnotationLocation = nil
+        surgeCheckedCity = nil
+        surgeCheckedLocation = nil
         self.shouldShowOverlay = false
         self.quickDestinationController.view.alpha = 0
         self.quickParkingController.view.alpha = 0
@@ -39,9 +41,9 @@ extension MapKitViewController {
         if let line = quadPolyline, let shadowLine = quadPolylineShadow {
             line.removeFromSuperlayer()
             shadowLine.removeFromSuperlayer()
-            quadStartCoordinate = nil
-            quadEndCoordinate = nil
         }
+        quadStartCoordinate = nil
+        quadEndCoordinate = nil
         self.removePolylineAnnotations()
         self.quickDestinationController.view.alpha = 0
         self.quickParkingController.view.alpha = 0

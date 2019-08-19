@@ -30,19 +30,19 @@ class ReviewsCell: UICollectionViewCell {
     var cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.DARK_GRAY, bottomColor: Theme.DARK_GRAY.withAlphaComponent(0.45))
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.LIGHT_GRAY.withAlphaComponent(0.1), bottomColor: Theme.LIGHT_GRAY.withAlphaComponent(0.4))
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 300)
         background.zPosition = -10
         view.layer.addSublayer(background)
-        view.layer.cornerRadius = 4
         view.clipsToBounds = true
+        view.layer.cornerRadius = 8
         
         return view
     }()
     
     let reviewLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH3
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -54,10 +54,7 @@ class ReviewsCell: UICollectionViewCell {
     var starImageView: UIImageView = {
         let button = UIImageView()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 15
-        button.clipsToBounds = true
         button.contentMode = .scaleAspectFill
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         
         return button
     }()
@@ -66,7 +63,7 @@ class ReviewsCell: UICollectionViewCell {
         let label = UILabel()
         label.text = ""
         label.font = Fonts.SSPRegularH4
-        label.textColor = Theme.WHITE.withAlphaComponent(0.8)
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
         
@@ -94,7 +91,7 @@ class ReviewsCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH3
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -107,10 +104,12 @@ class ReviewsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        self.backgroundColor = Theme.WHITE
+        self.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
         self.layer.shadowRadius = 3
-        self.layer.shadowOpacity = 0.4
+        self.layer.shadowOpacity = 0.2
+        self.layer.cornerRadius = 8
         
         setupViews()
     }
@@ -118,10 +117,10 @@ class ReviewsCell: UICollectionViewCell {
     func setupViews() {
         
         self.addSubview(cellView)
-        cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        cellView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         cellView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         cellView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         self.addSubview(reviewLabel)
         self.addSubview(date)

@@ -18,6 +18,7 @@ class BannerMessageViewController: UIViewController {
         background.zPosition = -10
         view.layer.addSublayer(background)
         view.clipsToBounds = true
+        view.alpha = 0
         
         return view
     }()
@@ -26,12 +27,14 @@ class BannerMessageViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.layer.borderColor = Theme.WHITE.cgColor
-        button.layer.borderWidth = 1
-        let image = UIImage(named: "settingsEmail")
+        button.backgroundColor = Theme.WHITE
+        button.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+        button.layer.borderWidth = 1.5
+        let image = UIImage(named: "settingsEmail")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
+        button.tintColor = Theme.GREEN_PIGMENT
         button.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         button.isUserInteractionEnabled = false
         
         return button
@@ -40,10 +43,9 @@ class BannerMessageViewController: UIViewController {
     var newMessageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Drivewayz sent you a message"
-        label.textColor = Theme.WHITE
+        label.text = "Contact Drivewayz support"
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPSemiBoldH4
-        label.numberOfLines = 2
         
         return label
     }()
@@ -52,7 +54,7 @@ class BannerMessageViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Tap to open"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -60,8 +62,8 @@ class BannerMessageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = lineColor
+        
+        view.backgroundColor = Theme.WHITE
         
         setupViews()
     }
@@ -69,10 +71,10 @@ class BannerMessageViewController: UIViewController {
     func setupViews() {
         
         self.view.addSubview(container)
+        container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         container.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 4).isActive = true
         
         self.view.addSubview(newMessageButton)
         newMessageButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -91,6 +93,24 @@ class BannerMessageViewController: UIViewController {
         subLabel.topAnchor.constraint(equalTo: newMessageLabel.bottomAnchor, constant: 0).isActive = true
         subLabel.sizeToFit()
         
+    }
+    
+    func currentMessage() {
+        self.container.alpha = 1
+        self.newMessageButton.layer.borderColor = UIColor.clear.cgColor
+        self.newMessageButton.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+        self.newMessageLabel.textColor = Theme.WHITE
+        self.subLabel.textColor = Theme.WHITE
+        self.newMessageLabel.text = "Drivewayz sent you a message"
+    }
+    
+    func previousMessage() {
+        self.container.alpha = 0
+        self.newMessageButton.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+        self.newMessageButton.tintColor = Theme.GREEN_PIGMENT
+        self.newMessageLabel.textColor = Theme.DARK_GRAY
+        self.subLabel.textColor = Theme.DARK_GRAY
+        self.newMessageLabel.text = "Contact Drivewayz support"
     }
 
 }

@@ -187,10 +187,7 @@ class SuccessfulPurchaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 8
-        view.layer.shadowOpacity = 0.4
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         
         setupViews()
         setupDuration()

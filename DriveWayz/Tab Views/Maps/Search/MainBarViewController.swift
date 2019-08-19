@@ -9,6 +9,7 @@
 import UIKit
 
 protocol handleInviteControllers {
+    func searchRecentsPressed(address: String)
     func openEvents()
 }
 
@@ -39,105 +40,29 @@ class MainBarViewController: UIViewController {
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
-        view.layer.cornerRadius = 16
         view.backgroundColor = lineColor
         view.isScrollEnabled = false
+        view.clipsToBounds = true
         
         return view
     }()
     
-    var scrollBar: UIView = {
-        let view = UIView()
+    var stackView: UIStackView = {
+        let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
-        view.layer.cornerRadius = 3
-//        view.alpha = 0
+        view.axis = .vertical
+        view.spacing = 3
         
         return view
     }()
     
-    var searchView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+    lazy var searchController: MainSearchViewController = {
+        let controller = MainSearchViewController()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        controller.delegate = self
         
-        return view
-    }()
-    
-    var searchButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
-        button.layer.cornerRadius = 4
-        
-        return button
-    }()
-    
-    var searchLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Where are you headed?"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH3
-        
-        return label
-    }()
-    
-    var microphoneButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.2)
-        button.layer.cornerRadius = 18
-        let origImage = UIImage(named: "calendarIcon")
-        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.STRAWBERRY_PINK
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
-        return button
-    }()
-    
-    var homeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
-        button.layer.cornerRadius = 15
-        button.tintColor = Theme.WHITE
-        let image = UIImage(named: "coupon")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
-        
-        return button
-    }()
-    
-    var homeLabel: UIButton = {
-        let label = UIButton()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitle("Park today and receive 10% off!", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH4
-        
-        return label
-    }()
-    
-    var recentButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.4)
-        button.layer.cornerRadius = 15
-        button.tintColor = Theme.WHITE
-        
-        return button
-    }()
-    
-    var recentLabel: UIButton = {
-        let label = UIButton()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH4
-        
-        return label
+        return controller
     }()
     
     lazy var worksController: HowItWorksController = {
@@ -148,29 +73,9 @@ class MainBarViewController: UIViewController {
         return controller
     }()
     
-    var eventsView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.alpha = 0
-        
-        return view
-    }()
-    
-    var eventsLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Upcoming Events"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPBoldH3
-        
-        return label
-    }()
-    
-    lazy var eventsController: EventsViewController = {
-        let controller = EventsViewController()
+    lazy var eventsController: MainEventsViewController = {
+        let controller = MainEventsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.mainDelegate = self
         self.addChild(controller)
         
         return controller
@@ -180,6 +85,8 @@ class MainBarViewController: UIViewController {
         let controller = NewHostBannerViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
+        let host = UITapGestureRecognizer(target: self, action: #selector(newHostControllerPressed))
+        controller.view.addGestureRecognizer(host)
         
         return controller
     }()
@@ -188,6 +95,9 @@ class MainBarViewController: UIViewController {
         let controller = InviteBannerViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
+        let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
+        controller.view.addGestureRecognizer(invite)
+        controller.parkingController.inviteButton.addTarget(self, action: #selector(inviteNewUser), for: .touchUpInside)
         
         return controller
     }()
@@ -196,39 +106,40 @@ class MainBarViewController: UIViewController {
         let controller = BannerMessageViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
-        controller.view.alpha = 0
         
         return controller
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowOffset = CGSize(width: 0, height: -2)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
         view.layer.cornerRadius = 16
 
         scrollView.delegate = self
         
-        checkRecentSearches()
+        setupStack()
         setupViews()
-        setupSearch()
-        setupRecents()
-        setupWorks()
-        setupInvite()
-        setupEvents()
-        setupHosting()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.eventsController.checkEvents()
+        self.eventsController.eventsController.checkEvents()
+    }
+    
+    func setupViews() {
+        setupSearch(0, last: false)
+        setupWorks(0, last: true)
+        setupInviteBanner(0, last: true)
+        setupEvents(0, last: true)
+        setupHostBanner(0, last: true)
     }
 
-    func setupViews() {
-        
+    func setupStack() {
+
         self.view.addSubview(scrollView)
         scrollView.contentSize = CGSize(width: phoneWidth, height: 860)
         scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -236,205 +147,83 @@ class MainBarViewController: UIViewController {
         scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        scrollView.addSubview(scrollBar)
-        scrollBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        scrollBar.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
-        scrollBar.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        scrollBar.heightAnchor.constraint(equalToConstant: 6).isActive = true
-        
+        scrollView.addSubview(stackView)
+        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+
     }
     
-    func setupSearch() {
-        
-        scrollView.addSubview(searchView)
-        scrollView.bringSubviewToFront(scrollBar)
-        scrollView.bringSubviewToFront(contactBannerController.view)
-        
-        searchView.addSubview(searchButton)
-        searchButton.topAnchor.constraint(equalTo: scrollBar.bottomAnchor, constant: 16).isActive = true
-        searchButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        searchButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        searchButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        searchButton.addSubview(searchLabel)
-        searchLabel.leftAnchor.constraint(equalTo: searchButton.leftAnchor, constant: 16).isActive = true
-        searchLabel.rightAnchor.constraint(equalTo: searchButton.rightAnchor, constant: -16).isActive = true
-        searchLabel.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
-        searchLabel.sizeToFit()
-        
-        searchButton.addSubview(microphoneButton)
-        microphoneButton.rightAnchor.constraint(equalTo: searchButton.rightAnchor, constant: -12).isActive = true
-        microphoneButton.centerYAnchor.constraint(equalTo: searchButton.centerYAnchor).isActive = true
-        microphoneButton.topAnchor.constraint(equalTo: searchButton.topAnchor, constant: 12).isActive = true
-        microphoneButton.widthAnchor.constraint(equalTo: microphoneButton.heightAnchor).isActive = true
-        
+    func setupSearch(_ index: Int, last: Bool) {
+        if last {
+            stackView.addArrangedSubview(searchController.view)
+        } else {
+            stackView.insertArrangedSubview(searchController.view, at: index)
+        }
+        searchController.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
-    func setupRecents() {
-        
-        searchView.addSubview(homeButton)
-        homeButton.leftAnchor.constraint(equalTo: searchButton.leftAnchor).isActive = true
-        homeButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16).isActive = true
-        homeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        homeButton.widthAnchor.constraint(equalTo: homeButton.heightAnchor).isActive = true
-        
-        searchView.addSubview(homeLabel)
-        homeLabel.leftAnchor.constraint(equalTo: homeButton.rightAnchor, constant: 6).isActive = true
-        homeLabel.centerYAnchor.constraint(equalTo: homeButton.centerYAnchor).isActive = true
-        homeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        homeLabel.sizeToFit()
-        
-        searchView.addSubview(recentButton)
-        recentButton.leftAnchor.constraint(equalTo: homeLabel.rightAnchor, constant: 16).isActive = true
-        recentButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16).isActive = true
-        recentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        recentButton.widthAnchor.constraint(equalTo: homeButton.heightAnchor).isActive = true
-        
-        searchView.addSubview(recentLabel)
-        recentLabel.leftAnchor.constraint(equalTo: recentButton.rightAnchor, constant: 6).isActive = true
-        recentLabel.centerYAnchor.constraint(equalTo: recentButton.centerYAnchor).isActive = true
-        recentLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        recentLabel.rightAnchor.constraint(lessThanOrEqualTo: self.view.rightAnchor, constant: -12).isActive = true
-        recentLabel.sizeToFit()
-        
-        searchView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        searchView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        searchView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        searchView.bottomAnchor.constraint(equalTo: homeButton.bottomAnchor, constant: 24).isActive = true
-        
-        scrollView.addSubview(contactBannerController.view)
-        contactBannerController.view.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
-        contactBannerController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        contactBannerController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        contactBannerHeightAnchor = contactBannerController.view.heightAnchor.constraint(equalToConstant: 0)
-            contactBannerHeightAnchor.isActive = true
-        
-    }
-    
-    var contactBannerHeightAnchor: NSLayoutConstraint!
-    
-    func setupWorks() {
-        
-        scrollView.addSubview(worksController.view)
-        worksController.view.topAnchor.constraint(equalTo: contactBannerController.view.bottomAnchor, constant: 4).isActive = true
-        worksController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        worksController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+    func setupWorks(_ index: Int, last: Bool) {
+        if last {
+            stackView.addArrangedSubview(worksController.view)
+        } else {
+            stackView.insertArrangedSubview(worksController.view, at: index)
+        }
         worksController.view.heightAnchor.constraint(equalToConstant: 384).isActive = true
-        
+    }
+    
+    func setupEvents(_ index: Int, last: Bool) {
+        if last {
+            stackView.addArrangedSubview(eventsController.view)
+        } else {
+            stackView.insertArrangedSubview(eventsController.view, at: index)
+        }
+        eventsController.view.heightAnchor.constraint(equalToConstant: 284).isActive = true
     }
     
     var inviteHeightAnchor: NSLayoutConstraint!
     
-    func setupInvite() {
-        
-        scrollView.addSubview(inviteFriendController.view)
-        inviteFriendController.view.topAnchor.constraint(equalTo: worksController.view.bottomAnchor, constant: 4).isActive = true
-        inviteFriendController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        inviteFriendController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+    func setupInviteBanner(_ index: Int, last: Bool) {
+        if last {
+            stackView.addArrangedSubview(inviteFriendController.view)
+        } else {
+            stackView.insertArrangedSubview(inviteFriendController.view, at: index)
+        }
         inviteHeightAnchor = inviteFriendController.view.heightAnchor.constraint(equalToConstant: 112)
             inviteHeightAnchor.isActive = true
-        let invite = UITapGestureRecognizer(target: self, action: #selector(inviteControllerPressed))
-        inviteFriendController.view.addGestureRecognizer(invite)
-        inviteFriendController.parkingController.inviteButton.addTarget(self, action: #selector(inviteNewUser), for: .touchUpInside)
-        
     }
     
-    var minimizeEvents: NSLayoutConstraint!
-    var maximizeEvents: NSLayoutConstraint!
-    
-    func setupEvents() {
-        
-        scrollView.addSubview(eventsView)
-        
-        eventsView.addSubview(eventsLabel)
-        eventsLabel.topAnchor.constraint(equalTo: eventsView.topAnchor, constant: 16).isActive = true
-        eventsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        eventsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        eventsLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        eventsView.addSubview(eventsController.view)
-        eventsController.view.topAnchor.constraint(equalTo: eventsLabel.bottomAnchor, constant: 16).isActive = true
-        eventsController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        eventsController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        eventsController.view.heightAnchor.constraint(equalToConstant: eventsController.cellHeight + 16).isActive = true
-        
-        eventsView.topAnchor.constraint(equalTo: inviteFriendController.view.bottomAnchor, constant: 4).isActive = true
-        eventsView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        eventsView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        eventsView.bottomAnchor.constraint(equalTo: eventsController.view.bottomAnchor, constant: 24).isActive = true
-        
-    }
-    
-    func setupHosting() {
-        
-        scrollView.addSubview(newHostController.view)
-        minimizeEvents = newHostController.view.topAnchor.constraint(equalTo: inviteFriendController.view.bottomAnchor, constant: 4)
-            minimizeEvents.isActive = true
-        maximizeEvents = newHostController.view.topAnchor.constraint(equalTo: eventsView.bottomAnchor, constant: 4)
-            maximizeEvents.isActive = false
-        newHostController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        newHostController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        newHostController.view.heightAnchor.constraint(equalToConstant: 140).isActive = true
-        let host = UITapGestureRecognizer(target: self, action: #selector(newHostControllerPressed))
-        newHostController.view.addGestureRecognizer(host)
-        
-    }
-    
-    func checkRecentSearches() {
-        let userDefaults = UserDefaults.standard
-        if let firstRecent = userDefaults.value(forKey: "firstSavedRecentTerm") {
-            var first = firstRecent as! String
-            if let dotRange = first.range(of: ",") {
-                first.removeSubrange(dotRange.lowerBound..<first.endIndex)
-                self.homeLabel.setTitle(first, for: .normal)
-                self.homeButton.alpha = 1
-                self.homeLabel.alpha = 1
-                let image = UIImage(named: "time")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                self.homeButton.setImage(tintedImage, for: .normal)
-                self.homeButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-                self.homeButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
-                self.homeLabel.addTarget(self, action: #selector(firstRecentPressed), for: .touchUpInside)
-                self.homeButton.addTarget(self, action: #selector(firstRecentPressed), for: .touchUpInside)
-            }
-        }
-        if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
-            var second = secondRecent as! String
-            if let dotRange = second.range(of: ",") {
-                second.removeSubrange(dotRange.lowerBound..<second.endIndex)
-                self.recentLabel.setTitle(second, for: .normal)
-                self.recentButton.alpha = 1
-                self.recentLabel.alpha = 1
-                let image = UIImage(named: "time")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                self.recentButton.setImage(tintedImage, for: .normal)
-                self.recentButton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-                self.recentButton.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
-                self.recentLabel.addTarget(self, action: #selector(secondRecentPressed), for: .touchUpInside)
-                self.recentButton.addTarget(self, action: #selector(secondRecentPressed), for: .touchUpInside)
-            }
+    func setupHostBanner(_ index: Int, last: Bool) {
+        if last {
+            stackView.addArrangedSubview(newHostController.view)
         } else {
-            self.recentButton.alpha = 0
-            self.recentLabel.alpha = 0
+            stackView.insertArrangedSubview(newHostController.view, at: index)
         }
+        newHostController.view.heightAnchor.constraint(equalToConstant: 140).isActive = true
     }
-    
-    @objc func firstRecentPressed() {
-        if let text = self.homeLabel.titleLabel?.text {
-            self.delegate?.zoomToSearchLocation(address: text)
+
+    func setupContact(_ index: Int, last: Bool) {
+        if stackView.arrangedSubviews.contains(contactBannerController.view) {
+            self.stackView.removeArrangedSubview(self.contactBannerController.view)
         }
-    }
-    
-    @objc func secondRecentPressed() {
-        if let text = self.recentLabel.titleLabel?.text {
-            self.delegate?.zoomToSearchLocation(address: text)
+        
+        if last {
+            stackView.addArrangedSubview(contactBannerController.view)
+        } else {
+            stackView.insertArrangedSubview(contactBannerController.view, at: index)
         }
+        contactBannerController.view.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
 }
 
 
 extension MainBarViewController: handleInviteControllers {
+    
+    func searchRecentsPressed(address: String) {
+        self.delegate?.zoomToSearchLocation(address: address)
+    }
     
     @objc func inviteControllerPressed() {
         if self.inviteHeightAnchor.constant == 112 {
@@ -468,11 +257,11 @@ extension MainBarViewController: handleInviteControllers {
     }
     
     func openEvents() {
-        self.minimizeEvents.isActive = false
-        self.maximizeEvents.isActive = true
+//        self.minimizeEvents.isActive = false
+//        self.maximizeEvents.isActive = true
         self.scrollView.contentSize = CGSize(width: phoneWidth, height: 1140)
         UIView.animate(withDuration: animationIn) {
-            self.eventsView.alpha = 1
+            self.eventsController.view.alpha = 1
             self.view.layoutIfNeeded()
         }
     }

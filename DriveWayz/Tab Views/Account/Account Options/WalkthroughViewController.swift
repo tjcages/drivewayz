@@ -445,7 +445,7 @@ class WalkthroughViewController: UIViewController {
     }
     
     @objc func backPressed(sender: UIButton) {
-        self.delegate?.setupNewParking(parkingImage: ParkingImage.noImage)
+//        self.delegate?.setupNewParking(parkingImage: ParkingImage.noImage)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.nextPressedFunc()
         }

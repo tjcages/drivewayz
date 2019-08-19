@@ -503,15 +503,15 @@ extension HostChatViewController: UICollectionViewDelegate, UICollectionViewData
         
         let message = messages[indexPath.item]
         cell.message = message
-        cell.textView.text = message.text
+//        cell.textView.text = message.text
         setupCell(cell: cell, message: message)
         
         if let text = message.text {
-            cell.textView.isHidden = false
-            cell.bubbleWidthAnchor?.constant = estimatedFrameForText(text: text).width + 32
+//            cell.textView.isHidden = false
+//            cell.bubbleWidthAnchor?.constant = estimatedFrameForText(text: text).width + 32
         } else if message.imageURL != nil {
-            cell.textView.isHidden = true
-            cell.bubbleWidthAnchor?.constant = 200
+//            cell.textView.isHidden = true
+//            cell.bubbleWidthAnchor?.constant = 200
         }
         
         cell.playButton.isHidden = message.videoURL == nil
@@ -542,8 +542,8 @@ extension HostChatViewController: UICollectionViewDelegate, UICollectionViewData
     
     fileprivate func setupCell(cell: ChatMessageCell, message: Message) {
         if message.fromID == Auth.auth().currentUser?.uid {
-            cell.bubbleView.backgroundColor = Theme.BLUE
-            cell.textView.textColor = UIColor.white
+//            cell.bubbleView.backgroundColor = Theme.BLUE
+//            cell.textView.textColor = UIColor.white
             cell.bubbleViewRightAnchor?.isActive = true
             cell.bubbleViewLeftAnchor?.isActive = false
             if message.communicationsStatus != nil {
@@ -552,8 +552,8 @@ extension HostChatViewController: UICollectionViewDelegate, UICollectionViewData
                 }
             }
         } else {
-            cell.bubbleView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-            cell.textView.textColor = UIColor.black
+//            cell.bubbleView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+//            cell.textView.textColor = UIColor.black
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
             if message.communicationsStatus != nil {
@@ -563,13 +563,13 @@ extension HostChatViewController: UICollectionViewDelegate, UICollectionViewData
             }
         }
         if let messageImageURL = message.imageURL {
-            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL) { (bool) in
-                
-            }
-            cell.messageImageView.isHidden = false
-            cell.bubbleView.backgroundColor = UIColor.clear
+//            cell.messageImageView.loadImageUsingCacheWithUrlString(messageImageURL) { (bool) in
+            
+//            }
+//            cell.messageImageView.isHidden = false
+//            cell.bubbleView.backgroundColor = UIColor.clear
         } else {
-            cell.messageImageView.isHidden = true
+//            cell.messageImageView.isHidden = true
         }
     }
     

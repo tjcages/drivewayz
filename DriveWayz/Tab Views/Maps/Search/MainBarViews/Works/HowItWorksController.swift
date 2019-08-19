@@ -13,11 +13,19 @@ class HowItWorksController: UIViewController {
     var worksLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "How it Works"
+        label.text = "How it works"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH2
+        label.font = Fonts.SSPSemiBoldH2
         
         return label
+    }()
+    
+    var worksView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = lineColor
+        
+        return view
     }()
     
     var mainLine: UIView = {
@@ -196,7 +204,7 @@ class HowItWorksController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-
+        
         setupViews()
         setupFirst()
         setupSecond()
@@ -206,11 +214,16 @@ class HowItWorksController: UIViewController {
 
     func setupViews() {
         
+        self.view.addSubview(worksView)
         self.view.addSubview(worksLabel)
         worksLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
         worksLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        worksLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        worksLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        worksLabel.sizeToFit()
+        
+        worksView.topAnchor.constraint(equalTo: worksLabel.bottomAnchor, constant: 12).isActive = true
+        worksView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        worksView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        worksView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         self.view.addSubview(mainLine)
         mainLine.topAnchor.constraint(equalTo: worksLabel.bottomAnchor, constant: 8).isActive = true

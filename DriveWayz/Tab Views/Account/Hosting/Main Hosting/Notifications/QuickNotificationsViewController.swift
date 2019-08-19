@@ -80,13 +80,18 @@ class QuickNotificationsViewController: UIViewController {
             }
             self.containerHeightAnchor.constant = self.height
             self.delegate?.expandMainNotificationHeight(height: self.height)
+            
+            if self.container.tag == 1 {
+                self.removeSublayer(self.container, layerIndex: 0)
+            }
             if let mainColors = colors.first {
                 let topColor = mainColors.key
                 let bottomColor = mainColors.value
                 let background = CAGradientLayer().customColor(topColor: topColor, bottomColor: bottomColor)
                 background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: height)
                 background.zPosition = -10
-                self.container.layer.addSublayer(background)
+                self.container.layer.insertSublayer(background, at: 0)
+                self.container.tag = 1
                 self.iconImageView.image = image
             }
         }
@@ -146,6 +151,13 @@ class QuickNotificationsViewController: UIViewController {
         
         self.previousSubtitleHeight = (notificationSubLabel.text?.height(withConstrainedWidth: phoneWidth - 68, font: Fonts.SSPRegularH4))!
         
+    }
+    
+    func removeSublayer(_ view: UIView, layerIndex index: Int) {
+        guard let sublayers = view.layer.sublayers else { return }
+        if sublayers.count > index {
+            view.layer.sublayers!.remove(at: index)
+        }
     }
     
 }

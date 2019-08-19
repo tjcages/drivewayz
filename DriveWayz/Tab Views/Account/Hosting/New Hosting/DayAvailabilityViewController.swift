@@ -11,7 +11,6 @@ import UIKit
 class DayAvailabilityViewController: UIViewController {
     
     let numberPicker = UIPickerView()
-    let selectionWidth = (phoneWidth - 24)/3
     var selectedFromTime: String = "8:00 AM"
     var selectedToTime: String = "5:00 PM"
     var additionalToTime: String?
@@ -19,7 +18,7 @@ class DayAvailabilityViewController: UIViewController {
     var dayAvailable: Int = 0
     
     var durationFromTimes: [String] = ["1:00 AM","2:00 AM","3:00 AM","4:00 AM","5:00 AM","6:00 AM","7:00 AM","8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM","10:00 PM","11:00 PM"]
-    var durationToTimes: [String] = ["2:00 AM","3:00 AM","4:00 AM","5:00 AM","6:00 AM","7:00 AM","8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM","10:00 PM","11:00 PM","12:00 AM"]
+    var durationToTimes: [String] = ["9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM","10:00 PM","11:00 PM","11:59 PM"]
     
     var dayLabel: UILabel = {
         let label = UILabel()
@@ -73,24 +72,6 @@ class DayAvailabilityViewController: UIViewController {
         return view
     }()
     
-    var firstSelection: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.BLUE.lighter(by: 20)!)
-        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 80)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        let origImage = UIImage(named: "Checkmark")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.clipsToBounds = true
-        button.addTarget(self, action: #selector(selectionPressed(sender:)), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-    
     var secondSelection: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -107,90 +88,6 @@ class DayAvailabilityViewController: UIViewController {
         button.alpha = 0
         
         return button
-    }()
-    
-    var thirdSelection: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.BLUE.lighter(by: 20)!)
-        background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 80)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        let origImage = UIImage(named: "Checkmark")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.clipsToBounds = true
-        button.addTarget(self, action: #selector(selectionPressed(sender:)), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-    
-    var morningLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Early"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var afternoonLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Midday"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var eveningLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Late"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var morningTime: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "1:00 AM - 7:00 AM"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var afternoonTime: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "8:00 AM - 5:00 PM"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    var eveningTime: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "6:00 PM - 12:00 AM"
-        label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPRegularH6
-        label.textAlignment = .center
-        
-        return label
     }()
     
     var durationView: UIView = {
@@ -224,6 +121,17 @@ class DayAvailabilityViewController: UIViewController {
         button.tintColor = .clear
         
         return button
+    }()
+    
+    var allDayLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY
+        label.text = "All day"
+        label.font = Fonts.SSPSemiBoldH3
+        label.textAlignment = .center
+        
+        return label
     }()
     
     var arrow: UIButton = {
@@ -265,7 +173,6 @@ class DayAvailabilityViewController: UIViewController {
         durationToButton.delegate = self
         
         setupViews()
-        setupTimes()
         setupDuration()
         setupButtons()
         setupHidden()
@@ -306,49 +213,14 @@ class DayAvailabilityViewController: UIViewController {
         
     }
     
-    func setupTimes() {
-        
-        container.addSubview(morningLabel)
-        morningLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
-        morningLabel.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        morningLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        morningLabel.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(afternoonLabel)
-        afternoonLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
-        afternoonLabel.leftAnchor.constraint(equalTo: morningLabel.rightAnchor).isActive = true
-        afternoonLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        afternoonLabel.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(eveningLabel)
-        eveningLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
-        eveningLabel.leftAnchor.constraint(equalTo: afternoonLabel.rightAnchor).isActive = true
-        eveningLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        eveningLabel.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(morningTime)
-        morningTime.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -8).isActive = true
-        morningTime.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        morningTime.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        morningTime.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(afternoonTime)
-        afternoonTime.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -8).isActive = true
-        afternoonTime.leftAnchor.constraint(equalTo: morningTime.rightAnchor).isActive = true
-        afternoonTime.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        afternoonTime.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(eveningTime)
-        eveningTime.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -8).isActive = true
-        eveningTime.leftAnchor.constraint(equalTo: afternoonTime.rightAnchor).isActive = true
-        eveningTime.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        eveningTime.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-    }
-    
     var durationViewWidthAnchor: NSLayoutConstraint!
     
     func setupDuration() {
+        
+        container.addSubview(allDayLabel)
+        allDayLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: 16).isActive = true
+        allDayLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        allDayLabel.sizeToFit()
         
         container.addSubview(durationView)
         durationView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
@@ -388,32 +260,17 @@ class DayAvailabilityViewController: UIViewController {
         toLine.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -32).isActive = true
         
     }
-    
-    var secondSelectionWidthAnchor: NSLayoutConstraint!
-    
+
     func setupButtons() {
         
         container.addSubview(secondSelection)
         secondSelection.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
         secondSelection.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
         secondSelection.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        secondSelectionWidthAnchor = secondSelection.widthAnchor.constraint(equalToConstant: selectionWidth)
-            secondSelectionWidthAnchor.isActive = true
-        
-        container.addSubview(firstSelection)
-        firstSelection.rightAnchor.constraint(equalTo: secondSelection.leftAnchor).isActive = true
-        firstSelection.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
-        firstSelection.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        firstSelection.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(thirdSelection)
-        thirdSelection.leftAnchor.constraint(equalTo: secondSelection.rightAnchor).isActive = true
-        thirdSelection.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
-        thirdSelection.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        thirdSelection.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
+        secondSelection.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
         
         self.customPressed()
-        self.secondSelection.alpha = 0
+//        self.secondSelection.alpha = 0
     }
     
     func createDatePicker() {
@@ -450,10 +307,9 @@ class DayAvailabilityViewController: UIViewController {
     @objc func customPressed() {
         self.view.endEditing(true)
         if self.durationViewWidthAnchor.constant == 0 {
-            self.secondSelectionWidthAnchor.constant = phoneWidth
             self.durationViewWidthAnchor.constant = phoneWidth - 24
             UIView.animate(withDuration: animationIn, animations: {
-                self.customButton.setTitle("Standard", for: .normal)
+                self.customButton.setTitle("ALL DAY", for: .normal)
                 self.view.layoutIfNeeded()
             }) { (success) in
                 if let from = self.durationFromButton.text, let to = self.durationToButton.text {
@@ -464,94 +320,40 @@ class DayAvailabilityViewController: UIViewController {
                 }
             }
         } else {
-            self.secondSelectionWidthAnchor.constant = selectionWidth
             self.durationViewWidthAnchor.constant = 0
             UIView.animate(withDuration: animationIn, animations: {
-                self.customButton.setTitle("Custom", for: .normal)
+                self.customButton.setTitle("Specific Times", for: .normal)
+                self.secondSelection.alpha = 1
                 self.view.layoutIfNeeded()
             }) { (success) in
                 self.checkSelectedTimes()
+                self.selectedFromTime = "All day"
+                self.selectedToTime = "All day"
             }
         }
     }
     
     @objc func selectionPressed(sender: UIButton) {
         self.view.endEditing(true)
-        if sender == self.firstSelection {
-            self.firstSelection.alpha = 0
-        } else if sender == self.secondSelection {
+        if sender == self.secondSelection {
             self.secondSelection.alpha = 0
-        } else if sender == self.thirdSelection {
-            self.thirdSelection.alpha = 0
         }
         self.checkSelectedTimes()
     }
     
     @objc func hiddenPressed(sender: UIButton) {
         self.view.endEditing(true)
-        if sender == self.firstHidden {
-            self.firstSelection.alpha = 1
-        } else if sender == self.secondHidden {
+        if sender == self.secondHidden {
             self.secondSelection.alpha = 1
-        } else if sender == self.thirdHidden {
-            self.thirdSelection.alpha = 1
         }
         self.checkSelectedTimes()
     }
     
     func checkSelectedTimes() {
-        if self.secondSelectionWidthAnchor.constant != phoneWidth {
-            if self.firstSelection.alpha == 1 && self.secondSelection.alpha == 1 && self.thirdSelection.alpha == 1 {
-                self.selectedFromTime = "1:00 AM"
-                self.selectedToTime = "12:00 AM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 1 && self.secondSelection.alpha == 0 && self.thirdSelection.alpha == 0 {
-                self.selectedFromTime = "1:00 AM"
-                self.selectedToTime = "7:00 AM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 0 && self.secondSelection.alpha == 1 && self.thirdSelection.alpha == 0 {
-                self.selectedFromTime = "8:00 AM"
-                self.selectedToTime = "5:00 AM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 0 && self.secondSelection.alpha == 0 && self.thirdSelection.alpha == 1 {
-                self.selectedFromTime = "6:00 PM"
-                self.selectedToTime = "12:00 AM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 1 && self.secondSelection.alpha == 1 && self.thirdSelection.alpha == 0 {
-                self.selectedFromTime = "1:00 AM"
-                self.selectedToTime = "5:00 PM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 0 && self.secondSelection.alpha == 1 && self.thirdSelection.alpha == 1 {
-                self.selectedFromTime = "8:00 AM"
-                self.selectedToTime = "12:00 AM"
-                self.additionalFromTime = nil
-                self.additionalToTime = nil
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 1 && self.secondSelection.alpha == 0 && self.thirdSelection.alpha == 1 {
-                self.selectedFromTime = "1:00 AM"
-                self.selectedToTime = "7:00 AM"
-                self.additionalFromTime = "6:00 PM"
-                self.additionalToTime = "12:00 AM"
-                self.dayAvailable = 1
-            } else if self.firstSelection.alpha == 0 && self.secondSelection.alpha == 0 && self.thirdSelection.alpha == 0 {
-                self.dayAvailable = 0
-            }
+        if self.secondSelection.alpha == 1 {
+            self.dayAvailable = 1
         } else {
-            if self.secondSelection.alpha == 1 {
-                self.dayAvailable = 1
-            } else {
-                self.dayAvailable = 0
-            }
+            self.dayAvailable = 0
         }
     }
     
@@ -564,47 +366,9 @@ class DayAvailabilityViewController: UIViewController {
         secondHidden.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         secondHidden.widthAnchor.constraint(equalTo: secondSelection.widthAnchor).isActive = true
         
-        container.addSubview(firstHidden)
-        container.sendSubviewToBack(firstHidden)
-        firstHidden.rightAnchor.constraint(equalTo: secondSelection.leftAnchor).isActive = true
-        firstHidden.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
-        firstHidden.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        firstHidden.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
-        container.addSubview(thirdHidden)
-        container.sendSubviewToBack(thirdHidden)
-        thirdHidden.leftAnchor.constraint(equalTo: secondHidden.rightAnchor).isActive = true
-        thirdHidden.topAnchor.constraint(equalTo: line.topAnchor).isActive = true
-        thirdHidden.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        thirdHidden.widthAnchor.constraint(equalToConstant: selectionWidth).isActive = true
-        
     }
     
-    var firstHidden: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "exit")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
-        button.addTarget(self, action: #selector(hiddenPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var secondHidden: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let origImage = UIImage(named: "exit")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
-        button.addTarget(self, action: #selector(hiddenPressed(sender:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    var thirdHidden: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         let origImage = UIImage(named: "exit")

@@ -61,6 +61,7 @@ class ListNotificationsViewController: UIViewController {
         view.register(NotificationsCell.self, forCellReuseIdentifier: "cellId")
         view.isScrollEnabled = false
         view.clipsToBounds = true
+        view.backgroundColor = Theme.WHITE
         
         return view
     }()
@@ -251,7 +252,7 @@ class NotificationsCell: UITableViewCell {
         let view = UIButton()
         view.titleLabel?.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitleColor(Theme.WHITE, for: .normal)
+        view.setTitleColor(Theme.DARK_GRAY, for: .normal)
         view.backgroundColor = lineColor
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
@@ -343,6 +344,8 @@ class NotificationsHeader: UIView {
     }()
     
     override func draw(_ rect: CGRect) {
+        
+        backgroundColor = Theme.WHITE
         
         setupViews()
     }

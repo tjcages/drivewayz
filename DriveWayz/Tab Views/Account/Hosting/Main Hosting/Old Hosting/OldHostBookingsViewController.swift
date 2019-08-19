@@ -273,7 +273,7 @@ extension OldHostBookingsViewController: handlePreviousBookings {
     }
     
     func hostingPreviousPressed(booking: Bookings, parking: ParkingSpots) {
-        self.hostingPreviousContainer.setData(booking: booking, parking: parking)
+//        self.hostingPreviousContainer.setData(booking: booking, parking: parking)
         self.hostingPreviousTopAnchor.constant = -statusHeight
         self.delegate?.defaultContentStatusBar()
         self.delegate?.hideExitButton()

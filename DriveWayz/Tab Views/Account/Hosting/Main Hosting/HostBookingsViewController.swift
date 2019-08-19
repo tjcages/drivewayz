@@ -9,7 +9,7 @@
 import UIKit
 
 protocol handleBookingInformation {
-    func expandBooking()
+    func expandBooking(booking: Bookings, image: UIImage)
     func bookingInformation()
     func hideOrganizer()
     func bringOrganizer()
@@ -129,7 +129,8 @@ class HostBookingsViewController: UIViewController {
     }()
     
     func observeData() {
-        
+        upcomingBookings.observeData()
+        previousBookings.observeData()
     }
     
     override func viewDidLoad() {
@@ -277,12 +278,14 @@ class HostBookingsViewController: UIViewController {
 extension HostBookingsViewController: handleBookingInformation {
     
     // Open options to information on each booking
-    func expandBooking() {
+    func expandBooking(booking: Bookings, image: UIImage) {
         self.delegate?.closeTabBar()
         UIView.animate(withDuration: animationIn, animations: {
             self.dimmingView.alpha = 0.6
         }) { (success) in
             let controller = ExpandedBookingsViewController()
+            controller.booking = booking
+            controller.profileImageView.image = image
             controller.delegate = self
             let navigation = UINavigationController(rootViewController: controller)
             navigation.navigationBar.isHidden = true

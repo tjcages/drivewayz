@@ -93,7 +93,7 @@ class HostNotifications: NSObject {
             self.notificationImage = UIImage(named: "flat-folder")
         } else if notificationType == "search" {
             self.type = .urgent
-            self.containerGradient = [Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4): Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)]
+            self.containerGradient = [Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1): Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)]
             self.notificationImage = UIImage(named: "flat-magnifier")
         } else if notificationType == "mailbox" {
             self.type = .mild

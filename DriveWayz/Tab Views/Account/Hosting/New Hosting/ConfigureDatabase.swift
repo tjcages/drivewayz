@@ -88,6 +88,13 @@ extension ConfigureParkingViewController {
                     let amenitiesRef = typeRef.child("Amenities")
                     amenitiesRef.setValue(selectedAmenities)
                     
+                    if var state = stateAddress, state.count <= 3 {
+                        state = state.replacingOccurrences(of: " ", with: "")
+                        if let keys = (statesDictionary as NSDictionary).allKeys(for: state) as? [String], let newState = keys.first {
+                            stateAddress = newState
+                        }
+                    }
+                    
                     let locationRef = childRef.child("Location")
                     let locationValues = ["overallAddress": overallAddress as Any,
                                           "streetAddress": streetAddress as Any,
@@ -98,6 +105,19 @@ extension ConfigureParkingViewController {
                                           "latitude": latitude as Any,
                                           "longitude": longitude as Any]
                         as [String: Any]
+                    
+                    if var state = stateAddress, let zip = zipAddress, let numberString = numberSpots, let number = Int(numberString) {
+                        state = state.replacingOccurrences(of: " ", with: "")
+                        if state.count > 2 {
+                            if let newState = statesDictionary[state] {
+                                state = newState
+                            }
+                        }
+                        let tempRef = Database.database().reference().child("Surge").child("SurgeDemand").child(state).child(zip).child(childKey)
+                        tempRef.setValue(number)
+                        let checkRef = Database.database().reference().child("Surge").child("SurgeCheck").child(state).child(zip).child(childKey)
+                        checkRef.setValue(Int(number))
+                    }
                     
                     if let city = cityAddress {
                         let parkingLocRef = Database.database().reference().child("ParkingLocations").child(city)

@@ -11,6 +11,8 @@ import Cosmos
 
 class BookingImageViewController: UIViewController {
     
+    var parkingImages: [UIImage] = []
+    
     var destinationIcon: UIButton = {
         let button = UIButton(type: .custom)
         let image = UIImage(named: "searchLocation")
@@ -72,12 +74,24 @@ class BookingImageViewController: UIViewController {
         return label
     }()
     
-    var bookingImageView: ExpandedImageViewController = {
-        let controller = ExpandedImageViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.editInformation.alpha = 0
+    var layout: UICollectionViewLayout = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
         
-        return controller
+        return layout
+    }()
+    
+    lazy var spacesPicker: UICollectionView = {
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        view.backgroundColor = Theme.WHITE
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.isPagingEnabled = true
+        view.register(SpacesImage.self, forCellWithReuseIdentifier: "Cell")
+        
+        return view
     }()
     
     var overviewButton: UIButton = {
@@ -119,11 +133,63 @@ class BookingImageViewController: UIViewController {
         
         return view
     }()
-
+    
+    var blankImageView = UIImageView()
+    
+    func checkImages(parking: ParkingSpots) {
+        self.spacesPicker.reloadData()
+        if let image = parking.firstImage {
+            self.appendNewImage(url: image, index: 0)
+        }
+        if let image = parking.secondImage {
+            self.appendNewImage(url: image, index: 1)
+        }
+        if let image = parking.thirdImage {
+            self.appendNewImage(url: image, index: 2)
+        }
+        if let image = parking.fourthImage {
+            self.appendNewImage(url: image, index: 3)
+        }
+        if let image = parking.fifthImage {
+            self.appendNewImage(url: image, index: 4)
+        }
+        if let image = parking.sixthImage {
+            self.appendNewImage(url: image, index: 5)
+        }
+        if let image = parking.seventhImage {
+            self.appendNewImage(url: image, index: 6)
+        }
+        if let image = parking.eighthImage {
+            self.appendNewImage(url: image, index: 7)
+        }
+        if let image = parking.ninethImage {
+            self.appendNewImage(url: image, index: 8)
+        }
+        if let image = parking.tenthImage {
+            self.appendNewImage(url: image, index: 9)
+        }
+    }
+    
+    func appendNewImage(url: String, index: Int) {
+        self.blankImageView.loadImageUsingCacheWithUrlString(url) { (bool) in
+            if let image = self.blankImageView.image {
+                if index < self.parkingImages.count {
+                    self.parkingImages.insert(image, at: index)
+                } else {
+                    self.parkingImages.append(image)
+                }
+                self.spacesPicker.reloadData()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = Theme.WHITE
+        
+        spacesPicker.delegate = self
+        spacesPicker.dataSource = self
         
         setupViews()
         setupImage()
@@ -172,12 +238,12 @@ class BookingImageViewController: UIViewController {
             bookedImageHeight = 300
         }
         
-        self.view.addSubview(bookingImageView.view)
-        bookingImageView.view.topAnchor.constraint(equalTo: subLabel.bottomAnchor, constant: 20).isActive = true
-        bookingImageView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        bookingImageView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        bookingImageView.view.heightAnchor.constraint(equalToConstant: bookedImageHeight).isActive = true
-        
+        self.view.addSubview(spacesPicker)
+        spacesPicker.topAnchor.constraint(equalTo: subLabel.bottomAnchor, constant: 20).isActive = true
+        spacesPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        spacesPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        spacesPicker.heightAnchor.constraint(equalToConstant: bookedImageHeight).isActive = true
+
     }
     
     var selectionCenterAnchor: NSLayoutConstraint!
@@ -185,19 +251,19 @@ class BookingImageViewController: UIViewController {
     func setupOptions() {
         
         self.view.addSubview(overviewButton)
-        overviewButton.topAnchor.constraint(equalTo: bookingImageView.view.bottomAnchor, constant: 12).isActive = true
+        overviewButton.topAnchor.constraint(equalTo: spacesPicker.bottomAnchor, constant: 12).isActive = true
         overviewButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         overviewButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         overviewButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 1/3).isActive = true
         
         self.view.addSubview(paymentButton)
-        paymentButton.topAnchor.constraint(equalTo: bookingImageView.view.bottomAnchor, constant: 12).isActive = true
+        paymentButton.topAnchor.constraint(equalTo: spacesPicker.bottomAnchor, constant: 12).isActive = true
         paymentButton.leftAnchor.constraint(equalTo: overviewButton.rightAnchor).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         paymentButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 1/3).isActive = true
         
         self.view.addSubview(reviewsButton)
-        reviewsButton.topAnchor.constraint(equalTo: bookingImageView.view.bottomAnchor, constant: 12).isActive = true
+        reviewsButton.topAnchor.constraint(equalTo: spacesPicker.bottomAnchor, constant: 12).isActive = true
         reviewsButton.leftAnchor.constraint(equalTo: paymentButton.rightAnchor).isActive = true
         reviewsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         reviewsButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 1/3).isActive = true
@@ -211,4 +277,39 @@ class BookingImageViewController: UIViewController {
         
     }
 
+}
+
+
+// Populate spaces collectionView
+extension BookingImageViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.parkingImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: phoneWidth, height: 280)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! SpacesImage
+        
+        if indexPath.row < self.parkingImages.count {
+            cell.spotImageView.image = self.parkingImages[indexPath.row]
+            cell.imageNumber.setTitle("\(indexPath.row + 1)", for: .normal)
+        }
+        let count = self.parkingImages.count
+        if count == 1 || count == 0 {
+            cell.imageNumber.alpha = 0
+        } else {
+            cell.imageNumber.alpha = 1
+        }
+        
+        return cell
+    }
+    
 }

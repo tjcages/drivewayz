@@ -15,6 +15,8 @@ import MapboxStatic
 extension ConfirmViewController: UNUserNotificationCenterDelegate {
     
     func setupNotifications() {
+        self.checkCoupons()
+        
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound])
         { (granted, error) in
@@ -35,7 +37,7 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                         let center = UNUserNotificationCenter.current()
                         center.setNotificationCategories([category])
                         DispatchQueue.main.async {
-                            self.postToDatabase()
+                            self.postBookingToDatabase()
                         }
                     }
                 }

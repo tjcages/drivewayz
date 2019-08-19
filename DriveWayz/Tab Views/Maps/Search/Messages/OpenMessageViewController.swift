@@ -309,28 +309,15 @@ extension OpenMessageViewController: UITableViewDelegate, UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == self.messagesTableView {
             let message = self.messagesRecent[indexPath.row]
-            let controller = RespondMessageViewController()
+            let controller = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
             guard let id = message.fromID else { return }
             controller.setData(userID: id)
-            controller.delegate = self
-            if let picture = message.picture {
-                if picture != "" {
-                    controller.profileImageView.loadImageUsingCacheWithUrlString(picture) { (bool) in
-                        if !bool {
-                            controller.profileImageView.image = UIImage(named: "background4")
-                        }
-                    }
-                } else {
-                    controller.profileImageView.image = UIImage(named: "background4")
-                }
-            }
+            controller.sendingFromDrivewayz = true
+            controller.gradientController.setBackButton()
             if let name = message.name {
-                controller.mainLabel.text = name
+                controller.gradientController.mainLabel.text = name
             }
             self.navigationController?.pushViewController(controller, animated: true)
-            delayWithSeconds(animationOut) {
-                controller.openMessageBar()
-            }
         }
     }
     

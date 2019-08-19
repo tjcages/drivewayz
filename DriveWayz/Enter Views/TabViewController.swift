@@ -27,7 +27,6 @@ protocol moveControllers {
 }
 
 protocol controlsNewParking {
-    func setupNewParking(parkingImage: ParkingImage)
     func removeNewParkingView()
     func removeNewVehicleView()
     func moveTopProfile()
@@ -188,7 +187,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     func moveToProfile() {
         self.delegate?.hideStatusBar()
-        self.mapController.purchaseButtonSwipedDown()
         self.mapController.view.bringSubviewToFront(self.mapController.fullBackgroundView)
         self.mapCenterAnchor.constant = self.view.frame.width/2 + 60
         hamburgerWidthAnchor.constant = -24
@@ -220,9 +218,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         }) { (success) in
             self.mapController.view.bringSubviewToFront(self.mapController.mainBarController.view)
             self.mapController.view.bringSubviewToFront(self.mapController.currentBottomController.view)
-            if eventsAreAllowed == true {
-                self.mapController.eventsControllerHidden()
-            }
         }
     }
     

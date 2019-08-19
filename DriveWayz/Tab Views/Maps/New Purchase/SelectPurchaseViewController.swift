@@ -1338,7 +1338,6 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     private func reserveParking() {
-        self.saveDelegate?.saveUserCurrentLocation()
         guard let currentUser = Auth.auth().currentUser?.uid else {return}
         
         let couponRef = Database.database().reference().child("users").child(currentUser).child("CurrentCoupon")

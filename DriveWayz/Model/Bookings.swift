@@ -42,6 +42,9 @@ class Bookings: NSObject {
     var destinationName: String?
     
     var checkedIn: Bool?
+    var section: TableSection?
+    var key: String?
+    var context: String = "Booking"
     
     init(dictionary: [String:Any]) {
         super.init()
@@ -101,6 +104,22 @@ class Bookings: NSObject {
             let toString = formatter.string(from: toDate)
             let dates = "\(fromString) - \(toString)"
             self.userDuration = dates
+        }
+        
+        let today = Date()
+        if let timestamp = self.fromDate {
+            let date = Date(timeIntervalSince1970: timestamp)
+            if date.isInToday {
+                section = .today
+            } else if date.isInYesterday {
+                section = .yesterday
+            } else if date.isInThisWeek {
+                section = .week
+            } else if date.isInSameMonth(date: today) {
+                section = .month
+            } else {
+                section = .earlier
+            }
         }
         
     }

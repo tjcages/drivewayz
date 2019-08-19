@@ -47,14 +47,15 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     
     func setupNavigationControllers() {
         
-        self.view.addSubview(currentBottomController.view)
-        currentBottomController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        currentBottomController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        currentBottomController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        currentBottomHeightAnchor = currentBottomController.view.heightAnchor.constraint(equalToConstant: 0)
-            currentBottomHeightAnchor.isActive = true
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(bottomPanned(sender:)))
-        currentBottomController.view.addGestureRecognizer(pan)
+//        self.view.addSubview(currentSpotController.view)
+//        currentTopAnchor = currentSpotController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 420)
+//        currentTopAnchor.isActive = true
+//        currentSpotController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        currentSpotController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+//        currentHeightAnchor = currentSpotController.view.heightAnchor.constraint(equalToConstant: 320)
+//        currentHeightAnchor.isActive = true
+//        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(currentlyScrolling(sender:)))
+//        currentSpotController.view.addGestureRecognizer(panGesture)
         
         self.view.addSubview(currentSearchLocation)
         currentSearchLocation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
@@ -130,7 +131,7 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
                             annotation.coordinate = parkingCoordinate
                             self.mapView.addAnnotation(annotation)
                             
-                            self.currentBottomHeightAnchor.constant = self.lowestHeight
+                            self.mainViewState = .currentBooking
                             UIView.animate(withDuration: animationOut, animations: {
                                 self.view.layoutIfNeeded()
                             })
@@ -309,9 +310,11 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     func closeCurrentBooking() {
         holdNavController.endNavigation()
         holdNavController.view.alpha = 0
+        currentActive = false
         DestinationRoute = nil
         ParkingRoute = nil
         
+        self.lowestHeight = 354
         self.mapView.resetNorth()
         self.hideCurrentParking()
         self.currentBottomController.scrollView.setContentOffset(.zero, animated: true)
@@ -334,12 +337,11 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
     func openCurrentInformation() {
         self.mapView.userTrackingMode = .followWithHeading
         self.mapView.allowsRotating = true
+        self.view.bringSubviewToFront(currentBottomController.view)
         UIView.animate(withDuration: animationOut, animations: {
             self.currentSearchLocation.alpha = 1
             self.currentSearchRegion.alpha = 1
             self.previousAnchor = self.lowestHeight
-            self.currentBottomHeightAnchor.constant = self.lowestHeight
-            self.mainBarTopAnchor.constant = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.currentBottomController.scrollView.isScrollEnabled = false

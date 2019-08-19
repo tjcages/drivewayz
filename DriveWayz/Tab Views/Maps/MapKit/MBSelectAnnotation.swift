@@ -13,6 +13,7 @@ import MapboxNavigation
 import MapboxCoreNavigation
 
 var didTapParking: Bool = false
+var TappedDestinationAnnotationLocation: CLLocation?
 
 extension MapKitViewController {
     
@@ -29,6 +30,8 @@ extension MapKitViewController {
                     self.removeMainBar()
                     self.delegate?.hideHamburger()
                     DestinationAnnotationLocation = userLocation
+                    TappedDestinationAnnotationLocation = parkingCoordinate
+                    
                     self.checkAnnotationsNearDestination(location: parkingCoordinate.coordinate, checkDistance: false)
                     self.parkingSelected()
                     self.mapView.setCenter(parkingCoordinate.coordinate, animated: true)
@@ -107,9 +110,14 @@ extension MapKitViewController {
             if self.mapView.zoomLevel >= 11 {
                 let touchLocation = CLLocation(latitude: touchCoordinate.latitude, longitude: touchCoordinate.longitude)
                 
-                // Otherwise, get all features within a rect the size of a touch (44x44).
-                let touchRect = CGRect(origin: point, size: .zero).insetBy(dx: -22.0, dy: -22.0)
-                guard let possibleFeatures = mapView.visibleAnnotations(in: sender.view!.bounds) else { return }
+                guard var possibleFeatures = mapView.visibleAnnotations(in: sender.view!.bounds) else { return }
+                for features in possibleFeatures {
+                    let position = mapView.convert(features.coordinate, toPointTo: sender.view)
+                    let distance = CGPointDistance(from: position, to: point)
+                    if distance > 20 {
+                        possibleFeatures = possibleFeatures.filter { $0 !== features }
+                    }
+                }
                 
                 // Select the closest feature to the touch center.
                 let closestFeatures = possibleFeatures.sorted(by: {
@@ -124,7 +132,7 @@ extension MapKitViewController {
                 // If no features were found, deselect the selected annotation, if any.
                 mapView.deselectAnnotation(mapView.selectedAnnotations.first, animated: true)
             } else {
-                let altitude = self.mapView.camera.altitude - 16000
+                let altitude = self.mapView.camera.altitude - 32000
                 
 //                self.mapView.setCenter(touchCoordinate, zoomLevel: zoom, animated: true)
                 let camera = MGLMapCamera(lookingAtCenter: touchCoordinate, altitude: CLLocationDistance(exactly: altitude)!, pitch: 0, heading: CLLocationDirection(0))
@@ -146,6 +154,14 @@ extension MapKitViewController {
             let camera = MGLMapCamera(lookingAtCenter: annotation.coordinate, altitude: CLLocationDistance(exactly: altitude)!, pitch: 0, heading: CLLocationDirection(0))
             self.mapView.setCamera(camera, withDuration: animationOut, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight * 3/4 - 60, right: phoneWidth/2), completionHandler: nil)
         }
+    }
+    
+    func CGPointDistanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
+        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
+    }
+    
+    func CGPointDistance(from: CGPoint, to: CGPoint) -> CGFloat {
+        return sqrt(CGPointDistanceSquared(from: from, to: to))
     }
     
 }
