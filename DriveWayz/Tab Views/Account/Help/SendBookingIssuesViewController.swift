@@ -826,6 +826,10 @@ extension SendBookingIssuesViewController {
                                 self.supportTextView.text = ""
                                 delayWithSeconds(2, completion: {
                                     self.backButtonPressed()
+                                    
+                                    delayWithSeconds(1, completion: {
+                                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
+                                    })
                                 })
                             })
                         }

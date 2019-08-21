@@ -131,6 +131,7 @@ extension MapKitViewController: handleMinimizingFullController {
                 }
                 delayWithSeconds(animationIn, completion: {
                     controller.dismiss(animated: true, completion: {
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
                         if current == true {
                             self.openCurrentInformation()
                         }
@@ -158,7 +159,6 @@ extension MapKitViewController: handleMinimizingFullController {
     }
     
     func hideCurrentParking() {
-        self.view.bringSubviewToFront(mainBarController.view)
         self.removeAllMapOverlays(shouldRefresh: true)
         mainViewState = .none
         UIView.animate(withDuration: animationOut, animations: {

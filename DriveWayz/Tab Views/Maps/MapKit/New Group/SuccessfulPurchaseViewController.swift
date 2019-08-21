@@ -169,10 +169,20 @@ class SuccessfulPurchaseViewController: UIViewController {
                 }
             }
         }
-        if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
-            if let timeMinutes = timeArray.dropFirst().dropFirst().first {
-                if let intMinutes = Int(timeMinutes) {
-                    minutes = intMinutes
+        if timeArray.count == 2 {
+            if let minuteString = timeArray.dropFirst().first, minuteString.contains("m") {
+                if let timeMinutes = timeArray.first {
+                    if let intMinutes = Int(timeMinutes) {
+                        minutes = intMinutes
+                    }
+                }
+            }
+        } else {
+            if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
+                if let timeMinutes = timeArray.dropFirst().dropFirst().first {
+                    if let intMinutes = Int(timeMinutes) {
+                        minutes = intMinutes
+                    }
                 }
             }
         }

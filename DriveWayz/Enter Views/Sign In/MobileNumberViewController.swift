@@ -11,14 +11,12 @@ import NVActivityIndicatorView
 
 protocol handlePhoneNumberVerification {
     func moveToMainController()
-    func moveToOnboarding()
-    func moveToLocationServices()
-    func createNewUser(name: String)
 }
 
 class MobileNumberViewController: UIViewController, handlePhoneNumberVerification {
     
     var delegate: handleOnboardingControllers?
+    var verificationCode: String?
     
     var backButton: UIButton = {
         let button = UIButton()
@@ -153,31 +151,6 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
         return loading
     }()
     
-    lazy var numberVerificationController: VerifyNumberViewController = {
-        let controller = VerifyNumberViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var enterNameController: EnterNameViewController = {
-        let controller = EnterNameViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var locationServicesController: LocationServicesViewController = {
-        let controller = LocationServicesViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.view.alpha = 0
-        
-        return controller
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -188,7 +161,10 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
         setupLabels()
         setupAreaCode()
         setupTextfield()
-        setupControllers()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        phoneNumberTextField.becomeFirstResponder()
     }
     
     func setupLabels() {
@@ -274,46 +250,18 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
         
     }
     
-    var numberVerifyTopAnchor: NSLayoutConstraint!
-    var enterNameTopAnchor: NSLayoutConstraint!
-    
-    func setupControllers() {
-        
-        self.view.addSubview(numberVerificationController.view)
-        numberVerificationController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        numberVerificationController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        numberVerifyTopAnchor = numberVerificationController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            numberVerifyTopAnchor.isActive = true
-        numberVerificationController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        
-        self.view.addSubview(enterNameController.view)
-        self.view.bringSubviewToFront(backButton)
-        enterNameController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        enterNameController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        enterNameTopAnchor = enterNameController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            enterNameTopAnchor.isActive = true
-        enterNameController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        
-        self.view.addSubview(locationServicesController.view)
-        locationServicesController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        locationServicesController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        locationServicesController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        locationServicesController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        
-    }
-    
     @objc func mainButtonPressed() {
         self.view.endEditing(true)
-        self.numberVerifyTopAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.backButton.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.numberVerificationController.firstVerificationField.becomeFirstResponder()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.backButton.alpha = 1
-            })
+        let controller = VerifyNumberViewController()
+        self.addChild(controller)
+        controller.delegate = self
+        
+        controller.phoneNumber = self.phoneNumberTextField.text!
+        if let code = self.verificationCode {
+            controller.verificationCode = code
         }
+        
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     @objc func deletePressed() {
@@ -327,28 +275,7 @@ class MobileNumberViewController: UIViewController, handlePhoneNumberVerificatio
     
     @objc func backButtonPressed() {
         self.view.endEditing(true)
-        if self.numberVerifyTopAnchor.constant == 0 {
-            self.numberVerifyTopAnchor.constant = phoneHeight
-            UIView.animate(withDuration: animationOut, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.numberVerificationController.firstVerificationField.text = ""
-                self.numberVerificationController.secondVerificationField.text = ""
-                self.numberVerificationController.thirdVerificationField.text = ""
-                self.numberVerificationController.fourthVerificationField.text = ""
-                self.numberVerificationController.fifthVerificationField.text = ""
-                self.numberVerificationController.sixthVerificationField.text = ""
-            }
-        } else if self.enterNameTopAnchor.constant == 0 {
-            self.enterNameTopAnchor.constant = phoneHeight
-            UIView.animate(withDuration: animationOut, animations: {
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.enterNameController.nameTextField.text = ""
-            }
-        } else {
-            self.delegate?.dismissMobileNumber()
-        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -440,47 +367,28 @@ extension MobileNumberViewController {
                     self.mainButton.backgroundColor = Theme.BLUE
                 }
                 print(error.localizedDescription)
+                self.showSimpleAlert(title: "Error", message: error.localizedDescription)
                 return
             }
             self.mainButton.isUserInteractionEnabled = true
             UIView.animate(withDuration: animationIn) {
                 self.mainButton.backgroundColor = Theme.BLUE
             }
-            self.numberVerificationController.phoneNumber = self.phoneNumberTextField.text!
-            self.numberVerificationController.verificationCode = verificationID
+            self.verificationCode = verificationID
             self.mainButtonPressed()
-        }
-    }
-    
-    func createNewUser(name: String) {
-        self.numberVerificationController.createNewUser(name: name)
-    }
-    
-    func moveToOnboarding() {
-        self.view.endEditing(true)
-        self.enterNameTopAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.backButton.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.enterNameController.nameTextField.becomeFirstResponder()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.backButton.alpha = 1
-            })
-        }
-    }
-    
-    func moveToLocationServices() {
-        self.view.endEditing(true)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.locationServicesController.view.alpha = 1
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            
         }
     }
     
     func moveToMainController() {
         self.delegate?.moveToMainController()
     }
+    
+    func showSimpleAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alert, animated: true)
+    }
+    
 }

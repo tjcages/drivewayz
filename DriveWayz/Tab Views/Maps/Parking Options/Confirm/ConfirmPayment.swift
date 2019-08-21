@@ -12,14 +12,14 @@ import Stripe
 extension ConfirmViewController: STPPaymentContextDelegate {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
-//        self.paymentInProgress = true
-//        self.paymentContext.requestPayment()
+        self.paymentInProgress = true
+        self.paymentContext.requestPayment()
         
-        self.paymentInProgress = true /////////////////////////////////////PAYMENT NOT SETUP
-        self.setupNotifications()
-        delayWithSeconds(2) {
-            self.paymentInProgress = false
-        }
+//        self.paymentInProgress = true /////////////////////////////////////PAYMENT NOT SETUP
+//        self.setupNotifications()
+//        delayWithSeconds(2) {
+//            self.paymentInProgress = false
+//        }
     }
     
 //    func sendPushNotification() {
@@ -87,6 +87,8 @@ extension ConfirmViewController: STPPaymentContextDelegate {
         case .success:
             self.setupNotifications()
         case .userCancellation:
+            return
+        default:
             return
         }
     }

@@ -10,10 +10,6 @@ import UIKit
 import CoreLocation
 import NVActivityIndicatorView
 
-protocol handleVerification {
-    func createNewUser(name: String)
-}
-
 class VerifyNumberViewController: UIViewController {
     
     var delegate: handlePhoneNumberVerification?
@@ -30,6 +26,18 @@ class VerifyNumberViewController: UIViewController {
             self.subLabel.attributedText = attributedString
         }
     }
+    
+    var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
 
     var mainLabel: UILabel = {
         let label = UILabel()
@@ -208,6 +216,10 @@ class VerifyNumberViewController: UIViewController {
         setupButton()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        firstVerificationField.becomeFirstResponder()
+    }
+    
     func setupLabels() {
 
         self.view.addSubview(mainLabel)
@@ -219,6 +231,17 @@ class VerifyNumberViewController: UIViewController {
             mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
         case .iphoneX:
             mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 132).isActive = true
+        }
+        
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 52).isActive = true
         }
         
         self.view.addSubview(mobileNumberLabel)
@@ -309,6 +332,11 @@ class VerifyNumberViewController: UIViewController {
         }
     }
 
+    @objc func backButtonPressed() {
+        self.view.endEditing(true)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 
@@ -378,19 +406,19 @@ extension VerifyNumberViewController: UITextFieldDelegate {
 }
 
 
-extension VerifyNumberViewController: handleVerification {
+extension VerifyNumberViewController {
     
     func registerWithPhoneNumber(verification: String) {
         self.loadingActivity.alpha = 1
         self.loadingActivity.startAnimating()
         if let verificationID = self.verificationCode {
             let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID, verificationCode: verification)
-            Auth.auth().signInAndRetrieveData(with: credential) { (authResult, error) in
+            Auth.auth().signIn(with: credential) { (authResult, error) in
                 if let error = error {
-                    self.createAlert(title: "Error", message: error.localizedDescription)
                     self.loadingActivity.alpha = 0
                     self.loadingActivity.stopAnimating()
                     print(error.localizedDescription)
+                    self.showSimpleAlert(title: "Error", message: error.localizedDescription)
                     return
                 }
                 guard let userID = authResult?.user.uid else { return }
@@ -398,11 +426,16 @@ extension VerifyNumberViewController: handleVerification {
                 let ref = Database.database().reference().child("users").child(userID)
                 ref.observeSingleEvent(of: .value, with: { (snapshot) in
                     if (snapshot.value as? [String:AnyObject]) != nil {
-                        self.login(uid: userID)
-                    } else {
-                        self.delegate?.moveToOnboarding()
                         self.loadingActivity.alpha = 0
                         self.loadingActivity.stopAnimating()
+                        
+                        let controller = EnterNameViewController()
+                        self.addChild(controller)
+                        controller.uid = userID
+                        controller.phoneNumber = self.phoneNumber
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    } else {
+                        self.login(uid: userID)
                     }
                 })
             }
@@ -413,52 +446,38 @@ extension VerifyNumberViewController: handleVerification {
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
-                self.delegate?.moveToLocationServices()
+                self.moveToLocationServices()
                 self.loadingActivity.alpha = 0
                 self.loadingActivity.stopAnimating()
             case .authorizedAlways, .authorizedWhenInUse:
-                UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-                UserDefaults.standard.synchronize()
+                self.loadingActivity.alpha = 0
+                self.loadingActivity.stopAnimating()
+                
+                let ref = Database.database().reference().child("users").child(uid)
+                ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+                
+                self.navigationController?.dismiss(animated: true, completion: nil)
                 self.delegate?.moveToMainController()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                    self.mainButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-                    self.loadingActivity.alpha = 0
-                    self.loadingActivity.stopAnimating()
-                    let ref = Database.database().reference().child("users").child(uid)
-                    ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
-                }
+            default:
+                print("Verify Number Failed to login")
             }
         } else {
-            self.delegate?.moveToOnboarding()
+            self.moveToLocationServices()
             self.loadingActivity.alpha = 0
             self.loadingActivity.stopAnimating()
         }
     }
     
-    func createNewUser(name: String) {
-        self.delegate?.moveToLocationServices()
-        guard let userID = self.uid, let number = self.phoneNumber else { return }
-        let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
-        let usersReference = ref.child("users").child(userID)
-        let values = ["name": name,
-                      "phone": "+1 " + number,
-                      "DeviceID": AppDelegate.DEVICEID]
-        usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-            if err != nil {
-                print(err?.localizedDescription as Any)
-                return
-            }
-            print("Successfully logged in!")
-            UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-            UserDefaults.standard.set(name, forKey: "userName")
-            UserDefaults.standard.synchronize()
-        })
+    func moveToLocationServices() {
+        let controller = LocationServicesViewController()
+        self.addChild(controller)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func createAlert(title: String, message: String) {
+    func showSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         
         self.present(alert, animated: true)
     }

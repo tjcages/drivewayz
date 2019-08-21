@@ -25,7 +25,7 @@ var phoneWidth: CGFloat = 0
 var statusHeight: CGFloat = 0
 
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, handleSignIn {
-    
+
     lazy var blackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -75,28 +75,27 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return view
     }()
     
-    lazy var startupOnboardingController: OnboardingViewController = {
-        let controller = OnboardingViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.statusDelegate = self
-        
-        return controller
-    }()
+//    lazy var startupOnboardingController: OnboardingViewController = {
+//        let controller = OnboardingViewController()
+//        self.addChild(controller)
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self
+//        controller.statusDelegate = self
+//
+//        return controller
+//    }()
     
-    lazy var startupMapController: TabViewController = {
-        let controller = TabViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self ////////////////////////////////////////////////?NEED TO SETUP OTHER LOCATION MANAGER DELAY
-        
-        return controller
-    }()
+//    lazy var startupMapController: TabViewController = {
+//        let controller = TabViewController()
+//        self.addChild(controller)
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self ////////////////////////////////////////////////?NEED TO SETUP OTHER LOCATION MANAGER DELAY
+//
+//        return controller
+//    }()
 
     var drivewayzIconLeftAnchor: NSLayoutConstraint!
     var drivewayzIconTopAnchor: NSLayoutConstraint!
-    var startupAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,7 +205,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                     }, completion: { (success) in
                         delayWithSeconds(0.4, completion: {
                             UIView.animate(withDuration: animationIn, animations: {
-                                self.startupAnchor.constant = 0
                                 if self.controller == true {
                                     self.drivewayzLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                                     self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
@@ -214,22 +212,39 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
                                     self.drivewayzLabel.alpha = 0
                                     self.drivewayzTopIcon.alpha = 0
                                     self.drivewayzBottomIcon.alpha = 0
-                                    self.startupMapController.view.alpha = 1
+                                    
+                                    let controller = TabViewController()
+                                    controller.delegate = self
+                                    controller.modalPresentationStyle = .overFullScreen
+                                    controller.modalTransitionStyle = .crossDissolve
+                                    self.present(controller, animated: true, completion: {
+                                        self.defaultStatusBar()
+                                        self.bringStatusBar()
+                                        UIView.animate(withDuration: animationIn, animations: {
+                                            self.blackView.alpha = 1
+                                        })
+                                    })
                                 } else {
                                     self.drivewayzIconTopAnchor.constant = -200
                                     self.drivewayzBottomIcon.transform = CGAffineTransform(translationX: 0.0, y: -200)
                                     self.drivewayzLabel.alpha = 0
                                     self.drivewayzTopIcon.alpha = 0
                                     self.drivewayzBottomIcon.alpha = 0
-                                    self.startupOnboardingController.circularView.alpha = 1
+                                    
+                                    let controller = OnboardingViewController()
+                                    controller.delegate = self
+                                    controller.statusDelegate = self
+                                    controller.modalPresentationStyle = .overFullScreen
+                                    self.present(controller, animated: true, completion: {
+                                        self.hideStatusBar()
+                                        UIView.animate(withDuration: animationIn, animations: {
+                                            controller.circularView.alpha = 1
+                                        })
+                                    })
                                 }
                                 self.view.layoutIfNeeded()
                             }, completion: { (success) in
-                                if self.controller == true {
-                                    UIView.animate(withDuration: animationIn, animations: {
-                                        self.blackView.alpha = 1
-                                    })
-                                }
+//
                             })
                         })
                     })
@@ -244,62 +259,24 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if isUserLoggedIn == true {
             self.controller = true
-            
-            self.view.addSubview(startupMapController.view)
-            self.addChild(startupMapController)
-            startupMapController.willMove(toParent: self)
-            startupMapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            startupAnchor = startupMapController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-                startupAnchor.isActive = true
-            startupMapController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            startupMapController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            startupMapController.view.alpha = 0
-            delayWithSeconds(1) {
-                self.hideStatusBar()
-                self.defaultStatusBar()
-            }
-            delayWithSeconds(2.6) {
-                self.bringStatusBar()
-            }
         } else {
             self.controller = false
-            
-            self.view.addSubview(startupOnboardingController.view)
-            self.addChild(startupOnboardingController)
-            startupOnboardingController.willMove(toParent: self)
-            startupOnboardingController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.startupAnchor = startupOnboardingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-                self.startupAnchor.isActive = true
-            startupOnboardingController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-            startupOnboardingController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-            startupOnboardingController.view.alpha = 1
-            delayWithSeconds(1) {
-                self.hideStatusBar()
-            }
         }
     }
     
     func moveToMainController() {
         self.controller = true
         
-        self.view.addSubview(self.startupMapController.view)
-        self.addChild(self.startupMapController)
-        self.startupMapController.willMove(toParent: self)
-        delayWithSeconds(4) {
-//            self.startupMapController.mapController.setupLocationManager()//////////////////////////////////////////////////////////////////////////
-        }
-        startupMapController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        startupMapController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        startupMapController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-        startupMapController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        startupMapController.view.alpha = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-            UIView.animate(withDuration: animationIn, animations: {
-                self.startupMapController.view.alpha = 1
-                self.blackView.alpha = 1
-            }, completion: { (success) in
-                self.defaultStatusBar()
-            })
+        self.defaultStatusBar()
+        UIView.animate(withDuration: animationIn, animations: {
+            self.blackView.alpha = 1
+        })
+        
+        UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+        UserDefaults.standard.synchronize()
+        
+        delayWithSeconds(1) {
+            self.bringStatusBar()
         }
     }
     

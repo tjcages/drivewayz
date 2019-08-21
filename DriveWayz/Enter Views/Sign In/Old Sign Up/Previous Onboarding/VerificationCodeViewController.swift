@@ -593,16 +593,16 @@ extension VerificationCodeViewController {
                 self.loadingActivity.alpha = 0
                 self.loadingActivity.stopAnimating()
             case .authorizedAlways, .authorizedWhenInUse:
-                UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-                UserDefaults.standard.synchronize()
+                let ref = Database.database().reference().child("users").child(uid)
+                ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
+                
                 self.delegate?.moveToMainController()
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
                     self.mainLabel.alpha = 0
                     self.nextButton.alpha = 0
                     self.loadingActivity.alpha = 0
                     self.loadingActivity.stopAnimating()
-                    let ref = Database.database().reference().child("users").child(uid)
-                    ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
                 }
             }
         } else {

@@ -410,7 +410,9 @@ extension UserContactViewController: UITextViewDelegate {
         } else {
             self.present(alert, animated: true)
             delayWithSeconds(1) {
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
+                })
             }
         }
     }

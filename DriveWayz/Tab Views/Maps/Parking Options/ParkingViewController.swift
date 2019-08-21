@@ -188,7 +188,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         return controller
     }()
     
-    var bubbleArrow: BubbleArrow = {
+    lazy var bubbleArrow: BubbleArrow = {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
@@ -196,6 +196,8 @@ class ParkingViewController: UIViewController, handleTestParking {
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
         view.alpha = 0
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideBubbleArrow))
+        view.addGestureRecognizer(tap)
         
         return view
     }()
@@ -444,6 +446,12 @@ class ParkingViewController: UIViewController, handleTestParking {
             UIView.animate(withDuration: animationIn, animations: {
                 self.bookingSliderController.view.alpha = 1
             })
+        }
+    }
+    
+    @objc func hideBubbleArrow() {
+        UIView.animate(withDuration: animationIn) {
+            self.bubbleArrow.alpha = 0
         }
     }
     

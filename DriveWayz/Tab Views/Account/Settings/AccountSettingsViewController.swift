@@ -79,7 +79,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
         if indexPath.row == 2 {
             tableView.separatorStyle = .none
         }
-        if options.count > indexPath.row {
+        if options.count > indexPath.row && optionsSub.count > indexPath.row {
             cell.titleLabel.text = options[indexPath.row]
             cell.subtitleLabel.text = optionsSub[indexPath.row]
             cell.iconView.setImage(optionsIcons[indexPath.row], for: .normal)

@@ -16,38 +16,9 @@ import AVFoundation
 import Mapbox
 import MapboxDirections
 import MapboxNavigation
-//import MapboxCoreNavigation
-//import CoreMotion
+
 
 var userLocation: CLLocation?
-var alreadyLoadedSpots: Bool = false
-
-//var finalWalkingRoute: Route?
-//var firstWalkingRoute: Route?
-//var secondWalkingRoute: Route?
-//var thirdWalkingRoute: Route?
-//var finalParkingRoute: Route?
-//var firstParkingRoute: Route?
-//var secondParkingRoute: Route?
-//var thirdParkingRoute: Route?
-//var finalPolyline: MGLPolyline?
-//var firstPolyline: MGLPolyline?
-//var secondPolyline: MGLPolyline?
-//var thirdPolyline: MGLPolyline?
-
-var destinationFinalCoordinates: [CLLocationCoordinate2D] = []
-var destinationFirstCoordinates: [CLLocationCoordinate2D] = []
-var destinationSecondCoordinates: [CLLocationCoordinate2D] = []
-var destinationThirdCoordinates: [CLLocationCoordinate2D] = []
-
-var finalMapView: MGLCoordinateBounds?
-var firstMapView: MGLCoordinateBounds?
-var secondMapView: MGLCoordinateBounds?
-var thirdMapView: MGLCoordinateBounds?
-var finalPurchaseMapView: MGLCoordinateBounds?
-var firstPurchaseMapView: MGLCoordinateBounds?
-var secondPurchaseMapView: MGLCoordinateBounds?
-var thirdPurchaseMapView: MGLCoordinateBounds?
 
 class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
     
@@ -118,6 +89,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         view.showsUserHeadingIndicator = true
         view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
         view.decelerationRate = 2.0
+        view.setContentInset(UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false)
         
         return view
     }()
@@ -658,6 +630,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var quickParkingWidthAnchor: NSLayoutConstraint!
     ///////////////////////////////////////////////////////////////////
     
+    let backgroundImageView: UIImageView = {
+        let image = UIImage(named: "mapCoverBackground")!.resizableImage(withCapInsets: .zero)
+        let view = UIImageView(image: image)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     func setupViews() {
         
         self.view.addSubview(mapView)
@@ -677,6 +657,13 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             singleTap.require(toFail: recognizer)
         }
         mapView.addGestureRecognizer(singleTap)
+        
+        self.view.addSubview(backgroundImageView)
+        backgroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        backgroundImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        backgroundImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        backgroundImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
     }
     
     func sendNewHost() {
@@ -695,10 +682,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
-    func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
-    
+
 }
 
 protocol controlSaveLocation {

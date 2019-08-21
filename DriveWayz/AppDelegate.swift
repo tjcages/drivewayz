@@ -27,9 +27,10 @@ let NetworkReachabilityChanged = NSNotification.Name("NetworkReachabilityChanged
 var previousNetworkReachabilityStatus: AFNetworkReachabilityStatus = .unknown
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     var window: UIWindow?
+    var applicationCheck: UIApplication?
     let gcmMessageIDKey = "174551543020"
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
@@ -37,18 +38,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        applicationCheck = application
+        
         detectDevice()
         checkNetwork()
         FirebaseApp.configure()
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-//        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-//        GIDSignIn.sharedInstance().delegate = self
         
         GMSServices.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
         GMSPlacesClient.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
         STPPaymentConfiguration.shared().publishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
+        
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
         
         statusHeight = UIApplication.shared.statusBarFrame.height
         
@@ -60,15 +64,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = startUpViewController
         window!.makeKeyAndVisible()
         
-        STPTheme.default().accentColor = Theme.PACIFIC_BLUE
+        STPTheme.default().accentColor = Theme.BLUE
         
         Messaging.messaging().delegate = self
         
-        if #available(iOS 10, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
-            UIApplication.shared.applicationIconBadgeNumber = 0
+        let isRegisteredForRemoteNotifications = UIApplication.shared.isRegisteredForRemoteNotifications
+        if isRegisteredForRemoteNotifications {
+            // user notifications auth
             UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in }
+            UIApplication.shared.applicationIconBadgeNumber = 0
+            UIApplication.shared.registerForRemoteNotifications()
+
             application.registerForRemoteNotifications()
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(registerForRemoteNotifs), name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
         }
         
         return true
@@ -110,9 +120,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        AppEventsLogger.activate(application)
+    @objc func registerForRemoteNotifs() {
+        let isRegisteredForRemoteNotifications = UIApplication.shared.isRegisteredForRemoteNotifications
+        if !isRegisteredForRemoteNotifications {
+            if let application = applicationCheck {
+                UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+                UIApplication.shared.applicationIconBadgeNumber = 0
+                UNUserNotificationCenter.current().delegate = self
+                UIApplication.shared.registerForRemoteNotifications()
+                
+                application.registerForRemoteNotifications()
+            }
+        }
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -123,6 +142,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if (stripeHandled) {
                 return true
             } else {
+                
+                return GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+                
                 return false
                 //            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
             }
@@ -192,6 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
         if timerStarted == true {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "bookingTimerRestart"), object: nil)
@@ -202,6 +225,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "confirmBookingCheck"), object: nil)
             }
         }
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        AppEventsLogger.activate(application)
     }
     
     func detectDevice() {
@@ -245,27 +273,89 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func restartApplication () {
-        let viewController = LaunchAnimationsViewController()
-        let navCtrl = UINavigationController(rootViewController: viewController)
-        
-        guard
-            let window = UIApplication.shared.keyWindow,
-            let rootViewController = window.rootViewController
-            else {
-                return
-        }
-        navCtrl.view.frame = rootViewController.view.frame
-        navCtrl.setNavigationBarHidden(true, animated: false)
-        navCtrl.view.layoutIfNeeded()
-        
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            window.rootViewController = navCtrl
-        })
-        
-    }
 }
 
+extension AppDelegate {
+    
+//    // Listen for user notifications
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//
+//        completionHandler([.alert, .badge, .sound])
+//    }
+    
+//    // listen for user notifications
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//
+//        completionHandler([.alert, .badge, .sound])
+//    }
+//
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//
+//        completionHandler([.alert, .badge, .sound])
+//    }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//
+//        completionHandler(.alert)
+//    }
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//
+//        let userInfo = response.notification.request.content.userInfo
+//
+//        print(userInfo)
+//
+//        completionHandler()
+//    }
+    
+//    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+//        let userInfo = remoteMessage.appData
+//
+//        print(userInfo)
+//
+//        Messaging.messaging().appDidReceiveMessage(userInfo)
+//    }
+    
+//    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//
+//        UIApplication.shared.applicationIconBadgeNumber = 0
+//
+//        completionHandler(.newData)
+//    }
+    
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+//        // With swizzling disabled you must let Messaging know about the message, for Analytics
+//        Messaging.messaging().appDidReceiveMessage(userInfo)
+//
+//        // Print full message.
+//        print(userInfo)
+//    }
+
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        UIApplication.shared.applicationIconBadgeNumber += 1
+
+        // Print full message
+        print(userInfo)
+
+        completionHandler(.newData)
+    }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+//        completionHandler()
+//    }
+    
+}
 
 extension AppDelegate: MessagingDelegate {
     
@@ -303,7 +393,7 @@ extension AppDelegate: MessagingDelegate {
         InstanceID.instanceID().instanceID(handler: { (result, error) in
             if error == nil {
                 AppDelegate.DEVICEID = (result?.token)!
-                
+
                 guard let currentUser = Auth.auth().currentUser?.uid else { return }
                 let ref = Database.database().reference().child("users").child(currentUser)
                 ref.updateChildValues(["DeviceID": AppDelegate.DEVICEID])
@@ -317,48 +407,27 @@ extension AppDelegate: MessagingDelegate {
         print("APNs registration failed: \(error)")
     }
     
-//    func connectToFCM() {
-//        Messaging.messaging().isAutoInitEnabled = true
-//    }
-    
 }
 
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        completionHandler([.alert, .badge, .sound])
-    }
-    
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        
-        completionHandler(.newData)
-    }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // Print full message.
-        print(userInfo)
-    }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-         Messaging.messaging().appDidReceiveMessage(userInfo)
-        UIApplication.shared.applicationIconBadgeNumber += 1
 
-        // Print full message.
-        print(userInfo)
+extension AppDelegate: GIDSignInDelegate {
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if let error = error {
+            // ...
+            return
+        }
         
-        completionHandler(.newData)
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        // ...
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
-        completionHandler()
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
     }
     
 }

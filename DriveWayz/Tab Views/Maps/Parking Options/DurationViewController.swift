@@ -108,7 +108,7 @@ class DurationViewController: UIViewController, handleHoursSelected {
     var pmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.BLUE
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.setTitle("pm", for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5

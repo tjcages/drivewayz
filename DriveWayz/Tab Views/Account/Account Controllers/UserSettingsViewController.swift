@@ -325,6 +325,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                 }
             }
         }
+        self.loadingLine.endAnimating()
     }
 
     @objc func backButtonPressed() {
@@ -345,31 +346,28 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     var startupAnchor: NSLayoutConstraint!
     
     func handleLogout() {
-        do {
-            try Auth.auth().signOut()
-            let loginManager = LoginManager()
-            loginManager.logOut()
-        } catch let logoutError {
-            print(logoutError)
-        }
-        self.delegate?.dismissActiveController()
-        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-        UserDefaults.standard.synchronize()
-
-        let launchController = LaunchAnimationsViewController()
-        launchController.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(launchController.view)
-        self.addChild(launchController)
-        launchController.willMove(toParent: self)
-        launchController.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.startupAnchor = launchController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.view.frame.height)
-            self.startupAnchor.isActive = true
-        launchController.view.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
-        launchController.view.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
-        UIView.animate(withDuration: animationOut) {
-            self.startupAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }
+        let alert = UIAlertController(title: "Log out?", message: "Are you sure you want to log out?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
+            do {
+                try Auth.auth().signOut()
+                let loginManager = LoginManager()
+                loginManager.logOut()
+            } catch let logoutError {
+                print(logoutError)
+            }
+            
+            UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+            UserDefaults.standard.synchronize()
+            
+            let controller = LaunchAnimationsViewController()
+            
+            self.present(controller, animated: true, completion: {  
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true)
     }
     
 }

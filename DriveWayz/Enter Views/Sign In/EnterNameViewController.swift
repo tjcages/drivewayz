@@ -11,7 +11,20 @@ import NVActivityIndicatorView
 
 class EnterNameViewController: UIViewController {
 
-    var delegate: handlePhoneNumberVerification?
+    var uid: String?
+    var phoneNumber: String?
+    
+    var backButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "arrow")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
     
     var mainLabel: UILabel = {
         let label = UILabel()
@@ -38,8 +51,8 @@ class EnterNameViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH4
-        label.text = "Generate Lorem Ipsum placeholder text for use in your graphic, print."
-        label.numberOfLines = 2
+        label.text = "Your full name is required for verification purposes. Your first name will be visible to hosts when you book their parking space."
+        label.numberOfLines = 4
         
         return label
     }()
@@ -70,7 +83,7 @@ class EnterNameViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        button.addTarget(self, action: #selector(createNewUser), for: .touchUpInside)
+        button.addTarget(self, action: #selector(moveToTerms), for: .touchUpInside)
         
         return button
     }()
@@ -110,6 +123,10 @@ class EnterNameViewController: UIViewController {
         setupTextfield()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        nameTextField.becomeFirstResponder()
+    }
+    
     func setupLabels() {
         
         self.view.addSubview(mainLabel)
@@ -123,6 +140,17 @@ class EnterNameViewController: UIViewController {
             mainLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 132).isActive = true
         }
         
+        self.view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        switch device {
+        case .iphone8:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        case .iphoneX:
+            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 52).isActive = true
+        }
+        
         self.view.addSubview(mobileNumberLabel)
         mobileNumberLabel.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 0).isActive = true
         mobileNumberLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
@@ -133,7 +161,7 @@ class EnterNameViewController: UIViewController {
         subLabel.topAnchor.constraint(equalTo: mobileNumberLabel.bottomAnchor, constant: 4).isActive = true
         subLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         subLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        subLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        subLabel.sizeToFit()
         
     }
     
@@ -165,10 +193,15 @@ class EnterNameViewController: UIViewController {
         
     }
     
-    @objc func createNewUser() {
-        self.nameTextField.endEditing(true)
+    @objc func moveToTerms() {
         if let name = self.nameTextField.text, name != "" || name != "Enter your full name" {
-            self.delegate?.createNewUser(name: name)
+            self.nameTextField.endEditing(true)
+            let controller = AcceptTermsViewController()
+            self.addChild(controller)
+            controller.uid = self.uid
+            controller.name = name
+            controller.phoneNumber = self.phoneNumber
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
@@ -181,6 +214,12 @@ class EnterNameViewController: UIViewController {
         }
     }
 
+    func moveToLocationServices() {
+        let controller = LocationServicesViewController()
+        self.addChild(controller)
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
 }
 
 
@@ -217,6 +256,19 @@ extension EnterNameViewController: UITextFieldDelegate {
             }
         }
         return true
+    }
+    
+    @objc func backButtonPressed() {
+        self.view.endEditing(true)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func showSimpleAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alert, animated: true)
     }
     
 }

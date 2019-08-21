@@ -47,6 +47,7 @@ extension MapKitViewController {
             
         case .mainBar:
             // Show main bar
+            
             self.mainBarController.scrollView.setContentOffset(.zero, animated: true)
             self.mainBarTopAnchor.constant = self.lowestHeight
             self.parkingControllerBottomAnchor.constant = 420
@@ -96,6 +97,7 @@ extension MapKitViewController {
             
         case .payment:
             // Show payment options
+            self.view.bringSubviewToFront(confirmPaymentController.view)
             self.mainBarTopAnchor.constant = 0
             self.parkingControllerBottomAnchor.constant = 420
             self.durationControllerBottomAnchor.constant = 500
@@ -115,6 +117,7 @@ extension MapKitViewController {
         case .currentBooking:
             // Show current booking
             self.removeAllHostLocations()
+            self.currentBottomController.scrollView.setContentOffset(.zero, animated: true)
             self.mainBarTopAnchor.constant = 0
             self.parkingControllerBottomAnchor.constant = 420
             self.durationControllerBottomAnchor.constant = 500

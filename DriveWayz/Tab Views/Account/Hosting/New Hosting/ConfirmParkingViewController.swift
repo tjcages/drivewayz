@@ -349,6 +349,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
                     })
                     return
                 }
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
                 self.moveToFinalizeParking()
                 UIView.animate(withDuration: animationOut, animations: {
                     self.denyNotifications.alpha = 0
@@ -359,6 +360,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
             // Attempt registration for remote notifications on the main thread
             DispatchQueue.main.async {
                 UIApplication.shared.registerForRemoteNotifications()
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
             }
         }
     }

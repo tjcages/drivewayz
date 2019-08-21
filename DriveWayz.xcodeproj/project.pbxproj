@@ -285,6 +285,8 @@
 		CA11C3F022ED14F9008CB9D9 /* GeneralNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3EF22ED14F9008CB9D9 /* GeneralNotificationViewController.swift */; };
 		CA11C3F722EE4172008CB9D9 /* HostResponsibilitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3F622EE4172008CB9D9 /* HostResponsibilitiesViewController.swift */; };
 		CA11C3F922EE78B3008CB9D9 /* HostSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11C3F822EE78B3008CB9D9 /* HostSpacesViewController.swift */; };
+		CA15DA70230AF7EB00F5B132 /* drivewayz.geojson in Resources */ = {isa = PBXBuildFile; fileRef = CA15DA6F230AF7EA00F5B132 /* drivewayz.geojson */; };
+		CA15DA72230CB78100F5B132 /* AcceptTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA15DA71230CB78100F5B132 /* AcceptTermsViewController.swift */; };
 		CA19D57122C0822C00337C7F /* ContactReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */; };
 		CA19D57A22C2B78A00337C7F /* cities.csv in Resources */ = {isa = PBXBuildFile; fileRef = CA19D57922C2B78A00337C7F /* cities.csv */; };
 		CA19D57C22C3D4C200337C7F /* MoveDotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D57B22C3D4C200337C7F /* MoveDotsViewController.swift */; };
@@ -673,6 +675,8 @@
 		CA11C3EF22ED14F9008CB9D9 /* GeneralNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralNotificationViewController.swift; sourceTree = "<group>"; };
 		CA11C3F622EE4172008CB9D9 /* HostResponsibilitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostResponsibilitiesViewController.swift; sourceTree = "<group>"; };
 		CA11C3F822EE78B3008CB9D9 /* HostSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSpacesViewController.swift; sourceTree = "<group>"; };
+		CA15DA6F230AF7EA00F5B132 /* drivewayz.geojson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = drivewayz.geojson; sourceTree = "<group>"; };
+		CA15DA71230CB78100F5B132 /* AcceptTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptTermsViewController.swift; sourceTree = "<group>"; };
 		CA19D57022C0822C00337C7F /* ContactReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactReviewsViewController.swift; sourceTree = "<group>"; };
 		CA19D57622C1B81600337C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../../../Downloads/drivewayz-master/DriveWayz/Info.plist"; sourceTree = "<group>"; };
 		CA19D57922C2B78A00337C7F /* cities.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cities.csv; sourceTree = SOURCE_ROOT; };
@@ -1169,6 +1173,7 @@
 				4DB62D132289FFFC00D967AB /* MobileNumberViewController.swift */,
 				4DB62D16228A1D3300D967AB /* VerifyNumberViewController.swift */,
 				4DB62D1F228F8AB100D967AB /* EnterNameViewController.swift */,
+				CA15DA71230CB78100F5B132 /* AcceptTermsViewController.swift */,
 				4D02C64F21CD94D500748BA3 /* LocationServicesViewController.swift */,
 			);
 			path = "Sign In";
@@ -1487,6 +1492,7 @@
 				4D3204572256F4C20099067E /* CustomLocation.gpx */,
 				4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */,
 				4D353C2021C99FD000AE07B4 /* overlay.json */,
+				CA15DA6F230AF7EA00F5B132 /* drivewayz.geojson */,
 				CA19D57922C2B78A00337C7F /* cities.csv */,
 				4DF8AF3A220D548500CF64FC /* parking_data.csv */,
 			);
@@ -2037,6 +2043,7 @@
 				4DE49006218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 				4DE4900E218BF09000171BB8 /* SourceSansPro-BoldItalic.ttf in Resources */,
 				4DE4900B218BF09000171BB8 /* SourceSansPro-Black.ttf in Resources */,
+				CA15DA70230AF7EB00F5B132 /* drivewayz.geojson in Resources */,
 				4D353C2121C99FD000AE07B4 /* overlay.json in Resources */,
 				4DE4900D218BF09000171BB8 /* SourceSansPro-ExtraLight.ttf in Resources */,
 				4DE49007218BF09000171BB8 /* SourceSansPro-Regular.ttf in Resources */,
@@ -2331,6 +2338,7 @@
 				4D2EB5CE21068731004AEA54 /* TermsViewController.swift in Sources */,
 				4D5F126C2176DFF800D9E38E /* HostMessageViewController.swift in Sources */,
 				4DCA492F20F018D500F00B3B /* MyAPIClient.swift in Sources */,
+				CA15DA72230CB78100F5B132 /* AcceptTermsViewController.swift in Sources */,
 				4D0F0BA321AD19AA0022D1B4 /* EditSettingsViewController.swift in Sources */,
 				4D202C9721ED1F2900F68F13 /* HostingProfitsViewController.swift in Sources */,
 				CAD9F83C22B85CFF0077969B /* BankTransferViewController.swift in Sources */,

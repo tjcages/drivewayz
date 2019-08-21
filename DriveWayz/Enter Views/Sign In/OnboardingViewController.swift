@@ -10,9 +10,9 @@ import UIKit
 import FacebookLogin
 import FacebookCore
 import SwiftyJSON
+import GoogleSignIn
 
 protocol handleOnboardingControllers {
-    func dismissMobileNumber()
     func moveToMainController()
 }
 
@@ -162,14 +162,6 @@ class OnboardingViewController: UIViewController {
         return view
     }()
     
-    lazy var mobileNumberController: MobileNumberViewController = {
-        let controller = MobileNumberViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
-    
     var facebookButton: UIButton = {
         let button = UIButton()
         let image = UIImage(named: "FacebookIcon")
@@ -188,6 +180,7 @@ class OnboardingViewController: UIViewController {
         let image = UIImage(named: "GooglePlusIcon")
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
         
         return button
     }()
@@ -196,12 +189,14 @@ class OnboardingViewController: UIViewController {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        
+        GIDSignIn.sharedInstance()?.delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
 
         setupViews()
         setupLabels()
         setupSelection()
         setupButtons()
-        setupControllers()
     }
     
     func setupViews() {
@@ -324,58 +319,38 @@ class OnboardingViewController: UIViewController {
         googlePlusButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         googlePlusButton.heightAnchor.constraint(equalTo: googlePlusButton.widthAnchor).isActive = true
         googlePlusButton.topAnchor.constraint(equalTo: socialLabel.bottomAnchor, constant: 12).isActive = true
-        
-    }
-    
-    var mobileNumberTopAnchor: NSLayoutConstraint!
-    
-    func setupControllers() {
-        
-        self.view.addSubview(mobileNumberController.view)
-        mobileNumberController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        mobileNumberController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mobileNumberTopAnchor = mobileNumberController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: phoneHeight)
-            mobileNumberTopAnchor.isActive = true
-        mobileNumberController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        
+
     }
 
     @objc func mainButtonPressed() {
-        self.mobileNumberTopAnchor.constant = 0
-        self.mobileNumberController.backButton.alpha = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.mobileNumberController.phoneNumberTextField.becomeFirstResponder()
+        
+        let controller = MobileNumberViewController()
+        controller.delegate = self
+        self.addChild(controller)
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isHidden = true
+//        navigation.modalPresentationStyle = .overCurrentContext
+        
+        self.present(navigation, animated: true) {
             self.statusDelegate?.defaultStatusBar()
             self.statusDelegate?.bringStatusBar()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.mobileNumberController.backButton.alpha = 1
-            })
         }
-    }
-    
-    func moveToMainController() {
-        self.delegate?.moveToMainController()
-        print("Successfully logged in!")
-        UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-        UserDefaults.standard.synchronize
     }
     
 }
 
-
 extension OnboardingViewController: handleOnboardingControllers {
     
-    func dismissMobileNumber() {
-        self.statusDelegate?.lightContentStatusBar()
-        self.statusDelegate?.hideStatusBar()
-        self.mobileNumberTopAnchor.constant = phoneHeight
-        UIView.animate(withDuration: animationOut, animations: {
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            //
-        }
+    func moveToMainController() {
+        self.delegate?.moveToMainController()
+        
+        let controller = TabViewController()
+        controller.delegate = LaunchAnimationsViewController()
+        controller.modalTransitionStyle = .crossDissolve
+        
+        self.present(controller, animated: true, completion: {
+            controller.bringHamburger()
+        })
     }
     
 }
@@ -430,7 +405,7 @@ extension OnboardingViewController: UIScrollViewDelegate {
     
 }
 
-
+// Handle the Facebook Sign in methods with Firebase Database
 extension OnboardingViewController {
     
     @objc func loginButtonDidCompleteLogin() {
@@ -443,8 +418,14 @@ extension OnboardingViewController {
                 let access = AccessToken.current
                 guard let accessTok = access?.authenticationToken else {return}
                 
+                let loadingView = SuccessfulPurchaseViewController()
+                loadingView.loadingActivity.startAnimating()
+                loadingView.modalPresentationStyle = .overCurrentContext
+                loadingView.modalTransitionStyle = .crossDissolve
+                self.present(loadingView, animated: true, completion: nil)
+                
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTok)
-                Auth.auth().signInAndRetrieveData(with: credentials) { (user, error) in
+                Auth.auth().signIn(with: credentials, completion: { (user, error) in
                     if error != nil {
                         print(error!)
                         return
@@ -457,34 +438,27 @@ extension OnboardingViewController {
                         case .success(response: let graphResponse):
                             if let dictionary = graphResponse.dictionaryValue {
                                 let json = JSON(dictionary)
-                                let email = json["email"].string!
-                                let name = json["name"].string!
-                                let pictureObject = json["picture"].dictionary!
-                                let pictureData = pictureObject["data"]?.dictionary!
-                                let pictureUrl = pictureData!["url"]?.string!
-                                
-                                let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
-                                let usersReference = ref.child("users").child(userID!)
-                                let values = ["name": name,
-                                              "email": email,
-                                              "picture": pictureUrl!,
-                                              "DeviceID": AppDelegate.DEVICEID]
-                                usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                                    if err != nil {
-                                        print(err!)
-                                        return
-                                    }
-                                    print("Successfully logged in!")
-                                    UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-                                    UserDefaults.standard.synchronize()
-                                    self.delegate?.moveToMainController()
-                                    
-                                    self.dismiss(animated: true, completion: nil)
-                                })
+                                if let email = json["email"].string, let name = json["name"].string, let pictureObject = json["picture"].dictionary, let pictureData = pictureObject["data"]?.dictionary, let pictureUrl = pictureData["url"]?.string {
+                                    let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
+                                    let usersReference = ref.child("users").child(userID!)
+                                    let values = ["name": name,
+                                                  "email": email,
+                                                  "picture": pictureUrl,
+                                                  "DeviceID": AppDelegate.DEVICEID]
+                                    usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                                        if err != nil {
+                                            print(err!)
+                                            return
+                                        }
+                                        self.dismiss(animated: true, completion: nil)
+                                        
+                                        self.moveToMainController()
+                                    })
+                                }
                             }
                         }
                     }
-                }
+                })
             case .cancelled:
                 print("User canceled Facebook Login")
             }
@@ -495,7 +469,57 @@ extension OnboardingViewController {
         print("Logged out of Facebook")
     }
     
+}
+
+// Handle the Google Sign in methods with Firebase Database
+extension OnboardingViewController: GIDSignInDelegate, GIDSignInUIDelegate {
     
+    @objc func googleSignIn() {
+        GIDSignIn.sharedInstance().signIn()
+    }
     
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        let loadingView = SuccessfulPurchaseViewController()
+        loadingView.loadingActivity.startAnimating()
+        loadingView.modalPresentationStyle = .overCurrentContext
+        loadingView.modalTransitionStyle = .crossDissolve
+        self.present(loadingView, animated: true, completion: nil)
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        Auth.auth().signIn(with: credential, completion: { (user, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            let userID = user?.user.uid
+            if let additionalInfo = user?.additionalUserInfo?.profile {
+                if let name = additionalInfo["name"] as? String, let email = additionalInfo["email"] as? String, let picture = additionalInfo["picture"] as? String {
+                    let ref = Database.database().reference(fromURL: "https://drivewayz-e20b9.firebaseio.com")
+                    let usersReference = ref.child("users").child(userID!)
+                    let values = ["name": name,
+                                  "email": email,
+                                  "picture": picture,
+                                  "DeviceID": AppDelegate.DEVICEID]
+                    usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                        if err != nil {
+                            print(err!)
+                            return
+                        }
+                        
+                        self.dismiss(animated: true, completion: nil)
+                        
+                        self.moveToMainController()
+                    })
+                }
+            }
+        })
+    }
     
 }

@@ -12,7 +12,6 @@ import NVActivityIndicatorView
 
 class LocationServicesViewController: UIViewController {
 
-    var delegate: handlePhoneNumberVerification?
     let locationManager = CLLocationManager()
     
     var mapView: MKMapView = {
@@ -27,10 +26,7 @@ class LocationServicesViewController: UIViewController {
     var viewContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.85)
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.4
+        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
         
         return view
     }()
@@ -38,7 +34,7 @@ class LocationServicesViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPSemiBoldH1
         label.text = "Location Services"
         
@@ -48,21 +44,10 @@ class LocationServicesViewController: UIViewController {
     var secondaryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH3
-        label.text = "Drivewayz would like to access your location to provide parking for you faster and simpler"
+        label.text = "Drivewayz would like to access your location to provide parking for you faster and simpler."
         label.numberOfLines = 3
-        
-        return label
-    }()
-    
-    var thirdLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
-        label.font = Fonts.SSPLightH5
-        label.text = "Read how we use your data in our\nPrivate Policy"
-        label.numberOfLines = 2
         
         return label
     }()
@@ -72,7 +57,7 @@ class LocationServicesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.addTarget(self, action: #selector(checkLocationServices), for: .touchUpInside)
         button.layer.cornerRadius = 4
@@ -128,12 +113,6 @@ class LocationServicesViewController: UIViewController {
         secondaryLabel.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -60).isActive = true
         secondaryLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        viewContainer.addSubview(thirdLabel)
-        thirdLabel.topAnchor.constraint(equalTo: secondaryLabel.bottomAnchor, constant: 10).isActive = true
-        thirdLabel.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
-        thirdLabel.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
-        thirdLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
         self.view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: viewContainer.centerXAnchor).isActive = true
         loadingActivity.bottomAnchor.constraint(equalTo: viewContainer.centerYAnchor, constant: -20).isActive = true
@@ -147,8 +126,8 @@ class LocationServicesViewController: UIViewController {
     func createToolbar() {
         
         self.view.addSubview(nextButton)
-        nextButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        nextButton.topAnchor.constraint(equalTo: thirdLabel.bottomAnchor, constant: 72).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        nextButton.topAnchor.constraint(equalTo: loadingActivity.bottomAnchor, constant: 48).isActive = true
         nextButton.leftAnchor.constraint(equalTo: viewContainer.leftAnchor, constant: 36).isActive = true
         nextButton.rightAnchor.constraint(equalTo: viewContainer.rightAnchor, constant: -36).isActive = true
         
@@ -164,7 +143,6 @@ extension LocationServicesViewController: CLLocationManagerDelegate {
             self.loadingActivity.alpha = 1
             self.mainLabel.alpha = 0
             self.secondaryLabel.alpha = 0
-            self.thirdLabel.alpha = 0
             self.nextButton.alpha = 0
         }
         self.loadingActivity.startAnimating()
@@ -190,11 +168,13 @@ extension LocationServicesViewController: CLLocationManagerDelegate {
                     }
                 }
             case .authorizedAlways, .authorizedWhenInUse:
-                self.delegate?.moveToMainController()
+                self.moveToMainController()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
                     self.loadingActivity.alpha = 0
                     self.loadingActivity.stopAnimating()
                 }
+            default:
+                fatalError()
             }
             self.loadingActivity.alpha = 0
             self.loadingActivity.stopAnimating()
@@ -204,6 +184,19 @@ extension LocationServicesViewController: CLLocationManagerDelegate {
             }
         }
         self.allowPressed = true
+    }
+    
+    func moveToMainController() {
+        let controller = TabViewController()
+        controller.delegate = LaunchAnimationsViewController()
+        controller.modalTransitionStyle = .crossDissolve
+
+        self.present(controller, animated: true) {
+            self.view.endEditing(true)
+            controller.view.endEditing(true)
+            
+            controller.bringHamburger()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

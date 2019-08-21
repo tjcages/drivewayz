@@ -318,10 +318,14 @@ extension MapKitViewController: NavigationViewControllerDelegate, handleRouteNav
         self.mapView.resetNorth()
         self.hideCurrentParking()
         self.currentBottomController.scrollView.setContentOffset(.zero, animated: true)
+        
+        self.locatorParkingBottomAnchor.isActive = true
+        self.locatorMainBottomAnchor.isActive = false
+        self.parkingBackButtonConfirmAnchor.isActive = false
+        self.parkingBackButtonBookAnchor.isActive = true
+        self.parkingBackButtonPurchaseAnchor.isActive = false
         UIView.animate(withDuration: animationOut, animations: {
-            self.parkingBackButtonConfirmAnchor.isActive = false
-            self.parkingBackButtonBookAnchor.isActive = true
-            self.parkingBackButtonPurchaseAnchor.isActive = false
+            self.locatorButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.defaultContentStatusBar()

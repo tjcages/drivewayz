@@ -128,7 +128,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UNUserNotificationCenter.current().delegate = self
+//        UNUserNotificationCenter.current().delegate = self
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
