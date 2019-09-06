@@ -21,10 +21,17 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     @objc func locatorButtonAction(sender: UIButton) {
         if let region = ZooomRegion {
             self.mapView.userTrackingMode = .none
-            if self.parkingControllerBottomAnchor.constant == 0 {
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64), animated: true)
+            if self.parkingControllerBottomAnchor?.constant == 0 {
+                let insets = UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64)
+                self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
             } else {
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 32, bottom: 320, right: 32), animated: true)
+                if self.mainViewState != .currentBooking {
+                    let insets = UIEdgeInsets(top: statusHeight + 40, left: 32, bottom: 320, right: 32)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
+                } else {
+                    let insets = UIEdgeInsets(top: statusHeight + 156, left: 64, bottom: 320, right: 64)
+                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
+                }
             }
         } else {
             if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
@@ -66,15 +73,16 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         
         locationManager.startUpdatingLocation()
         
-        self.observeAllParking()
         if self.searchedForPlace == false {
             if let userLocation = locationManager.location {
+                self.mapView.userTrackingMode = .follow
 //                self.removeAllMapOverlays(shouldRefresh: true)
-                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: false)
+                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: true)
+                
                 let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
                 self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight * 3/4 - 60, right: phoneWidth/2), completionHandler: nil)
                 
-                delayWithSeconds(1) {
+                delayWithSeconds(0.6) {
                     self.mapView.userTrackingMode = .follow
                 }
             }
@@ -85,14 +93,18 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
     
     func mapView(_ mapView: MGLMapView, regionDidChangeWith reason: MGLCameraChangeReason, animated: Bool) {
         if self.backgroundImageView.alpha == 1 {
-            UIView.animate(withDuration: animationIn) {
+            UIView.animate(withDuration: 0.8) {
                 self.backgroundImageView.alpha = 0
             }
         }
     }
     
     func mapViewUserLocationAnchorPoint(_ mapView: MGLMapView) -> CGPoint {
-        return CGPoint(x: phoneWidth/2, y: phoneHeight/4)
+        if BookedState == .currentlyBooked {
+            return CGPoint(x: phoneWidth/2, y: phoneHeight/3)
+        } else {
+            return CGPoint(x: phoneWidth/2, y: phoneHeight/4)
+        }
     }
     
     func processResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?, completion: @escaping(String) -> ()) {
@@ -125,9 +137,6 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
             UIView.animate(withDuration: animationOut) {
                 if ZoomMapView != nil {
                     self.polyRouteLocatorButton.alpha = 1
-                } else if isCurrentlyBooked {
-                    self.currentSearchLocation.alpha = 1
-                    self.currentSearchRegion.alpha = 1
                 } else {
                     self.locatorButton.alpha = 1
                 }

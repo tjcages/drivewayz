@@ -17,7 +17,7 @@ class BookingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -40,7 +40,7 @@ class BookingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -63,7 +63,7 @@ class BookingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -86,7 +86,7 @@ class BookingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -109,7 +109,7 @@ class BookingOptionsViewController: UIViewController {
         button.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -131,7 +131,7 @@ class BookingOptionsViewController: UIViewController {
         durationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(expandDuration)
-        expandDuration.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        expandDuration.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         expandDuration.centerYAnchor.constraint(equalTo: durationButton.centerYAnchor).isActive = true
         expandDuration.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandDuration.widthAnchor.constraint(equalToConstant: 24).isActive = true
@@ -143,7 +143,7 @@ class BookingOptionsViewController: UIViewController {
         paymentButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(expandPayment)
-        expandPayment.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        expandPayment.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         expandPayment.centerYAnchor.constraint(equalTo: paymentButton.centerYAnchor).isActive = true
         expandPayment.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandPayment.widthAnchor.constraint(equalToConstant: 24).isActive = true
@@ -155,7 +155,7 @@ class BookingOptionsViewController: UIViewController {
         issueButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(expandIssue)
-        expandIssue.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        expandIssue.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         expandIssue.centerYAnchor.constraint(equalTo: issueButton.centerYAnchor).isActive = true
         expandIssue.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandIssue.widthAnchor.constraint(equalToConstant: 24).isActive = true
@@ -167,7 +167,7 @@ class BookingOptionsViewController: UIViewController {
         problemButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(expandProblem)
-        expandProblem.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        expandProblem.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         expandProblem.centerYAnchor.constraint(equalTo: problemButton.centerYAnchor).isActive = true
         expandProblem.heightAnchor.constraint(equalToConstant: 24).isActive = true
         expandProblem.widthAnchor.constraint(equalToConstant: 24).isActive = true

@@ -70,7 +70,6 @@ extension MapKitViewController {
                         UIView.animate(withDuration: animationIn, animations: {
                             self.view.layoutIfNeeded()
                         }, completion: { (success) in
-                            self.eventsController.checkEvents()
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 UIView.animate(withDuration: animationOut, animations: {
                                     self.networkTopAnchor.constant = -80

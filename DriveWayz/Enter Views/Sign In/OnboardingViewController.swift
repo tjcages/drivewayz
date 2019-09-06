@@ -191,7 +191,7 @@ class OnboardingViewController: UIViewController {
         scrollView.delegate = self
         
         GIDSignIn.sharedInstance()?.delegate = self
-        GIDSignIn.sharedInstance().uiDelegate = self
+//        GIDSignIn.sharedInstance().uiDelegate = self
 
         setupViews()
         setupLabels()
@@ -472,7 +472,7 @@ extension OnboardingViewController {
 }
 
 // Handle the Google Sign in methods with Firebase Database
-extension OnboardingViewController: GIDSignInDelegate, GIDSignInUIDelegate {
+extension OnboardingViewController: GIDSignInDelegate {
     
     @objc func googleSignIn() {
         GIDSignIn.sharedInstance().signIn()

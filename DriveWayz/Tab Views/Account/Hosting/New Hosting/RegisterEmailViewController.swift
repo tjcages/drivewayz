@@ -24,6 +24,8 @@ class RegisterEmailViewController: UIViewController {
         view.isScrollEnabled = false
         view.keyboardAppearance = .dark
         view.autocapitalizationType = .none
+        view.enablesReturnKeyAutomatically = false
+        view.keyboardType = .emailAddress
         
         return view
     }()
@@ -129,7 +131,11 @@ extension RegisterEmailViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.messageTextLine.backgroundColor = lineColor
+        messageTextLine.backgroundColor = lineColor
+        if let text = messageTextView.text {
+            let newText = text.replacingOccurrences(of: "\n", with: "")
+            messageTextView.text = newText
+        }
         self.checkIfGood()
     }
     

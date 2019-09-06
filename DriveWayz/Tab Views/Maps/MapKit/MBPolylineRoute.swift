@@ -38,17 +38,17 @@ extension MapKitViewController: MGLMapViewDelegate {
             layer.lineColor = NSExpression(forConstantValue: Theme.PRUSSIAN_BLUE)
             layer.lineOpacity = NSExpression(forConstantValue: 0.4)
             
-            if !didTapParking {
+//            if !didTapParking {
                 layer.lineDashPattern = NSExpression(forConstantValue: [0, 1.5])
-            } else {
-                layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
-                    0: Theme.LIGHT_ORANGE,
-                    0.2: Theme.STRAWBERRY_PINK,
-                ])
-            }
+//            } else {
+//                layer.lineGradient = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", [
+//                    0: Theme.LIGHT_ORANGE,
+//                    0.2: Theme.STRAWBERRY_PINK,
+//                ])
+//            }
             
             // The line width should gradually increase based on the zoom level.
-            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
+            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 8, 18: 20])
             
             style.addLayer(layer)
             self.polylineLayer = layer
@@ -105,10 +105,8 @@ extension MapKitViewController: MGLMapViewDelegate {
             polylineFirstTimer?.invalidate()
             polylineFirstTimer = nil
             
-            if isCurrentlyBooked == false {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.animateFirstPolyline()
-                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.animateFirstPolyline()
             }
             
             return

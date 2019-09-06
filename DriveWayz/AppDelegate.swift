@@ -37,12 +37,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     static let SERVERKEY = "AAAAKKQVLOw:APA91bEzWxKfKYZzgQQ59ubBKwFZ__6pZEE489XPJqJUaQmbHsLMPKWSKfvMwbFYw3hL74stguq9xLZTaxOtn5MuUAHkDWFzd50U9eoW5WUrSSbQ-pR8_cTmro44Re72uqKGPAetdXeK"
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
+    var mainController: LaunchAnimationsViewController?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         applicationCheck = application
         
+        FirebaseApp.configure()
+        checkForBooking()
         detectDevice()
         checkNetwork()
-        FirebaseApp.configure()
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
@@ -60,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
         let startUpViewController = mainStoryboard.instantiateViewController(withIdentifier: "LaunchAnimationsViewController") as! LaunchAnimationsViewController
-
+        mainController = startUpViewController
         window!.rootViewController = startUpViewController
         window!.makeKeyAndVisible()
         
@@ -82,6 +85,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         return true
+    }
+    
+    func checkForBooking() {
+        let bookingStatus = UserDefaults.standard.string(forKey: "userBookingStatus") ?? "none"
+        if bookingStatus == "currentlyBooked" {
+            BookedState = .currentlyBooked
+        } else if bookingStatus == "reserved" {
+            BookedState = .reserved
+        } else {
+            BookedState = .none
+        }
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userID)
+        ref.child("UpcomingReservations").observe(.childAdded) { (snapshot) in
+            BookedState = .reserved
+            UserDefaults.standard.set("reserved", forKey: "userBookingStatus")
+            UserDefaults.standard.synchronize()
+        }
+        ref.child("UpcomingReservations").observe(.childRemoved) { (snapshot) in
+            BookedState = .none
+            UserDefaults.standard.set("none", forKey: "userBookingStatus")
+            UserDefaults.standard.synchronize()
+        }
+        ref.child("CurrentBooking").observe(.childAdded) { (snapshot) in
+            if let controller = self.mainController, let tabController = controller.tabController {
+                if tabController.mapController.mainViewState != .payment {
+                    BookedState = .currentlyBooked
+                }
+            } else {
+                BookedState = .currentlyBooked
+            }
+            UserDefaults.standard.set("currentlyBooked", forKey: "userBookingStatus")
+            UserDefaults.standard.synchronize()
+        }
+        ref.child("CurrentBooking").observe(.childRemoved) { (snapshot) in
+            BookedState = .none
+            UserDefaults.standard.set("none", forKey: "userBookingStatus")
+            UserDefaults.standard.synchronize()
+        }
     }
     
     func checkNetwork() {
@@ -142,8 +184,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if (stripeHandled) {
                 return true
             } else {
-                
-                return GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+                return (GIDSignIn.sharedInstance()?.handle(url))!
+//                return GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
                 
                 return false
                 //            return self.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String, annotation: "")
@@ -218,11 +260,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if timerStarted == true {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "bookingTimerRestart"), object: nil)
-            }
-        }
-        if currentActive == true {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "confirmBookingCheck"), object: nil)
             }
         }
     }

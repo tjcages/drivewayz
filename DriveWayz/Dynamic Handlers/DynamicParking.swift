@@ -18,6 +18,13 @@ struct DynamicParking {
     
     static func getDynamicParking(parkingSpot: ParkingSpots, dateFrom: Date, dateTo: Date, completion: @escaping(ParkingSpots) -> ()) {
         let parking = parkingSpot
+        let unavailableDay = removeUnavailableDays(parking: parking, dateFrom: dateFrom, dateTo: dateTo)
+        if unavailableDay == false {
+            //Days are marked unavailable
+            parking.isSpotAvailable = false
+            completion(parking)
+            return
+        }
         if let fromDay = dateFrom.dayOfWeek(), let toDay = dateTo.dayOfWeek() {
             if fromDay == toDay {
                 // Only one day
@@ -211,6 +218,63 @@ struct DynamicParking {
         } else {
             return [Date()]
         }
+    }
+    
+    static func removeUnavailableDays(parking: ParkingSpots, dateFrom: Date, dateTo: Date) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let stringFrom = dateFormatter.string(from: dateFrom)
+        let stringTo = dateFormatter.string(from: dateTo)
+        if let unavailable = parking.MondayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.TuesdayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.WednesdayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.ThursdayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.FridayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.SaturdayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        if let unavailable = parking.SundayUnavailable {
+            for day in unavailable {
+                if stringFrom == day || stringTo == day {
+                    return false
+                }
+            }
+        }
+        return true
     }
     
 }

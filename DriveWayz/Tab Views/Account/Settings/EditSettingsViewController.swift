@@ -50,29 +50,33 @@ class EditSettingsViewController: UIViewController {
     var detailLabel: UILabel = {
         let label = UILabel()
         label.text = "Details"
-        label.textColor = Theme.BLACK
+        label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPSemiBoldH2
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         
         return label
     }()
     
-    var subDetailLabel: UITextField = {
-        let label = UITextField()
-        label.text = ""
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.SSPRegularH2
-        label.placeholder = ""
-        label.textAlignment = .center
+    var detailView: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        view.tintColor = Theme.BLUE
+        view.font = Fonts.SSPRegularH3
+        view.textColor = Theme.BLACK
+        view.isScrollEnabled = false
+        view.keyboardAppearance = .dark
+        view.autocapitalizationType = .none
+        view.enablesReturnKeyAutomatically = false
         
-        return label
+        return view
     }()
     
-    var subLine: UIView = {
+    var detailLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = lineColor
         
         return view
     }()
@@ -92,14 +96,12 @@ class EditSettingsViewController: UIViewController {
     
     func setData(title: String, subtitle: String) {
         detailLabel.text = title
-        subDetailLabel.placeholder = title
-        subDetailLabel.text = subtitle
+        detailView.text = subtitle
         if title == "Phone" {
-            self.subDetailLabel.keyboardType = .numberPad
+            self.detailView.keyboardType = .numberPad
         } else {
-            self.subDetailLabel.keyboardType = .default
+            self.detailView.keyboardType = .default
         }
-        subDetailLabel.becomeFirstResponder()
     }
     
     override func viewDidLoad() {
@@ -107,9 +109,14 @@ class EditSettingsViewController: UIViewController {
         
         view.backgroundColor = Theme.WHITE
         
-        subDetailLabel.delegate = self
+        detailView.delegate = self
         
         setupViews()
+        createToolbar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        detailView.becomeFirstResponder()
     }
     
     var gradientHeightAnchor: CGFloat = 160
@@ -144,28 +151,27 @@ class EditSettingsViewController: UIViewController {
             backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
      
-        self.view.addSubview(detailLabel)
-        detailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        detailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
+        view.addSubview(detailLabel)
+        detailLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         detailLabel.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 24).isActive = true
-        detailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        detailLabel.sizeToFit()
+
+        view.addSubview(detailView)
+        detailView.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 8).isActive = true
+        detailView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        detailView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        detailView.heightAnchor.constraint(equalToConstant: 46).isActive = true
         
-        self.view.addSubview(subDetailLabel)
-        subDetailLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        subDetailLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        subDetailLabel.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 24).isActive = true
-        subDetailLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.addSubview(detailLine)
+        detailLine.leftAnchor.constraint(equalTo: detailView.leftAnchor).isActive = true
+        detailLine.rightAnchor.constraint(equalTo: detailView.rightAnchor).isActive = true
+        detailLine.bottomAnchor.constraint(equalTo: detailView.bottomAnchor).isActive = true
+        detailLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.view.addSubview(subLine)
-        subLine.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        subLine.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        subLine.topAnchor.constraint(equalTo: subDetailLabel.bottomAnchor, constant: 12).isActive = true
-        subLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        self.view.addSubview(updateButton)
-        updateButton.topAnchor.constraint(equalTo: subLine.bottomAnchor, constant: 48).isActive = true
-        updateButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        updateButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        view.addSubview(updateButton)
+        updateButton.topAnchor.constraint(equalTo: detailLine.bottomAnchor, constant: 48).isActive = true
+        updateButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        updateButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         updateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
     }
@@ -177,7 +183,7 @@ class EditSettingsViewController: UIViewController {
     @objc func updateButtonPressed() {
         self.view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
-        if let title = detailLabel.text, let message = subDetailLabel.text, let userID = Auth.auth().currentUser?.uid {
+        if let title = detailLabel.text, let message = detailView.text, let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID)
             if title == "Email" {
                 ref.updateChildValues(["email": message])
@@ -195,20 +201,31 @@ class EditSettingsViewController: UIViewController {
 }
 
 
-extension EditSettingsViewController: UITextFieldDelegate {
+extension EditSettingsViewController: UITextViewDelegate {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == self.subDetailLabel && self.detailLabel.text == "Phone" {
-            var fullString = textField.text ?? ""
-            fullString.append(string)
-            if range.length == 1 {
-                textField.text = format(phoneNumber: fullString, shouldRemoveLastDigit: true)
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
+        detailLine.backgroundColor = Theme.BLUE
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        detailLine.backgroundColor = lineColor
+        if let text = detailView.text {
+            let newText = text.replacingOccurrences(of: "\n", with: "")
+            detailView.text = newText
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == self.detailView && self.detailLabel.text == "Phone" {
+            guard let fullString = textView.text else { return }
+            let range = fullString.count
+            if range == 1 {
+                textView.text = format(phoneNumber: fullString, shouldRemoveLastDigit: true)
             } else {
-                textField.text = format(phoneNumber: fullString)
+                textView.text = format(phoneNumber: fullString)
             }
-            return false
-        } else {
-            return true
         }
     }
     
@@ -235,6 +252,29 @@ extension EditSettingsViewController: UITextFieldDelegate {
             number = number.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "($1) $2-$3", options: .regularExpression, range: range)
         }
         return number
+    }
+    
+    // Build the 'Done' button to dismiss keyboard
+    func createToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.WHITE
+        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderWidth = 0.5
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        detailView.inputAccessoryView = toolBar
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     @objc func backButtonPressed() {

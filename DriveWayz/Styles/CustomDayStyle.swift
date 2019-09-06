@@ -312,7 +312,7 @@ open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
         super.init()
         mapStyleURL = URL(string: "mapbox://styles/tcagle717/cjqiqnvzj2m8p2spmrdqhw82m")!
         styleType = .day
-        statusBarStyle = .lightContent
+        statusBarStyle = .default
     }
 
     open override func apply() {
@@ -325,64 +325,40 @@ open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
             tintColor = .defaultTint
         }
 
-        ArrivalTimeLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
-        ArrivalTimeLabel.appearance().normalTextColor = UIColor.clear
+        InstructionsBannerView.appearance().isHidden = true
+        InstructionsBannerView.appearance().alpha = 0
+        ResumeButton.appearance().alpha = 0
+        
+        FloatingButton.appearance().isHidden = true
+        ArrivalTimeLabel.appearance().isHidden = true
 
-//        BottomBannerContainerView.appearance().backgroundColor = UIColor.clear
-        BottomBannerView.appearance().backgroundColor = UIColor.clear
-        Button.appearance().textColor = UIColor.clear
-        CancelButton.appearance().tintColor = UIColor.clear
+        BottomBannerView.appearance().isHidden = true
+        Button.appearance().isHidden = true
+        CancelButton.appearance().isHidden = true
 
-        DismissButton.appearance().backgroundColor = UIColor.clear
-        DismissButton.appearance().textColor = UIColor.clear
-        DismissButton.appearance().textFont = UIFont.systemFont(ofSize: 20, weight: .medium).adjustedFont
+        DismissButton.appearance().isHidden = true
 
-        DistanceLabel.appearance().unitFont = UIFont.systemFont(ofSize: 14, weight: .medium).adjustedFont
-        DistanceLabel.appearance().valueFont = UIFont.systemFont(ofSize: 22, weight: .medium).adjustedFont
-        DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).unitTextColor = UIColor.clear
-        DistanceLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).valueTextColor = UIColor.clear
-        DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).unitTextColor = UIColor.clear
-        DistanceLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).valueTextColor = UIColor.clear
-        DistanceRemainingLabel.appearance().font = UIFont.systemFont(ofSize: 18, weight: .medium).adjustedFont
-        DistanceRemainingLabel.appearance().normalTextColor = UIColor.clear
+        DistanceLabel.appearance().isHidden = true
+        DistanceRemainingLabel.appearance().isHidden = true
 
-        EndOfRouteButton.appearance().textColor = UIColor.clear
-        EndOfRouteButton.appearance().textFont = .systemFont(ofSize: 15)
-        EndOfRouteContentView.appearance().backgroundColor = UIColor.clear
-        EndOfRouteStaticLabel.appearance().normalFont = .systemFont(ofSize: 14.0)
-        EndOfRouteStaticLabel.appearance().normalTextColor = UIColor.clear
-        EndOfRouteTitleLabel.appearance().normalFont = .systemFont(ofSize: 36.0)
-        EndOfRouteTitleLabel.appearance().normalTextColor = UIColor.clear
-        ExitView.appearance().backgroundColor = .clear
+        EndOfRouteButton.appearance().isHidden = true
+        EndOfRouteContentView.appearance().isHidden = true
+        EndOfRouteStaticLabel.appearance().isHidden = true
+        EndOfRouteTitleLabel.appearance().isHidden = true
+        ExitView.appearance().isHidden = true
 
-        ExitView.appearance().layer.borderWidth = 1.0
-        ExitView.appearance().layer.cornerRadius = 5.0
-        ExitView.appearance().foregroundColor = UIColor.clear
-        ExitView.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = UIColor.clear
-        FloatingButton.appearance().backgroundColor = UIColor.clear
-        FloatingButton.appearance().tintColor = tintColor
-        GenericRouteShield.appearance().backgroundColor = UIColor.clear
-        GenericRouteShield.appearance().layer.borderWidth = 1.0
-        GenericRouteShield.appearance().layer.cornerRadius = 5.0
-        GenericRouteShield.appearance().foregroundColor = UIColor.clear
-        GenericRouteShield.appearance(for: UITraitCollection(userInterfaceIdiom: .carPlay)).foregroundColor = UIColor.clear
+        FloatingButton.appearance().isHidden = true
+        GenericRouteShield.appearance().isHidden = true
 
-//        InstructionsBannerContentView.appearance().backgroundColor = UIColor.clear
-        InstructionsBannerView.appearance().backgroundColor = UIColor.clear
+        InstructionsBannerView.appearance().isHidden = true
 
         LaneView.appearance().primaryColor = .defaultLaneArrowPrimary
         LaneView.appearance().secondaryColor = .defaultLaneArrowSecondary
         LanesView.appearance().backgroundColor = UIColor.clear
         LineView.appearance().lineColor = UIColor.clear
 
-        ManeuverView.appearance().backgroundColor = .clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).primaryColor = UIColor.clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).secondaryColor = UIColor.clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).primaryColor = UIColor.clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [NextBannerView.self]).secondaryColor = UIColor.clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).primaryColor = UIColor.clear
-        ManeuverView.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).secondaryColor = UIColor.clear
-
+        ManeuverView.appearance().isHidden = true
+        
         NavigationMapView.appearance().maneuverArrowColor       = .defaultManeuverArrow
         NavigationMapView.appearance().maneuverArrowStrokeColor = .defaultManeuverArrowStroke
         NavigationMapView.appearance().routeAlternateColor      = .defaultAlternateLine
@@ -394,43 +370,28 @@ open class CustomHiddenStyle: Style, InstructionsBannerViewDelegate {
         NavigationMapView.appearance().trafficUnknownColor      = .trafficUnknown
 
         NavigationView.appearance().backgroundColor = UIColor.clear
-        NextBannerView.appearance().backgroundColor = UIColor.clear
-        NextInstructionLabel.appearance().font = UIFont.systemFont(ofSize: 20, weight: .medium).adjustedFont
-        NextInstructionLabel.appearance().normalTextColor = UIColor.clear
-        PrimaryLabel.appearance().normalFont = UIFont.systemFont(ofSize: 30, weight: .medium).adjustedFont
-        PrimaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = UIColor.clear
-        PrimaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = UIColor.clear
-        ProgressBar.appearance().barColor = UIColor.clear
+        
+        NextBannerView.appearance().isHidden = true
+        NextInstructionLabel.appearance().isHidden = true
+        PrimaryLabel.appearance().isHidden = true
+        ProgressBar.appearance().isHidden = true
 
-        ReportButton.appearance().alpha = 1
-        ReportButton.appearance().backgroundColor = UIColor.clear
-        ReportButton.appearance().textColor = UIColor.clear
+        ReportButton.appearance().isHidden = true
+        ResumeButton.appearance().isHidden = true
 
-        ResumeButton.appearance().backgroundColor = UIColor.clear
-        ResumeButton.appearance().tintColor = UIColor.clear
+        SecondaryLabel.appearance().isHidden = true
+        SeparatorView.appearance().isHidden = true
+        StatusView.appearance().isHidden = true
+        StepInstructionsView.appearance().isHidden = true
+        StepListIndicatorView.appearance().isHidden = true
+        StepTableViewCell.appearance().isHidden = true
+        StepsBackgroundView.appearance().isHidden = true
 
-        SecondaryLabel.appearance().normalFont = UIFont.systemFont(ofSize: 26, weight: .medium).adjustedFont
-        SecondaryLabel.appearance(whenContainedInInstancesOf: [InstructionsBannerView.self]).normalTextColor = UIColor.clear
-        SecondaryLabel.appearance(whenContainedInInstancesOf: [StepInstructionsView.self]).normalTextColor = UIColor.clear
-        SeparatorView.appearance().backgroundColor = UIColor.clear
-        StatusView.appearance().backgroundColor = UIColor.clear
-        StepInstructionsView.appearance().backgroundColor = UIColor.clear
-        StepListIndicatorView.appearance().gradientColors = [#colorLiteral(red: 0.431372549, green: 0.431372549, blue: 0.431372549, alpha: 1), #colorLiteral(red: 0.6274509804, green: 0.6274509804, blue: 0.6274509804, alpha: 1), #colorLiteral(red: 0.431372549, green: 0.431372549, blue: 0.431372549, alpha: 1)]
-        StepTableViewCell.appearance().backgroundColor = UIColor.clear
-        StepsBackgroundView.appearance().backgroundColor = UIColor.clear
-
-        TimeRemainingLabel.appearance().font = UIFont.systemFont(ofSize: 28, weight: .medium).adjustedFont
-        TimeRemainingLabel.appearance().normalTextColor = UIColor.clear
-        TimeRemainingLabel.appearance().trafficHeavyColor = UIColor.clear
-        TimeRemainingLabel.appearance().trafficLowColor = UIColor.clear
-        TimeRemainingLabel.appearance().trafficModerateColor = UIColor.clear
-        TimeRemainingLabel.appearance().trafficSevereColor = UIColor.clear
-        TimeRemainingLabel.appearance().trafficUnknownColor = UIColor.clear
+        TimeRemainingLabel.appearance().isHidden = true
 
         UserPuckCourseView.appearance().puckColor = Theme.BLUE
-        WayNameLabel.appearance().normalFont = UIFont.systemFont(ofSize:20, weight: .medium).adjustedFont
-        WayNameLabel.appearance().normalTextColor = UIColor.clear
-        WayNameView.appearance().backgroundColor = UIColor.clear
-        WayNameView.appearance().borderColor = UIColor.clear
+        WayNameLabel.appearance().isHidden = true
+        WayNameView.appearance().isHidden = true
+        
     }
 }

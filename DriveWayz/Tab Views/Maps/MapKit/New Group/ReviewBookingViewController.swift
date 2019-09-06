@@ -13,26 +13,16 @@ import StoreKit
 class ReviewBookingViewController: UIViewController {
     
     var delegate: handleMinimizingFullController?
-    var selectedParking: String? {
+    var currentParking: ParkingSpots? {
         didSet {
-            guard let parkingID = self.selectedParking else { return }
-            let ref = Database.database().reference().child("ParkingSpots").child(parkingID)
-            ref.observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String: Any] {
-                    let parking = ParkingSpots(dictionary: dictionary)
-                    if let numberSpots = parking.numberSpots, let secondaryType = parking.secondaryType {
-                        if let number = Int(numberSpots) {
-                            let wordString = number.asWord
-                            let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
-                            self.parkingSpotLabel.text = descriptionAddress
-                            self.parkingSpotWidthAnchor.constant = descriptionAddress.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4) + 16
-                            self.view.layoutIfNeeded()
-                        }
-                        if let firstImage = parking.firstImage, firstImage != "" {
-                            self.spotImageView.loadImageUsingCacheWithUrlString(firstImage) { (bool) in
-                                
-                            }
-                        }
+            if let parking = self.currentParking {
+                if let numberSpots = parking.numberSpots, let secondaryType = parking.secondaryType {
+                    if let number = Int(numberSpots) {
+                        let wordString = number.asWord
+                        let descriptionAddress = "\(wordString.capitalizingFirstLetter())-Car \(secondaryType.capitalizingFirstLetter())"
+                        self.parkingSpotLabel.text = descriptionAddress
+                        self.parkingSpotWidthAnchor.constant = descriptionAddress.width(withConstrainedHeight: 25, font: Fonts.SSPSemiBoldH4) + 16
+                        self.view.layoutIfNeeded()
                     }
                 }
             }
@@ -50,15 +40,13 @@ class ReviewBookingViewController: UIViewController {
     }()
     
     var spotImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        imageView.isUserInteractionEnabled = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 70
-        imageView.clipsToBounds = true
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 70
+        view.clipsToBounds = true
         
-        return imageView
+        return view
     }()
 
     var parkingSpotLabel: UILabel = {
@@ -480,7 +468,7 @@ class ReviewBookingViewController: UIViewController {
     func removeReview(close: Bool) {
         self.doneButton.alpha = 0.5
         self.doneButton.isUserInteractionEnabled = false
-        guard var message = self.message.text, let parkingID = selectedParking else { return }
+        guard var message = self.message.text, let parking = currentParking, let parkingID = parking.parkingID else { return }
         if message == "Enter your review" { message = "" }
         if close == true {
             self.delegate?.reviewOptionsDismissed()
@@ -505,31 +493,29 @@ class ReviewBookingViewController: UIViewController {
                         self.doneButton.alpha = 1.0
                         self.doneButton.isUserInteractionEnabled = true
                         
-                        if let parkingUserID = dictionary["id"] as? String {
-                            let nameArray = name.split(separator: " ")
-                            if let firstName = nameArray.first {
-                                var title = ""
-                                var subtitle = ""
-                                let rating = String(format:"%.0f", self.stars.rating)
-                                if self.stars.rating >= 4.0 {
-                                    title = "Congratulations!"
-                                    subtitle = "You got a \(rating) star rating from \(String(firstName))"
-                                    let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["notificationType": "leftReviewGood", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "mild", "parkingID": parkingID])
-                                } else if self.stars.rating <= 2.0 {
-                                    title = "\(String(firstName)) gave you a \(rating) star rating"
-                                    subtitle = "We will reach out to see why"
-                                    let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
-                                } else {
-                                    title = "\(String(firstName)) gave you a \(rating) star rating"
-                                    subtitle = "We will reach out if this continues"
-                                    let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
-                                    notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
-                                }
-//                                let sender = PushNotificationSender()
-//                                sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
+                        let nameArray = name.split(separator: " ")
+                        if let firstName = nameArray.first {
+                            var title = ""
+                            var subtitle = ""
+                            let rating = String(format:"%.0f", self.stars.rating)
+                            if self.stars.rating >= 4.0 {
+                                title = "Congratulations!"
+                                subtitle = "You got a \(rating) star rating from \(String(firstName))"
+                                let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
+                                notificationRef.updateChildValues(["notificationType": "leftReviewGood", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "mild", "parkingID": parkingID])
+                            } else if self.stars.rating <= 2.0 {
+                                title = "\(String(firstName)) gave you a \(rating) star rating"
+                                subtitle = "We will reach out to see why"
+                                let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
+                                notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
+                            } else {
+                                title = "\(String(firstName)) gave you a \(rating) star rating"
+                                subtitle = "We will reach out if this continues"
+                                let notificationRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("Notifications").childByAutoId()
+                                notificationRef.updateChildValues(["notificationType": "leftReviewPoor", "title": title, "subtitle": subtitle, "timestamp": Date().timeIntervalSince1970, "urgency": "moderate", "parkingID": parkingID])
                             }
+                            //                                let sender = PushNotificationSender()
+                            //                                sender.sendPushNotification(toUser: parkingUserID, title: title, subtitle: subtitle)
                         }
                     }
                 })

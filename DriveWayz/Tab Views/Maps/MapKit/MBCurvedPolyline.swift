@@ -12,10 +12,14 @@ import Mapbox
 var quadPolyline: CAGradientLayer?
 var quadPolylineShadow: CAShapeLayer?
 
+var destinationA: Bool = true
+var destinationB: Bool = false
+var destinationC: Bool = true
+var destinationD: Bool = false
+
 extension MapKitViewController {
 
     func drawCurvedOverlay(startCoordinate: CLLocationCoordinate2D, endCoordinate: CLLocationCoordinate2D) {
-
         if let line = quadPolyline, let shadowLine = quadPolylineShadow {
             line.removeFromSuperlayer()
             shadowLine.removeFromSuperlayer()
@@ -159,25 +163,50 @@ extension MapKitViewController {
         }
         if let destinationCoor = DestinationAnnotationLocation?.coordinate {
             let destinationPoint = self.mapView.convert(destinationCoor, toPointTo: self.view)
+            resetDestinationCoor()
             if destinationPoint.x >= phoneWidth/2 {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16))
                 self.quickDestinationRightAnchor.constant = destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
                 self.monitorDifference(difference: difference)
+                destinationA = true
             } else {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16))
                 self.quickDestinationRightAnchor.constant = destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
                 self.monitorDifference(difference: difference)
+                destinationB = true
             }
             if destinationPoint.y >= phoneHeight/4 {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y - 20))
                 self.quickDestinationTopAnchor.constant = destinationPoint.y - 20
                 self.monitorDifference(difference: difference)
+                destinationC = true
             } else {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y + 20))
                 self.quickDestinationTopAnchor.constant = destinationPoint.y + 20
                 self.monitorDifference(difference: difference)
+                destinationD = true
+            }
+            if destinationA && destinationC {
+                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
+                print("AC")
+            } else if destinationA && destinationD {
+                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+                print("AD")
+            } else if destinationB && destinationC {
+                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+                print("BC")
+            } else if destinationB && destinationD {
+                quickParkingController.darkContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+                print("BD")
             }
         }
+    }
+    
+    func resetDestinationCoor() {
+        destinationA = false
+        destinationB = false
+        destinationC = false
+        destinationD = false
     }
 
     func monitorDifference(difference: CGFloat) {

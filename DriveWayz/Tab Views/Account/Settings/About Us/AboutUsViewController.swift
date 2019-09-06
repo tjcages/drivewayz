@@ -69,7 +69,7 @@ class AboutUsViewController: UIViewController {
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         
         setupViews()
     }
@@ -154,12 +154,13 @@ extension AboutUsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return 56
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! BookingIssuesCell
         cell.selectionStyle = .none
+        cell.backgroundColor = Theme.WHITE
         tableView.separatorStyle = .singleLine
         cell.separatorInset = UIEdgeInsets(top: 0, left: 58, bottom: 0, right: 0)
         if indexPath.row == 1 {

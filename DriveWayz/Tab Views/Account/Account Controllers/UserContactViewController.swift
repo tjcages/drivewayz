@@ -75,7 +75,7 @@ class UserContactViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         view.text = "Share your thoughts"
         
         return view
@@ -145,7 +145,7 @@ class UserContactViewController: UIViewController {
 //        
         scrollView.delegate = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.WHITE
         view.clipsToBounds = true
         
         supportTextView.delegate = self
@@ -236,7 +236,7 @@ class UserContactViewController: UIViewController {
         supportButton.topAnchor.constraint(equalTo: supportTextView.bottomAnchor, constant: 32).isActive = true
         supportButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
         supportButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        supportButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        supportButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         scrollView.addSubview(exampleLabel)
         exampleLabel.topAnchor.constraint(equalTo: supportButton.bottomAnchor, constant: 32).isActive = true

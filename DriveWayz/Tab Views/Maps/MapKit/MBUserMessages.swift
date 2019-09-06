@@ -52,7 +52,9 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
                 case .iphoneX:
                     self.minimizedHeight = 234
                 }
-                self.mainBarTopAnchor.constant = self.lowestHeight
+                if self.mainViewState == .mainBar {
+                    self.mainBarTopAnchor.constant = self.lowestHeight
+                }
                 UIView.animate(withDuration: animationOut, animations: {
                     self.view.layoutIfNeeded()
                 })
@@ -71,7 +73,9 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
                 case .iphoneX:
                     self.minimizedHeight = 164
                 }
-                self.mainBarTopAnchor.constant = self.lowestHeight
+                if self.mainViewState == .mainBar {
+                    self.mainBarTopAnchor.constant = self.lowestHeight
+                }
                 UIView.animate(withDuration: animationOut, animations: {
                     self.view.layoutIfNeeded()
                 })

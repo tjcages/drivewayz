@@ -17,7 +17,9 @@ class AccountSettingsViewController: UIViewController {
     var optionsSub: [String] = ["No name", "No email", "No phone number"]
     var optionsColorsTop: [UIColor] = [Theme.LightPink, Theme.LightBlue, Theme.LightGreen]
     var optionsColorsBottom: [UIColor] = [Theme.DarkPink, Theme.BLUE, Theme.DarkGreen]
-    var optionsIcons: [UIImage] = [UIImage(named: "settingsProfile")!, UIImage(named: "settingsEmail")!, UIImage(named: "settingsPhone")!]
+    var optionsIcons: [UIImage] = [UIImage(named: "settingsProfile")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsEmail")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsPhone")!.withRenderingMode(.alwaysTemplate)]
     
     var optionsTableView: UITableView = {
         let view = UITableView()
@@ -39,11 +41,11 @@ class AccountSettingsViewController: UIViewController {
         optionsTableView.dataSource = self
         
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 8
+//        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+//        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        view.layer.shadowRadius = 3
+//        view.layer.shadowOpacity = 0.2
+//        view.layer.cornerRadius = 8
 
         setupViews()
     }
@@ -52,8 +54,8 @@ class AccountSettingsViewController: UIViewController {
         
         self.view.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
     }
@@ -74,7 +76,7 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 58, bottom: 0, right: 0)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         tableView.separatorStyle = .singleLine
         if indexPath.row == 2 {
             tableView.separatorStyle = .none
@@ -83,11 +85,6 @@ extension AccountSettingsViewController: UITableViewDelegate, UITableViewDataSou
             cell.titleLabel.text = options[indexPath.row]
             cell.subtitleLabel.text = optionsSub[indexPath.row]
             cell.iconView.setImage(optionsIcons[indexPath.row], for: .normal)
-            
-            let background = CAGradientLayer().customVerticalColor(topColor: optionsColorsTop[indexPath.row], bottomColor: optionsColorsBottom[indexPath.row])
-            background.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            background.zPosition = -10
-            cell.iconView.layer.addSublayer(background)
         }
         
         return cell

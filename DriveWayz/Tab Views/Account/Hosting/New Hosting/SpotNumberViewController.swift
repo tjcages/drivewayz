@@ -18,6 +18,12 @@ class SpotNumberViewController: UIViewController {
     var numbers = [1]
     var selectedDay: String?
     
+    var spotNumbers: [Int] = [12, 123, 1234, 12345] {
+        didSet {
+            self.multipleSpotsPicker.reloadData()
+        }
+    }
+    
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -108,6 +114,63 @@ class SpotNumberViewController: UIViewController {
         return view
     }()
     
+    var multipleSpotNumberInformation: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.text = "Additional spot numbers"
+        label.font = Fonts.SSPRegularH5
+        label.alpha = 0
+        
+        return label
+    }()
+    
+    var multipleSpotNumberField: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.text = "• • • •"
+        view.font = Fonts.SSPRegularH3
+        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.PACIFIC_BLUE
+        view.keyboardType = .numberPad
+        view.keyboardAppearance = .dark
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var layout: UICollectionViewLayout = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 12
+        
+        return layout
+    }()
+    
+    lazy var multipleSpotsPicker: UICollectionView = {
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        view.backgroundColor = UIColor.clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.clipsToBounds = false
+        view.register(SpotNumbers.self, forCellWithReuseIdentifier: "Cell")
+        view.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        view.alpha = 0
+        
+        return view
+    }()
+    
+    var multipleSpotNumberLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = lineColor
+        view.alpha = 0
+        
+        return view
+    }()
+    
     var gateCodeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -180,7 +243,10 @@ class SpotNumberViewController: UIViewController {
         
         numberField.delegate = self
         spotNumberField.delegate = self
+        multipleSpotNumberField.delegate = self
         gateCodeField.delegate = self
+        multipleSpotsPicker.delegate = self
+        multipleSpotsPicker.dataSource = self
         
         setupViews()
         setupNumber()
@@ -226,17 +292,17 @@ class SpotNumberViewController: UIViewController {
         spotNumberInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
         spotNumberInformation.topAnchor.constraint(equalTo: numberLine.bottomAnchor, constant: 30).isActive = true
         
-        scrollView.addSubview(spotNumberCheckmark)
-        spotNumberCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        spotNumberCheckmark.centerYAnchor.constraint(equalTo: spotNumberInformation.centerYAnchor).isActive = true
-        spotNumberCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        spotNumberCheckmark.heightAnchor.constraint(equalTo: spotNumberCheckmark.widthAnchor).isActive = true
-        
         scrollView.addSubview(spotNumberField)
         spotNumberField.topAnchor.constraint(equalTo: spotNumberInformation.bottomAnchor, constant: 8).isActive = true
         spotNumberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         spotNumberField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         spotNumberField.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        
+        scrollView.addSubview(spotNumberCheckmark)
+        spotNumberCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        spotNumberCheckmark.centerYAnchor.constraint(equalTo: spotNumberField.centerYAnchor).isActive = true
+        spotNumberCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        spotNumberCheckmark.heightAnchor.constraint(equalTo: spotNumberCheckmark.widthAnchor).isActive = true
         
         scrollView.addSubview(spotNumberLine)
         spotNumberLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -244,7 +310,34 @@ class SpotNumberViewController: UIViewController {
         spotNumberLine.bottomAnchor.constraint(equalTo: spotNumberField.bottomAnchor).isActive = true
         spotNumberLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
+        scrollView.addSubview(multipleSpotNumberInformation)
+        multipleSpotNumberInformation.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        multipleSpotNumberInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        multipleSpotNumberInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        multipleSpotNumberInformation.topAnchor.constraint(equalTo: spotNumberLine.bottomAnchor, constant: 30).isActive = true
+        
+        scrollView.addSubview(multipleSpotNumberField)
+        multipleSpotNumberField.topAnchor.constraint(equalTo: multipleSpotNumberInformation.bottomAnchor, constant: 8).isActive = true
+        multipleSpotNumberField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        multipleSpotNumberField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        multipleSpotNumberField.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        
+        scrollView.addSubview(multipleSpotsPicker)
+        multipleSpotsPicker.topAnchor.constraint(equalTo: multipleSpotNumberInformation.bottomAnchor, constant: 8).isActive = true
+        multipleSpotsPicker.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
+        multipleSpotsPicker.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        multipleSpotsPicker.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        
+        scrollView.addSubview(multipleSpotNumberLine)
+        multipleSpotNumberLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        multipleSpotNumberLine.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -48).isActive = true
+        multipleSpotNumberLine.bottomAnchor.constraint(equalTo: multipleSpotNumberField.bottomAnchor).isActive = true
+        multipleSpotNumberLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
     }
+    
+    var otherNumbersAnchor: NSLayoutConstraint!
+    var singleNumbersAnchor: NSLayoutConstraint!
     
     func setupCode() {
         
@@ -252,19 +345,22 @@ class SpotNumberViewController: UIViewController {
         gateCodeInformation.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         gateCodeInformation.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         gateCodeInformation.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        gateCodeInformation.topAnchor.constraint(equalTo: spotNumberLine.bottomAnchor, constant: 30).isActive = true
-        
-        scrollView.addSubview(gateCodeCheckmark)
-        gateCodeCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
-        gateCodeCheckmark.centerYAnchor.constraint(equalTo: gateCodeInformation.centerYAnchor).isActive = true
-        gateCodeCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        gateCodeCheckmark.heightAnchor.constraint(equalTo: gateCodeCheckmark.widthAnchor).isActive = true
+        singleNumbersAnchor = gateCodeInformation.topAnchor.constraint(equalTo: spotNumberLine.bottomAnchor, constant: 30)
+            singleNumbersAnchor.isActive = true
+        otherNumbersAnchor = gateCodeInformation.topAnchor.constraint(equalTo: multipleSpotNumberLine.bottomAnchor, constant: 30)
+            otherNumbersAnchor.isActive = false
         
         scrollView.addSubview(gateCodeField)
         gateCodeField.topAnchor.constraint(equalTo: gateCodeInformation.bottomAnchor, constant: 8).isActive = true
         gateCodeField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         gateCodeField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         gateCodeField.heightAnchor.constraint(equalToConstant: 46).isActive = true
+        
+        scrollView.addSubview(gateCodeCheckmark)
+        gateCodeCheckmark.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
+        gateCodeCheckmark.centerYAnchor.constraint(equalTo: gateCodeField.centerYAnchor).isActive = true
+        gateCodeCheckmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        gateCodeCheckmark.heightAnchor.constraint(equalTo: gateCodeCheckmark.widthAnchor).isActive = true
         
         scrollView.addSubview(gateCodeLine)
         gateCodeLine.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -282,6 +378,39 @@ class SpotNumberViewController: UIViewController {
         
     }
     
+    func guessSpotNumbers() {
+        if let firstNumberString = self.spotNumberField.text, var firstNumber = Int(firstNumberString), let numberSpotsString = self.numberField.text, let numberSpots = Int(numberSpotsString) {
+            for _ in 0..<(numberSpots - 1) {
+                
+            }
+        }
+    }
+    
+    func otherSpots() {
+        self.spotNumberInformation.text = "Enter the first spot number"
+        self.otherNumbersAnchor.isActive = true
+        self.singleNumbersAnchor.isActive = false
+        UIView.animate(withDuration: animationIn) {
+            self.multipleSpotNumberInformation.alpha = 1
+            self.multipleSpotsPicker.alpha = 1
+            self.multipleSpotNumberLine.alpha = 1
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func singleSpots() {
+        self.spotNumberInformation.text = "Does the spot have a number?"
+        self.otherNumbersAnchor.isActive = false
+        self.singleNumbersAnchor.isActive = true
+        UIView.animate(withDuration: animationIn) {
+            self.multipleSpotNumberInformation.alpha = 0
+            self.multipleSpotNumberField.alpha = 0
+            self.multipleSpotsPicker.alpha = 0
+            self.multipleSpotNumberLine.alpha = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @objc func checkmarkPressed(sender: UIButton) {
         if sender == spotNumberCheckmark {
             self.spotNumberField.becomeFirstResponder()
@@ -297,6 +426,9 @@ class SpotNumberViewController: UIViewController {
                 sender.backgroundColor = Theme.GREEN_PIGMENT
                 sender.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
             }) { (success) in
+                if sender == self.spotNumberCheckmark, self.numberField.text != "1" {
+                    self.otherSpots()
+                }
             }
         } else {
             UIView.animate(withDuration: 0.1, animations: {
@@ -304,6 +436,9 @@ class SpotNumberViewController: UIViewController {
                 sender.backgroundColor = Theme.OFF_WHITE
                 sender.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
             }) { (success) in
+                if sender == self.spotNumberCheckmark, self.numberField.text != "1" {
+                    self.singleSpots()
+                }
             }
         }
     }
@@ -333,6 +468,7 @@ class SpotNumberViewController: UIViewController {
         
         numberField.inputAccessoryView = toolBar
         spotNumberField.inputAccessoryView = toolBar
+        multipleSpotNumberField.inputAccessoryView = toolBar
         gateCodeField.inputAccessoryView = toolBar
     }
     
@@ -351,6 +487,40 @@ class SpotNumberViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+}
+
+
+extension SpotNumberViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return spotNumbers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let amenitiesText = spotNumbers[indexPath.row]
+        let stringText = String(amenitiesText)
+        let width = stringText.width(withConstrainedHeight: 36, font: Fonts.SSPRegularH3) + 8
+        
+        return CGSize(width: width, height: 36)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! SpotNumbers
+        if spotNumbers.count == (indexPath.row + 1) {
+            cell.iconLabel.text = "\(spotNumbers[indexPath.row])"
+        } else if spotNumbers.count > 1 {
+            cell.iconLabel.text = "\(spotNumbers[indexPath.row]),"
+        } else {
+            cell.iconLabel.text = "\(spotNumbers[indexPath.row])"
+        }
+        
+        return cell
+    }
+    
 }
 
 
@@ -395,12 +565,16 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         if textView == self.spotNumberField {
             self.spotNumberField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.spotNumberLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: numberInformation, animated: true, offset: 16)
         } else if textView == self.numberField {
             self.numberField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.numberLine.backgroundColor = Theme.BLUE
         } else if textView == self.gateCodeField {
             self.gateCodeField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.gateCodeLine.backgroundColor = Theme.BLUE
+            self.scrollView.scrollToView(view: gateCodeInformation, animated: true, offset: 16)
+        } else if textView == self.multipleSpotNumberField {
+            self.scrollView.scrollToView(view: spotNumberInformation, animated: true, offset: 16)
         }
     }
     
@@ -450,9 +624,41 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         }
         
         self.scrollView.scrollIndicatorInsets = self.scrollView.contentInset
+    }
+    
+}
+
+
+class SpotNumbers: UICollectionViewCell {
+    
+    var iconLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPRegularH3
+        label.textAlignment = .center
         
-        //        let selectedRange = self.supportTextView.selectedRange
-        //        self.supportTextView.scrollRangeToVisible(selectedRange)
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupViews()
+    }
+    
+    func setupViews() {
+        
+        self.addSubview(iconLabel)
+        iconLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        iconLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        iconLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        iconLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 }

@@ -27,7 +27,7 @@ extension MapKitViewController {
     }
     
     func monitorCoupons() {
-        if !isCurrentlyBooked {
+        if BookedState != .currentlyBooked {
             guard let userID = Auth.auth().currentUser?.uid else { return }
             let ref = Database.database().reference().child("users").child(userID).child("CurrentCoupon")
             ref.observe(.childAdded) { (snapshot) in

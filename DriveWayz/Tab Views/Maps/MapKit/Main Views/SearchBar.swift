@@ -49,8 +49,9 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
-        self.summaryTopAnchor.constant = -260
-        self.mainBarController.searchController.checkRecentSearches()
+        summaryTopAnchor.constant = -260
+        mainViewState = .none
+        mainBarController.searchController.checkRecentSearches()
         UIView.animate(withDuration: animationOut, animations: {
             self.locationResultsHeightAnchor.constant = 0
             self.view.layoutIfNeeded()

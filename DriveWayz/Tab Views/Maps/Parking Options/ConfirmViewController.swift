@@ -7,15 +7,12 @@
 //
 
 import UIKit
-import Stripe
+import FirebaseFirestore
 import NVActivityIndicatorView
 
 class ConfirmViewController: UIViewController {
     
     var delegate: handleCheckoutParking?
-    let stripePublishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
-    let backendBaseURL: String? = "https://boiling-shore-28466.herokuapp.com"
-    let paymentCurrency = "usd"
     
     var parking: ParkingSpots?
     var fromDate: Date?
@@ -25,46 +22,40 @@ class ConfirmViewController: UIViewController {
     var totalTime: String?
     var discount: Int = 0
     
-    var paymentContext: STPPaymentContext
+    let paymentController = ChoosePaymentView()
+    var currentPaymentMethod: PaymentMethod?
+    
     var paymentInProgress: Bool = false {
         didSet {
             UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.paymentInProgress {
                     self.loadingActivity.startAnimating()
                     self.loadingActivity.alpha = 1
-                    self.mainButton.alpha = 0.6
+                    self.mainButtonUnavailable()
                     self.mainButton.setTitle("", for: .normal)
                 }
                 else {
                     self.loadingActivity.stopAnimating()
                     self.loadingActivity.alpha = 0
-                    self.mainButton.alpha = 1
-                    self.mainButton.isUserInteractionEnabled = true
-                    self.mainButton.backgroundColor = Theme.STRAWBERRY_PINK
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.mainButton.setTitle("Purchase Spot", for: .normal)
-                    }
+                    self.mainButtonAvailable()
+                    self.mainButton.setTitle("Purchase Spot", for: .normal)
                 }
             }, completion: nil)
         }
     }
     
-    enum RideRequestState {
-        case none
-        case requesting
-        case active
-    }
-    
-    var rideRequestState: RideRequestState = .none {
-        didSet {
-            reloadRequestRideButton()
-        }
-    }
+    var dimmingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.DARK_GRAY
+        view.alpha = 0
+        
+        return view
+    }()
     
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 35
         let image = UIImage(named: "Residential Home Parking")
@@ -85,6 +76,7 @@ class ConfirmViewController: UIViewController {
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         button.layer.borderColor = Theme.WHITE.cgColor
         button.layer.borderWidth = 2
+        button.isUserInteractionEnabled = false
         
         return button
     }()
@@ -150,15 +142,14 @@ class ConfirmViewController: UIViewController {
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Payment", for: .normal)
+        button.setTitle("Select payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentHorizontalAlignment = .left
-        button.titleLabel?.textAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
-        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: phoneWidth/2 - 72)
-        button.addTarget(self, action: #selector(handlePaymentButtonTapped), for: .touchUpInside)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+        button.addTarget(self, action: #selector(paymentButtonPressed), for: .touchUpInside)
         
         return button
     }()
@@ -249,11 +240,10 @@ class ConfirmViewController: UIViewController {
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
         
-        NotificationCenter.default.addObserver(self, selector: #selector(monitorCurrentParking), name: NSNotification.Name(rawValue: "confirmBookingCheck"), object: nil)
-        
         setupViews()
         setupCalendar()
         setupPayment()
+        observePaymentMethod()
     }
     
     var normalCostAnchor: NSLayoutConstraint!
@@ -362,14 +352,156 @@ class ConfirmViewController: UIViewController {
         line2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         line2.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        view.addSubview(dimmingView)
+        dimmingView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
     }
+    
+}
+
+// Handle Stripe payments
+extension ConfirmViewController: handleExtendPaymentMethod {
+    
+    @objc func confirmPurchasePressed(sender: UIButton) {
+        // First check if a payment method is specified
+        if let paymentMethod = currentPaymentMethod {
+            guard let userId = Auth.auth().currentUser?.uid else { return }
+            paymentInProgress = true
+            loadingActivity.alpha = 1
+            loadingActivity.startAnimating()
+            
+            // Use the token in the next step
+            let db = Firestore.firestore()
+            var ref: DocumentReference? = nil
+            
+            guard let text = self.totalCostLabel.text?.replacingOccurrences(of: "$", with: "") else { return }
+            guard let costs = Double(text) else { return }
+            let pennies = Int(costs * 100)
+            
+            let amount = pennies
+            let description = "New booking"
+            let timestamp = Date().timeIntervalSince1970
+            
+            if let id = paymentMethod.id, let customer = paymentMethod.customer {
+                let data = ["source": id, "customer_id": customer, "amount": amount, "description": description, "timestamp": timestamp] as [String : Any]
+                ref = db.collection("stripe_customers").document(userId).collection("charges").addDocument(data: data, completion: { (err) in
+                    if let error = err {
+                        print(error.localizedDescription)
+                        return
+                    }
+                    if let key = ref?.documentID {
+                        self.monitorPayments(key: key)
+                    }
+                })
+            } else {
+                // The payment source was invalid
+                print("There was an issue processing your request")
+            }
+        } else {
+            paymentButtonPressed()
+        }
+    }
+    
+    func monitorPayments(key: String) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore().collection("stripe_customers").document(userId).collection("charges").document(key)
+        db.addSnapshotListener { (documentSnapshot, error) in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+            }
+            guard let data = document.data() else {
+                print("Document data was empty.")
+                return
+            }
+            let stripePayment = StripePayment(dictionary: data)
+            if let status = stripePayment.status {
+                self.paymentInProgress = false
+                self.loadingActivity.alpha = 0
+                self.loadingActivity.stopAnimating()
+                
+                if status == "succeeded" {
+                    // Stripe payment succeeded
+                    print(status)
+                    self.setupNotifications()
+                } else if status == "failed" {
+                    // Stripe payment failed
+                    print(status)
+                }
+            }
+        }
+    }
+    
+    @objc func paymentButtonPressed() {
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 0.6
+        }) { (success) in
+            self.paymentController.extendedDelegate = self
+            let navigation = UINavigationController(rootViewController: self.paymentController)
+            navigation.navigationBar.isHidden = true
+            navigation.modalPresentationStyle = .overCurrentContext
+            self.present(navigation, animated: true, completion: nil)
+        }
+    }
+    
+    func observePaymentMethod() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userId).child("selectedPayment")
+        ref.observe(.childAdded) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                let paymentMethod = PaymentMethod(dictionary: dictionary)
+                if let cardNumber = paymentMethod.last4 {
+                    let card = "•••• \(cardNumber)"
+                    self.paymentButton.setTitle(card, for: .normal)
+                    self.paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    let image = setDefaultPaymentMethod(method: paymentMethod)
+                    self.paymentButton.setImage(image, for: .normal)
+                    self.currentPaymentMethod = paymentMethod
+                }
+            }
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.paymentButton.setTitle("Select payment", for: .normal)
+            self.paymentButton.setImage(nil, for: .normal)
+            self.currentPaymentMethod = nil
+            ref.observe(.childAdded, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    let paymentMethod = PaymentMethod(dictionary: dictionary)
+                    if let cardNumber = paymentMethod.last4 {
+                        let card = "•••• \(cardNumber)"
+                        self.paymentButton.setTitle(card, for: .normal)
+                        let image = setDefaultPaymentMethod(method: paymentMethod)
+                        self.paymentButton.setImage(image, for: .normal)
+                        self.currentPaymentMethod = paymentMethod
+                    }
+                }
+            })
+        }
+    }
+    
+    func sendAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func closeBackground() {
+        UIView.animate(withDuration: animationOut) {
+            tabDimmingView.alpha = 0
+        }
+    }
+    
+}
+
+
+// Handle timing and information
+extension ConfirmViewController {
     
     func changeDates(fromDate: Date, totalTime: String) {
         var hours: Int = 0
         var minutes: Int = 0
         self.totalTime = totalTime
         let timeArray = totalTime.split(separator: " ")
-        print(timeArray)
         if let hourString = timeArray.dropFirst().first, hourString.contains("h") {
             if let timeHours = timeArray.first {
                 if let intHours = Int(timeHours) {
@@ -412,7 +544,7 @@ class ConfirmViewController: UIViewController {
             
             let finalString = fromString + " - " + toString + " " + APString
             self.timeLabel.setTitle(finalString, for: .normal)
-//            self.durationLabel.text = finalString
+            //            self.durationLabel.text = finalString
             self.setHourLabel(minutes: Int(hours * 60 + minutes))
         }
         
@@ -426,7 +558,7 @@ class ConfirmViewController: UIViewController {
                 timeString = timeString.replacingOccurrences(of: "hrs", with: "hours")
                 timeString = timeString.replacingOccurrences(of: "hr", with: "hour")
                 timeString = timeString.replacingOccurrences(of: "min", with: "minutes")
-//                self.timeLabel.setTitle(timeString, for: .normal)
+                //                self.timeLabel.setTitle(timeString, for: .normal)
                 if dateWeek == dayOfTheWeekFrom {
                     let fromDay = dayFormatter.string(from: fromDate)
                     self.calendarLabel.setTitle("Today, \(fromDay)", for: .normal)
@@ -441,7 +573,7 @@ class ConfirmViewController: UIViewController {
     func setData(price: Double, hours: Double, parking: ParkingSpots) {
         self.parking = parking
         self.fromDate = bookingFromDate /////////////////////
-//        self.toDate = bookingToDate //////////////////////
+        //        self.toDate = bookingToDate //////////////////////
         self.price = price
         self.hours = hours
         
@@ -527,80 +659,44 @@ class ConfirmViewController: UIViewController {
     func setHourLabel(minutes: Int) {
         let tuple = minutesToHoursMinutes(minutes: minutes)
         if tuple.hours == 1 {
-            self.mainButton.alpha = 1
-            self.mainButton.isUserInteractionEnabled = true
+            mainButtonAvailable()
             if tuple.leftMinutes == 0 {
-                self.durationLabel.text = "\(tuple.hours) hour"
+                durationLabel.text = "\(tuple.hours) hour"
             } else {
-                self.durationLabel.text = "\(tuple.hours) hour \(tuple.leftMinutes) min"
+                durationLabel.text = "\(tuple.hours) hour \(tuple.leftMinutes) min"
             }
         } else if tuple.hours == 0 {
             if tuple.leftMinutes == 0 {
-                self.durationLabel.text = "00 min"
-                self.mainButton.alpha = 0.5
-                self.mainButton.isUserInteractionEnabled = false
+                mainButtonUnavailable()
+                durationLabel.text = "00 min"
             } else {
-                self.mainButton.alpha = 1
-                self.mainButton.isUserInteractionEnabled = true
-                self.durationLabel.text = "\(tuple.leftMinutes) min"
+                mainButtonAvailable()
+                durationLabel.text = "\(tuple.leftMinutes) min"
             }
         } else {
-            self.mainButton.alpha = 1
-            self.mainButton.isUserInteractionEnabled = true
+            mainButtonAvailable()
             if tuple.leftMinutes == 0 {
-                self.durationLabel.text = "\(tuple.hours) hours"
+                durationLabel.text = "\(tuple.hours) hours"
             } else {
-                self.durationLabel.text = "\(tuple.hours) hours \(tuple.leftMinutes) min"
+                durationLabel.text = "\(tuple.hours) hours \(tuple.leftMinutes) min"
             }
         }
+    }
+    
+    func mainButtonAvailable() {
+        mainButton.setTitleColor(Theme.WHITE, for: .normal)
+        mainButton.backgroundColor = Theme.STRAWBERRY_PINK
+        mainButton.isUserInteractionEnabled = true
+    }
+    
+    func mainButtonUnavailable() {
+        mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        mainButton.backgroundColor = Theme.LIGHT_GRAY
+        mainButton.isUserInteractionEnabled = false
     }
     
     func minutesToHoursMinutes (minutes : Int) -> (hours : Int , leftMinutes : Int) {
         return (minutes / 60, (minutes % 60))
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    init() {
-        
-        MyAPIClient.sharedClient.baseURLString = self.backendBaseURL
-        
-        // This code is included here for the sake of readability, but in your application you should set up your configuration and theme earlier, preferably in your App Delegate.
-        let config = STPPaymentConfiguration.shared()
-        config.publishableKey = self.stripePublishableKey
-        config.requiredBillingAddressFields = STPBillingAddressFields.none
-        config.additionalPaymentOptions = .all
-        
-        // Create card sources instead of card tokens
-        config.createCardSources = true
-        
-        let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
-        let paymentContext = STPPaymentContext(customerContext: customerContext,
-                                               configuration: config,
-                                               theme: .default())
-        let userInformation = STPUserInformation()
-        paymentContext.prefilledInformation = userInformation
-        paymentContext.paymentCurrency = self.paymentCurrency
-        
-        self.paymentContext = paymentContext
-        
-        var localeComponents: [String: String] = [
-            NSLocale.Key.currencyCode.rawValue: self.paymentCurrency,
-            ]
-        localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
-        let localeID = NSLocale.localeIdentifier(fromComponents: localeComponents)
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: localeID)
-        numberFormatter.numberStyle = .currency
-        numberFormatter.usesGroupingSeparator = true
-        
-        
-        super.init(nibName: nil, bundle: nil)
-        
-        self.paymentContext.delegate = self
-        paymentContext.hostViewController = self
-    }
-
 }

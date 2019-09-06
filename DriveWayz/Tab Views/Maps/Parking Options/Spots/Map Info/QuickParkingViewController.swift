@@ -15,6 +15,7 @@ class QuickParkingViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 4
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         view.clipsToBounds = true
         
         return view
@@ -49,7 +50,6 @@ class QuickParkingViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.alpha = 0
         button.isUserInteractionEnabled = false
-        button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
         return button
     }()
@@ -59,7 +59,17 @@ class QuickParkingViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4 min"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH5
+        label.font = Fonts.SSPSemiBoldH3
+        
+        return label
+    }()
+    
+    var parkingLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "parking spot"
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -89,25 +99,29 @@ class QuickParkingViewController: UIViewController {
         lightContainer.leftAnchor.constraint(equalTo: darkContainer.leftAnchor).isActive = true
         lightContainer.topAnchor.constraint(equalTo: darkContainer.topAnchor).isActive = true
         lightContainer.bottomAnchor.constraint(equalTo: darkContainer.bottomAnchor).isActive = true
-        lightContainer.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        lightContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         darkContainer.addSubview(walkingIcon)
         walkingIcon.centerXAnchor.constraint(equalTo: lightContainer.centerXAnchor).isActive = true
-        walkingIcon.topAnchor.constraint(equalTo: darkContainer.topAnchor, constant: 2).isActive = true
-        walkingIcon.widthAnchor.constraint(equalToConstant: 26).isActive = true
-        walkingIcon.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        walkingIcon.centerYAnchor.constraint(equalTo: darkContainer.centerYAnchor).isActive = true
+        walkingIcon.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        walkingIcon.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         darkContainer.addSubview(carIcon)
         carIcon.centerXAnchor.constraint(equalTo: lightContainer.centerXAnchor).isActive = true
-        carIcon.topAnchor.constraint(equalTo: darkContainer.topAnchor, constant: 2).isActive = true
-        carIcon.widthAnchor.constraint(equalToConstant: 26).isActive = true
-        carIcon.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        carIcon.centerYAnchor.constraint(equalTo: lightContainer.centerYAnchor).isActive = true
+        carIcon.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        carIcon.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         darkContainer.addSubview(distanceLabel)
         distanceLabel.leftAnchor.constraint(equalTo: lightContainer.rightAnchor, constant: 8).isActive = true
-        distanceLabel.rightAnchor.constraint(equalTo: darkContainer.rightAnchor, constant: -8).isActive = true
-        distanceLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        distanceLabel.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        distanceLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -8).isActive = true
+        distanceLabel.sizeToFit()
+        
+        darkContainer.addSubview(parkingLabel)
+        parkingLabel.leftAnchor.constraint(equalTo: distanceLabel.leftAnchor).isActive = true
+        parkingLabel.topAnchor.constraint(equalTo: distanceLabel.bottomAnchor, constant: -6).isActive = true
+        parkingLabel.sizeToFit()
         
     }
     

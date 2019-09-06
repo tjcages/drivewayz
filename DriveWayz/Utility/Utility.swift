@@ -55,7 +55,9 @@ struct Font {
     enum StandardSize: Double {
         case extraLarge = 46.0
         case h0 = 38.0
+        case h00 = 34.0
         case h1 = 32.0
+        case h25 = 28.0
         case h2 = 24.0
         case h3 = 20.0
         case h4 = 18.0
@@ -142,6 +144,7 @@ class Fonts {
     static let SSPRegularH6 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
     //Bold
+    static let SSPBoldH00 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h00)).instance
     static let SSPBoldH0 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
     static let SSPBoldH1 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
     static let SSPBoldH2 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
@@ -181,8 +184,10 @@ class Fonts {
     static let SSPBlackH6 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
     //SemiBold
+    static let SSPSemiBoldH00 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h00)).instance
     static let SSPSemiBoldH0 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
     static let SSPSemiBoldH1 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
+    static let SSPSemiBoldH25 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h25)).instance
     static let SSPSemiBoldH2 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
     static let SSPSemiBoldH3 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
     static let SSPSemiBoldH4 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h4)).instance

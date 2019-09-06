@@ -15,10 +15,9 @@ import AFNetworking
 import AVFoundation
 import Mapbox
 import MapboxDirections
-import MapboxNavigation
 
-
-var userLocation: CLLocation?
+//var userLocation: CLLocation?
+var hasLoadedMapView: Bool = false
 
 class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
     
@@ -32,24 +31,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         super.viewDidLoad()
         
         view.clipsToBounds = true
-   
+        
         monitorSurge()
-        
-        setupViews()
-        setupDimmingViews()
-        setupMainViews()
-        setupMapButtons()
-        setupSearch()
-        setupLocator()
-        
-        setupCurrentViews()
-        setupPurchaseStatus()
-        setupNavigationControllers()
-        setupUserMessages()
-
-        setupCoupons()
-        setupNetworkConnection()
-        observeUserDrivewayzMessages()
+        observeAllParking()
+        observeCurrentParking()
+        setupController()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,12 +43,42 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             self.hasLoaded = true
             self.setupLocationManager()
         }
-        if isCurrentlyBooked {
-            self.delegate?.lightContentStatusBar()
-        }
     }
     
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    func setupController() {
+        if !hasLoadedMapView {
+            hasLoadedMapView = true
+            
+            setupViews()
+            setupDimmingViews()
+            setupMainViews()
+            setupMapButtons()
+            setupSearch()
+            setupLocator()
+            
+            setupCurrentViews()
+            setupUserMessages()
+            setupCoupons()
+            setupNetworkConnection()
+            DynamicPricing.readCityCSV()
+            
+            if BookedState == .currentlyBooked && mainViewState != .currentBooking {
+                mainViewState = .currentBooking
+//                return
+            } else if BookedState == .reserved && mainViewState != .duration { // NEED TO CHANGE TO RESERVATION
+                mainViewState = .duration
+//                return
+            } else if BookedState == .none && mainViewState != .mainBar {
+                mainViewState = .mainBar
+//                return
+            }
+            
+            reloadRequestedViews()
+            observeUserDrivewayzMessages()
+        }
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     var lowestHeight: CGFloat = 354
     var minimizedHeight: CGFloat = 150
@@ -87,9 +103,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         view.logoView.isHidden = true
         view.attributionButton.isHidden = true
         view.showsUserHeadingIndicator = true
-        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+        view.setContentInset(UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false, completionHandler: nil)
         view.decelerationRate = 2.0
-        view.setContentInset(UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false)
         
         return view
     }()
@@ -100,14 +115,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
             button.setImage(tintableImage, for: .normal)
         }
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
+        button.tintColor = Theme.DARK_GRAY
         button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.layer.cornerRadius = 28
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
         button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.6
+        button.layer.shadowOpacity = 0.4
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
         button.alpha = 0
@@ -135,6 +150,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         
         return button
     }()
+
+    var currentHeightAnchor: NSLayoutConstraint!
+    var previousHeightAnchor: CGFloat = 380
     
     lazy var mainBarController: MainBarViewController = {
         let controller = MainBarViewController()
@@ -157,101 +175,16 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     lazy var searchBarController: SearchBarViewController = {
         let controller = SearchBarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.delegate = self
+        //        controller.delegate = self
         self.addChild(controller)
         
         return controller
-    }()
-    
-    lazy var currentSpotController: CurrentSpotViewController = {
-        let controller = CurrentSpotViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-//    lazy var expandedSpotController: ExpandedSpotViewController = {
-//        let controller = ExpandedSpotViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.delegate = self
-//        self.addChild(controller)
-//
-//        return controller
-//    }()
-    
-//    var expandedSpotBottomAnchor: NSLayoutConstraint!
-    
-    var currentTopAnchor: NSLayoutConstraint!
-    var currentHeightAnchor: NSLayoutConstraint!
-    var previousHeightAnchor: CGFloat = 380
-    
-    var bottomBar: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        //        view.layer.cornerRadius = 15
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.6
-        
-        return view
-    }()
-    
-    lazy var giftButton: UIButton = {
-        let view = UIButton()
-        view.backgroundColor = Theme.BLACK
-        view.layer.cornerRadius = 25
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.BLACK.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.6
-        
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        let origImage = UIImage(named: "giftIcon")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.layer.cornerRadius = 25
-        button.clipsToBounds = true
-        button.imageEdgeInsets = UIEdgeInsets(top: 12.5, left: 12.5, bottom: 12.5, right: 12.5)
-        
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
-        view.addSubview(button)
-        view.isHidden = true ///////////////////NO GIFT
-        
-        return view
     }()
     
     lazy var locationsSearchResults: MapSearchViewController = {
         let controller = MapSearchViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var eventsController: EventsViewController = {
-        let controller = EventsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Events"
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var checkEventsController: CheckEventsViewController = {
-        let controller = CheckEventsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Check Events"
         self.addChild(controller)
         
         return controller
@@ -285,101 +218,54 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
-        self.addChild(controller)
         
         return controller
     }()
     
-    lazy var speechSearchResults: SpeechRecognitionViewController = {
-        let controller = SpeechRecognitionViewController()
+    lazy var currentBottomController: CurrentBookingView = {
+        let controller = CurrentBookingView()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
+    
+    var durationLeftAnchor: NSLayoutConstraint!
+    var durationRightAnchor: NSLayoutConstraint!
+    var durationTopAnchor: NSLayoutConstraint!
+    var currentBookingHeight: CGFloat = phoneHeight - 116 - 252
+    
+    var previousBookingPercentage: CGFloat = 0
+    
+    lazy var currentDurationController: CurrentDurationView = {
+        let controller = CurrentDurationView()
+        self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.alpha = 0
+        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         controller.delegate = self
-        self.addChild(controller)
         
         return controller
     }()
     
-    lazy var purchaseViewController: SelectPurchaseViewController = {
-        let controller = SelectPurchaseViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        controller.title = "Purchase Controller"
-//        controller.delegate = self
-        controller.saveDelegate = self
+    lazy var endBookingController: EndCurrentBookingView = {
+        let controller = EndCurrentBookingView()
         self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var informationViewController: InformationViewController = {
-        let controller = InformationViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        controller.title = "Information Controller"
-        controller.hostDelegate = self
-//        controller.navigationDelegate = self
-        self.addChild(controller)
+        controller.view.alpha = 0
+        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         
         return controller
     }()
     
     var fullBackgroundView: UIView = {
         let view = UIView()
-        view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLACK
+        view.backgroundColor = Theme.DARK_GRAY
+        view.alpha = 0
         
         return view
-    }()
-    
-    lazy var darkBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return blurEffectView
-    }()
-    
-    var purchaseStaus: UIButton = {
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("", for: .normal)
-        view.titleLabel?.textColor = Theme.WHITE
-        view.titleLabel?.font = Fonts.SSPSemiBoldH5
-        view.titleLabel?.textAlignment = .center
-        view.titleLabel?.numberOfLines = 2
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        view.alpha = 0
-        view.layer.cornerRadius = 10
-        view.isUserInteractionEnabled = false
-        
-        return view
-    }()
-    
-    var swipeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Swipe up for more info, down to dismiss"
-        label.textColor = Theme.WHITE
-        label.textAlignment = .center
-        label.font = Fonts.SSPSemiBoldH5
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        label.layer.cornerRadius = 20
-        label.clipsToBounds = true
-        label.alpha = 0
-        
-        return label
-    }()
-    
-    lazy var currentParkingController: CurrentParkingViewController = {
-        let controller = CurrentParkingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        
-        return controller
     }()
     
     var networkConnection: UIButton = {
@@ -424,67 +310,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    var holdNavTopAnchor: NSLayoutConstraint!
-    
-    lazy var holdNavController: HoldNavViewController = {
-        let controller = HoldNavViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var currentBottomController: NavigationBottomViewController = {
-        let controller = NavigationBottomViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    var currentSearchLocation: UIButton = {
-        let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "my_location") {
-            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
-            button.setImage(tintableImage, for: .normal)
-        }
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
-        button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 1)
-        button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.6
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(currentLocatorButtonPressed), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-    
-    var currentSearchRegion: UIButton = {
-        let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "my_route") {
-            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
-            button.setImage(tintableImage, for: .normal)
-        }
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
-        button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 1)
-        button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.6
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(currentLocatorRegionPressed), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-    
     lazy var quickCouponController: QuickCouponsViewController = {
         let controller = QuickCouponsViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -493,18 +318,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         
         return controller
     }()
-    
-//    var successfulPurchaseTopAnchor: NSLayoutConstraint!
-    
-//    lazy var successfulPurchaseController: SuccessfulPurchaseViewController = {
-//        let controller = SuccessfulPurchaseViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.delegate = self
-//        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-//        self.addChild(controller)
-//
-//        return controller
-//    }()
     
     var reviewBookingTopAnchor: NSLayoutConstraint!
     
@@ -519,27 +332,11 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-//    var contactDrivewayzTopAnchor: NSLayoutConstraint!
-    
-//    lazy var contactDrivewayzController: ContactReviewsViewController = {
-//        let controller = ContactReviewsViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        self.addChild(controller)
-//
-//        return controller
-//    }()
-    
-//    let transition = CircularTransition()
     var newMessageTopAnchor: NSLayoutConstraint!
-    
-//    var motionManager: CMMotionActivityManager!
-//    var motionTimer: Timer!
     var shouldUpdatePolyline: Bool = true
     
-    var currentBottomHeightAnchor: NSLayoutConstraint!
     var previousAnchor: CGFloat = 170.0
     
-    var navigationRouteController: NavigationViewController?
     var shouldBeSearchingForAnnotations: Bool = true
     
     var searchedForPlace: Bool = false
@@ -584,9 +381,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var locationResultsHeightAnchor: NSLayoutConstraint!
     
     var summaryTopAnchor: NSLayoutConstraint!
-    var mainBarTopAnchor: NSLayoutConstraint!
     var mainBarPreviousPosition: CGFloat = 0.0
+    var currentViewPreviousPosition: CGFloat = 0.0
     var mainBarHighest: Bool = false
+    var currentViewHighest: Bool = false
     
     var parkingBackButtonBookAnchor: NSLayoutConstraint!
     var parkingBackButtonPurchaseAnchor: NSLayoutConstraint!
@@ -594,11 +392,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var locatorMainBottomAnchor: NSLayoutConstraint!
     var locatorParkingBottomAnchor: NSLayoutConstraint!
+    var locatorCurrentBottomAnchor: NSLayoutConstraint!
     
     var parkingControllerBottomAnchor: NSLayoutConstraint!
-    var parkingControllerHeightAnchor: NSLayoutConstraint!
+    var mainBarTopAnchor: NSLayoutConstraint!
     var durationControllerBottomAnchor: NSLayoutConstraint!
     var confirmControllerBottomAnchor: NSLayoutConstraint!
+    var currentBottomHeightAnchor: NSLayoutConstraint!
+    
+    var parkingControllerHeightAnchor: NSLayoutConstraint!
     var shouldFlipGradient: Bool = false
 
     var networkTopAnchor: NSLayoutConstraint!
@@ -680,7 +482,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
 
 }

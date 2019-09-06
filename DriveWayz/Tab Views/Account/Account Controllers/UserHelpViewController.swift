@@ -110,7 +110,7 @@ class UserHelpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.OFF_WHITE
         view.clipsToBounds = true
         
         issuesTable.delegate = self
@@ -216,6 +216,7 @@ extension UserHelpViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = issuesTable.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! BookingIssuesCell
         cell.selectionStyle = .none
+        cell.backgroundColor = Theme.WHITE
         
         if indexPath.row < self.issueOptions.count {
             cell.titleLabel.text = self.issueOptions[indexPath.row]

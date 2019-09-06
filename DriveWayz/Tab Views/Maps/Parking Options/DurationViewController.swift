@@ -26,9 +26,11 @@ class DurationViewController: UIViewController, handleHoursSelected {
     var delegate: handleCheckoutParking?
     var fromDate = Date()
     var toDate = Date()
+    
     var selectedHours: Int = 2
     var selectedMinutes: Int = 15
     var totalSelectedTime: Double = 2.25
+    
     var parking: ParkingSpots?
     var shouldReverse: Bool = true
     var amPm: String = "am"
@@ -205,21 +207,6 @@ class DurationViewController: UIViewController, handleHoursSelected {
         bookingButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         bookingButton.sizeToFit()
         
-//        timeView.addSubview(longtermButton)
-//        longtermButton.centerYAnchor.constraint(equalTo: bookingButton.centerYAnchor).isActive = true
-//        longtermButton.leftAnchor.constraint(equalTo: bookingButton.rightAnchor, constant: 16).isActive = true
-//        longtermButton.sizeToFit()
-//
-//        timeView.addSubview(selectLine)
-//        selectLine.topAnchor.constraint(equalTo: bookingButton.bottomAnchor, constant: -4).isActive = true
-//        selectWidthAnchor = selectLine.widthAnchor.constraint(equalToConstant: (bookingButton.titleLabel?.text?.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3))!)
-//            selectWidthAnchor.isActive = true
-//        selectLine.heightAnchor.constraint(equalToConstant: 2).isActive = true
-//        selectBookingCenterAnchor = selectLine.centerXAnchor.constraint(equalTo: bookingButton.centerXAnchor)
-//            selectBookingCenterAnchor.isActive = true
-//        selectLongtermCenterAnchor = selectLine.centerXAnchor.constraint(equalTo: longtermButton.centerXAnchor)
-//            selectLongtermCenterAnchor.isActive = false
-        
         timeView.addSubview(currentDatesController.view)
         currentDatesController.view.topAnchor.constraint(equalTo: bookingButton.bottomAnchor, constant: 6).isActive = true
         currentDatesController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -384,35 +371,35 @@ class DurationViewController: UIViewController, handleHoursSelected {
     func setHourLabel(minutes: Int) {
         let tuple = minutesToHoursMinutes(minutes: minutes)
         if tuple.hours == 1 {
-            self.mainButton.alpha = 1
-            self.mainButton.isUserInteractionEnabled = true
+            mainButton.alpha = 1
+            mainButton.isUserInteractionEnabled = true
             if tuple.leftMinutes == 0 {
-                self.totalTimeLabel.text = "\(tuple.hours) hr"
+                totalTimeLabel.text = "\(tuple.hours) hr"
             } else {
-                self.totalTimeLabel.text = "\(tuple.hours) hr \(tuple.leftMinutes) min"
+                totalTimeLabel.text = "\(tuple.hours) hr \(tuple.leftMinutes) min"
             }
         } else if tuple.hours == 0 {
             if tuple.leftMinutes == 0 {
-                self.totalTimeLabel.text = "00 min"
-                self.mainButton.alpha = 0.5
-                self.mainButton.isUserInteractionEnabled = false
+                totalTimeLabel.text = "00 min"
+                mainButton.alpha = 0.5
+                mainButton.isUserInteractionEnabled = false
             } else {
-                self.mainButton.alpha = 1
-                self.mainButton.isUserInteractionEnabled = true
-                self.totalTimeLabel.text = "\(tuple.leftMinutes) min"
+                mainButton.alpha = 1
+                mainButton.isUserInteractionEnabled = true
+                totalTimeLabel.text = "\(tuple.leftMinutes) min"
             }
         } else {
-            self.mainButton.alpha = 1
-            self.mainButton.isUserInteractionEnabled = true
+            mainButton.alpha = 1
+            mainButton.isUserInteractionEnabled = true
             if tuple.leftMinutes == 0 {
-                self.totalTimeLabel.text = "\(tuple.hours) hrs"
+                totalTimeLabel.text = "\(tuple.hours) hrs"
             } else {
-                self.totalTimeLabel.text = "\(tuple.hours) hrs \(tuple.leftMinutes) min"
+                totalTimeLabel.text = "\(tuple.hours) hrs \(tuple.leftMinutes) min"
             }
         }
-        self.selectedHours = tuple.hours
-        self.selectedMinutes = tuple.leftMinutes
-        self.totalSelectedTime = Double(tuple.hours) + Double(tuple.leftMinutes)/60
+        selectedHours = tuple.hours
+        selectedMinutes = tuple.leftMinutes
+        totalSelectedTime = Double(tuple.hours) + Double(tuple.leftMinutes)/60
     }
     
     

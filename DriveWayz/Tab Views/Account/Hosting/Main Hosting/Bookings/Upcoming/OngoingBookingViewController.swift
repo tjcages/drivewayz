@@ -15,7 +15,7 @@ class OngoingBookingViewController: UIViewController {
             if let booking = self.booking {
                 self.ongoingLabel.setTitle(booking.context, for: .normal)
                 if booking.context == "Reservation" {
-                    self.ongoingLabel.setTitle("Previous", for: .normal)
+                    self.ongoingLabel.setTitle("Upcoming", for: .normal)
                 }
                 self.contextLabel.text = "Reservation"
                 if let name = booking.userName {

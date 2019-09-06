@@ -22,6 +22,7 @@ target 'DriveWayz' do
     	pod 'Firebase/Analytics'
 	pod 'Firebase/DynamicLinks'
 	pod 'Firebase/RemoteConfig'
+	pod 'Firebase/Firestore'
 
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
@@ -42,7 +43,7 @@ target 'DriveWayz' do
 
 	pod 'MapboxStatic.swift', '~> 0.9'
 	pod 'Mapbox-iOS-SDK'
-	pod 'MapboxDirections.swift'
+	#pod 'MapboxDirections.swift'
 	#pod 'MapboxSpeech'
 	pod 'MapboxCoreNavigation'
 	pod 'MapboxNavigation'
@@ -57,5 +58,7 @@ target 'DriveWayz' do
 	pod 'UIImageColors'
 	pod 'Solar'
 	pod 'CHIPageControl', '~> 0.1.3'
+
+	pod 'PayCardsRecognizer'
 
 end

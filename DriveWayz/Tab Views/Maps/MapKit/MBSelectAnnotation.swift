@@ -9,7 +9,7 @@
 import Foundation
 import Mapbox
 import MapboxDirections
-import MapboxNavigation
+//import MapboxNavigation
 import MapboxCoreNavigation
 
 var didTapParking: Bool = false
@@ -27,13 +27,12 @@ extension MapKitViewController {
                 if let parkingLat = parking.latitude, let parkingLong = parking.longitude {
                     let parkingCoordinate = CLLocation(latitude: parkingLat, longitude: parkingLong)
                     guard let userLocation = self.mapView.userLocation?.location else { return }
-                    self.removeMainBar()
                     self.delegate?.hideHamburger()
                     DestinationAnnotationLocation = userLocation
                     TappedDestinationAnnotationLocation = parkingCoordinate
                     
-                    self.checkAnnotationsNearDestination(location: parkingCoordinate.coordinate, checkDistance: false)
                     self.parkingSelected()
+                    self.checkAnnotationsNearDestination(location: parkingCoordinate.coordinate, checkDistance: false)
                     self.mapView.setCenter(parkingCoordinate.coordinate, animated: true)
                     
 //                    self.checkAnnotationsNearDestination(location: userLocation.coordinate, checkDistance: true)

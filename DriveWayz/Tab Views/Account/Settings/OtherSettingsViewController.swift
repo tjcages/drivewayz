@@ -16,7 +16,12 @@ class OtherSettingsViewController: UIViewController {
     var optionsSub: [String] = ["No payment methods", "No vehicles", "Update your preferences", "Wheelchair Access", "Policies & Agreements", ""]
     var optionsColorsTop: [UIColor] = [Theme.LightRed, Theme.LightPurple, Theme.LightTeal, Theme.LightYellow, Theme.LightBlue, Theme.HARMONY_RED.lighter()!]
     var optionsColorsBottom: [UIColor] = [Theme.DarkRed, Theme.DarkPurple, Theme.DarkTeal, Theme.DarkYellow, Theme.DarkBlue, Theme.HARMONY_RED]
-    var optionsIcons: [UIImage] = [UIImage(named: "settingsCard")!, UIImage(named: "settingsVehicle")!, UIImage(named: "settingsNotifications")!, UIImage(named: "settingsAccessibility")!, UIImage(named: "settingsAbout")!, UIImage(named: "settingsLogout")!]
+    var optionsIcons: [UIImage] = [UIImage(named: "settingsCard")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsVehicle")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsNotifications")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsAccessibility")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsAbout")!.withRenderingMode(.alwaysTemplate),
+                                   UIImage(named: "settingsLogout")!.withRenderingMode(.alwaysTemplate)]
     
     var optionsTableView: UITableView = {
         let view = UITableView()
@@ -26,10 +31,36 @@ class OtherSettingsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(SettingsCell.self, forCellReuseIdentifier: "cellId")
         view.isScrollEnabled = false
-//        view.allowsSelection = false
         
         return view
     }()
+    
+    func observePaymentMethod() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("users").child(userId).child("selectedPayment")
+        ref.observe(.childAdded) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                let paymentMethod = PaymentMethod(dictionary: dictionary)
+                if let brand = paymentMethod.brand, let cardNumber = paymentMethod.last4 {
+                    self.optionsSub[0] = brand.uppercased() + " •••• \(cardNumber)"
+                    self.optionsTableView.reloadData()
+                }
+            }
+        }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.optionsSub[0] = "No payment methods"
+            self.optionsTableView.reloadData()
+            ref.observe(.childAdded, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    let paymentMethod = PaymentMethod(dictionary: dictionary)
+                    if let brand = paymentMethod.brand, let cardNumber = paymentMethod.last4 {
+                        self.optionsSub[0] = brand.uppercased() + " •••• \(cardNumber)"
+                        self.optionsTableView.reloadData()
+                    }
+                }
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,21 +69,17 @@ class OtherSettingsViewController: UIViewController {
         optionsTableView.dataSource = self
         
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 8
         
         setupViews()
+        observePaymentMethod()
     }
     
     func setupViews() {
         
         self.view.addSubview(optionsTableView)
         optionsTableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        optionsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        optionsTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         optionsTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
     }
@@ -73,17 +100,12 @@ extension OtherSettingsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 58, bottom: 0, right: 0)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         tableView.separatorStyle = .singleLine
         if options.count > indexPath.row && optionsSub.count > indexPath.row {
             cell.titleLabel.text = options[indexPath.row]
             cell.subtitleLabel.text = optionsSub[indexPath.row]
             cell.iconView.setImage(optionsIcons[indexPath.row], for: .normal)
-            
-            let background = CAGradientLayer().customVerticalColor(topColor: optionsColorsTop[indexPath.row], bottomColor: optionsColorsBottom[indexPath.row])
-            background.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            background.zPosition = -10
-            cell.iconView.layer.addSublayer(background)
             
             if optionsSub[indexPath.row] == "" {
                 cell.titleLabelTopAnchor.isActive = false
@@ -108,7 +130,7 @@ extension OtherSettingsViewController: UITableViewDelegate, UITableViewDataSourc
                 cell.iconView.alpha = 1
             }
         }
-        if cell.titleLabel.text == "Payment" || cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Notifications" || cell.titleLabel.text == "Accessibility" || cell.titleLabel.text == "Logout" || cell.titleLabel.text == "" {
+        if cell.titleLabel.text == "Vehicle" || cell.titleLabel.text == "Notifications" || cell.titleLabel.text == "Accessibility" || cell.titleLabel.text == "Logout" || cell.titleLabel.text == "" {
             cell.nextButton.alpha = 0
         } else {
             cell.nextButton.alpha = 1
@@ -120,16 +142,12 @@ extension OtherSettingsViewController: UITableViewDelegate, UITableViewDataSourc
         if cell.titleLabel.text == "Logout" {
             cell.titleLabel.textColor = Theme.HARMONY_RED
             cell.nextButton.alpha = 0
+            cell.defaultButton.alpha = 0
+        } else if cell.titleLabel.text == "Payment" && cell.subtitleLabel.text != "No payment methods" {
+            cell.defaultButton.alpha = 1
         } else {
-            cell.titleLabel.textColor = Theme.BLACK
-        }
-        if cell.subtitleLabel.text == "Payment" {
-            cell.paymentButton.alpha = 1
-            cell.subtitleLabel.text = ""
-            cell.paymentButton.setTitle(userInformationNumbers, for: .normal)
-            cell.paymentButton.setImage(userInformationImage, for: .normal)
-        } else {
-            cell.paymentButton.alpha = 0
+            cell.defaultButton.alpha = 0
+            cell.titleLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
         }
         
         return cell
@@ -142,6 +160,8 @@ extension OtherSettingsViewController: UITableViewDelegate, UITableViewDataSourc
                 self.delegate?.moveToAbout()
             } else if title == "Logout" {
                 self.delegate?.handleLogout()
+            } else if title == "Payment" {
+                self.delegate?.handlePaymentPressed()
             }
         }
     }

@@ -189,7 +189,7 @@ class ExtendTimeViewController: UIViewController, STPPaymentContextDelegate, con
         config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
-        config.createCardSources = true;
+//        config.createCardSources = true;
         
         let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
         let paymentContext = STPPaymentContext(customerContext: customerContext,

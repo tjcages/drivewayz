@@ -9,6 +9,20 @@
 import UIKit
 import FirebaseDatabase
 
+// Booking enum to tell what state the user is in
+var BookedState: BookingState = .none {
+    didSet {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "userBookingStatus"), object: nil)
+        }
+    }
+}
+enum BookingState {
+    case none // Nothing booked
+    case currentlyBooked // User has a booking currently going on
+    case reserved // User has an upcoming reservation
+}
+
 class Bookings: NSObject {
     
     var bookingID: String?

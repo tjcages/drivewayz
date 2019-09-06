@@ -71,6 +71,7 @@ extension HelpOptionsViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SettingsCell
         cell.selectionStyle = .none
         cell.separatorInset = UIEdgeInsets(top: 0, left: 58, bottom: 0, right: 0)
+        cell.backgroundColor = Theme.WHITE
         tableView.separatorStyle = .singleLine
         if indexPath.row >= 2 {
             tableView.separatorStyle = .none

@@ -20,6 +20,7 @@ extension MapKitViewController {
     
     func removeAllMapOverlays(shouldRefresh: Bool) {
         ZoomMapView = nil
+        ZooomRegion = nil
         CurrentDestinationLocation = nil
         ClosestParkingLocation = nil
         DestinationAnnotationLocation = nil

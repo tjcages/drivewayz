@@ -22,12 +22,6 @@ extension MapKitViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(parkingBackButtonPressed))
         fullBackgroundView.addGestureRecognizer(tap)
         
-        self.view.addSubview(darkBlurView)
-        darkBlurView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        darkBlurView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        darkBlurView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        darkBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-
     }
 
 }

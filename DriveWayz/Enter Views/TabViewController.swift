@@ -48,6 +48,15 @@ protocol controlsAccountOptions {
     func bringAnalyticsController()
 }
 
+var tabDimmingView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = Theme.DARK_GRAY
+    view.alpha = 0
+    
+    return view
+}()
+
 class TabViewController: UIViewController, UNUserNotificationCenterDelegate, controlsAccountOptions, moveControllers {
     
     var swipe: Int = 1
@@ -85,9 +94,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let controller = MapKitViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Map"
         controller.vehicleDelegate = self
         controller.delegate = self
+        
         return controller
     }()
     
@@ -95,9 +104,9 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let controller = AccountSlideViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Profile"
         controller.delegate = self
         controller.moveDelegate = self
+        
         return controller
     }()
 
@@ -121,14 +130,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         
         view.backgroundColor = Theme.WHITE
         
+        NotificationCenter.default.addObserver(self, selector: #selector(monitorCurrentParking), name: NSNotification.Name(rawValue: "userBookingStatus"), object: nil)
+        
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.tabBarController?.tabBar.isHidden = true
         
         setupViews()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-//        UNUserNotificationCenter.current().delegate = self
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
@@ -155,6 +162,12 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         shadowView.rightAnchor.constraint(equalTo: mapController.view.rightAnchor).isActive = true
         shadowView.topAnchor.constraint(equalTo: mapController.view.topAnchor).isActive = true
         shadowView.bottomAnchor.constraint(equalTo: mapController.view.bottomAnchor).isActive = true
+        
+        self.view.addSubview(tabDimmingView)
+        tabDimmingView.leftAnchor.constraint(equalTo: mapController.view.leftAnchor).isActive = true
+        tabDimmingView.rightAnchor.constraint(equalTo: mapController.view.rightAnchor).isActive = true
+        tabDimmingView.topAnchor.constraint(equalTo: mapController.view.topAnchor).isActive = true
+        tabDimmingView.bottomAnchor.constraint(equalTo: mapController.view.bottomAnchor).isActive = true
         
         self.view.addSubview(blurView)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(moveToMapSwipe(sender:)))
@@ -185,16 +198,27 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         
     }
     
+    @objc func monitorCurrentParking() {
+        if BookedState == .currentlyBooked {
+            mapController.mainViewState = .currentBooking
+        } else if BookedState == .reserved {
+            mapController.mainViewState = .none
+        } else {
+            mapController.mainViewState = .none
+        }
+    }
+    
     func moveToProfile() {
         self.delegate?.hideStatusBar()
-        self.mapController.view.bringSubviewToFront(self.mapController.fullBackgroundView)
         self.mapCenterAnchor.constant = self.view.frame.width/2 + 60
         hamburgerWidthAnchor.constant = -24
         UIView.animate(withDuration: animationIn, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.shadowView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            tabDimmingView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             self.mapController.view.layer.cornerRadius = 16
-            self.mapController.fullBackgroundView.alpha = 0.2
+            tabDimmingView.layer.cornerRadius = 16
+            tabDimmingView.alpha = 0.2
             hamburgerButton.alpha = 0
             self.blurView.alpha = 1
             self.view.layoutIfNeeded()
@@ -210,14 +234,15 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         UIView.animate(withDuration: animationOut, animations: {
             self.mapController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.shadowView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            tabDimmingView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.mapController.view.layer.cornerRadius = 0
-            self.mapController.fullBackgroundView.alpha = 0
+            tabDimmingView.layer.cornerRadius = 0
+            tabDimmingView.alpha = 0
             hamburgerButton.alpha = 1
             self.blurView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.mapController.view.bringSubviewToFront(self.mapController.mainBarController.view)
-            self.mapController.view.bringSubviewToFront(self.mapController.currentBottomController.view)
+            //
         }
     }
     

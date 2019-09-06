@@ -11,11 +11,14 @@ import Firebase
 import FacebookLogin
 import Stripe
 import Cosmos
+import FirebaseFirestore
 
 protocol changeSettingsHandler {
+    func observePayments()
     func changeEmail(text: String)
     func changePhone(text: String)
     func changeName(text: String)
+    func handlePaymentPressed()
     
     func moveToAbout()
     func editSettings(title: String, subtitle: String)
@@ -30,6 +33,9 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     var delegate: moveControllers?
     var paymentInformation: String = ""
     var pickerParking: UIImagePickerController?
+    
+    var defaultCardBrand: String?
+    var defaultCardLast: String?
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
@@ -161,6 +167,8 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         return view
     }()
     
+    let paymentsController = PaymentMethodsView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -172,6 +180,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         setupViews()
         setupAccount()
         observeUserInformation()
+        observePayments()
         getVersionNumber()
     }
     
@@ -240,16 +249,16 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         stars.sizeToFit()
         
         scrollView.addSubview(accountController.view)
-        accountController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
-        accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        accountController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
+        accountController.view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
+        accountController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        accountController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         accountController.view.heightAnchor.constraint(equalToConstant: 240).isActive = true
         
         scrollView.addSubview(otherController.view)
         otherController.view.topAnchor.constraint(equalTo: accountController.view.bottomAnchor, constant: 16).isActive = true
-        otherController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        otherController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -12).isActive = true
-        otherController.view.heightAnchor.constraint(equalToConstant: 480).isActive = true
+        otherController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        otherController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        otherController.view.heightAnchor.constraint(equalToConstant: 479).isActive = true
 
         scrollView.addSubview(versionLabel)
         versionLabel.topAnchor.constraint(equalTo: otherController.view.bottomAnchor, constant: 16).isActive = true
@@ -257,6 +266,11 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         versionLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
         versionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
+    }
+    
+    func handlePaymentPressed() {
+        paymentsController.delegate = self
+        self.navigationController?.pushViewController(paymentsController, animated: true)
     }
     
     func editSettings(title: String, subtitle: String) {
@@ -275,7 +289,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
             ref.observeSingleEvent(of: .value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:Any] {
                     self.accountController.optionsSub = []
-                    self.otherController.optionsSub = []
                     if let name = dictionary["name"] as? String {
                         self.accountController.optionsSub.append(name)
                     }
@@ -302,7 +315,6 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                     if let phone = dictionary["phone"] as? String {
                         self.accountController.optionsSub.append(phone)
                     } else { self.accountController.optionsSub.append("No phone number") }
-                    self.otherController.optionsSub.append("Payment")
                     self.accountController.optionsTableView.reloadData()
                     self.otherController.optionsTableView.reloadData()
                     if let vehicle = dictionary["selectedVehicle"] as? String {
@@ -311,21 +323,38 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
                             if let dictionary = snapshot.value as? [String:Any] {
                                 self.loadingLine.endAnimating()
                                 if let vehicleLicensePlate = dictionary["licensePlate"] as? String {
-                                    self.otherController.optionsSub.append(vehicleLicensePlate)
-                                } else {
-                                    self.otherController.optionsSub.append("No vehicle")
+                                    self.otherController.optionsSub[1] = vehicleLicensePlate
                                 }
                                 self.accountController.optionsTableView.reloadData()
                                 self.otherController.optionsTableView.reloadData()
                             }
                         })
-                    } else {
-                        self.otherController.optionsSub.append("No vehicle")
                     }
                 }
             }
         }
         self.loadingLine.endAnimating()
+    }
+    
+    func observePayments() {
+        paymentsController.loadingLine.alpha = 1
+        paymentsController.loadingLine.startAnimating()
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore().collection("stripe_customers").document(userId).collection("sources")
+        db.addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            self.paymentsController.paymentMethods = []
+            for document in documents {
+                let dataDescription = document.data()
+                let paymentMethod = PaymentMethod(dictionary: dataDescription)
+                self.paymentsController.paymentMethods.append(paymentMethod)
+            }
+            self.paymentsController.loadingLine.alpha = 0
+            self.paymentsController.loadingLine.endAnimating()
+        }
     }
 
     @objc func backButtonPressed() {

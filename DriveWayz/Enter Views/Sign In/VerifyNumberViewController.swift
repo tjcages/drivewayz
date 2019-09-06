@@ -425,7 +425,7 @@ extension VerifyNumberViewController {
                 self.uid = userID
                 let ref = Database.database().reference().child("users").child(userID)
                 ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if (snapshot.value as? [String:AnyObject]) != nil {
+                    if (snapshot.value as? [String:AnyObject]) == nil {
                         self.loadingActivity.alpha = 0
                         self.loadingActivity.stopAnimating()
                         

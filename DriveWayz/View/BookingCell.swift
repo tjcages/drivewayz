@@ -74,7 +74,6 @@ class BookingCell: UICollectionViewCell {
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 50
         let image = UIImage(named: "Apartment Parking")
@@ -101,21 +100,23 @@ class BookingCell: UICollectionViewCell {
         
         return view
     }()
-    
+
     var stars: CosmosView = {
         let view = CosmosView()
-        view.rating = 3.6
+        view.rating = 5
+        view.settings.fillMode = .precise
         view.settings.updateOnTouch = false
-        view.settings.fillMode = StarFillMode.precise
-        view.settings.starSize = 16
-        view.settings.starMargin = 0
+        view.settings.starSize = 14
+        view.settings.starMargin = 2
         view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
+        view.settings.filledImage = UIImage(named: "Star Filled")?.withRenderingMode(.alwaysOriginal)
+        view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
         
         return view
     }()

@@ -11,7 +11,7 @@ import Firebase
 import GoogleSignIn
 //import FirebaseInvites
 
-class BannerAdViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
+class BannerAdViewController: UIViewController, GIDSignInDelegate {
 
     var bannerImageView: UIImageView = {
         let imageView = UIImageView()
@@ -88,7 +88,7 @@ class BannerAdViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDe
 
     @objc func inviteTapped(_ sender: AnyObject) {
         
-        GIDSignIn.sharedInstance().uiDelegate = self
+//        GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID

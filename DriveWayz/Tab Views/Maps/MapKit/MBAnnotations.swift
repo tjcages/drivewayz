@@ -55,21 +55,20 @@ extension MapKitViewController {
     }
     
     func observeAllParking() {
-        if !currentActive {
+        if BookedState != .currentlyBooked {
             mapAnnotationID = []
-            DynamicPricing.readCityCSV()
             let ref = Database.database().reference().child("ParkingSpots")
             ref.observe(.childAdded) { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
                     let park = ParkingSpots(dictionary: dictionary)
-                    if let parkingID = dictionary["parkingID"] as? String, let number = park.numberSpots {
+                    if let parkingID = dictionary["parkingID"] as? String {
                         
-//                        if let zip = park.zipAddress, let city = park.cityAddress, let state = park.stateAddress {
-//                            let tempRef = Database.database().reference().child("Surge").child("SurgeDemand").child(state).child(city).child(zip).child(parkingID)
-//                            tempRef.setValue(Int(number))
-//                            let checkRef = Database.database().reference().child("Surge").child("SurgeCheck").child(state).child(city).child(zip).child(parkingID)
-//                            checkRef.setValue(Int(number))
-//                        }
+                        if let zip = park.zipAddress, let city = park.cityAddress, let state = park.stateAddress, let number = park.numberSpots {
+                            let tempRef = Database.database().reference().child("Surge").child("SurgeDemand").child(state).child(city).child(zip).child(parkingID)
+                            tempRef.setValue(Int(number))
+                            let checkRef = Database.database().reference().child("Surge").child("SurgeCheck").child(state).child(city).child(zip).child(parkingID)
+                            checkRef.setValue(Int(number))
+                        }
                         
                         DynamicParking.getDynamicParking(parkingSpot: park, dateFrom: bookingFromDate, dateTo: bookingToDate) { (parking) in
                             self.parkingSpotsDictionary[parkingID] = parking

@@ -222,10 +222,16 @@ class ParkingSpots: NSObject {
             SundayUnavailable = unavailableDays["Sunday"] as? [String]
         }
         
-//        if let currentBooking = dictionary["CurrentBooking"] as? [String:Any] {
-//            isSpotAvailable = false
-//        }
-//
+        if let currentBooking = dictionary["CurrentBooking"] as? [String:Any] {
+            if let numberString = self.numberSpots, let number = Int(numberString) {
+                let currentCount = currentBooking.count
+                if currentCount >= number {
+                    isSpotAvailable = false
+                    unavailableReason = "This spot is currently booked"
+                }
+            }
+        }
+
         if (dictionary["ParkingUnavailability"] as? TimeInterval) != nil {
             isSpotAvailable = false
             unavailableReason = "This spot is marked inactive"

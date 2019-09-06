@@ -64,6 +64,8 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         case invalidResponse
     }
     
+    
+    
     var checkedCustomerKey: Bool = false
 
     func createCustomerKey(withAPIVersion apiVersion: String, completion: @escaping STPJSONResponseCompletionBlock) {

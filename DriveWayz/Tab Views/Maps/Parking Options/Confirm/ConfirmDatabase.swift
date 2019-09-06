@@ -20,8 +20,12 @@ extension ConfirmViewController {
             let userRef = Database.database().reference().child("users").child(userID)
             userRef.observeSingleEvent(of: .value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String:Any] {
-                    if let name = dictionary["name"] as? String, let picture = dictionary["picture"] as? String {
+                    if let name = dictionary["name"] as? String {
                         var distance: Double = 0.0
+                        var picture: String = ""
+                        if let pic = dictionary["picture"] as? String {
+                            picture = pic
+                        }
                         var rating: Double = 5.0
                         if let userRating = dictionary["rating"] as? Double {
                             rating = userRating
@@ -63,6 +67,9 @@ extension ConfirmViewController {
                                         hostRef.child("UpcomingReservations").updateChildValues([bookingID: bookingID])
                                         userRef.child("Reservations").updateChildValues([bookingID: bookingID])
                                         userRef.child("UpcomingReservations").updateChildValues([bookingID: bookingID])
+                                        
+                                        self.delegate?.expandCheckmark(current: false, booking: Bookings(dictionary: [:]))
+                                        
                                         hostRef.observeSingleEvent(of: .value, with: { (snapshot) in
                                             if let dictionary = snapshot.value as? [String:Any] {
                                                 if let totalBookings = dictionary["totalBookings"] as? Int {
@@ -115,8 +122,6 @@ extension ConfirmViewController {
                                                             } else {
                                                                 hostRef.updateChildValues(["userFunds": totalCost])
                                                             }
-                                                            
-                                                            self.delegate?.expandCheckmark(current: false)
                                                         }
                                                     })
                                                 }
@@ -128,8 +133,9 @@ extension ConfirmViewController {
                                     let ref = Database.database().reference().child("UserBookings")
                                     let bookingRef = ref.childByAutoId()
                                     guard let bookingKey = bookingRef.key else { return }
+                                    let values = ["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating, "walkingTime": walkingTime, "destinationName": destinationName, "bookingID": bookingKey] as [String: Any]
                                     
-                                    bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating, "walkingTime": walkingTime, "destinationName": destinationName, "bookingID": bookingKey])
+                                    bookingRef.updateChildValues(values)
                                     distance = finalDestination.coordinate.distance(to: finalParking)
                                     
                                     if let bookingID = bookingRef.key {
@@ -138,6 +144,10 @@ extension ConfirmViewController {
                                         hostRef.child("CurrentBooking").updateChildValues([bookingID: bookingID])
                                         userRef.child("Bookings").updateChildValues([bookingID: bookingID])
                                         userRef.child("CurrentBooking").updateChildValues([bookingID: bookingID])
+                                        
+                                        let booking = Bookings(dictionary: values)
+                                        self.delegate?.expandCheckmark(current: true, booking: booking)
+                                        
                                         hostRef.observeSingleEvent(of: .value, with: { (snapshot) in
                                             if let dictionary = snapshot.value as? [String:Any] {
                                                 if let totalBookings = dictionary["totalBookings"] as? Int {
@@ -190,8 +200,6 @@ extension ConfirmViewController {
                                                             } else {
                                                                 hostRef.updateChildValues(["userFunds": totalCost])
                                                             }
-                                                            
-                                                            self.delegate?.expandCheckmark(current: true)
                                                         }
                                                     })
                                                 }
@@ -203,32 +211,6 @@ extension ConfirmViewController {
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    @objc func monitorCurrentParking() {
-        if let userID = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child("users").child(userID).child("CurrentBooking")
-            ref.observe(.childAdded) { (snapshot) in
-                currentActive = true
-                let key = snapshot.key
-                let bookingRef = Database.database().reference().child("UserBookings").child(key)
-                bookingRef.observeSingleEvent(of: .value, with: { (bookingSnapshot) in
-                    if let bookingDictionary = bookingSnapshot.value as? [String:Any] {
-                        if let parkingID = bookingDictionary["parkingID"] as? String, let finalDestinationLat = bookingDictionary["finalDestinationLat"] as? Double, let finalDestinationLong = bookingDictionary["finalDestinationLong"] as? Double, let finalParkingLat = bookingDictionary["finalParkingLat"] as? Double, let finalParkingLong = bookingDictionary["finalParkingLong"] as? Double {
-                            let finalDestination = CLLocationCoordinate2D(latitude: finalDestinationLat, longitude: finalDestinationLong)
-                            let finalParking = CLLocationCoordinate2D(latitude: finalParkingLat, longitude: finalParkingLong)
-                            finalDestinationCoordinate = finalDestination
-                            FinalAnnotationLocation = finalParking
-                            self.delegate?.setupReviewBooking(parkingID: parkingID)
-                            
-                            let booking = Bookings(dictionary: bookingDictionary)
-                            isCurrentlyBooked = true
-                            self.delegate?.confirmPurchasePressed(booking: booking)
-                        }
-                    }
-                })
             }
         }
     }

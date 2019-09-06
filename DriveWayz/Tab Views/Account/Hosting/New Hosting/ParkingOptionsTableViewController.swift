@@ -866,7 +866,7 @@ extension ParkingOptionsViewController {
     func setupBusinessViews() {
         
         scrollView.addSubview(parkinglotImageView)
-        parkinglotImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
+        parkinglotImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         parkinglotImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
         parkinglotImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         parkinglotImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true

@@ -9,7 +9,7 @@
 import UIKit
 import Mapbox
 import MapboxDirections
-import MapboxNavigation
+//import MapboxNavigation
 import MapboxCoreNavigation
 import Cosmos
 
@@ -839,7 +839,7 @@ extension UserRecentViewController: MGLMapViewDelegate {
     func setupQuickController(minute: Double) {
         let time = minute.rounded(toPlaces: 0)
         let distanceTime = String(format: "%.0f min", time)
-        let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 44
+        let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3) + 94
         self.quickParkingController.distanceLabel.text = distanceTime
         self.quickParkingWidthAnchor.constant = distanceWidth
         
@@ -848,7 +848,6 @@ extension UserRecentViewController: MGLMapViewDelegate {
     
     func moveQuickControllers(startCoordinate: CLLocationCoordinate2D, endCoordinate: CLLocationCoordinate2D) {
         let startPoint = self.mapView.convert(startCoordinate, toPointTo: self.view)
-        let endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
     
         if startPoint.x >= phoneWidth/3 {
             self.quickParkingRightAnchor.constant = startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16

@@ -17,8 +17,13 @@ var userMostRecentLocation: CLLocationCoordinate2D?
 var shouldDragMainBar: Bool = true
 
 protocol mainBarSearchDelegate {
+    func openNavigation(success: Bool, booking: Bookings)
+    func showEndBookingView()
+    func hideEndBookingView()
+    
     func mainBarWillOpen()
     func mainBarWillClose()
+    func closeCurrentBooking()
     func expandedMainBar()
     func showCurrentLocation()
     func hideCurrentLocation()
@@ -39,14 +44,16 @@ extension MapKitViewController: mainBarSearchDelegate {
     
     func setupLocator() {
 
-        self.view.addSubview(locatorButton)
-        locatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        locatorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        view.addSubview(locatorButton)
+        locatorButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        locatorButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
-        locatorMainBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: mainBarController.view.topAnchor, constant: -12)
+        locatorMainBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: mainBarController.view.topAnchor, constant: -16)
             locatorMainBottomAnchor.isActive = true
-        locatorParkingBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: parkingBackButton.bottomAnchor, constant: 0)
+        locatorParkingBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: parkingBackButton.bottomAnchor, constant: -4)
             locatorParkingBottomAnchor.isActive = false
+        locatorCurrentBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16)
+            locatorCurrentBottomAnchor.isActive = false
         
         self.view.addSubview(locationsSearchResults.view)
         locationsSearchResults.view.topAnchor.constraint(equalTo: summaryController.view.bottomAnchor, constant: -10).isActive = true
@@ -60,30 +67,10 @@ extension MapKitViewController: mainBarSearchDelegate {
         self.view.bringSubviewToFront(parkingController.view)
         self.view.bringSubviewToFront(durationController.view)
         self.view.bringSubviewToFront(confirmPaymentController.view)
+        self.view.bringSubviewToFront(endBookingController.view)
         self.view.bringSubviewToFront(currentBottomController.view)
-
-    }
-    
-    func removeMainBar() {
-        self.view.endEditing(true)
-        self.summaryTopAnchor.constant = -260
-        self.mainBarTopAnchor.constant = 0
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mainBarController.scrollView.alpha = 1
-            self.fullBackgroundView.alpha = 0
-            self.locationResultsHeightAnchor.constant = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.view.bringSubviewToFront(self.fullBackgroundView)
-            self.view.bringSubviewToFront(self.mainBarController.view)
-            self.view.bringSubviewToFront(self.parkingController.view)
-            UIView.animate(withDuration: animationIn, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: { (success) in
-                self.mainBarHighest = false
-                self.delegate?.defaultContentStatusBar()
-            })
-        }
+        self.view.bringSubviewToFront(currentDurationController.view)
+        
     }
     
     @objc func mainBarWillOpen() {
@@ -153,24 +140,6 @@ extension MapKitViewController: mainBarSearchDelegate {
         }
     }
     
-    func bringMainBar() {
-        if let userLocation = locationManager.location {
-            let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
-            self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
-        }
-        self.view.bringSubviewToFront(mainBarController.view)
-        self.mainBarTopAnchor.constant = self.lowestHeight
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mainBarController.scrollView.alpha = 1
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
-        }, completion: { (success) in
-            self.mainBarHighest = false
-            self.delegate?.bringHamburger()
-            self.delegate?.defaultContentStatusBar()
-        })
-    }
-    
     func expandedMainBar() {
         self.mainBarTopAnchor.constant = phoneHeight - statusHeight
         UIView.animate(withDuration: animationIn, animations: {
@@ -180,15 +149,6 @@ extension MapKitViewController: mainBarSearchDelegate {
             self.mainBarController.scrollView.isScrollEnabled = true
         }
     }
-    
-//    @objc func microphoneButtonPressed(sender: UIButton) {
-//        self.dismissKeyboard()
-//        UIView.animate(withDuration: animationIn, animations: {
-//            self.speechSearchResults.view.alpha = 1
-//        }) { (success) in
-//            self.speechSearchResults.recordAndRecognizeSpeech()
-//        }
-//    }
     
     @objc func mainBarIsScrolling(sender: UIPanGestureRecognizer) {
         if shouldDragMainBar {

@@ -490,7 +490,6 @@ extension CurrentSpotViewController: UIScrollViewDelegate {
         let translation = scrollView.contentOffset.y
         if translation <= -46.0 && self.scrollView.isScrollEnabled == true && self.parkingBackButton.alpha == 1 {
             self.middleController()
-            self.delegate?.minimizeFullController()
         } else {
             UIView.animate(withDuration: animationOut) {
                 if translation > 90 && translation < 230 {

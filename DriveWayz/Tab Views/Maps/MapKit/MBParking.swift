@@ -14,9 +14,7 @@ protocol handleCheckoutParking {
     func becomeAHost()
     func setDurationPressed(fromDate: Date, totalTime: String)
     func observeAllHosting()
-    func confirmPurchasePressed(booking: Bookings)
-    func expandCheckmark(current: Bool)
-    func setupReviewBooking(parkingID: String)
+    func expandCheckmark(current: Bool, booking: Bookings)
     
     func changeParkingOptionsHeight(fade: CGFloat)
     func bringExpandedBooking()
@@ -53,16 +51,16 @@ extension MapKitViewController: handleCheckoutParking {
         quickDestinationWidthAnchor = quickDestinationController.view.widthAnchor.constraint(equalToConstant: 100)
             quickDestinationWidthAnchor.isActive = true
         quickDestinationController.view.widthAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
-        quickDestinationController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        quickDestinationController.view.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         self.view.addSubview(quickParkingController.view)
         quickParkingRightAnchor = quickParkingController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
             quickParkingRightAnchor.isActive = true
         quickParkingTopAnchor = quickParkingController.view.centerYAnchor.constraint(equalTo: self.view.topAnchor)
             quickParkingTopAnchor.isActive = true
-        quickParkingWidthAnchor = quickParkingController.view.widthAnchor.constraint(equalToConstant: 100)
+        quickParkingWidthAnchor = quickParkingController.view.widthAnchor.constraint(equalToConstant: 180)
             quickParkingWidthAnchor.isActive = true
-        quickParkingController.view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        quickParkingController.view.heightAnchor.constraint(equalToConstant: 42).isActive = true
         
         mapView.addSubview(polyRouteLocatorButton)
         polyRouteLocatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
@@ -90,10 +88,6 @@ extension MapKitViewController: handleCheckoutParking {
         self.fullBackgroundView.alpha = fade
     }
     
-    func setupReviewBooking(parkingID: String) {
-        self.reviewBookingController.selectedParking = parkingID
-    }
-    
     @objc func parkingBackButtonPressed() {
         if durationControllerBottomAnchor.constant == 0 {
             self.changeDatesDismissed()
@@ -105,7 +99,7 @@ extension MapKitViewController: handleCheckoutParking {
         } else if confirmControllerBottomAnchor.constant == 0 {
             self.backToBooking()
         } else {
-            if isCurrentlyBooked {
+            if BookedState == .currentlyBooked {
                 mainViewState = .currentBooking
             } else {
                 mainViewState = .mainBar

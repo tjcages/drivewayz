@@ -118,7 +118,6 @@ class MainBarViewController: UIViewController {
         view.layer.shadowOffset = CGSize(width: 0, height: -2)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 16
 
         scrollView.delegate = self
         

@@ -9,7 +9,7 @@
 import UIKit
 import Mapbox
 import MapboxDirections
-import MapboxNavigation
+//import MapboxNavigation
 import MapboxCoreNavigation
 import Cosmos
 

@@ -125,7 +125,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         button.backgroundColor = UIColor.clear
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.setTitle("1 hour", for: .normal)
-        button.setImage(UIImage(named: "hourParkingIcon"), for: .normal)
+        button.setImage(UIImage(named: "setTimeIcon"), for: .normal)
 //        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         button.addTarget(self, action: #selector(hourButtonPressed(sender:)), for: .touchUpInside)
         
@@ -1008,7 +1008,7 @@ class SelectPurchaseViewController: UIViewController, UIPickerViewDelegate, UIPi
         config.additionalPaymentOptions = .all
         
         // Create card sources instead of card tokens
-        config.createCardSources = true;
+//        config.createCardSources = true;
         
         let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
         let paymentContext = STPPaymentContext(customerContext: customerContext,

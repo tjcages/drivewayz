@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class TransferMoneyViewController: UIViewController {
     
@@ -277,6 +278,15 @@ class TransferMoneyViewController: UIViewController {
                                             delayWithSeconds(1.7, completion: {
                                                 UIView.animate(withDuration: animationIn, animations: {
                                                     self.dimmingView.alpha = 0
+                                                })
+                                                delayWithSeconds(0.6, completion: {
+                                                    let appStoreReview = UserDefaults.standard.bool(forKey: "AppStoreReview")
+                                                    if appStoreReview == false {
+                                                        if #available( iOS 10.3,*){
+                                                            SKStoreReviewController.requestReview()
+                                                            UserDefaults.standard.set(true, forKey: "AppStoreReview")
+                                                        }
+                                                    }
                                                 })
                                             })
                                         })
