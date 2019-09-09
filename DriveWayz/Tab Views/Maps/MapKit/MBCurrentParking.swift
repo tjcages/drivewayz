@@ -18,10 +18,10 @@ protocol handleRouteNavigation {
 extension MapKitViewController: handleRouteNavigation {
     
     func openCurrentParking(bookingId: String) {
-        mainViewState = .none
+        BookedState = .currentlyBooked
         removeAllMapOverlays(shouldRefresh: false)
         delayWithSeconds(animationOut) {
-            self.removeAllMapOverlays(shouldRefresh: false)
+//            self.removeAllMapOverlays(shouldRefresh: false)
             self.mainViewState = .currentBooking
             self.locatorButtonPressed()
             self.defaultContentStatusBar()
@@ -44,22 +44,24 @@ extension MapKitViewController: handleRouteNavigation {
             UserDefaults.standard.synchronize()
         }
         ref.child("UpcomingReservations").observe(.childRemoved) { (snapshot) in
-            BookedState = .none
+            BookedState = .currentlyBooked
             UserDefaults.standard.set("none", forKey: "userBookingStatus")
             UserDefaults.standard.synchronize()
         }
         ref.child("CurrentBooking").observe(.childAdded) { (snapshot) in
             self.removePolylineAnnotations()
-            if self.mainViewState != .payment {
-                BookedState = .currentlyBooked
-            }
+            BookedState = .currentlyBooked
             UserDefaults.standard.set("currentlyBooked", forKey: "userBookingStatus")
             UserDefaults.standard.synchronize()
             
+            self.view.bringSubviewToFront(self.endBookingController.view)
+            self.view.bringSubviewToFront(self.currentBottomController.view)
+            self.view.bringSubviewToFront(self.currentDurationController.view)
             let key = snapshot.key
             self.findCurrentRoute(key: key)
         }
         ref.child("CurrentBooking").observe(.childRemoved) { (snapshot) in
+            self.hideEndBookingView()
             self.removeAllMapOverlays(shouldRefresh: true)
             delayWithSeconds(animationOut, completion: {
                 self.bringReviewBooking()

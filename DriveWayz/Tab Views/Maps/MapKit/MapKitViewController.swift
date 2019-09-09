@@ -66,7 +66,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
                 mainViewState = .currentBooking
 //                return
             } else if BookedState == .reserved && mainViewState != .duration { // NEED TO CHANGE TO RESERVATION
-                mainViewState = .duration
+                mainViewState = .mainBar
 //                return
             } else if BookedState == .none && mainViewState != .mainBar {
                 mainViewState = .mainBar

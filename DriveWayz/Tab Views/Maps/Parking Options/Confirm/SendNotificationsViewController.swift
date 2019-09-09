@@ -16,7 +16,7 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
     
     func setupNotifications() {
         self.checkCoupons()
-        
+        self.postBookingToDatabase()
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound])
         { (granted, error) in
@@ -36,8 +36,10 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                         let category = UNNotificationCategory(identifier: "actionCategory", actions: [endParkingAction], intentIdentifiers: [], options: [])
                         let center = UNUserNotificationCenter.current()
                         center.setNotificationCategories([category])
-                        DispatchQueue.main.async {
-                            self.postBookingToDatabase()
+                        
+                        if let parking = self.parking, let parkingLat = parking.latitude, let parkingLong = parking.longitude, let hours = self.hours {
+                            let seconds = hours * 3600
+//                            self.sendNotifications(latitude: parkingLat, longitude: parkingLong, seconds: seconds)
                         }
                     }
                 }
@@ -49,7 +51,7 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         
-        center.removeAllPendingNotificationRequests() // To remove all pending notifications which are not delivered yet but scheduled.
+//        center.removeAllPendingNotificationRequests() // To remove all pending notifications which are not delivered yet but scheduled.
         center.removeAllDeliveredNotifications()
         
         let mapboxCoordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -230,9 +232,9 @@ extension ConfirmViewController {
         switch response.actionIdentifier {
         case "endParking":
             print("Action Second Tapped")
-//            self.endCurrentParking()
+            endCurrentParking()
         default:
-            print("Action Second Tapped")
+            print("Action Unknown Tapped")
 //            self.endCurrentParking()
             break
         }
@@ -240,16 +242,26 @@ extension ConfirmViewController {
     }
     
     func endCurrentParking() {
-//        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-//        let ref = Database.database().reference().child("users").child(currentUser).child("currentParking")
-//        let parkingRef = Database.database().reference().child("parking").child(self.currentParkingID).child("Current").child(currentUser)
-//        ref.removeValue()
-//        parkingRef.removeValue()
-//
-//        timerStarted = false
-//        notificationSent = false
-//        currentParking = false
-//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        if let userID = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child("users").child(userID)
+            ref.child("CurrentBooking").observeSingleEvent(of: .childAdded) { (snapshot) in
+                let key = snapshot.key
+                let bookingRef = Database.database().reference().child("UserBookings").child(key)
+                bookingRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String:Any] {
+                        if let parkingID = dictionary["parkingID"] as? String {
+                            let parkingRef = Database.database().reference().child("ParkingSpots").child(parkingID)
+                            parkingRef.child("CurrentBooking").removeValue()
+                            ref.child("CurrentBooking").removeValue()
+                            timerStarted = false
+                            if bookingTimer != nil {
+                                bookingTimer!.invalidate()
+                            }
+                            BookedState = .none
+                        }
+                    }
+                })
+            }
+        }
     }
 }

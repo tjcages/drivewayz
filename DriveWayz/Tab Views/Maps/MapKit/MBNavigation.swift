@@ -123,6 +123,7 @@ extension MapKitViewController: handleMinimizingFullController {
             controller.modalTransitionStyle = .crossDissolve
             controller.modalPresentationStyle = .overCurrentContext
             self.present(controller, animated: true) {
+                controller.animateSuccess()
                 delayWithSeconds(3) {
                     controller.closeSuccess()
                     delayWithSeconds(animationIn, completion: {

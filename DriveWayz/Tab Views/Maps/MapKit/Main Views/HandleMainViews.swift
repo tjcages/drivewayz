@@ -46,6 +46,7 @@ extension MapKitViewController {
     }
     
     func showNone() {
+        mapView.allowsRotating = false
         mainBarTopAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 420
         durationControllerBottomAnchor.constant = 500
@@ -67,6 +68,7 @@ extension MapKitViewController {
     }
     
     func showMainBar() {
+        mapView.allowsRotating = false
         mainBarController.scrollView.setContentOffset(.zero, animated: true)
         mainBarTopAnchor.constant = self.lowestHeight
         parkingControllerBottomAnchor.constant = 420
@@ -89,6 +91,7 @@ extension MapKitViewController {
     }
     
     func showParking() {
+        mapView.allowsRotating = false
         mainBarTopAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 0
         durationControllerBottomAnchor.constant = 500
@@ -112,6 +115,7 @@ extension MapKitViewController {
     }
     
     func showDuration() {
+        mapView.allowsRotating = false
         mainBarTopAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 420
         durationControllerBottomAnchor.constant = 0
@@ -136,6 +140,7 @@ extension MapKitViewController {
     }
     
     func showPayment() {
+        mapView.allowsRotating = false
         view.bringSubviewToFront(confirmPaymentController.view)
         mainBarTopAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 420
@@ -161,6 +166,7 @@ extension MapKitViewController {
     }
     
     func showCurrentBooking() {
+        mapView.allowsRotating = true
         removePolylineAnnotations()
         mainBarTopAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 420
@@ -267,7 +273,7 @@ extension MapKitViewController {
         endBookingController.view.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor).isActive = true
         endBookingController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         endBookingController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        endBookingController.view.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        endBookingController.view.heightAnchor.constraint(equalToConstant: 86).isActive = true
         
     }
     

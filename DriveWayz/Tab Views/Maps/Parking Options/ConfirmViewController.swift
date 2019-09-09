@@ -363,6 +363,10 @@ class ConfirmViewController: UIViewController {
 extension ConfirmViewController: handleExtendPaymentMethod {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
+        self.setupNotifications()
+        return ///////////////////// TESTING PLEASE REMOVE
+        
+        
         // First check if a payment method is specified
         if let paymentMethod = currentPaymentMethod {
             guard let userId = Auth.auth().currentUser?.uid else { return }

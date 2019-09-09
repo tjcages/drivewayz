@@ -202,7 +202,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         if BookedState == .currentlyBooked {
             mapController.mainViewState = .currentBooking
         } else if BookedState == .reserved {
-            mapController.mainViewState = .none
+            mapController.mainViewState = .mainBar
         } else {
             mapController.mainViewState = .none
         }

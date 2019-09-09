@@ -74,20 +74,20 @@ class EndCurrentBookingView: UIViewController {
     
     func setupViews() {
         
-        view.addSubview(mainLabel)
-        mainLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 12).isActive = true
-        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        
-        view.addSubview(subLabel)
-        subLabel.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 0).isActive = true
-        subLabel.leftAnchor.constraint(equalTo: mainLabel.leftAnchor).isActive = true
-        
         view.addSubview(iconView)
         view.addSubview(iconButton)
         iconButton.anchor(top: nil, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 32, height: 32)
         iconButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -1.5).isActive = true
         
         iconView.anchor(top: iconButton.topAnchor, left: iconButton.leftAnchor, bottom: iconButton.bottomAnchor, right: view.rightAnchor, paddingTop: -8, paddingLeft: -12, paddingBottom: -8, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(mainLabel)
+        mainLabel.topAnchor.constraint(equalTo: iconView.topAnchor, constant: 0).isActive = true
+        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        
+        view.addSubview(subLabel)
+        subLabel.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 0).isActive = true
+        subLabel.leftAnchor.constraint(equalTo: mainLabel.leftAnchor).isActive = true
         
         view.addSubview(bottomView)
         bottomView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 3)
