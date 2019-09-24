@@ -178,9 +178,9 @@ class ParkingTypeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Our most common parking space. The spot is usually owned or leased by the host and can be a driveway or shared parking lot."
+        label.text = "This is our most common parking space. Typically, these are owned or leased properties with a driveway or shared parking lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -189,9 +189,9 @@ class ParkingTypeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A parking space that is owned by the property owner and leased by then tennant. Usually associated with one spot number in a lot."
+        label.text = "These parking spots must be specifically designated for your unit, numbered, and cannot require a parking permit to be parked in."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -201,9 +201,9 @@ class ParkingTypeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
+        label.text = "These parking spots be clearly designated solely for the business signing up or the individual with rights to the parking lot. Numbers for spots are not required."
         label.numberOfLines = 3
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -213,9 +213,9 @@ class ParkingTypeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "None of the above options. Drivewayz will contact you before the spot will become live."
+        label.text = "None of the above options. Drivewayz will contact you prior to your parking spot becoming live."
         label.numberOfLines = 3
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label

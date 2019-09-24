@@ -86,7 +86,7 @@ extension MapKitViewController: handleMinimizingFullController {
             }, completion: { (success) in
                 self.mainViewState = .mainBar
                 self.view.bringSubviewToFront(self.mainBarController.view)
-                if self.mainBarTopAnchor.constant == self.lowestHeight {
+                if self.mainBarBottomAnchor.constant == phoneHeight - self.lowestHeight {
                     self.fullBackgroundView.alpha = 0
                     self.delegate?.bringHamburger()
                     self.delegate?.defaultContentStatusBar()

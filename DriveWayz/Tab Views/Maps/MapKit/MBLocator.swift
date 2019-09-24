@@ -75,6 +75,7 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         
         if self.searchedForPlace == false {
             if let userLocation = locationManager.location {
+                self.mainBarController.searchController.determineCity(location: userLocation)
                 self.mapView.userTrackingMode = .follow
 //                self.removeAllMapOverlays(shouldRefresh: true)
                 self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: true)
@@ -126,6 +127,9 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         self.checkMapForAnnotations()
         if DestinationAnnotationLocation != nil, let from = quadStartCoordinate, let to = quadEndCoordinate {
             self.drawCurvedOverlay(startCoordinate: from, endCoordinate: to)
+        }
+        if let route = mapBoxRoute {
+             createRouteLine(route: route)
         }
     }
     

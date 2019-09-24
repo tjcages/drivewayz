@@ -457,7 +457,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These spots keep cars out of poor weather or the hot sun. Please do not select this amenity if cars will not be completely covered."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -469,7 +469,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If selected, a universal car charger must be accessible from the parking spot listed and must be readily available for instant use."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -481,7 +481,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "By selecting this option, you agree to abide by our privacy policy regarding access to gated properties. Users will only be able to view the code after paying for the spot."
         label.numberOfLines = 5
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -493,7 +493,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be within 1 mile of a stadium or event center."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -505,7 +505,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be within 1 mile of a public beach area."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -517,7 +517,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be available from 9 PM to 7 AM"
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -529,7 +529,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Your parking spot must be no further than 2 miles from an airport."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -541,7 +541,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Well-lit parking spots provide an added form of security, especially at night."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -553,7 +553,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These parking spots must be a minimum of 7 ft. tall, with easy access for a large pickup truck."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -565,7 +565,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "These parking spots are generally used for compact vehicles, with no height minimum."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -577,7 +577,7 @@ class AmenitiesParkingViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If most people can find your location without a hassle or if GPS is able to easily guide individuals to your parking spot, this amenity is highly sought after!"
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label

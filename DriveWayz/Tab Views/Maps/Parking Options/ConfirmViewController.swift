@@ -157,7 +157,7 @@ class ConfirmViewController: UIViewController {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.backgroundColor = Theme.BLUE
         button.setTitle("Purchase Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -341,7 +341,7 @@ class ConfirmViewController: UIViewController {
         loadingActivity.heightAnchor.constraint(equalTo: loadingActivity.widthAnchor).isActive = true
         
         self.view.addSubview(paymentButton)
-        paymentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
+        paymentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
         paymentButton.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
         paymentButton.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -576,8 +576,9 @@ extension ConfirmViewController {
     
     func setData(price: Double, hours: Double, parking: ParkingSpots) {
         self.parking = parking
-        self.fromDate = bookingFromDate /////////////////////
-        //        self.toDate = bookingToDate //////////////////////
+        self.fromDate = bookingFromDate
+        self.toDate = bookingToDate
+        
         self.price = price
         self.hours = hours
         
@@ -689,7 +690,7 @@ extension ConfirmViewController {
     
     func mainButtonAvailable() {
         mainButton.setTitleColor(Theme.WHITE, for: .normal)
-        mainButton.backgroundColor = Theme.STRAWBERRY_PINK
+        mainButton.backgroundColor = Theme.BLUE
         mainButton.isUserInteractionEnabled = true
     }
     

@@ -161,7 +161,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
         toolBar.setItems([flexibleSpace, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
-        self.messageTextView.inputAccessoryView = toolBar
+        messageTextView.inputAccessoryView = toolBar
     }
 
     func startMessage() {

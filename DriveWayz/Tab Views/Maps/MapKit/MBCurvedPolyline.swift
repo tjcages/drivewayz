@@ -109,19 +109,19 @@ extension MapKitViewController {
     }
     
     func zoomToCurve(first: CLLocationCoordinate2D, second: CLLocationCoordinate2D) {
-        let long = [first.longitude, second.longitude].sorted()
-        let lat = [first.latitude, second.latitude].sorted()
-        if let leftLast = lat.last, let leftFirst = long.first, let rightFirst = lat.first, let rightLast = long.last {
-            let leftMost = CLLocation(latitude: leftLast, longitude: leftFirst)
-            let rightMost = CLLocation(latitude: rightFirst, longitude: rightLast)
-            
-            let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
-            self.mapView.userTrackingMode = .none
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 36, bottom: phoneHeight - 260, right: 36), animated: true)
-            delayWithSeconds(animationOut) {
-                self.drawCurvedOverlay(startCoordinate: first, endCoordinate: second)
-            }
-        }
+//        let long = [first.longitude, second.longitude].sorted()
+//        let lat = [first.latitude, second.latitude].sorted()
+//        if let leftLast = lat.last, let leftFirst = long.first, let rightFirst = lat.first, let rightLast = long.last {
+//            let leftMost = CLLocation(latitude: leftLast, longitude: leftFirst)
+//            let rightMost = CLLocation(latitude: rightFirst, longitude: rightLast)
+//
+//            let region = MGLCoordinateBounds(sw: leftMost.coordinate, ne: rightMost.coordinate)
+//            self.mapView.userTrackingMode = .none
+//            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 36, bottom: phoneHeight - 260, right: 36), animated: true)
+//            delayWithSeconds(animationOut) {
+//                self.drawCurvedOverlay(startCoordinate: first, endCoordinate: second)
+//            }
+//        }
     }
 
     private func calculateControlPoint(startPoint: CGPoint, endPoint: CGPoint) -> CGPoint {
@@ -144,61 +144,61 @@ extension MapKitViewController {
             }
         }
         if startPoint.x >= phoneWidth/2 {
-            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16))
-            self.quickParkingRightAnchor.constant = startPoint.x - self.quickParkingWidthAnchor.constant/2 - 16
+            let difference = abs(self.quickDestinationRightAnchor.constant - (startPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16))
+            self.quickDestinationRightAnchor.constant = startPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
             self.monitorDifference(difference: difference)
         } else {
-            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16))
-            self.quickParkingRightAnchor.constant = startPoint.x + self.quickParkingWidthAnchor.constant/2 + 16
+            let difference = abs(self.quickDestinationRightAnchor.constant - (startPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16))
+            self.quickDestinationRightAnchor.constant = startPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
             self.monitorDifference(difference: difference)
         }
         if startPoint.y >= phoneHeight/4 {
-            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.y - 20))
-            self.quickParkingTopAnchor.constant = startPoint.y - 20
+            let difference = abs(self.quickDestinationTopAnchor.constant - (startPoint.y - 20))
+            self.quickDestinationTopAnchor.constant = startPoint.y - 20
             self.monitorDifference(difference: difference)
         } else {
-            let difference = abs(self.quickParkingRightAnchor.constant - (startPoint.y + 20))
-            self.quickParkingTopAnchor.constant = startPoint.y + 20
+            let difference = abs(self.quickDestinationTopAnchor.constant - (startPoint.y + 20))
+            self.quickDestinationTopAnchor.constant = startPoint.y + 20
             self.monitorDifference(difference: difference)
         }
         if let destinationCoor = DestinationAnnotationLocation?.coordinate {
             let destinationPoint = self.mapView.convert(destinationCoor, toPointTo: self.view)
             resetDestinationCoor()
             if destinationPoint.x >= phoneWidth/2 {
-                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16))
-                self.quickDestinationRightAnchor.constant = destinationPoint.x - self.quickDestinationWidthAnchor.constant/2 - 16
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x - self.quickParkingWidthAnchor.constant/2 - 16))
+                self.quickParkingRightAnchor.constant = destinationPoint.x - self.quickParkingWidthAnchor.constant/2 - 16
                 self.monitorDifference(difference: difference)
                 destinationA = true
             } else {
-                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16))
-                self.quickDestinationRightAnchor.constant = destinationPoint.x + self.quickDestinationWidthAnchor.constant/2 + 16
+                let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x + self.quickParkingWidthAnchor.constant/2 + 16))
+                self.quickParkingRightAnchor.constant = destinationPoint.x + self.quickParkingWidthAnchor.constant/2 + 16
                 self.monitorDifference(difference: difference)
                 destinationB = true
             }
             if destinationPoint.y >= phoneHeight/4 {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y - 20))
-                self.quickDestinationTopAnchor.constant = destinationPoint.y - 20
+                self.quickParkingTopAnchor.constant = destinationPoint.y - 20
                 self.monitorDifference(difference: difference)
                 destinationC = true
             } else {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.y + 20))
-                self.quickDestinationTopAnchor.constant = destinationPoint.y + 20
+                self.quickParkingTopAnchor.constant = destinationPoint.y + 20
                 self.monitorDifference(difference: difference)
                 destinationD = true
             }
-            if destinationA && destinationC {
-                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
-                print("AC")
-            } else if destinationA && destinationD {
-                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-                print("AD")
-            } else if destinationB && destinationC {
-                quickParkingController.darkContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-                print("BC")
-            } else if destinationB && destinationD {
-                quickParkingController.darkContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-                print("BD")
-            }
+//            if destinationA && destinationC {
+//                quickParkingController.container.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner]
+//                print("AC")
+//            } else if destinationA && destinationD {
+//                quickParkingController.container.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+//                print("AD")
+//            } else if destinationB && destinationC {
+//                quickParkingController.container.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+//                print("BC")
+//            } else if destinationB && destinationD {
+//                quickParkingController.container.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+//                print("BD")
+//            }
         }
     }
     

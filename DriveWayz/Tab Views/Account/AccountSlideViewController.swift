@@ -221,6 +221,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 if let userName = dictionary["name"] as? String {
                     self.profileName.text = userName
+                    UserDefaults.standard.set(userName, forKey: "userName")
+                    UserDefaults.standard.synchronize()
                     self.stars.alpha = 1
                 }
                 if let email = dictionary["email"] as? String {

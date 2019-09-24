@@ -12,6 +12,11 @@ import MapKit
 import Mapbox
 import GooglePlaces
 
+protocol controlSaveLocation {
+    func zoomToSearchLocation(address: String)
+    func closeSearch()
+}
+
 extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     
     func setupSearch() {
@@ -42,9 +47,16 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         case .iphoneX:
             searchBarController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
-        let touch = UITapGestureRecognizer(target: self, action: #selector(mainBarWillOpen))
+        let touch = UITapGestureRecognizer(target: self, action: #selector(openMainBar))
         quickDestinationController.view.addGestureRecognizer(touch)
         
+    }
+    
+    @objc func searchDurationPressed() {
+        openMainBar()
+        delayWithSeconds(animationOut + animationIn) {
+            self.summaryController.calendarButton.sendActions(for: .touchUpInside)
+        }
     }
     
     @objc func dismissKeyboard() {
@@ -67,65 +79,24 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     }
     
     @objc func changeDatesPressed() {
-        self.view.endEditing(true)
-        self.durationControllerBottomAnchor.constant = 0
-        self.fullBackgroundView.alpha = 0
-        self.view.bringSubviewToFront(fullBackgroundView)
-        self.view.bringSubviewToFront(durationController.view)
-        self.view.bringSubviewToFront(parkingBackButton)
-        self.parkingBackButtonPurchaseAnchor.isActive = true
-        self.parkingBackButtonBookAnchor.isActive = false
-        self.parkingBackButtonConfirmAnchor.isActive = false
-        self.delegate?.hideHamburger()
-        UIView.animate(withDuration: animationIn) {
-            self.parkingBackButton.tintColor = Theme.WHITE
-            self.parkingBackButton.alpha = 1
-            self.fullBackgroundView.alpha = 0.6
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func changeDatesDismissed() {
-        self.durationControllerBottomAnchor.constant = 500
-        self.parkingBackButtonPurchaseAnchor.isActive = false
-        self.parkingBackButtonBookAnchor.isActive = true
-        self.parkingBackButtonConfirmAnchor.isActive = false
-        UIView.animate(withDuration: animationOut, animations: {
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 0.6
         }) { (success) in
-            self.delegate?.bringHamburger()
-            self.view.bringSubviewToFront(self.mainBarController.view)
-            self.view.bringSubviewToFront(self.locationsSearchResults.view)
-            self.view.bringSubviewToFront(self.summaryController.view)
-            self.view.bringSubviewToFront(self.parkingController.view)
-            if self.parkingControllerBottomAnchor.constant != 0 && self.confirmControllerBottomAnchor.constant != 0 && self.summaryTopAnchor.constant != -260 {
-                self.summaryController.searchTextField.becomeFirstResponder()
-            }
-            UIView.animate(withDuration: animationIn, animations: {
-                self.parkingBackButton.tintColor = Theme.DARK_GRAY
-            })
+            self.durationController.modalPresentationStyle = .overCurrentContext
+            self.present(self.durationController, animated: true, completion: nil)
         }
     }
     
     @objc func searchBackButtonPressed() {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     func showCurrentLocation() {
-        self.locationsSearchResults.bringCurrentLocation()
+        locationsSearchResults.bringCurrentLocation()
     }
     
     func hideCurrentLocation() {
-        self.locationsSearchResults.hideCurrentLocation()
-    }
-    
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print("ERROR AUTO COMPLETE \(error)")
-    }
-    
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        self.dismiss(animated: true, completion: nil)
+        locationsSearchResults.hideCurrentLocation()
     }
     
 }

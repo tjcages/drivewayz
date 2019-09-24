@@ -80,7 +80,15 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    var lowestHeight: CGFloat = 354
+    var mapBoxRoute: Route? {
+        didSet {
+//            delayWithSeconds(1) {
+//                self.animateRouteLine()
+//            }
+        }
+    }
+    
+    var lowestHeight: CGFloat = 450
     var minimizedHeight: CGFloat = 150
     
     enum CurrentData {
@@ -154,14 +162,23 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var currentHeightAnchor: NSLayoutConstraint!
     var previousHeightAnchor: CGFloat = 380
     
-    lazy var mainBarController: MainBarViewController = {
-        let controller = MainBarViewController()
+    lazy var mainBarController: TestMainBar = {
+        let controller = TestMainBar()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         self.addChild(controller)
-        
+
         return controller
     }()
+    
+//    lazy var mainBarController: MainBarViewController = {
+//        let controller = MainBarViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.delegate = self
+//        self.addChild(controller)
+//
+//        return controller
+//    }()
     
     lazy var summaryController: SearchSummaryViewController = {
         let controller = SearchSummaryViewController()
@@ -203,15 +220,17 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    lazy var durationController: DurationViewController = {
-        let controller = DurationViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Purchase"
-        controller.delegate = self
-        self.addChild(controller)
-        
-        return controller
-    }()
+//    lazy var durationController: DurationViewController = {
+//        let controller = DurationViewController()
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        controller.title = "Purchase"
+//        controller.delegate = self
+//        self.addChild(controller)
+//
+//        return controller
+//    }()
+//
+    var durationController = TestDurationView()
     
     lazy var confirmPaymentController: ConfirmViewController = {
         let controller = ConfirmViewController()
@@ -234,8 +253,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var durationLeftAnchor: NSLayoutConstraint!
     var durationRightAnchor: NSLayoutConstraint!
     var durationTopAnchor: NSLayoutConstraint!
+    lazy var currentMainBarHeight: CGFloat = phoneHeight - lowestHeight
     var currentBookingHeight: CGFloat = phoneHeight - 116 - 252
     
+    var previousMainBarPercentage: CGFloat = 0
     var previousBookingPercentage: CGFloat = 0
     
     lazy var currentDurationController: CurrentDurationView = {
@@ -395,8 +416,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var locatorCurrentBottomAnchor: NSLayoutConstraint!
     
     var parkingControllerBottomAnchor: NSLayoutConstraint!
-    var mainBarTopAnchor: NSLayoutConstraint!
-    var durationControllerBottomAnchor: NSLayoutConstraint!
+//    var mainBarTopAnchor: NSLayoutConstraint!
+    var mainBarBottomAnchor: NSLayoutConstraint!
+//    var durationControllerBottomAnchor: NSLayoutConstraint!
     var confirmControllerBottomAnchor: NSLayoutConstraint!
     var currentBottomHeightAnchor: NSLayoutConstraint!
     
@@ -485,11 +507,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return .default
     }
 
-}
-
-protocol controlSaveLocation {
-    func zoomToSearchLocation(address: String)
-    func mainBarWillClose()
 }
 
 protocol handleEventSelection {

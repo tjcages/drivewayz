@@ -10,18 +10,17 @@ import UIKit
 
 class QuickParkingViewController: UIViewController {
 
-    var darkContainer: UIView = {
+    var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 4
-        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        view.layer.cornerRadius = 2
         view.clipsToBounds = true
         
         return view
     }()
     
-    var lightContainer: UIView = {
+    var darkContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.DARK_GRAY
@@ -54,24 +53,36 @@ class QuickParkingViewController: UIViewController {
         return button
     }()
     
-    var distanceLabel: UILabel = {
+    var parkingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4 min"
+        label.text = "University Street"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
     
-    var parkingLabel: UILabel = {
+    var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "parking spot"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        label.font = Fonts.SSPRegularH5
+        label.text = "4 min"
+        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.font = Fonts.SSPRegularH6
         
         return label
+    }()
+    
+    var expandButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        
+        return button
     }()
     
     override func viewDidLoad() {
@@ -89,39 +100,45 @@ class QuickParkingViewController: UIViewController {
     
     func setupViews() {
         
-        self.view.addSubview(darkContainer)
-        darkContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        darkContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        darkContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        darkContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        view.addSubview(container)
+        container.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        container.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        container.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
-        darkContainer.addSubview(lightContainer)
-        lightContainer.leftAnchor.constraint(equalTo: darkContainer.leftAnchor).isActive = true
-        lightContainer.topAnchor.constraint(equalTo: darkContainer.topAnchor).isActive = true
-        lightContainer.bottomAnchor.constraint(equalTo: darkContainer.bottomAnchor).isActive = true
-        lightContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        container.addSubview(darkContainer)
+        darkContainer.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
+        darkContainer.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
+        darkContainer.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        darkContainer.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        darkContainer.addSubview(walkingIcon)
-        walkingIcon.centerXAnchor.constraint(equalTo: lightContainer.centerXAnchor).isActive = true
-        walkingIcon.centerYAnchor.constraint(equalTo: darkContainer.centerYAnchor).isActive = true
+        container.addSubview(walkingIcon)
+        walkingIcon.centerXAnchor.constraint(equalTo: darkContainer.centerXAnchor).isActive = true
+        walkingIcon.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         walkingIcon.widthAnchor.constraint(equalToConstant: 24).isActive = true
         walkingIcon.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
-        darkContainer.addSubview(carIcon)
-        carIcon.centerXAnchor.constraint(equalTo: lightContainer.centerXAnchor).isActive = true
-        carIcon.centerYAnchor.constraint(equalTo: lightContainer.centerYAnchor).isActive = true
+        container.addSubview(carIcon)
+        carIcon.centerXAnchor.constraint(equalTo: darkContainer.centerXAnchor).isActive = true
+        carIcon.centerYAnchor.constraint(equalTo: darkContainer.centerYAnchor).isActive = true
         carIcon.widthAnchor.constraint(equalToConstant: 32).isActive = true
         carIcon.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        darkContainer.addSubview(distanceLabel)
-        distanceLabel.leftAnchor.constraint(equalTo: lightContainer.rightAnchor, constant: 8).isActive = true
-        distanceLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -8).isActive = true
+        container.addSubview(parkingLabel)
+        parkingLabel.leftAnchor.constraint(equalTo: darkContainer.rightAnchor, constant: 8).isActive = true
+        parkingLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -8).isActive = true
+        parkingLabel.sizeToFit()
+        
+        container.addSubview(distanceLabel)
+        distanceLabel.leftAnchor.constraint(equalTo: parkingLabel.leftAnchor).isActive = true
+        distanceLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4).isActive = true
         distanceLabel.sizeToFit()
         
-        darkContainer.addSubview(parkingLabel)
-        parkingLabel.leftAnchor.constraint(equalTo: distanceLabel.leftAnchor).isActive = true
-        parkingLabel.topAnchor.constraint(equalTo: distanceLabel.bottomAnchor, constant: -6).isActive = true
-        parkingLabel.sizeToFit()
+        container.addSubview(expandButton)
+        expandButton.rightAnchor.constraint(equalTo: container.rightAnchor, constant: 2).isActive = true
+        expandButton.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        expandButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        expandButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
     

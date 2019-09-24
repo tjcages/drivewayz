@@ -63,7 +63,7 @@ class CurrentDurationView: UIViewController {
         let today = Date().timeIntervalSince1970
         let seconds = toTime - today
         self.seconds = Int(seconds)
-        self.runTimer()
+        runTimer()
     }
     
     @objc func observeBooking() {
@@ -138,7 +138,7 @@ class CurrentDurationView: UIViewController {
         let today = Date().timeIntervalSince1970
         let seconds = toTimeParking - today
         self.seconds = Int(seconds)
-        self.runTimer()
+        runTimer()
     }
     
     func runTimer() {
@@ -148,16 +148,16 @@ class CurrentDurationView: UIViewController {
     }
     
     @objc func updateTimer() {
-        if self.seconds > 600 {
-            self.seconds = self.seconds - 1
+        if seconds > 600 {
+            seconds = seconds - 1
             durationLabel.text = "Time left"
             timeLeft.text = timeString(time: TimeInterval(self.seconds))
             if hasShownEndBooking {
                 hasShownEndBooking = false
                 delegate?.hideEndBookingView()
             }
-        } else if self.seconds > 0 {
-            self.seconds = self.seconds - 1
+        } else if seconds > 0 {
+            seconds = seconds - 1
             durationLabel.text = "Please plan on moving soon"
             timeLeft.text = timeString(time: TimeInterval(self.seconds))
             if !hasShownEndBooking {

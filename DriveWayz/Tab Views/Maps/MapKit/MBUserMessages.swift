@@ -13,7 +13,7 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
     
     func setupUserMessages() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(drivewayzMessagePressed))
-        mainBarController.contactBannerController.view.addGestureRecognizer(tap)
+//        mainBarController.contactBannerController.view.addGestureRecognizer(tap)
     }
     
     @objc func drivewayzMessagePressed() {
@@ -39,10 +39,10 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(userID)
         ref.child("PersonalMessages").observe(.childAdded) { (snapshot) in
-            self.mainBarController.setupContact(0, last: false)
-            self.mainBarController.contactBannerController.currentMessage()
+//            self.mainBarController.setupContact(0, last: false)
+//            self.mainBarController.contactBannerController.currentMessage()
             UIView.animate(withDuration: animationIn, animations: {
-                self.mainBarController.contactBannerController.view.alpha = 1
+//                self.mainBarController.contactBannerController.view.alpha = 1
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
                 self.lowestHeight = 424
@@ -53,7 +53,8 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
                     self.minimizedHeight = 234
                 }
                 if self.mainViewState == .mainBar {
-                    self.mainBarTopAnchor.constant = self.lowestHeight
+                    self.mainViewState = .mainBar
+//                    self.mainBarTopAnchor.constant = self.lowestHeight
                 }
                 UIView.animate(withDuration: animationOut, animations: {
                     self.view.layoutIfNeeded()
@@ -61,12 +62,12 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
             })
         }
         ref.child("previousMessages").observe(.childAdded) { (snapshot) in
-            self.mainBarController.setupContact(2, last: false)
-            self.mainBarController.contactBannerController.previousMessage()
+//            self.mainBarController.setupContact(2, last: false)
+//            self.mainBarController.contactBannerController.previousMessage()
             UIView.animate(withDuration: animationIn, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
-                self.lowestHeight = 354
+                self.lowestHeight = 450
                 switch device {
                 case .iphone8:
                     self.minimizedHeight = 150
@@ -74,7 +75,8 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
                     self.minimizedHeight = 164
                 }
                 if self.mainViewState == .mainBar {
-                    self.mainBarTopAnchor.constant = self.lowestHeight
+                    self.mainViewState = .mainBar
+//                    self.mainBarBottomAnchor.constant = self.lowestHeight
                 }
                 UIView.animate(withDuration: animationOut, animations: {
                     self.view.layoutIfNeeded()

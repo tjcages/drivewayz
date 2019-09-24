@@ -311,10 +311,6 @@ extension Date {
         return newDate
     }
     
-    public func round(precision: TimeInterval) -> Date {
-        return round(precision: precision, rule: .toNearestOrAwayFromZero)
-    }
-    
     public func ceil(precision: TimeInterval) -> Date {
         return round(precision: precision, rule: .up)
     }
@@ -323,7 +319,7 @@ extension Date {
         return round(precision: precision, rule: .down)
     }
     
-    private func round(precision: TimeInterval, rule: FloatingPointRoundingRule) -> Date {
+    public func round(precision: TimeInterval, rule: FloatingPointRoundingRule) -> Date {
         let seconds = (self.timeIntervalSinceReferenceDate / precision).rounded(rule) *  precision;
         return Date(timeIntervalSinceReferenceDate: seconds)
     }
@@ -716,5 +712,47 @@ extension UIView {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
     }
-    
+}
+
+extension UITextView {
+    func centerVertically() {
+        let fittingSize = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        let size = sizeThatFits(fittingSize)
+        let topOffset = (bounds.size.height - size.height * zoomScale) / 2
+        let positiveTopOffset = max(1, topOffset)
+        contentOffset.y = -positiveTopOffset - 4
+    }
+}
+
+extension Date {
+    var yesterday: Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
+    }
+    var tomorrow: Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
+    }
+    var noon: Date {
+        return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+    }
+    var month: Int {
+        return Calendar.current.component(.month,  from: self)
+    }
+    var isLastDayOfMonth: Bool {
+        return tomorrow.month != month
+    }
+    func hours(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date, to: self).hour ?? 0
+    }
+    func nearestHour() -> Date? {
+        var components = NSCalendar.current.dateComponents([.minute], from: self)
+        let minute = components.minute ?? 0
+        components.minute = minute >= 0 ? 60 - minute : -minute
+        return Calendar.current.date(byAdding: components, to: self)
+    }
+}
+
+extension Date {
+    func isBetween(date date1: Date, andDate date2: Date) -> Bool {
+        return date1.compare(self) == self.compare(date2)
+    }
 }

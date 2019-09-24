@@ -110,9 +110,9 @@ class CurrentBookingView: UIViewController {
     var stackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = lineColor
         view.axis = .vertical
-        view.spacing = 3
+        view.spacing = 6
         
         return view
     }()
@@ -200,6 +200,7 @@ class CurrentBookingView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = lineColor
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -2)
         view.layer.shadowRadius = 6
@@ -292,6 +293,10 @@ extension CurrentBookingView: handleCurrentBooking {
         UIView.animate(withDuration: animationIn, animations: {
             tabDimmingView.alpha = 0.6
         }) { (success) in
+            if let booking = self.currentBooking, let toDate = booking.toDate {
+                let date = Date(timeIntervalSince1970: toDate)
+                self.extendController.sliderView.setData(toDate: date)
+            }
             self.extendController.dynamicPrice = self.detailsController.extensionDynamicPrice
             self.extendController.delegate = self
             self.extendController.currentBooking = self.currentBooking

@@ -38,14 +38,6 @@ class ChoosePaymentView: UIViewController {
         return view
     }()
     
-    var separatorView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        
-        return view
-    }()
-    
     lazy var pullButton: UIButton = {
         let button = UIButton()
         let origImage = UIImage(named: "pull-up")
@@ -95,7 +87,7 @@ class ChoosePaymentView: UIViewController {
         button.backgroundColor = Theme.BLUE
         button.setTitle("Add payment method", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         let icon = UIImage(named: "plusIcon")?.withRenderingMode(.alwaysTemplate)
         button.tintColor = Theme.WHITE
         button.setImage(icon, for: .normal)
@@ -166,15 +158,15 @@ class ChoosePaymentView: UIViewController {
         container.addSubview(cancelButton)
         cancelButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         cancelButton.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        cancelButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         switch device {
         case .iphone8:
             profitsBottomAnchor = cancelButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -32)
-            profitsBottomAnchor.isActive = true
+                profitsBottomAnchor.isActive = true
             self.bottomAnchor = -32
         case .iphoneX:
             profitsBottomAnchor = cancelButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -52)
-            profitsBottomAnchor.isActive = true
+                profitsBottomAnchor.isActive = true
             self.bottomAnchor = -52
         }
 
@@ -186,9 +178,9 @@ class ChoosePaymentView: UIViewController {
         pullButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         
         container.addSubview(newCardButton)
-        newCardButton.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -32).isActive = true
-        newCardButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
-        newCardButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32).isActive = true
+        newCardButton.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -16).isActive = true
+        newCardButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        newCardButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         newCardButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         container.addSubview(optionsTableView)
@@ -210,9 +202,6 @@ class ChoosePaymentView: UIViewController {
         loadingActivity.widthAnchor.constraint(equalToConstant: 40).isActive = true
         loadingActivity.heightAnchor.constraint(equalTo: loadingActivity.widthAnchor).isActive = true
         
-        container.addSubview(separatorView)
-        separatorView.anchor(top: nil, left: container.leftAnchor, bottom: cancelButton.topAnchor, right: container.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 3)
-        
         container.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 80).isActive = true
         container.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         container.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
@@ -220,6 +209,8 @@ class ChoosePaymentView: UIViewController {
             containerTopAnchor.isActive = false
         emptyContainerTopAnchor = container.topAnchor.constraint(equalTo: newCreditCard.topAnchor, constant: -32)
             emptyContainerTopAnchor.isActive = true
+        
+        view.layoutIfNeeded()
         
     }
     

@@ -14,7 +14,7 @@ class QuickDestinationViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = 2
         view.clipsToBounds = true
         
         return view
@@ -23,22 +23,10 @@ class QuickDestinationViewController: UIViewController {
     var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "4 min"
         label.textColor = Theme.DARK_GRAY
-        label.font = Fonts.SSPSemiBoldH4
+        label.font = Fonts.SSPRegularH5
         
         return label
-    }()
-    
-    var expandButton: UIButton = {
-        let button = UIButton()
-        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
     }()
     
     override func viewDidLoad() {
@@ -67,12 +55,6 @@ class QuickDestinationViewController: UIViewController {
         distanceLabel.rightAnchor.constraint(equalTo: darkContainer.rightAnchor, constant: -4).isActive = true
         distanceLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         distanceLabel.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        
-        darkContainer.addSubview(expandButton)
-        expandButton.rightAnchor.constraint(equalTo: darkContainer.rightAnchor, constant: 2).isActive = true
-        expandButton.centerYAnchor.constraint(equalTo: darkContainer.centerYAnchor).isActive = true
-        expandButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        expandButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
 

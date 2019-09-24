@@ -79,6 +79,43 @@ extension MapKitViewController: handleParkingOptions {
     }
     
     func drawRoute(fromLocation: CLLocation, toLocation: CLLocation, identifier: MBDirectionsProfileIdentifier) {
+        removeRouteLine()
+        let region = MGLCoordinateBounds(sw: fromLocation.coordinate, ne: toLocation.coordinate)
+        ZooomRegion = region
+        
+        let inset = UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64)
+        mapView.setVisibleCoordinateBounds(region, edgePadding: inset, animated: true) {
+            self.mapView.addSubview(routeStartPin)
+            self.mapView.addSubview(routeParkingPin)
+            
+            let last = self.mapView.convert(toLocation.coordinate, toPointTo: self.mapView)
+            let start = self.mapView.convert(fromLocation.coordinate, toPointTo: self.mapView)
+            
+            routeStartPin.center = CGPoint(x: last.x + 3, y: last.y + 6)
+            routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
+        }
+        
+        if mainViewState != .currentBooking && BookedState != .currentlyBooked {
+            quadStartCoordinate = fromLocation.coordinate
+            
+            if let userLocation = locationManager.location?.coordinate {
+                quadEndCoordinate = userLocation
+                quickDestinationController.view.isHidden = false
+                drawCurvedOverlay(startCoordinate: userLocation, endCoordinate: fromLocation.coordinate)
+                placeAvailable()
+            }
+        } else {
+            quickParkingController.carIcon.alpha = 1
+            quickParkingController.walkingIcon.alpha = 0
+            quickDestinationController.view.isHidden = true
+            
+            DestinationAnnotationLocation = toLocation
+            quadStartCoordinate = toLocation.coordinate
+            quadEndCoordinate = fromLocation.coordinate
+            
+            locatorButtonAction(sender: locatorButton)
+        }
+        
         let directions = Directions.shared
         let waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), name: "Start"),
@@ -93,61 +130,19 @@ extension MapKitViewController: handleParkingOptions {
                 return
             }
             if let route = routes?.first {
+                self.mapBoxRoute = route
+                self.createRouteLine(route: route)
+                
                 let minute = route.expectedTravelTime / 60
                 self.setupQuickController(minute: minute)
                 WalkingTime = minute
                 if route.coordinateCount > 0 {
-//                    firstWalkingRoute = route
-                    // Convert the route’s coordinates into a polyline.
-                    
-                    var routeCoordinates = route.coordinates!
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
-                    routeLine.title = "ParkingDestUnder"
-                    
-//                    let ne = routeLine.overlayBounds.ne
-//                    let sw = routeLine.overlayBounds.sw
-//                    let region = MGLCoordinateBounds(sw: sw, ne: ne)
-                    let region = MGLCoordinateBounds(sw: fromLocation.coordinate, ne: toLocation.coordinate)
-                    ZooomRegion = region
-                    self.mapView.addAnnotation(routeLine)
-                    
                     self.parkingCoordinates = route.coordinates!
-                    self.addPolyline(to: self.mapView.style!, isCurrentDriving: false)
-                    self.animateFirstPolyline()
-
-                    delayWithSeconds(animationOut, completion: {
-                        let marker = MGLPointAnnotation()
-                        marker.coordinate = toLocation.coordinate
-                        if self.mainViewState != .currentBooking {
-                            marker.title = "Destination"
-                        }
-                        self.mapView.addAnnotation(marker)
-                    })
                     
-                    if self.mainViewState != .currentBooking && BookedState != .currentlyBooked {
-                        delayWithSeconds(animationIn, completion: {
-                            self.mapView.setVisibleCoordinateBounds(region, edgePadding: UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64), animated: true, completionHandler: nil)
-                            quadStartCoordinate = fromLocation.coordinate
-                            if let userLocation = self.locationManager.location?.coordinate {
-                                quadEndCoordinate = userLocation
-                                self.quickDestinationController.view.isHidden = false
-                                self.drawCurvedOverlay(startCoordinate: userLocation, endCoordinate: fromLocation.coordinate)
-                                self.placeAvailable()
-                            }
-                        })
-                    } else {
-                        self.quickParkingController.carIcon.alpha = 1
-                        self.quickParkingController.walkingIcon.alpha = 0
-                        self.quickDestinationController.view.isHidden = true
-                        
-                        delayWithSeconds(1.2, completion: {
-                            DestinationAnnotationLocation = toLocation
-                            quadStartCoordinate = toLocation.coordinate
-                            quadEndCoordinate = fromLocation.coordinate
-                            
-                            self.locatorButtonAction(sender: self.locatorButton)
-                        })
-                    }
+                    self.mapView.layer.insertSublayer(routeUnderLine, below: routeStartPin.layer)
+                    self.mapView.layer.insertSublayer(routeLine, below: routeStartPin.layer)
+                    self.animateRouteUnderLine()
+                    self.animateRouteLine()
                 }
             }
         }
@@ -156,20 +151,17 @@ extension MapKitViewController: handleParkingOptions {
     func setupQuickController(minute: Double) {
         let time = minute.rounded(toPlaces: 0)
         let distanceTime = String(format: "%.0f min", time)
-        let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3) + 94
         self.quickParkingController.distanceLabel.text = distanceTime
-        self.quickParkingWidthAnchor.constant = distanceWidth
         
         if let address = self.searchBarController.toLabel.text {
             let addressArray = address.split(separator: ",")
             if let addressString = addressArray.first {
                 let addy = String(addressString)
-                let addressWidth = addy.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH4) + 32
-                self.quickDestinationController.distanceLabel.text = addy
-                self.quickDestinationWidthAnchor.constant = addressWidth
+                let addressWidth = addy.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH5) + 72
+                self.quickParkingController.parkingLabel.text = addy
+                self.quickParkingWidthAnchor.constant = addressWidth
             }
         }
-        
         self.view.layoutIfNeeded()
     }
     

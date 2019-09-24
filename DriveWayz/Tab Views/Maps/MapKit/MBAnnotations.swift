@@ -188,26 +188,26 @@ extension MapKitViewController {
     
     func placeAvailable() {
         mapAnnotationID = []
-        if self.availableParkingSpots.count > 0 {
-            for parking in self.availableParkingSpots {
-                if let latitude = parking.latitude, let longitude = parking.longitude {
-                    let location = CLLocation(latitude: latitude, longitude: longitude)
-                    let marker = MGLPointAnnotation()
-                    marker.coordinate = location.coordinate
-                    if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
-                        marker.title = ID
-                        mapAnnotationID.append(ID)
-                        self.mapView.addAnnotation(marker)
-                    }
-                }
-            }
-        } else {
-            delayWithSeconds(1) {
-                self.parkingHidden(showMainBar: true)
-                self.createSimpleAlert(title: "No parking in this area", message: "Sign up to be a host today to help improve your parking community!")
-                self.placeAllAnnotations()
-            }
-        }
+//        if self.availableParkingSpots.count > 0 {
+//            for parking in self.availableParkingSpots {
+//                if let latitude = parking.latitude, let longitude = parking.longitude {
+//                    let location = CLLocation(latitude: latitude, longitude: longitude)
+//                    let marker = MGLPointAnnotation()
+//                    marker.coordinate = location.coordinate
+//                    if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+//                        marker.title = ID
+//                        mapAnnotationID.append(ID)
+//                        self.mapView.addAnnotation(marker)
+//                    }
+//                }
+//            }
+//        } else {
+//            delayWithSeconds(1) {
+//                self.parkingHidden(showMainBar: true)
+//                self.createSimpleAlert(title: "No parking in this area", message: "Sign up to be a host today to help improve your parking community!")
+//                self.placeAllAnnotations()
+//            }
+//        }
     }
     
     func organizeParkingLocations() {

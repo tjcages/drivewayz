@@ -11,7 +11,7 @@ import UIKit
 class Theme {
     
     static let SEA_BLUE = UIColor(red: 72/255, green: 165/255, blue: 216/255, alpha: 1)
-    static let PRUSSIAN_BLUE = UIColor(red: 130/255, green: 131/255, blue: 156/255, alpha: 1)
+    static let PRUSSIAN_BLUE = UIColor(red: 148/255, green: 159/255, blue: 181/255, alpha: 1)
     static let PACIFIC_BLUE = UIColor(red: 51/255, green: 134/255, blue: 240/255, alpha: 1)
     static let GREEN_PIGMENT = UIColor(red: 35/255, green: 195/255, blue: 89/255, alpha: 1)
     static let HARMONY_RED = UIColor(red: 238/255, green: 105/255, blue: 107/255, alpha: 1)
@@ -31,7 +31,7 @@ class Theme {
     static let GOLD = UIColor(red: 254/255, green: 198/255, blue: 46/255, alpha: 1)
     static let DARK_GRAY = UIColor(red: 29/255, green: 29/255, blue: 39/255, alpha: 1)
     static let LIGHT_GRAY = UIColor(red: 197/255, green: 196/255, blue: 203/255, alpha: 1)
-    static let GRAY = UIColor(red: 231/255, green: 231/255, blue: 234/255, alpha: 1)
+    static let GRAY = UIColor(red: 235/255, green: 238/255, blue: 244/255, alpha: 1)
     static let ASH_GRAY = UIColor(red: 42/255, green: 42/255, blue: 42/255, alpha: 1)
     static let BLACK = UIColor(red: 25/255, green: 25/255, blue: 25/255, alpha: 1)
     static let HOST_BLUE = UIColor(red: 28/255, green: 22/255, blue: 46/255, alpha: 1)

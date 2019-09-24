@@ -271,6 +271,9 @@ extension NewCardView: STPPaymentCardTextFieldDelegate, handleCardRecognition {
         if let year = result.recognizedExpireDateYear, let yearInt = UInt(year) {
             params.expYear = yearInt
         }
+        if let name = result.recognizedHolderName {
+            params.name = name
+        }
         paymentCardTextField.cardParams = STPPaymentMethodCardParams(cardSourceParams: params)
         paymentCardTextField.becomeFirstResponder()
     }

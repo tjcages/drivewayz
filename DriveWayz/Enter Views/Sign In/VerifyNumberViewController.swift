@@ -80,6 +80,7 @@ class VerifyNumberViewController: UIViewController {
         field.keyboardType = .numberPad
         field.textAlignment = .center
         field.layer.cornerRadius = 4
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -95,6 +96,7 @@ class VerifyNumberViewController: UIViewController {
         field.textAlignment = .center
         field.layer.cornerRadius = 4
         field.text = "•"
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -110,6 +112,7 @@ class VerifyNumberViewController: UIViewController {
         field.textAlignment = .center
         field.layer.cornerRadius = 4
         field.text = "•"
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -125,6 +128,7 @@ class VerifyNumberViewController: UIViewController {
         field.textAlignment = .center
         field.layer.cornerRadius = 4
         field.text = "•"
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -140,6 +144,7 @@ class VerifyNumberViewController: UIViewController {
         field.textAlignment = .center
         field.layer.cornerRadius = 4
         field.text = "•"
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -155,6 +160,7 @@ class VerifyNumberViewController: UIViewController {
         field.textAlignment = .center
         field.layer.cornerRadius = 4
         field.text = "•"
+        field.keyboardAppearance = .dark
         
         return field
     }()
@@ -214,6 +220,7 @@ class VerifyNumberViewController: UIViewController {
         setupLabels()
         setupVerificationField()
         setupButton()
+        createToolbar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -480,6 +487,37 @@ extension VerifyNumberViewController {
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         
         self.present(alert, animated: true)
+    }
+    
+    func createToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.tintColor = Theme.WHITE
+        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderWidth = 0.5
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+        doneButton.setTitleTextAttributes([ NSAttributedString.Key.font: Fonts.SSPSemiBoldH4], for: UIControl.State.normal)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        firstVerificationField.inputAccessoryView = toolBar
+        secondVerificationField.inputAccessoryView = toolBar
+        thirdVerificationField.inputAccessoryView = toolBar
+        fourthVerificationField.inputAccessoryView = toolBar
+        fifthVerificationField.inputAccessoryView = toolBar
+        sixthVerificationField.inputAccessoryView = toolBar
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
     
 }

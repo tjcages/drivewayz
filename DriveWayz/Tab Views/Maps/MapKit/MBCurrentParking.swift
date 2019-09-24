@@ -139,6 +139,7 @@ extension MapKitViewController: handleRouteNavigation {
     }
     
     func closeCurrentBooking() {
+        showHamburger = true
         previousBookingPercentage = 0.0
         currentBottomHeightAnchor.constant = currentBookingHeight
         durationLeftAnchor.constant = 16

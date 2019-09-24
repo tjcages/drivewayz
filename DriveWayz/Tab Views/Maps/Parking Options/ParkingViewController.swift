@@ -30,10 +30,21 @@ class ParkingViewController: UIViewController, handleTestParking {
                 let incorrectDuration = parking.unavailableReason
                 self.bubbleWidthAnchor.constant = incorrectDuration.width(withConstrainedHeight: 30, font: Fonts.SSPRegularH5) + 24
                 self.bubbleArrow.message = incorrectDuration
+                if let streetAddress = parking.streetAddress {
+                    let addressArray = streetAddress.split(separator: " ")
+                    if addressArray.count > 2 {
+                        let address = "\(String(addressArray[1])) \(String(addressArray[2]))"
+                        delegate?.setQuickParkingLabel(text: address)
+                    } else if addressArray.count > 1 {
+                        delegate?.setQuickParkingLabel(text: String(addressArray[1]))
+                    } else {
+                        delegate?.setQuickParkingLabel(text: "")
+                    }
+                }
             }
             UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.spotIsAvailable {
-                    self.mainButton.backgroundColor = Theme.STRAWBERRY_PINK
+                    self.mainButton.backgroundColor = Theme.DARK_GRAY
                     self.mainButton.setTitleColor(Theme.WHITE, for: .normal)
                     self.mainButton.isUserInteractionEnabled = true
                     self.bubbleArrow.alpha = 0
@@ -111,7 +122,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Book Prime Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)

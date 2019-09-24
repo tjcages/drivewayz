@@ -108,11 +108,11 @@ extension ConfigureParkingViewController {
                     
                     if var state = stateAddress, let zip = zipAddress, let city = cityAddress, let numberString = numberSpots, let number = Int(numberString) {
                         state = state.replacingOccurrences(of: " ", with: "")
-                        if state.count > 2 {
-                            if let newState = statesDictionary[state] {
-                                state = newState
-                            }
-                        }
+//                        if state.count > 2 {
+//                            if let newState = statesDictionary[state] {
+//                                state = newState
+//                            }
+//                        }
                         let tempRef = Database.database().reference().child("Surge").child("SurgeDemand").child(state).child(city).child(zip).child(childKey)
                         tempRef.setValue(number)
                         let checkRef = Database.database().reference().child("Surge").child("SurgeCheck").child(state).child(city).child(zip).child(childKey)

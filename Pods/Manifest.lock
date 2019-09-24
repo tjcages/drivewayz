@@ -281,6 +281,7 @@ PODS:
   - TextFieldEffects (1.6.0)
   - Turf (0.3.0)
   - UIImageColors (2.1.0)
+  - ViewAnimator (2.5.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -319,6 +320,7 @@ DEPENDENCIES:
   - SwiftyJSON
   - TextFieldEffects
   - UIImageColors
+  - ViewAnimator
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -384,6 +386,7 @@ SPEC REPOS:
     - TextFieldEffects
     - Turf
     - UIImageColors
+    - ViewAnimator
 
 EXTERNAL SOURCES:
   GeoFire:
@@ -458,7 +461,8 @@ SPEC CHECKSUMS:
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
   Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
   UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
+  ViewAnimator: 173932c659a43c5a15c665878750d92801ae2cf1
 
-PODFILE CHECKSUM: 7c347ac2396dd6e4297e14fb6edbc0b0326bf3e5
+PODFILE CHECKSUM: 3d0cf3eb1db2fe1ccace59b3bc773224c1b53905
 
 COCOAPODS: 1.7.3

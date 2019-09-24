@@ -21,10 +21,12 @@ protocol mainBarSearchDelegate {
     func showEndBookingView()
     func hideEndBookingView()
     
-    func mainBarWillOpen()
-    func mainBarWillClose()
+    func openMainBar()
+    func closeMainBar()
+    func closeSearch()
+//    func expandedMainBar()
+    
     func closeCurrentBooking()
-    func expandedMainBar()
     func showCurrentLocation()
     func hideCurrentLocation()
     func zoomToSearchLocation(address: String)
@@ -73,195 +75,220 @@ extension MapKitViewController: mainBarSearchDelegate {
         
     }
     
-    @objc func mainBarWillOpen() {
-        if self.fullBackgroundView.alpha <= 0.85 {
-            if let currentLocation = self.locationManager.location?.coordinate {
-                userMostRecentLocation = currentLocation
-            }
-            self.summaryTopAnchor.constant = 0
-            self.parkingControllerBottomAnchor.constant = 400
-            self.confirmControllerBottomAnchor.constant = 360
-            self.mainBarTopAnchor.constant = phoneHeight
-            self.delegate?.hideHamburger()
-            self.delegate?.defaultContentStatusBar()
-            self.view.bringSubviewToFront(locationsSearchResults.view)
-            self.view.bringSubviewToFront(summaryController.view)
-            self.summaryController.searchTextField.text = ""
-            UIView.animate(withDuration: animationOut, animations: {
-                self.mainBarController.scrollView.alpha = 0
-                self.fullBackgroundView.alpha = 0.4
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.mainBarController.scrollView.isScrollEnabled = true
-                self.mainBarController.scrollView.setContentOffset(.zero, animated: false)
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.locationsSearchResults.checkRecentSearches()
-                    self.locationResultsHeightAnchor.constant = self.view.frame.height - 100
-                    self.view.layoutIfNeeded()
-                }) { (success) in
-                    self.summaryController.searchTextField.becomeFirstResponder()
-                    self.mainBarController.scrollView.isScrollEnabled = false
-                }
-            }
+    
+    @objc func searchReservationsPressed() {
+        if mainBarController.reservationsOpen {
+            closeMainReservation()
         } else {
-            self.mainBarTopAnchor.constant = phoneHeight - 150
-            self.delegate?.lightContentStatusBar()
-            self.delegate?.hideHamburger()
-            UIView.animate(withDuration: animationIn, animations: {
-                self.fullBackgroundView.alpha = 0.7
-                self.locatorButton.alpha = 0
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                self.mainBarController.scrollView.isScrollEnabled = false
-                self.mainBarHighest = true
-                self.mainBarWillOpen()
-            }
+            expandMainReservation()
         }
     }
     
-    func mainBarWillClose() {
-        self.view.endEditing(true)
-        self.summaryTopAnchor.constant = -260
-        self.mainBarTopAnchor.constant = self.lowestHeight
-        UIView.animate(withDuration: animationOut, animations: {
-            self.locationResultsHeightAnchor.constant = 0
-            self.mainBarController.scrollView.alpha = 1
+    func expandMainReservation() {
+        mainBarController.expandReservations()
+        mainBarBottomAnchor.constant -= 100
+        UIView.animate(withDuration: animationIn) {
+            self.fullBackgroundView.alpha = 0.4
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func closeMainReservation() {
+        mainBarController.closeReservations()
+        mainBarBottomAnchor.constant += 100
+        UIView.animate(withDuration: animationIn) {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func recommendButtonPressed() {
+        if let city = mainBarController.searchController.recommendationButton.titleLabel?.text {
+            zoomToSearchLocation(address: city)
+        }
+    }
+    
+    // Open search results and bring search summary controller down
+    @objc func openSearch() {
+        mainViewState = .mainBar
+        showHamburger = false
+        openMainBar()
+        delegate?.hideHamburger()
+        
+        view.bringSubviewToFront(locationsSearchResults.view)
+        view.bringSubviewToFront(summaryController.view)
+        
+        mainBarBottomAnchor.constant = 0
+        summaryTopAnchor.constant = 0
+        summaryController.searchTextField.text = ""
+        locationsSearchResults.checkRecentSearches()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainBarController.scrollView.alpha = 0
+            self.view.layoutIfNeeded()
         }) { (success) in
-            self.view.bringSubviewToFront(self.mainBarController.view)
+            self.summaryController.searchTextField.becomeFirstResponder() 
+            self.locationResultsHeightAnchor.constant = phoneHeight - 100
             UIView.animate(withDuration: animationIn, animations: {
                 self.view.layoutIfNeeded()
-            }, completion: { (success) in
-                self.mainBarHighest = false
-                self.delegate?.bringHamburger()
-                self.delegate?.defaultContentStatusBar()
             })
         }
     }
     
-    func expandedMainBar() {
-        self.mainBarTopAnchor.constant = phoneHeight - statusHeight
+    func closeSearch() {
+        view.endEditing(true)
+        showHamburger = true
+        closeMainBar()
+        
+        view.bringSubviewToFront(self.mainBarController.view)
+        locationResultsHeightAnchor.constant = 0
+        summaryTopAnchor.constant = -260
         UIView.animate(withDuration: animationIn, animations: {
-            self.fullBackgroundView.alpha = 0.9
+            self.mainBarController.scrollView.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.mainBarController.scrollView.isScrollEnabled = true
+            self.delegate?.bringHamburger()
+            self.delegate?.defaultContentStatusBar()
         }
     }
     
+//    @objc func mainBarWillOpen() {
+//        if fullBackgroundView.alpha <= 0.85 {
+//            if let currentLocation = locationManager.location?.coordinate {
+//                userMostRecentLocation = currentLocation
+//            }
+//            closeMainReservation()
+//            summaryTopAnchor.constant = 0
+//            parkingControllerBottomAnchor.constant = 400
+//            confirmControllerBottomAnchor.constant = 360
+//            mainBarTopAnchor.constant = phoneHeight
+//            delegate?.hideHamburger()
+//            delegate?.defaultContentStatusBar()
+//            view.bringSubviewToFront(locationsSearchResults.view)
+//            view.bringSubviewToFront(summaryController.view)
+//            summaryController.searchTextField.text = ""
+//            UIView.animate(withDuration: animationOut, animations: {
+//                self.mainBarController.scrollView.alpha = 0
+//                self.fullBackgroundView.alpha = 0.4
+//                self.view.layoutIfNeeded()
+//            }) { (success) in
+//                self.mainBarController.scrollView.isScrollEnabled = true
+//                self.mainBarController.scrollView.setContentOffset(.zero, animated: false)
+//                UIView.animate(withDuration: animationIn, animations: {
+//                    self.locationsSearchResults.checkRecentSearches()
+//                    self.locationResultsHeightAnchor.constant = self.view.frame.height - 100
+//                    self.view.layoutIfNeeded()
+//                }) { (success) in
+//                    self.summaryController.searchTextField.becomeFirstResponder()
+//                    self.mainBarController.scrollView.isScrollEnabled = false
+//                }
+//            }
+//        } else {
+//            mainBarTopAnchor.constant = phoneHeight - 150
+//            delegate?.lightContentStatusBar()
+//            delegate?.hideHamburger()
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.fullBackgroundView.alpha = 0.7
+//                self.locatorButton.alpha = 0
+//                self.view.layoutIfNeeded()
+//            }) { (success) in
+//                self.mainBarController.scrollView.isScrollEnabled = false
+//                self.mainBarHighest = true
+//                self.mainBarWillOpen()
+//            }
+//        }
+//    }
+//
+//    func mainBarWillClose() {
+//        closeMainReservation()
+//        view.endEditing(true)
+//        summaryTopAnchor.constant = -260
+//        mainBarTopAnchor.constant = lowestHeight
+//        UIView.animate(withDuration: animationOut, animations: {
+//            self.locationResultsHeightAnchor.constant = 0
+//            self.mainBarController.scrollView.alpha = 1
+//            self.fullBackgroundView.alpha = 0
+//            self.view.layoutIfNeeded()
+//        }) { (success) in
+//            self.view.bringSubviewToFront(self.mainBarController.view)
+//            UIView.animate(withDuration: animationIn, animations: {
+//                self.view.layoutIfNeeded()
+//            }, completion: { (success) in
+//                self.mainBarHighest = false
+//                self.delegate?.bringHamburger()
+//                self.delegate?.defaultContentStatusBar()
+//            })
+//        }
+//    }
+
+    
     @objc func mainBarIsScrolling(sender: UIPanGestureRecognizer) {
-        if shouldDragMainBar {
-            let position = -sender.translation(in: self.view).y
-            let highestHeight = phoneHeight - 150
-            if sender.state == .changed {
-                let difference = position - self.mainBarPreviousPosition
-                if self.mainBarTopAnchor.constant >= self.lowestHeight - 40 || (self.mainBarHighest == true && self.mainBarTopAnchor.constant <= 772) {
-                    let difference = position - self.mainBarPreviousPosition
-                    self.mainBarTopAnchor.constant = self.mainBarTopAnchor.constant + difference
-                    let percent = (self.mainBarTopAnchor.constant - self.lowestHeight)/highestHeight
-                    self.fullBackgroundView.alpha = 1.2 * percent
-                    if percent >= 0.2 {
-                        self.delegate?.lightContentStatusBar()
-                        self.delegate?.hideHamburger()
-                    } else {
-                        self.delegate?.defaultContentStatusBar()
-                    }
-                } else if self.mainBarTopAnchor.constant <= self.lowestHeight - 40 && difference <= 0 {
-                    self.mainBarTopAnchor.constant = self.minimizedHeight
-                    UIView.animate(withDuration: animationOut) {
-                        self.view.layoutIfNeeded()
-                    }
-                } else if difference <= 0 {
-                    self.mainBarTopAnchor.constant = highestHeight
-//                    self.mainBarController.scrollView.isScrollEnabled = true
-                    UIView.animate(withDuration: animationOut) {
-                        self.view.layoutIfNeeded()
-                    }
-                } else {
-                    self.mainBarTopAnchor.constant = self.lowestHeight
-                    UIView.animate(withDuration: animationOut) {
-                        self.view.layoutIfNeeded()
-                    }
-                }
-            } else if sender.state == .ended {
-                let difference = position - self.mainBarPreviousPosition
-                if (self.mainBarTopAnchor.constant < highestHeight && self.mainBarHighest == false) || self.mainBarTopAnchor.constant <= highestHeight {
-                    if self.mainBarTopAnchor.constant >= phoneHeight/3 && difference < 0 && self.mainBarTopAnchor.constant <= phoneHeight * 2/3 {
-                        self.mainBarTopAnchor.constant = self.lowestHeight
-                        UIView.animate(withDuration: animationOut, animations: {
-                            self.fullBackgroundView.alpha = 0
-                            self.view.layoutIfNeeded()
-                        }) { (success) in
-                            self.mainBarHighest = false
-                            self.delegate?.bringHamburger()
-                            self.delegate?.defaultContentStatusBar()
-                            self.mainBarController.scrollView.isScrollEnabled = false
-                        }
-                    } else if self.mainBarTopAnchor.constant >= phoneHeight/3 && difference >= 0 {
-                        if self.mainBarHighest == true && self.mainBarTopAnchor.constant < highestHeight - 40 {
-                            self.mainBarTopAnchor.constant = self.lowestHeight
-                            UIView.animate(withDuration: animationIn, animations: {
-                                self.fullBackgroundView.alpha = 0
-                                self.view.layoutIfNeeded()
-                            }) { (success) in
-                                self.mainBarHighest = false
-                                self.delegate?.bringHamburger()
-                                self.delegate?.defaultContentStatusBar()
-                                self.mainBarController.scrollView.isScrollEnabled = false
-                            }
-                        } else {
-                            self.mainBarTopAnchor.constant = highestHeight
-                            self.delegate?.lightContentStatusBar()
-                            self.delegate?.hideHamburger()
-                            UIView.animate(withDuration: animationIn, animations: {
-                                self.fullBackgroundView.alpha = 0.7
-                                self.locatorButton.alpha = 0
-                                self.view.layoutIfNeeded()
-                            }) { (success) in
-                                self.mainBarController.scrollView.isScrollEnabled = false
-                                self.mainBarHighest = true
-                            }
-                        }
-                    } else if self.mainBarTopAnchor.constant <= self.minimizedHeight + 20 {
-                        self.mainBarTopAnchor.constant = self.minimizedHeight
-                        UIView.animate(withDuration: animationOut, animations: {
-                            self.fullBackgroundView.alpha = 0
-                            self.view.layoutIfNeeded()
-                        }) { (success) in
-                            self.mainBarHighest = false
-                            self.delegate?.bringHamburger()
-                            self.delegate?.defaultContentStatusBar()
-                            self.mainBarController.scrollView.isScrollEnabled = false
-                        }
-                    } else {
-                        self.mainBarTopAnchor.constant = self.lowestHeight
-                        UIView.animate(withDuration: animationOut, animations: {
-                            self.fullBackgroundView.alpha = 0
-                            self.view.layoutIfNeeded()
-                        }) { (success) in
-                            self.mainBarHighest = false
-                            self.delegate?.bringHamburger()
-                            self.delegate?.defaultContentStatusBar()
-                            self.mainBarController.scrollView.isScrollEnabled = false
-                        }
-                    }
-                } else {
-                    self.mainBarTopAnchor.constant = phoneHeight - statusHeight
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.fullBackgroundView.alpha = 0.9
-                        self.view.layoutIfNeeded()
-                    }) { (success) in
-                        self.mainBarController.scrollView.isScrollEnabled = true
-                    }
-                }
+        let translation = -sender.translation(in: self.view).y
+        let state = sender.state
+        let percentage = translation/(phoneHeight/3)
+        if state == .changed {
+            if percentage >= 0 && percentage <= 1 && previousMainBarPercentage != 1.0 {
+                changeMainScrollAmount(percentage: percentage)
             }
-            self.mainBarPreviousPosition = position
+        } else if state == .ended {
+            if previousMainBarPercentage >= 0.25 {
+                openMainBar()
+            } else {
+                closeMainBar()
+            }
+        }
+    }
+    
+    func changeMainScrollAmount(percentage: CGFloat) {
+        previousMainBarPercentage = percentage
+        
+        if percentage >= 0.2 {
+            delegate?.hideHamburger()
+            delegate?.lightContentStatusBar()
+            if mainBarController.reservationsOpen {
+                closeMainReservation()
+            }
+        }
+        
+        mainBarBottomAnchor.constant = currentMainBarHeight - currentMainBarHeight * percentage
+        fullBackgroundView.alpha = 0 + percentage
+        view.layoutIfNeeded()
+    }
+    
+    @objc func openMainBar() {
+        mainBarController.scrollView.isScrollEnabled = true
+        previousMainBarPercentage = 1.0
+        mainBarBottomAnchor.constant = 0
+        
+        delegate?.hideHamburger()
+        delegate?.lightContentStatusBar()
+        if mainBarController.reservationsOpen {
+            closeMainReservation()
+        }
+        
+        UIView.animate(withDuration: animationOut, animations: {
+            self.fullBackgroundView.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            
+        }
+    }
+    
+    func closeMainBar() {
+        previousMainBarPercentage = 0.0
+        mainBarBottomAnchor.constant = currentMainBarHeight
+        
+        delegate?.bringHamburger()
+        delegate?.defaultContentStatusBar()
+        UIView.animate(withDuration: animationOut, animations: {
+            self.fullBackgroundView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.mainBarController.scrollView.isScrollEnabled = false
         }
     }
     
     func becomeANewHost() {
-        self.delegate?.bringNewHostingController()
+        delegate?.bringNewHostingController()
     }
     
 }

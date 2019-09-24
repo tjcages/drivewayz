@@ -17,6 +17,8 @@ enum MainViewState {
     case currentBooking
 }
 
+var showHamburger: Bool = true
+
 extension MapKitViewController {
     
     func reloadRequestedViews() {
@@ -47,9 +49,10 @@ extension MapKitViewController {
     
     func showNone() {
         mapView.allowsRotating = false
-        mainBarTopAnchor.constant = 0
+//        mainBarTopAnchor.constant = 0
+        mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 420
-        durationControllerBottomAnchor.constant = 500
+//        durationControllerBottomAnchor.constant = 500
         confirmControllerBottomAnchor.constant = 380
         currentBottomHeightAnchor.constant = phoneHeight
         
@@ -68,11 +71,16 @@ extension MapKitViewController {
     }
     
     func showMainBar() {
+        if mainBarController.reservationsOpen {
+            closeMainReservation()
+        }
+        
         mapView.allowsRotating = false
         mainBarController.scrollView.setContentOffset(.zero, animated: true)
-        mainBarTopAnchor.constant = self.lowestHeight
+//        mainBarTopAnchor.constant = self.lowestHeight
+        mainBarBottomAnchor.constant = phoneHeight - lowestHeight
         parkingControllerBottomAnchor.constant = 420
-        durationControllerBottomAnchor.constant = 500
+//        durationControllerBottomAnchor.constant = 500
         confirmControllerBottomAnchor.constant = 380
         currentBottomHeightAnchor.constant = phoneHeight
         
@@ -85,16 +93,17 @@ extension MapKitViewController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.delegate?.bringHamburger()
+            if showHamburger { self.delegate?.bringHamburger() }
             self.delegate?.defaultContentStatusBar()
         }
     }
     
     func showParking() {
         mapView.allowsRotating = false
-        mainBarTopAnchor.constant = 0
+//        mainBarTopAnchor.constant = 0
+        mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 0
-        durationControllerBottomAnchor.constant = 500
+//        durationControllerBottomAnchor.constant = 500
         confirmControllerBottomAnchor.constant = 380
         currentBottomHeightAnchor.constant = phoneHeight
         
@@ -109,42 +118,28 @@ extension MapKitViewController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.delegate?.bringHamburger()
+            self.delegate?.hideHamburger()
+//            if showHamburger { self.delegate?.bringHamburger() }
             self.delegate?.defaultContentStatusBar()
         }
     }
     
     func showDuration() {
-        mapView.allowsRotating = false
-        mainBarTopAnchor.constant = 0
-        parkingControllerBottomAnchor.constant = 420
-        durationControllerBottomAnchor.constant = 0
-        confirmControllerBottomAnchor.constant = 380
-        currentBottomHeightAnchor.constant = phoneHeight
-        
-        parkingBackButtonBookAnchor.isActive = false
-        parkingBackButtonPurchaseAnchor.isActive = true
-        parkingBackButtonConfirmAnchor.isActive = false
-        
-        locatorMainBottomAnchor.isActive = false
-        locatorParkingBottomAnchor.isActive = true
-        locatorCurrentBottomAnchor.isActive = false
-        UIView.animate(withDuration: animationOut, animations: {
-            self.locatorButton.alpha = 0
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 0.6
         }) { (success) in
-            self.delegate?.bringHamburger()
-            self.delegate?.defaultContentStatusBar()
+            self.durationController.modalPresentationStyle = .overCurrentContext
+            self.present(self.durationController, animated: true, completion: nil)
         }
     }
     
     func showPayment() {
         mapView.allowsRotating = false
         view.bringSubviewToFront(confirmPaymentController.view)
-        mainBarTopAnchor.constant = 0
+//        mainBarTopAnchor.constant = 0
+        mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 420
-        durationControllerBottomAnchor.constant = 500
+//        durationControllerBottomAnchor.constant = 500
         confirmControllerBottomAnchor.constant = 0
         currentBottomHeightAnchor.constant = phoneHeight
         
@@ -160,17 +155,20 @@ extension MapKitViewController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.delegate?.bringHamburger()
+            self.delegate?.hideHamburger()
+//            if showHamburger { self.delegate?.bringHamburger() }
             self.delegate?.defaultContentStatusBar()
         }
     }
     
     func showCurrentBooking() {
+        showHamburger = false
         mapView.allowsRotating = true
         removePolylineAnnotations()
-        mainBarTopAnchor.constant = 0
+//        mainBarTopAnchor.constant = 0
+        mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 420
-        durationControllerBottomAnchor.constant = 500
+//        durationControllerBottomAnchor.constant = 500
         confirmControllerBottomAnchor.constant = 380
         currentBottomHeightAnchor.constant = currentBookingHeight
         
@@ -201,13 +199,19 @@ extension MapKitViewController {
         self.view.addSubview(mainBarController.view)
         mainBarController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         mainBarController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mainBarTopAnchor = mainBarController.view.heightAnchor.constraint(equalToConstant: 0)
-            mainBarTopAnchor.isActive = true
-        mainBarController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        mainBarTopAnchor = mainBarController.view.heightAnchor.constraint(equalToConstant: 0)
+//            mainBarTopAnchor.isActive = true
+        mainBarBottomAnchor = mainBarController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            mainBarBottomAnchor.isActive = true
+        mainBarController.view.heightAnchor.constraint(equalToConstant: phoneHeight - statusHeight).isActive = true
+//        mainBarController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarIsScrolling(sender:)))
         mainBarController.view.addGestureRecognizer(pan)
-        mainBarController.searchController.searchButton.addTarget(self, action: #selector(mainBarWillOpen), for: .touchUpInside)
-        mainBarController.searchController.microphoneButton.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
+        mainBarController.searchController.searchView.addTarget(self, action: #selector(openSearch), for: .touchUpInside)
+        mainBarController.searchController.recommendationButton.addTarget(self, action: #selector(recommendButtonPressed), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(searchReservationsPressed))
+        mainBarController.reservationsController.view.addGestureRecognizer(tap)
     }
     
     func setupParking() {
@@ -224,17 +228,7 @@ extension MapKitViewController {
     }
     
     func setupDuration() {
-        self.view.addSubview(durationController.view)
-        durationController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        durationController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        durationControllerBottomAnchor = durationController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 500)
-            durationControllerBottomAnchor.isActive = true
-        switch device {
-        case .iphone8:
-            durationController.view.heightAnchor.constraint(equalToConstant: 412).isActive = true
-        case .iphoneX:
-            durationController.view.heightAnchor.constraint(equalToConstant: 440).isActive = true
-        }
+        durationController.delegate = self
     }
     
     func setupPayment() {

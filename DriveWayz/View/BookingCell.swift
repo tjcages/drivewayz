@@ -160,7 +160,7 @@ class BookingCell: UICollectionViewCell {
         label.text = "$1.40/hour"
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH5
-        label.backgroundColor = Theme.GREEN_PIGMENT
+        label.backgroundColor = Theme.PRUSSIAN_BLUE
         label.layer.cornerRadius = 14
         label.clipsToBounds = true
         label.textAlignment = .center

@@ -60,5 +60,6 @@ target 'DriveWayz' do
 	pod 'CHIPageControl', '~> 0.1.3'
 
 	pod 'PayCardsRecognizer'
+	pod 'ViewAnimator'
 
 end

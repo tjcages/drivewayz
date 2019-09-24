@@ -129,8 +129,8 @@ class ExtendDurationView: UIViewController {
         return label
     }()
     
-    lazy var sliderView: PurchaseSliderViewController = {
-        let controller = PurchaseSliderViewController()
+    lazy var sliderView: DurationTimeView = {
+        let controller = DurationTimeView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
         
@@ -214,25 +214,25 @@ class ExtendDurationView: UIViewController {
         line.anchor(top: nil, left: view.leftAnchor, bottom: paymentButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 8, paddingRight: 20, width: 0, height: 1)
         
         view.addSubview(sliderView.view)
-        sliderView.view.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -12).isActive = true
-        sliderView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        sliderView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        sliderView.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        sliderView.view.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -20).isActive = true
+        sliderView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        sliderView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        sliderView.view.heightAnchor.constraint(equalToConstant: 72).isActive = true
         
-        view.addSubview(mainLabel)
-        mainLabel.bottomAnchor.constraint(equalTo: sliderView.view.topAnchor, constant: -16).isActive = true
-        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        mainLabel.sizeToFit()
-        
-        view.addSubview(totalTimeLabel)
-        totalTimeLabel.centerYAnchor.constraint(equalTo: mainLabel.centerYAnchor).isActive = true
-        totalTimeLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        totalTimeLabel.sizeToFit()
+//        view.addSubview(mainLabel)
+//        mainLabel.bottomAnchor.constraint(equalTo: sliderView.view.topAnchor, constant: -16).isActive = true
+//        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+//        mainLabel.sizeToFit()
+//
+//        view.addSubview(totalTimeLabel)
+//        totalTimeLabel.centerYAnchor.constraint(equalTo: mainLabel.centerYAnchor).isActive = true
+//        totalTimeLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+//        totalTimeLabel.sizeToFit()
         
         container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         container.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         container.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        container.topAnchor.constraint(equalTo: mainLabel.topAnchor, constant: -16).isActive = true
+        container.topAnchor.constraint(equalTo: sliderView.view.topAnchor, constant: -20).isActive = true
      
         view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: mainButton.centerXAnchor).isActive = true

@@ -163,66 +163,66 @@ class UserContactViewController: UIViewController {
     
     func setupViews() {
         
-        self.view.addSubview(scrollView)
-        self.view.addSubview(gradientContainer)
-        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        view.addSubview(scrollView)
+        view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
             gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 140)
-            gradientHeightAnchor.isActive = true
+                gradientHeightAnchor.isActive = true
         case .iphoneX:
             gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: 160)
-            gradientHeightAnchor.isActive = true
+                gradientHeightAnchor.isActive = true
         }
         
         scrollView.contentSize = CGSize(width: phoneWidth, height: 800)
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         scrollView.addGestureRecognizer(tap)
         
-        self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
         }
         
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
         mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
         gradientContainer.addSubview(loadingLine)
         loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
         scrollView.addSubview(informationLabel)
         informationLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
-        informationLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        informationLabel.widthAnchor.constraint(equalToConstant: self.view.frame.width - 48).isActive = true
+        informationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        informationLabel.widthAnchor.constraint(equalToConstant: phoneWidth - 48).isActive = true
         informationLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         scrollView.addSubview(supportTextLabel)
-        supportTextLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        supportTextLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         supportTextLabel.topAnchor.constraint(equalTo: informationLabel.bottomAnchor, constant: 16).isActive = true
         supportTextLabel.sizeToFit()
         
         scrollView.addSubview(supportTextView)
         supportTextView.topAnchor.constraint(equalTo: supportTextLabel.bottomAnchor, constant: 8).isActive = true
-        supportTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        supportTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        supportTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        supportTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         supportTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
         supportTextView.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
@@ -234,13 +234,13 @@ class UserContactViewController: UIViewController {
         
         scrollView.addSubview(supportButton)
         supportButton.topAnchor.constraint(equalTo: supportTextView.bottomAnchor, constant: 32).isActive = true
-        supportButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        supportButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        supportButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        supportButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         supportButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         scrollView.addSubview(exampleLabel)
         exampleLabel.topAnchor.constraint(equalTo: supportButton.bottomAnchor, constant: 32).isActive = true
-        exampleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        exampleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         exampleLabel.widthAnchor.constraint(equalToConstant: phoneWidth - 48).isActive = true
         exampleLabel.sizeToFit()
         
@@ -251,10 +251,10 @@ class UserContactViewController: UIViewController {
 extension UserContactViewController: MFMailComposeViewControllerDelegate {
     
     @objc func sendEmail() {
-        self.supportButton.backgroundColor = lineColor
-        self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        self.supportButton.isUserInteractionEnabled = false
-        self.loadingLine.startAnimating()
+        supportButton.backgroundColor = lineColor
+        supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        supportButton.isUserInteractionEnabled = false
+        loadingLine.startAnimating()
         
         guard let message = self.supportTextView.text else { return }
         if message != "" && message != "Contact us" {
@@ -296,27 +296,16 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
                 }
             }
         } else {
-            self.createSimpleAlert(title: "No message", message: "")
-            self.supportButton.backgroundColor = lineColor
-            self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.supportButton.isUserInteractionEnabled = true
-            self.loadingLine.endAnimating()
+            createSimpleAlert(title: "No message", message: "")
+            supportButton.backgroundColor = lineColor
+            supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            supportButton.isUserInteractionEnabled = true
+            loadingLine.endAnimating()
         }
     }
     
-//    func fetchNewCurrent(name: String) {
-//        let sender = PushNotificationSender()
-//        let date = Date()
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "h:mm a MM/dd/yyyy"
-//        let time = dateFormatter.string(from: date)
-//        for keys in self.confirmedIDs {
-//            sender.sendPushNotification(toUser: keys, title: "\(name) sent Drivewayz a message", subtitle: "\(time)")
-//        }
-//    }
-    
     func observeCorrectID() {
-        self.confirmedIDs = []
+        confirmedIDs = []
         let ref = Database.database().reference().child("ConfirmedID")
         ref.observe(.childAdded) { (snapshot) in
             if let key = snapshot.value as? String {
@@ -332,12 +321,12 @@ extension UserContactViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
-        self.supportTextLine.backgroundColor = Theme.BLUE
+        supportTextLine.backgroundColor = Theme.BLUE
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.supportTextLine.backgroundColor = lineColor
+        supportTextLine.backgroundColor = lineColor
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -346,13 +335,13 @@ extension UserContactViewController: UITextViewDelegate {
         let estimatedSize = textView.sizeThatFits(size)
         let estimatedHeight = estimatedSize.height
         if textView.text != "" {
-            self.supportButton.backgroundColor = Theme.BLUE
-            self.supportButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.supportButton.isUserInteractionEnabled = true
+            supportButton.backgroundColor = Theme.BLUE
+            supportButton.setTitleColor(Theme.WHITE, for: .normal)
+            supportButton.isUserInteractionEnabled = true
         } else {
-            self.supportButton.backgroundColor = lineColor
-            self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.supportButton.isUserInteractionEnabled = false
+            supportButton.backgroundColor = lineColor
+            supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            supportButton.isUserInteractionEnabled = false
         }
         
         textView.constraints.forEach { (constraint) in

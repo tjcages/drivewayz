@@ -48,7 +48,7 @@ extension MapKitViewController: MGLMapViewDelegate {
 //            }
             
             // The line width should gradually increase based on the zoom level.
-            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 8, 18: 20])
+            layer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", [14: 5, 18: 20])
             
             style.addLayer(layer)
             self.polylineLayer = layer

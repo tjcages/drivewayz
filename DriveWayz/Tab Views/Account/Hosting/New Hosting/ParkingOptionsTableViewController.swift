@@ -57,7 +57,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "A large area for parking with multiple parking spaces for customers. Must own the parking lot to list with Drivewayz."
         label.numberOfLines = 3
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -107,7 +107,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "A parking space that is owned by the property owner and leased by then tenant. Usually associated with one spot number in a lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -158,7 +158,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Covered parking is usually when the parking spot is in a parking garage, but can also be if the spot is covered by a patio or deck."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -209,7 +209,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Only select this option if your parking spot is in between two buildings or behind a residential home and it is generally described as in an alley."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -260,7 +260,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "If your parking space is in a gated complex. To list your spot through Drivewayz you must provide a gate code and a spot number."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -311,7 +311,7 @@ class ParkingOptionsViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
         label.text = "Parking is on the street near a residential home. You must own this spot to list it through Drivewayz."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -362,9 +362,9 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Only select this option if you are the business owner of a parking lot. Drivewayz will reach out to you to confirm the information is correct."
+        label.text = "Select this option if you are the owner or have the rights to a specific parking spot(s) or the whole lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         
         return label
     }()
@@ -412,9 +412,9 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Only select this option if you are the business owner of a parking garage structure. Drivewayz will reach out to you to confirm the information is correct."
+        label.text = "Select this option if you are the owner or have the rights to a specific parking spot(s) or the whole lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -463,9 +463,9 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "Only select this option if you are the business owner of a parking garage structure. Drivewayz will reach out to you to confirm the information is correct."
+        label.text = "Select this option if you are the owner or have the rights to a specific parking spot(s) or the whole lot."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -514,9 +514,9 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A condo parking space is similar to a residential space but generally is shared with another unit and requires the driver to pull off on one side of the driveway."
+        label.text = "Similar to a residential space, you must have the rights to a specific parking spot(s); they must be clearly identified and not require a parking permit."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
@@ -565,9 +565,9 @@ class ParkingOptionsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
-        label.text = "A circular loop parking spot is one that requires someone to park in a roundabout and pull up as far forward as possible."
+        label.text = "Circular loop parking spots or roundabouts must not be located on public property, nor require a permit."
         label.numberOfLines = 4
-        label.font = Fonts.SSPLightH5
+        label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
         return label
