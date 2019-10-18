@@ -13,7 +13,7 @@ class CommentInputTextView: UITextView {
     fileprivate let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = "Message"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.PRUSSIAN_BLUE
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -26,6 +26,8 @@ class CommentInputTextView: UITextView {
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
+        returnKeyType = .done
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
         
         addSubview(placeholderLabel)
@@ -34,6 +36,14 @@ class CommentInputTextView: UITextView {
 
     @objc func handleTextChange() {
         placeholderLabel.isHidden = !self.text.isEmpty
+        
+        if text == "\n" {
+            dismissKeyboard()
+        }
+    }
+    
+    @objc func dismissKeyboard() {
+        endEditing(true)
     }
     
     required init?(coder aDecoder: NSCoder) {

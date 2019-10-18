@@ -78,7 +78,7 @@ class ExtendDurationView: UIViewController {
         button.backgroundColor = lineColor
         button.setTitle("Confirm Purchase", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.isEnabled = false
         button.addTarget(self, action: #selector(confirmButtonPressed), for: .touchUpInside)
@@ -98,7 +98,7 @@ class ExtendDurationView: UIViewController {
     
     var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Set payment method", for: .normal)
+        button.setTitle("Set payment", for: .normal)
         button.backgroundColor = UIColor.clear
         button.contentHorizontalAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -142,7 +142,7 @@ class ExtendDurationView: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY
         label.text = "$4.56"
-        label.font = Fonts.SSPSemiBoldH3
+        label.font = Fonts.SSPRegularH2
         label.textAlignment = .right
         
         return label
@@ -217,7 +217,7 @@ class ExtendDurationView: UIViewController {
         sliderView.view.bottomAnchor.constraint(equalTo: line.topAnchor, constant: -20).isActive = true
         sliderView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         sliderView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        sliderView.view.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        sliderView.view.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
 //        view.addSubview(mainLabel)
 //        mainLabel.bottomAnchor.constraint(equalTo: sliderView.view.topAnchor, constant: -16).isActive = true
@@ -334,7 +334,7 @@ class ExtendDurationView: UIViewController {
     func mainButtonAvailable() {
         UIView.animate(withDuration: animationIn) {
             self.mainButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.mainButton.backgroundColor = Theme.BLUE
+            self.mainButton.backgroundColor = Theme.DARK_GRAY
             self.mainButton.isEnabled = true
         }
     }

@@ -13,6 +13,8 @@ import UserNotifications
 var rightArrow: UIButton!
 var leftArrow: UIButton!
 
+let mapTutorialController = MapTutorialView()
+
 protocol moveControllers {
     func dismissActiveController()
     
@@ -46,6 +48,13 @@ protocol controlsAccountOptions {
     func bringHelpController()
     func bringFeedbackController()
     func bringAnalyticsController()
+}
+
+protocol handleMapTutorial {
+    func searchPressed()
+    func recommendationPressed()
+    func parkNowPressed()
+    func reservePressed()
 }
 
 var tabDimmingView: UIView = {
@@ -83,8 +92,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 16
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
         
         return view
@@ -94,7 +103,7 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         let controller = MapKitViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.vehicleDelegate = self
+        controller.accountDelegate = self
         controller.delegate = self
         
         return controller
@@ -136,6 +145,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         self.tabBarController?.tabBar.isHidden = true
         
         setupViews()
+        checkOpens()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        print("DISAPPEARING")
     }
     
     var containerHeightAnchor: NSLayoutConstraint!
@@ -196,6 +210,36 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         gradientContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
+    }
+    
+    func checkOpens() {
+        var opens = UserDefaults.standard.integer(forKey: "numberOfOpens")
+        if opens <= 1 {
+            opens += 1
+            UserDefaults.standard.set(opens, forKey: "numberOfOpens")
+            UserDefaults.standard.synchronize()
+            delayWithSeconds(1) {
+                if BookedState == .none {
+                    self.mapController.view.isUserInteractionEnabled = false
+                    
+                    self.mapController.view.isUserInteractionEnabled = true
+                    mapTutorialController.delegate = self
+                    mapTutorialController.modalPresentationStyle = .overCurrentContext
+                    mapTutorialController.modalTransitionStyle = .crossDissolve
+                    
+                    guard let position = self.view.superview?.convert(self.mapController.mainBarController.searchController.searchView.center, to: nil)
+                        else { return }
+                    
+                    mapTutorialController.dimViewHeight = phoneHeight - mainBarNormalHeight + statusHeight
+                    mapTutorialController.searchViewHeight = position.y - 3
+                    //                mapTutorialController.searchViewHeight = mainBarNormalHeight + position.y + statusHeight
+                    
+                    self.present(mapTutorialController, animated: true, completion: {
+                        //
+                    })
+                }
+            }
+        }
     }
     
     @objc func monitorCurrentParking() {
@@ -401,17 +445,12 @@ extension TabViewController {
         UIView.animate(withDuration: animationIn, animations: {
             self.gradientContainer.alpha = 1
         }) { (success) in
-            self.present(navigation, animated: true) {
-                UIView.animate(withDuration: animationIn) {
-                    controller.backButton.alpha = 1
-                    self.view.layoutIfNeeded()
-                }
-            }
+            self.present(navigation, animated: true, completion: nil)
         }
     }
     
     func bringHelpController() {
-        let controller = UserHelpViewController()
+        let controller = TESTHelpViewController()
         controller.delegate = self
         let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isHidden = true
@@ -419,10 +458,6 @@ extension TabViewController {
             self.gradientContainer.alpha = 1
         }) { (success) in
             self.present(navigation, animated: true) {
-                UIView.animate(withDuration: animationIn) {
-                    controller.backButton.alpha = 1
-                    self.view.layoutIfNeeded()
-                }
             }
         }
     }
@@ -500,8 +535,25 @@ extension TabViewController {
     
 }
 
-
-
+extension TabViewController: handleMapTutorial {
+    
+    func searchPressed() {
+        mapController.openSearch()
+    }
+    
+    func recommendationPressed() {
+        mapController.recommendButtonPressed()
+    }
+    
+    func parkNowPressed() {
+        mapController.mainBarController.searchController.durationBottomController.parkNowButton.sendActions(for: .touchUpInside)
+    }
+    
+    func reservePressed() {
+        mapController.mainBarController.searchController.durationBottomController.reserveSpotButton.sendActions(for: .touchUpInside)
+    }
+    
+}
 
 
 

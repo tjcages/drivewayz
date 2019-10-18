@@ -9,12 +9,26 @@
 import UIKit
 
 class Users: NSObject {
+    
     var id: String?
-    var bio: String?
     var name: String?
     var email: String?
+    var phone: String?
     var picture: String?
+    
+    init(dictionary: [String: Any]) {
+        super.init()
+        
+        name = dictionary["name"] as? String
+        email = dictionary["email"] as? String
+        phone = dictionary["phone"] as? String
+        picture = dictionary["picture"] as? String
+        
+    }
+    
 }
+
+
 
 enum Device {
     case iphone8

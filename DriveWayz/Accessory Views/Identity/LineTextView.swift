@@ -12,8 +12,9 @@ class LineTextView: UITextView {
     
     var placeholderLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Message"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.PRUSSIAN_BLUE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -21,6 +22,7 @@ class LineTextView: UITextView {
     
     func showPlaceholderLabel() {
         placeholderLabel.isHidden = false
+//        deleteButton.isHidden = true
     }
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -32,11 +34,9 @@ class LineTextView: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
         
         addSubview(placeholderLabel)
-//        placeholderLabel.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        placeholderLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         placeholderLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        placeholderLabel.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        placeholderLabel.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        placeholderLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+        placeholderLabel.sizeToFit()
 
     }
     
@@ -62,6 +62,15 @@ class LineTextView: UITextView {
     
     @objc func handleTextChange() {
         placeholderLabel.isHidden = !self.text.isEmpty
+//        deleteButton.isHidden = self.text.isEmpty
+        
+        if text.last == "\n" {
+            text = text.replacingOccurrences(of: "\n", with: "")
+            if text.isEmpty {
+                showPlaceholderLabel()
+            }
+            dismissKeyboard()
+        }
     }
     
     func createToolbar() {
@@ -80,14 +89,6 @@ class LineTextView: UITextView {
         toolBar.isUserInteractionEnabled = true
         
         inputAccessoryView = toolBar
-    }
-    
-    override func shouldChangeText(in range: UITextRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            dismissKeyboard()
-            return false
-        }
-        return true
     }
     
     @objc func dismissKeyboard() {

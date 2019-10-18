@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ReservationBannerView: UIViewController {
+class MainBannerView: UIViewController {
     
     var reservationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.DARK_GRAY
         view.alpha = 0
         
         return view
@@ -23,7 +23,7 @@ class ReservationBannerView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Schedule your next parking"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         
@@ -34,7 +34,7 @@ class ReservationBannerView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Learn more"
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -44,7 +44,7 @@ class ReservationBannerView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Get 10% off your booking for reserving ahead of time."
-        label.textColor = Theme.WHITE
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.alpha = 0
@@ -68,7 +68,7 @@ class ReservationBannerView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "arrow-right")?.withRenderingMode(.alwaysTemplate)
 //        button.transform = CGAffineTransform(scaleX: -0.7, y: 0.7)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.setImage(image, for: .normal)
         
         return button
@@ -77,12 +77,13 @@ class ReservationBannerView: UIViewController {
     var discountButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT
-        button.layer.cornerRadius = 12
+        button.backgroundColor = Theme.DarkGreen
         button.setTitle("10%", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH6
         button.isUserInteractionEnabled = false
+        button.layer.cornerRadius = 12
+        button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
         return button
     }()
@@ -90,7 +91,13 @@ class ReservationBannerView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.WHITE
+        view.clipsToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
+        view.backgroundColor = Theme.DarkGreen.withAlphaComponent(0.2)
+        self.view.addSubview(view)
         
         setupViews()
     }
@@ -117,12 +124,12 @@ class ReservationBannerView: UIViewController {
         view.addSubview(discountButton)
         
         reservationButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        reservationButtonTopAnchor = reservationButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 8)
+        reservationButtonTopAnchor = reservationButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 12)
             reservationButtonTopAnchor.isActive = true
         reservationButton.widthAnchor.constraint(equalTo: reservationButton.heightAnchor).isActive = true
-        reservationButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        reservationButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
-        mainLeftAnchor = mainLabel.leftAnchor.constraint(equalTo: reservationButton.rightAnchor, constant: 32)
+        mainLeftAnchor = mainLabel.leftAnchor.constraint(equalTo: reservationButton.rightAnchor, constant: 24)
             mainLeftAnchor.isActive = true
         mainLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         mainLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 12).isActive = true
@@ -157,9 +164,9 @@ class ReservationBannerView: UIViewController {
         reservationViewSubTopAnchor = reservationView.topAnchor.constraint(equalTo: subLabel.topAnchor, constant: -4)
             reservationViewSubTopAnchor.isActive = false
         
-        discountButton.centerXAnchor.constraint(equalTo: reservationButton.rightAnchor, constant: 0).isActive = true
-        discountButton.bottomAnchor.constraint(equalTo: reservationButton.bottomAnchor).isActive = true
-        discountButton.widthAnchor.constraint(equalToConstant: 38).isActive = true
+        discountButton.centerXAnchor.constraint(equalTo: reservationButton.rightAnchor, constant: -4).isActive = true
+        discountButton.centerYAnchor.constraint(equalTo: reservationButton.topAnchor, constant: 12).isActive = true
+        discountButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         discountButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
@@ -177,8 +184,8 @@ class ReservationBannerView: UIViewController {
         UIView.animate(withDuration: animationIn, animations: {
             self.mainLabel.font = Fonts.SSPSemiBoldH2
             self.subLabel.font = Fonts.SSPRegularH4
-            self.subLabel.textColor = Theme.DARK_GRAY
-            self.arrowButton.tintColor = Theme.DARK_GRAY
+            self.subLabel.textColor = Theme.WHITE
+            self.arrowButton.tintColor = Theme.WHITE
             self.discountButton.alpha = 0
             self.reservationView.alpha = 1
             self.subLabel.text = "Reserve your spot"
@@ -197,21 +204,20 @@ class ReservationBannerView: UIViewController {
         reservationViewSubLeftAnchor.isActive = false
         subLabelLeftAnchor.isActive = true
         arrowRightAnchor.isActive = false
-        mainLeftAnchor.constant = 32
+        mainLeftAnchor.constant = 24
         subLabelBottomAnchor.constant = -12
-        reservationButtonTopAnchor.constant = 8
+        reservationButtonTopAnchor.constant = 12
         UIView.animate(withDuration: animationIn, animations: {
             self.mainLabel.alpha = 0
             self.subLabel.font = Fonts.SSPRegularH5
-            self.subLabel.textColor = Theme.WHITE
-            self.arrowButton.tintColor = Theme.WHITE
+            self.subLabel.textColor = Theme.DARK_GRAY
+            self.arrowButton.tintColor = Theme.DARK_GRAY
             self.informationLabel.alpha = 0
             self.reservationView.alpha = 0
             self.subLabel.text = "Learn more"
             self.view.layoutIfNeeded()
         }) { (success) in
             self.mainLabel.font = Fonts.SSPSemiBoldH3
-//            self.mainLabel.textColor = Theme.DARK_GRAY
             UIView.animate(withDuration: animationIn, animations: {
                 self.mainLabel.alpha = 1
                 self.discountButton.alpha = 1

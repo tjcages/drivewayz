@@ -10,57 +10,84 @@ import UIKit
 
 class LineInputAccessoryView: UIView {
     
-    var lineUnselectedColor: UIColor = lineColor
+    var lineUnselectedColor: UIColor = Theme.OFF_WHITE
     var lineSelectedColor: UIColor = Theme.BLUE
+    
+    lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 4
+        let origImage = UIImage(named: "exit")
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.isHidden = true
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)
+        
+        return button
+    }()
     
     var textViewFont = Fonts.SSPRegularH3 {
         didSet {
-            lineTextView.font = textViewFont
+            lineTextView?.font = textViewFont
         }
     }
     var textViewText = "" {
         didSet {
-            lineTextView.text = textViewText
+            lineTextView?.text = textViewText
         }
     }
     var textViewKeyboardType: UIKeyboardType = .numberPad {
         didSet {
-            lineTextView.keyboardType = textViewKeyboardType
+            lineTextView?.keyboardType = textViewKeyboardType
+        }
+    }
+    var textViewAutcapitalizationType: UITextAutocapitalizationType = .sentences {
+        didSet {
+            lineTextView?.autocapitalizationType = textViewAutcapitalizationType
         }
     }
     var textViewAlignment: NSTextAlignment = .left {
         didSet {
-            lineTextView.textAlignment = textViewAlignment
+            lineTextView?.textAlignment = textViewAlignment
         }
     }
     
     fileprivate let lineSeparatorView = UIView()
-    lazy var lineTextView: LineTextView = {
-        let view = LineTextView()
-        view.font = textViewFont
-        view.text = textViewText
-        view.keyboardType = textViewKeyboardType
-        view.textAlignment = textViewAlignment
-        
-        return view
-    }()
+    var lineTextView: LineTextView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = lineColor
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextEditing), name: UITextView.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextEnd), name: UITextView.textDidEndEditingNotification, object: nil)
         
-        addSubview(lineTextView)
-        lineTextView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        lineTextView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        lineTextView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        lineTextView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        lineTextView = LineTextView()
+        lineTextView?.font = textViewFont
+        lineTextView?.text = textViewText
+        lineTextView?.keyboardType = textViewKeyboardType
+        lineTextView?.textAlignment = textViewAlignment
+        
+        addSubview(lineTextView!)
+        lineTextView?.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        lineTextView?.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        lineTextView?.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+        lineTextView?.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        
+        addSubview(deleteButton)
+        deleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -12).isActive = true
+        deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        //        deleteButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.6).isActive = true
+        deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor).isActive = true
 
         layoutIfNeeded()
-        lineTextView.centerVertically()
+        lineTextView?.centerVertically()
         
         setupLineSeparatorView()
     }
@@ -75,10 +102,31 @@ class LineInputAccessoryView: UIView {
     }
     
     @objc func handleTextEditing() {
-        if lineTextView.isFirstResponder {
-            lineSeparatorView.backgroundColor = lineSelectedColor
-            backgroundColor = lineSelectedColor.withAlphaComponent(0.1)
+        if lineTextView != nil {
+            if lineTextView!.isFirstResponder {
+                lineSeparatorView.backgroundColor = lineSelectedColor
+                backgroundColor = lineSelectedColor.withAlphaComponent(0.1)
+            }
         }
+    }
+    
+    @objc func handleTextChange() {
+        if let textView = lineTextView {
+            deleteButton.isHidden = textView.text.isEmpty
+        } else {
+            deleteButton.isHidden = true
+        }
+    }
+    
+    @objc func deletePressed() {
+        lineTextView?.text = nil
+        lineTextView?.showPlaceholderLabel()
+        deleteButton.isHidden = true
+    }
+    
+    func clearCommentTextField() {
+        deletePressed()
+        endEditing(true)
     }
     
     @objc func handleTextEnd() {

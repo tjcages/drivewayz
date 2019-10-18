@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Mapbox
+import GoogleMaps
 
 protocol handleMinimizingFullController {
     func setDefaultStatusBar()
@@ -86,7 +86,7 @@ extension MapKitViewController: handleMinimizingFullController {
             }, completion: { (success) in
                 self.mainViewState = .mainBar
                 self.view.bringSubviewToFront(self.mainBarController.view)
-                if self.mainBarBottomAnchor.constant == phoneHeight - self.lowestHeight {
+                if self.mainBarBottomAnchor.constant == phoneHeight - mainBarNormalHeight {
                     self.fullBackgroundView.alpha = 0
                     self.delegate?.bringHamburger()
                     self.delegate?.defaultContentStatusBar()
@@ -104,7 +104,7 @@ extension MapKitViewController: handleMinimizingFullController {
         navigation.modalPresentationStyle = .overFullScreen
         navigation.modalTransitionStyle = .crossDissolve
         self.present(navigation, animated: true) {
-            if let image = self.confirmPaymentController.spotIcon.image, let time = self.confirmPaymentController.totalTime, success {
+            if let image = self.confirmPaymentController.currentParkingImage, let time = self.confirmPaymentController.totalTime, success {
                 navigation.openCurrentBooking(image: image, time: time)
             }
             if !success {
@@ -118,7 +118,10 @@ extension MapKitViewController: handleMinimizingFullController {
             openNavigation(success: true, booking: booking)
         } else {
             let controller = SuccessfulPurchaseViewController()
-            controller.spotIcon.image = self.confirmPaymentController.spotIcon.image
+            if let totalTime = currentTotalTime {
+                controller.changeDates(totalTime: totalTime)
+            }
+            controller.spotIcon.image = self.confirmPaymentController.currentParkingImage
             controller.loadingActivity.startAnimating()
             controller.modalTransitionStyle = .crossDissolve
             controller.modalPresentationStyle = .overCurrentContext
@@ -150,12 +153,9 @@ extension MapKitViewController: handleMinimizingFullController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.mapView.resetNorth()
-            self.mapView.allowsRotating = true
-            self.mapView.isRotateEnabled = true
-            delayWithSeconds(animationOut * 2) {
-                self.mapView.isRotateEnabled = false
-                self.mapView.allowsRotating = false
+            if let userLocation = self.locationManager.location {
+                let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: 12.0)
+                self.mapView.animate(to: camera)
             }
         }
     }

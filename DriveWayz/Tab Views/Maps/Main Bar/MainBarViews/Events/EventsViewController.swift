@@ -18,7 +18,6 @@ class EventsViewController: UIViewController, UICollectionViewDelegateFlowLayout
     lazy var cellHeight: CGFloat = 180
     var costParking: String = "$1.30"
     var hrefEvent: String = ""
-    var delegate: handleEventSelection?
     var mainDelegate: handleInviteControllers?
     
     var eventsLayout: UICollectionViewLayout = {

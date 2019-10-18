@@ -112,7 +112,7 @@ class CurrentBookingView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = lineColor
         view.axis = .vertical
-        view.spacing = 6
+        view.spacing = 3
         
         return view
     }()
@@ -202,7 +202,7 @@ class CurrentBookingView: UIViewController {
         
         view.backgroundColor = lineColor
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: -2)
+        view.layer.shadowOffset = CGSize(width: 0, height: -3)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
         
@@ -376,7 +376,10 @@ extension CurrentBookingView: handleCurrentBooking {
         let controller = UserContactViewController()
         controller.context = "Booking"
         controller.informationLabel.text = contactText
-        self.present(controller, animated: true, completion: nil)
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.navigationBar.isHidden = true
+        navigation.modalPresentationStyle = .overCurrentContext
+        self.present(navigation, animated: true, completion: nil)
     }
     
     func askToEndReservation() {

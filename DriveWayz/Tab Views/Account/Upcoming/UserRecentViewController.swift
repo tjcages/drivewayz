@@ -837,7 +837,7 @@ extension UserRecentViewController: MGLMapViewDelegate {
     }
     
     func setupQuickController(minute: Double) {
-        let time = minute.rounded(toPlaces: 0)
+        let time = minute.rounded()
         let distanceTime = String(format: "%.0f min", time)
         let distanceWidth = distanceTime.width(withConstrainedHeight: 30, font: Fonts.SSPSemiBoldH3) + 94
         self.quickParkingController.distanceLabel.text = distanceTime

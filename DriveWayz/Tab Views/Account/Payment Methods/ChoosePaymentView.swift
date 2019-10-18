@@ -32,7 +32,6 @@ class ChoosePaymentView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 24
         view.clipsToBounds = true
         
         return view
@@ -84,10 +83,10 @@ class ChoosePaymentView: UIViewController {
     var newCardButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Add payment method", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPSemiBoldH3
+        button.titleLabel?.font = Fonts.SSPRegularH3
         let icon = UIImage(named: "plusIcon")?.withRenderingMode(.alwaysTemplate)
         button.tintColor = Theme.WHITE
         button.setImage(icon, for: .normal)

@@ -39,8 +39,8 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         return commentInputAccessoryView
     }()
     
-    let gradientController: GradientContainerViewController = {
-        let controller = GradientContainerViewController()
+    let gradientController: GradientContainerView = {
+        let controller = GradientContainerView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.mainLabel.text = "Drivewayz Support"
         controller.backButton.addTarget(self, action: #selector(backButtonDismissed), for: .touchUpInside)

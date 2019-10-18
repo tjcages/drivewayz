@@ -12,7 +12,12 @@ import GooglePlaces
 
 class MapSearchViewController: UIViewController {
     
-    var recentItems: [String: String] = [:]
+    var recentId: [String] = []
+    var recentItems: [String] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     var matchingItems:[GMSAutocompletePrediction] = []
     var delegate: controlSaveLocation?
     var placesClient: GMSPlacesClient?
@@ -70,7 +75,7 @@ class MapSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.WHITE.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.WHITE
         
         self.placesClient = GMSPlacesClient()
         
@@ -151,7 +156,7 @@ class MapSearchViewController: UIViewController {
     }
     
     @objc func handleTextChange(_ myNot: Notification) {
-        recentItems = [:]
+        recentItems = []
         if let use = myNot.userInfo {
             if let searchBarText = use["text"] as? String {
                 if searchBarText == "" {
@@ -175,47 +180,78 @@ class MapSearchViewController: UIViewController {
         }
     }
     
-    func saveNewTerms(address: String) {
+    func saveNewTerms(placeId: String) {
         let userDefaults = UserDefaults.standard
         if let firstRecent = userDefaults.value(forKey: "firstSavedRecentTerm") {
             let first = firstRecent as! String
-            if first != address {
+            if first != placeId {
                 if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
                     let second = secondRecent as! String
-                    if second == address {
-                        userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                    if second == placeId {
+                        userDefaults.setValue(placeId, forKey: "firstSavedRecentTerm")
                         userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
                     } else {
-                        userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                        userDefaults.setValue(placeId, forKey: "firstSavedRecentTerm")
                         userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
                     }
                 } else {
-                    userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+                    userDefaults.setValue(placeId, forKey: "firstSavedRecentTerm")
                     userDefaults.setValue(first, forKey: "secondSavedRecentTerm")
                 }
             }
         } else {
-            userDefaults.setValue(address, forKey: "firstSavedRecentTerm")
+            userDefaults.setValue(placeId, forKey: "firstSavedRecentTerm")
         }
         userDefaults.synchronize()
     }
     
     func checkRecentSearches() {
-        self.recentItems = [:]
+        recentItems = []
+        recentId = []
         let userDefaults = UserDefaults.standard
         if let firstRecent = userDefaults.value(forKey: "firstSavedRecentTerm") {
-            let first = firstRecent as! String
-            self.recentItems.updateValue(first, forKey: "Recent")
-        } else {
-            self.recentItems.updateValue("nil", forKey: "Home")
+            let saved = firstRecent as! String
+            
+            let placesClient = GMSPlacesClient.shared()
+            placesClient.lookUpPlaceID(saved) { (place, error) in
+                if let error = error {
+                    print("lookup place id query error: \(error.localizedDescription)")
+                    return
+                }
+                guard let place = place else {
+                    print("No place details for \(saved)")
+                    return
+                }
+                if let address = place.name {
+                    self.recentId.append(saved)
+                    self.recentItems.append(address)
+                } else if let address = place.formattedAddress {
+                    self.recentId.append(saved)
+                    self.recentItems.append(address)
+                }
+            }
         }
         if let secondRecent = userDefaults.value(forKey: "secondSavedRecentTerm") {
-            let second = secondRecent as! String
-            self.recentItems.updateValue(second, forKey: "Recent1")
-        } else {
-            self.recentItems.updateValue("nil", forKey: "Work")
+            let saved = secondRecent as! String
+            let placesClient = GMSPlacesClient.shared()
+            placesClient.lookUpPlaceID(saved) { (place, error) in
+                if let error = error {
+                    print("lookup place id query error: \(error.localizedDescription)")
+                    return
+                }
+                guard let place = place else {
+                    print("No place details for \(saved)")
+                    return
+                }
+                if let address = place.name {
+                    self.recentItems.append(address)
+                    self.recentId.append(saved)
+                } else if let address = place.formattedAddress {
+                    self.recentItems.append(address)
+                    self.recentId.append(saved)
+                }
+            }
         }
-        self.tableView.reloadData()
     }
     
 }
@@ -240,128 +276,53 @@ extension MapSearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row < 2 && recentItems.count > 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LocationRecentsCell
-            cell.pinImageView.backgroundColor = lineColor
-            cell.pinImageView.tintColor = Theme.DARK_GRAY
-            if let selectedItem = recentItems["Recent"], indexPath.row == 0 {
-                cell.titleTextView.text = "Recent"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LocationRecentsCell
+        cell.selectionStyle = .none
+        if indexPath.row < 2 && recentItems.count > indexPath.row && recentId.count > indexPath.row {
+            cell.setRecent()
+            if let selectedItem = recentItems.first, let placeID = recentId.first, indexPath.row == 0 {
                 cell.nameTextView.text = selectedItem
-                let image = UIImage(named: "parking_history")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                cell.pinImageView.setImage(tintedImage, for: .normal)
-                cell.titleTextView.text = "Recent"
-//                cell.pinImageView.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                cell.distanceLabel.alpha = 0
-            } else if let selectedItem = recentItems["Recent1"] {
-                cell.titleTextView.text = "Recent"
+                cell.placeID = placeID
+            } else if let selectedItem = recentItems.last, let placeID = recentId.last {
                 cell.nameTextView.text = selectedItem
-                let image = UIImage(named: "parking_history")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                cell.pinImageView.setImage(tintedImage, for: .normal)
-                cell.titleTextView.text = "Recent"
-//                cell.pinImageView.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                cell.distanceLabel.alpha = 0
-            } else if var selectedItem = recentItems["Home"] {
-                cell.titleTextView.text = "Home"
-                if selectedItem == "nil" { selectedItem = "Set home" }
-                cell.nameTextView.text = selectedItem
-                let image = UIImage(named: "parking")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                cell.pinImageView.tintColor = Theme.WHITE
-                cell.pinImageView.setImage(tintedImage, for: .normal)
-                cell.titleTextView.text = "Home"
-                cell.pinImageView.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-                cell.pinImageView.backgroundColor = Theme.STRAWBERRY_PINK
-                cell.distanceLabel.alpha = 0
-            } else if var selectedItem = recentItems["Work"] {
-                cell.titleTextView.text = "Work"
-                if selectedItem == "nil" { selectedItem = "Set home" }
-                cell.nameTextView.text = selectedItem
-                let image = UIImage(named: "parking")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                cell.pinImageView.tintColor = Theme.WHITE
-                cell.pinImageView.setImage(tintedImage, for: .normal)
-                cell.titleTextView.text = "Home"
-                cell.pinImageView.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-                cell.pinImageView.backgroundColor = Theme.STRAWBERRY_PINK
-                cell.distanceLabel.alpha = 0
+                cell.placeID = placeID
             }
-            cell.alpha = 1
-            cell.selectionStyle = .none
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LocationRecentsCell
-            if indexPath.row < matchingItems.count {
+            cell.setNormal()
+            if matchingItems.count > indexPath.row {
                 let selectedItem = matchingItems[indexPath.row - recentItems.count]
                 cell.titleTextView.text = selectedItem.attributedPrimaryText.string
                 cell.nameTextView.text = selectedItem.attributedSecondaryText?.string
                 cell.specificAddress = selectedItem.attributedFullText.string
-                let image = UIImage(named: "parkingSpaceIcon")
-                let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-                cell.pinImageView.setImage(tintedImage, for: .normal)
-                cell.pinImageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-                cell.pinImageView.backgroundColor = UIColor.clear
-                cell.pinImageView.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-                
-                if let currentLocation = userMostRecentLocation {
-                    
-                    let placeID = selectedItem.placeID
-                    let placesClient = GMSPlacesClient.shared()
-                    placesClient.lookUpPlaceID(placeID) { (place, error) in
-                        if let error = error {
-                            print("lookup place id query error: \(error.localizedDescription)")
-                            return
-                        }
-                        guard let place = place else {
-                            print("No place details for \(placeID)")
-                            return
-                        }
-                        
-                        let searchedLatitude = place.coordinate.latitude
-                        let searchedLongitude = place.coordinate.longitude
-                        let searchedCoordinate = CLLocationCoordinate2D(latitude: searchedLatitude, longitude: searchedLongitude)
-                        let distance = currentLocation.distance(to: searchedCoordinate)
-                        let miles = distance/1609.34 //miles
-                        if miles <= 50 {
-                            let distanceString = String(format: "%.1f mi", miles)
-                            cell.distanceLabel.text = distanceString
-                            cell.distanceLabel.alpha = 1
-                        } else {
-                            cell.distanceLabel.alpha = 0
-                        }
-                    }
-                }
+                cell.placeID = selectedItem.placeID
             }
-            cell.alpha = 1
-            cell.selectionStyle = .none
             
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? LocationRecentsCell {
-            if cell.distanceLabel.alpha == 1 {
-                guard let address = cell.specificAddress else { return }
-                self.delegate?.zoomToSearchLocation(address: address)
-                self.saveNewTerms(address: address)
-                self.matchingItems = []
-                self.recentItems = [:]
-            } else {
-                guard let address = cell.nameTextView.text else { return }
-                if cell.titleTextView.text == "Home" {
-                    cell.backgroundColor = Theme.BLUE.withAlphaComponent(0.4)
-                } else {
-                    cell.backgroundColor = UIColor.clear
-                    self.delegate?.zoomToSearchLocation(address: address)
-                    self.saveNewTerms(address: address)
-                    self.matchingItems = []
-                    self.recentItems = [:]
-                }
-            }
+        let cell = tableView.cellForRow(at: indexPath) as! LocationRecentsCell
+        if let placeId = cell.placeID {
+            delegate?.zoomToSearchLocation(placeId: placeId)
+            saveNewTerms(placeId: placeId)
+            
+            matchingItems = []
+            recentItems = []
         }
+//
+//
+//        guard let address = cell.specificAddress else { return }
+//        if let placeID = cell.placeID {
+////            self.
+//        } else {
+//            self.delegate?.zoomToSearchLocation(address: address, coordinate: nil)
+//            self.saveNewTerms(placeId: placeID)
+//            self.matchingItems = []
+//            self.recentItems = []
+//        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -377,26 +338,26 @@ extension MapSearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 class LocationRecentsCell: UITableViewCell {
     
-    var fullAddress: String?
     var specificAddress: String?
+    var placeID: String?
+    var coordinate: CLLocationCoordinate2D?
     
     var pinImageView: UIButton = {
         let button = UIButton()
         let image = UIImage(named: "parking_history")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
+        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = lineColor
         button.layer.cornerRadius = 35/2
-//        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
     }()
     
     var titleTextView: UILabel = {
         let label = UILabel()
-        label.text = "Home"
         label.font = Fonts.SSPSemiBoldH4
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.BLACK
@@ -406,22 +367,9 @@ class LocationRecentsCell: UITableViewCell {
     
     var nameTextView: UILabel = {
         let label = UILabel()
-        label.text = "Set home"
         label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
-        
-        return label
-    }()
-    
-    var distanceLabel: UILabel = {
-        let label = UILabel()
-        label.text = "2.6 miles"
-        label.font = Fonts.SSPRegularH5
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
-        label.textAlignment = .right
-        label.alpha = 0
+        label.textColor = Theme.PRUSSIAN_BLUE
         
         return label
     }()
@@ -435,7 +383,6 @@ class LocationRecentsCell: UITableViewCell {
         addSubview(pinImageView)
         addSubview(titleTextView)
         addSubview(nameTextView)
-        addSubview(distanceLabel)
         
         pinImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
         pinImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -445,18 +392,26 @@ class LocationRecentsCell: UITableViewCell {
         titleTextView.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: 4).isActive = true
         titleTextView.leftAnchor.constraint(equalTo: pinImageView.rightAnchor, constant: 12).isActive = true
         titleTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        titleTextView.rightAnchor.constraint(equalTo: distanceLabel.leftAnchor, constant: -4).isActive = true
+        titleTextView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         
         nameTextView.topAnchor.constraint(equalTo: self.centerYAnchor, constant: -2).isActive = true
         nameTextView.leftAnchor.constraint(equalTo: pinImageView.rightAnchor, constant: 12).isActive = true
         nameTextView.heightAnchor.constraint(equalToConstant: 25).isActive = true
         nameTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -72).isActive = true
         
-        distanceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -24).isActive = true
-        distanceLabel.centerYAnchor.constraint(equalTo: titleTextView.centerYAnchor).isActive = true
-        distanceLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        distanceLabel.sizeToFit()
-        
+    }
+    
+    func setRecent() {
+        titleTextView.text = "Recent"
+        let image = UIImage(named: "parking_history")?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        pinImageView.setImage(image, for: .normal)
+        pinImageView.backgroundColor = lineColor
+    }
+    
+    func setNormal() {
+        let image = UIImage(named: "parkingSpaceIcon")?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        pinImageView.setImage(image, for: .normal)
+        pinImageView.backgroundColor = UIColor.clear
     }
     
     required init?(coder aDecoder: NSCoder) {

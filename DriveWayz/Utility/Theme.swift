@@ -43,7 +43,7 @@ class Theme {
     static let LightPink = UIColor(red: 254/255, green: 155/255, blue: 134/255, alpha: 1)
     static let DarkPink = UIColor(red: 241/255, green: 88/255, blue: 135/255, alpha: 1)
     static let LightGreen = UIColor(red: 157/255, green: 230/255, blue: 134/255, alpha: 1)
-    static let DarkGreen = UIColor(red: 47/255, green: 173/255, blue: 102/255, alpha: 1)
+    static let DarkGreen = UIColor(red: 10/255, green: 131/255, blue: 51/255, alpha: 1)
     static let LightRed = UIColor(red: 250/255, green: 123/255, blue: 126/255, alpha: 1)
     static let DarkRed = UIColor(red: 239/255, green: 96/255, blue: 102/255, alpha: 1)
     static let LightPurple = UIColor(red: 156/255, green: 163/255, blue: 249/255, alpha: 1)

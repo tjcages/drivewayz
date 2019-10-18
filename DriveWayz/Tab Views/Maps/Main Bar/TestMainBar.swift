@@ -9,16 +9,53 @@
 import UIKit
 
 protocol handleInviteControllers {
-    func searchRecentsPressed(address: String)
-    func changeRecentsHeight(height: CGFloat)
-    func openEvents()
+    func changeRecentsHeight(number: Int)
+}
+
+var mainBarDifference: CGFloat = 304
+var mainBarLowestHeight: CGFloat = 160
+var mainBarNormalHeight: CGFloat = 300 {
+    didSet {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "readjustMainBar"), object: nil)
+        mainBarHighestHeight = mainBarNormalHeight + mainBarDifference
+    }
+}
+var mainBarHighestHeight: CGFloat = mainBarNormalHeight + mainBarDifference
+
+enum MainBarRecents: CGFloat {
+    case noRecents = 300
+    case oneRecents = 322
+    case twoRecents = 382
 }
 
 class TestMainBar: UIViewController {
     
     var delegate: mainBarSearchDelegate?
+    var mainBarRecents: MainBarRecents = .noRecents {
+        didSet {
+            mainBarNormalHeight = self.mainBarRecents.rawValue
+            if self.mainBarBanner {
+                mainBarNormalHeight += bannerHeight
+            }
+            mainBarHighestHeight = mainBarNormalHeight + mainBarDifference
+        }
+    }
+    
+    var bannerHeight: CGFloat = 75
+    var mainBarBanner: Bool = false {
+        didSet {
+            if self.mainBarBanner {
+                mainBarNormalHeight += bannerHeight
+                mainBarLowestHeight += bannerHeight
+            } else {
+                mainBarNormalHeight -= bannerHeight
+                mainBarLowestHeight -= bannerHeight
+            }
+        }
+    }
     
     var reservationsOpen: Bool = false
+    var couponsOpen: Bool = false
     
     var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -26,9 +63,9 @@ class TestMainBar: UIViewController {
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.decelerationRate = .fast
-        view.backgroundColor = lineColor
         view.isScrollEnabled = false
         view.clipsToBounds = true
+        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
         
         return view
     }()
@@ -37,13 +74,22 @@ class TestMainBar: UIViewController {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
-        view.spacing = 6
+        view.spacing = -1
+        view.backgroundColor = Theme.WHITE
         
         return view
     }()
     
-    lazy var searchController: TestSearchViewController = {
-        let controller = TestSearchViewController()
+    lazy var bannerController: MainBannerView = {
+        let controller = MainBannerView()
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        self.addChild(controller)
+        
+        return controller
+    }()
+    
+    lazy var searchController: MainSearchView = {
+        let controller = MainSearchView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
         controller.delegate = self
@@ -51,37 +97,19 @@ class TestMainBar: UIViewController {
         return controller
     }()
     
-    lazy var newHostController: NewHostBannerViewController = {
-        let controller = NewHostBannerViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        let host = UITapGestureRecognizer(target: self, action: #selector(newHostControllerPressed))
-        controller.view.addGestureRecognizer(host)
-        
-        return controller
-    }()
-    
-    lazy var inviteController: RecommendViewController = {
-        let controller = RecommendViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        controller.inviteButton.addTarget(self, action: #selector(inviteNewUser), for: .touchUpInside)
-        
-        return controller
-    }()
-    
-    lazy var eventsController: TestEventsViewController = {
-        let controller = TestEventsViewController()
+    lazy var optionsController: MainOptionsView = {
+        let controller = MainOptionsView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
         
         return controller
     }()
     
-    lazy var reservationsController: ReservationBannerView = {
-        let controller = ReservationBannerView()
+    lazy var quickController: MainQuickView = {
+        let controller = MainQuickView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         self.addChild(controller)
+        controller.view.alpha = 0
         
         return controller
     }()
@@ -89,7 +117,6 @@ class TestMainBar: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.WHITE
         view.layer.shadowColor = Theme.DARK_GRAY.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -6)
         view.layer.shadowRadius = 10
@@ -102,28 +129,42 @@ class TestMainBar: UIViewController {
     }
     
     func setupViews() {
-        setupSearch(0, last: false)
-        setupInvite(0, last: true)
-        setupHostBanner(0, last: true)
-        setupEvents(0, last: true)
-        setupReservations(0, last: false)
+        setupBanner(0, last: false)
+        setupSearch(0, last: true)
+        setupOptions(0, last: true)
+        setupQuick(0, last: true)
     }
+    
+    var scrollViewTopAnchor: NSLayoutConstraint!
     
     func setupStack() {
         
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth, height: 860)
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        view.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: phoneWidth, height: phoneHeight * 5/4)
+        scrollViewTopAnchor = scrollView.topAnchor.constraint(equalTo: view.topAnchor)
+            scrollViewTopAnchor.isActive = true
+        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 24).isActive = true
         
         scrollView.addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        stackView.anchor(top: scrollView.topAnchor, left: view.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+    
+    }
+    
+    var bannerHeightAnchor: NSLayoutConstraint!
+    
+    func setupBanner(_ index: Int, last: Bool) {
+        bannerController.view.alpha = 1
+        if last {
+            stackView.addArrangedSubview(bannerController.view)
+        } else {
+            stackView.insertArrangedSubview(bannerController.view, at: index)
+        }
+        bannerHeightAnchor = bannerController.view.heightAnchor.constraint(equalToConstant: bannerHeight)
+            bannerHeightAnchor.isActive = true
         
+        mainBarBanner = true
     }
     
     var searchHeightAnchor: NSLayoutConstraint!
@@ -134,120 +175,129 @@ class TestMainBar: UIViewController {
         } else {
             stackView.insertArrangedSubview(searchController.view, at: index)
         }
-        searchHeightAnchor = searchController.view.heightAnchor.constraint(equalToConstant: 176)
+        searchHeightAnchor = searchController.view.heightAnchor.constraint(equalToConstant: 232)
             searchHeightAnchor.isActive = true
+        
+        searchController.durationBottomController.parkNowButton.addTarget(self, action: #selector(reserveSpotPressed(sender:)), for: .touchUpInside)
+        searchController.durationBottomController.reserveSpotButton.addTarget(self, action: #selector(reserveSpotPressed(sender:)), for: .touchUpInside)
     }
     
-    func setupHostBanner(_ index: Int, last: Bool) {
+    func setupOptions(_ index: Int, last: Bool) {
         if last {
-            stackView.addArrangedSubview(newHostController.view)
+            stackView.addArrangedSubview(optionsController.view)
         } else {
-            stackView.insertArrangedSubview(newHostController.view, at: index)
+            stackView.insertArrangedSubview(optionsController.view, at: index)
         }
-        newHostController.view.heightAnchor.constraint(equalToConstant: 140).isActive = true
+        optionsController.view.heightAnchor.constraint(equalToConstant: optionsController.cellHeight + 124).isActive = true
     }
     
-    func setupInvite(_ index: Int, last: Bool) {
+    func setupQuick(_ index: Int, last: Bool) {
         if last {
-            stackView.addArrangedSubview(inviteController.view)
+            stackView.addArrangedSubview(quickController.view)
         } else {
-            stackView.insertArrangedSubview(inviteController.view, at: index)
+            stackView.insertArrangedSubview(quickController.view, at: index)
         }
-        inviteController.view.heightAnchor.constraint(equalToConstant: 178).isActive = true
+        quickController.view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        quickController.firstButton.addTarget(self, action: #selector(firstQuickOptionPressed), for: .touchUpInside)
+        quickController.firstLabel.addTarget(self, action: #selector(firstQuickOptionPressed), for: .touchUpInside)
+        quickController.secondButton.addTarget(self, action: #selector(secondQuickOptionPressed), for: .touchUpInside)
+        quickController.secondLabel.addTarget(self, action: #selector(secondQuickOptionPressed), for: .touchUpInside)
+        quickController.thirdButton.addTarget(self, action: #selector(thirdQuickOptionPressed), for: .touchUpInside)
+        quickController.thirdLabel.addTarget(self, action: #selector(thirdQuickOptionPressed), for: .touchUpInside)
     }
     
-    func setupEvents(_ index: Int, last: Bool) {
-        if last {
-            stackView.addArrangedSubview(eventsController.view)
-        } else {
-            stackView.insertArrangedSubview(eventsController.view, at: index)
+    func showQuickOptions() {
+        bannerHeightAnchor.constant = 0
+        scrollViewTopAnchor.constant = 120
+        UIView.animate(withDuration: animationOut, animations: {
+            self.bannerController.view.alpha = 0
+            self.scrollView.layer.cornerRadius = 24
+            self.searchController.view.layer.cornerRadius = 24
+            self.optionsController.view.layer.cornerRadius = 24
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.scrollViewTopAnchor.constant = 0
+            self.quickController.animateQuickViews()
+            UIView.animate(withDuration: animationOut * 2, delay: 0, usingSpringWithDamping: 3, initialSpringVelocity: 3, options: .curveEaseInOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
         }
-        eventsController.view.heightAnchor.constraint(equalToConstant: eventsController.cellHeight).isActive = true
     }
     
-    var reservationsHeightAnchor: NSLayoutConstraint!
-    
-    func setupReservations(_ index: Int, last: Bool) {
-        if last {
-            stackView.addArrangedSubview(reservationsController.view)
-        } else {
-            stackView.insertArrangedSubview(reservationsController.view, at: index)
+    func hideQuickOptions() {
+        bannerHeightAnchor.constant = 72
+        scrollViewTopAnchor.constant = 0
+        quickController.dismissQuickViews()
+        UIView.animate(withDuration: animationOut) {
+            self.bannerController.view.alpha = 1
+            self.scrollView.layer.cornerRadius = 0
+            self.searchController.view.layer.cornerRadius = 0
+            self.optionsController.view.layer.cornerRadius = 0
+            self.view.layoutIfNeeded()
         }
-        reservationsHeightAnchor = reservationsController.view.heightAnchor.constraint(equalToConstant: 72)
-            reservationsHeightAnchor.isActive = true
+    }
+    
+    @objc func firstQuickOptionPressed() {
+        delegate?.quickHelp()
+    }
+    
+    @objc func secondQuickOptionPressed() {
+        delegate?.quickNewHost()
+    }
+    
+    @objc func thirdQuickOptionPressed() {
+        delegate?.quickAccount()
     }
     
 }
 
 extension TestMainBar {
     
-    func changeRecentsHeight(height: CGFloat) {
-        searchHeightAnchor.constant = 156 + height
-        UIView.animate(withDuration: animationIn) {
-            self.searchController.recentsTableView.alpha = 1
-            self.view.layoutIfNeeded()
+    @objc func reserveSpotPressed(sender: UIButton) {
+        if sender == searchController.durationBottomController.parkNowButton {
+            delegate?.showDuration(parkNow: true)
+        } else {
+            delegate?.showDuration(parkNow: false)
         }
+    }
+    
+    func changeRecentsHeight(number: Int) {
+//        if number == 1 {
+//            mainBarRecents = .oneRecents
+//        } else if number == 2 {
+//            mainBarRecents = .twoRecents
+//        }
+//        let height = searchController.cellHeight * CGFloat(number)
+//        searchHeightAnchor.constant = 224 + height
+//        UIView.animate(withDuration: animationIn) {
+//            self.searchController.recentsTableView.alpha = 1
+//            self.view.layoutIfNeeded()
+//        }
     }
     
     func expandReservations() {
         reservationsOpen = true
-        reservationsHeightAnchor.constant += 100
-        reservationsController.expandBanner()
+        bannerHeightAnchor.constant += 100
+        bannerController.expandBanner()
     }
     
     func closeReservations() {
         reservationsOpen = false
-        reservationsHeightAnchor.constant -= 100
-        reservationsController.closeBanner()
+        bannerHeightAnchor.constant -= 100
+        bannerController.closeBanner()
     }
     
 }
 
 extension TestMainBar: handleInviteControllers {
     
-    func searchRecentsPressed(address: String) {
-        self.delegate?.zoomToSearchLocation(address: address)
-    }
-    
     @objc func newHostControllerPressed() {
-        self.scrollView.setContentOffset(.zero, animated: true)
-        self.delegate?.becomeANewHost()
-        delayWithSeconds(2) {
-            self.scrollView.isScrollEnabled = false
-        }
-    }
-    
-    func openEvents() {
-
-    }
-    
-    @objc func inviteNewUser() {
-        if let url = self.inviteController.dynamicLink {
-            let promoText = "Check out Drivewayz the parking rental app!"
-            let activityVC = UIActivityViewController(activityItems: [promoText, url], applicationActivities: nil)
-            present(activityVC, animated: true, completion: nil)
-            
-            delayWithSeconds(4) {
-                guard let currentUser = Auth.auth().currentUser?.uid else {return}
-                let ref = Database.database().reference().child("users").child(currentUser)
-                ref.child("Coupons").observeSingleEvent(of: .value) { (snapshot) in
-                    if let dictionary = snapshot.value as? [String:AnyObject] {
-                        if (dictionary["INVITE10"] as? String) != nil {
-                            let alert = UIAlertController(title: "Sorry", message: "You can only get one 10% off coupon for sharing.", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                            self.present(alert, animated: true)
-                            return
-                        } else {
-                            ref.child("Coupons").updateChildValues(["INVITE10": "10% off coupon!"])
-                            ref.child("CurrentCoupon").updateChildValues(["invite": 10])
-                            let alert = UIAlertController(title: "Thanks for sharing!", message: "You have successfully invited your friend and recieved a 10% off coupon for your next rental.", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                            self.present(alert, animated: true)
-                        }
-                    }
-                }
-            }
-        }
+//        self.scrollView.setContentOffset(.zero, animated: true)
+//        self.delegate?.becomeANewHost()
+//        delayWithSeconds(2) {
+//            self.scrollView.isScrollEnabled = false
+//        }
     }
     
 }
@@ -258,6 +308,7 @@ extension TestMainBar: UIScrollViewDelegate {
         view.endEditing(true)
         shouldDragMainBar = true
         let translation = scrollView.contentOffset.y
+        
         if translation < 0 {
             scrollView.contentOffset.y = 0.0
             scrollView.isScrollEnabled = false

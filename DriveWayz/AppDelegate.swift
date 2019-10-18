@@ -26,6 +26,8 @@ var solar: SolarTime = .day
 let NetworkReachabilityChanged = NSNotification.Name("NetworkReachabilityChanged")
 var previousNetworkReachabilityStatus: AFNetworkReachabilityStatus = .unknown
 
+var currentBooking: Bookings?
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     

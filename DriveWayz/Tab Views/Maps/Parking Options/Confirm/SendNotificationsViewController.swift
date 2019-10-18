@@ -15,8 +15,8 @@ import MapboxStatic
 extension ConfirmViewController: UNUserNotificationCenterDelegate {
     
     func setupNotifications() {
-        self.checkCoupons()
-        self.postBookingToDatabase()
+        checkCoupons()
+        postBookingToDatabase()
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound])
         { (granted, error) in
@@ -37,10 +37,10 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                         let center = UNUserNotificationCenter.current()
                         center.setNotificationCategories([category])
                         
-                        if let parking = self.parking, let parkingLat = parking.latitude, let parkingLong = parking.longitude, let hours = self.hours {
-                            let seconds = hours * 3600
+//                        if let parking = self.parking, let parkingLat = parking.latitude, let parkingLong = parking.longitude, let hours = self.hours {
+//                            let seconds = hours * 3600
 //                            self.sendNotifications(latitude: parkingLat, longitude: parkingLong, seconds: seconds)
-                        }
+//                        }
                     }
                 }
             }
@@ -92,11 +92,13 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                 firstContent.badge = 0
                 firstContent.sound = UNNotificationSound.default
                 
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
-                let request = UNNotificationRequest(identifier: "firstNotificationIdentifier", content: firstContent, trigger: trigger)
-                center.add(request) { (error) in
-                    if error != nil {
-                        print("Error sending first notification: ", error!)
+                if endingSeconds > 0 {
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
+                    let request = UNNotificationRequest(identifier: "firstNotificationIdentifier", content: firstContent, trigger: trigger)
+                    center.add(request) { (error) in
+                        if error != nil {
+                            print("Error sending first notification: ", error!)
+                        }
                     }
                 }
             } else if index == 1 {
@@ -110,11 +112,13 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                     secondContent.sound = UNNotificationSound.default
                     secondContent.categoryIdentifier = "actionCategory"
                     
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
-                    let request = UNNotificationRequest(identifier: "secondNotificationIdentifier", content: secondContent, trigger: trigger)
-                    center.add(request) { (error) in
-                        if error != nil {
-                            print("Error sending second notification: ", error!)
+                    if endingSeconds > 0 {
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
+                        let request = UNNotificationRequest(identifier: "secondNotificationIdentifier", content: secondContent, trigger: trigger)
+                        center.add(request) { (error) in
+                            if error != nil {
+                                print("Error sending second notification: ", error!)
+                            }
                         }
                     }
                 }
@@ -129,11 +133,13 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                     thirdContent.sound = UNNotificationSound.default
                     thirdContent.categoryIdentifier = "actionCategory"
                     
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
-                    let request = UNNotificationRequest(identifier: "thirdNotificationIdentifier", content: thirdContent, trigger: trigger)
-                    center.add(request) { (error) in
-                        if error != nil {
-                            print("Error sending third notification: ", error!)
+                    if endingSeconds > 0 {
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
+                        let request = UNNotificationRequest(identifier: "thirdNotificationIdentifier", content: thirdContent, trigger: trigger)
+                        center.add(request) { (error) in
+                            if error != nil {
+                                print("Error sending third notification: ", error!)
+                            }
                         }
                     }
                 }
@@ -146,11 +152,13 @@ extension ConfirmViewController: UNUserNotificationCenterDelegate {
                     fourthContent.badge = 0
                     fourthContent.sound = UNNotificationSound.default
                     
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
-                    let request = UNNotificationRequest(identifier: "fourthNotificationIdentifier", content: fourthContent, trigger: trigger)
-                    center.add(request) { (error) in
-                        if error != nil {
-                            print("Error sending fourth notification: ", error!)
+                    if endingSeconds > 0 {
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(endingSeconds), repeats: false)
+                        let request = UNNotificationRequest(identifier: "fourthNotificationIdentifier", content: fourthContent, trigger: trigger)
+                        center.add(request) { (error) in
+                            if error != nil {
+                                print("Error sending fourth notification: ", error!)
+                            }
                         }
                     }
                 }

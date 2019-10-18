@@ -87,7 +87,6 @@ class ExpandedBookingsViewController: UIViewController {
     var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 24
         view.clipsToBounds = true
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
@@ -100,7 +99,6 @@ class ExpandedBookingsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 24
         
         return view
     }()

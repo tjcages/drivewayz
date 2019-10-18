@@ -18,9 +18,6 @@ protocol handleHoursSelected {
 //    func changeToLongterm()
 }
 
-var bookingFromDate = Date()
-var bookingToDate = Date().addingTimeInterval(TimeInterval(8100))
-
 class DurationViewController: UIViewController, handleHoursSelected {
     
     var delegate: handleCheckoutParking?

@@ -19,6 +19,7 @@ class NewCardView: UIViewController {
     
     var delegate: updatePaymentMethod?
     var paymentMethods: [PaymentMethod] = []
+    var cardName: String?
     
     var paymentCardTextField: STPPaymentCardTextField = {
         let field = STPPaymentCardTextField()
@@ -90,7 +91,7 @@ class NewCardView: UIViewController {
         button.backgroundColor = lineColor
         button.setTitle("Save Card", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         
@@ -102,10 +103,10 @@ class NewCardView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "camera")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.BLUE
+        button.tintColor = Theme.WHITE
         button.addTarget(self, action: #selector(openCardRecognizer), for: .touchUpInside)
         button.layer.cornerRadius = 4
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.DARK_GRAY
         
         return button
     }()
@@ -222,6 +223,9 @@ class NewCardView: UIViewController {
         let params = STPCardParams()
         params.number = cardParams.number
         if let monthNumber = cardParams.expMonth, let month = UInt(exactly: monthNumber), let yearNumber = cardParams.expYear, let year = UInt(exactly: yearNumber) {
+            if let name = cardName {
+                params.name = name
+            }
             params.expMonth = month
             params.expYear = year
             params.cvc = cardParams.cvc
@@ -255,7 +259,6 @@ class NewCardView: UIViewController {
                 })
             }
         }
-        
     }
     
 }
@@ -273,6 +276,7 @@ extension NewCardView: STPPaymentCardTextFieldDelegate, handleCardRecognition {
         }
         if let name = result.recognizedHolderName {
             params.name = name
+            cardName = name
         }
         paymentCardTextField.cardParams = STPPaymentMethodCardParams(cardSourceParams: params)
         paymentCardTextField.becomeFirstResponder()
@@ -313,7 +317,7 @@ extension NewCardView: STPPaymentCardTextFieldDelegate, handleCardRecognition {
     func saveButtonAvailable() {
         UIView.animate(withDuration: animationIn) {
             self.saveButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.saveButton.backgroundColor = Theme.BLUE
+            self.saveButton.backgroundColor = Theme.DARK_GRAY
             self.saveButton.isEnabled = true
         }
     }

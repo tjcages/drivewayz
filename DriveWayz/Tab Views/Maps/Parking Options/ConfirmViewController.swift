@@ -10,9 +10,12 @@ import UIKit
 import FirebaseFirestore
 import NVActivityIndicatorView
 
+var paymentNormalHeight: CGFloat = 316
+
 class ConfirmViewController: UIViewController {
     
     var delegate: handleCheckoutParking?
+    var additionalDelegate: handleAdditionalSteps?
     
     var parking: ParkingSpots?
     var fromDate: Date?
@@ -21,9 +24,13 @@ class ConfirmViewController: UIViewController {
     var hours: Double?
     var totalTime: String?
     var discount: Int = 0
+    var currentParkingImage: UIImage?
     
     let paymentController = ChoosePaymentView()
+    let vehicleController = ChooseVehicleView()
+    
     var currentPaymentMethod: PaymentMethod?
+    var currentVehicleMethod: Vehicles?
     
     var paymentInProgress: Bool = false {
         didSet {
@@ -44,71 +51,83 @@ class ConfirmViewController: UIViewController {
         }
     }
     
-    var dimmingView: UIView = {
+    var mainLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Please confirm booking"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPSemiBoldH3
+        
+        return label
+    }()
+    
+    var greetingLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "You can always extend time later"
+        label.textColor = Theme.PRUSSIAN_BLUE
+        label.font = Fonts.SSPRegularH5
+        
+        return label
+    }()
+    
+    var selectionContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
-        view.alpha = 0
+        view.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
         
         return view
     }()
     
-    var spotIcon: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFit
-        view.layer.cornerRadius = 35
-        let image = UIImage(named: "Residential Home Parking")
-        view.image = image
+    var parkingTypeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Prime Spot"
+        label.textColor = Theme.DARK_GRAY
+        label.font = Fonts.SSPSemiBoldH3
         
-        return view
-    }()
-    
-    var checkmark: UIButton = {
-        let image = UIImage(named: "Checkmark")
-        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton()
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.WHITE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 25/2
-        button.backgroundColor = Theme.GREEN_PIGMENT
-        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        button.layer.borderColor = Theme.WHITE.cgColor
-        button.layer.borderWidth = 2
-        button.isUserInteractionEnabled = false
-        
-        return button
+        return label
     }()
     
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = lineColor
         
         return view
     }()
     
-    var durationLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
-        label.text = "5 hours"
-        label.font = Fonts.SSPRegularH4
-        label.textAlignment = .right
+    var durationButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("3:15pm to 4:30pm", for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.contentHorizontalAlignment = .left
         
-        return label
+        return button
     }()
     
     var totalCostLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.DARK_GRAY
         label.text = "$0.00"
-        label.font = Fonts.SSPSemiBoldH1
+        label.font = Fonts.SSPRegularH2
         label.textAlignment = .right
         
         return label
+    }()
+    
+    var informationIcon: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.addTarget(self, action: #selector(informationButtonPressed), for: .touchUpInside)
+        
+        return button
     }()
     
     var couponCostLabel: UILabel = {
@@ -132,12 +151,16 @@ class ConfirmViewController: UIViewController {
         return label
     }()
     
-    var line2: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+    var saleIcon: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "saleIcon")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = Theme.DarkGreen
+        button.transform = CGAffineTransform(scaleX: -0.8, y: 0.8)
+        button.alpha = 0
         
-        return view
+        return button
     }()
     
     var paymentButton: UIButton = {
@@ -154,10 +177,34 @@ class ConfirmViewController: UIViewController {
         return button
     }()
     
+    var vehicleButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add vehicle", for: .normal)
+        button.contentHorizontalAlignment = .right
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.addTarget(self, action: #selector(vehicleButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var vehicleArrowButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 0, unit: .degrees))
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(vehicleButtonPressed), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Purchase Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -175,61 +222,6 @@ class ConfirmViewController: UIViewController {
         
         return loading
     }()
-    
-    var calendarButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "calendarIcon")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
-    var calendarLabel: UIButton = {
-        let label = UIButton()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitle("Today", for: .normal)
-        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH5
-        label.contentHorizontalAlignment = .left
-        
-        return label
-    }()
-    
-    var timeButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "time")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
-    var timeLabel: UIButton = {
-        let label = UIButton()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitle("2 hours 15 minutes", for: .normal)
-        label.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
-        label.titleLabel?.font = Fonts.SSPSemiBoldH5
-        label.contentHorizontalAlignment = .left
-        
-        return label
-    }()
-    
-    var changeButton: UIButton = {
-        let label = UIButton()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitle("Change", for: .normal)
-        label.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
-        label.titleLabel?.font = Fonts.SSPRegularH5
-        label.contentHorizontalAlignment = .right
-        
-        return label
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -241,130 +233,132 @@ class ConfirmViewController: UIViewController {
         view.layer.shadowOpacity = 0.4
         
         setupViews()
-        setupCalendar()
         setupPayment()
-        observePaymentMethod()
+        observePayments()
+        observeVehicles()
     }
     
-    var normalCostAnchor: NSLayoutConstraint!
-    var couponCostAnchor: NSLayoutConstraint!
-
     func setupViews() {
         
-        self.view.addSubview(spotIcon)
-        spotIcon.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        spotIcon.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 18).isActive = true
-        spotIcon.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        spotIcon.heightAnchor.constraint(equalTo: spotIcon.widthAnchor).isActive = true
+        view.addSubview(mainLabel)
+        view.addSubview(greetingLabel)
         
-        self.view.addSubview(checkmark)
-        checkmark.centerXAnchor.constraint(equalTo: spotIcon.rightAnchor, constant: -12).isActive = true
-        checkmark.centerYAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: -12).isActive = true
-        checkmark.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        checkmark.heightAnchor.constraint(equalTo: checkmark.widthAnchor).isActive = true
+        mainLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        mainLabel.sizeToFit()
         
-        self.view.addSubview(couponCostLabel)
-        self.view.addSubview(totalCostLabel)
-        normalCostAnchor = totalCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32)
-            normalCostAnchor.isActive = true
-        couponCostAnchor = totalCostLabel.rightAnchor.constraint(equalTo: couponCostLabel.leftAnchor, constant: -8)
-            couponCostAnchor.isActive = false
-        totalCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 12).isActive = true
-        totalCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        greetingLabel.topAnchor.constraint(equalTo: mainLabel.bottomAnchor, constant: 0).isActive = true
+        greetingLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        greetingLabel.sizeToFit()
+        
+        view.addSubview(selectionContainer)
+        view.addSubview(parkingTypeLabel)
+        view.addSubview(totalCostLabel)
+        view.addSubview(couponCostLabel)
+        view.addSubview(saleIcon)
+        view.addSubview(informationIcon)
+        view.addSubview(durationButton)
+        
+        parkingTypeLabel.topAnchor.constraint(equalTo: selectionContainer.topAnchor, constant: 12).isActive = true
+        parkingTypeLabel.leftAnchor.constraint(equalTo: selectionContainer.leftAnchor, constant: 16).isActive = true
+        parkingTypeLabel.sizeToFit()
+        
+        totalCostLabel.centerYAnchor.constraint(equalTo: parkingTypeLabel.centerYAnchor).isActive = true
+        totalCostLabel.rightAnchor.constraint(equalTo: selectionContainer.rightAnchor, constant: -16).isActive = true
         totalCostLabel.sizeToFit()
         
-        couponCostLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        couponCostLabel.topAnchor.constraint(equalTo: spotIcon.topAnchor, constant: 16).isActive = true
-        couponCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        couponCostLabel.centerYAnchor.constraint(equalTo: durationButton.centerYAnchor).isActive = true
+        couponCostLabel.rightAnchor.constraint(equalTo: totalCostLabel.rightAnchor).isActive = true
         couponCostLabel.sizeToFit()
         
-        self.view.addSubview(durationLabel)
-        durationLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        durationLabel.topAnchor.constraint(equalTo: totalCostLabel.bottomAnchor, constant: 4).isActive = true
-        durationLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        durationLabel.sizeToFit()
+        saleIcon.centerYAnchor.constraint(equalTo: totalCostLabel.centerYAnchor).isActive = true
+        saleIcon.rightAnchor.constraint(equalTo: totalCostLabel.leftAnchor, constant: -4).isActive = true
+        saleIcon.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        saleIcon.widthAnchor.constraint(equalTo: saleIcon.heightAnchor).isActive = true
         
-        self.view.addSubview(line)
-        line.topAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: 16).isActive = true
-        line.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        line.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        informationIcon.centerYAnchor.constraint(equalTo: parkingTypeLabel.centerYAnchor).isActive = true
+        informationIcon.leftAnchor.constraint(equalTo: parkingTypeLabel.rightAnchor, constant: 12).isActive = true
+        informationIcon.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        informationIcon.widthAnchor.constraint(lessThanOrEqualTo: informationIcon.heightAnchor).isActive = true
         
-    }
-    
-    func setupCalendar() {
+        durationButton.topAnchor.constraint(equalTo: parkingTypeLabel.bottomAnchor, constant: 4).isActive = true
+        durationButton.leftAnchor.constraint(equalTo: parkingTypeLabel.leftAnchor).isActive = true
+        durationButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        durationButton.sizeToFit()
         
-        self.view.addSubview(calendarLabel)
-        self.view.addSubview(calendarButton)
-        calendarLabel.leftAnchor.constraint(equalTo: calendarButton.rightAnchor, constant: 12).isActive = true
-        calendarLabel.centerYAnchor.constraint(equalTo: calendarButton.centerYAnchor).isActive = true
-        calendarLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        calendarLabel.sizeToFit()
-        
-        calendarButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        calendarButton.topAnchor.constraint(equalTo: line.bottomAnchor, constant: 14).isActive = true
-        calendarButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        calendarButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        
-        self.view.addSubview(timeLabel)
-        self.view.addSubview(timeButton)
-        timeLabel.leftAnchor.constraint(equalTo: timeButton.rightAnchor, constant: 12).isActive = true
-        timeLabel.centerYAnchor.constraint(equalTo: timeButton.centerYAnchor).isActive = true
-        timeLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        timeLabel.sizeToFit()
-        
-        timeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 32).isActive = true
-        timeButton.topAnchor.constraint(equalTo: calendarButton.bottomAnchor, constant: 12).isActive = true
-        timeButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
-        timeButton.widthAnchor.constraint(equalTo: timeButton.heightAnchor).isActive = true
-        
-        self.view.addSubview(changeButton)
-        changeButton.centerYAnchor.constraint(equalTo: calendarButton.centerYAnchor).isActive = true
-        changeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -32).isActive = true
-        changeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        changeButton.sizeToFit()
+        selectionContainer.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 20).isActive = true
+        selectionContainer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        selectionContainer.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        selectionContainer.bottomAnchor.constraint(equalTo: durationButton.bottomAnchor, constant: 12).isActive = true
         
     }
     
     func setupPayment() {
         
-        self.view.addSubview(mainButton)
-        mainButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -28).isActive = true
-        mainButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -12).isActive = true
-        mainButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        mainButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        view.addSubview(mainButton)
+        mainButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -28).isActive = true
+        mainButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        mainButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        mainButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
-        self.view.addSubview(loadingActivity)
+        view.addSubview(loadingActivity)
         loadingActivity.centerXAnchor.constraint(equalTo: mainButton.centerXAnchor).isActive = true
         loadingActivity.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor).isActive = true
         loadingActivity.widthAnchor.constraint(equalToConstant: 40).isActive = true
         loadingActivity.heightAnchor.constraint(equalTo: loadingActivity.widthAnchor).isActive = true
         
-        self.view.addSubview(paymentButton)
-        paymentButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        paymentButton.rightAnchor.constraint(equalTo: mainButton.leftAnchor).isActive = true
-        paymentButton.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor).isActive = true
+        view.addSubview(paymentButton)
+        paymentButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        paymentButton.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -8).isActive = true
         paymentButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        paymentButton.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
-        self.view.addSubview(line2)
-        line2.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -16).isActive = true
-        line2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        line2.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
-        line2.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        view.addSubview(vehicleButton)
+        view.addSubview(vehicleArrowButton)
         
-        view.addSubview(dimmingView)
-        dimmingView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        vehicleButton.centerYAnchor.constraint(equalTo: paymentButton.centerYAnchor).isActive = true
+        vehicleButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        vehicleButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        vehicleButton.sizeToFit()
+        
+        vehicleArrowButton.rightAnchor.constraint(equalTo: vehicleButton.leftAnchor, constant: -4).isActive = true
+        vehicleArrowButton.centerYAnchor.constraint(equalTo: paymentButton.centerYAnchor).isActive = true
+        vehicleArrowButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        vehicleArrowButton.widthAnchor.constraint(equalTo: vehicleArrowButton.heightAnchor).isActive = true
+        
+        view.addSubview(line)
+        line.bottomAnchor.constraint(equalTo: paymentButton.topAnchor, constant: -8).isActive = true
+        line.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        line.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
     }
     
+    @objc func vehicleButtonPressed() {
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 0.6
+        }) { (success) in
+            self.vehicleController.extendedDelegate = self
+            let navigation = UINavigationController(rootViewController: self.vehicleController)
+            navigation.navigationBar.isHidden = true
+            navigation.modalPresentationStyle = .overCurrentContext
+            self.present(navigation, animated: true, completion: nil)
+        }
+    }
+    
 }
+
 
 // Handle Stripe payments
 extension ConfirmViewController: handleExtendPaymentMethod {
     
     @objc func confirmPurchasePressed(sender: UIButton) {
-        self.setupNotifications()
-        return ///////////////////// TESTING PLEASE REMOVE
+        if currentPaymentMethod == nil || currentVehicleMethod == nil {
+            additionalDelegate?.openAdditionalStep()
+            return
+        }
+//        self.setupNotifications()
+//        return ///////////////////// TESTING PLEASE REMOVE
         
         
         // First check if a payment method is specified
@@ -448,40 +442,140 @@ extension ConfirmViewController: handleExtendPaymentMethod {
         }
     }
     
-    func observePaymentMethod() {
+    @objc func informationButtonPressed() {
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 0.6
+        }) { (success) in
+            let controller = PaymentBreakdownViewController()
+            if let cost = self.totalCostLabel.text, let price = self.price {
+                let hourlyCost = String(format: "$%.2f", price)
+                controller.setData(totalCost: cost, hourlyCost: hourlyCost, discount: self.discount)
+            }
+            controller.delegate = self
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.navigationBar.isHidden = true
+            navigation.modalPresentationStyle = .overCurrentContext
+            self.present(navigation, animated: true, completion: nil)
+        }
+    }
+    
+    func observePayments() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(userId).child("selectedPayment")
-        ref.observe(.childAdded) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: Any] {
-                let paymentMethod = PaymentMethod(dictionary: dictionary)
-                if let cardNumber = paymentMethod.last4 {
+        let db = Firestore.firestore().collection("stripe_customers").document(userId).collection("sources")
+        db.addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            self.paymentController.paymentMethods = []
+            for document in documents {
+                let dataDescription = document.data()
+                
+                let paymentMethod = PaymentMethod(dictionary: dataDescription)
+                if let cardNumber = paymentMethod.last4, paymentMethod.defaultCard {
                     let card = "•••• \(cardNumber)"
                     self.paymentButton.setTitle(card, for: .normal)
                     self.paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
                     let image = setDefaultPaymentMethod(method: paymentMethod)
                     self.paymentButton.setImage(image, for: .normal)
                     self.currentPaymentMethod = paymentMethod
+                    addStepController.currentPaymentMethod = paymentMethod
                 }
             }
         }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.paymentButton.setTitle("Select payment", for: .normal)
-            self.paymentButton.setImage(nil, for: .normal)
-            self.currentPaymentMethod = nil
-            ref.observe(.childAdded, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: Any] {
-                    let paymentMethod = PaymentMethod(dictionary: dictionary)
-                    if let cardNumber = paymentMethod.last4 {
-                        let card = "•••• \(cardNumber)"
-                        self.paymentButton.setTitle(card, for: .normal)
-                        let image = setDefaultPaymentMethod(method: paymentMethod)
-                        self.paymentButton.setImage(image, for: .normal)
-                        self.currentPaymentMethod = paymentMethod
-                    }
+    }
+    
+    func observeVehicles() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore().collection("stripe_customers").document(userId).collection("vehicles")
+        db.addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            self.vehicleController.vehicleMethods = []
+            for document in documents {
+                let dataDescription = document.data()
+                
+                let vehicleMethod = Vehicles(dictionary: dataDescription)
+                if let model = vehicleMethod.vehicleModel, vehicleMethod.defaultVehicle {
+                    self.vehicleButton.setTitle(model, for: .normal)
+                    self.vehicleButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.currentVehicleMethod = vehicleMethod
+                    addStepController.currentVehicleMethod = vehicleMethod
                 }
-            })
+            }
         }
     }
+    
+//    func observePaymentMethod() {
+//        guard let userId = Auth.auth().currentUser?.uid else { return }
+//        let ref = Database.database().reference().child("users").child(userId).child("selectedPayment")
+//        ref.observe(.childAdded) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String: Any] {
+//                let paymentMethod = PaymentMethod(dictionary: dictionary)
+//                if let cardNumber = paymentMethod.last4 {
+//                    let card = "•••• \(cardNumber)"
+//                    self.paymentButton.setTitle(card, for: .normal)
+//                    self.paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+//                    let image = setDefaultPaymentMethod(method: paymentMethod)
+//                    self.paymentButton.setImage(image, for: .normal)
+//                    self.currentPaymentMethod = paymentMethod
+//                    addStepController.currentPaymentMethod = paymentMethod
+//                }
+//            }
+//        }
+//        ref.observe(.childRemoved) { (snapshot) in
+//            self.paymentButton.setTitle("Select payment", for: .normal)
+//            self.paymentButton.setImage(nil, for: .normal)
+//            self.currentPaymentMethod = nil
+//            ref.observe(.childAdded, with: { (snapshot) in
+//                if let dictionary = snapshot.value as? [String: Any] {
+//                    let paymentMethod = PaymentMethod(dictionary: dictionary)
+//                    if let cardNumber = paymentMethod.last4 {
+//                        let card = "•••• \(cardNumber)"
+//                        self.paymentButton.setTitle(card, for: .normal)
+//                        let image = setDefaultPaymentMethod(method: paymentMethod)
+//                        self.paymentButton.setImage(image, for: .normal)
+//                        self.currentPaymentMethod = paymentMethod
+//                        addStepController.currentPaymentMethod = paymentMethod
+//                    }
+//                }
+//            })
+//        }
+//    }
+//
+//    func observeVehicleMethod() {
+//        guard let userId = Auth.auth().currentUser?.uid else { return }
+//        let ref = Database.database().reference().child("users").child(userId).child("selectedVehicle")
+//        ref.observe(.childAdded) { (snapshot) in
+//            if let dictionary = snapshot.value as? [String: Any] {
+//                let vehicleMethod = Vehicles(dictionary: dictionary)
+//                if let model = vehicleMethod.vehicleModel {
+//                    self.vehicleButton.setTitle(model, for: .normal)
+//                    self.vehicleButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+//                    self.currentVehicleMethod = vehicleMethod
+//                    addStepController.currentVehicleMethod = vehicleMethod
+//                }
+//            }
+//        }
+//        ref.observe(.childRemoved) { (snapshot) in
+//            self.vehicleButton.setTitle("Add vehicle", for: .normal)
+//            self.vehicleButton.setImage(nil, for: .normal)
+//            self.currentVehicleMethod = nil
+//            ref.observe(.childAdded, with: { (snapshot) in
+//                if let dictionary = snapshot.value as? [String: Any] {
+//                    let vehicleMethod = Vehicles(dictionary: dictionary)
+//                    if let model = vehicleMethod.vehicleModel {
+//                        self.vehicleButton.setTitle(model, for: .normal)
+//                        self.vehicleButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+//                        self.currentVehicleMethod = vehicleMethod
+//                        addStepController.currentVehicleMethod = vehicleMethod
+//                    }
+//                }
+//            })
+//        }
+//    }
     
     func sendAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -501,88 +595,70 @@ extension ConfirmViewController: handleExtendPaymentMethod {
 // Handle timing and information
 extension ConfirmViewController {
     
-    func changeDates(fromDate: Date, totalTime: String) {
-        var hours: Int = 0
-        var minutes: Int = 0
-        self.totalTime = totalTime
-        let timeArray = totalTime.split(separator: " ")
-        if let hourString = timeArray.dropFirst().first, hourString.contains("h") {
-            if let timeHours = timeArray.first {
-                if let intHours = Int(timeHours) {
-                    hours = intHours
-                }
-            }
-        }
-        if timeArray.count == 2 {
-            if let minuteString = timeArray.dropFirst().first, minuteString.contains("m") {
-                if let timeMinutes = timeArray.first {
-                    if let intMinutes = Int(timeMinutes) {
-                        minutes = intMinutes
-                    }
-                }
-            }
-        } else {
-            if let minuteString = timeArray.dropFirst().dropFirst().dropFirst().first, minuteString.contains("m") {
-                if let timeMinutes = timeArray.dropFirst().dropFirst().first {
-                    if let intMinutes = Int(timeMinutes) {
-                        minutes = intMinutes
-                    }
-                }
-            }
-        }
-        let additionalSeconds: Double = Double((hours * 60 + minutes) * 60)
-        let toDate = fromDate.addingTimeInterval(additionalSeconds)
-        
-        let calendar = Calendar.current
-        let toHour = calendar.component(.minute, from: toDate)
-        let nextDiff = toHour.roundedUp(toMultipleOf: 5) - toHour
-        if let nextDate = calendar.date(byAdding: .minute, value: nextDiff, to: toDate) {
-            self.toDate = nextDate
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm"
-            let fromString = formatter.string(from: fromDate)
-            let toString = formatter.string(from: nextDate)
-            let APformatter = DateFormatter()
-            APformatter.dateFormat = "a"
-            let APString = APformatter.string(from: nextDate).lowercased()
-            
-            let finalString = fromString + " - " + toString + " " + APString
-            self.timeLabel.setTitle(finalString, for: .normal)
-            //            self.durationLabel.text = finalString
-            self.setHourLabel(minutes: Int(hours * 60 + minutes))
-        }
+    func changeDates() {
+        let fromDate = bookingFromDate
+        let toDate = bookingToDate
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMMM d"
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "MMMM d"
-        if let dateWeek = Date().dayOfWeek() {
-            if let dayOfTheWeekFrom = fromDate.dayOfWeek() {
-                var timeString = totalTime
-                timeString = timeString.replacingOccurrences(of: "hrs", with: "hours")
-                timeString = timeString.replacingOccurrences(of: "hr", with: "hour")
-                timeString = timeString.replacingOccurrences(of: "min", with: "minutes")
-                //                self.timeLabel.setTitle(timeString, for: .normal)
-                if dateWeek == dayOfTheWeekFrom {
-                    let fromDay = dayFormatter.string(from: fromDate)
-                    self.calendarLabel.setTitle("Today, \(fromDay)", for: .normal)
-                } else {
-                    let fromDay = formatter.string(from: fromDate)
-                    self.calendarLabel.setTitle(fromDay, for: .normal)
-                }
+        formatter.amSymbol = "am"
+        formatter.pmSymbol = "pm"
+        if fromDate.isInSameDay(date: toDate) {
+            if fromDate.isInToday {
+                formatter.dateFormat = "h:mma"
+                let fromString = formatter.string(from: fromDate)
+                let toString = formatter.string(from: toDate)
+                let overallString = "\(fromString) to \(toString)"
+                durationButton.setTitle(overallString, for: .normal)
+            } else if fromDate.isInTomorrow {
+                formatter.dateFormat = "h:mma"
+                let fromString = formatter.string(from: fromDate)
+                let toString = formatter.string(from: toDate)
+                let overallString = "Tomorrow \(fromString) to \(toString)"
+                durationButton.setTitle(overallString, for: .normal)
+            } else {
+                formatter.dateFormat = "E h:mma"
+                let fromString = formatter.string(from: fromDate)
+                formatter.dateFormat = "h:mma"
+                let toString = formatter.string(from: toDate)
+                let overallString = "\(fromString) to \(toString)"
+                durationButton.setTitle(overallString, for: .normal)
             }
+        } else {
+            formatter.dateFormat = "E h:mma"
+            let fromString = formatter.string(from: fromDate)
+            let toString = formatter.string(from: toDate)
+            let overallString = "\(fromString) to \(toString)"
+            durationButton.setTitle(overallString, for: .normal)
         }
     }
     
-    func setData(price: Double, hours: Double, parking: ParkingSpots) {
-        self.parking = parking
-        self.fromDate = bookingFromDate
-        self.toDate = bookingToDate
-        
+    func setData(price: Double, parking: ParkingSpots) {
         self.price = price
-        self.hours = hours
+        self.parking = parking
+        var hour: Double = 2.25
+        if parkNow {
+            hours = bookingDuration
+            if let time = hours {
+                hour = time
+            }
+            bookingFromDate = Date()
+            bookingToDate = Date().addingTimeInterval(TimeInterval(hour * 3600)).round(precision: (5 * 60), rule: FloatingPointRoundingRule.up)
+            self.fromDate = bookingFromDate
+            self.toDate = bookingToDate
+        } else {
+            self.fromDate = bookingFromDate
+            self.toDate = bookingToDate
+            if let from = fromDate, let to = toDate {
+                let hours = to.hours(from: from)
+                let minutes = to.minutes(from: from)
+                let total: Double = Double(hours) + Double(minutes)/60.0
+                hour = total
+            }
+        }
+        currentTotalTime = "\(hour) hours"
+        changeDates()
         
-        let cost = (price * hours)
+        let cost = (price * hour)
         let fees = cost * 0.029 + 0.3
         let endPrice = (cost + fees).rounded(toPlaces: 2)
         self.totalCostLabel.text = String(format:"$%.02f", endPrice)
@@ -591,34 +667,34 @@ extension ConfirmViewController {
         if let secondaryType = parking.secondaryType {
             if secondaryType == "driveway" {
                 let image = UIImage(named: "Residential Home Driveway")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "parking lot" {
                 let image = UIImage(named: "Parking Lot")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "apartment" {
                 let image = UIImage(named: "Apartment Parking")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "alley" {
                 let image = UIImage(named: "Alley Parking")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "garage" {
                 let image = UIImage(named: "Parking Garage")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "gated spot" {
                 let image = UIImage(named: "Gated Spot")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "street spot" {
                 let image = UIImage(named: "Street Parking")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "underground spot" {
                 let image = UIImage(named: "UnderGround Parking")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "condo" {
                 let image = UIImage(named: "Residential Home Driveway")
-                self.spotIcon.image = image
+                currentParkingImage = image
             } else if secondaryType == "circular" {
                 let image = UIImage(named: "Other Parking")
-                self.spotIcon.image = image
+                currentParkingImage = image
             }
         }
         
@@ -629,31 +705,31 @@ extension ConfirmViewController {
                 if (dictionary["CurrentCoupon"] as? [String: Any]) != nil {
                     ref.child("CurrentCoupon").observe(.childAdded) { (snapshot) in
                         if let dictionary = snapshot.value as? Int {
-                            self.normalCostAnchor.isActive = false
-                            self.couponCostAnchor.isActive = true
                             self.discount = dictionary
                             let discountedCost = endPrice - Double(dictionary)/100 * endPrice
                             self.totalCostLabel.text = String(format:"$%.02f", discountedCost)
+                            if discountedCost <= 0 { self.mainButtonUnavailable() } else { self.mainButtonAvailable()}
                             UIView.animate(withDuration: animationIn, animations: {
                                 self.couponCostLabel.alpha = 1
+                                self.saleIcon.alpha = 1
                                 self.view.layoutIfNeeded()
                             })
                         } else {
-                            self.normalCostAnchor.isActive = true
-                            self.couponCostAnchor.isActive = false
                             self.totalCostLabel.text = String(format:"$%.02f", endPrice)
+                            if endPrice <= 0 { self.mainButtonUnavailable() } else { self.mainButtonAvailable()}
                             UIView.animate(withDuration: animationIn, animations: {
                                 self.couponCostLabel.alpha = 0
+                                self.saleIcon.alpha = 0
                                 self.view.layoutIfNeeded()
                             })
                         }
                     }
                 } else {
-                    self.normalCostAnchor.isActive = true
-                    self.couponCostAnchor.isActive = false
                     self.totalCostLabel.text = String(format:"$%.02f", endPrice)
+                    if endPrice <= 0 { self.mainButtonUnavailable() } else { self.mainButtonAvailable()}
                     UIView.animate(withDuration: animationIn, animations: {
                         self.couponCostLabel.alpha = 0
+                        self.saleIcon.alpha = 0
                         self.view.layoutIfNeeded()
                     })
                 }
@@ -661,42 +737,15 @@ extension ConfirmViewController {
         }
     }
     
-    func setHourLabel(minutes: Int) {
-        let tuple = minutesToHoursMinutes(minutes: minutes)
-        if tuple.hours == 1 {
-            mainButtonAvailable()
-            if tuple.leftMinutes == 0 {
-                durationLabel.text = "\(tuple.hours) hour"
-            } else {
-                durationLabel.text = "\(tuple.hours) hour \(tuple.leftMinutes) min"
-            }
-        } else if tuple.hours == 0 {
-            if tuple.leftMinutes == 0 {
-                mainButtonUnavailable()
-                durationLabel.text = "00 min"
-            } else {
-                mainButtonAvailable()
-                durationLabel.text = "\(tuple.leftMinutes) min"
-            }
-        } else {
-            mainButtonAvailable()
-            if tuple.leftMinutes == 0 {
-                durationLabel.text = "\(tuple.hours) hours"
-            } else {
-                durationLabel.text = "\(tuple.hours) hours \(tuple.leftMinutes) min"
-            }
-        }
-    }
-    
     func mainButtonAvailable() {
         mainButton.setTitleColor(Theme.WHITE, for: .normal)
-        mainButton.backgroundColor = Theme.BLUE
+        mainButton.backgroundColor = Theme.DARK_GRAY
         mainButton.isUserInteractionEnabled = true
     }
     
     func mainButtonUnavailable() {
         mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        mainButton.backgroundColor = Theme.LIGHT_GRAY
+        mainButton.backgroundColor = lineColor
         mainButton.isUserInteractionEnabled = false
     }
     

@@ -297,20 +297,20 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                     return
                 }
                 self.checkIfHost(chatPartnerID: chatPartnerID)
-                let ref = Database.database().reference().child("users").child(chatPartnerID)
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    guard let dictionary = snapshot.value as? [String:AnyObject]
-                        else {
-                            return
-                    }
-                    let user = Users()
-                    let picture = dictionary["picture"] as? String
-                    let name = dictionary["name"] as? String
-                    user.id = chatPartnerID
-                    user.name = name
-                    user.picture = picture
-//                    self.currentMessagesController.setData(userId: chatPartnerID)
-                }, withCancel: nil)
+//                let ref = Database.database().reference().child("users").child(chatPartnerID)
+//                ref.observeSingleEvent(of: .value, with: { (snapshot) in
+//                    guard let dictionary = snapshot.value as? [String:AnyObject]
+//                        else {
+//                            return
+//                    }
+//                    let user = Users(dictionary: dictionary)
+//                    let picture = user.picture
+//                    let name = user.name
+//                    user.id = chatPartnerID
+//                    user.name = name
+//                    user.picture = picture
+////                    self.currentMessagesController.setData(userId: chatPartnerID)
+//                }, withCancel: nil)
             }
         }
     }

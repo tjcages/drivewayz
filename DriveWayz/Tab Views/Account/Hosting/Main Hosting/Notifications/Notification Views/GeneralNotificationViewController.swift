@@ -86,7 +86,6 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.cornerRadius = 24
         view.clipsToBounds = true
         
         return view

@@ -13,7 +13,7 @@ import Mapbox
 import GooglePlaces
 
 protocol controlSaveLocation {
-    func zoomToSearchLocation(address: String)
+    func zoomToSearchLocation(placeId: String)
     func closeSearch()
 }
 
@@ -52,6 +52,54 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         
     }
     
+    @objc func recommendButtonPressed() {
+        if let location = userCurrentLocation, let city = mainBarController.searchController.recommendationButton.titleLabel?.text {
+            dismissSearch()
+            DestinationAnnotationName = city
+            zoomToRecommendedLocation(location: location.coordinate)
+        }
+    }
+    
+    // Open search results and bring search summary controller down
+    @objc func openSearch() {
+        showHamburger = false
+        delegate?.hideHamburger()
+        
+        view.bringSubviewToFront(locationsSearchResults.view)
+        view.bringSubviewToFront(summaryController.view)
+        
+        mainViewState = .none
+        summaryTopAnchor.constant = 0
+        locationResultsHeightAnchor.constant = -16
+        summaryController.searchTextField.text = ""
+        locationsSearchResults.checkRecentSearches()
+        summaryController.searchTextField.becomeFirstResponder()
+        
+        UIView.animate(withDuration: animationOut, animations: {
+            self.mainBarController.scrollView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+
+        }
+    }
+    
+    func closeSearch() {
+        view.endEditing(true)
+        showHamburger = true
+        mainViewState = .mainBar
+        
+        view.bringSubviewToFront(self.mainBarController.view)
+        locationResultsHeightAnchor.constant = phoneHeight * 1.5
+        summaryTopAnchor.constant = -260
+        UIView.animate(withDuration: animationIn, animations: {
+            self.mainBarController.scrollView.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            self.delegate?.bringHamburger()
+            self.delegate?.defaultContentStatusBar()
+        }
+    }
+    
     @objc func searchDurationPressed() {
         openMainBar()
         delayWithSeconds(animationOut + animationIn) {
@@ -63,9 +111,9 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         self.view.endEditing(true)
         summaryTopAnchor.constant = -260
         mainViewState = .none
-        mainBarController.searchController.checkRecentSearches()
+
         UIView.animate(withDuration: animationOut, animations: {
-            self.locationResultsHeightAnchor.constant = 0
+            self.locationResultsHeightAnchor.constant = phoneHeight * 1.5
             self.view.layoutIfNeeded()
         }) { (success) in
             UIView.animate(withDuration: animationOut, animations: {

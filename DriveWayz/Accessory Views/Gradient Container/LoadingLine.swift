@@ -15,7 +15,7 @@ class LoadingLine: UIView {
     var loadingLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.BLUE
+        view.backgroundColor = Theme.DARK_GRAY
         
         return view
     }()
@@ -23,7 +23,6 @@ class LoadingLine: UIView {
     var bottomLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
         
         return view
     }()

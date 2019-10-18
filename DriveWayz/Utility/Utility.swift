@@ -184,7 +184,7 @@ class Fonts {
     static let SSPBlackH6 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
     //SemiBold
-    static let SSPSemiBoldH00 = Font(Font.FontType.installed(Font.FontName.SSPBold), size: Font.FontSize.standard(Font.StandardSize.h00)).instance
+    static let SSPSemiBoldH00 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h00)).instance
     static let SSPSemiBoldH0 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
     static let SSPSemiBoldH1 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
     static let SSPSemiBoldH25 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h25)).instance

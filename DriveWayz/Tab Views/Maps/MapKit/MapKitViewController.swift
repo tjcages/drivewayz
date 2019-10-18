@@ -8,18 +8,21 @@
 
 import UIKit
 import MapKit
+
 import CoreLocation
+import GoogleMaps
 import GooglePlaces
+
 import Firebase
-import AFNetworking
-import AVFoundation
-import Mapbox
-import MapboxDirections
+//import AFNetworking
+//import AVFoundation
+//import Mapbox
+//import MapboxDirections
 
 //var userLocation: CLLocation?
 var hasLoadedMapView: Bool = false
 
-class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation, handleEventSelection {
+class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHosts, controlSaveLocation {
     
     var mainViewState: MainViewState = .none {
         didSet {
@@ -33,17 +36,16 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         view.clipsToBounds = true
         
         monitorSurge()
-        observeAllParking()
         observeCurrentParking()
         setupController()
+        setupLocationManager()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if self.hasLoaded == false {
-            self.hasLoaded = true
-            self.setupLocationManager()
-        }
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        if self.hasLoaded == false {
+//            self.hasLoaded = true
+//        }
+//    }
     
     func setupController() {
         if !hasLoadedMapView {
@@ -58,7 +60,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             
             setupCurrentViews()
             setupUserMessages()
-            setupCoupons()
+            monitorCoupons()
             setupNetworkConnection()
             DynamicPricing.readCityCSV()
             
@@ -80,16 +82,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    var mapBoxRoute: Route? {
-        didSet {
-//            delayWithSeconds(1) {
-//                self.animateRouteLine()
-//            }
-        }
-    }
+    var mapBoxRoute: MKRoute?
     
-    var lowestHeight: CGFloat = 450
-    var minimizedHeight: CGFloat = 150
+    lazy var currentBookingHeight: CGFloat = phoneHeight - 116 - 252
     
     enum CurrentData {
         case notReserved
@@ -98,24 +93,22 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var currentData: CurrentData = CurrentData.notReserved
     var hasLoaded: Bool = false
     
-    lazy var mapView: MGLMapView = {
-        let view = MGLMapView(frame: self.view.bounds)
+    lazy var mapView: GMSMapView = {
+        let camera = GMSCameraPosition.camera(withLatitude: 37.8249, longitude: -122.4194, zoom: 24.0)
+        let view = GMSMapView(frame: .zero, camera: camera)
+        view.delegate = self
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.setCenter(CLLocationCoordinate2D(latitude: 59.31, longitude: 18.06), zoomLevel: 9, animated: false)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.showsUserLocation = true
-        view.showsScale = false
-        view.isRotateEnabled = false
-        view.isPitchEnabled = false
-        view.userTrackingMode = .followWithHeading
-        view.logoView.isHidden = true
-        view.attributionButton.isHidden = true
-        view.showsUserHeadingIndicator = true
-        view.setContentInset(UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false, completionHandler: nil)
-        view.decelerationRate = 2.0
-        
+        view.isMyLocationEnabled = true
+        view.settings.tiltGestures = false
+        view.settings.compassButton = false
+        view.settings.rotateGestures = false
+        view.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: mainBarNormalHeight + 72, right: horizontalPadding)
+
         return view
     }()
+    
+    var canShowLocatorButton: Bool = true
     
     var locatorButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -138,29 +131,9 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return button
     }()
     
-    var polyRouteLocatorButton: UIButton = {
-        let button = UIButton(type: .custom)
-        if let myImage = UIImage(named: "my_location") {
-            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
-            button.setImage(tintableImage, for: .normal)
-        }
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.8)
-        button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 20
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.layer.shadowColor = Theme.BLACK.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 1)
-        button.layer.shadowRadius = 3
-        button.layer.shadowOpacity = 0.6
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
-        button.alpha = 0
-        
-        return button
-    }()
-
     var currentHeightAnchor: NSLayoutConstraint!
     var previousHeightAnchor: CGFloat = 380
+    var canScrollMainView: Bool = true
     
     lazy var mainBarController: TestMainBar = {
         let controller = TestMainBar()
@@ -192,8 +165,8 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     lazy var searchBarController: SearchBarViewController = {
         let controller = SearchBarViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        //        controller.delegate = self
         self.addChild(controller)
+        controller.view.backgroundColor = .red
         
         return controller
     }()
@@ -220,23 +193,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-//    lazy var durationController: DurationViewController = {
-//        let controller = DurationViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.title = "Purchase"
-//        controller.delegate = self
-//        self.addChild(controller)
-//
-//        return controller
-//    }()
-//
-    var durationController = TestDurationView()
+    var durationController = TestDurationTabView()
     
     lazy var confirmPaymentController: ConfirmViewController = {
         let controller = ConfirmViewController()
         self.addChild(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
+        controller.additionalDelegate = self
         
         return controller
     }()
@@ -253,8 +217,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var durationLeftAnchor: NSLayoutConstraint!
     var durationRightAnchor: NSLayoutConstraint!
     var durationTopAnchor: NSLayoutConstraint!
-    lazy var currentMainBarHeight: CGFloat = phoneHeight - lowestHeight
-    var currentBookingHeight: CGFloat = phoneHeight - 116 - 252
     
     var previousMainBarPercentage: CGFloat = 0
     var previousBookingPercentage: CGFloat = 0
@@ -303,11 +265,17 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var parkingBackButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "arrow")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 24
+        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowRadius = 6
+        button.layer.shadowOpacity = 0.2
+        let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.alpha = 0
         button.addTarget(self, action: #selector(parkingBackButtonPressed), for: .touchUpInside)
         
         return button
@@ -331,15 +299,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    lazy var quickCouponController: QuickCouponsViewController = {
-        let controller = QuickCouponsViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
     var reviewBookingTopAnchor: NSLayoutConstraint!
     
     lazy var reviewBookingController: ReviewBookingViewController = {
@@ -353,7 +312,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    var newMessageTopAnchor: NSLayoutConstraint!
     var shouldUpdatePolyline: Bool = true
     
     var previousAnchor: CGFloat = 170.0
@@ -362,18 +320,18 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var searchedForPlace: Bool = false
     var timer: Timer?
-    var canChangeLocatorButtonTint: Bool = true
-    var destinationString: String = "Arrived at destination"
-    var annotationSelected: MGLAnnotation?
+//    var canChangeLocatorButtonTint: Bool = true
+//    var destinationString: String = "Arrived at destination"
+    var annotationSelected: GMSMarker?
     var shouldShowOverlay: Bool = false
     
     var currentCoordinate: CLLocationCoordinate2D?
     var navigationSteps = [CLLocationCoordinate2D]()
-    let speechSythensizer = AVSpeechSynthesizer()
+//    let speechSythensizer = AVSpeechSynthesizer()
     var stepCounter = 1
     
     var delegate: moveControllers?
-    var vehicleDelegate: controlsAccountOptions?
+    var accountDelegate: controlsAccountOptions?
     
     let locationManager = CLLocationManager()
     let delta = 0.1
@@ -385,7 +343,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var availableParkingSpots = [ParkingSpots]()
     var parkingSpotsDictionary = [String: ParkingSpots]()
     var visibleAnnotationsDistance: [Double] = []
-    var visibleAnnotations: [MGLPointAnnotation] = []
+    var visibleAnnotations: [GMSMarker] = []
 //    var visibleParkingSpots: Int = 0
     var destination: CLLocation?
     
@@ -432,17 +390,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var previousEventLocation: CGFloat = 0
     
     ///////////////////////////////MAPBOX///////////////////////////////
-    var polylineFirstTimer: Timer?
-    var polylineSecondTimer: Timer?
-    var polylineSource: MGLShapeSource?
-    var polylineSecondSource: MGLShapeSource?
-    var navigationRegionSource: MGLShapeSource?
-    var polylineLayer: MGLLineStyleLayer?
-    var polylineSecondLayer: MGLLineStyleLayer?
-    var currentFirstIndex = 1
-    var currentSecondIndex = 1
-    var destinationCoordinates: [CLLocationCoordinate2D] = []
-    var parkingCoordinates: [CLLocationCoordinate2D] = []
     
     var quickDestinationRightAnchor: NSLayoutConstraint!
     var quickDestinationTopAnchor: NSLayoutConstraint!
@@ -463,35 +410,42 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     }()
     
     func setupViews() {
+
+        view.addSubview(mapView)
+        mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        self.view.addSubview(mapView)
-        mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        mapView.setCenter(CLLocationCoordinate2D(latitude: 37.8249, longitude: -122.4194), animated: false)
-        mapView.userTrackingMode = .follow
-        mapView.delegate = self
-        let url = URL(string: "mapbox://styles/tcagle717/cjjnibq7002v22sowhbsqkg22")
-        self.mapView.styleURL = url
-        
-        // Add a single tap gesture recognizer. This gesture requires the built-in MGLMapView tap gestures (such as those for zoom and annotation selection) to fail.
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(sender:)))
-        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-            singleTap.require(toFail: recognizer)
+        // Load the map style to be applied to Google Maps
+        if let path = Bundle.main.path(forResource: "GoogleMapStyle", ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                do {
+                    // Set the map style by passing a valid JSON string.
+                    if let jsonString = jsonToString(json: jsonResult as AnyObject) {
+                        mapView.mapStyle = try GMSMapStyle(jsonString: jsonString)
+                    }
+                } catch {
+                    NSLog("One or more of the map styles failed to load. \(error)")
+                }
+            } catch {
+                // handle error
+                NSLog("One or more of the map styles failed to load. \(error)")
+            }
         }
-        mapView.addGestureRecognizer(singleTap)
         
-        self.view.addSubview(backgroundImageView)
-        backgroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        backgroundImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        backgroundImageView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        backgroundImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        let position = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.127)
+        let london = GMSMarker(position: position)
+        london.title = "London"
+        london.icon = UIImage(named: "annotationMapMarker")
+        london.map = mapView
+        
+        view.addSubview(backgroundImageView)
+        backgroundImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
     
     func sendNewHost() {
-        self.vehicleDelegate?.bringNewHostingController()
+        self.accountDelegate?.bringNewHostingController()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -506,12 +460,18 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
-
+    
 }
 
-protocol handleEventSelection {
-    func zoomToSearchLocation(address: String)
+func jsonToString(json: AnyObject) -> String? {
+    do {
+        let data1 =  try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted) // first of all convert json to the data
+        let convertedString = String(data: data1, encoding: String.Encoding.utf8) // the data will be converted to the string
+        return convertedString
+        
+    } catch let myJSONError {
+        print(myJSONError)
+        
+        return nil
+    }
 }
-
-
-

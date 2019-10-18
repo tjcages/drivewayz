@@ -66,7 +66,7 @@ class UserContactViewController: UIViewController {
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 3
-        label.text = "Please reach out to us with any questions or concerns"
+        label.text = "Please reach out to us with any questions or concerns."
         
         return label
     }()
@@ -75,7 +75,7 @@ class UserContactViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.PRUSSIAN_BLUE
         view.text = "Share your thoughts"
         
         return view
@@ -106,7 +106,7 @@ class UserContactViewController: UIViewController {
     var exampleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.PRUSSIAN_BLUE
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 10
         label.textAlignment = .center
@@ -126,7 +126,7 @@ class UserContactViewController: UIViewController {
         button.isUserInteractionEnabled = false
         button.setTitle("Contact support", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
         
@@ -186,9 +186,9 @@ class UserContactViewController: UIViewController {
         scrollView.addGestureRecognizer(tap)
         
         view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
         switch device {
         case .iphone8:
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true
@@ -407,18 +407,14 @@ extension UserContactViewController: UITextViewDelegate {
     }
     
     @objc func backButtonPressed() {
-        self.delegate?.dismissActiveController()
-        self.dismiss(animated: true) {
-            self.backButton.alpha = 0
-        }
-//        if context != "Feedback" {
-//            self.navigationController?.popViewController(animated: true)
-//        } else {
-//            self.delegate?.dismissActiveController()
-//            self.dismiss(animated: true) {
+        if delegate != nil {
+            self.delegate?.dismissActiveController()
+            self.dismiss(animated: true) {
 //                self.backButton.alpha = 0
-//            }
-//        }
+            }
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc func dismissKeyboard() {

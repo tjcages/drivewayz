@@ -11,21 +11,33 @@ import Firebase
 
 class Vehicles: NSObject {
     
-    var id: String?
+    var dictionary: [String: Any]?
+
+    var fingerprint: String?
     var timestamp: NSNumber?
-    var vehicleImageURL: String?
+    
     var vehicleLicensePlate: String?
     var vehicleMake: String?
     var vehicleModel: String?
     var vehicleYear: String?
     
+    var defaultVehicle: Bool = false
+    
     init(dictionary: [String: Any]) {
         super.init()
-        id = dictionary["id"] as? String
+        self.dictionary = dictionary
+        
+        fingerprint = dictionary["fingerprint"] as? String
+        
         timestamp = dictionary["timestamp"] as? NSNumber
-        vehicleImageURL = dictionary["vehicleImageURL"] as? String
-        vehicleMake = dictionary["vehicleMake"] as? String
-        vehicleModel = dictionary["vehicleModel"] as? String
-        vehicleYear = dictionary["vehicleYear"] as? String
+        
+        vehicleMake = dictionary["make"] as? String
+        vehicleModel = dictionary["model"] as? String
+        vehicleYear = dictionary["year"] as? String
+        vehicleLicensePlate = dictionary["license"] as? String
+        
+        if let status = dictionary["default"] as? Bool {
+            defaultVehicle = status
+        }
     }
 }

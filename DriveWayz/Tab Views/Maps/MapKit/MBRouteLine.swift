@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MapboxDirections
+import MapKit
 
 var routeTimer: Timer?
 var routeLineIndex: Int = 0
@@ -27,7 +27,7 @@ var routeUnderLine: CAShapeLayer = {
     line.fillColor = UIColor.clear.cgColor
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 4
-    line.strokeColor = Theme.LIGHT_GRAY.darker(by: 10)!.cgColor
+    line.strokeColor = Theme.PRUSSIAN_BLUE.cgColor
     
     return line
 }()
@@ -38,6 +38,10 @@ var routeStartPin: UIView = {
     view.layer.cornerRadius = 9
     view.layer.borderColor = Theme.DARK_GRAY.cgColor
     view.layer.borderWidth = 7
+    view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+    view.layer.shadowOpacity = 0.2
+    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+    view.layer.shadowRadius = 4
 
     return view
 }()
@@ -53,11 +57,13 @@ var routeParkingPin: UIImageView = {
 
 extension MapKitViewController: CAAnimationDelegate {
     
-    func createRouteLine(route: Route) {
-        guard let coordinates = route.coordinates else { return }
+    func createRouteLine(route: MKRoute) {
+
+        let poly = route.polyline
         var points: [CGPoint] = []
-        for coordinate in coordinates {
-            let point = mapView.convert(coordinate, toPointTo: mapView)
+        for mapPoint in UnsafeBufferPointer(start: poly.points(), count: poly.pointCount) {
+            let coordinate = mapPoint.coordinate
+            let point = mapView.projection.point(for: coordinate)
             points.append(point)
         }
         let linePath = UIBezierPath()
@@ -66,11 +72,59 @@ extension MapKitViewController: CAAnimationDelegate {
             for point in points {
                 linePath.addLine(to: point)
             }
+            routeLine.path = route.polyline.accessibilityPath?.cgPath
             routeLine.path = linePath.cgPath
             routeUnderLine.path = linePath.cgPath
-            routeStartPin.center = CGPoint(x: last.x + 3, y: last.y + 6)
-            routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
+            if BookedState != .currentlyBooked {
+                routeStartPin.center = CGPoint(x: last.x + 3, y: last.y + 6)
+                routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
+            } else {
+                routeParkingPin.center = CGPoint(x: last.x, y: last.y - 26)
+                routeStartPin.center = CGPoint(x: start.x + 3, y: start.y + 6)
+            }
         }
+
+        
+//        guard let linePath =  route.accessibilityPath else { return }
+//        routeLine.path = linePath.cgPath
+//        routeLine.path = linePath.cgPath
+//        routeUnderLine.path = linePath.cgPath
+//        if let startCoordinate = quadStartCoordinate, let endCoordinate = quadEndCoordinate {
+//            let start = mapView.projection.point(for: startCoordinate)
+//            let end = mapView.projection.point(for: endCoordinate)
+//
+//            if BookedState != .currentlyBooked {
+//                routeStartPin.center = CGPoint(x: end.x + 3, y: end.y + 6)
+//                routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
+//            } else {
+//                routeParkingPin.center = CGPoint(x: end.x, y: end.y - 26)
+//                routeStartPin.center = CGPoint(x: start.x + 3, y: start.y + 6)
+//            }
+//        }
+        
+//        guard let coordinates = route.coordinates else { return }
+//        var points: [CGPoint] = []
+//        for coordinate in coordinates {
+//            let point = mapView.projection.point(for: coordinate)
+//            points.append(point)
+//        }
+//        let linePath = UIBezierPath()
+//        if points.count > 0, let start = points.first, let last = points.last {
+//            linePath.move(to: start)
+//            for point in points {
+//                linePath.addLine(to: point)
+//            }
+//            routeLine.path = route.polyline.accessibilityPath?.cgPath
+//            routeLine.path = linePath.cgPath
+//            routeUnderLine.path = linePath.cgPath
+//            if BookedState != .currentlyBooked {
+//                routeStartPin.center = CGPoint(x: last.x + 3, y: last.y + 6)
+//                routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
+//            } else {
+//                routeParkingPin.center = CGPoint(x: last.x, y: last.y - 26)
+//                routeStartPin.center = CGPoint(x: start.x + 3, y: start.y + 6)
+//            }
+//        }
     }
     
     func animateRouteLine() {
@@ -101,11 +155,11 @@ extension MapKitViewController: CAAnimationDelegate {
     }
     
     func animateRouteUnderLine() {
-        let animation = CABasicAnimation(keyPath: "strokeStart")
+        let animation = CABasicAnimation(keyPath: "opacity")
         // animation set up here, I've included a few properties as an example
         animation.duration = 0.5
-        animation.fromValue = 1
-        animation.toValue = 0
+        animation.fromValue = 0
+        animation.toValue = 1
         
         let group = CAAnimationGroup()
         group.duration = 0.5

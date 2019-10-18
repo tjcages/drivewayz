@@ -21,7 +21,7 @@ class BubbleArrow: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.STRAWBERRY_PINK
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = 4
         
         return view
     }()
@@ -41,7 +41,7 @@ class BubbleArrow: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.WHITE
         label.text = ""
-        label.font = Fonts.SSPRegularH5
+        label.font = Fonts.SSPRegularH4
         
         return label
     }()
@@ -51,6 +51,9 @@ class BubbleArrow: UIView {
         
         setupViews()
     }
+    
+    var triangleLeftAnchor: NSLayoutConstraint!
+    var triangleRightAnchor: NSLayoutConstraint!
     
     func setupViews() {
         
@@ -63,16 +66,29 @@ class BubbleArrow: UIView {
         container.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         container.bottomAnchor.constraint(equalTo: triangleView.topAnchor).isActive = true
         
-        triangleView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
+        triangleLeftAnchor = triangleView.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 16)
+            triangleLeftAnchor.isActive = true
+        triangleRightAnchor = triangleView.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -16)
+            triangleRightAnchor.isActive = true
         triangleView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        triangleView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        triangleView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        triangleView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        triangleView.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
         label.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
         label.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 12).isActive = true
         label.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -12).isActive = true
         label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8).isActive = true
         
+    }
+    
+    func leftTriangle() {
+        triangleLeftAnchor.isActive = true
+        triangleRightAnchor.isActive = false
+    }
+    
+    func rightTriangle() {
+        triangleLeftAnchor.isActive = false
+        triangleRightAnchor.isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

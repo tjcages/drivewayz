@@ -190,13 +190,13 @@ class MainSearchViewController: UIViewController {
     
     @objc func firstRecentPressed() {
         if let text = self.homeLabel.titleLabel?.text {
-            self.delegate?.searchRecentsPressed(address: text)
+//            self.delegate?.searchRecentsPressed(address: text)
         }
     }
     
     @objc func secondRecentPressed() {
         if let text = self.recentLabel.titleLabel?.text {
-            self.delegate?.searchRecentsPressed(address: text)
+//            self.delegate?.searchRecentsPressed(address: text)
         }
     }
 

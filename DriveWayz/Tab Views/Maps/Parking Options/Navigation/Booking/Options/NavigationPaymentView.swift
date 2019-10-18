@@ -56,7 +56,7 @@ class NavigationPaymentView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Sat Jan 12, 2019"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH4
         
         return label

@@ -15,7 +15,7 @@ class PurchaseDurationViewController: UIViewController {
     
     var selectedHour: Int = 2
     var selectedMinute: Int = 15
-    var delegate: handleDurationSet?
+//    var delegate: handleDurationSet?
     
     var reservationLabel: UILabel = {
         let label = UILabel()
@@ -343,7 +343,7 @@ class PurchaseDurationViewController: UIViewController {
             let minutes: Double = Double(self.selectedMinute)/60
             let duration = Double(self.selectedHour) + minutes
             
-            self.delegate?.durationTimeSet(duration: totalTime, time: duration)
+//            self.delegate?.durationTimeSet(duration: totalTime, time: duration)
         }
     }
     

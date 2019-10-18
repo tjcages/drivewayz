@@ -16,6 +16,9 @@ let animationOut = 0.3
 let lineColor = Theme.GRAY
 
 var gradientHeight: CGFloat = 140
+var cancelBottomHeight: CGFloat = -52
+
+var mapZoomLevel: Float = 14.5
 
 let statesDictionary = ["Alabama": "AL",
                         "Alaska": "AK",

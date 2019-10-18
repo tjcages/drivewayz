@@ -8,7 +8,10 @@
 
 import Foundation
 import MapKit
-import Mapbox
+import GoogleMaps
+//import Mapbox
+
+let bookingTutorialController = BookingTutorialView()
 
 protocol handleCheckoutParking {
     func becomeAHost()
@@ -22,27 +25,22 @@ protocol handleCheckoutParking {
     func hideExpandedBooking()
 }
 
+var currentTotalTime: String?
+
 extension MapKitViewController: handleCheckoutParking {
     
     func setupMapButtons() {
-        
-//        self.view.addSubview(expandedSpotController.view)
-//        expandedSpotController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//        expandedSpotController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-//        expandedSpotBottomAnchor = expandedSpotController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: phoneHeight)
-//            expandedSpotBottomAnchor.isActive = true
-//        expandedSpotController.view.heightAnchor.constraint(equalToConstant: phoneHeight).isActive = true
-        
+
         self.view.addSubview(parkingBackButton)
-        parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 12).isActive = true
-        parkingBackButtonBookAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -8)
+        parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        parkingBackButtonBookAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16)
             parkingBackButtonBookAnchor.isActive = true
-        parkingBackButtonPurchaseAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: durationController.view.topAnchor, constant: -8)
+        parkingBackButtonPurchaseAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: durationController.view.topAnchor, constant: -16)
             parkingBackButtonPurchaseAnchor.isActive = false
-        parkingBackButtonConfirmAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: confirmPaymentController.view.topAnchor, constant: -8)
+        parkingBackButtonConfirmAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: confirmPaymentController.view.topAnchor, constant: -16)
             parkingBackButtonConfirmAnchor.isActive = false
-        parkingBackButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        parkingBackButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        parkingBackButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        parkingBackButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         self.view.addSubview(quickDestinationController.view)
         quickDestinationRightAnchor = quickDestinationController.view.centerXAnchor.constraint(equalTo: self.view.leftAnchor)
@@ -62,12 +60,6 @@ extension MapKitViewController: handleCheckoutParking {
         quickParkingWidthAnchor = quickParkingController.view.widthAnchor.constraint(equalToConstant: 180)
             quickParkingWidthAnchor.isActive = true
         quickParkingController.view.heightAnchor.constraint(equalToConstant: 42).isActive = true
-        
-        mapView.addSubview(polyRouteLocatorButton)
-        polyRouteLocatorButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16).isActive = true
-        polyRouteLocatorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        polyRouteLocatorButton.widthAnchor.constraint(equalTo: polyRouteLocatorButton.heightAnchor).isActive = true
-        polyRouteLocatorButton.bottomAnchor.constraint(equalTo: parkingBackButton.bottomAnchor).isActive = true
         
     }
     
@@ -93,8 +85,7 @@ extension MapKitViewController: handleCheckoutParking {
         if parkingControllerBottomAnchor.constant == 0 && self.parkingControllerHeightAnchor.constant == 372 {
             parkingHidden(showMainBar: true)
         } else if parkingControllerBottomAnchor.constant == 0 {
-            parkingController.minimizeBookingPressed()
-            mainViewState = .parking
+            parkingHidden(showMainBar: true)
         } else if confirmControllerBottomAnchor.constant == 0 {
             backToBooking()
         } else {
@@ -112,63 +103,60 @@ extension MapKitViewController: handleCheckoutParking {
     }
     
     func setDurationPressed(fromDate: Date, totalTime: String) {
+        currentTotalTime = totalTime
         self.parkingController.bookingPicker.setContentOffset(.zero, animated: true)
         self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
         self.parkingController.changeDates(fromDate: fromDate, totalTime: totalTime)
-        self.confirmPaymentController.changeDates(fromDate: fromDate, totalTime: totalTime)
-//        self.successfulPurchaseController.changeDates(totalTime: totalTime)
+        self.confirmPaymentController.changeDates()
     }
     
     func observeAllHosting() {
-        self.removeAllHostLocations()
-        self.observeAllParking()
+        mapView.clear()
+        observeAllParking()
     }
     
     @objc func bookSpotPressed() {
         mainViewState = .payment
-        self.quickCouponController.minimizeController()
+        locatorButtonPressed(padding: 32)
         if let price = self.parkingController.selectedParkingSpot?.dynamicCost, let parking = self.parkingController.selectedParkingSpot {
-            let hours = self.durationController.hoursController.totalSelectedTime
-            self.confirmPaymentController.setData(price: Double(price), hours: hours, parking: parking)
-        }
-        if let region = ZooomRegion {
-            let inset = UIEdgeInsets(top: statusHeight + 40, left: 32, bottom: 320, right: 32)
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: inset, animated: true, completionHandler: nil)
+            confirmPaymentController.setData(price: Double(price), parking: parking)
         }
     }
 
     func parkingSelected() {
-        self.quickCouponController.minimizeController()
         self.parkingController.bookingPicker.reloadData()
-//        self.durationController.saveDates()
         mainViewState = .parking
         UIView.animate(withDuration: animationIn) {
             self.parkingBackButton.alpha = 1
             self.view.layoutIfNeeded()
         }
+        checkParkingOpens()
     }
     
     @objc func parkingHidden(showMainBar: Bool) {
-        ZooomRegion = nil
         shouldBeSearchingForAnnotations = true
         removeRouteLine()
         removeAllMapOverlays(shouldRefresh: true)
-        mainViewState = .none
         parkingController.bookingPicker.setContentOffset(.zero, animated: true)
         UIView.animate(withDuration: animationOut, animations: {
             self.parkingBackButton.alpha = 0
+            self.quickParkingController.view.alpha = 0
+            self.quickDestinationController.view.alpha = 0
+            if bookingTutorialController.view.alpha == 1 {
+                bookingTutorialController.view.alpha = 0
+            }
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.bringHamburger()
-            if showMainBar {
-                self.mainViewState = .mainBar
-                delayWithSeconds(1, completion: {
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.quickParkingController.view.alpha = 0
-                        self.quickDestinationController.view.alpha = 0
-                    })
+        }
+        if showMainBar {
+            self.mainViewState = .mainBar
+            delayWithSeconds(1, completion: {
+                UIView.animate(withDuration: animationIn, animations: {
+                    self.quickParkingController.view.alpha = 0
+                    self.quickDestinationController.view.alpha = 0
                 })
-            }
+            })
         }
     }
 
@@ -188,10 +176,7 @@ extension MapKitViewController: handleCheckoutParking {
     
     func backToBooking() {
         mainViewState = .parking
-        if let region = ZooomRegion {
-            let inset = UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64)
-            self.mapView.setVisibleCoordinateBounds(region, edgePadding: inset, animated: true, completionHandler: nil)
-        }
+        locatorButtonPressed(padding: 80)
     }
     
     @objc func changeFinalDates() {
@@ -202,3 +187,5 @@ extension MapKitViewController: handleCheckoutParking {
     }
     
 }
+
+

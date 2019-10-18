@@ -128,9 +128,9 @@ class CurrentCardView: UIViewController {
             tableViewHeight.isActive = true
         
         view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
         switch device {
         case .iphone8:
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true

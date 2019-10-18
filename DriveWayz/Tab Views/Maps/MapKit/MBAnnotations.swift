@@ -8,7 +8,8 @@
 
 import Foundation
 import CoreLocation
-import Mapbox
+import GoogleMaps
+//import Mapbox
 
 var numberOfTotalParkingSpots: Int = 0
 var mapAnnotationID: [String] = []
@@ -85,25 +86,54 @@ extension MapKitViewController {
     func placeAvailableParking(parking: ParkingSpots) {
         if let latitude = parking.latitude, let longitude = parking.longitude {
             let location = CLLocation(latitude: latitude, longitude: longitude)
-            let marker = MGLPointAnnotation()
-            marker.coordinate = location.coordinate
-            if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
-                marker.title = ID
-                mapAnnotationID.append(ID)
-                self.mapView.addAnnotation(marker)
+            
+            let position = location.coordinate
+            let marker = GMSMarker(position: position)
+            if let id = parking.parkingID {
+                marker.appearAnimation = GMSMarkerAnimation.pop
+                marker.title = id
+                mapAnnotationID.append(id)
             }
+            if parking.isSpotAvailable {
+                marker.icon = UIImage(named: "annotationMapMarker")
+            } else {
+                marker.icon = UIImage(named: "annotationUnavailableMarker")
+            }
+            marker.map = mapView
+            
+//            let marker = MGLPointAnnotation()
+//            marker.coordinate = location.coordinate
+//            if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+//                marker.title = ID
+//                mapAnnotationID.append(ID)
+//                self.mapView.addAnnotation(marker)
+//            }
         }
         if let location = DestinationAnnotationLocation, didTapParking == false {
-            let marker = MGLPointAnnotation()
-            marker.coordinate = location.coordinate
+            let position = location.coordinate
+            let marker = GMSMarker(position: position)
+            marker.appearAnimation = GMSMarkerAnimation.pop
             marker.title = "Destination"
-            self.mapView.addAnnotation(marker)
+            marker.icon = UIImage(named: "annotationMapMarker")
+            marker.map = mapView
+            
+//            let marker = MGLPointAnnotation()
+//            marker.coordinate = location.coordinate
+//            marker.title = "Destination"
+//            self.mapView.addAnnotation(marker)
             self.checkAnnotationsNearDestination(location: location.coordinate, checkDistance: true)
         } else if let location = TappedDestinationAnnotationLocation, didTapParking == true {
-            let marker = MGLPointAnnotation()
-            marker.coordinate = location.coordinate
+            let position = location.coordinate
+            let marker = GMSMarker(position: position)
+            marker.appearAnimation = GMSMarkerAnimation.pop
             marker.title = "Destination"
-            self.mapView.addAnnotation(marker)
+            marker.icon = UIImage(named: "annotationMapMarker")
+            marker.map = mapView
+            
+//            let marker = MGLPointAnnotation()
+//            marker.coordinate = location.coordinate
+//            marker.title = "Destination"
+//            self.mapView.addAnnotation(marker)
             self.checkAnnotationsNearDestination(location: location.coordinate, checkDistance: true)
         }
     }
@@ -112,20 +142,41 @@ extension MapKitViewController {
         for parking in self.parkingSpots {
             if let latitude = parking.latitude, let longitude = parking.longitude {
                 let location = CLLocation(latitude: latitude, longitude: longitude)
-                let marker = MGLPointAnnotation()
-                marker.coordinate = location.coordinate
-                if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
-                    marker.title = ID
-                    mapAnnotationID.append(ID)
-                    self.mapView.addAnnotation(marker)
+                
+                let position = location.coordinate
+                let marker = GMSMarker(position: position)
+                if let id = parking.parkingID {
+                    marker.appearAnimation = GMSMarkerAnimation.pop
+                    marker.title = id
+                    mapAnnotationID.append(id)
                 }
+                if parking.isSpotAvailable {
+                    marker.icon = UIImage(named: "annotationMapMarker")
+                } else {
+                    marker.icon = UIImage(named: "annotationUnavailableMarker")
+                }
+                marker.map = mapView
+//                let marker = MGLPointAnnotation()
+//                marker.coordinate = location.coordinate
+//                if let ID = parking.parkingID, !mapAnnotationID.contains(ID) {
+//                    marker.title = ID
+//                    mapAnnotationID.append(ID)
+//                    self.mapView.addAnnotation(marker)
+//                }
             }
         }
         if let location = DestinationAnnotationLocation {
-            let marker = MGLPointAnnotation()
-            marker.coordinate = location.coordinate
+            let position = location.coordinate
+            let marker = GMSMarker(position: position)
+            marker.appearAnimation = GMSMarkerAnimation.pop
             marker.title = "Destination"
-            self.mapView.addAnnotation(marker)
+            marker.icon = UIImage(named: "annotationMapMarker")
+            marker.map = mapView
+            
+//            let marker = MGLPointAnnotation()
+//            marker.coordinate = location.coordinate
+//            marker.title = "Destination"
+//            self.mapView.addAnnotation(marker)
             self.checkAnnotationsNearDestination(location: location.coordinate, checkDistance: true)
         }
     }
@@ -241,54 +292,48 @@ extension MapKitViewController {
         }
     }
     
-    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        // For better performance, always try to reuse existing annotations.
-        if let title = annotation.title, title == "Destination" {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
-            
-            // If there is no reusable annotation image available, initialize a new one.
-            if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
-            }
-            
-            return annotationImage
-        } else if let title = annotation.title, let parkingID = title, let parking = self.parkingSpotsDictionary[parkingID] {
-            if parking.isSpotAvailable == false {
-                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationUnavailableMarker")
-                
-                // If there is no reusable annotation image available, initialize a new one.
-                if(annotationImage == nil) {
-                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationUnavailableMarker")!, reuseIdentifier: "annotationUnavailableMarker")
-                }
-                
-                return annotationImage
-            } else {
-                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
-                
-                // If there is no reusable annotation image available, initialize a new one.
-                if(annotationImage == nil) {
-                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
-                }
-                
-                return annotationImage
-            }
-        } else {
-            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
-            
-            // If there is no reusable annotation image available, initialize a new one.
-            if(annotationImage == nil) {
-                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
-            }
-            
-            return annotationImage
-        }
-    }
-    
-    func checkMapForAnnotations() {
-        if let annotations = self.mapView.visibleAnnotations {
-//            print(annotations.count)
-        }
-    }
+//    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+//        // For better performance, always try to reuse existing annotations.
+//        if let title = annotation.title, title == "Destination" {
+//            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "destinationMarkerIcon")
+//            
+//            // If there is no reusable annotation image available, initialize a new one.
+//            if(annotationImage == nil) {
+//                annotationImage = MGLAnnotationImage(image: UIImage(named: "destinationMarkerIcon")!, reuseIdentifier: "destinationMarkerIcon")
+//            }
+//            
+//            return annotationImage
+//        } else if let title = annotation.title, let parkingID = title, let parking = self.parkingSpotsDictionary[parkingID] {
+//            if parking.isSpotAvailable == false {
+//                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationUnavailableMarker")
+//                
+//                // If there is no reusable annotation image available, initialize a new one.
+//                if(annotationImage == nil) {
+//                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationUnavailableMarker")!, reuseIdentifier: "annotationUnavailableMarker")
+//                }
+//                
+//                return annotationImage
+//            } else {
+//                var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+//                
+//                // If there is no reusable annotation image available, initialize a new one.
+//                if(annotationImage == nil) {
+//                    annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+//                }
+//                
+//                return annotationImage
+//            }
+//        } else {
+//            var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "annotationMapMarker")
+//            
+//            // If there is no reusable annotation image available, initialize a new one.
+//            if(annotationImage == nil) {
+//                annotationImage = MGLAnnotationImage(image: UIImage(named: "annotationMapMarker")!, reuseIdentifier: "annotationMapMarker")
+//            }
+//            
+//            return annotationImage
+//        }
+//    }
     
     func createSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

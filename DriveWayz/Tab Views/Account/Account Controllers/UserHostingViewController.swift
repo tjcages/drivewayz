@@ -33,11 +33,11 @@ class UserHostingViewController: UIViewController {
     var previousSelectionCenter: CGFloat = 0.0
     
     var userParking: ParkingSpots?
-    var userBookings: [Bookings] = [] {
-        didSet {
-            self.monitorPreviousBookings()
-        }
-    }
+//    var userBookings: [Bookings] = [] {
+//        didSet {
+//            self.monitorPreviousBookings()
+//        }
+//    }
     var stringDates: [String] = []
     var dateProfits: [Double] = []
     var emptyProfits: [Double] = []

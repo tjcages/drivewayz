@@ -214,13 +214,8 @@ class MainBarViewController: UIViewController {
 
 
 extension MainBarViewController: handleInviteControllers {
-    func changeRecentsHeight(height: CGFloat) {
+    func changeRecentsHeight(number: Int) {
         
-    }
-    
-    
-    func searchRecentsPressed(address: String) {
-        self.delegate?.zoomToSearchLocation(address: address)
     }
     
     @objc func inviteControllerPressed() {
@@ -248,7 +243,7 @@ extension MainBarViewController: handleInviteControllers {
     @objc func newHostControllerPressed() {
         self.scrollView.setContentOffset(.zero, animated: true)
         self.delegate?.closeMainBar()
-        self.delegate?.becomeANewHost()
+        self.delegate?.quickNewHost()
         delayWithSeconds(2) {
             self.scrollView.isScrollEnabled = false
         }

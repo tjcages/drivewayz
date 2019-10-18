@@ -18,11 +18,11 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Help", "Settings"]
+    var options: [String] = ["Book a spot", "My bookings", "Become a host", "Contact us", "Help", "Settings"]
     let cellId = "cellId"
     var selectedIndex: Int = 0 {
         didSet {
-            self.optionsTableView.reloadData()
+            optionsTableView.reloadData()
         }
     }
     
@@ -48,30 +48,38 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     }()
     
     var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        let origImage = UIImage(named: "background4")
-        imageView.image = origImage
-        imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        imageView.isUserInteractionEnabled = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor.clear
-        imageView.layer.cornerRadius = 50
-        imageView.clipsToBounds = true
+        let view = UIImageView()
+        let image = UIImage(named: "background4")?.withRenderingMode(.alwaysTemplate)
+        view.image = image
+        view.tintColor = lineColor
+        view.isUserInteractionEnabled = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFill
+        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.layer.cornerRadius = 50
+        view.clipsToBounds = true
         
-        return imageView
+        return view
+    }()
+    
+    var profileView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.OFF_WHITE
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 52
+        
+        return view
     }()
     
     var profileName: UILabel = {
-        let profileName = UILabel()
-        profileName.translatesAutoresizingMaskIntoConstraints = false
-        profileName.textColor = Theme.DARK_GRAY
-        profileName.textAlignment = .center
-        profileName.font = Fonts.SSPSemiBoldH3
-        profileName.text = ""
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = Theme.WHITE
+        label.textAlignment = .center
+        label.font = Fonts.SSPSemiBoldH3
         
-        return profileName
+        return label
     }()
     
     var stars: CosmosView = {
@@ -91,7 +99,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         view.settings.filledImage = UIImage(named: "Star Filled")?.withRenderingMode(.alwaysOriginal)
         view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
         view.settings.textFont = Fonts.SSPRegularH5
-        view.settings.textColor = Theme.DARK_GRAY
+        view.settings.textColor = Theme.WHITE
         view.text = "5.0"
         
         return view
@@ -100,7 +108,7 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.DARK_GRAY
         
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
@@ -135,8 +143,8 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         
         view.backgroundColor = Theme.WHITE
         
-        self.optionsTableView.delegate = self
-        self.optionsTableView.dataSource = self
+        optionsTableView.delegate = self
+        optionsTableView.dataSource = self
 
         setupMainView()
         setupTopView()
@@ -156,14 +164,14 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     
     func setupMainView() {
         
-        self.view.addSubview(container)
-        container.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        view.addSubview(container)
+        container.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         container.widthAnchor.constraint(equalToConstant: phoneWidth/2 + 80).isActive = true
-        container.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        container.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         
-        self.view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: self.view.frame.width/2 + 80, height: 840)
+        view.addSubview(scrollView)
+        scrollView.contentSize = CGSize(width: phoneWidth/2 + 80, height: 840)
         scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
@@ -174,11 +182,15 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     func setupTopView() {
         
         scrollView.addSubview(profileLine)
+        scrollView.addSubview(profileView)
         scrollView.addSubview(profileImageView)
+        
         profileImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
+        
+        profileView.anchor(top: profileImageView.topAnchor, left: profileImageView.leftAnchor, bottom: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -2, paddingLeft: -2, paddingBottom: -2, paddingRight: -2, width: 0, height: 0)
         
         scrollView.addSubview(profileName)
         profileName.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
@@ -320,9 +332,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                 } else if self.options[indexPath.row] == "Become a host" {
                     self.openAccountView()
                     self.delegate?.bringNewHostingController()
-                } else if self.options[indexPath.row] == "Vehicle" {
-                    self.openAccountView()
-                    self.delegate?.bringVehicleController()
                 } else if self.options[indexPath.row] == "Settings" {
                     self.openAccountView()
                     self.delegate?.bringSettingsController()
@@ -357,11 +366,11 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
         ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Contact us", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Hosted spaces", "Contact us", "Help", "Settings"]
             self.optionsTableView.reloadData()
         }
         ref.observe(.childRemoved) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Help", "Settings"]
+            self.options = ["Book a spot", "My bookings", "Become a host", "Contact us", "Help", "Settings"]
             self.delegate?.closeAccountView()
 //            self.delegate?.hideHostingController()
             self.optionsTableView.reloadData()
@@ -375,10 +384,10 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
             if let key = snapshot.value as? String {
                 if key == currentUser {
                     if self.options.contains("Become a host") {
-                        self.options = ["Book a spot", "My bookings", "Vehicle", "Become a host", "Contact us", "Analytics", "Help", "Settings"]
+                        self.options = ["Book a spot", "My bookings", "Become a host", "Contact us", "Analytics", "Help", "Settings"]
                         self.optionsTableView.reloadData()
                     } else {
-                        self.options = ["Book a spot", "My bookings", "Vehicle", "Hosted spaces", "Contact us", "Analytics", "Help", "Settings"]
+                        self.options = ["Book a spot", "My bookings", "Hosted spaces", "Contact us", "Analytics", "Help", "Settings"]
                         self.optionsTableView.reloadData()
                     }
                 }

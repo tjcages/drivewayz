@@ -25,10 +25,10 @@ extension MapKitViewController {
             shadowLine.removeFromSuperlayer()
         }
         
-        let start = self.mapView.convert(startCoordinate, toPointTo: self.view)
+        let start = self.mapView.projection.point(for: startCoordinate)
         let raise: CGFloat = 1.0
         var startPoint = CGPoint(x: start.x, y: start.y - raise)
-        var endPoint = self.mapView.convert(endCoordinate, toPointTo: self.view)
+        var endPoint = self.mapView.projection.point(for: endCoordinate)
         self.moveQuickControllers(startPoint: start)
         
         let distance = startCoordinate.distance(to: endCoordinate)
@@ -162,7 +162,7 @@ extension MapKitViewController {
             self.monitorDifference(difference: difference)
         }
         if let destinationCoor = DestinationAnnotationLocation?.coordinate {
-            let destinationPoint = self.mapView.convert(destinationCoor, toPointTo: self.view)
+            let destinationPoint = self.mapView.projection.point(for: destinationCoor)
             resetDestinationCoor()
             if destinationPoint.x >= phoneWidth/2 {
                 let difference = abs(self.quickParkingRightAnchor.constant - (destinationPoint.x - self.quickParkingWidthAnchor.constant/2 - 16))

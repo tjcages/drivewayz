@@ -450,7 +450,7 @@ class HostResponsibilitiesViewController: UIViewController {
         exitButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
         exitButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         exitButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        exitButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
+        exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         
         self.view.addSubview(pullButton)
         pullButton.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -16).isActive = true
@@ -712,8 +712,12 @@ extension HostResponsibilitiesViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let translation = scrollView.contentOffset.y
         if translation <= -120 {
-            self.delegate?.dismissView()
-        } else if translation <= -16 {
+            if self.delegate != nil {
+                self.delegate?.dismissView()
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        } else if translation <= -16 - statusHeight {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.alpha = 0
             }

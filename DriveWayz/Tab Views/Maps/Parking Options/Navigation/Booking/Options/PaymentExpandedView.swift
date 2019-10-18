@@ -19,7 +19,6 @@ class PaymentExpandedView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = lineColor
-        view.layer.cornerRadius = 8
         view.clipsToBounds = true
         
         return view

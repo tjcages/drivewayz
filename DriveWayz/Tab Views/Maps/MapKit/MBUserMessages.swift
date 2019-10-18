@@ -12,7 +12,7 @@ import UIKit
 extension MapKitViewController: UIViewControllerTransitioningDelegate {
     
     func setupUserMessages() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(drivewayzMessagePressed))
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(drivewayzMessagePressed))
 //        mainBarController.contactBannerController.view.addGestureRecognizer(tap)
     }
     
@@ -45,13 +45,13 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
 //                self.mainBarController.contactBannerController.view.alpha = 1
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
-                self.lowestHeight = 424
-                switch device {
-                case .iphone8:
-                    self.minimizedHeight = 220
-                case .iphoneX:
-                    self.minimizedHeight = 234
-                }
+//                self.lowestHeight = 380
+//                switch device {
+//                case .iphone8:
+//                    self.minimizedHeight = 220
+//                case .iphoneX:
+//                    self.minimizedHeight = 234
+//                }
                 if self.mainViewState == .mainBar {
                     self.mainViewState = .mainBar
 //                    self.mainBarTopAnchor.constant = self.lowestHeight
@@ -67,13 +67,13 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
             UIView.animate(withDuration: animationIn, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (success) in
-                self.lowestHeight = 450
-                switch device {
-                case .iphone8:
-                    self.minimizedHeight = 150
-                case .iphoneX:
-                    self.minimizedHeight = 164
-                }
+//                self.lowestHeight = 380
+//                switch device {
+//                case .iphone8:
+//                    self.minimizedHeight = 150
+//                case .iphoneX:
+//                    self.minimizedHeight = 164
+//                }
                 if self.mainViewState == .mainBar {
                     self.mainViewState = .mainBar
 //                    self.mainBarBottomAnchor.constant = self.lowestHeight

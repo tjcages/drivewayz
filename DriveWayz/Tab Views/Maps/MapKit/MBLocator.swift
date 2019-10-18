@@ -6,59 +6,40 @@
 //  Copyright © 2018 COAD. All rights reserved.
 //
 
-import Foundation
-import MapKit
-import Mapbox
+import UIKit
+import GoogleMaps
 
 protocol handleLocatorButton {
-    func locatorButtonPressed()
+    func locatorButtonPressed(padding: CGFloat?)
 }
 
-var userCity: String = ""
+var userCurrentLocation: CLLocation?
 
-extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDelegate, handleLocatorButton {
+extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, handleLocatorButton {
     
     @objc func locatorButtonAction(sender: UIButton) {
-        if let region = ZooomRegion {
-            self.mapView.userTrackingMode = .none
-            if self.parkingControllerBottomAnchor?.constant == 0 {
-                let insets = UIEdgeInsets(top: statusHeight + 40, left: 64, bottom: 430, right: 64)
-                self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
+        locatorButtonPressed(padding: nil)
+    }
+    
+    func locatorButtonPressed(padding: CGFloat?) {
+        canShowLocatorButton = false
+        if let fromLocation = quadStartCoordinate, let toLocation = quadEndCoordinate {
+            let bounds = GMSCoordinateBounds(coordinate: fromLocation, coordinate: toLocation)
+            if let pad = padding {
+                let camera = GMSCameraUpdate.fit(bounds, withPadding: pad)
+                mapView.animate(with: camera)
             } else {
-                if self.mainViewState != .currentBooking {
-                    let insets = UIEdgeInsets(top: statusHeight + 40, left: 32, bottom: 320, right: 32)
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
-                } else {
-                    let insets = UIEdgeInsets(top: statusHeight + 156, left: 64, bottom: 320, right: 64)
-                    self.mapView.setVisibleCoordinateBounds(region, edgePadding: insets, animated: true, completionHandler: nil)
-                }
+                let camera = GMSCameraUpdate.fit(bounds, withPadding: 64)
+                mapView.animate(with: camera)
             }
         } else {
-            if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-                self.mapView.allowsRotating = true
-                self.mapView.isRotateEnabled = true
-                self.mapView.resetNorth()
-                let camera = MGLMapCamera(lookingAtCenter: location, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
-                self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight*3/4 - 60, right: phoneWidth/2), completionHandler: nil)
-                delayWithSeconds(animationOut * 2) {
-                    self.mapView.isRotateEnabled = false
-                    self.mapView.allowsRotating = false
-                    self.mapView.userTrackingMode = .follow
-                }
+            if let userLocation = self.locationManager.location {
+                let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
+                mapView.animate(to: camera)
             }
         }
         UIView.animate(withDuration: animationIn) {
             self.locatorButton.alpha = 0
-            self.polyRouteLocatorButton.alpha = 0
-        }
-    }
-    
-    func locatorButtonPressed() {
-        if let location: CLLocationCoordinate2D = mapView.userLocation?.coordinate {
-            self.mapView.setCenter(location, zoomLevel: 13, animated: true)
-            delayWithSeconds(animationOut * 2) {
-                self.mapView.userTrackingMode = .follow
-            }
         }
     }
     
@@ -73,38 +54,44 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         
         locationManager.startUpdatingLocation()
         
-        if self.searchedForPlace == false {
-            if let userLocation = locationManager.location {
-                self.mainBarController.searchController.determineCity(location: userLocation)
-                self.mapView.userTrackingMode = .follow
-//                self.removeAllMapOverlays(shouldRefresh: true)
-                self.mapView.setCenter(userLocation.coordinate, zoomLevel: 12, animated: true)
-                
-                let camera = MGLMapCamera(lookingAtCenter: userLocation.coordinate, altitude: CLLocationDistance(exactly: 18000)!, pitch: 0, heading: CLLocationDirection(0))
-                self.mapView.setCamera(camera, withDuration: animationOut * 2, animationTimingFunction: nil, edgePadding: UIEdgeInsets(top: phoneHeight/4 + 60, left: phoneWidth/2, bottom: phoneHeight * 3/4 - 60, right: phoneWidth/2), completionHandler: nil)
-                
-                delayWithSeconds(0.6) {
-                    self.mapView.userTrackingMode = .follow
-                }
+        observeAllParking()
+        delayWithSeconds(1) {
+            guard let location = self.locationManager.location else {
+                return
             }
-        } else {
+            self.mainBarController.searchController.determineCity(location: location)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard status == .authorizedWhenInUse else {
             return
         }
-    }
-    
-    func mapView(_ mapView: MGLMapView, regionDidChangeWith reason: MGLCameraChangeReason, animated: Bool) {
-        if self.backgroundImageView.alpha == 1 {
-            UIView.animate(withDuration: 0.8) {
-                self.backgroundImageView.alpha = 0
+        locationManager.startUpdatingLocation()
+        
+        mapView.isMyLocationEnabled = true
+        
+        delayWithSeconds(1) {
+            guard let location = self.locationManager.location else {
+                return
             }
+            self.mainBarController.searchController.determineCity(location: location)
         }
     }
     
-    func mapViewUserLocationAnchorPoint(_ mapView: MGLMapView) -> CGPoint {
-        if BookedState == .currentlyBooked {
-            return CGPoint(x: phoneWidth/2, y: phoneHeight/3)
-        } else {
-            return CGPoint(x: phoneWidth/2, y: phoneHeight/4)
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else {
+            return
+        }
+        
+        if locatorButton.alpha == 0 && (mainViewState == .mainBar || mainViewState == .currentBooking) {
+            canShowLocatorButton = false
+            var zoom = mapZoomLevel
+            if mainViewState == .currentBooking {
+                zoom = 15.5
+            }
+            let camera = GMSCameraPosition(target: location.coordinate, zoom: zoom)
+            mapView.animate(to: camera)
         }
     }
     
@@ -120,42 +107,30 @@ extension MapKitViewController: CLLocationManagerDelegate, UIGestureRecognizerDe
         }
     }
     
-    func mapView(_ mapView: MGLMapView, regionIsChangingWith reason: MGLCameraChangeReason) {
-        self.view.layoutIfNeeded()
-        let value = reason.rawValue
-        self.userInteractionChange(value: value)
-        self.checkMapForAnnotations()
+    func mapViewSnapshotReady(_ mapView: GMSMapView) {
+        if self.backgroundImageView.alpha == 1 {
+            UIView.animate(withDuration: 0.8) {
+                self.backgroundImageView.alpha = 0
+            }
+        }
+    }
+    
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        if locatorButton.alpha == 0 && canShowLocatorButton {
+            UIView.animate(withDuration: animationOut) {
+                self.locatorButton.alpha = 1
+            }
+        }
         if DestinationAnnotationLocation != nil, let from = quadStartCoordinate, let to = quadEndCoordinate {
             self.drawCurvedOverlay(startCoordinate: from, endCoordinate: to)
         }
         if let route = mapBoxRoute {
-             createRouteLine(route: route)
+            createRouteLine(route: route)
         }
     }
     
-    func userInteractionChange(value: UInt) {
-        if value == 4 {
-            self.mapChangedFromUserInteraction = true
-            self.changeUserInteractionTimer.invalidate()
-            self.changeUserInteractionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(changeFromUserInteraction), userInfo: nil, repeats: false)
-            UIView.animate(withDuration: animationOut) {
-                if ZoomMapView != nil {
-                    self.polyRouteLocatorButton.alpha = 1
-                } else {
-                    self.locatorButton.alpha = 1
-                }
-            }
-        } else {
-            self.mapChangedFromUserInteraction = false
-        }
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        canShowLocatorButton = true
     }
-    
-    @objc func changeFromUserInteraction() {
-        self.mapChangedFromUserInteraction = false
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
+
 }

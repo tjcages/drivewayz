@@ -92,9 +92,9 @@ class RecognizerViewController: UIViewController, PayCardsRecognizerPlatformDele
         gradientContainer.heightAnchor.constraint(equalToConstant: 160).isActive = true
         
         view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
         backButton.bottomAnchor.constraint(equalTo: gradientContainer.topAnchor, constant: -16).isActive = true
         
         view.addSubview(mainLabel)

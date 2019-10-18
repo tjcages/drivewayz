@@ -360,6 +360,7 @@ class AddANewParkingSpotViewController: UIViewController, UIImagePickerControlle
         
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: lattitudeConstant, longitude: longitudeConstant)
+        marker.appearAnimation = GMSMarkerAnimation.pop
         marker.title = "\(place.name)"
         marker.snippet = "\(place.formattedAddress!)"
         marker.map = mapView

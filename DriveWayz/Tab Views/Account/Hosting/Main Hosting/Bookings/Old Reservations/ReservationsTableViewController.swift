@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 class ReservationsTableViewController: UIViewController {
     
-    var delegate: handlePreviousBookings?
+//    var delegate: handlePreviousBookings?
     
     let cellHeight: CGFloat = 202
     var parkingSpot: ParkingSpots?
@@ -327,12 +327,12 @@ extension ReservationsTableViewController: UITableViewDelegate, UITableViewDataS
         if tableView == self.upcomingTableView {
             if self.upcomingBookings.count > indexPath.row {
                 let booking = self.upcomingBookings[indexPath.row]
-                self.delegate?.hostingPreviousPressed(booking: booking, parking: parking)
+//                self.delegate?.hostingPreviousPressed(booking: booking, parking: parking)
             }
         } else {
             if self.previousBookings.count > indexPath.row {
                 let booking = self.previousBookings[indexPath.row]
-                self.delegate?.hostingPreviousPressed(booking: booking, parking: parking)
+//                self.delegate?.hostingPreviousPressed(booking: booking, parking: parking)
             }
         }
     }

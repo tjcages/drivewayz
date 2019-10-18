@@ -25,7 +25,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     
     lazy var container: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = .black
+        view.backgroundColor = Theme.DARK_GRAY
         
         return view
     }()
@@ -33,7 +33,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var darkView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .black
+        view.backgroundColor = Theme.DARK_GRAY
         
         return view
     }()
@@ -74,7 +74,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = Theme.DARK_GRAY
         label.text = "Rules and regulations"
-        label.font = Fonts.SSPSemiBoldH2
+        label.font = Fonts.SSPRegularH2
         
         return label
     }()
@@ -82,10 +82,10 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.PRUSSIAN_BLUE
         label.text = "When deciding whether to become a Drivewayz host, it's important for you to understand how the laws work in your city."
-        label.font = Fonts.SSPRegularH6
-        label.numberOfLines = 4
+        label.font = Fonts.SSPRegularH4
+        label.numberOfLines = 10
         
         return label
     }()
@@ -123,7 +123,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.6)
+        view.backgroundColor = lineColor
         view.layer.cornerRadius = 30
         
         return view
@@ -132,7 +132,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsSubLabel2: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.PRUSSIAN_BLUE
         label.text = """
         Some cities have laws that restrict your ability to host paying guests for short periods. These laws are often part of a city's zoning or administrative codes. In many cities, you must register, get a permit, or obtain a license before you list your property or accept guests. Certain types of short-term bookings may be prohibited altogether. Local governments vary greatly in how they enforce these laws. Penalties may include fines or other enforcement.
         
@@ -142,8 +142,8 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
         
         Please review your local laws before listing your space on Drivewayz. By accepting our Terms of Service and activating a listing, you certify that you will follow your local laws and regulations.
         """
-        label.font = Fonts.SSPRegularH6
-        label.numberOfLines = 38
+        label.font = Fonts.SSPRegularH4
+        label.numberOfLines = 100
         
         return label
     }()
@@ -178,7 +178,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
         webView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        rulesView.contentSize = CGSize(width: phoneWidth, height: 900)
+        rulesView.contentSize = CGSize(width: phoneWidth, height: 1200)
         rulesView.topAnchor.constraint(equalTo: darkView.bottomAnchor).isActive = true
         rulesView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         rulesView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true

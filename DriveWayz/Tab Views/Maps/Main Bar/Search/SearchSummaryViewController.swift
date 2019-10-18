@@ -300,7 +300,7 @@ class SearchSummaryViewController: UIViewController {
         
         self.view.addSubview(calendarLabel)
         self.view.addSubview(calendarButton)
-        calendarLabel.leftAnchor.constraint(equalTo: calendarButton.rightAnchor, constant: 8).isActive = true
+        calendarLabel.leftAnchor.constraint(equalTo: calendarButton.rightAnchor, constant: 4).isActive = true
         calendarLabel.centerYAnchor.constraint(equalTo: calendarButton.centerYAnchor).isActive = true
         calendarLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         calendarLabel.sizeToFit()

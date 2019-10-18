@@ -137,17 +137,7 @@ class BookingExpandedViewController: UIViewController {
         return label
     }()
     
-    lazy var quickBookingController: QuickBookingViewController = {
-        let controller = QuickBookingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.addChild(controller)
-        controller.view.alpha = 0
-        
-        return controller
-    }()
-    
     func setData(parking: ParkingSpots) {
-        self.quickBookingController.setData(parking: parking)
         if let secondaryType = parking.secondaryType, let numberSpots = parking.numberSpots, let streetAddress = parking.streetAddress {
             self.secondaryType = secondaryType
             self.numberSpots = numberSpots
@@ -175,7 +165,6 @@ class BookingExpandedViewController: UIViewController {
         
         setupViews()
         setupDetails()
-        setupController()
     }
     
     var priceWidthAnchor: NSLayoutConstraint!
@@ -224,25 +213,10 @@ class BookingExpandedViewController: UIViewController {
         
     }
     
-    func setupController() {
-        
-        self.view.addSubview(quickBookingController.view)
-        quickBookingController.view.topAnchor.constraint(equalTo: spotIcon.bottomAnchor, constant: 16).isActive = true
-        quickBookingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        quickBookingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        quickBookingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        
-    }
-    
     func changeHeight(amount: CGFloat, state: UIPanGestureRecognizer.State) {
         let percentage = amount/140
         let reducedPercentage = amount/60
         if state == .changed {
-            if self.quickBookingController.view.alpha == 1 {
-                UIView.animate(withDuration: animationIn, animations: {
-                    self.quickBookingController.view.alpha = 0
-                })
-            }
             self.spotIconTopAnchor.constant = 12 + 20 * percentage
             self.spotIcon.transform = CGAffineTransform(scaleX: 1 + 0.2 * percentage, y: 1 + 0.2 * percentage)
             self.priceLabel.alpha = 1 - reducedPercentage
@@ -261,9 +235,7 @@ class BookingExpandedViewController: UIViewController {
                     self.spotLabel.alpha = 0
                     self.view.layoutIfNeeded()
                 }) { (success) in
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.quickBookingController.view.alpha = 1
-                    })
+
                 }
             } else {
                 UIView.animate(withDuration: animationOut, animations: {
@@ -275,9 +247,7 @@ class BookingExpandedViewController: UIViewController {
                     self.spotLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 }) { (success) in
-                    UIView.animate(withDuration: animationIn, animations: {
-                        self.quickBookingController.view.alpha = 0
-                    })
+
                 }
             }
         }

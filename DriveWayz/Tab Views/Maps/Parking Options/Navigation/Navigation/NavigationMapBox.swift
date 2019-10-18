@@ -319,6 +319,9 @@ class NavigationMapBox: UIViewController {
     func openCurrentSuccess() {
         if let image = currentBookingImage, let time = currentBookingTime {
             let controller = SuccessfulPurchaseViewController()
+            if let totalTime = currentTotalTime {
+                controller.changeDates(totalTime: totalTime)
+            }
             controller.spotIcon.image = image
             controller.loadingActivity.startAnimating()
             controller.modalTransitionStyle = .crossDissolve
@@ -342,6 +345,9 @@ class NavigationMapBox: UIViewController {
     
     func openGeneralSuccess() {
         let controller = SuccessfulPurchaseViewController()
+        if let totalTime = currentTotalTime {
+            controller.changeDates(totalTime: totalTime)
+        }
         controller.loadingActivity.startAnimating()
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext

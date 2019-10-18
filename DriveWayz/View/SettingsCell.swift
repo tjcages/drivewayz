@@ -11,42 +11,43 @@ import UIKit
 
 class SettingsCell: UITableViewCell {
     
-    var iconView: UIButton = {
-        let button = UIButton()
-        button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = Theme.DARK_GRAY
-        button.isUserInteractionEnabled = false
-        button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        
-        return button
-    }()
+    func setIcon(image: UIImage?) {
+        iconButton.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
+        iconButton.alpha = 1
+        titleLabelLeftAnchor.constant = 60
+        layoutIfNeeded()
+    }
+    
+    func removeIcon() {
+        iconButton.alpha = 0
+        titleLabelLeftAnchor.constant = 20
+        layoutIfNeeded()
+    }
     
     var titleLabel: UILabel = {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.PRUSSIAN_BLUE
         
         return view
     }()
     
     var subtitleLabel: UILabel = {
         let view = UILabel()
-        view.font = Fonts.SSPSemiBoldH4
+        view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.DARK_GRAY
         
         return view
     }()
     
-    var nextButton: UIButton = {
+    var iconButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = Theme.BLUE
+        button.isUserInteractionEnabled = false
+        button.alpha = 0
         
         return button
     }()
@@ -65,44 +66,34 @@ class SettingsCell: UITableViewCell {
         return button
     }()
     
-    var titleLabelTopAnchor: NSLayoutConstraint!
-    var titleLabelCenterAnchor: NSLayoutConstraint!
+    var titleLabelLeftAnchor: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = UIColor.clear
+        backgroundColor = Theme.WHITE
         
-        addSubview(iconView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
-        addSubview(nextButton)
+        addSubview(iconButton)
         addSubview(defaultButton)
-        
-        iconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
-        iconView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        iconView.widthAnchor.constraint(equalTo: iconView.heightAnchor).isActive = true
-        
-        titleLabelTopAnchor = titleLabel.topAnchor.constraint(equalTo: iconView.topAnchor, constant: -8)
-            titleLabelTopAnchor.isActive = true
-        titleLabelCenterAnchor = titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor)
-            titleLabelCenterAnchor.isActive = false
-        titleLabel.leftAnchor.constraint(equalTo: iconView.rightAnchor, constant: 16).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
+        titleLabelLeftAnchor = titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20)
+            titleLabelLeftAnchor.isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         titleLabel.sizeToFit()
         
-        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -4).isActive = true
-        subtitleLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor).isActive = true
+        subtitleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 100).isActive = true
+        subtitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         subtitleLabel.sizeToFit()
         
-        nextButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
-        nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        iconButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        iconButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        iconButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
-        defaultButton.centerYAnchor.constraint(equalTo: subtitleLabel.centerYAnchor).isActive = true
-        defaultButton.leftAnchor.constraint(equalTo: subtitleLabel.rightAnchor, constant: 12).isActive = true
+        defaultButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        defaultButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         defaultButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         defaultButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
         

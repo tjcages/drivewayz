@@ -10,7 +10,7 @@ import UIKit
 
 class OngoingMessageViewController: UIViewController {
     
-    var delegate: handlePreviousBookings?
+//    var delegate: handlePreviousBookings?
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
@@ -213,7 +213,7 @@ class OngoingMessageViewController: UIViewController {
     }
     
     @objc func backButtonDismissed() {
-        self.delegate?.dismissOngoingMessages()
+//        self.delegate?.dismissOngoingMessages()
     }
     
 }

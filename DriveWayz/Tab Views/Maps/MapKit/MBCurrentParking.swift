@@ -23,7 +23,7 @@ extension MapKitViewController: handleRouteNavigation {
         delayWithSeconds(animationOut) {
 //            self.removeAllMapOverlays(shouldRefresh: false)
             self.mainViewState = .currentBooking
-            self.locatorButtonPressed()
+            self.locatorButtonPressed(padding: 64)
             self.defaultContentStatusBar()
             
             self.view.bringSubviewToFront(self.endBookingController.view)
@@ -49,7 +49,7 @@ extension MapKitViewController: handleRouteNavigation {
             UserDefaults.standard.synchronize()
         }
         ref.child("CurrentBooking").observe(.childAdded) { (snapshot) in
-            self.removePolylineAnnotations()
+            self.mapView.clear()
             BookedState = .currentlyBooked
             UserDefaults.standard.set("currentlyBooked", forKey: "userBookingStatus")
             UserDefaults.standard.synchronize()
@@ -65,7 +65,7 @@ extension MapKitViewController: handleRouteNavigation {
             self.removeAllMapOverlays(shouldRefresh: true)
             delayWithSeconds(animationOut, completion: {
                 self.bringReviewBooking()
-                self.locatorButtonPressed()
+                self.locatorButtonPressed(padding: nil)
             })
             UserDefaults.standard.set("none", forKey: "userBookingStatus")
             UserDefaults.standard.synchronize()
@@ -82,7 +82,7 @@ extension MapKitViewController: handleRouteNavigation {
                     if let checkedIn = booking.checkedIn, checkedIn {
                         self.drawRoute(fromLocation: currentLocation, toLocation: parking, identifier: .walking)
                     } else {
-                        self.drawRoute(fromLocation: currentLocation, toLocation: parking, identifier: .automobileAvoidingTraffic)
+                        self.drawRoute(fromLocation: currentLocation, toLocation: parking, identifier: .automobile)
                     }
                 }
             }

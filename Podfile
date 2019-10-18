@@ -58,6 +58,7 @@ target 'DriveWayz' do
 	pod 'UIImageColors'
 	pod 'Solar'
 	pod 'CHIPageControl', '~> 0.1.3'
+	pod 'JTAppleCalendar'
 
 	pod 'PayCardsRecognizer'
 	pod 'ViewAnimator'

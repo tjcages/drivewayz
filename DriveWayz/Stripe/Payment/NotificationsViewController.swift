@@ -11,8 +11,6 @@ import Firebase
 import GoogleMaps
 import Stripe
 
-var hours: Int?
-
 protocol dropDownProtocol {
     func dropDownPressed(string : String)
 }
@@ -161,7 +159,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
 //        reserveButton.isUserInteractionEnabled = true
         let hoursString = dropDownOptions[indexPath.row]
         let noHoursString = hoursString.replacingOccurrences(of: " hours", with: "", options: .regularExpression, range: nil)
-        hours = Int(noHoursString.replacingOccurrences(of: " hour", with: "", options: .regularExpression, range: nil))
+//        hours = Int(noHoursString.replacingOccurrences(of: " hour", with: "", options: .regularExpression, range: nil))
     }
     
 }

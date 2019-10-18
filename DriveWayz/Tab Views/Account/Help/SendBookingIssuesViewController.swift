@@ -191,7 +191,7 @@ class SendBookingIssuesViewController: UIViewController {
         button.backgroundColor = Theme.BLUE
         button.setTitle("Contact support", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
         button.addTarget(self, action: #selector(sendHelpMessage), for: .touchUpInside)
@@ -301,7 +301,7 @@ class SendBookingIssuesViewController: UIViewController {
         button.backgroundColor = lineColor
         button.setTitle("Submit feedback", for: .normal)
         button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
         button.addTarget(self, action: #selector(feebackSubmitted), for: .touchUpInside)

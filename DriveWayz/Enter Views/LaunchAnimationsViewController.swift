@@ -92,8 +92,10 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         switch device {
         case .iphone8:
             gradientHeight = 140
+            cancelBottomHeight = -32
         case .iphoneX:
             gradientHeight = 160
+            cancelBottomHeight = -52
         }
 
         self.view.addSubview(gradient)
@@ -317,5 +319,10 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }
+    
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
+
 
 }
