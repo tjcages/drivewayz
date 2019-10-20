@@ -302,6 +302,7 @@ class AddStepView: UIViewController {
                 vehicleButtonPressed()
             } else if title == "Confirm Booking" {
                 delegate?.confirmBookingStep()
+                backButtonPressed()
             }
         }
     }
@@ -313,7 +314,9 @@ class AddStepView: UIViewController {
     }
     
     @objc func backButtonPressed() {
-        self.delegate?.closeBackground()
+        UIView.animate(withDuration: animationOut) {
+            tabDimmingView.alpha = 0
+        }
         self.dismiss(animated: true) {
         }
     }
