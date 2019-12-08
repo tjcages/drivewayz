@@ -109,7 +109,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
     
     func mapViewSnapshotReady(_ mapView: GMSMapView) {
         if self.backgroundImageView.alpha == 1 {
-            UIView.animate(withDuration: 0.8) {
+            UIView.animate(withDuration: 0.4) {
                 self.backgroundImageView.alpha = 0
             }
         }

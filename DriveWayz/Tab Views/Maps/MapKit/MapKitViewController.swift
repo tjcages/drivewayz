@@ -94,7 +94,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var hasLoaded: Bool = false
     
     lazy var mapView: GMSMapView = {
-        let camera = GMSCameraPosition.camera(withLatitude: 37.8249, longitude: -122.4194, zoom: 24.0)
+        let camera = GMSCameraPosition.camera(withLatitude: 37.8249, longitude: -122.4194, zoom: 14.0)
         let view = GMSMapView(frame: .zero, camera: camera)
         view.delegate = self
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]

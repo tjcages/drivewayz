@@ -92,13 +92,9 @@ class MainBannerView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.WHITE
+        view.backgroundColor = Theme.HOST_GREEN
         view.clipsToBounds = true
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DarkGreen.withAlphaComponent(0.2)
-        self.view.addSubview(view)
         
         setupViews()
     }

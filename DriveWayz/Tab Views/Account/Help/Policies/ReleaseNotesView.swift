@@ -92,6 +92,10 @@ class ReleaseNotesView: UIViewController {
         getVersionNumber()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        gradientController.animateBackButton()
+    }
+    
     func setupViews() {
         
         view.addSubview(gradientController.view)

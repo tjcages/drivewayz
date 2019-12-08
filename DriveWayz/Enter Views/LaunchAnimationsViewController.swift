@@ -68,15 +68,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         
         return label
     }()
-    
-    lazy var gradient: UIImageView = {
-        let image = UIImage(named: "purpleGradient")
-        let view = UIImageView(image: image)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFill
-        
-        return view
-    }()
 
     var drivewayzIconLeftAnchor: NSLayoutConstraint!
     var drivewayzIconTopAnchor: NSLayoutConstraint!
@@ -84,7 +75,13 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = Theme.DARK_GRAY
+        
         checkViews()
+        
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = .light
+        }
         
         phoneHeight = self.view.frame.height
         phoneWidth = self.view.frame.width
@@ -92,17 +89,20 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         switch device {
         case .iphone8:
             gradientHeight = 140
-            cancelBottomHeight = -32
+            cancelBottomHeight = -20
         case .iphoneX:
             gradientHeight = 160
-            cancelBottomHeight = -52
+            cancelBottomHeight = -56
         }
-
-        self.view.addSubview(gradient)
-        gradient.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        gradient.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        gradient.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        gradient.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        
+        setupViews()
+        
+        delayWithSeconds(0.1) {
+            self.animate()
+        }
+    }
+    
+    func setupViews() {
         
         self.view.addSubview(blackView)
         blackView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -129,9 +129,6 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         drivewayzLabel.centerYAnchor.constraint(equalTo: drivewayzTopIcon.centerYAnchor, constant: 4).isActive = true
         drivewayzLabel.sizeToFit()
         
-        delayWithSeconds(0.1) {
-            self.animate()
-        }
     }
     
     func animate() {
@@ -283,14 +280,14 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     }
     
     func lightContentStatusBar() {
-        self.statusBarColor = true
+        statusBarColor = true
         UIView.animate(withDuration: animationIn) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
     
     func defaultStatusBar() {
-        self.statusBarColor = false
+        statusBarColor = false
         UIView.animate(withDuration: animationIn) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
@@ -302,7 +299,7 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
     }
     
     var statusBarShouldBeHidden = true
-    var statusBarColor = true
+    var statusBarColor = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if statusBarColor == true {

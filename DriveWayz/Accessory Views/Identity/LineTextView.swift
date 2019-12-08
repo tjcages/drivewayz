@@ -10,6 +10,29 @@ import UIKit
 
 class LineTextView: UITextView {
     
+    var placeCenter: Bool = false {
+        didSet {
+            if placeCenter {
+                placeLeftAnchor.isActive = false
+                placeCenterAnchor.isActive = true
+            } else {
+                placeLeftAnchor.isActive = true
+                placeCenterAnchor.isActive = false
+            }
+        }
+    }
+    var placeHolderCenter: Bool = true {
+        didSet {
+            if placeHolderCenter {
+                placeHolderCenterAnchor.isActive = true
+                placeHolderTopAnchor.isActive = false
+            } else {
+                placeHolderCenterAnchor.isActive = false
+                placeHolderTopAnchor.isActive = true
+            }
+        }
+    }
+    
     var placeholderLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,6 +48,12 @@ class LineTextView: UITextView {
 //        deleteButton.isHidden = true
     }
     
+    var placeHolderCenterAnchor: NSLayoutConstraint!
+    var placeHolderTopAnchor: NSLayoutConstraint!
+    
+    var placeLeftAnchor: NSLayoutConstraint!
+    var placeCenterAnchor: NSLayoutConstraint!
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
@@ -34,9 +63,16 @@ class LineTextView: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
         
         addSubview(placeholderLabel)
-        placeholderLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        placeholderLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12).isActive = true
+        placeLeftAnchor = placeholderLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 12)
+            placeLeftAnchor.isActive = true
+        placeCenterAnchor = placeholderLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            placeCenterAnchor.isActive = false
         placeholderLabel.sizeToFit()
+        
+        placeHolderCenterAnchor = placeholderLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            placeHolderCenterAnchor.isActive = true
+        placeHolderTopAnchor = placeholderLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8)
+            placeHolderTopAnchor.isActive = false
 
     }
     

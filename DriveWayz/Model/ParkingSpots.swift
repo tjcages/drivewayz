@@ -11,6 +11,8 @@ import MapKit
 import Firebase
 
 class ParkingSpots: NSObject {
+    
+    var dictionary: [String: Any]?
 
     var hostEmail: String?
     var hostMessage: String?
@@ -114,9 +116,21 @@ class ParkingSpots: NSObject {
     var totalProfits: Double?
     
     var Bookings: [String]?
+    var Notifications: [HostNotifications] = []
     
     init(dictionary: [String:Any]) {
         super.init()
+        
+        self.dictionary = dictionary
+        
+        Notifications = []
+        if let notificationDict = dictionary["Notifications"] as? [String: [String: Any]] {
+            for notification in notificationDict {
+                let hostNotification = HostNotifications(dictionary: notification.value)
+                hostNotification.key = notification.key
+                Notifications.append(hostNotification)
+            }
+        }
         
         hostEmail = dictionary["hostEmail"] as? String
         hostMessage = dictionary["hostMessage"] as? String

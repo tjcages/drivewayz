@@ -15,67 +15,67 @@ class SendBookingIssuesViewController: UIViewController {
         didSet {
             if let faq = FAQ {
                 if let mainInformation = faq.mainInformation {
-                    self.titleLabel.alpha = 1
-                    self.subtitleLabel.alpha = 1
+                    titleLabel.alpha = 1
+                    subtitleLabel.alpha = 1
                     for information in mainInformation {
                         if information == mainInformation.first {
-                            self.subtitleLabel.text = information
+                            subtitleLabel.text = information
                         } else {
                             guard let text = self.subtitleLabel.text else { return }
-                            self.subtitleLabel.text = text + "\n\n" + information
+                            subtitleLabel.text = text + "\n\n" + information
                         }
                     }
                 }
                 if let contactSupport = faq.contactSupport {
-                    self.supportButton.setTitle(contactSupport, for: .normal)
-                    self.contactButton()
+                    supportButton.setTitle(contactSupport, for: .normal)
+                    contactButton()
                 } else {
-                    self.noContactButton()
+                    noContactButton()
                 }
                 if let supportText = faq.supportText {
-                    self.supportTextLabel.text = supportText
+                    supportTextLabel.text = supportText
                     self.supportText()
                 } else {
-                    self.noSupportText()
+                    noSupportText()
                 }
-                self.openFeedback()
+                openFeedback()
             }
         }
     }
     
     var userLiked: Bool = false {
         didSet {
-            if self.userLiked == true {
-                if self.userDisliked == true {
-                    self.userDisliked = false
+            if userLiked == true {
+                if userDisliked == true {
+                    userDisliked = false
                 }
-                self.likeButton.tintColor = Theme.BLUE
-                self.likeButton.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
-                self.sendFeedbackToDatabase(like: true, add: true)
-                self.expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
+                likeButton.tintColor = Theme.BLUE
+                likeButton.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
+                sendFeedbackToDatabase(like: true, add: true)
+                expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
             } else {
-                self.likeButton.tintColor = Theme.DARK_GRAY
-                self.likeButton.backgroundColor = lineColor
-                self.sendFeedbackToDatabase(like: true, add: false)
+                likeButton.tintColor = Theme.DARK_GRAY
+                likeButton.backgroundColor = lineColor
+                sendFeedbackToDatabase(like: true, add: false)
             }
         }
     }
     var userDisliked: Bool = false {
         didSet {
-            if self.userDisliked == true {
-                if self.userLiked == true {
-                    self.userLiked = false
+            if userDisliked == true {
+                if userLiked == true {
+                    userLiked = false
                 }
-                self.dislikeButton.tintColor = Theme.BLUE
-                self.dislikeButton.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
-                self.sendFeedbackToDatabase(like: false, add: true)
-                self.expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
-                self.openDislikeFeeback()
+                dislikeButton.tintColor = Theme.BLUE
+                dislikeButton.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
+                sendFeedbackToDatabase(like: false, add: true)
+                expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
+                openDislikeFeeback()
             } else {
-                self.dislikeButton.tintColor = Theme.DARK_GRAY
-                self.dislikeButton.backgroundColor = lineColor
-                self.sendFeedbackToDatabase(like: false, add: false)
-                self.closeDislikeFeedback()
+                dislikeButton.tintColor = Theme.DARK_GRAY
+                dislikeButton.backgroundColor = lineColor
+                sendFeedbackToDatabase(like: false, add: false)
+                closeDislikeFeedback()
             }
         }
     }
@@ -141,7 +141,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.PRUSSIAN_BLUE
         view.numberOfLines = 100
         view.text = ""
         view.alpha = 0
@@ -153,7 +153,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.DARK_GRAY
         view.text = "Support text"
         view.numberOfLines = 2
         view.alpha = 0
@@ -188,7 +188,7 @@ class SendBookingIssuesViewController: UIViewController {
     var supportButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Contact support", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -320,7 +320,7 @@ class SendBookingIssuesViewController: UIViewController {
     func setInformation(question: String) {
         loadingLine.startAnimating()
         if question != "" {
-            self.FAQString = question
+            FAQString = question
             let ref = Database.database().reference().child("FrequentlyAskedQuestions").child("Answers").child(question)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
@@ -359,11 +359,11 @@ class SendBookingIssuesViewController: UIViewController {
     
     func setupViews() {
         
-        self.view.addSubview(scrollView)
-        self.view.addSubview(gradientContainer)
-        gradientContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        gradientContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        view.addSubview(scrollView)
+        view.addSubview(gradientContainer)
+        gradientContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        gradientContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        gradientContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         switch device {
         case .iphone8:
             gradientContainer.heightAnchor.constraint(equalToConstant: self.gradientHeightAnchor).isActive = true
@@ -373,32 +373,32 @@ class SendBookingIssuesViewController: UIViewController {
         
         scrollView.contentSize = CGSize(width: phoneWidth, height: 1000)
         scrollView.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         scrollView.addGestureRecognizer(tap)
         
-        self.view.addSubview(backButton)
-        backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
+        view.addSubview(backButton)
+        backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         switch device {
         case .iphone8:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 28).isActive = true
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 28).isActive = true
         case .iphoneX:
-            backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
         }
         
-        self.view.addSubview(mainLabel)
-        mainLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 24).isActive = true
-        mainLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -24).isActive = true
+        view.addSubview(mainLabel)
+        mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24).isActive = true
+        mainLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24).isActive = true
         mainLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
         mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
         
-        self.view.addSubview(feedbackAlert)
+        view.addSubview(feedbackAlert)
         feedbackAlert.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: 16).isActive = true
-        feedbackAlert.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        feedbackAlert.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         feedbackAlert.widthAnchor.constraint(equalToConstant: 200).isActive = true
         feedbackAlert.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -408,19 +408,19 @@ class SendBookingIssuesViewController: UIViewController {
         
         gradientContainer.addSubview(loadingLine)
         loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
-        loadingLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        loadingLine.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        loadingLine.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        loadingLine.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
         scrollView.addSubview(titleLabel)
-        titleLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        titleLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: scrollView.topAnchor, constant: 52).isActive = true
         titleLabel.sizeToFit()
         
         scrollView.addSubview(subtitleLabel)
-        subtitleLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        subtitleLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        subtitleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        subtitleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16).isActive = true
         subtitleLabel.sizeToFit()
         
@@ -429,14 +429,14 @@ class SendBookingIssuesViewController: UIViewController {
     func setupTextViews() {
         
         scrollView.addSubview(supportTextLabel)
-        supportTextLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        supportTextLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         supportTextLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 32).isActive = true
         supportTextLabel.sizeToFit()
         
         scrollView.addSubview(supportTextView)
         supportTextView.topAnchor.constraint(equalTo: supportTextLabel.bottomAnchor, constant: 8).isActive = true
-        supportTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        supportTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        supportTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        supportTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         supportTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
         supportTextView.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
@@ -458,8 +458,8 @@ class SendBookingIssuesViewController: UIViewController {
             supportTextAnchor.isActive = true
         noSupportTextAnchor = supportButton.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 32)
             noSupportTextAnchor.isActive = false
-        supportButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        supportButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        supportButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        supportButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         supportButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
     }
@@ -470,7 +470,7 @@ class SendBookingIssuesViewController: UIViewController {
     func setupHelpful() {
         
         scrollView.addSubview(helpfulLabel)
-        helpfulLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        helpfulLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         contactButtonAnchor = helpfulLabel.topAnchor.constraint(equalTo: supportButton.bottomAnchor, constant: 48)
             contactButtonAnchor.isActive = true
         noContactButtonAnchor = helpfulLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 48)
@@ -479,25 +479,25 @@ class SendBookingIssuesViewController: UIViewController {
         
         scrollView.addSubview(likeButton)
         likeButton.topAnchor.constraint(equalTo: helpfulLabel.bottomAnchor, constant: 24).isActive = true
-        likeButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 12).isActive = true
+        likeButton.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -12).isActive = true
         likeButton.heightAnchor.constraint(equalTo: likeButton.widthAnchor).isActive = true
         likeButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(dislikeButton)
         dislikeButton.topAnchor.constraint(equalTo: helpfulLabel.bottomAnchor, constant: 24).isActive = true
-        dislikeButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -12).isActive = true
+        dislikeButton.leftAnchor.constraint(equalTo: view.centerXAnchor, constant: 12).isActive = true
         dislikeButton.heightAnchor.constraint(equalTo: likeButton.widthAnchor).isActive = true
         dislikeButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
         scrollView.addSubview(feedbackTextLabel)
-        feedbackTextLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
+        feedbackTextLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         feedbackTextLabel.topAnchor.constraint(equalTo: dislikeButton.bottomAnchor, constant: 32).isActive = true
         feedbackTextLabel.sizeToFit()
         
         scrollView.addSubview(feedbackTextView)
         feedbackTextView.topAnchor.constraint(equalTo: feedbackTextLabel.bottomAnchor, constant: 8).isActive = true
-        feedbackTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        feedbackTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        feedbackTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        feedbackTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         feedbackTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
         feedbackTextView.heightAnchor.constraint(equalToConstant: 110).isActive = true
         
@@ -509,77 +509,77 @@ class SendBookingIssuesViewController: UIViewController {
         
         scrollView.addSubview(feedbackButton)
         feedbackButton.topAnchor.constraint(equalTo: feedbackTextView.bottomAnchor, constant: 32).isActive = true
-        feedbackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        feedbackButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        feedbackButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        feedbackButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         feedbackButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
         
     }
     
     func supportText() {
-        self.supportTextAnchor.isActive = true
-        self.noSupportTextAnchor.isActive = false
-        self.supportTextLabel.alpha = 1
-        self.supportTextView.alpha = 1
-        self.supportTextLine.alpha = 1
+        supportTextAnchor.isActive = true
+        noSupportTextAnchor.isActive = false
+        supportTextLabel.alpha = 1
+        supportTextView.alpha = 1
+        supportTextLine.alpha = 1
 
-        self.contactButton()
-        self.supportButton.setTitle("Contact support", for: .normal)
-        self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        self.supportButton.backgroundColor = lineColor
-        self.supportButton.isUserInteractionEnabled = false
+        contactButton()
+        supportButton.setTitle("Contact support", for: .normal)
+        supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        supportButton.backgroundColor = lineColor
+        supportButton.isUserInteractionEnabled = false
     }
     
     func noSupportText() {
-        self.supportTextAnchor.isActive = false
-        self.noSupportTextAnchor.isActive = true
-        self.supportTextLabel.alpha = 0
-        self.supportTextView.alpha = 0
-        self.supportTextLine.alpha = 0
-        self.supportButton.setTitleColor(Theme.WHITE, for: .normal)
-        self.supportButton.backgroundColor = Theme.BLUE
-        self.supportButton.isUserInteractionEnabled = true
+        supportTextAnchor.isActive = false
+        noSupportTextAnchor.isActive = true
+        supportTextLabel.alpha = 0
+        supportTextView.alpha = 0
+        supportTextLine.alpha = 0
+        supportButton.setTitleColor(Theme.WHITE, for: .normal)
+        supportButton.backgroundColor = Theme.DARK_GRAY
+        supportButton.isUserInteractionEnabled = true
     }
     
     func contactButton() {
-        self.contactButtonAnchor.isActive = true
-        self.noContactButtonAnchor.isActive = false
-        self.supportButton.alpha = 1
+        contactButtonAnchor.isActive = true
+        noContactButtonAnchor.isActive = false
+        supportButton.alpha = 1
     }
     
     func noContactButton() {
-        self.contactButtonAnchor.isActive = false
-        self.noContactButtonAnchor.isActive = true
-        self.supportButton.alpha = 0
+        contactButtonAnchor.isActive = false
+        noContactButtonAnchor.isActive = true
+        supportButton.alpha = 0
     }
     
     func openFeedback() {
-        self.helpfulLabel.alpha = 1
-        self.likeButton.alpha = 1
-        self.dislikeButton.alpha = 1
+        helpfulLabel.alpha = 1
+        likeButton.alpha = 1
+        dislikeButton.alpha = 1
     }
     
     func openDislikeFeeback() {
-        self.feedbackTextLabel.alpha = 1
-        self.feedbackTextView.alpha = 1
-        self.feedbackTextLine.alpha = 1
-        self.feedbackButton.alpha = 1
-        self.scrollView.contentSize.height = self.scrollView.contentSize.height + 100
-        let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.view.frame.height)
-        self.scrollView.setContentOffset(bottomOffset, animated: true)
+        feedbackTextLabel.alpha = 1
+        feedbackTextView.alpha = 1
+        feedbackTextLine.alpha = 1
+        feedbackButton.alpha = 1
+        scrollView.contentSize.height = scrollView.contentSize.height + 100
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - view.frame.height)
+        scrollView.setContentOffset(bottomOffset, animated: true)
     }
     
     func closeDislikeFeedback() {
-        self.feedbackTextLabel.alpha = 0
-        self.feedbackTextView.alpha = 0
-        self.feedbackTextLine.alpha = 0
-        self.feedbackButton.alpha = 0
-        self.scrollView.contentSize.height = self.scrollView.contentSize.height - 100
-        self.scrollView.setContentOffset(.zero, animated: true)
+        feedbackTextLabel.alpha = 0
+        feedbackTextView.alpha = 0
+        feedbackTextLine.alpha = 0
+        feedbackButton.alpha = 0
+        scrollView.contentSize.height = scrollView.contentSize.height - 100
+        scrollView.setContentOffset(.zero, animated: true)
     }
     
     func expandAlert(title: String, color: UIColor) {
-        self.feedbackAlert.backgroundColor = color
-        self.feedbackAlert.setTitle(title, for: .normal)
+        feedbackAlert.backgroundColor = color
+        feedbackAlert.setTitle(title, for: .normal)
         UIView.animate(withDuration: animationOut, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0.6, options: .curveEaseInOut, animations: {
             self.feedbackAlert.alpha = 1
             self.feedbackAlert.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -594,17 +594,17 @@ class SendBookingIssuesViewController: UIViewController {
     }
     
     @objc func helpfulButtonPressed(sender: UIButton) {
-        if sender == self.likeButton {
-            if self.userLiked == false {
-                self.userLiked = true
+        if sender == likeButton {
+            if userLiked == false {
+                userLiked = true
             } else {
-                self.userLiked = false
+                userLiked = false
             }
-        } else if sender == self.dislikeButton {
-            if self.userDisliked == false {
-                self.userDisliked = true
+        } else if sender == dislikeButton {
+            if userDisliked == false {
+                userDisliked = true
             } else {
-                self.userDisliked = false
+                userDisliked = false
             }
         }
     }
@@ -657,14 +657,14 @@ class SendBookingIssuesViewController: UIViewController {
             let ref = Database.database().reference().child("FrequentlyAskedQuestions").child("Answers").child(question).child("Feedback")
             ref.updateChildValues([currentUser: feedback])
             loadingLine.endAnimating()
-            self.expandAlert(title: "Submitted feedback", color: Theme.BLUE)
-            self.closeDislikeFeedback()
+            expandAlert(title: "Submitted feedback", color: Theme.BLUE)
+            closeDislikeFeedback()
         }
     }
     
     @objc func backButtonPressed() {
-        self.loadingLine.endAnimating()
-        self.navigationController?.popViewController(animated: true)
+        loadingLine.endAnimating()
+        navigationController?.popViewController(animated: true)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -678,12 +678,12 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
-        self.supportTextLine.backgroundColor = Theme.BLUE
+        supportTextLine.backgroundColor = Theme.BLUE
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.supportTextLine.backgroundColor = lineColor
+        supportTextLine.backgroundColor = lineColor
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -693,23 +693,23 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
         let estimatedHeight = estimatedSize.height
         if textView == self.feedbackTextView {
             if textView.text != "" {
-                self.feedbackButton.backgroundColor = Theme.BLUE
-                self.feedbackButton.setTitleColor(Theme.WHITE, for: .normal)
-                self.feedbackButton.isUserInteractionEnabled = true
+                feedbackButton.backgroundColor = Theme.DARK_GRAY
+                feedbackButton.setTitleColor(Theme.WHITE, for: .normal)
+                feedbackButton.isUserInteractionEnabled = true
             } else {
-                self.feedbackButton.backgroundColor = lineColor
-                self.feedbackButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-                self.feedbackButton.isUserInteractionEnabled = false
+                feedbackButton.backgroundColor = lineColor
+                feedbackButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                feedbackButton.isUserInteractionEnabled = false
             }
         } else {
             if textView.text != "" {
-                self.supportButton.backgroundColor = Theme.BLUE
-                self.supportButton.setTitleColor(Theme.WHITE, for: .normal)
-                self.supportButton.isUserInteractionEnabled = true
+                supportButton.backgroundColor = Theme.DARK_GRAY
+                supportButton.setTitleColor(Theme.WHITE, for: .normal)
+                supportButton.isUserInteractionEnabled = true
             } else {
-                self.supportButton.backgroundColor = lineColor
-                self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-                self.supportButton.isUserInteractionEnabled = false
+                supportButton.backgroundColor = lineColor
+                supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                supportButton.isUserInteractionEnabled = false
             }
         }
         
@@ -730,15 +730,12 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
         
         if notification.name == UIResponder.keyboardWillHideNotification {
-            self.scrollView.contentInset = .zero
+            scrollView.contentInset = .zero
         } else {
-            self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
         }
         
-        self.scrollView.scrollIndicatorInsets = self.scrollView.contentInset
-        
-//        let selectedRange = self.supportTextView.selectedRange
-//        self.supportTextView.scrollRangeToVisible(selectedRange)
+        scrollView.scrollIndicatorInsets = self.scrollView.contentInset
     }
     
     // Build the 'Done' button to dismiss keyboard
@@ -762,11 +759,11 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
     }
     
     @objc func dismissKeyboard() {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
 }
@@ -775,14 +772,14 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
 extension SendBookingIssuesViewController {
     
     @objc func sendHelpMessage() {
-        self.supportButton.alpha = 0.5
-        self.supportButton.isUserInteractionEnabled = false
+        supportButton.alpha = 0.5
+        supportButton.isUserInteractionEnabled = false
         
-        guard var message = self.supportTextView.text else { return }
-        if self.supportTextView.alpha != 0 {
-            message = self.titleLabel.text! + ":\n" + message
+        guard var message = supportTextView.text else { return }
+        if supportTextView.alpha != 0 {
+            message = titleLabel.text! + ":\n" + message
         } else {
-            message = self.titleLabel.text!
+            message = titleLabel.text!
         }
         
         if message != "" && message != "Contact us" {
@@ -837,9 +834,9 @@ extension SendBookingIssuesViewController {
                 }
             }
         } else {
-            self.expandAlert(title: "Issue sending", color: Theme.STRAWBERRY_PINK)
-            self.supportButton.alpha = 1.0
-            self.supportButton.isUserInteractionEnabled = true
+            expandAlert(title: "Issue sending", color: Theme.STRAWBERRY_PINK)
+            supportButton.alpha = 1.0
+            supportButton.isUserInteractionEnabled = true
         }
     }
     

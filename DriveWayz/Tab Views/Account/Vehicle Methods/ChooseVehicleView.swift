@@ -85,7 +85,7 @@ class ChooseVehicleView: UIViewController {
         button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Add vehicle", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         let icon = UIImage(named: "plusIcon")?.withRenderingMode(.alwaysTemplate)
         button.tintColor = Theme.WHITE
         button.setImage(icon, for: .normal)

@@ -66,6 +66,18 @@ class SettingsCell: UITableViewCell {
         return button
     }()
     
+    var arrowButton: UIButton = {
+        let button = UIButton()
+        let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = Theme.DARK_GRAY
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = false
+        
+        return button
+    }()
+    
     var titleLabelLeftAnchor: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -77,6 +89,7 @@ class SettingsCell: UITableViewCell {
         addSubview(subtitleLabel)
         addSubview(iconButton)
         addSubview(defaultButton)
+        addSubview(arrowButton)
 
         titleLabelLeftAnchor = titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20)
             titleLabelLeftAnchor.isActive = true
@@ -96,6 +109,11 @@ class SettingsCell: UITableViewCell {
         defaultButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         defaultButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         defaultButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        arrowButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
+        arrowButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        arrowButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        arrowButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
     }
     

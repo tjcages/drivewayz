@@ -94,13 +94,17 @@ class MainOptionsView: UIViewController {
     }
     
     func openRewardsView(image: UIImage?, option: DiscountOptions) {
-        let controller = DiscountsViewController()
-        controller.discountOption = option
-        controller.graphicImage = image
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overCurrentContext
-        self.present(navigation, animated: true, completion: nil)
+        UIView.animate(withDuration: animationIn, animations: {
+            tabDimmingView.alpha = 1
+        }) { (success) in
+            let controller = DiscountsViewController()
+            controller.discountOption = option
+            controller.graphicImage = image
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.navigationBar.isHidden = true
+            navigation.modalPresentationStyle = .overFullScreen
+            self.present(navigation, animated: true, completion: nil)
+        }
     }
     
 }

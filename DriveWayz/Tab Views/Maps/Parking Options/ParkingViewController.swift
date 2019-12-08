@@ -368,7 +368,7 @@ class ParkingViewController: UIViewController, handleTestParking {
             self.paymentController.extendedDelegate = self
             let navigation = UINavigationController(rootViewController: self.paymentController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }

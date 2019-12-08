@@ -130,7 +130,7 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
         UIView.animate(withDuration: animationIn, animations: {
             tabDimmingView.alpha = 0.6
         }) { (success) in
-            self.durationController.modalPresentationStyle = .overCurrentContext
+            self.durationController.modalPresentationStyle = .overFullScreen
             self.present(self.durationController, animated: true, completion: nil)
         }
     }

@@ -93,9 +93,9 @@ extension VehicleMethodsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! VehicleMethodsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! VehicleMethodsCell
         cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if indexPath.row < vehicleMethods.count {
             cell.vehicleMethod = vehicleMethods[indexPath.row]

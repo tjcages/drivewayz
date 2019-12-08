@@ -212,6 +212,7 @@ class TestMainBar: UIViewController {
         scrollViewTopAnchor.constant = 120
         UIView.animate(withDuration: animationOut, animations: {
             self.bannerController.view.alpha = 0
+            self.searchController.durationBottomController.view.alpha = 0
             self.scrollView.layer.cornerRadius = 24
             self.searchController.view.layer.cornerRadius = 24
             self.optionsController.view.layer.cornerRadius = 24
@@ -231,6 +232,7 @@ class TestMainBar: UIViewController {
         quickController.dismissQuickViews()
         UIView.animate(withDuration: animationOut) {
             self.bannerController.view.alpha = 1
+            self.searchController.durationBottomController.view.alpha = 1
             self.scrollView.layer.cornerRadius = 0
             self.searchController.view.layer.cornerRadius = 0
             self.optionsController.view.layer.cornerRadius = 0
@@ -262,20 +264,6 @@ extension TestMainBar {
         }
     }
     
-    func changeRecentsHeight(number: Int) {
-//        if number == 1 {
-//            mainBarRecents = .oneRecents
-//        } else if number == 2 {
-//            mainBarRecents = .twoRecents
-//        }
-//        let height = searchController.cellHeight * CGFloat(number)
-//        searchHeightAnchor.constant = 224 + height
-//        UIView.animate(withDuration: animationIn) {
-//            self.searchController.recentsTableView.alpha = 1
-//            self.view.layoutIfNeeded()
-//        }
-    }
-    
     func expandReservations() {
         reservationsOpen = true
         bannerHeightAnchor.constant += 100
@@ -297,6 +285,20 @@ extension TestMainBar: handleInviteControllers {
 //        self.delegate?.becomeANewHost()
 //        delayWithSeconds(2) {
 //            self.scrollView.isScrollEnabled = false
+//        }
+    }
+
+    func changeRecentsHeight(number: Int) {
+//        if number == 1 {
+//            mainBarRecents = .oneRecents
+//        } else if number == 2 {
+//            mainBarRecents = .twoRecents
+//        }
+//        let height = searchController.cellHeight * CGFloat(number)
+//        searchHeightAnchor.constant = 224 + height
+//        UIView.animate(withDuration: animationIn) {
+//            self.searchController.recentsTableView.alpha = 1
+//            self.view.layoutIfNeeded()
 //        }
     }
     

@@ -333,7 +333,7 @@ extension NewCardView: STPPaymentCardTextFieldDelegate, handleCardRecognition {
     @objc func openCardRecognizer() {
         let controller = RecognizerViewController()
         controller.delegate = self
-        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalPresentationStyle = .overFullScreen
         self.present(controller, animated: true, completion: nil)
     }
 

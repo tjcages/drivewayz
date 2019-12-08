@@ -124,7 +124,7 @@ extension MapKitViewController: handleMinimizingFullController {
             controller.spotIcon.image = self.confirmPaymentController.currentParkingImage
             controller.loadingActivity.startAnimating()
             controller.modalTransitionStyle = .crossDissolve
-            controller.modalPresentationStyle = .overCurrentContext
+            controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true) {
                 controller.animateSuccess()
                 delayWithSeconds(3) {

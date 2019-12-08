@@ -13,6 +13,8 @@ class LineInputAccessoryView: UIView {
     var lineUnselectedColor: UIColor = Theme.OFF_WHITE
     var lineSelectedColor: UIColor = Theme.BLUE
     
+    var backgroundUnselectedColor: UIColor = lineColor
+    
     lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -21,9 +23,9 @@ class LineInputAccessoryView: UIView {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.DARK_GRAY
         button.isHidden = true
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)
         
         return button
@@ -55,13 +57,13 @@ class LineInputAccessoryView: UIView {
         }
     }
     
-    fileprivate let lineSeparatorView = UIView()
+    let lineSeparatorView = UIView()
     var lineTextView: LineTextView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = lineColor
+        backgroundColor = backgroundUnselectedColor
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextEditing), name: UITextView.textDidBeginEditingNotification, object: nil)
@@ -131,7 +133,7 @@ class LineInputAccessoryView: UIView {
     
     @objc func handleTextEnd() {
         lineSeparatorView.backgroundColor = lineUnselectedColor
-        backgroundColor = lineColor
+        backgroundColor = backgroundUnselectedColor
     }
     
     required init?(coder aDecoder: NSCoder) {

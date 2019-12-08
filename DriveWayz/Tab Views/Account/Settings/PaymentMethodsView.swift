@@ -92,9 +92,9 @@ extension PaymentMethodsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! PaymentMethodsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! PaymentMethodsCell
         cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         if indexPath.row < paymentMethods.count {
             cell.paymentMethod = paymentMethods[indexPath.row]

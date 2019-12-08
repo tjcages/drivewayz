@@ -86,6 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.addObserver(self, selector: #selector(registerForRemoteNotifs), name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
         }
         
+        UITableView.appearance().separatorColor = lineColor
+        
         return true
     }
     
@@ -259,6 +261,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         UIApplication.shared.applicationIconBadgeNumber = 0
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "applicationWillEnterForeground"), object: nil)
         if timerStarted == true {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "bookingTimerRestart"), object: nil)

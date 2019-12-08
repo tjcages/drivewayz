@@ -51,6 +51,8 @@ class DiscountsViewController: UIViewController {
         controller.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         controller.scrollViewHeight = phoneHeight
         controller.setExitButton()
+        controller.backButton.alpha = 0
+        controller.mainLabel.alpha = 0
         
         return controller
     }()
@@ -146,6 +148,13 @@ class DiscountsViewController: UIViewController {
         observeAvailableCoupons()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: animationIn) {
+            self.gradientController.backButton.alpha = 1
+            self.gradientController.mainLabel.alpha = 1
+        }
+    }
+    
     var mainButtonBottomAnchor: NSLayoutConstraint!
     
     func setupViews() {
@@ -199,7 +208,7 @@ class DiscountsViewController: UIViewController {
     }
     
     func handleShare() {
-        gradientController.mainLabel.text = "Invite"
+        gradientController.setMainLabel(text: "Invite")
         mainLabel.text = "Help others \nPark Smarter too"
         subLabel.text = "Earn 25% off your next park when you refer a friend to try Drivewayz."
         informationButton.setTitle("How invites work", for: .normal)
@@ -208,7 +217,7 @@ class DiscountsViewController: UIViewController {
     }
     
     func handleCode() {
-        gradientController.mainLabel.text = "Discounts"
+        gradientController.setMainLabel(text: "Discounts")
         mainLabel.text = "Get rewards and \ndiscounts"
         subLabel.text = "Enter your coupon code to save money the next time you park!"
         informationButton.setTitle("How coupons work", for: .normal)
@@ -303,9 +312,10 @@ class DiscountsViewController: UIViewController {
     }
     
     @objc func backButtonPressed() {
-        self.dismiss(animated: true) {
-            //
+        UIView.animate(withDuration: animationIn) {
+            tabDimmingView.alpha = 0
         }
+        self.dismiss(animated: true, completion: nil)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

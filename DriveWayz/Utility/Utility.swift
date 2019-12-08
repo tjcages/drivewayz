@@ -172,7 +172,7 @@ class Fonts {
     static let SSPExtraLightH6 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
     //Extra Large
-    static let SSPExtraLarge = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.extraLarge)).instance
+    static let SSPExtraLarge = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.extraLarge)).instance
     
     //Black
     static let SSPBlackH0 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h0)).instance

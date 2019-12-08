@@ -87,7 +87,7 @@ class EditSettingsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Update", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.BLUE
+        button.backgroundColor = Theme.DARK_GRAY
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(updateButtonPressed), for: .touchUpInside)
@@ -173,7 +173,7 @@ class EditSettingsViewController: UIViewController {
         updateButton.topAnchor.constraint(equalTo: detailLine.bottomAnchor, constant: 48).isActive = true
         updateButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         updateButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        updateButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        updateButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
     }
     

@@ -90,6 +90,7 @@ class NextHelpView: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        gradientController.animateBackButton()
         UIView.animate(withDuration: animationIn) {
             self.view.layoutIfNeeded()
         }
@@ -168,13 +169,11 @@ extension NextHelpView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = optionsTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! HelpCell
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         cell.selectionStyle = .none
         
         if options.count > indexPath.row {
             cell.subOption = options[indexPath.row]
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: phoneWidth, bottom: 0, right: 0)
         }
         
         return cell
@@ -212,8 +211,6 @@ extension NextHelpView: UIScrollViewDelegate {
                 let percent = translation/60
                 gradientController.gradientHeightAnchor.constant = gradientHeight - percent * 60
                 gradientController.mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
-            } else if translation <= -60 {
-                gradientController.backButton.sendActions(for: .touchUpInside)
             }
         } else {
             if translation < 0 && gradientController.gradientHeightAnchor.constant != gradientHeight {

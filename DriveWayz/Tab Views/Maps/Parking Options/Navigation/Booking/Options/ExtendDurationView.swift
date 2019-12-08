@@ -377,7 +377,7 @@ class ExtendDurationView: UIViewController {
         paymentController.extendedDelegate = self
         let navigation = UINavigationController(rootViewController: paymentController)
         navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overCurrentContext
+        navigation.modalPresentationStyle = .overFullScreen
         self.present(navigation, animated: true, completion: nil)
         
         profitsBottomAnchor.constant = 100

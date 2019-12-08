@@ -62,11 +62,10 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     lazy var gradientController: GradientContainerView = {
         let controller = GradientContainerView()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.mainLabel.text = "Settings"
-        controller.setExitButton()
         controller.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         controller.scrollViewHeight = 1200
         controller.scrollView.isHidden = true
+        controller.setExitButton()
         
         return controller
     }()
@@ -143,6 +142,12 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         observeUserInformation()
         observePayments()
         observeVehicles()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if gradientController.mainLabel.text != "Settings" {
+            gradientController.setMainLabel(text: "Settings")
+        }
     }
     
     var paymentHeightAnchor: NSLayoutConstraint!

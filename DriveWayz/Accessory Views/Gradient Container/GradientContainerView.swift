@@ -10,14 +10,22 @@ import UIKit
 
 class GradientContainerView: UIViewController {
     
+    var gradientNewHeight = gradientHeight {
+        didSet {
+            gradientHeightAnchor.constant = gradientNewHeight
+        }
+    }
+    var subHeight: CGFloat = 0
+    var shouldDismiss: Bool = false
+    
     let gradientContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.DARK_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 3
-        view.layer.shadowOpacity = 0.2
+//        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+//        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        view.layer.shadowRadius = 3
+//        view.layer.shadowOpacity = 0.2
         
         return view
     }()
@@ -29,17 +37,45 @@ class GradientContainerView: UIViewController {
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
         button.tag = 1
+        button.alpha = 0
         
         return button
     }()
     
+    var mainView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
     let mainLabel: UILabel = {
         let label = UILabel()
-        label.text = "Title"
         label.textColor = Theme.WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH1
+        
+        return label
+    }()
+    
+    var subView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        
+        return view
+    }()
+    
+    let subLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Theme.WHITE
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.SSPRegularH3
+        label.numberOfLines = 2
+        label.alpha = 0
         
         return label
     }()
@@ -76,10 +112,22 @@ class GradientContainerView: UIViewController {
         }
     }
     
+    var mainLabelBottomAnchor: NSLayoutConstraint!
+    var subLabelBottom: NSLayoutConstraint!
+    var subLabelBottomAnchor: NSLayoutConstraint!
+    
     func setupViews() {
         
         view.addSubview(scrollView)
         view.addSubview(gradientContainer)
+        
+        view.addSubview(mainView)
+        mainView.addSubview(mainLabel)
+        
+        view.addSubview(subView)
+        subView.addSubview(subLabel)
+        
+        view.addSubview(backButton)
         
         scrollView.contentSize = CGSize(width: phoneWidth, height: scrollViewHeight)
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -96,7 +144,6 @@ class GradientContainerView: UIViewController {
         gradientHeightAnchor = gradientContainer.heightAnchor.constraint(equalToConstant: gradientHeight)
             gradientHeightAnchor.isActive = true
         
-        view.addSubview(backButton)
         backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
@@ -107,11 +154,23 @@ class GradientContainerView: UIViewController {
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 48).isActive = true
         }
         
-        view.addSubview(mainLabel)
         mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         mainLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
-        mainLabel.bottomAnchor.constraint(equalTo: gradientContainer.bottomAnchor, constant: -16).isActive = true
+        mainLabelBottomAnchor = mainLabel.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
+            mainLabelBottomAnchor.isActive = true
+        subLabelBottom = mainLabel.bottomAnchor.constraint(equalTo: subLabel.topAnchor)
+            subLabelBottom.isActive = false
         mainLabel.sizeToFit()
+        
+        mainView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: gradientContainer.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
+        
+        subLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        subLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        subLabelBottomAnchor = subLabel.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 64)
+            subLabelBottomAnchor.isActive = true
+        subLabel.sizeToFit()
+        
+        subView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: gradientContainer.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
         
         gradientContainer.addSubview(loadingLine)
         loadingLine.topAnchor.constraint(equalTo: gradientContainer.bottomAnchor).isActive = true
@@ -119,6 +178,71 @@ class GradientContainerView: UIViewController {
         loadingLine.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         loadingLine.heightAnchor.constraint(equalToConstant: 3).isActive = true
         
+    }
+    
+    func animateText(text: String) {
+        UIView.animate(withDuration: animationIn, animations: {
+            self.mainLabel.alpha = 0
+        }) { (success) in
+            self.setMainLabel(text: text)
+        }
+    }
+    
+    func setMainLabel(text: String) {
+        mainLabel.text = text
+        mainLabelBottomAnchor.constant = 32
+        view.layoutIfNeeded()
+        
+        mainLabelBottomAnchor.constant = 0
+        UIView.animate(withDuration: animationOut, delay: 0, options: .curveEaseOut, animations: {
+            self.mainLabel.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            UIView.animate(withDuration: animationIn) {
+                self.backButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                self.backButton.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func setSublabel(text: String) {
+        if text != "" {
+            subLabel.text = text
+            guard let height = subLabel.text?.height(withConstrainedWidth: phoneWidth - 40, font: Fonts.SSPRegularH3) else { return }
+            gradientNewHeight = gradientHeight + height
+            subHeight = height
+            
+            gradientHeightAnchor.constant = gradientNewHeight
+            mainLabelBottomAnchor.isActive = false
+            subLabelBottom.isActive = true
+            subLabelBottomAnchor.constant = 0
+            
+            UIView.animate(withDuration: animationOut) {
+                self.subLabel.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            subLabel.text = text
+            gradientNewHeight = gradientHeight
+            
+            gradientHeightAnchor.constant = gradientNewHeight
+            mainLabelBottomAnchor.isActive = true
+            subLabelBottom.isActive = false
+            
+            UIView.animate(withDuration: animationOut) {
+                self.subLabel.alpha = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func animateBackButton() {
+        UIView.animate(withDuration: animationIn) {
+            self.backButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.backButton.alpha = 1
+            self.view.layoutIfNeeded()
+        }
     }
     
     func setBackButton() {
@@ -151,13 +275,15 @@ extension GradientContainerView: UIScrollViewDelegate {
         if state == .changed {
             if translation > 0 && translation < 60 {
                 let percent = translation/60
-                gradientHeightAnchor.constant = gradientHeight - percent * 60
+                gradientHeightAnchor.constant = gradientNewHeight - percent * 60
                 mainLabel.transform = CGAffineTransform(scaleX: 1 - 0.2 * percent, y: 1 - 0.2 * percent)
             } else if translation <= -60 {
-                backButton.sendActions(for: .touchUpInside)
+                if shouldDismiss {
+                    backButton.sendActions(for: .touchUpInside)
+                }
             }
         } else {
-            if translation < 0 && self.gradientHeightAnchor.constant != gradientHeight {
+            if translation < 0 && self.gradientHeightAnchor.constant != gradientNewHeight {
                 scrollExpanded()
             }
         }
@@ -182,7 +308,7 @@ extension GradientContainerView: UIScrollViewDelegate {
     }
     
     func scrollExpanded() {
-        gradientHeightAnchor.constant = gradientHeight
+        gradientHeightAnchor.constant = gradientNewHeight
         UIView.animate(withDuration: animationOut, animations: {
             self.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.view.layoutIfNeeded()
@@ -192,7 +318,7 @@ extension GradientContainerView: UIScrollViewDelegate {
     }
     
     func scrollMinimized() {
-        gradientHeightAnchor.constant = gradientHeight - 60
+        gradientHeightAnchor.constant = gradientNewHeight - 60
         UIView.animate(withDuration: animationOut, animations: {
             self.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.view.layoutIfNeeded()

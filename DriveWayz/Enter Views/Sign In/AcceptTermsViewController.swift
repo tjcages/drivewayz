@@ -235,7 +235,7 @@ class AcceptTermsViewController: UIViewController {
             
             let loadingView = SuccessfulPurchaseViewController()
             loadingView.loadingActivity.startAnimating()
-            loadingView.modalPresentationStyle = .overCurrentContext
+            loadingView.modalPresentationStyle = .overFullScreen
             loadingView.modalTransitionStyle = .crossDissolve
             self.present(loadingView, animated: true, completion: nil)
             

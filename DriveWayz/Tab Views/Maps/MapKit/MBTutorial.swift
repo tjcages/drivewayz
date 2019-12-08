@@ -11,7 +11,6 @@ import UIKit
 protocol handleAdditionalSteps {
     func openAdditionalStep()
     func confirmBookingStep()
-    func closeBackground()
 }
 
 var addStepController = AddStepView()
@@ -46,19 +45,13 @@ extension MapKitViewController: handleAdditionalSteps {
             addStepController.currentVehicleMethod = self.confirmPaymentController.currentVehicleMethod
             let navigation = UINavigationController(rootViewController: addStepController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }
     
     func confirmBookingStep() {
         confirmPaymentController.mainButton.sendActions(for: .touchUpInside)
-    }
-    
-    func closeBackground() {
-        UIView.animate(withDuration: animationOut) {
-            tabDimmingView.alpha = 0
-        }
     }
     
 }

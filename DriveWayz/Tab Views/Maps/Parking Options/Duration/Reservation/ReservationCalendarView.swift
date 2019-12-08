@@ -150,10 +150,9 @@ class ReservationCalendarView: UIViewController {
                 self.setupMonthLabel(date: date.date)
             }
             
-//            var height: CGFloat = 326
             var height: CGFloat = 108
-            let daysCount = visibleDates.monthDates.count
-            if daysCount < 45 {
+            guard let distance = self.today.totalDistance(from: self.today.endOfMonthFC(), resultIn: .day) else { return }
+            if distance >= 14 {
                 height += 288
                 self.calendarHeightAnchor.constant = 338
             } else {
@@ -257,6 +256,9 @@ extension ReservationCalendarView: JTACMonthViewDelegate, JTACMonthViewDataSourc
     
     func calendar(_ calendar: JTACMonthView, headerViewForDateRange range: (start: Date, end: Date), at indexPath: IndexPath) -> JTACMonthReusableView {
         let header = calendar.dequeueReusableJTAppleSupplementaryView(withReuseIdentifier: "cell", for: indexPath) as! CalendarSectionHeaderView
+        if indexPath.section > 0 {
+            header.isHidden = true
+        }
         
         return header
     }
@@ -372,6 +374,13 @@ extension ReservationCalendarView: UICollectionViewDelegate, UICollectionViewDat
 
 class TestRangeSelectionViewControllerCell: JTACDayCell {
     
+    var cellWidth = (phoneWidth - 40)/7 {
+        didSet {
+            selectedHeightAnchor.constant = cellWidth
+            layoutIfNeeded()
+        }
+    }
+    
     var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -385,6 +394,28 @@ class TestRangeSelectionViewControllerCell: JTACDayCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.BLUE
+        view.isHidden = true
+        
+        return view
+    }()
+    
+    var todayView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderColor = Theme.BLUE.cgColor
+        view.layer.borderWidth = 1
+        view.backgroundColor = Theme.HOST_BLUE
+        view.isHidden = true
+        
+        return view
+    }()
+    
+    var strikeLine: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.transform = CGAffineTransform(rotationAngle: CGFloat.pi/4)
+        view.isHidden = true
         
         return view
     }()
@@ -396,16 +427,27 @@ class TestRangeSelectionViewControllerCell: JTACDayCell {
         setupViews()
     }
     
+    var selectedHeightAnchor: NSLayoutConstraint!
+    
     func setupViews() {
-        let cellWidth = (phoneWidth - 40)/7
         
+        addSubview(todayView)
         addSubview(selectedView)
         addSubview(label)
+        addSubview(strikeLine)
         
         selectedView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         selectedView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        selectedView.heightAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        selectedHeightAnchor = selectedView.heightAnchor.constraint(equalToConstant: cellWidth)
+            selectedHeightAnchor.isActive = true
         selectedView.widthAnchor.constraint(equalTo: selectedView.heightAnchor).isActive = true
+
+        todayView.anchor(top: selectedView.topAnchor, left: selectedView.leftAnchor, bottom: selectedView.bottomAnchor, right: selectedView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        strikeLine.heightAnchor.constraint(equalTo: selectedView.heightAnchor, constant: -16).isActive = true
+        strikeLine.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        strikeLine.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        strikeLine.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true

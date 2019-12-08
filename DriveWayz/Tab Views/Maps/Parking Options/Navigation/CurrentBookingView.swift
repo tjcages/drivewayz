@@ -300,7 +300,7 @@ extension CurrentBookingView: handleCurrentBooking {
             self.extendController.dynamicPrice = self.detailsController.extensionDynamicPrice
             self.extendController.delegate = self
             self.extendController.currentBooking = self.currentBooking
-            self.extendController.modalPresentationStyle = .overCurrentContext
+            self.extendController.modalPresentationStyle = .overFullScreen
             self.present(self.extendController, animated: true, completion: nil)
         }
     }
@@ -355,7 +355,7 @@ extension CurrentBookingView: handleCurrentBooking {
             
             controller.detailsController.currentBooking = self.currentBooking
             controller.delegate = self
-            controller.modalPresentationStyle = .overCurrentContext
+            controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true, completion: nil)
         }
     }
@@ -378,7 +378,7 @@ extension CurrentBookingView: handleCurrentBooking {
         controller.informationLabel.text = contactText
         let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overCurrentContext
+        navigation.modalPresentationStyle = .overFullScreen
         self.present(navigation, animated: true, completion: nil)
     }
     

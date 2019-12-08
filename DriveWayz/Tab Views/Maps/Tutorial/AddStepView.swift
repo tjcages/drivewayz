@@ -277,7 +277,7 @@ class AddStepView: UIViewController {
             self.paymentController.extendedDelegate = self
             let navigation = UINavigationController(rootViewController: self.paymentController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }
@@ -289,7 +289,7 @@ class AddStepView: UIViewController {
             self.vehicleController.extendedDelegate = self
             let navigation = UINavigationController(rootViewController: self.vehicleController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }
@@ -309,7 +309,7 @@ class AddStepView: UIViewController {
     
     @objc func openHelp() {
         let controller = AddHelpView()
-        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalPresentationStyle = .overFullScreen
         navigationController?.pushViewController(controller, animated: true)
     }
     

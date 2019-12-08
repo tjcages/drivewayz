@@ -325,7 +325,7 @@ class NavigationMapBox: UIViewController {
             controller.spotIcon.image = image
             controller.loadingActivity.startAnimating()
             controller.modalTransitionStyle = .crossDissolve
-            controller.modalPresentationStyle = .overCurrentContext
+            controller.modalPresentationStyle = .overFullScreen
             controller.changeDates(totalTime: time)
             
             navigationMapController.present(controller, animated: true) {
@@ -350,7 +350,7 @@ class NavigationMapBox: UIViewController {
         }
         controller.loadingActivity.startAnimating()
         controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalPresentationStyle = .overFullScreen
         
         navigationMapController.present(controller, animated: true) {
             delayWithSeconds(1, completion: {

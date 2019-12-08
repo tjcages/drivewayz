@@ -420,7 +420,7 @@ extension OnboardingViewController {
                 
                 let loadingView = SuccessfulPurchaseViewController()
                 loadingView.loadingActivity.startAnimating()
-                loadingView.modalPresentationStyle = .overCurrentContext
+                loadingView.modalPresentationStyle = .overFullScreen
                 loadingView.modalTransitionStyle = .crossDissolve
                 self.present(loadingView, animated: true, completion: nil)
                 
@@ -486,7 +486,7 @@ extension OnboardingViewController: GIDSignInDelegate {
         }
         let loadingView = SuccessfulPurchaseViewController()
         loadingView.loadingActivity.startAnimating()
-        loadingView.modalPresentationStyle = .overCurrentContext
+        loadingView.modalPresentationStyle = .overFullScreen
         loadingView.modalTransitionStyle = .crossDissolve
         self.present(loadingView, animated: true, completion: nil)
         

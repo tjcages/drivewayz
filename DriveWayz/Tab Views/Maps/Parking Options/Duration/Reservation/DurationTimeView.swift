@@ -128,25 +128,6 @@ class DurationTimeView: UIViewController {
         return view
     }()
     
-    var sliderPin: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
-        view.layer.shadowOffset = .zero
-        view.layer.shadowRadius = 6
-        view.layer.shadowOpacity = 0.2
-        view.layer.cornerRadius = 28
-        view.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
-        
-        let center = UIView(frame: CGRect(x: 8, y: 8, width: 40, height: 40))
-        center.backgroundColor = Theme.BLUE
-        center.layer.cornerRadius = 20
-        view.addSubview(center)
-        
-        return view
-    }()
-    
     var leftTrack: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false

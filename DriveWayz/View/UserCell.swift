@@ -52,11 +52,14 @@ class UserCell: UITableViewCell {
                         }
                     }
                     if let name = dictionary["name"] as? String {
-                        var fullNameArr = name.split(separator: " ")
+                        let fullNameArr = name.split(separator: " ")
                         let firstName: String = String(fullNameArr[0])
                         if let lastName: String = fullNameArr.count > 1 ? String(fullNameArr[1]) : nil {
-                            var lastCharacter = lastName.chunk(n: 1)
-                            self.textLabel?.text = "\(firstName) \(lastCharacter[0])."
+                            if let lastCharacter = lastName.first {
+                                self.textLabel?.text = "\(firstName) \(String(lastCharacter))."
+                            } else {
+                                self.textLabel?.text = firstName
+                            }
                         } else {
                             self.textLabel?.text = name
                             if name == " Drivewayz " {

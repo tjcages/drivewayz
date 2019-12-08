@@ -18,7 +18,7 @@ class Theme {
     static let STRAWBERRY_PINK = UIColor(red: 248/255, green: 108/255, blue: 110/255, alpha: 1) //
     
     static let LIGHT_PURPLE = UIColor(red: 125/255, green: 97/255, blue: 236/255, alpha: 1)
-    static let PURPLE = UIColor(red: 80/255, green: 87/255, blue: 203/255, alpha: 1)
+    static let PURPLE = UIColor(red: 112/255, green: 106/255, blue: 240/255, alpha: 1)
     
     static let BLUE = UIColor(red: 20/255, green: 119/255, blue: 251/255, alpha: 1)
     static let LIGHT_BLUE = UIColor(red: 72/255, green: 165/255, blue: 216/255, alpha: 1)
@@ -29,13 +29,17 @@ class Theme {
     static let WHITE = UIColor(red: 254/255, green: 255/255, blue: 255/255, alpha: 1)
     static let OFF_WHITE = UIColor(red: 243/255, green: 245/255, blue: 247/255, alpha: 1)
     static let GOLD = UIColor(red: 254/255, green: 198/255, blue: 46/255, alpha: 1)
-    static let DARK_GRAY = UIColor(red: 29/255, green: 29/255, blue: 39/255, alpha: 1)
+    static let DARK_GRAY = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     static let LIGHT_GRAY = UIColor(red: 197/255, green: 196/255, blue: 203/255, alpha: 1)
     static let GRAY = UIColor(red: 235/255, green: 238/255, blue: 244/255, alpha: 1)
     static let ASH_GRAY = UIColor(red: 42/255, green: 42/255, blue: 42/255, alpha: 1)
     static let BLACK = UIColor(red: 25/255, green: 25/255, blue: 25/255, alpha: 1)
-    static let HOST_BLUE = UIColor(red: 28/255, green: 22/255, blue: 46/255, alpha: 1)
     
+    static let HOST_BLUE = UIColor(red: 209/255, green: 228/255, blue: 254/255, alpha: 1)
+    static let HOST_DARK_BLUE = UIColor(red: 185/255, green: 203/255, blue: 229/255, alpha: 1)
+    static let HOST_GREEN = UIColor(red: 206/255, green: 232/255, blue: 214/255, alpha: 1)
+    static let HOST_RED = UIColor(red: 253/255, green: 210/255, blue: 211/255, alpha: 1)
+    static let HOST_PURPLE = UIColor(red: 211/255, green: 211/255, blue: 253/255, alpha: 1)
     
     static let EasternBlue = UIColor(red: 26/255, green: 145/255, blue: 161/255, alpha: 1)
     static let LightOrange = UIColor(red: 255/255, green: 195/255, blue: 135/255, alpha: 1)
@@ -54,5 +58,6 @@ class Theme {
     static let DarkYellow = UIColor(red: 238/255, green: 185/255, blue: 71/255, alpha: 1)
     static let LightBlue = UIColor(red: 70/255, green: 210/255, blue: 253/255, alpha: 1)
     static let DarkBlue = UIColor(red: 83/255, green: 81/255, blue: 240/255, alpha: 1)
+    static let LIGHT_PINK = UIColor(red: 253/255, green: 210/255, blue: 211/255, alpha: 1)
     
 }

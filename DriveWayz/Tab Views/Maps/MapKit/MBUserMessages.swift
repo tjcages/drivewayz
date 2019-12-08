@@ -22,7 +22,7 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
         controller.setData(userID: userID)
         controller.sendingFromDrivewayz = false
         controller.gradientController.setExitButton()
-        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalPresentationStyle = .overFullScreen
         self.present(controller, animated: true) {
             self.lightContentStatusBar()
             delayWithSeconds(1, completion: {

@@ -70,7 +70,7 @@ class HostNotifications: NSObject {
         if notificationType == "newHost" {
             self.type = .moderate
             self.containerGradient = [Theme.DarkPurple: Theme.LightPurple]
-            self.notificationImage = UIImage(named: "flat-plant")
+            self.notificationImage = UIImage(named: "notificationHouse")
         } else if notificationType == "notification" {
             self.type = .moderate
             self.containerGradient = [Theme.LightTeal: Theme.DarkTeal]
@@ -94,7 +94,7 @@ class HostNotifications: NSObject {
         } else if notificationType == "search" {
             self.type = .urgent
             self.containerGradient = [Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1): Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)]
-            self.notificationImage = UIImage(named: "flat-magnifier")
+            self.notificationImage = UIImage(named: "Search")
         } else if notificationType == "mailbox" {
             self.type = .mild
             self.containerGradient = [Theme.LightPurple: Theme.DarkPurple]
@@ -130,11 +130,11 @@ class HostNotifications: NSObject {
         } else if notificationType == "leftReviewPoor" {
             self.type = .moderate
             self.containerGradient = [Theme.SEA_BLUE: Theme.SEA_BLUE]
-            self.notificationImage = UIImage(named: "notificationStarPoor")
+            self.notificationImage = UIImage(named: "notificationStar")
         } else if notificationType == "userParked" {
             self.type = .moderate
             self.containerGradient = [Theme.LightRed: Theme.DarkRed]
-            self.notificationImage = UIImage(named: "notificationVehicle")
+            self.notificationImage = UIImage(named: "notificationPin")
         }
         
         urgency = dictionary["urgency"] as? String

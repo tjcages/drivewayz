@@ -38,7 +38,7 @@ class MainSearchView: UIViewController {
     var greetingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Good morning, Tyler"
+        label.text = "Good morning"
         label.textColor = Theme.DARK_GRAY
         label.font = Fonts.SSPRegularH4
         
@@ -69,8 +69,6 @@ class MainSearchView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
-        button.layer.cornerRadius = 4
-        button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         button.clipsToBounds = true
         
         return button
@@ -192,23 +190,24 @@ class MainSearchView: UIViewController {
         
         searchView.addSubview(searchLabel)
         view.addSubview(recommendationButton)
+        searchView.addSubview(searchButton)
         
         searchLabel.leftAnchor.constraint(equalTo: searchView.leftAnchor, constant: 16).isActive = true
         searchLabel.centerYAnchor.constraint(equalTo: searchView.centerYAnchor).isActive = true
         searchLabel.sizeToFit()
         
         recommendationButton.leftAnchor.constraint(equalTo: searchLabel.rightAnchor, constant: 4).isActive = true
+        recommendationButton.rightAnchor.constraint(lessThanOrEqualTo: searchButton.leftAnchor, constant: -12).isActive = true
         recommendationButton.centerYAnchor.constraint(equalTo: searchLabel.centerYAnchor).isActive = true
         recommendationButton.sizeToFit()
         
-        searchView.addSubview(searchButton)
         searchButton.rightAnchor.constraint(equalTo: searchView.rightAnchor, constant: -8).isActive = true
         searchButton.centerYAnchor.constraint(equalTo: searchView.centerYAnchor).isActive = true
         searchButton.topAnchor.constraint(equalTo: searchView.topAnchor, constant: 10).isActive = true
         searchButton.widthAnchor.constraint(equalTo: searchButton.heightAnchor).isActive = true
         
         searchView.addSubview(loadingLine)
-        loadingLine.anchor(top: nil, left: searchView.leftAnchor, bottom: searchView.bottomAnchor, right: searchView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 3)
+        loadingLine.anchor(top: nil, left: searchView.leftAnchor, bottom: searchView.bottomAnchor, right: searchView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 2)
         
         view.addSubview(durationBottomController.view)
         durationBottomController.view.anchor(top: searchView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: bottomHeight)

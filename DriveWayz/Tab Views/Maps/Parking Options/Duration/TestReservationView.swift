@@ -275,9 +275,6 @@ class TestReservationView: UIViewController {
         view.addSubview(scrollView)
         
         view.addSubview(gradientContainer)
-        gradientContainer.addSubview(exitButton)
-        gradientContainer.addSubview(mainLabel)
-        
         gradientTopAnchor = gradientContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: -240)
             gradientTopAnchor.isActive = true
         gradientContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -604,7 +601,7 @@ extension TestReservationView {
     
     @objc func informationButtonPressed() {
         let controller = ReservationInformationView()
-        controller.modalPresentationStyle = .overCurrentContext
+        controller.modalPresentationStyle = .overFullScreen
         self.present(controller, animated: true, completion: nil)
         UIView.animate(withDuration: animationIn) {
             tabDimmingView.alpha = 0.8

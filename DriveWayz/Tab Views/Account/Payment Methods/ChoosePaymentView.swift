@@ -13,7 +13,7 @@ import FirebaseFirestore
 class ChoosePaymentView: UIViewController {
 
     var extendedDelegate: handleExtendPaymentMethod?
-    var bottomAnchor: CGFloat = 0.0
+    lazy var bottomAnchor: CGFloat = cancelBottomHeight
     var shouldDismiss: Bool = true
     
     var paymentMethods: [PaymentMethod] = [] {
@@ -54,7 +54,6 @@ class ChoosePaymentView: UIViewController {
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
-        button.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         
         return button
     }()
@@ -86,7 +85,7 @@ class ChoosePaymentView: UIViewController {
         button.backgroundColor = Theme.DARK_GRAY
         button.setTitle("Add payment method", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.titleLabel?.font = Fonts.SSPRegularH3
+        button.titleLabel?.font = Fonts.SSPSemiBoldH3
         let icon = UIImage(named: "plusIcon")?.withRenderingMode(.alwaysTemplate)
         button.tintColor = Theme.WHITE
         button.setImage(icon, for: .normal)
@@ -155,19 +154,11 @@ class ChoosePaymentView: UIViewController {
         view.addSubview(container)
         
         container.addSubview(cancelButton)
+        cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         cancelButton.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
         cancelButton.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        cancelButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        switch device {
-        case .iphone8:
-            profitsBottomAnchor = cancelButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -32)
-                profitsBottomAnchor.isActive = true
-            self.bottomAnchor = -32
-        case .iphoneX:
-            profitsBottomAnchor = cancelButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -52)
-                profitsBottomAnchor.isActive = true
-            self.bottomAnchor = -52
-        }
+        profitsBottomAnchor = cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: cancelBottomHeight)
+            profitsBottomAnchor.isActive = true
 
         view.addSubview(pullButton)
         pullButton.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -16).isActive = true

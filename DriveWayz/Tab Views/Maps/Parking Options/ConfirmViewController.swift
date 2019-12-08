@@ -341,7 +341,7 @@ class ConfirmViewController: UIViewController {
             self.vehicleController.extendedDelegate = self
             let navigation = UINavigationController(rootViewController: self.vehicleController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }
@@ -437,7 +437,7 @@ extension ConfirmViewController: handleExtendPaymentMethod {
             self.paymentController.extendedDelegate = self
             let navigation = UINavigationController(rootViewController: self.paymentController)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }
@@ -454,7 +454,7 @@ extension ConfirmViewController: handleExtendPaymentMethod {
             controller.delegate = self
             let navigation = UINavigationController(rootViewController: controller)
             navigation.navigationBar.isHidden = true
-            navigation.modalPresentationStyle = .overCurrentContext
+            navigation.modalPresentationStyle = .overFullScreen
             self.present(navigation, animated: true, completion: nil)
         }
     }

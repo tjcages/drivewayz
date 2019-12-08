@@ -131,7 +131,7 @@ extension MapKitViewController {
         }
         let navigation = UINavigationController(rootViewController: durationController)
         navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overCurrentContext
+        navigation.modalPresentationStyle = .overFullScreen
         UIView.animate(withDuration: animationIn, animations: {
             tabDimmingView.alpha = 0.4
         }) { (success) in
