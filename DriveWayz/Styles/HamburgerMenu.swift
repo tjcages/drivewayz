@@ -11,6 +11,7 @@ import UIKit
 var hamburgerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.alpha = 0
     
     return button
 }()

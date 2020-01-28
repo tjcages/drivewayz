@@ -321,5 +321,4 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return true
     }
 
-
 }

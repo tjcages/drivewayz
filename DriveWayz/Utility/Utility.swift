@@ -39,30 +39,24 @@ struct Font {
     
     
     enum FontName: String {
-        case SSPBlackItalic         = "SourceSansPro-BlackItalic"
-        case SSPSemiBoldItalic      = "SourceSansPro-SemiBoldItalic"
-        case SSPRegular             = "SourceSansPro-Regular"
-        case SSPBold                = "SourceSansPro-Bold"
-        case SSPLightItalic         = "SourceSansPro-LightItalic"
-        case SSPLight               = "SourceSansPro-Light"
-        case SSPBlack               = "SourceSansPro-Black"
-        case SSPExtraLight          = "SourceSansPro-ExtraLight"
-        case SSPBoldItalic          = "SourceSansPro-BoldItalic"
-        case SSPSemiBold            = "SourceSansPro-SemiBold"
-        case SSPUltraLightItalic    = "SourceSansPro-UltraLightItalic"
+        case SSPRegular             = "OpenSans-Regular"
+        case SSPLight               = "OpenSans-Light"
+//        case SSPBlack               = "Montserrat-Medium"
+        case SSPSemiBold            = "OpenSans-SemiBold"
+        case SSPBold                = "OpenSans-Bold"
     }
     
     enum StandardSize: Double {
         case extraLarge = 46.0
-        case h0 = 38.0
-        case h00 = 34.0
-        case h1 = 32.0
-        case h25 = 28.0
-        case h2 = 24.0
-        case h3 = 20.0
-        case h4 = 18.0
-        case h5 = 16.0
-        case h6 = 14.0
+        case h0 = 34.0
+        case h00 = 30.0
+        case h1 = 28.0
+        case h25 = 24.0
+        case h2 = 20.0
+        case h3 = 18.0
+        case h4 = 16.0
+        case h5 = 14.0
+        case h6 = 12.0
     }
     
     enum FontType {
@@ -162,26 +156,17 @@ class Fonts {
     static let SSPLightH5 = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
     static let SSPLightH6 = Font(Font.FontType.installed(Font.FontName.SSPLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
-    //Extra Light
-    static let SSPExtraLightH0 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
-    static let SSPExtraLightH1 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
-    static let SSPExtraLightH2 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
-    static let SSPExtraLightH3 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
-    static let SSPExtraLightH4 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h4)).instance
-    static let SSPExtraLightH5 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
-    static let SSPExtraLightH6 = Font(Font.FontType.installed(Font.FontName.SSPExtraLight), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
-    
     //Extra Large
     static let SSPExtraLarge = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.extraLarge)).instance
     
     //Black
-    static let SSPBlackH0 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
-    static let SSPBlackH1 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
-    static let SSPBlackH2 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
-    static let SSPBlackH3 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
-    static let SSPBlackH4 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h4)).instance
-    static let SSPBlackH5 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
-    static let SSPBlackH6 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
+//    static let SSPBlackH0 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
+//    static let SSPBlackH1 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
+//    static let SSPBlackH2 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
+//    static let SSPBlackH3 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
+//    static let SSPBlackH4 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h4)).instance
+//    static let SSPBlackH5 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h5)).instance
+//    static let SSPBlackH6 = Font(Font.FontType.installed(Font.FontName.SSPBlack), size: Font.FontSize.standard(Font.StandardSize.h6)).instance
     
     //SemiBold
     static let SSPSemiBoldH00 = Font(Font.FontType.installed(Font.FontName.SSPSemiBold), size: Font.FontSize.standard(Font.StandardSize.h00)).instance

@@ -49,6 +49,7 @@ end
 	pod 'GooglePlacePicker'
 	pod 'GoogleMaps'
     	pod 'GeoFire', :git => 'https://github.com/firebase/geofire-objc.git'
+	pod 'Cyborg'
 
 	pod 'Stripe'
 	pod 'Alamofire', '~> 4.7.3'

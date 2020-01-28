@@ -11,7 +11,7 @@ import NVActivityIndicatorView
 
 class SuccessfulListingView: UIViewController {
 
-   var delegate: handleMinimizingFullController?
+//   var delegate: handleMinimizingFullController?
         
     var container: UIView = {
         let view = UIView()

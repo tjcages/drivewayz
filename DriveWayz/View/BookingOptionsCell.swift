@@ -44,7 +44,7 @@ class BookingOptionsCell: UITableViewCell {
     
     var iconButton: UIButton = {
         let button = UIButton()
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -54,9 +54,9 @@ class BookingOptionsCell: UITableViewCell {
     var mainLabel: UILabel = {
         let view = UILabel()
         view.text = ""
-        view.font = Fonts.SSPRegularH4
+        view.font = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -103,7 +103,7 @@ class BookingOptionsCell: UITableViewCell {
         iconButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         iconButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         iconButton.heightAnchor.constraint(equalTo: iconButton.widthAnchor).isActive = true
-        iconButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        iconButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
         
         messageTopAnchor = mainLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
             messageTopAnchor.isActive = true

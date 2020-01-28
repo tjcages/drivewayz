@@ -71,7 +71,7 @@ class HostPortalController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Your Host Portal"
         label.textColor = Theme.WHITE
-        label.font = Fonts.SSPSemiBoldH1
+        label.font = Fonts.SSPBoldH1
         label.alpha = 0
         
         return label

@@ -41,8 +41,8 @@ extension MapKitViewController: handleAdditionalSteps {
             tabDimmingView.alpha = 0.8
         }) { (success) in
             addStepController.delegate = self
-            addStepController.currentPaymentMethod = self.confirmPaymentController.currentPaymentMethod
-            addStepController.currentVehicleMethod = self.confirmPaymentController.currentVehicleMethod
+//            addStepController.currentPaymentMethod = self.confirmPaymentController.currentPaymentMethod
+//            addStepController.currentVehicleMethod = self.confirmPaymentController.currentVehicleMethod
             let navigation = UINavigationController(rootViewController: addStepController)
             navigation.navigationBar.isHidden = true
             navigation.modalPresentationStyle = .overFullScreen
@@ -51,7 +51,7 @@ extension MapKitViewController: handleAdditionalSteps {
     }
     
     func confirmBookingStep() {
-        confirmPaymentController.mainButton.sendActions(for: .touchUpInside)
+//        confirmPaymentController.mainButton.sendActions(for: .touchUpInside)
     }
     
 }

@@ -109,20 +109,7 @@ extension MapKitViewController {
 //                self.mapView.addAnnotation(marker)
 //            }
         }
-        if let location = DestinationAnnotationLocation, didTapParking == false {
-            let position = location.coordinate
-            let marker = GMSMarker(position: position)
-            marker.appearAnimation = GMSMarkerAnimation.pop
-            marker.title = "Destination"
-            marker.icon = UIImage(named: "annotationMapMarker")
-            marker.map = mapView
-            
-//            let marker = MGLPointAnnotation()
-//            marker.coordinate = location.coordinate
-//            marker.title = "Destination"
-//            self.mapView.addAnnotation(marker)
-            self.checkAnnotationsNearDestination(location: location.coordinate, checkDistance: true)
-        } else if let location = TappedDestinationAnnotationLocation, didTapParking == true {
+        if let location = DestinationAnnotationLocation {
             let position = location.coordinate
             let marker = GMSMarker(position: position)
             marker.appearAnimation = GMSMarkerAnimation.pop
@@ -277,14 +264,14 @@ extension MapKitViewController {
                         for parking in closeParkingSpots {
                             bookingSpots.append(parking)
                         }
-                        self.parkingController.parkingSpots = bookingSpots
+//                        self.parkingController.parkingSpots = bookingSpots
                     }
                 } else {
-                    self.parkingController.parkingSpots = bookingSpots
+//                    self.parkingController.parkingSpots = bookingSpots
                     //no parking
                 }
             } else {
-                self.parkingController.parkingSpots = bookingSpots
+//                self.parkingController.parkingSpots = bookingSpots
                 //no parking
             }
         } else {

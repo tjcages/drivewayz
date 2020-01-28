@@ -114,18 +114,10 @@
 	<string>Speak to search for a location</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>SourceSansPro-BlackItalic.ttf</string>
-		<string>SourceSansPro-SemiBoldItalic.ttf</string>
-		<string>SourceSansPro-Regular.ttf</string>
-		<string>SourceSansPro-Bold.ttf</string>
-		<string>SourceSansPro-LightItalic.ttf</string>
-		<string>SourceSansPro-Light.ttf</string>
-		<string>SourceSansPro-Black.ttf</string>
-		<string>SourceSansPro-ExtraLight.ttf</string>
-		<string>SourceSansPro-BoldItalic.ttf</string>
-		<string>SourceSansPro-SemiBold.ttf</string>
-		<string>SourceSansPro-UltraLightItalic.ttf</string>
-		<string>SourceSansPro-Italic.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Light.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

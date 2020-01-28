@@ -9,15 +9,12 @@
 import UIKit
 import GoogleMaps
 
-var didTapParking: Bool = false
 var TappedDestinationAnnotationLocation: CLLocation?
 
 extension MapKitViewController {
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        didTapParking = true
-        self.quickParkingController.walkingIcon.alpha = 0
-        self.quickParkingController.carIcon.alpha = 1
+        userEnteredDestination = false
         if let parkingID = marker.title {
             if let parking = self.parkingSpotsDictionary[parkingID] {
                 if let parkingLat = parking.latitude, let parkingLong = parking.longitude {
@@ -28,7 +25,7 @@ extension MapKitViewController {
                     DestinationAnnotationLocation = userLocation
                     TappedDestinationAnnotationLocation = parkingCoordinate
                     
-                    self.parkingSelected()
+                    mainViewState = .parking
                     self.checkAnnotationsNearDestination(location: parkingCoordinate.coordinate, checkDistance: false)
                 }
             }

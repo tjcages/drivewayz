@@ -11,20 +11,15 @@ import UIKit
 var shouldDragMainBar: Bool = true
 
 protocol mainBarSearchDelegate {
-    func openNavigation(success: Bool, booking: Bookings)
-    func showEndBookingView()
-    func hideEndBookingView()
-    
     func showDuration(parkNow: Bool)
+    
+    func showCurrentLocation()
+    func hideCurrentLocation()
     
     func openMainBar()
     func closeMainBar()
     func closeSearch()
-//    func expandedMainBar()
     
-    func closeCurrentBooking()
-    func showCurrentLocation()
-    func hideCurrentLocation()
     func zoomToSearchLocation(placeId: String)
     
     func quickNewHost()
@@ -36,7 +31,7 @@ extension MapKitViewController: mainBarSearchDelegate {
     
     func setupLocator() {
 
-        view.addSubview(locatorButton)
+        mapView.addSubview(locatorButton)
         locatorButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
@@ -47,22 +42,24 @@ extension MapKitViewController: mainBarSearchDelegate {
         locatorCurrentBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16)
             locatorCurrentBottomAnchor.isActive = false
         
+        mapView.addSubview(parkingRouteButton)
+        parkingRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        parkingRouteButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        parkingRouteButton.widthAnchor.constraint(equalTo: parkingRouteButton.heightAnchor).isActive = true
+        parkingRouteButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16).isActive = true
+        
+        mapView.addSubview(currentRouteButton)
+        currentRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        currentRouteButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        currentRouteButton.widthAnchor.constraint(equalTo: currentRouteButton.heightAnchor).isActive = true
+        currentRouteButton.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16).isActive = true
+        
         view.addSubview(locationsSearchResults.view)
         locationResultsHeightAnchor = locationsSearchResults.view.topAnchor.constraint(equalTo: summaryController.view.bottomAnchor, constant: phoneHeight * 1.5)
             locationResultsHeightAnchor.isActive = true
         locationsSearchResults.view.leftAnchor.constraint(equalTo: summaryController.view.leftAnchor).isActive = true
         locationsSearchResults.view.rightAnchor.constraint(equalTo: summaryController.view.rightAnchor).isActive = true
         locationsSearchResults.view.heightAnchor.constraint(equalToConstant: phoneHeight - 100).isActive = true
-        
-        view.bringSubviewToFront(fullBackgroundView)
-        view.bringSubviewToFront(mainBarController.view)
-        view.bringSubviewToFront(parkingController.view)
-        view.bringSubviewToFront(durationController.view)
-        view.bringSubviewToFront(confirmPaymentController.view)
-        view.bringSubviewToFront(endBookingController.view)
-        view.bringSubviewToFront(currentBottomController.view)
-        view.bringSubviewToFront(currentDurationController.view)
-        view.bringSubviewToFront(parkingBackButton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(readjustMainBar), name: NSNotification.Name(rawValue: "readjustMainBar"), object: nil)
         

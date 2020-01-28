@@ -221,6 +221,7 @@
 		CA19D58222C68B4000337C7F /* SuccessfulPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */; };
 		CA1D1959237A550A00BA417F /* ProgressPagingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D1958237A550A00BA417F /* ProgressPagingDisplay.swift */; };
 		CA1D195D237A6BEE00BA417F /* HostPortalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1D195C237A6BEE00BA417F /* HostPortalController.swift */; };
+		CA30B65723A48F2E00AC7718 /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA30B65623A48F2E00AC7718 /* PurchaseViewController.swift */; };
 		CA3C2FC922BDFFA400A2A374 /* HostNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */; };
 		CA3C2FCB22BE663900A2A374 /* UserHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C2FCA22BE663900A2A374 /* UserHostingViewController.swift */; };
 		CA41A077236008940063FB92 /* ProgressExpandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA41A076236008940063FB92 /* ProgressExpandedView.swift */; };
@@ -231,6 +232,7 @@
 		CA4E68E2235F8B0D00532364 /* HostOnboardingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4E68E1235F8B0D00532364 /* HostOnboardingController.swift */; };
 		CA4E68E5235F8D0600532364 /* HostOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4E68E4235F8D0600532364 /* HostOnboardingView.swift */; };
 		CA4E68EB235F912B00532364 /* HorizontalPagingDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4E68EA235F912B00532364 /* HorizontalPagingDisplay.swift */; };
+		CA5707F523A6F2F500EB93D4 /* PurchaseBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5707F423A6F2F500EB93D4 /* PurchaseBannerView.swift */; };
 		CA5A7F2E22DF9FA5001004B6 /* HostRegulationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5A7F2D22DF9FA5001004B6 /* HostRegulationsViewController.swift */; };
 		CA5A7F3122DFA8ED001004B6 /* ReadPoliciesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5A7F3022DFA8ED001004B6 /* ReadPoliciesViewController.swift */; };
 		CA5A7F3322E01CCA001004B6 /* BookingsOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5A7F3222E01CCA001004B6 /* BookingsOptionsViewController.swift */; };
@@ -291,9 +293,7 @@
 		CA75DC9B2318B853004E8A0D /* CurrentBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DC9A2318B853004E8A0D /* CurrentBookingView.swift */; };
 		CA75DC9D23199F45004E8A0D /* CurrentDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DC9C23199F45004E8A0D /* CurrentDurationView.swift */; };
 		CA75DCA02319B8A7004E8A0D /* CurrentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DC9F2319B8A7004E8A0D /* CurrentDetailsView.swift */; };
-		CA75DCA2231B25EF004E8A0D /* CurrentTripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCA1231B25EF004E8A0D /* CurrentTripView.swift */; };
 		CA75DCA4231C225E004E8A0D /* BookingOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCA3231C225E004E8A0D /* BookingOptionsCell.swift */; };
-		CA75DCA6231EB6F5004E8A0D /* CurrentPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCA5231EB6F5004E8A0D /* CurrentPaymentView.swift */; };
 		CA75DCA8231EBCE0004E8A0D /* CurrentOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCA7231EBCE0004E8A0D /* CurrentOptionsView.swift */; };
 		CA75DCAB231EC397004E8A0D /* PaymentExpandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCAA231EC397004E8A0D /* PaymentExpandedView.swift */; };
 		CA75DCAD231EDF43004E8A0D /* ExtendDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75DCAC231EDF43004E8A0D /* ExtendDurationView.swift */; };
@@ -334,6 +334,9 @@
 		CA8AC75722EA41A300A1D337 /* ExpandedWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC75622EA41A300A1D337 /* ExpandedWalletViewController.swift */; };
 		CA8AC75922EA460700A1D337 /* ExpandedOptionsWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC75822EA460700A1D337 /* ExpandedOptionsWalletViewController.swift */; };
 		CA8AC75B22EA534100A1D337 /* EditWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC75A22EA534100A1D337 /* EditWalletViewController.swift */; };
+		CA8AF1B123A830C9000E22E2 /* CurrentParkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AF1B023A830C9000E22E2 /* CurrentParkingView.swift */; };
+		CA8AF1B323A837DE000E22E2 /* CurrentTripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AF1B223A837DE000E22E2 /* CurrentTripView.swift */; };
+		CA8AF1B523A85F62000E22E2 /* CurrentPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AF1B423A85F62000E22E2 /* CurrentPaymentView.swift */; };
 		CA8C7FC92362240E0091D066 /* MainTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C7FC82362240E0091D066 /* MainTypeCell.swift */; };
 		CA8C7FCB236241880091D066 /* ListingNumbersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C7FCA236241880091D066 /* ListingNumbersView.swift */; };
 		CA8C7FCD236241930091D066 /* ListingNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C7FCC236241930091D066 /* ListingNumberView.swift */; };
@@ -418,6 +421,8 @@
 		CA9085F3232C2E120038EC51 /* LineInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9085F2232C2E120038EC51 /* LineInputAccessoryView.swift */; };
 		CA9085F5232C489B0038EC51 /* DurationHoursView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9085F4232C489B0038EC51 /* DurationHoursView.swift */; };
 		CA9085F72331768E0038EC51 /* MainBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9085F62331768D0038EC51 /* MainBannerView.swift */; };
+		CA9B968D23A8A40200301DE6 /* CurrentMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9B968C23A8A40200301DE6 /* CurrentMessageView.swift */; };
+		CA9B968F23A9765C00301DE6 /* CurrentParkingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9B968E23A9765C00301DE6 /* CurrentParkingController.swift */; };
 		CAA610DB238DA5DD00B62E2D /* ListingExpandedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610DA238DA5DD00B62E2D /* ListingExpandedController.swift */; };
 		CAA610DE238DA91200B62E2D /* ListingToDoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610DD238DA91200B62E2D /* ListingToDoView.swift */; };
 		CAA610E0238DF21D00B62E2D /* ListingPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610DF238DF21D00B62E2D /* ListingPhotosView.swift */; };
@@ -431,6 +436,8 @@
 		CAA610F1238EEA8000B62E2D /* AvailabilityFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610F0238EEA8000B62E2D /* AvailabilityFullView.swift */; };
 		CAA610F3238EF10500B62E2D /* AvailabilityInactiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610F2238EF10500B62E2D /* AvailabilityInactiveView.swift */; };
 		CAA610F5238EFB7F00B62E2D /* AvailabilityCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA610F4238EFB7F00B62E2D /* AvailabilityCalendarView.swift */; };
+		CAA919D123A7168700506F3C /* ConfirmBookingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA919D023A7168700506F3C /* ConfirmBookingController.swift */; };
+		CAA919D323A8032600506F3C /* CurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA919D223A8032600506F3C /* CurrentViewController.swift */; };
 		CAB69430234BDDFB00CA06DD /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB6942F234BDDFB00CA06DD /* AccountView.swift */; };
 		CAB69432234BFC7C00CA06DD /* MainOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB69431234BFC7C00CA06DD /* MainOptionsView.swift */; };
 		CAB69434234BFEF700CA06DD /* MainOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB69433234BFEF700CA06DD /* MainOptionsCell.swift */; };
@@ -469,7 +476,18 @@
 		CADF884D2386358B00447E37 /* PaymentBreakdownHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF884C2386358B00447E37 /* PaymentBreakdownHelpView.swift */; };
 		CADF884F23863B4800447E37 /* PayoutIssueHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF884E23863B4800447E37 /* PayoutIssueHelpView.swift */; };
 		CADF8851238646DB00447E37 /* SuccessfulDisputeHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF8850238646DB00447E37 /* SuccessfulDisputeHelpView.swift */; };
+		CAE08E7023A8269C00785082 /* CurrentRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE08E6F23A8269C00785082 /* CurrentRouteView.swift */; };
 		CAE61908239D9CA6006E1004 /* BankAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE61907239D9CA6006E1004 /* BankAccountView.swift */; };
+		CAE6190A239DAA0F006E1004 /* BookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE61909239DAA0F006E1004 /* BookingViewController.swift */; };
+		CAE6190D239DB0C5006E1004 /* BookingSpotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE6190C239DB0C5006E1004 /* BookingSpotView.swift */; };
+		CAE61924239E0FF6006E1004 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAE61923239E0FBD006E1004 /* OpenSans-Bold.ttf */; };
+		CAE61925239E0FF6006E1004 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAE6191B239E0FA7006E1004 /* OpenSans-Light.ttf */; };
+		CAE61926239E0FF6006E1004 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAE6191A239E0FA4006E1004 /* OpenSans-Regular.ttf */; };
+		CAE61927239E0FF6006E1004 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CAE61921239E0FB8006E1004 /* OpenSans-SemiBold.ttf */; };
+		CAE61929239EC97A006E1004 /* MBBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE61928239EC97A006E1004 /* MBBooking.swift */; };
+		CAE6192B239ED07F006E1004 /* BookingTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE6192A239ED07F006E1004 /* BookingTopView.swift */; };
+		CAE6192D239F3F7E006E1004 /* QuickDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE6192C239F3F7E006E1004 /* QuickDurationView.swift */; };
+		CAE6192F239F61A6006E1004 /* QuickParkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE6192E239F61A5006E1004 /* QuickParkingView.swift */; };
 		CAE98973234E743700B48478 /* MainQuickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE98972234E743700B48478 /* MainQuickView.swift */; };
 		CAE98977234FD8AF00B48478 /* DiscountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE98976234FD8AF00B48478 /* DiscountsViewController.swift */; };
 		CAE9897923500C1400B48478 /* DiscountsHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE9897823500C1400B48478 /* DiscountsHelpView.swift */; };
@@ -731,6 +749,7 @@
 		CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessfulPurchaseViewController.swift; sourceTree = "<group>"; };
 		CA1D1958237A550A00BA417F /* ProgressPagingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPagingDisplay.swift; sourceTree = "<group>"; };
 		CA1D195C237A6BEE00BA417F /* HostPortalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostPortalController.swift; sourceTree = "<group>"; };
+		CA30B65623A48F2E00AC7718 /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		CA3C2FC822BDFFA400A2A374 /* HostNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostNotifications.swift; sourceTree = "<group>"; };
 		CA3C2FCA22BE663900A2A374 /* UserHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHostingViewController.swift; sourceTree = "<group>"; };
 		CA41A076236008940063FB92 /* ProgressExpandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExpandedView.swift; sourceTree = "<group>"; };
@@ -741,6 +760,7 @@
 		CA4E68E1235F8B0D00532364 /* HostOnboardingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostOnboardingController.swift; sourceTree = "<group>"; };
 		CA4E68E4235F8D0600532364 /* HostOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostOnboardingView.swift; sourceTree = "<group>"; };
 		CA4E68EA235F912B00532364 /* HorizontalPagingDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalPagingDisplay.swift; sourceTree = "<group>"; };
+		CA5707F423A6F2F500EB93D4 /* PurchaseBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseBannerView.swift; sourceTree = "<group>"; };
 		CA5A7F2D22DF9FA5001004B6 /* HostRegulationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostRegulationsViewController.swift; sourceTree = "<group>"; };
 		CA5A7F3022DFA8ED001004B6 /* ReadPoliciesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPoliciesViewController.swift; sourceTree = "<group>"; };
 		CA5A7F3222E01CCA001004B6 /* BookingsOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingsOptionsViewController.swift; sourceTree = "<group>"; };
@@ -801,9 +821,7 @@
 		CA75DC9A2318B853004E8A0D /* CurrentBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentBookingView.swift; sourceTree = "<group>"; };
 		CA75DC9C23199F45004E8A0D /* CurrentDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDurationView.swift; sourceTree = "<group>"; };
 		CA75DC9F2319B8A7004E8A0D /* CurrentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDetailsView.swift; sourceTree = "<group>"; };
-		CA75DCA1231B25EF004E8A0D /* CurrentTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTripView.swift; sourceTree = "<group>"; };
 		CA75DCA3231C225E004E8A0D /* BookingOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingOptionsCell.swift; sourceTree = "<group>"; };
-		CA75DCA5231EB6F5004E8A0D /* CurrentPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPaymentView.swift; sourceTree = "<group>"; };
 		CA75DCA7231EBCE0004E8A0D /* CurrentOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentOptionsView.swift; sourceTree = "<group>"; };
 		CA75DCAA231EC397004E8A0D /* PaymentExpandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentExpandedView.swift; sourceTree = "<group>"; };
 		CA75DCAC231EDF43004E8A0D /* ExtendDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendDurationView.swift; sourceTree = "<group>"; };
@@ -844,6 +862,9 @@
 		CA8AC75622EA41A300A1D337 /* ExpandedWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedWalletViewController.swift; sourceTree = "<group>"; };
 		CA8AC75822EA460700A1D337 /* ExpandedOptionsWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedOptionsWalletViewController.swift; sourceTree = "<group>"; };
 		CA8AC75A22EA534100A1D337 /* EditWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWalletViewController.swift; sourceTree = "<group>"; };
+		CA8AF1B023A830C9000E22E2 /* CurrentParkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentParkingView.swift; sourceTree = "<group>"; };
+		CA8AF1B223A837DE000E22E2 /* CurrentTripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTripView.swift; sourceTree = "<group>"; };
+		CA8AF1B423A85F62000E22E2 /* CurrentPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPaymentView.swift; sourceTree = "<group>"; };
 		CA8C7FC82362240E0091D066 /* MainTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTypeCell.swift; path = "DriveWayz/Tab Views/Account/Hosting/New Hosting/Listing Views/MainTypeCell.swift"; sourceTree = SOURCE_ROOT; };
 		CA8C7FCA236241880091D066 /* ListingNumbersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingNumbersView.swift; sourceTree = "<group>"; };
 		CA8C7FCC236241930091D066 /* ListingNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingNumberView.swift; sourceTree = "<group>"; };
@@ -928,6 +949,8 @@
 		CA9085F2232C2E120038EC51 /* LineInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineInputAccessoryView.swift; sourceTree = "<group>"; };
 		CA9085F4232C489B0038EC51 /* DurationHoursView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationHoursView.swift; sourceTree = "<group>"; };
 		CA9085F62331768D0038EC51 /* MainBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBannerView.swift; sourceTree = "<group>"; };
+		CA9B968C23A8A40200301DE6 /* CurrentMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMessageView.swift; sourceTree = "<group>"; };
+		CA9B968E23A9765C00301DE6 /* CurrentParkingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentParkingController.swift; sourceTree = "<group>"; };
 		CAA610DA238DA5DD00B62E2D /* ListingExpandedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingExpandedController.swift; sourceTree = "<group>"; };
 		CAA610DD238DA91200B62E2D /* ListingToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingToDoView.swift; sourceTree = "<group>"; };
 		CAA610DF238DF21D00B62E2D /* ListingPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingPhotosView.swift; sourceTree = "<group>"; };
@@ -941,6 +964,8 @@
 		CAA610F0238EEA8000B62E2D /* AvailabilityFullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityFullView.swift; sourceTree = "<group>"; };
 		CAA610F2238EF10500B62E2D /* AvailabilityInactiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityInactiveView.swift; sourceTree = "<group>"; };
 		CAA610F4238EFB7F00B62E2D /* AvailabilityCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityCalendarView.swift; sourceTree = "<group>"; };
+		CAA919D023A7168700506F3C /* ConfirmBookingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingController.swift; sourceTree = "<group>"; };
+		CAA919D223A8032600506F3C /* CurrentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentViewController.swift; sourceTree = "<group>"; };
 		CAB6942F234BDDFB00CA06DD /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		CAB69431234BFC7C00CA06DD /* MainOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOptionsView.swift; sourceTree = "<group>"; };
 		CAB69433234BFEF700CA06DD /* MainOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOptionsCell.swift; sourceTree = "<group>"; };
@@ -979,7 +1004,18 @@
 		CADF884C2386358B00447E37 /* PaymentBreakdownHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentBreakdownHelpView.swift; sourceTree = "<group>"; };
 		CADF884E23863B4800447E37 /* PayoutIssueHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayoutIssueHelpView.swift; sourceTree = "<group>"; };
 		CADF8850238646DB00447E37 /* SuccessfulDisputeHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessfulDisputeHelpView.swift; sourceTree = "<group>"; };
+		CAE08E6F23A8269C00785082 /* CurrentRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRouteView.swift; sourceTree = "<group>"; };
 		CAE61907239D9CA6006E1004 /* BankAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccountView.swift; sourceTree = "<group>"; };
+		CAE61909239DAA0F006E1004 /* BookingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingViewController.swift; sourceTree = "<group>"; };
+		CAE6190C239DB0C5006E1004 /* BookingSpotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSpotView.swift; sourceTree = "<group>"; };
+		CAE6191A239E0FA4006E1004 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		CAE6191B239E0FA7006E1004 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		CAE61921239E0FB8006E1004 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		CAE61923239E0FBD006E1004 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		CAE61928239EC97A006E1004 /* MBBooking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBBooking.swift; sourceTree = "<group>"; };
+		CAE6192A239ED07F006E1004 /* BookingTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingTopView.swift; sourceTree = "<group>"; };
+		CAE6192C239F3F7E006E1004 /* QuickDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDurationView.swift; sourceTree = "<group>"; };
+		CAE6192E239F61A5006E1004 /* QuickParkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickParkingView.swift; sourceTree = "<group>"; };
 		CAE98972234E743700B48478 /* MainQuickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQuickView.swift; sourceTree = "<group>"; };
 		CAE98976234FD8AF00B48478 /* DiscountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountsViewController.swift; sourceTree = "<group>"; };
 		CAE9897823500C1400B48478 /* DiscountsHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscountsHelpView.swift; sourceTree = "<group>"; };
@@ -1037,14 +1073,15 @@
 				4D9FB806213EF70400899829 /* MapKitViewController.swift */,
 				4DC676F2222E451F00A75123 /* MBCurvedPolyline.swift */,
 				4DCFB9F621D8510800E910FF /* MBGetRoute.swift */,
+				CABA5FA9233868C30050CC17 /* MBRouteLine.swift */,
 				4D202C8A21E6D25A00F68F13 /* MBAnnotations.swift */,
 				4D0AD44D22040C5E00A3911D /* MBSelectAnnotation.swift */,
 				4D02C66E21D0850D00748BA3 /* MBParking.swift */,
+				CAE61928239EC97A006E1004 /* MBBooking.swift */,
 				4D02C65D21CDDC4D00748BA3 /* MBLocator.swift */,
 				4DB5CA7B221A73B600A4C6FD /* MBNavigation.swift */,
 				4D5A0EF021E0009700EB38A1 /* MBCurrentParking.swift */,
 				CA098AD822CFE5E500E45F0F /* MBUserMessages.swift */,
-				CABA5FA9233868C30050CC17 /* MBRouteLine.swift */,
 				CA7591662341B9BE00A9FA93 /* MBTutorial.swift */,
 				4D218BFD22ADDCA700633176 /* MBRemoveAnnotations.swift */,
 				4DCFB9F321D83C4600E910FF /* Main Views */,
@@ -1057,14 +1094,14 @@
 		4D02C67021D1926500748BA3 /* Parking Options */ = {
 			isa = PBXGroup;
 			children = (
-				4DB7AE5322330F44000ACEC0 /* ParkingViewController.swift */,
-				CAE989922355591700B48478 /* ParkingTESTViewController.swift */,
-				4DA99316223785EB0085D859 /* ConfirmViewController.swift */,
-				CA836FB42310D566005C910E /* Navigation */,
-				4D2A2E3A221B4EF30031791A /* Current Spot */,
-				4D67DCB4221C7EC2000BF192 /* Spots */,
-				4D3018752280B526007F772B /* Confirm */,
+				CAE61909239DAA0F006E1004 /* BookingViewController.swift */,
+				CA30B65623A48F2E00AC7718 /* PurchaseViewController.swift */,
+				CAA919D223A8032600506F3C /* CurrentViewController.swift */,
 				4D67DCBB221CDB87000BF192 /* Duration */,
+				CAE6190B239DB0B5006E1004 /* Booking */,
+				CA5707F323A6F2DB00EB93D4 /* Purchase */,
+				CAA919CF23A7165F00506F3C /* Current */,
+				CAA919CE23A7164E00506F3C /* Old */,
 			);
 			path = "Parking Options";
 			sourceTree = "<group>";
@@ -1369,7 +1406,6 @@
 			children = (
 				4D30187322809B76007F772B /* ConfirmDatabase.swift */,
 				4DE78F57216C5D8D00B99835 /* SendNotificationsViewController.swift */,
-				4D3018782280FAF8007F772B /* PaymentBreakdownViewController.swift */,
 				CA19D58122C68B4000337C7F /* SuccessfulPurchaseViewController.swift */,
 			);
 			path = Confirm;
@@ -1593,10 +1629,10 @@
 		4DCCF9EB20CCA66100B70577 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				CAE6190E239E06EE006E1004 /* Open Sans */,
+				4DE48FF7218BF09000171BB8 /* Source_Sans_Pro */,
 				CAE9899023541D6400B48478 /* GoogleMapStyle.json */,
 				CA8C7FDF236769600091D066 /* GoogleMapDropStyle.json */,
-				CA8C803D2373EB430091D066 /* testACE.json */,
-				4DE48FF7218BF09000171BB8 /* Source_Sans_Pro */,
 				4D21D2F120CC9FF9002D7005 /* Assets.xcassets */,
 				4D3204572256F4C20099067E /* CustomLocation.gpx */,
 				4D42F8C820CCA6AA005A95BB /* Default-568h@2x.png */,
@@ -1634,6 +1670,7 @@
 		4DE48FF7218BF09000171BB8 /* Source_Sans_Pro */ = {
 			isa = PBXGroup;
 			children = (
+				CA8C803D2373EB430091D066 /* testACE.json */,
 				4DE48FF8218BF09000171BB8 /* SourceSansPro-BlackItalic.ttf */,
 				4DE48FF9218BF09000171BB8 /* SourceSansPro-SemiBoldItalic.ttf */,
 				4DE48FFA218BF09000171BB8 /* SourceSansPro-Regular.ttf */,
@@ -1848,6 +1885,15 @@
 			path = "Onboarding Views";
 			sourceTree = "<group>";
 		};
+		CA5707F323A6F2DB00EB93D4 /* Purchase */ = {
+			isa = PBXGroup;
+			children = (
+				CA5707F423A6F2F500EB93D4 /* PurchaseBannerView.swift */,
+				4D3018782280FAF8007F772B /* PaymentBreakdownViewController.swift */,
+			);
+			path = Purchase;
+			sourceTree = "<group>";
+		};
 		CA5A7F2F22DFA8DB001004B6 /* Policies */ = {
 			isa = PBXGroup;
 			children = (
@@ -1981,10 +2027,6 @@
 		CA75DC9E2319B893004E8A0D /* Booking */ = {
 			isa = PBXGroup;
 			children = (
-				CA75DC9F2319B8A7004E8A0D /* CurrentDetailsView.swift */,
-				CA75DCA1231B25EF004E8A0D /* CurrentTripView.swift */,
-				CA75DCA5231EB6F5004E8A0D /* CurrentPaymentView.swift */,
-				CA75DCA7231EBCE0004E8A0D /* CurrentOptionsView.swift */,
 				CA75DCA9231EC380004E8A0D /* Options */,
 			);
 			path = Booking;
@@ -2014,8 +2056,6 @@
 		CA836FB42310D566005C910E /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				CA75DC9C23199F45004E8A0D /* CurrentDurationView.swift */,
-				CA75DC9A2318B853004E8A0D /* CurrentBookingView.swift */,
 				CA75DC9E2319B893004E8A0D /* Booking */,
 				CA75DC992318B835004E8A0D /* Navigation */,
 			);
@@ -2363,6 +2403,31 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		CAA919CE23A7164E00506F3C /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				4DB7AE5322330F44000ACEC0 /* ParkingViewController.swift */,
+				CAE989922355591700B48478 /* ParkingTESTViewController.swift */,
+				4DA99316223785EB0085D859 /* ConfirmViewController.swift */,
+				CA836FB42310D566005C910E /* Navigation */,
+				4D2A2E3A221B4EF30031791A /* Current Spot */,
+				4D67DCB4221C7EC2000BF192 /* Spots */,
+				4D3018752280B526007F772B /* Confirm */,
+			);
+			path = Old;
+			sourceTree = "<group>";
+		};
+		CAA919CF23A7165F00506F3C /* Current */ = {
+			isa = PBXGroup;
+			children = (
+				CAA919D023A7168700506F3C /* ConfirmBookingController.swift */,
+				CA75DC9C23199F45004E8A0D /* CurrentDurationView.swift */,
+				CAE08E7123A826A400785082 /* Views */,
+				CA75DC9A2318B853004E8A0D /* CurrentBookingView.swift */,
+			);
+			path = Current;
+			sourceTree = "<group>";
+		};
 		CAB943C1237F71E500790907 /* Help */ = {
 			isa = PBXGroup;
 			children = (
@@ -2404,6 +2469,8 @@
 			children = (
 				4DCFB9FE21DB376B00E910FF /* QuickDestinationViewController.swift */,
 				CAD9F84422B99B4C0077969B /* QuickParkingViewController.swift */,
+				CAE6192C239F3F7E006E1004 /* QuickDurationView.swift */,
+				CAE6192E239F61A5006E1004 /* QuickParkingView.swift */,
 			);
 			path = "Map Info";
 			sourceTree = "<group>";
@@ -2430,6 +2497,41 @@
 				CADF88482385DC9100447E37 /* BookingsContainerView.swift */,
 			);
 			path = Bookings;
+			sourceTree = "<group>";
+		};
+		CAE08E7123A826A400785082 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CAE08E6F23A8269C00785082 /* CurrentRouteView.swift */,
+				CA8AF1B023A830C9000E22E2 /* CurrentParkingView.swift */,
+				CA75DC9F2319B8A7004E8A0D /* CurrentDetailsView.swift */,
+				CA8AF1B223A837DE000E22E2 /* CurrentTripView.swift */,
+				CA8AF1B423A85F62000E22E2 /* CurrentPaymentView.swift */,
+				CA75DCA7231EBCE0004E8A0D /* CurrentOptionsView.swift */,
+				CA9B968C23A8A40200301DE6 /* CurrentMessageView.swift */,
+				CA9B968E23A9765C00301DE6 /* CurrentParkingController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CAE6190B239DB0B5006E1004 /* Booking */ = {
+			isa = PBXGroup;
+			children = (
+				CAE6190C239DB0C5006E1004 /* BookingSpotView.swift */,
+				CAE6192A239ED07F006E1004 /* BookingTopView.swift */,
+			);
+			path = Booking;
+			sourceTree = "<group>";
+		};
+		CAE6190E239E06EE006E1004 /* Open Sans */ = {
+			isa = PBXGroup;
+			children = (
+				CAE61923239E0FBD006E1004 /* OpenSans-Bold.ttf */,
+				CAE6191B239E0FA7006E1004 /* OpenSans-Light.ttf */,
+				CAE6191A239E0FA4006E1004 /* OpenSans-Regular.ttf */,
+				CAE61921239E0FB8006E1004 /* OpenSans-SemiBold.ttf */,
+			);
+			path = "Open Sans";
 			sourceTree = "<group>";
 		};
 		CAE98974234E746300B48478 /* Test */ = {
@@ -2595,6 +2697,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAE61924239E0FF6006E1004 /* OpenSans-Bold.ttf in Resources */,
+				CAE61925239E0FF6006E1004 /* OpenSans-Light.ttf in Resources */,
+				CAE61926239E0FF6006E1004 /* OpenSans-Regular.ttf in Resources */,
+				CAE61927239E0FF6006E1004 /* OpenSans-SemiBold.ttf in Resources */,
 				CA8C7FE0236769600091D066 /* GoogleMapDropStyle.json in Resources */,
 				CAE989912354211400B48478 /* GoogleMapStyle.json in Resources */,
 				4DE4900C218BF09000171BB8 /* OFL.txt in Resources */,
@@ -2723,6 +2829,7 @@
 				CAEA52E0235FF6BE00B8056C /* HostProgressView.swift in Sources */,
 				CAC0A7F022B80DC600240857 /* NewBankViewController.swift in Sources */,
 				CA8C7FE923691A6D0091D066 /* MapsPictureView.swift in Sources */,
+				CA9B968F23A9765C00301DE6 /* CurrentParkingController.swift in Sources */,
 				CAA610F3238EF10500B62E2D /* AvailabilityInactiveView.swift in Sources */,
 				CAB943C3237F71F900790907 /* HelpAvailabilityController.swift in Sources */,
 				CAE9899523565CB600B48478 /* DurationBottomView.swift in Sources */,
@@ -2735,6 +2842,7 @@
 				CA5C509022F7683800B0AC7D /* FAQs.swift in Sources */,
 				CA83D6E42321F64300E9A744 /* AlertController.swift in Sources */,
 				CAA610F5238EFB7F00B62E2D /* AvailabilityCalendarView.swift in Sources */,
+				CAE6190D239DB0C5006E1004 /* BookingSpotView.swift in Sources */,
 				4D3018792280FAF8007F772B /* PaymentBreakdownViewController.swift in Sources */,
 				CAF51CE322C9AF8000B5ECDB /* SendOptionsViewController.swift in Sources */,
 				CAE9897923500C1400B48478 /* DiscountsHelpView.swift in Sources */,
@@ -2758,6 +2866,7 @@
 				4D9363FF2251D0F400EEAC61 /* OldBarViewController.swift in Sources */,
 				CABA5FAA233868C30050CC17 /* MBRouteLine.swift in Sources */,
 				CAE61908239D9CA6006E1004 /* BankAccountView.swift in Sources */,
+				CA8AF1B323A837DE000E22E2 /* CurrentTripView.swift in Sources */,
 				CA8D2F49237E2F8600426E3A /* EarningsSelectView.swift in Sources */,
 				CA66D1932312F35200E9C5C3 /* NavigationExtension.swift in Sources */,
 				CA724E5922B7661C00E15858 /* ChatMessageCell.swift in Sources */,
@@ -2852,6 +2961,7 @@
 				CA75916E2342FE5F00A9FA93 /* AddHelpView.swift in Sources */,
 				4DF1EFDC2234D99600210E6B /* PurchaseSliderViewController.swift in Sources */,
 				CAD9F84022B8ABD00077969B /* BankDOBViewController.swift in Sources */,
+				CAE61929239EC97A006E1004 /* MBBooking.swift in Sources */,
 				CA10D49D22D520C8005D151E /* EditImagesViewController.swift in Sources */,
 				4D8EA26621813F6A00F6469C /* LocationSearchTableViewController.swift in Sources */,
 				CA8D2F35237B295C00426E3A /* PortalBannerView.swift in Sources */,
@@ -2869,6 +2979,7 @@
 				CA83D6E023209CA900E9A744 /* ChoosePaymentView.swift in Sources */,
 				CA836FB62310D57A005C910E /* NavigationMapBox.swift in Sources */,
 				CA3C2FC922BDFFA400A2A374 /* HostNotifications.swift in Sources */,
+				CAE6192B239ED07F006E1004 /* BookingTopView.swift in Sources */,
 				CA8AC75722EA41A300A1D337 /* ExpandedWalletViewController.swift in Sources */,
 				4D26EE5D20E5A23E00E369EF /* ParkingSpots.swift in Sources */,
 				CAE989872352B00200B48478 /* GettingStartedView.swift in Sources */,
@@ -2893,11 +3004,11 @@
 				CAE9897D2350388600B48478 /* HelpOptions.swift in Sources */,
 				CA7591592340451500A9FA93 /* ActiveCouponView.swift in Sources */,
 				4D53F9A620D97BFB00A1C1FA /* MapViewController.swift in Sources */,
-				CA75DCA6231EB6F5004E8A0D /* CurrentPaymentView.swift in Sources */,
 				4D202CCB21F02A0200F68F13 /* EditAmenitiesViewController.swift in Sources */,
 				4D437C0E22B45272001C6C4C /* BookingInfoViewController.swift in Sources */,
 				CAA610E2238DFD9600B62E2D /* ListingDescriptionView.swift in Sources */,
 				4D218BED229DE06E00633176 /* HowItWorksController.swift in Sources */,
+				CA9B968D23A8A40200301DE6 /* CurrentMessageView.swift in Sources */,
 				CADF88462385D93100447E37 /* BookingHelpView.swift in Sources */,
 				CA8C7FFF2370CC510091D066 /* PriceSliderView.swift in Sources */,
 				CA5C509422FB968E00B0AC7D /* ABLoaderView.swift in Sources */,
@@ -2925,6 +3036,7 @@
 				4DC676F3222E451F00A75123 /* MBCurvedPolyline.swift in Sources */,
 				4D02C65C21CDDBD300748BA3 /* SearchBar.swift in Sources */,
 				CA098ADC22CFE63500E45F0F /* OpenMessageViewController.swift in Sources */,
+				CA30B65723A48F2E00AC7718 /* PurchaseViewController.swift in Sources */,
 				4D202CA321ED4F9100F68F13 /* HostingExpandedViewController.swift in Sources */,
 				4D30187222809181007F772B /* PuchaseTimes.swift in Sources */,
 				CAA610F1238EEA8000B62E2D /* AvailabilityFullView.swift in Sources */,
@@ -2971,6 +3083,7 @@
 				CAE9897B2350317200B48478 /* TESTHelpViewController.swift in Sources */,
 				CADF883E2385C38B00447E37 /* DeleteListingHelpView.swift in Sources */,
 				CA8C80012370DE970091D066 /* PriceAdditionalView.swift in Sources */,
+				CAE6192D239F3F7E006E1004 /* QuickDurationView.swift in Sources */,
 				CA8C80212372199B0091D066 /* ClassicFireworkController.swift in Sources */,
 				4D21D31720CC9FF9002D7005 /* Message.swift in Sources */,
 				4D2EB5CE21068731004AEA54 /* TermsViewController.swift in Sources */,
@@ -3004,6 +3117,7 @@
 				4DCC6C0121134D3200AEEF35 /* LaunchAnimationsViewController.swift in Sources */,
 				CA5C508922F3E91400B0AC7D /* UpcomingOptionsViewController.swift in Sources */,
 				4D37436220DC989900923BC4 /* TabViewController.swift in Sources */,
+				CAE6192F239F61A6006E1004 /* QuickParkingView.swift in Sources */,
 				CA11C3E722EBEDBB008CB9D9 /* HostNotificationsViewController.swift in Sources */,
 				4D218BFE22ADDCA700633176 /* MBRemoveAnnotations.swift in Sources */,
 				CA19D57E22C5BF0600337C7F /* BookingReviewsViewController.swift in Sources */,
@@ -3011,7 +3125,6 @@
 				4D2DDEAA2108B44B005AB485 /* ReviewsCell.swift in Sources */,
 				CAB943C723832E7500790907 /* HelpEarningsController.swift in Sources */,
 				CA48AD9C237B17E500924706 /* PortalTabsView.swift in Sources */,
-				CA75DCA2231B25EF004E8A0D /* CurrentTripView.swift in Sources */,
 				CA4E68E2235F8B0D00532364 /* HostOnboardingController.swift in Sources */,
 				CA9085E1232748C00038EC51 /* RecommendViewController.swift in Sources */,
 				CA8C7FE7236914F70091D066 /* PictureHighlightView.swift in Sources */,
@@ -3058,6 +3171,7 @@
 				4D2EB5CA2106642A004AEA54 /* ContactUsViewController.swift in Sources */,
 				CA8C7FD12362A6F80091D066 /* ListingInformationView.swift in Sources */,
 				4DC7FA5F22B02375003C5C42 /* CredentialsSettingsView.swift in Sources */,
+				CA5707F523A6F2F500EB93D4 /* PurchaseBannerView.swift in Sources */,
 				CA8C7FCF2362419E0091D066 /* ListingCodeView.swift in Sources */,
 				4DB62D122289F67A00D967AB /* OnboardingViewController.swift in Sources */,
 				CAF51CDA22C9980500B5ECDB /* TestMessageViewController.swift in Sources */,
@@ -3094,6 +3208,7 @@
 				4D202CC721F026B100F68F13 /* EditCostViewController.swift in Sources */,
 				4DBD6D1421C4CD0700C52991 /* EventCell.swift in Sources */,
 				CAB943D32384645A00790907 /* HelpPortalController.swift in Sources */,
+				CAE6190A239DAA0F006E1004 /* BookingViewController.swift in Sources */,
 				4DF1EFDA2234B6B300210E6B /* PurchaseTimesViewController.swift in Sources */,
 				CAE989992357831A00B48478 /* ReservationInformationView.swift in Sources */,
 				4D19BB52211804360016F36F /* ProfileBannerAdsViewController.swift in Sources */,
@@ -3115,6 +3230,7 @@
 				CA8D2F4F237E574D00426E3A /* PaymentsCell.swift in Sources */,
 				4DB62D142289FFFC00D967AB /* MobileNumberViewController.swift in Sources */,
 				CA6F341022D3D77700CF8961 /* ConfirmAvailabilityViewController.swift in Sources */,
+				CA8AF1B523A85F62000E22E2 /* CurrentPaymentView.swift in Sources */,
 				CA5C507322F27CE200B0AC7D /* HostInboxViewController.swift in Sources */,
 				CA66D1A62317296200E9C5C3 /* NavigationPaymentView.swift in Sources */,
 				CAE9898A2352E10D00B48478 /* TestReservationView.swift in Sources */,
@@ -3131,8 +3247,10 @@
 				CA8A2004230A0BA10028A132 /* HamburgerMenu.swift in Sources */,
 				CA8C803B23721C340091D066 /* CircleColorSparkViewFactory.swift in Sources */,
 				CA1D195D237A6BEE00BA417F /* HostPortalController.swift in Sources */,
+				CAA919D323A8032600506F3C /* CurrentViewController.swift in Sources */,
 				4DA1FFF3216ED1F6004312F2 /* UserMessages.swift in Sources */,
 				4DD3B63821961C26008B1417 /* SpeechRecognitionViewController.swift in Sources */,
+				CA8AF1B123A830C9000E22E2 /* CurrentParkingView.swift in Sources */,
 				CA11C3DF22EB890D008CB9D9 /* TransfersInformationViewController.swift in Sources */,
 				CA8C7FE2236784AE0091D066 /* HostPicturesView.swift in Sources */,
 				4D02C65621CDDA7900748BA3 /* NetworkConnection.swift in Sources */,
@@ -3141,11 +3259,13 @@
 				4D02C65221CDD89A00748BA3 /* MainBar.swift in Sources */,
 				CA9085EE232C0B300038EC51 /* NewTimeView.swift in Sources */,
 				4DB62D1C228F717100D967AB /* NewHostBannerViewController.swift in Sources */,
+				CAE08E7023A8269C00785082 /* CurrentRouteView.swift in Sources */,
 				CAE989932355591700B48478 /* ParkingTESTViewController.swift in Sources */,
 				4DCF0C6F20D7409F00C6D1AB /* Vehicles.swift in Sources */,
 				4DBD6D1821C8840900C52991 /* Reachability.swift in Sources */,
 				CA8C7FED236A0E920091D066 /* TutorialExampleView.swift in Sources */,
 				4D8EA26821816AE800F6469C /* ParkingOptionsTableViewController.swift in Sources */,
+				CAA919D123A7168700506F3C /* ConfirmBookingController.swift in Sources */,
 				CAB943D62384862F00790907 /* HelpMenuController.swift in Sources */,
 				CA5C507C22F2912C00B0AC7D /* CalendarViewController.swift in Sources */,
 				CA8AC74022E6C37C00A1D337 /* ProfitsChartsViewController.swift in Sources */,

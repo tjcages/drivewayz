@@ -6,9 +6,18 @@
 //  Copyright © 2018 COAD. All rights reserved.
 //
 
-import Foundation
+import CoreLocation
 
 // Variables that are the same throughout
+
+
+// TESTING
+
+//let hostLocation = CLLocation(latitude: 32.744530, longitude: -117.188110)
+let hostLocation = CLLocation(latitude: 32.799880, longitude: -117.253410)
+let testDestination = CLLocation(latitude: 32.743249, longitude: -117.181614)
+
+// END TESTING
 
 let formatter = DateFormatter()
 let calendar = Calendar.current
@@ -22,6 +31,22 @@ var gradientHeight: CGFloat = 140
 var cancelBottomHeight: CGFloat = -52
 
 var mapZoomLevel: Float = 14.5
+var mapTrackingLevel: Float = 18.5
+
+class Line: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = lineColor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
 
 let parkingValues: [CGFloat] = [0.128571428571429,
                                0.0571428571428571,

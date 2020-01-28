@@ -48,13 +48,14 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
             searchBarController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 48).isActive = true
         }
         let touch = UITapGestureRecognizer(target: self, action: #selector(openMainBar))
-        quickDestinationController.view.addGestureRecognizer(touch)
+        quickDurationView.addGestureRecognizer(touch)
         
     }
     
     @objc func recommendButtonPressed() {
         if let location = userCurrentLocation, let city = mainBarController.searchController.recommendationButton.titleLabel?.text {
             dismissSearch()
+            userEnteredDestination = true
             DestinationAnnotationName = city
             zoomToRecommendedLocation(location: location.coordinate)
         }
@@ -128,6 +129,7 @@ extension MapKitViewController: UITextFieldDelegate, UITextViewDelegate {
     
     @objc func changeDatesPressed() {
         UIView.animate(withDuration: animationIn, animations: {
+            
             tabDimmingView.alpha = 0.6
         }) { (success) in
             self.durationController.modalPresentationStyle = .overFullScreen

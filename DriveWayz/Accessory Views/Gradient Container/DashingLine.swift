@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Line: CAShapeLayer {
+class DashingLine: CAShapeLayer {
     
     override init() {
         super.init()

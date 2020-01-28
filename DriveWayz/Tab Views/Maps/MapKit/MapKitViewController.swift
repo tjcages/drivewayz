@@ -26,7 +26,13 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var mainViewState: MainViewState = .none {
         didSet {
-            self.reloadRequestedViews()
+            reloadRequestedViews()
+        }
+    }
+    
+    var currentBookingState: CurrentBookingState = .none {
+        didSet {
+            monitorBookingState()
         }
     }
 
@@ -35,10 +41,12 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         
         view.clipsToBounds = true
         
-        monitorSurge()
-        observeCurrentParking()
+//        monitorSurge()
+//        observeCurrentParking()
         setupController()
         setupLocationManager()
+        
+        mainViewState = .parking
     }
     
 //    override func viewDidAppear(_ animated: Bool) {
@@ -58,11 +66,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
             setupSearch()
             setupLocator()
             
-            setupCurrentViews()
             setupUserMessages()
             monitorCoupons()
             setupNetworkConnection()
-            DynamicPricing.readCityCSV()
+//            DynamicPricing.readCityCSV()
             
             if BookedState == .currentlyBooked && mainViewState != .currentBooking {
                 mainViewState = .currentBooking
@@ -82,9 +89,14 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    var mapBoxRoute: MKRoute?
+    var currentBookingHeight: CGFloat = phoneHeight - 116 - 252 {
+        didSet {
+            currentHeightChange()
+        }
+    } // 116 corresponds to DurationController
     
-    lazy var currentBookingHeight: CGFloat = phoneHeight - 116 - 252
+    var mapBoxRoute: MKRoute?
+    var mapBoxWalkingRoute: MKRoute?
     
     enum CurrentData {
         case notReserved
@@ -108,8 +120,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return view
     }()
     
-    var canShowLocatorButton: Bool = true
-    
     var locatorButton: UIButton = {
         let button = UIButton(type: .custom)
         if let myImage = UIImage(named: "my_location") {
@@ -131,6 +141,48 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return button
     }()
     
+    var parkingRouteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "my_route") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 20
+//        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.4
+        button.transform = CGAffineTransform(scaleX: -1.0, y: -1.0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    var currentRouteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let myImage = UIImage(named: "my_route") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            button.setImage(tintableImage, for: .normal)
+        }
+        button.tintColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.WHITE
+        button.layer.cornerRadius = 28
+        button.imageEdgeInsets = UIEdgeInsets(top: -4, left: -4, bottom: -4, right: -4)
+        button.layer.shadowColor = Theme.BLACK.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.4
+        button.transform = CGAffineTransform(scaleX: -1.0, y: -1.0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(locatorButtonAction(sender:)), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var currentHeightAnchor: NSLayoutConstraint!
     var previousHeightAnchor: CGFloat = 380
     var canScrollMainView: Bool = true
@@ -143,15 +195,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
 
         return controller
     }()
-    
-//    lazy var mainBarController: MainBarViewController = {
-//        let controller = MainBarViewController()
-//        controller.view.translatesAutoresizingMaskIntoConstraints = false
-//        controller.delegate = self
-//        self.addChild(controller)
-//
-//        return controller
-//    }()
     
     lazy var summaryController: SearchSummaryViewController = {
         let controller = SearchSummaryViewController()
@@ -180,39 +223,26 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return controller
     }()
     
-    lazy var parkingController: ParkingViewController = {
-        let controller = ParkingViewController()
+    lazy var parkingController: BookingViewController = {
+        let controller = BookingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Parking"
         controller.delegate = self
-        controller.navigationDelegate = self
-        controller.locatorDelegate = self
-        controller.parkingDelegate = self
+//        controller.navigationDelegate = self
+//        controller.locatorDelegate = self
+//        controller.parkingDelegate = self
         self.addChild(controller)
         
         return controller
+    }()
+    
+    var topParkingView: BookingTopView = {
+        let view = BookingTopView()
+        view.backButton.addTarget(self, action: #selector(parkingBackButtonPressed), for: .touchUpInside)
+        
+        return view
     }()
     
     var durationController = TestDurationTabView()
-    
-    lazy var confirmPaymentController: ConfirmViewController = {
-        let controller = ConfirmViewController()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.additionalDelegate = self
-        
-        return controller
-    }()
-    
-    lazy var currentBottomController: CurrentBookingView = {
-        let controller = CurrentBookingView()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        
-        return controller
-    }()
     
     var durationLeftAnchor: NSLayoutConstraint!
     var durationRightAnchor: NSLayoutConstraint!
@@ -220,6 +250,16 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var previousMainBarPercentage: CGFloat = 0
     var previousBookingPercentage: CGFloat = 0
+    var previousCurrentPercentage: CGFloat = 0
+    
+    lazy var currentBottomController: CurrentViewController = {
+        let controller = CurrentViewController()
+        self.addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.delegate = self
+        
+        return controller
+    }()
     
     lazy var currentDurationController: CurrentDurationView = {
         let controller = CurrentDurationView()
@@ -228,16 +268,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         controller.view.alpha = 0
         controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         controller.delegate = self
-        
-        return controller
-    }()
-    
-    lazy var endBookingController: EndCurrentBookingView = {
-        let controller = EndCurrentBookingView()
-        self.addChild(controller)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.alpha = 0
-        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         
         return controller
     }()
@@ -267,7 +297,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = 25
         button.layer.shadowColor = Theme.DARK_GRAY.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
@@ -281,39 +311,10 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
         return button
     }()
     
-    lazy var quickDestinationController: QuickDestinationViewController = {
-        let controller = QuickDestinationViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Destination"
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    lazy var quickParkingController: QuickParkingViewController = {
-        let controller = QuickParkingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.title = "Destination"
-        self.addChild(controller)
-        
-        return controller
-    }()
-    
-    var reviewBookingTopAnchor: NSLayoutConstraint!
-    
-    lazy var reviewBookingController: ReviewBookingViewController = {
-        let controller = ReviewBookingViewController()
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.delegate = self
-        controller.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        controller.view.alpha = 0
-        self.addChild(controller)
-        
-        return controller
-    }()
+    var quickDurationView = QuickDurationView()
+    var quickParkingView = QuickParkingView()
     
     var shouldUpdatePolyline: Bool = true
-    
     var previousAnchor: CGFloat = 170.0
     
     var shouldBeSearchingForAnnotations: Bool = true
@@ -336,7 +337,7 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     let locationManager = CLLocationManager()
     let delta = 0.1
     var mapChangedFromUserInteraction = true
-    var changeUserInteractionTimer = Timer()
+    var changeUserInteractionTimer: Timer?
     var changeLocationCounter: Int = 0
     
     var parkingSpots = [ParkingSpots]()
@@ -344,8 +345,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     var parkingSpotsDictionary = [String: ParkingSpots]()
     var visibleAnnotationsDistance: [Double] = []
     var visibleAnnotations: [GMSMarker] = []
-//    var visibleParkingSpots: Int = 0
-    var destination: CLLocation?
     
     var currentUserBooking: Bookings?
     
@@ -367,17 +366,13 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
     
     var parkingBackButtonBookAnchor: NSLayoutConstraint!
     var parkingBackButtonPurchaseAnchor: NSLayoutConstraint!
-    var parkingBackButtonConfirmAnchor: NSLayoutConstraint!
     
     var locatorMainBottomAnchor: NSLayoutConstraint!
     var locatorParkingBottomAnchor: NSLayoutConstraint!
     var locatorCurrentBottomAnchor: NSLayoutConstraint!
     
     var parkingControllerBottomAnchor: NSLayoutConstraint!
-//    var mainBarTopAnchor: NSLayoutConstraint!
     var mainBarBottomAnchor: NSLayoutConstraint!
-//    var durationControllerBottomAnchor: NSLayoutConstraint!
-    var confirmControllerBottomAnchor: NSLayoutConstraint!
     var currentBottomHeightAnchor: NSLayoutConstraint!
     
     var parkingControllerHeightAnchor: NSLayoutConstraint!
@@ -432,12 +427,6 @@ class MapKitViewController: UIViewController, UISearchBarDelegate, controlNewHos
                 NSLog("One or more of the map styles failed to load. \(error)")
             }
         }
-        
-        let position = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.127)
-        let london = GMSMarker(position: position)
-        london.title = "London"
-        london.icon = UIImage(named: "annotationMapMarker")
-        london.map = mapView
         
         view.addSubview(backgroundImageView)
         backgroundImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)

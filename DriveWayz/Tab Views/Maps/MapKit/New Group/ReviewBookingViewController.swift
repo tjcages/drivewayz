@@ -12,7 +12,7 @@ import StoreKit
 
 class ReviewBookingViewController: UIViewController {
     
-    var delegate: handleMinimizingFullController?
+//    var delegate: handleMinimizingFullController?
     var currentParking: ParkingSpots? {
         didSet {
             if let parking = self.currentParking {
@@ -471,7 +471,7 @@ class ReviewBookingViewController: UIViewController {
         guard var message = self.message.text, let parking = currentParking, let parkingID = parking.parkingID else { return }
         if message == "Enter your review" { message = "" }
         if close == true {
-            self.delegate?.reviewOptionsDismissed()
+//            self.delegate?.reviewOptionsDismissed()
         }
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("users").child(userID)
@@ -524,7 +524,7 @@ class ReviewBookingViewController: UIViewController {
     }
     
     @objc func cancelButtonPressed() {
-        self.delegate?.reviewOptionsDismissed()
+//        self.delegate?.reviewOptionsDismissed()
     }
     
     func getInformationReview() {

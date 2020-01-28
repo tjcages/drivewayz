@@ -16,7 +16,7 @@ class CurrentSpotViewController: UIViewController {
     
     var shouldDarken: Bool = true
     
-    var delegate: handleMinimizingFullController?
+//    var delegate: handleMinimizingFullController?
     var driveTime: Double = 0.0 {
         didSet {
             self.fullCurrentController.driveTime = driveTime
@@ -498,7 +498,6 @@ extension CurrentSpotViewController: UIScrollViewDelegate {
                     self.darkView.alpha = 1
                     self.spotLocatingLabel2.alpha = 0
                     self.parkingBackButton.tintColor = Theme.WHITE
-                    self.delegate?.setLightStatusBar()
                 } else if translation > 240 {
                     self.darkView.alpha = 0
                     delayWithSeconds(animationOut, completion: {
@@ -514,7 +513,6 @@ extension CurrentSpotViewController: UIScrollViewDelegate {
                     self.containerTopAnchor.constant = 280
                     self.blackContainer.alpha = 0
                     self.parkingBackButton.tintColor = Theme.BLACK
-                    self.delegate?.setDefaultStatusBar()
                     delayWithSeconds(0.6, completion: {
                         self.shouldDarken = true
                     })

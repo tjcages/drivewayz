@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Group 5445.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "noun_Car_2254025.png",
+      "filename" : "Group 5445@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "Group 5445@3x.png",
       "scale" : "3x"
     }
   ],

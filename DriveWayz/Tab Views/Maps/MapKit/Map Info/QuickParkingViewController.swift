@@ -93,6 +93,7 @@ class QuickParkingViewController: UIViewController {
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4
         view.alpha = 0
+        view.isHidden = true
         
         setupViews()
     }

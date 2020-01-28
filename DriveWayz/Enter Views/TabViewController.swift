@@ -211,13 +211,13 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         gradientContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         gradientContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        delayWithSeconds(1) {
-            let controller = HostPortalController()
-            let navigation = UINavigationController(rootViewController: controller)
-            navigation.modalPresentationStyle = .overFullScreen
-            navigation.navigationBar.isHidden = true
-            self.present(navigation, animated: true, completion: nil)
-        }
+//        delayWithSeconds(1) {
+//            let controller = HostPortalController()
+//            let navigation = UINavigationController(rootViewController: controller)
+//            navigation.modalPresentationStyle = .overFullScreen
+//            navigation.navigationBar.isHidden = true
+//            self.present(navigation, animated: true, completion: nil)
+//        }
     }
     
     func checkOpens() {

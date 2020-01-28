@@ -8,9 +8,27 @@
 
 import UIKit
 import CoreLocation
-import Mapbox
+import GoogleMaps
 
 extension MapKitViewController {
+    
+    func removeRouteLine() {
+        mapView.clear()
+        mapBoxRoute = nil
+        mapBoxWalkingRoute = nil
+        routeUnderLine.path = nil
+        routeLine.path = nil
+        routeWalkingLine.path = nil
+        routeWalkingUnderLine.path = nil
+        
+        routeUnderLine.removeFromSuperlayer()
+        routeLine.removeFromSuperlayer()
+        routeWalkingUnderLine.removeFromSuperlayer()
+        routeWalkingLine.removeFromSuperlayer()
+        routeStartPin.removeFromSuperview()
+        routeParkingPin.removeFromSuperview()
+        routeEndPin.removeFromSuperview()
+    }
 
     func removeAllMapOverlays(shouldRefresh: Bool) {
         DestinationAnnotationLocation = nil
@@ -18,20 +36,20 @@ extension MapKitViewController {
         surgeCheckedCity = nil
         surgeCheckedLocation = nil
         shouldShowOverlay = false
-        quickDestinationController.view.alpha = 0
-        quickParkingController.view.alpha = 0
         
         quadStartCoordinate = nil
         quadEndCoordinate = nil
-        shouldShowOverlay = false
-        quickDestinationController.view.alpha = 0
-        quickParkingController.view.alpha = 0
+        ZoomStartCoordinate = nil
+        ZoomEndCoordinate = nil
         
-        quickDestinationController.view.alpha = 0
-        quickParkingController.view.alpha = 0
-        quickDestinationController.view.isUserInteractionEnabled = true
-        quickParkingController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        quickDestinationController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        shouldShowOverlay = false
+        quickDurationView.alpha = 0
+        quickParkingView.alpha = 0
+        
+        quickDurationView.isUserInteractionEnabled = true
+        quickParkingView.isUserInteractionEnabled = true
+        quickParkingView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        quickDurationView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         
         removeRouteLine()
         
@@ -42,7 +60,10 @@ extension MapKitViewController {
         
         if shouldRefresh == true {
             observeAllParking()
-            locatorButtonPressed(padding: nil)
+            if let userLocation = self.locationManager.location {
+                let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
+                mapView.camera = camera
+            }
         } else {
             mapView.clear()
         }
