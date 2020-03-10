@@ -32,7 +32,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.numberOfLines = 2
         label.text = "Any parking images will not be shown until a driver has booked the space"
@@ -44,7 +44,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "General images (4 max)"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPLightH3
         
         return label
@@ -58,7 +58,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 1
@@ -73,7 +73,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.OFF_WHITE
+        label.backgroundColor = Theme.BACKGROUND_GRAY
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
@@ -87,7 +87,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
@@ -104,7 +104,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 2
@@ -119,7 +119,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.OFF_WHITE
+        label.backgroundColor = Theme.BACKGROUND_GRAY
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
@@ -133,7 +133,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
@@ -150,7 +150,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
         button.tag = 3
@@ -165,7 +165,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.OFF_WHITE
+        label.backgroundColor = Theme.BACKGROUND_GRAY
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
@@ -179,7 +179,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
@@ -196,7 +196,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         button.imageEdgeInsets = UIEdgeInsets(top: 42, left: 42, bottom: 42, right: 42)
         button.tag = 4
         button.addTarget(self, action: #selector(selectImageControl(sender:)), for: .touchUpInside)
@@ -211,7 +211,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.OFF_WHITE
+        label.backgroundColor = Theme.BACKGROUND_GRAY
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
         
@@ -225,7 +225,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.cornerRadius = 15
         button.alpha = 0
@@ -242,7 +242,7 @@ class BusinessPicturesViewController: UIViewController, UIImagePickerControllerD
         button.tintColor = Theme.WHITE
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.layer.cornerRadius = 15
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.GREEN
         button.alpha = 0
         
         return button

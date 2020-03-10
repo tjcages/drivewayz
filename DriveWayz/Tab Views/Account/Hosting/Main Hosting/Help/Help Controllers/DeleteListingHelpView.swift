@@ -32,7 +32,7 @@ class DeleteListingHelpView: UIViewController {
     lazy var pullButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.layer.cornerRadius = 2.5
         button.isUserInteractionEnabled = false
         
@@ -42,7 +42,7 @@ class DeleteListingHelpView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.text = "Delete listing"
         
@@ -52,7 +52,7 @@ class DeleteListingHelpView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -73,7 +73,7 @@ class DeleteListingHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "945 Diamond Street"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -83,7 +83,7 @@ class DeleteListingHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "2-Car Residential"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -93,7 +93,7 @@ class DeleteListingHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Are you sure you want to delete this listing? All information will be removed permanently."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 4
         
@@ -114,7 +114,7 @@ class DeleteListingHelpView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.HARMONY_RED
+        button.backgroundColor = Theme.SALMON
         button.setTitle("Delete Listing", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -127,7 +127,7 @@ class DeleteListingHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

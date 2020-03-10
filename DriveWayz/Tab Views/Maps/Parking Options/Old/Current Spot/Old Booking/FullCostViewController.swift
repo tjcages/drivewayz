@@ -13,7 +13,7 @@ class FullCostViewController: UIViewController {
     var costLabel: UIButton = {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.setTitle("Discover 4422", for: .normal)
         label.titleLabel?.font = Fonts.SSPRegularH3
         label.contentHorizontalAlignment = .left

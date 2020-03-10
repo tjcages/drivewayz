@@ -75,7 +75,7 @@ extension OtherSettingsView: UITableViewDelegate, UITableViewDataSource {
             let label = UILabel()
             label.font = Fonts.SSPRegularH4
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.textColor = Theme.PRUSSIAN_BLUE
+            label.textColor = Theme.GRAY_WHITE
             label.text = "Preferences"
             
             view.addSubview(label)
@@ -103,12 +103,12 @@ extension OtherSettingsView: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             cell.titleLabel.text = options.last
-            cell.titleLabel.textColor = Theme.HARMONY_RED
+            cell.titleLabel.textColor = Theme.SALMON
         } else {
             if indexPath.row == 2 {
-                cell.titleLabel.textColor = Theme.DARK_GRAY
+                cell.titleLabel.textColor = Theme.BLACK
             } else {
-                cell.titleLabel.textColor = Theme.PRUSSIAN_BLUE
+                cell.titleLabel.textColor = Theme.GRAY_WHITE
             }
         }
         

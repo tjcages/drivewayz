@@ -32,7 +32,7 @@ class HelpWorksView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "How it works"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
         return label
@@ -41,7 +41,7 @@ class HelpWorksView: UIView {
     var oneButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.setTitle("1", for: .normal)
@@ -55,7 +55,7 @@ class HelpWorksView: UIView {
     var twoButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.setTitle("2", for: .normal)
@@ -69,7 +69,7 @@ class HelpWorksView: UIView {
     var threeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         button.setTitle("3", for: .normal)
@@ -83,7 +83,7 @@ class HelpWorksView: UIView {
     var oneLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
         
@@ -93,7 +93,7 @@ class HelpWorksView: UIView {
     var twoLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
         
@@ -103,7 +103,7 @@ class HelpWorksView: UIView {
     var threeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
         
@@ -114,7 +114,7 @@ class HelpWorksView: UIView {
         super.init(frame: frame)
         
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        line.backgroundColor = lineColor
+        line.backgroundColor = Theme.LINE_GRAY
         addSubview(line)
 
         setupViews()

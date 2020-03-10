@@ -15,8 +15,11 @@ import GoogleSignIn
 import GoogleMaps
 import GooglePlaces
 import Stripe
-import FacebookCore
-import FacebookLogin
+//import FacebookCore
+//import FacebookLogin
+import FBSDKCoreKit
+import FBSDKLoginKit
+
 import UserNotifications
 import AFNetworking
 import Solar
@@ -36,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let gcmMessageIDKey = "174551543020"
     static let NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
     static var DEVICEID = String()
+    static let GMSKEY = "AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8"
     static let SERVERKEY = "AAAAKKQVLOw:APA91bEzWxKfKYZzgQQ59ubBKwFZ__6pZEE489XPJqJUaQmbHsLMPKWSKfvMwbFYw3hL74stguq9xLZTaxOtn5MuUAHkDWFzd50U9eoW5WUrSSbQ-pR8_cTmro44Re72uqKGPAetdXeK"
     private let baseURLString: String = "https://boiling-shore-28466.herokuapp.com"
     
@@ -49,10 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         detectDevice()
         checkNetwork()
         
-        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        GMSServices.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
-        GMSPlacesClient.provideAPIKey("AIzaSyAuHA_iLGQ5sYtI_pAdYOP6SyPcoJrZaB8")
+        GMSServices.provideAPIKey(AppDelegate.GMSKEY)
+        GMSPlacesClient.provideAPIKey(AppDelegate.GMSKEY)
         STPPaymentConfiguration.shared().publishableKey = "pk_live_xPZ14HLRoxNVnMRaTi8ecUMQ"
 //        STPPaymentConfiguration.shared().appleMerchantIdentifier = "your apple merchant identifier"
         
@@ -86,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.addObserver(self, selector: #selector(registerForRemoteNotifs), name: NSNotification.Name(rawValue: "registerForNotifications"), object: nil)
         }
         
-        UITableView.appearance().separatorColor = lineColor
+        UITableView.appearance().separatorColor = Theme.LINE_GRAY
         
         return true
     }
@@ -113,13 +117,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UserDefaults.standard.synchronize()
         }
         ref.child("CurrentBooking").observe(.childAdded) { (snapshot) in
-            if let controller = self.mainController, let tabController = controller.tabController {
-                if tabController.mapController.mainViewState != .payment {
-                    BookedState = .currentlyBooked
-                }
-            } else {
-                BookedState = .currentlyBooked
-            }
+//            if let controller = self.mainController, let tabController = controller.tabController {
+//                if tabController.mapController.mainViewState != .payment {
+//                    BookedState = .currentlyBooked
+//                }
+//            } else {
+//                BookedState = .currentlyBooked
+//            }
             UserDefaults.standard.set("currentlyBooked", forKey: "userBookingStatus")
             UserDefaults.standard.synchronize()
         }
@@ -271,7 +275,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         UIApplication.shared.applicationIconBadgeNumber = 0
-        AppEventsLogger.activate(application)
+//        AppEventsLogger.activate(application)
     }
     
     func detectDevice() {

@@ -13,7 +13,7 @@ class FullDurationViewController: UIViewController {
     var reservationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Booking"
         label.font = Fonts.SSPSemiBoldH3
         
@@ -46,7 +46,7 @@ class FullDurationViewController: UIViewController {
     var timeLeft: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
+        label.textColor = Theme.GREEN.withAlphaComponent(0.8)
         label.text = "4h 24m"
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
@@ -58,11 +58,11 @@ class FullDurationViewController: UIViewController {
     var leftLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE.darker(by: 2)
+        view.backgroundColor = Theme.BACKGROUND_GRAY.darker(by: 2)
         
         let circle = UIView()
         circle.translatesAutoresizingMaskIntoConstraints = false
-        circle.backgroundColor = Theme.OFF_WHITE.darker(by: 2)
+        circle.backgroundColor = Theme.BACKGROUND_GRAY.darker(by: 2)
         circle.layer.cornerRadius = 3
         view.addSubview(circle)
         circle.centerXAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -76,11 +76,11 @@ class FullDurationViewController: UIViewController {
     var rightLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE.darker(by: 1)
+        view.backgroundColor = Theme.BACKGROUND_GRAY.darker(by: 1)
         
         let circle = UIView()
         circle.translatesAutoresizingMaskIntoConstraints = false
-        circle.backgroundColor = Theme.OFF_WHITE.darker(by: 1)
+        circle.backgroundColor = Theme.BACKGROUND_GRAY.darker(by: 1)
         circle.layer.cornerRadius = 3
         view.addSubview(circle)
         circle.centerXAnchor.constraint(equalTo: view.rightAnchor).isActive = true
@@ -94,7 +94,7 @@ class FullDurationViewController: UIViewController {
     var arriveLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.5)
         label.text = "arrive"
         label.font = Fonts.SSPRegularH5
         
@@ -104,7 +104,7 @@ class FullDurationViewController: UIViewController {
     var leaveLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.5)
         label.text = "depart"
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right

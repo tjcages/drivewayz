@@ -10,6 +10,10 @@ import UIKit
 
 class DashingLine: CAShapeLayer {
     
+    var defaultColor: UIColor = Theme.BLACK
+    var defaultWidth: CGFloat = 2
+    var travelDistance = phoneWidth
+    
     override init() {
         super.init()
         
@@ -25,22 +29,24 @@ class DashingLine: CAShapeLayer {
     }
     
     func createLine() {
-        // 1)
-        let bezPath = UIBezierPath()
-        bezPath.move(to: CGPoint(x: 45, y: 0))
-        let distance = CGFloat(arc4random_uniform(45 - 25) + 25)
-        bezPath.addLine(to: CGPoint(x: distance, y: 0))
-        
-        // 2)
-        lineWidth = 2
-        lineCap = CAShapeLayerLineCap.round
-        strokeColor = UIColor.darkGray.cgColor
-        path = bezPath.cgPath
+
     }
     
     func animate() {
         // 1)
-        let duration: CFTimeInterval = 0.6
+        let bezPath = UIBezierPath()
+        bezPath.move(to: CGPoint(x: 0, y: 0))
+        let distance = travelDistance
+        bezPath.addLine(to: CGPoint(x: distance, y: 0))
+        
+        // 2)
+        lineWidth = defaultWidth
+        lineCap = CAShapeLayerLineCap.round
+        strokeColor = defaultColor.cgColor
+        path = bezPath.cgPath
+        
+        // 1)
+        let duration: CFTimeInterval = 1.2
         
         // 2)
         let end = CABasicAnimation(keyPath: "strokeEnd")
@@ -62,15 +68,20 @@ class DashingLine: CAShapeLayer {
         
         // 4)
         let group = CAAnimationGroup()
-        group.animations = [end, begin]
+        group.animations = [end, begin, end]
         group.duration = duration
+        group.repeatCount = .infinity
         
         // 5)
-        strokeEnd = 1
-        strokeStart = 1
+        strokeEnd = 0
+        strokeStart = 0
         
         // 6)
         add(group, forKey: "move")
+    }
+    
+    func endAnimate() {
+        removeAnimation(forKey: "move")
     }
     
 }

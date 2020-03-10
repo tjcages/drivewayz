@@ -26,7 +26,7 @@ class EarningsDisputeHelpView: UIViewController {
     
     lazy var blackView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -44,7 +44,7 @@ class EarningsDisputeHelpView: UIViewController {
     lazy var pullButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.layer.cornerRadius = 2.5
         button.isUserInteractionEnabled = false
         
@@ -54,7 +54,7 @@ class EarningsDisputeHelpView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.text = "Earnings Dispute"
         
@@ -64,7 +64,7 @@ class EarningsDisputeHelpView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -72,10 +72,10 @@ class EarningsDisputeHelpView: UIViewController {
     var reservationIcon: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 45/2
         button.clipsToBounds = true
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         let image = UIImage(named: "helpPayment")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         
@@ -86,7 +86,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Thu 12, Nov 2019"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -96,7 +96,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Last payout"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -106,7 +106,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "If you believe the total earnings amount after the most recent payout does not correctly correspond to the amount shown, after applicable fees, please open a dispute claim."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 8
         
@@ -120,8 +120,8 @@ class EarningsDisputeHelpView: UIViewController {
         check.borderWidth = 0
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = lineColor
-        check.backgroundColor = lineColor
+        check.uncheckedBorderColor = Theme.LINE_GRAY
+        check.backgroundColor = Theme.LINE_GRAY
         check.layer.cornerRadius = 2
         check.clipsToBounds = true
         check.checkmarkColor = Theme.WHITE
@@ -135,7 +135,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "I understand my current balance should reflect the amount after all applicable fees are collected."
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 5
         
@@ -146,7 +146,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Current balance"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -156,7 +156,7 @@ class EarningsDisputeHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$45.23"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -166,7 +166,7 @@ class EarningsDisputeHelpView: UIViewController {
     var balanceLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -174,9 +174,9 @@ class EarningsDisputeHelpView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Open Dispute Claim", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(mainButtonPressed), for: .touchUpInside)
@@ -187,7 +187,7 @@ class EarningsDisputeHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -293,8 +293,8 @@ class EarningsDisputeHelpView: UIViewController {
     }
     
     @objc func mainButtonPressed() {
-        mainButton.backgroundColor = lineColor
-        mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        mainButton.backgroundColor = Theme.LINE_GRAY
+        mainButton.setTitleColor(Theme.BLACK, for: .normal)
         UIView.animate(withDuration: animationIn, animations: {
             self.blackView.alpha = 0.2
         }) { (success) in
@@ -312,12 +312,12 @@ class EarningsDisputeHelpView: UIViewController {
     @objc func onCheckBoxValueChange(_ sender: CheckBox) {
         if sender.isChecked {
             sender.backgroundColor = Theme.BLUE
-            mainButton.backgroundColor = Theme.DARK_GRAY
+            mainButton.backgroundColor = Theme.BLACK
             mainButton.setTitleColor(Theme.WHITE, for: .normal)
         } else {
-            sender.backgroundColor = lineColor
-            mainButton.backgroundColor = lineColor
-            mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            sender.backgroundColor = Theme.LINE_GRAY
+            mainButton.backgroundColor = Theme.LINE_GRAY
+            mainButton.setTitleColor(Theme.BLACK, for: .normal)
         }
     }
     

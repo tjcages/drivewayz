@@ -172,7 +172,7 @@ class MessageOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Ask for open communications", for: .normal)
-        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.7)
+        button.backgroundColor = Theme.SALMON.withAlphaComponent(0.7)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = Fonts.SSPLightH5
@@ -192,7 +192,7 @@ class MessageOptionsViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.textAlignment = .center
         label.text = "In order to speak freely with the host you must first ask their permission for open communications."
@@ -213,7 +213,7 @@ class MessageOptionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         spotTakenWidth = (spotTaken.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
         cantFindWidth = (cantFind.titleLabel?.text?.width(withConstrainedHeight: 40, font: Fonts.SSPLightH5))! + 20
@@ -412,9 +412,9 @@ class MessageOptionsViewController: UIViewController {
     @objc func optionsButtonPressed(sender: UIButton) {
         if sender.backgroundColor == Theme.WHITE {
             UIView.animate(withDuration: 0.1) {
-                sender.backgroundColor = Theme.SEA_BLUE
+                sender.backgroundColor = Theme.BLUE
                 sender.setTitleColor(Theme.WHITE, for: .normal)
-                sender.layer.borderColor = Theme.SEA_BLUE.cgColor
+                sender.layer.borderColor = Theme.BLUE.cgColor
                 sender.tag = 1
                 if self.lastButton != nil {
                     self.lastButton.backgroundColor = Theme.WHITE
@@ -469,7 +469,7 @@ class MessageOptionsViewController: UIViewController {
                     self.sendMessageWithProperties(properties: properties)
                     UIView.animate(withDuration: 0.1) {
                         self.sendCommunications.setTitle("Pending...", for: .normal)
-                        self.sendCommunications.backgroundColor = Theme.DARK_GRAY
+                        self.sendCommunications.backgroundColor = Theme.BLACK
                         self.sendCommunicationsWidth.constant = 180
                         self.view.layoutIfNeeded()
                     }

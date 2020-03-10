@@ -52,7 +52,7 @@ class TransfersInformationViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Have a different issue", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(optionsPressed(sender:)), for: .touchUpInside)
         
@@ -64,7 +64,7 @@ class TransfersInformationViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Did not receive payment", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(optionsPressed(sender:)), for: .touchUpInside)
         
@@ -76,7 +76,7 @@ class TransfersInformationViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Payout information is incorrect", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(optionsPressed(sender:)), for: .touchUpInside)
         
@@ -88,7 +88,7 @@ class TransfersInformationViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Why is my payout in transit?", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(optionsPressed(sender:)), for: .touchUpInside)
         
@@ -98,7 +98,7 @@ class TransfersInformationViewController: UIViewController {
     var firstLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -106,7 +106,7 @@ class TransfersInformationViewController: UIViewController {
     var secondLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -114,7 +114,7 @@ class TransfersInformationViewController: UIViewController {
     var thirdLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -122,7 +122,7 @@ class TransfersInformationViewController: UIViewController {
     var fourthLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -130,7 +130,7 @@ class TransfersInformationViewController: UIViewController {
     var fifthLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -167,7 +167,7 @@ class TransfersInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

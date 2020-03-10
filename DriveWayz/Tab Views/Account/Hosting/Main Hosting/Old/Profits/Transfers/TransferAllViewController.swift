@@ -116,7 +116,7 @@ class TransferAllViewController: UIViewController {
         paymentsTable.delegate = self
         paymentsTable.dataSource = self
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -272,7 +272,7 @@ class TransferCell: UITableViewCell {
     func inTransitButton() {
         self.transitButton.alpha = 1
         self.paidButton.alpha = 0
-        self.amountLabel.textColor = Theme.GREEN_PIGMENT
+        self.amountLabel.textColor = Theme.GREEN
     }
     
     func madePaymentButton() {
@@ -296,9 +296,9 @@ class TransferCell: UITableViewCell {
     var transitButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GREEN.withAlphaComponent(0.2)
         button.setTitle("Transit", for: .normal)
-        button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+        button.setTitleColor(Theme.GREEN, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.layer.cornerRadius = 13
         button.alpha = 0
@@ -311,7 +311,7 @@ class TransferCell: UITableViewCell {
         view.text = "••••"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -321,7 +321,7 @@ class TransferCell: UITableViewCell {
         view.text = "11/11/2019 6:34PM"
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()

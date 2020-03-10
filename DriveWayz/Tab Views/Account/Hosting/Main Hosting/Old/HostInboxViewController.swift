@@ -15,10 +15,10 @@ class HostInboxViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -77,7 +77,7 @@ class HostInboxViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "No messages currently"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.alpha = 0
         
@@ -349,7 +349,7 @@ class InboxCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.text = "Any chance I can park a car in this area?"
         
         return view
@@ -359,7 +359,7 @@ class InboxCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.4)
         view.text = "Jul 4, 8:00am - 10:00pm"
         
         return view
@@ -369,8 +369,8 @@ class InboxCell: UITableViewCell {
         let view = UIButton()
         view.titleLabel?.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        view.backgroundColor = lineColor
+        view.setTitleColor(Theme.BLACK, for: .normal)
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
@@ -384,7 +384,7 @@ class InboxCell: UITableViewCell {
         view.text = "Show more"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.4)
         view.textAlignment = .center
         view.alpha = 0
         

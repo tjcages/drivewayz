@@ -49,7 +49,7 @@ class CustomNumbersView: UIViewController {
     
     lazy var statusView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -78,7 +78,7 @@ class CustomNumbersView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Confirm Spot Numbers (1)", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -102,7 +102,7 @@ class CustomNumbersView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.text = "Custom numbers"
         
@@ -123,7 +123,7 @@ class CustomNumbersView: UIViewController {
     lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -137,9 +137,9 @@ class CustomNumbersView: UIViewController {
     lazy var backButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Back", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
@@ -152,7 +152,7 @@ class CustomNumbersView: UIViewController {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.message = "Can only set custom numbers for the total number of spots."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -472,14 +472,14 @@ class CustomNumberCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         
         return view
     }()
     
     var mainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -494,7 +494,7 @@ class CustomNumberCell: UITableViewCell {
     var textViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -502,10 +502,10 @@ class CustomNumberCell: UITableViewCell {
     var removeRangeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.layer.cornerRadius = 14
         button.imageEdgeInsets = UIEdgeInsets(top: 9, left: 9, bottom: 9, right: 9)
         
@@ -553,7 +553,7 @@ class CustomNumberCell: UITableViewCell {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.sizeToFit()
         toolBar.tintColor = Theme.WHITE
         
@@ -599,8 +599,8 @@ extension CustomNumberCell: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         backgroundColor = .clear
-        textViewLine.backgroundColor = lineColor
-        removeRangeButton.backgroundColor = lineColor
+        textViewLine.backgroundColor = Theme.LINE_GRAY
+        removeRangeButton.backgroundColor = Theme.LINE_GRAY
         delegate?.adjustForKeyboard(tag: tag, dismiss: true)
     }
     

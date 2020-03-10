@@ -42,9 +42,9 @@ class PictureTutorialView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2

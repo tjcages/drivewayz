@@ -16,7 +16,7 @@ class PriceAdditionalView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH2
         label.numberOfLines = 5
         label.isUserInteractionEnabled = true
@@ -49,7 +49,7 @@ class PriceAdditionalView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Standard is comparable to parking rates in your area and typically maximizes the number of bookings."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 5
         

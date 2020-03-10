@@ -29,7 +29,7 @@ class ProfileBannerAdsViewController: UIViewController {
         view.alpha = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 5
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 1
         view.layer.shadowOpacity = 0.8

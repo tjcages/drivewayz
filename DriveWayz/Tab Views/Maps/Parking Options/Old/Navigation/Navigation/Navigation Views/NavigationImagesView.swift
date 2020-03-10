@@ -24,7 +24,7 @@ class NavigationImagesView: UIViewController {
     
     lazy var spacesPicker: UICollectionView = {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false

@@ -129,7 +129,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
     var notificationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -140,7 +140,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
     var notificationSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 2
@@ -198,7 +198,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         view.text = "Enter verification code from email"
         view.alpha = 0
         
@@ -208,7 +208,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
     var verificationTextView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH4
@@ -225,7 +225,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
     var verificationTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -244,7 +244,7 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
         
         verificationTextView.delegate = self
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -441,8 +441,8 @@ class GeneralNotificationViewController: UIViewController, handleHostResponsibil
         self.verificationTextLine.alpha = 1
         self.loadingLine.alpha = 1
         self.generalButton.setTitle("Check verification code", for: .normal)
-        self.generalButton.backgroundColor = lineColor
-        self.generalButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.generalButton.backgroundColor = Theme.LINE_GRAY
+        self.generalButton.setTitleColor(Theme.BLACK, for: .normal)
         self.generalButton.isUserInteractionEnabled = false
         self.verificationTextView.tintColor = self.mainColor
         self.createToolbar()
@@ -558,8 +558,8 @@ extension GeneralNotificationViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         self.shouldDismiss = true
-        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.verificationTextLine.backgroundColor = lineColor
+        textView.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        self.verificationTextLine.backgroundColor = Theme.LINE_GRAY
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -573,8 +573,8 @@ extension GeneralNotificationViewController: UITextViewDelegate {
                 self.generalButton.setTitleColor(Theme.WHITE, for: .normal)
                 self.generalButton.isUserInteractionEnabled = true
             } else {
-                self.generalButton.backgroundColor = lineColor
-                self.generalButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                self.generalButton.backgroundColor = Theme.LINE_GRAY
+                self.generalButton.setTitleColor(Theme.BLACK, for: .normal)
                 self.generalButton.isUserInteractionEnabled = false
             }
         }
@@ -612,9 +612,9 @@ extension GeneralNotificationViewController: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

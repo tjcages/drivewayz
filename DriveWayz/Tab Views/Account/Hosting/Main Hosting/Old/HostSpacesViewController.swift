@@ -22,9 +22,9 @@ class HostSpacesViewController: UIViewController, handleHostSpaces {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -70,7 +70,7 @@ class HostSpacesViewController: UIViewController, handleHostSpaces {
         let view = UIView()
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -101,7 +101,7 @@ class HostSpacesViewController: UIViewController, handleHostSpaces {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Add a new spot", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         let icon = UIImage(named: "plusIcon")?.withRenderingMode(.alwaysTemplate)
         button.tintColor = Theme.DarkPink
@@ -109,7 +109,7 @@ class HostSpacesViewController: UIViewController, handleHostSpaces {
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         button.layer.cornerRadius = 8
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0.2
@@ -163,7 +163,7 @@ class HostSpacesViewController: UIViewController, handleHostSpaces {
         spacesPicker.delegate = self
         spacesPicker.dataSource = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
         setupControllers()
@@ -436,7 +436,7 @@ class SpacesCell: UICollectionViewCell {
     var spotImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         view.layer.cornerRadius =  4
@@ -450,7 +450,7 @@ class SpacesCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 4
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -462,7 +462,7 @@ class SpacesCell: UICollectionViewCell {
     var spotLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Two-Car Driveway"
         label.font = Fonts.SSPSemiBoldH3
         
@@ -472,7 +472,7 @@ class SpacesCell: UICollectionViewCell {
     var locationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "University Avenue, Boulder CO"
         label.font = Fonts.SSPRegularH5
         
@@ -495,7 +495,7 @@ class SpacesCell: UICollectionViewCell {
     var listedButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         button.setTitle("Listed on 09/28/2019", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
@@ -539,10 +539,10 @@ class SpacesCell: UICollectionViewCell {
         view.settings.updateOnTouch = false
         view.settings.starSize = 14
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -550,7 +550,7 @@ class SpacesCell: UICollectionViewCell {
         view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
         view.text = "10"
         view.semanticContentAttribute = .forceRightToLeft
-        view.settings.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.settings.textColor = Theme.BLACK.withAlphaComponent(0.8)
         view.settings.textFont = Fonts.SSPSemiBoldH6
         
         return view
@@ -560,12 +560,12 @@ class SpacesCell: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Today, 10:00AM - 4:00PM", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH6
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
         button.clipsToBounds = true
         let icon = UIImage(named: "time")?.withRenderingMode(.alwaysTemplate)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.8)
         button.setImage(icon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 3, bottom: 3, right: 1)
@@ -580,7 +580,7 @@ class SpacesCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        self.layer.shadowColor = Theme.BLACK.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowRadius = 3
         self.layer.shadowOpacity = 0.2

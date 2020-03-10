@@ -17,9 +17,9 @@ class UserContactViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -63,7 +63,7 @@ class UserContactViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 3
         label.text = "Please reach out to us with any questions or concerns."
@@ -75,7 +75,7 @@ class UserContactViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         view.text = "Share your thoughts"
         
         return view
@@ -84,7 +84,7 @@ class UserContactViewController: UIViewController {
     var supportTextView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH4
@@ -98,7 +98,7 @@ class UserContactViewController: UIViewController {
     var supportTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -106,7 +106,7 @@ class UserContactViewController: UIViewController {
     var exampleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 10
         label.textAlignment = .center
@@ -122,10 +122,10 @@ class UserContactViewController: UIViewController {
     var supportButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.isUserInteractionEnabled = false
         button.setTitle("Contact support", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(sendEmail), for: .touchUpInside)
@@ -251,8 +251,8 @@ class UserContactViewController: UIViewController {
 extension UserContactViewController: MFMailComposeViewControllerDelegate {
     
     @objc func sendEmail() {
-        supportButton.backgroundColor = lineColor
-        supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        supportButton.backgroundColor = Theme.LINE_GRAY
+        supportButton.setTitleColor(Theme.BLACK, for: .normal)
         supportButton.isUserInteractionEnabled = false
         loadingLine.startAnimating()
         
@@ -282,8 +282,8 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
                         if let key = snap.key {
                             let childRef = Database.database().reference().child("Messages").child(key)
                             childRef.updateChildValues(values, withCompletionBlock: { (error, success) in
-                                self.supportButton.backgroundColor = lineColor
-                                self.supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                                self.supportButton.backgroundColor = Theme.LINE_GRAY
+                                self.supportButton.setTitleColor(Theme.BLACK, for: .normal)
                                 self.supportButton.isUserInteractionEnabled = true
                                 self.loadingLine.endAnimating()
                                 self.view.endEditing(true)
@@ -297,8 +297,8 @@ extension UserContactViewController: MFMailComposeViewControllerDelegate {
             }
         } else {
             createSimpleAlert(title: "No message", message: "")
-            supportButton.backgroundColor = lineColor
-            supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            supportButton.backgroundColor = Theme.LINE_GRAY
+            supportButton.setTitleColor(Theme.BLACK, for: .normal)
             supportButton.isUserInteractionEnabled = true
             loadingLine.endAnimating()
         }
@@ -325,8 +325,8 @@ extension UserContactViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        supportTextLine.backgroundColor = lineColor
+        textView.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        supportTextLine.backgroundColor = Theme.LINE_GRAY
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -339,8 +339,8 @@ extension UserContactViewController: UITextViewDelegate {
             supportButton.setTitleColor(Theme.WHITE, for: .normal)
             supportButton.isUserInteractionEnabled = true
         } else {
-            supportButton.backgroundColor = lineColor
-            supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            supportButton.backgroundColor = Theme.LINE_GRAY
+            supportButton.setTitleColor(Theme.BLACK, for: .normal)
             supportButton.isUserInteractionEnabled = false
         }
         
@@ -376,9 +376,9 @@ extension UserContactViewController: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

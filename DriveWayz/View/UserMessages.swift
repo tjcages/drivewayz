@@ -27,7 +27,7 @@ class UserMessages: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 29
-        view.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+        view.layer.borderColor = Theme.GREEN.cgColor
         view.layer.borderWidth = 2
         view.alpha = 0
         
@@ -49,7 +49,7 @@ class UserMessages: UITableViewCell {
         view.text = "Left a message"
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         
         return view
     }()
@@ -59,7 +59,7 @@ class UserMessages: UITableViewCell {
         view.text = "10/10/18"
         view.font = Fonts.SSPLightH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.7)
+        view.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.7)
         view.textAlignment = .right
         
         return view
@@ -70,7 +70,7 @@ class UserMessages: UITableViewCell {
         view.text = "Context"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         view.textAlignment = .right
         
         return view

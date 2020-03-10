@@ -13,7 +13,7 @@ class TutorialExampleView: UIViewController {
     var imageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.clipsToBounds = true
         view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFill
@@ -23,7 +23,7 @@ class TutorialExampleView: UIViewController {
     
     let mainLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.numberOfLines = 2
@@ -34,7 +34,7 @@ class TutorialExampleView: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 2
         
@@ -44,9 +44,9 @@ class TutorialExampleView: UIViewController {
     var exampleButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Example", for: .normal)
-        button.setTitleColor(Theme.PRUSSIAN_BLUE, for: .normal)
+        button.setTitleColor(Theme.GRAY_WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 12

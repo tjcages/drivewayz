@@ -14,7 +14,7 @@ class BankTransferViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "$0.00"
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPExtraLarge
         label.textAlignment = .center
@@ -37,7 +37,7 @@ class BankTransferViewController: UIViewController {
         agreement.attributedText = attributedString
         agreement.isUserInteractionEnabled = true
         agreement.isEditable = false
-        agreement.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        agreement.textColor = Theme.BLACK.withAlphaComponent(0.7)
         agreement.textAlignment = .center
         agreement.translatesAutoresizingMaskIntoConstraints = false
         agreement.font = Fonts.SSPRegularH6

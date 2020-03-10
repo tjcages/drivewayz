@@ -32,7 +32,7 @@ class PaymentBreakdownHelpView: UIViewController {
     lazy var pullButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.layer.cornerRadius = 2.5
         button.isUserInteractionEnabled = false
         
@@ -42,7 +42,7 @@ class PaymentBreakdownHelpView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.text = "Payment breakdown"
         
@@ -52,7 +52,7 @@ class PaymentBreakdownHelpView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -61,7 +61,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "The total amount charged to the consumer includes the hourly cost plus processing and payment fees. \n\nDrivewayz takes 20-25% of the total before fees for listing costs."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 8
         
@@ -71,10 +71,10 @@ class PaymentBreakdownHelpView: UIViewController {
     var reservationIcon: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 45/2
         button.clipsToBounds = true
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         let image = UIImage(named: "hostEarningsIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
@@ -86,7 +86,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$8.80 for 2.25 hours"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -96,7 +96,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Last payment"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -106,7 +106,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Total cost"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -116,7 +116,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$11.73"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
         
@@ -127,7 +127,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Hourly price"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
           
         return label
@@ -137,7 +137,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$5.21/hour"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
           
@@ -148,7 +148,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Booking fee"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
           
         return label
@@ -158,7 +158,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$0.30"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
           
@@ -169,7 +169,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Processing fee"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
           
         return label
@@ -179,7 +179,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$0.34"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
           
@@ -190,7 +190,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Drivewayz fee"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
           
         return label
@@ -200,7 +200,7 @@ class PaymentBreakdownHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$2.93"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
           
@@ -210,7 +210,7 @@ class PaymentBreakdownHelpView: UIViewController {
     var balanceLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -218,7 +218,7 @@ class PaymentBreakdownHelpView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Dismiss", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -231,7 +231,7 @@ class PaymentBreakdownHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

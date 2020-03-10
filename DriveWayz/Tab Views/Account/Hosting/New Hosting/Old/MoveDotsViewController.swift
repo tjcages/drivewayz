@@ -191,7 +191,7 @@ class MoveDotsViewController: UIViewController {
             self.dot2View.alpha = 1
             self.dot3View.alpha = 1
             self.dot4View.alpha = 1
-            self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
+            self.shapeLayer.fillColor = Theme.BLUE.withAlphaComponent(0.5).cgColor
         }
         self.panView.isUserInteractionEnabled = true
     }

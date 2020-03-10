@@ -34,7 +34,7 @@ class HelpOptionCell: UICollectionViewCell {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
@@ -44,7 +44,7 @@ class HelpOptionCell: UICollectionViewCell {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -64,7 +64,7 @@ class HelpOptionCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = Theme.WHITE
-        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowColor = Theme.BLACK.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 4
         layer.shadowOpacity = 0.2
@@ -127,7 +127,7 @@ class HelpCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.numberOfLines = 2
         
         return view
@@ -138,7 +138,7 @@ class HelpCell: UITableViewCell {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         

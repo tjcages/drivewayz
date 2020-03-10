@@ -112,7 +112,7 @@ class ExpandedBookingsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
         button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
@@ -140,7 +140,7 @@ class ExpandedBookingsViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         view.alpha = 0.8
         view.isUserInteractionEnabled = false
-        let background = CAGradientLayer().customColor(topColor: Theme.LIGHT_GRAY, bottomColor: Theme.LIGHT_GRAY.withAlphaComponent(0.8))
+        let background = CAGradientLayer().customColor(topColor: Theme.GRAY_WHITE_4, bottomColor: Theme.GRAY_WHITE_4.withAlphaComponent(0.8))
         background.frame = CGRect(x: 0, y: 0, width: 110, height: 110)
         background.zPosition = -10
         view.layer.addSublayer(background)
@@ -156,7 +156,7 @@ class ExpandedBookingsViewController: UIViewController {
         view.backgroundColor = Theme.WHITE
         view.alpha = 0.4
         view.isUserInteractionEnabled = false
-        let background = CAGradientLayer().customColor(topColor: Theme.LIGHT_GRAY, bottomColor: Theme.LIGHT_GRAY.withAlphaComponent(0.8))
+        let background = CAGradientLayer().customColor(topColor: Theme.GRAY_WHITE_4, bottomColor: Theme.GRAY_WHITE_4.withAlphaComponent(0.8))
         background.frame = CGRect(x: 0, y: 0, width: 140, height: 140)
         background.zPosition = -10
         view.layer.addSublayer(background)
@@ -182,10 +182,10 @@ class ExpandedBookingsViewController: UIViewController {
         view.settings.updateOnTouch = false
         view.settings.starSize = 16
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -199,7 +199,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Vehicle"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -219,7 +219,7 @@ class ExpandedBookingsViewController: UIViewController {
     var vehicleLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -228,7 +228,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "License plate"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -248,7 +248,7 @@ class ExpandedBookingsViewController: UIViewController {
     var licenseLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -256,7 +256,7 @@ class ExpandedBookingsViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -264,7 +264,7 @@ class ExpandedBookingsViewController: UIViewController {
     var dimView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         
         return view
     }()
@@ -288,7 +288,7 @@ class ExpandedBookingsViewController: UIViewController {
         label.text = "8:00am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         
         return label
     }()
@@ -298,7 +298,7 @@ class ExpandedBookingsViewController: UIViewController {
         label.text = "10:15am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .right
         
         return label
@@ -308,7 +308,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("to", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.4), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.isUserInteractionEnabled = false
         
@@ -336,7 +336,7 @@ class ExpandedBookingsViewController: UIViewController {
     var priceView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 4
         
         return view
@@ -366,7 +366,7 @@ class ExpandedBookingsViewController: UIViewController {
     var lineView3: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -375,7 +375,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Booking fee"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -396,7 +396,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Processing fee"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -417,7 +417,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Drivewayz fee"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -437,7 +437,7 @@ class ExpandedBookingsViewController: UIViewController {
     var lineView4: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -456,7 +456,7 @@ class ExpandedBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$12.38"
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -466,7 +466,7 @@ class ExpandedBookingsViewController: UIViewController {
     var lineView2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -484,7 +484,7 @@ class ExpandedBookingsViewController: UIViewController {
     var optionsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 4
         
         return view
@@ -494,7 +494,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Contact driver", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -508,7 +508,7 @@ class ExpandedBookingsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         
@@ -519,7 +519,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("I need my spot back", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -533,7 +533,7 @@ class ExpandedBookingsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -543,7 +543,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Driver overstayed duration", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -557,7 +557,7 @@ class ExpandedBookingsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -567,7 +567,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Driver information was incorrect", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -581,7 +581,7 @@ class ExpandedBookingsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -591,7 +591,7 @@ class ExpandedBookingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Report driver", for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -605,7 +605,7 @@ class ExpandedBookingsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button

@@ -85,11 +85,11 @@ extension AvailabilityOptionsView: UITableViewDelegate, UITableViewDataSource {
             let option = options[indexPath.row]
             cell.option = option
             if option.text.contains(removeString) {
-                cell.mainLabel.textColor = Theme.HARMONY_RED
-                cell.iconButton.tintColor = Theme.HARMONY_RED
+                cell.mainLabel.textColor = Theme.SALMON
+                cell.iconButton.tintColor = Theme.SALMON
             } else {
-                cell.mainLabel.textColor = Theme.DARK_GRAY
-                cell.iconButton.tintColor = Theme.DARK_GRAY
+                cell.mainLabel.textColor = Theme.BLACK
+                cell.iconButton.tintColor = Theme.BLACK
             }
         }
             
@@ -123,8 +123,8 @@ class AvailabilityOptionsCell: UITableViewCell {
                     self.mainLabel.textColor = Theme.WHITE
                     self.backgroundColor = Theme.BLUE
                 } else {
-                    self.iconButton.tintColor = Theme.DARK_GRAY
-                    self.mainLabel.textColor = Theme.DARK_GRAY
+                    self.iconButton.tintColor = Theme.BLACK
+                    self.mainLabel.textColor = Theme.BLACK
                     self.backgroundColor = Theme.WHITE
                 }
             }
@@ -143,7 +143,7 @@ class AvailabilityOptionsCell: UITableViewCell {
     var iconButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
         
         return button
@@ -153,7 +153,7 @@ class AvailabilityOptionsCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         
         return label
     }()

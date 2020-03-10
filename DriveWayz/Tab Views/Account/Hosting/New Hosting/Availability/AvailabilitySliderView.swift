@@ -62,7 +62,7 @@ class AvailabilitySliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Peak rental hours"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -238,7 +238,7 @@ class AvailabilitySliderView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Remove range", for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(removeRangePressed), for: .touchUpInside)
@@ -249,7 +249,7 @@ class AvailabilitySliderView: UIViewController {
     var trackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 3
         
         return view
@@ -275,13 +275,13 @@ class AvailabilitySliderView: UIViewController {
     var unavailableView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.GRAY_WHITE
         view.layer.cornerRadius = 13
         view.alpha = 0
         
         let triangle = TriangleView()
         triangle.translatesAutoresizingMaskIntoConstraints = false
-        triangle.color = Theme.PRUSSIAN_BLUE
+        triangle.color = Theme.GRAY_WHITE
         triangle.backgroundColor = UIColor.clear
         triangle.layer.cornerRadius = 6
         
@@ -309,7 +309,7 @@ class AvailabilitySliderView: UIViewController {
     var unavailableButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.PRUSSIAN_BLUE
+        button.backgroundColor = Theme.GRAY_WHITE
         button.layer.cornerRadius = 4
         button.setTitle("Make Unavailable", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -639,7 +639,7 @@ class AvailabilitySliderView: UIViewController {
     
     func createTick(frame: CGRect) -> UIView {
         let tick = UIView(frame: frame)
-        tick.backgroundColor = lineColor
+        tick.backgroundColor = Theme.LINE_GRAY
         
         return tick
     }
@@ -751,13 +751,13 @@ class AvailabilitySliderView: UIViewController {
                 if (view.tag >= Int(startValue - 1) && view.tag < Int(endValue)) || (view.tag >= Int(startValue2 - 1) && view.tag < Int(endValue2)) {
                     view.backgroundColor = Theme.BLUE.withAlphaComponent(0.8)
                 } else {
-                    view.backgroundColor = lineColor
+                    view.backgroundColor = Theme.LINE_GRAY
                 }
             } else {
                 if view.tag >= Int(startValue - 1) && view.tag < Int(endValue) {
                     view.backgroundColor = Theme.BLUE.withAlphaComponent(0.8)
                 } else {
-                    view.backgroundColor = lineColor
+                    view.backgroundColor = Theme.LINE_GRAY
                 }
             }
         }

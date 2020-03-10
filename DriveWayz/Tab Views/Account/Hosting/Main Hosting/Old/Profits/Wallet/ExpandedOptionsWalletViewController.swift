@@ -25,7 +25,7 @@ class ExpandedOptionsWalletViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Transfer to bank", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         
         return button
@@ -36,7 +36,7 @@ class ExpandedOptionsWalletViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Add funds", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.4), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         
         return button
@@ -57,7 +57,7 @@ class ExpandedOptionsWalletViewController: UIViewController {
     var firstLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -65,7 +65,7 @@ class ExpandedOptionsWalletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

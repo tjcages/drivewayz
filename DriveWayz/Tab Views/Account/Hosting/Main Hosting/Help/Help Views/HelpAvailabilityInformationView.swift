@@ -13,7 +13,7 @@ class HelpAvailabilityInformationView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -23,7 +23,7 @@ class HelpAvailabilityInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Let's Get Started", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         
@@ -34,7 +34,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You can always change availability \npreferences in the host portal."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -47,7 +47,7 @@ class HelpAvailabilityInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "mainQuickHost")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.isUserInteractionEnabled = false
         button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         
@@ -58,7 +58,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Know when your \nspot is booked"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         label.numberOfLines = 2
         
@@ -69,7 +69,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Get notified when your parking spot \nis in use and for how long."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         
@@ -80,7 +80,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.BLUE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -113,7 +113,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Don't stress the details"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
         return label
@@ -123,7 +123,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Ensure your spot is ready \nfor the times listed and \nwe’ll handle the rest."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         
@@ -145,7 +145,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -157,7 +157,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Today's availability"
         
         return label
@@ -167,7 +167,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Active"
         
         return label
@@ -214,13 +214,13 @@ class HelpAvailabilityInformationView: UIViewController {
     var unavailableButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.SALMON.withAlphaComponent(0.2)
         button.setTitle("Mark spot unavailable", for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         let image = UIImage(named: "hostAvailabilityNegative")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.HARMONY_RED
+        button.tintColor = Theme.SALMON
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 32)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16)
         button.contentHorizontalAlignment = .right
@@ -235,7 +235,7 @@ class HelpAvailabilityInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Need your spot back? \nMark inactivate to prevent bookings."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         
@@ -394,10 +394,10 @@ extension HelpAvailabilityInformationView: UICollectionViewDelegate, UICollectio
             cell.dateLabel.alpha = 1
             cell.value = 0.8
         } else if indexPath.row == 4 {
-            cell.availableView.backgroundColor = Theme.LIGHT_GRAY
+            cell.availableView.backgroundColor = Theme.GRAY_WHITE_4
             cell.value = 0.4
         } else if indexPath.row == 5 {
-            cell.availableView.backgroundColor = Theme.LIGHT_GRAY
+            cell.availableView.backgroundColor = Theme.GRAY_WHITE_4
             cell.value = 0.6
         }
         

@@ -135,7 +135,7 @@ class HostPortalController: UIViewController {
     
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -168,7 +168,7 @@ class HostPortalController: UIViewController {
         notificationsTable.delegate = self
         notificationsTable.dataSource = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(setData), name: UIApplication.significantTimeChangeNotification, object: nil)

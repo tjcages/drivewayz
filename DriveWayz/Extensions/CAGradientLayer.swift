@@ -11,25 +11,10 @@ import Foundation
 
 extension CAGradientLayer {
     
-    @objc func blueColor() -> CAGradientLayer {
-        
-        let topColor = Theme.LIGHT_BLUE
-        let bottomColor = Theme.BLUE
-        
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = gradientColors
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        
-        return gradientLayer
-    }
-    
     @objc func blurColor() -> CAGradientLayer {
         
         let topColor = UIColor.clear
-        let bottomColor = Theme.DARK_GRAY
+        let bottomColor = Theme.BLACK
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
         
@@ -43,8 +28,8 @@ extension CAGradientLayer {
     
     @objc func mixColors() -> CAGradientLayer {
         
-        let topColor = Theme.PACIFIC_BLUE
-        let bottomColor = Theme.SEA_BLUE
+        let topColor = Theme.BLUE
+        let bottomColor = Theme.BLUE
 //        let bottomColor = UIColor(red: 34/255, green: 48/255, blue: 70/255, alpha: 1)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
@@ -59,8 +44,8 @@ extension CAGradientLayer {
     
     @objc func startColors() -> CAGradientLayer {
         
-        let topColor = Theme.PACIFIC_BLUE
-        let bottomColor = Theme.PRUSSIAN_BLUE
+        let topColor = Theme.BLUE
+        let bottomColor = Theme.GRAY_WHITE
 //        let bottomColor = UIColor(red: 17/255, green: 98/255, blue: 145/255, alpha: 1)
         
         let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
@@ -93,7 +78,7 @@ extension CAGradientLayer {
     @objc func mediumBlurColor() -> CAGradientLayer {
         
         let topColor = Theme.WHITE.withAlphaComponent(0)
-        let bottomColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        let bottomColor = Theme.BLACK.withAlphaComponent(0.6)
         let middleColor = Theme.WHITE.withAlphaComponent(0.6)
         
         let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]
@@ -121,47 +106,17 @@ extension CAGradientLayer {
         return gradientLayer
     }
     
-    @objc func purpleColor() -> CAGradientLayer {
-        
-        let topColor = Theme.LIGHT_BLUE
-        let bottomColor = Theme.PURPLE
-        
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = gradientColors
-        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        
-        return gradientLayer
-    }
-    
     @objc func purpleBlueColor() -> CAGradientLayer {
         
-        let topColor = Theme.STRAWBERRY_PINK
-        let middleColor = Theme.LIGHT_ORANGE
-        let bottomColor = Theme.STRAWBERRY_PINK
+        let topColor = Theme.SALMON
+        let middleColor = Theme.WARM_2_LIGHT
+        let bottomColor = Theme.SALMON
         
         let gradientColors: [CGColor] = [topColor.cgColor, middleColor.cgColor, bottomColor.cgColor]
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
         gradientLayer.startPoint = CGPoint(x: 1, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        
-        return gradientLayer
-    }
-    
-    @objc func purpleStraightColor() -> CAGradientLayer {
-        
-        let topColor = Theme.LIGHT_BLUE
-        let bottomColor = Theme.PURPLE
-        
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = gradientColors
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         
         return gradientLayer

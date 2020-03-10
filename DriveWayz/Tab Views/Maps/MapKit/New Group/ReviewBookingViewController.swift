@@ -55,7 +55,7 @@ class ReviewBookingViewController: UIViewController {
         label.text = ""
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH4
-        label.backgroundColor = Theme.GREEN_PIGMENT
+        label.backgroundColor = Theme.GREEN
         label.layer.cornerRadius = 18
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -70,10 +70,10 @@ class ReviewBookingViewController: UIViewController {
         view.settings.fillMode = StarFillMode.full
         view.settings.starSize = 36
         view.settings.starMargin = 6
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.1)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.1)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -108,13 +108,13 @@ class ReviewBookingViewController: UIViewController {
     
     var message: UITextView = {
         let field = UITextView()
-        field.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        field.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         field.text = "Enter your review"
-        field.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        field.textColor = Theme.BLACK.withAlphaComponent(0.4)
         field.font = Fonts.SSPRegularH4
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.cornerRadius = 4
-        field.tintColor = Theme.PACIFIC_BLUE
+        field.tintColor = Theme.BLUE
         field.isScrollEnabled = false
         field.contentInset = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
         field.keyboardAppearance = .dark
@@ -126,7 +126,7 @@ class ReviewBookingViewController: UIViewController {
     var characterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH5
         label.text = "0/160"
         label.textAlignment = .right
@@ -148,7 +148,7 @@ class ReviewBookingViewController: UIViewController {
     var infoLabel: UILabel = {
         let label = UILabel()
         label.text = "Please let us know where we can improve in the future"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 2
@@ -160,7 +160,7 @@ class ReviewBookingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("The spot information was incorrect", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -173,7 +173,7 @@ class ReviewBookingViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -183,7 +183,7 @@ class ReviewBookingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("The app did not work", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -196,7 +196,7 @@ class ReviewBookingViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -206,7 +206,7 @@ class ReviewBookingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("I need a refund", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -219,7 +219,7 @@ class ReviewBookingViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -229,7 +229,7 @@ class ReviewBookingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Other", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -242,7 +242,7 @@ class ReviewBookingViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -253,13 +253,13 @@ class ReviewBookingViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED.withAlphaComponent(0.5), for: .highlighted)
+        button.setTitleColor(Theme.SALMON, for: .normal)
+        button.setTitleColor(Theme.SALMON.withAlphaComponent(0.5), for: .highlighted)
         button.alpha = 0
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
     
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         button.addSubview(view)
         
         return button
@@ -270,7 +270,7 @@ class ReviewBookingViewController: UIViewController {
         
         message.delegate = self
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 8
         view.layer.shadowOpacity = 0.4
@@ -587,18 +587,18 @@ extension ReviewBookingViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if self.message.text == "" {
             self.message.text = "Enter your review"
-            self.message.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            self.message.textColor = Theme.BLACK.withAlphaComponent(0.4)
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newLength = (textView.text?.count)! + text.count - range.length
         if (newLength <= 160) {
-            self.characterLabel.textColor = Theme.PACIFIC_BLUE
+            self.characterLabel.textColor = Theme.BLUE
             self.characterLabel.text = "\(newLength)/160"
             return true
         } else {
-            self.characterLabel.textColor = Theme.HARMONY_RED
+            self.characterLabel.textColor = Theme.SALMON
             return false
         }
     }

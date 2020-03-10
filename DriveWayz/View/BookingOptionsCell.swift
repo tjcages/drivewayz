@@ -66,7 +66,7 @@ class BookingOptionsCell: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.GREEN_PIGMENT
+        view.textColor = Theme.GREEN
         view.alpha = 0
         
         return view
@@ -77,7 +77,7 @@ class BookingOptionsCell: UITableViewCell {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         

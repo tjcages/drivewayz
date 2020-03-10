@@ -35,7 +35,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Messages"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH1
         
@@ -46,8 +46,8 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.backgroundColor = Theme.BACKGROUND_GRAY
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 8
         view.layer.shadowOpacity = 0.4
@@ -61,7 +61,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         button.addTarget(self, action: #selector(backButtonPressed(sender:)), for: .touchUpInside)
@@ -291,7 +291,7 @@ class UserMessagesViewController: UIViewController, UITableViewDelegate, UITable
                     self.previousCell?.backgroundColor = Theme.WHITE
                 }
                 self.previousCell = cell
-                cell.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+                cell.backgroundColor = Theme.BLACK.withAlphaComponent(0.2)
                 let message = self.messages[indexPath.row]
                 guard let chatPartnerID = message.chatPartnerID() else {
                     return

@@ -65,7 +65,7 @@ class PaymentsCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Carter parked"
         
         return label
@@ -75,7 +75,7 @@ class PaymentsCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "2 hours ago"
         
         return label
@@ -86,7 +86,7 @@ class PaymentsCell: UITableViewCell {
         label.text = "+$6.73"
         label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .right
         
         return label
@@ -125,7 +125,7 @@ class PaymentsCell: UITableViewCell {
         amountLabel.sizeToFit()
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         addSubview(view)
         
     }

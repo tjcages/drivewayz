@@ -39,7 +39,7 @@ class HostProgressView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -49,7 +49,7 @@ class HostProgressView: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
         
@@ -60,7 +60,7 @@ class HostProgressView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "List your spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
         return label
@@ -70,7 +70,7 @@ class HostProgressView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Follow these easy steps to list \nyour parking space"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 2
         label.font = Fonts.SSPRegularH3
         
@@ -100,15 +100,15 @@ class HostProgressView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -120,7 +120,7 @@ class HostProgressView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.setTitle("Exit", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.contentHorizontalAlignment = .right
         button.addTarget(self, action: #selector(exitNewHost), for: .touchUpInside)
@@ -252,7 +252,7 @@ class HostProgressView: UIViewController {
     func hideNextButton(completion: @escaping() -> Void) {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {
@@ -374,6 +374,6 @@ class DimmingView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
     }
 }

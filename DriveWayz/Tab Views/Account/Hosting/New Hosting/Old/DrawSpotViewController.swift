@@ -17,7 +17,7 @@ class DrawSpotViewController: UIViewController {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.text = "Make sure the parking space is clearly shown then press the button below to highlight"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3

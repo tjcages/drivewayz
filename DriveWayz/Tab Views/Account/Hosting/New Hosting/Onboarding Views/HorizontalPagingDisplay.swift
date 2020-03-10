@@ -113,9 +113,9 @@ class HorizontalPagingDisplay: UIView {
     }
     
     func darkPaging() {
-        leftSelectionLine.backgroundColor = Theme.DARK_GRAY
-        centerSelectionLine.backgroundColor = Theme.DARK_GRAY
-        rightSelectionLine.backgroundColor = Theme.DARK_GRAY
+        leftSelectionLine.backgroundColor = Theme.BLACK
+        centerSelectionLine.backgroundColor = Theme.BLACK
+        rightSelectionLine.backgroundColor = Theme.BLACK
     }
     
     required init?(coder aDecoder: NSCoder) {

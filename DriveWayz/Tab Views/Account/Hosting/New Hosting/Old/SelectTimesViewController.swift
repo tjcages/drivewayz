@@ -29,7 +29,7 @@ class SelectTimesViewController: UIViewController {
     var scheduleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.text = "Tap specific durations or tap the standard button for predetermined times"
         label.numberOfLines = 2

@@ -45,7 +45,7 @@ class ReleaseNotesView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
 
         return view
     }()
@@ -54,7 +54,7 @@ class ReleaseNotesView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Release Notes"
         
         return label
@@ -64,7 +64,7 @@ class ReleaseNotesView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 100
         
         return label
@@ -74,7 +74,7 @@ class ReleaseNotesView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Ver. 3.145"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         

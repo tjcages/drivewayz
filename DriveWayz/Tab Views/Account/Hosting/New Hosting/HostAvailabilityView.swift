@@ -50,15 +50,15 @@ class HostAvailabilityView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -89,7 +89,7 @@ class HostAvailabilityView: UIViewController {
     
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -98,7 +98,7 @@ class HostAvailabilityView: UIViewController {
     var blurView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.OFF_WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE)
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BACKGROUND_GRAY.withAlphaComponent(0), bottomColor: Theme.BACKGROUND_GRAY)
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: abs(cancelBottomHeight * 2) + 16)
         background.zPosition = 10
         view.layer.addSublayer(background)
@@ -129,7 +129,7 @@ class HostAvailabilityView: UIViewController {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.message = "Please set your availability for every day of the week"
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -155,7 +155,7 @@ class HostAvailabilityView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         scrollView.delegate = self
         optionsTableView.delegate = self
@@ -272,7 +272,7 @@ class HostAvailabilityView: UIViewController {
             let value = selectedTimes.count
                 if value > 0 {
                     let index = IndexPath(row: value, section: 0)
-                    optionsTableView.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.2)
+                    optionsTableView.backgroundColor = Theme.SALMON.withAlphaComponent(0.2)
                     let frame = optionsTableView.rectForRow(at: index)
                     let y = optionsTableView.convert(frame, to: scrollView).minY + 8
             
@@ -346,7 +346,7 @@ class HostAvailabilityView: UIViewController {
             UIView.animate(withDuration: animationOut, delay: 0, options: .curveEaseOut, animations: {
                 self.nextButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
                 if mainTypeState == .pictures {
-                    self.nextButton.tintColor = Theme.DARK_GRAY
+                    self.nextButton.tintColor = Theme.BLACK
                 } else {
                     self.nextButton.tintColor = Theme.WHITE
                 }
@@ -359,7 +359,7 @@ class HostAvailabilityView: UIViewController {
     func hideNextButton(completion: @escaping() -> Void) {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {
@@ -432,12 +432,12 @@ extension HostAvailabilityView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Select day to set time range"
         
         view.addSubview(label)

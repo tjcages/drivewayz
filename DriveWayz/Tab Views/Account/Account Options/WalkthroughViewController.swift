@@ -15,7 +15,7 @@ class WalkthroughViewController: UIViewController {
     var termsContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
         view.layer.cornerRadius = 10
         
@@ -34,7 +34,7 @@ class WalkthroughViewController: UIViewController {
     
     var terms: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH3
@@ -54,7 +54,7 @@ class WalkthroughViewController: UIViewController {
     
     var text: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
@@ -72,7 +72,7 @@ class WalkthroughViewController: UIViewController {
     
     var text1: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
@@ -95,7 +95,7 @@ class WalkthroughViewController: UIViewController {
     
     var text2: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
@@ -118,7 +118,7 @@ class WalkthroughViewController: UIViewController {
     
     var text3: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
@@ -132,9 +132,9 @@ class WalkthroughViewController: UIViewController {
         let page = UIPageControl(frame: CGRect(x: 50, y: 300, width: 200, height: 20))
         page.numberOfPages = 4
         page.currentPage = 0
-        page.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
-        page.pageIndicatorTintColor = Theme.DARK_GRAY
-        page.currentPageIndicatorTintColor = Theme.PACIFIC_BLUE
+        page.tintColor = Theme.BLACK.withAlphaComponent(0.4)
+        page.pageIndicatorTintColor = Theme.BLACK
+        page.currentPageIndicatorTintColor = Theme.BLUE
         page.translatesAutoresizingMaskIntoConstraints = false
         page.isUserInteractionEnabled = false
         
@@ -145,9 +145,9 @@ class WalkthroughViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
-        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
+        button.layer.borderColor = Theme.BLUE.cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(nextPressed(sender:)), for: .touchUpInside)
@@ -159,9 +159,9 @@ class WalkthroughViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Start!", for: .normal)
-        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.backgroundColor = UIColor.clear
-        button.layer.borderColor = Theme.PACIFIC_BLUE.cgColor
+        button.layer.borderColor = Theme.BLUE.cgColor
         button.alpha = 0
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 20

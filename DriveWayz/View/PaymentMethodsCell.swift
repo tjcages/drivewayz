@@ -62,7 +62,7 @@ class PaymentMethodsCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -72,7 +72,7 @@ class PaymentMethodsCell: UITableViewCell {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -95,9 +95,9 @@ class PaymentMethodsCell: UITableViewCell {
     var defaultButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GREEN.withAlphaComponent(0.2)
         button.setTitle("Default", for: .normal)
-        button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+        button.setTitleColor(Theme.GREEN, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
         button.layer.cornerRadius = 25/2
         button.isUserInteractionEnabled = false
@@ -114,7 +114,7 @@ class PaymentMethodsCell: UITableViewCell {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 25/2
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.GREEN
         button.isUserInteractionEnabled = false
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         button.alpha = 0

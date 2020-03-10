@@ -14,7 +14,7 @@ class ListingPriceView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Standard rate"
         
         return label
@@ -24,7 +24,7 @@ class ListingPriceView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "$6.17/hour"
         
         return label
@@ -35,7 +35,7 @@ class ListingPriceView: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -45,7 +45,7 @@ class ListingPriceView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()

@@ -7,67 +7,30 @@
 //
 
 import UIKit
+import SVGKit
 import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FacebookLogin
-import Cosmos
 
-class AccountSlideViewController: UIViewController, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class AccountSlideViewController: UIViewController {
     
     var delegate: controlsAccountOptions?
     var moveDelegate: moveControllers?
     
-    var options: [String] = ["Book a spot", "My bookings", "Become a host", "Contact us", "Help", "Settings"]
+    var options: [String] = ["Book a spot", "Contact us", "Help", "Settings"]
     let cellId = "cellId"
     var selectedIndex: Int = 0 {
         didSet {
-            optionsTableView.reloadData()
+            tableView.reloadData()
         }
     }
     
-    lazy var container: UIView = {
-        let view = UIView()
+    var profileIcon: SVGKImageView = {
+        let image = SVGKImage(named: "MaleProfile_2")
+        let view = SVGKFastImageView(svgkImage: image)!
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        view.clipsToBounds = false
-        
-        return view
-    }()
-    
-    var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.clear
-        view.showsVerticalScrollIndicator = false
-        view.showsHorizontalScrollIndicator = false
-        view.decelerationRate = .fast
-        view.clipsToBounds = false
-        
-        return view
-    }()
-    
-    var profileImageView: UIImageView = {
-        let view = UIImageView()
-        let image = UIImage(named: "background4")?.withRenderingMode(.alwaysTemplate)
-        view.image = image
-        view.tintColor = lineColor
-        view.isUserInteractionEnabled = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFill
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
-        view.layer.cornerRadius = 50
-        view.clipsToBounds = true
-        
-        return view
-    }()
-    
-    var profileView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 52
+        view.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         
         return view
     }()
@@ -75,156 +38,138 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     var profileName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.WHITE
-        label.textAlignment = .center
-        label.font = Fonts.SSPSemiBoldH3
+        label.textColor = Theme.BLACK
+        label.font = Fonts.SSPSemiBoldH2
         
         return label
     }()
     
-    var stars: CosmosView = {
-        let view = CosmosView()
-        view.rating = 5.0
-        view.settings.fillMode = .precise
-        view.settings.updateOnTouch = false
-        view.settings.starSize = 16
-        view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.isUserInteractionEnabled = false
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = true
-        view.settings.filledImage = UIImage(named: "Star Filled")?.withRenderingMode(.alwaysOriginal)
-        view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
-        view.settings.textFont = Fonts.SSPRegularH5
-        view.settings.textColor = Theme.WHITE
-        view.text = "5.0"
+    var profileButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("View profile", for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.contentHorizontalAlignment = .left
         
-        return view
+        return button
     }()
     
-    var profileLine: UIView = {
+    var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
-        
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = lineColor
-        view.addSubview(line)
-        line.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        line.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        line.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
     
-    var optionsTableView: UITableView = {
+    lazy var tableView: UITableView = {
         let view = UITableView()
         view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.register(OptionsCell.self, forCellReuseIdentifier: "cellId")
-        view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
-        view.contentOffset = CGPoint.zero
         view.decelerationRate = .fast
         view.showsVerticalScrollIndicator = false
-        view.clipsToBounds = false
-        view.isScrollEnabled = false
+        view.delegate = self
+        view.dataSource = self
+        view.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 20, right: 0)
         
         return view
+    }()
+    
+    var bottomView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Theme.BLACK
+        
+        return view
+    }()
+    
+    var helpButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Help Center", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.contentHorizontalAlignment = .left
+        
+        return button
+    }()
+    
+    var parkingButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Free parking", for: .normal)
+        button.setTitleColor(Theme.WHITE, for: .normal)
+        button.titleLabel?.font = Fonts.SSPRegularH4
+        button.contentHorizontalAlignment = .left
+        
+        return button
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-        
-        optionsTableView.delegate = self
-        optionsTableView.dataSource = self
 
-        setupMainView()
-        setupTopView()
+        setupViews()
+        setupBottom()
+        
         fetchUser()
-        configureHosts()
+//        configureHosts()
         observeCorrectID()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func setupViews() {
+        
+        view.addSubview(profileIcon)
+        view.addSubview(profileName)
+        view.addSubview(profileButton)
+        view.addSubview(line)
+        
+        profileIcon.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        
+        profileName.leftAnchor.constraint(equalTo: profileIcon.leftAnchor).isActive = true
+        profileName.topAnchor.constraint(equalTo: profileIcon.bottomAnchor, constant: 20).isActive = true
+        profileName.sizeToFit()
+        
+        profileButton.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 0).isActive = true
+        profileButton.leftAnchor.constraint(equalTo: profileIcon.leftAnchor).isActive = true
+        profileButton.sizeToFit()
+        
+        line.anchor(top: profileButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)
+    
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    func setupMainView() {
+    func setupBottom() {
         
-        view.addSubview(container)
-        container.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        container.widthAnchor.constraint(equalToConstant: phoneWidth/2 + 80).isActive = true
-        container.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        view.addSubview(tableView)
+        view.addSubview(bottomView)
+        view.addSubview(helpButton)
+        view.addSubview(parkingButton)
         
-        view.addSubview(scrollView)
-        scrollView.contentSize = CGSize(width: phoneWidth/2 + 80, height: 840)
-        scrollView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        scrollView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+        parkingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        parkingButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
+        parkingButton.sizeToFit()
         
-    }
-    
-    func setupTopView() {
+        helpButton.bottomAnchor.constraint(equalTo: parkingButton.topAnchor, constant: -20).isActive = true
+        helpButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
+        helpButton.sizeToFit()
         
-        scrollView.addSubview(profileLine)
-        scrollView.addSubview(profileView)
-        scrollView.addSubview(profileImageView)
+        bottomView.anchor(top: helpButton.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: -20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        profileImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
+        tableView.anchor(top: line.bottomAnchor, left: view.leftAnchor, bottom: bottomView.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        profileView.anchor(top: profileImageView.topAnchor, left: profileImageView.leftAnchor, bottom: profileImageView.bottomAnchor, right: profileImageView.rightAnchor, paddingTop: -2, paddingLeft: -2, paddingBottom: -2, paddingRight: -2, width: 0, height: 0)
-        
-        scrollView.addSubview(profileName)
-        profileName.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
-        profileName.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 2).isActive = true
-        profileName.widthAnchor.constraint(lessThanOrEqualToConstant: 400).isActive = true
-        profileName.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        scrollView.addSubview(stars)
-        stars.topAnchor.constraint(equalTo: profileName.bottomAnchor, constant: 2).isActive = true
-        stars.leftAnchor.constraint(equalTo: profileName.leftAnchor).isActive = true
-        stars.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        stars.sizeToFit()
-        
-        scrollView.addSubview(optionsTableView)
-        optionsTableView.leftAnchor.constraint(equalTo: container.leftAnchor).isActive = true
-        optionsTableView.topAnchor.constraint(equalTo: stars.bottomAnchor, constant: 44).isActive = true
-        optionsTableView.rightAnchor.constraint(equalTo: container.rightAnchor).isActive = true
-        optionsTableView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        
-        profileLine.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        profileLine.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        profileLine.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        profileLine.bottomAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: -12).isActive = true
-    
     }
     
     func openAccountView() {
-        self.delegate?.openAccountView()
+        delegate?.openAccountView()
     }
     
     func fetchUser() {
         if let isUserName: String = UserDefaults.standard.object(forKey: "userName") as? String {
             self.profileName.text = isUserName
-            self.stars.alpha = 1
         }
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -235,29 +180,21 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
                     self.profileName.text = userName
                     UserDefaults.standard.set(userName, forKey: "userName")
                     UserDefaults.standard.synchronize()
-                    self.stars.alpha = 1
                 }
-                if let email = dictionary["email"] as? String {
-                    userEmail = email
-                }
-                if let userPicture = dictionary["picture"] as? String {
-                    if userPicture == "" {
-                        self.profileImageView.image = UIImage(named: "background4")
-                    } else {
-                        self.profileImageView.loadImageUsingCacheWithUrlString(userPicture) { (bool) in
-                            if !bool {
-                                self.profileImageView.image = UIImage(named: "background4")
-                            }
-                        }
-                    }
-                }
-                if let userRating = dictionary["rating"] as? Double {
-                    self.stars.rating = userRating
-                    self.stars.text = String(format:"%.01f", userRating)
-                } else {
-                    self.stars.rating = 5.0
-                    self.stars.text = "5.0"
-                }
+//                if let email = dictionary["email"] as? String {
+//                    userEmail = email
+//                }
+//                if let userPicture = dictionary["picture"] as? String {
+//                    if userPicture == "" {
+//                        self.profileImageView.image = UIImage(named: "background4")
+//                    } else {
+//                        self.profileImageView.loadImageUsingCacheWithUrlString(userPicture) { (bool) in
+//                            if !bool {
+//                                self.profileImageView.image = UIImage(named: "background4")
+//                            }
+//                        }
+//                    }
+//                }
             }
         }, withCancel: nil)
         return
@@ -279,16 +216,69 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func goBackToMap() {
+        self.delegate?.moveToMap()
+    }
+    
+    func displayAlertMessage(userMessage: String, title: String) {
+        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func configureHosts() {
+//        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+//        let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
+//        ref.observe(.childAdded) { (snapshot) in
+//            self.options = ["Book a spot", "My bookings", "Hosted spaces", "Contact us", "Help", "Settings"]
+//            self.tableView.reloadData()
+//        }
+//        ref.observe(.childRemoved) { (snapshot) in
+//            self.options = ["Book a spot", "My bookings", "Become a host", "Contact us", "Help", "Settings"]
+//            self.delegate?.closeAccountView()
+////            self.delegate?.hideHostingController()
+//            self.tableView.reloadData()
+//        }
+    }
+    
+    func observeCorrectID() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("ConfirmedID")
+        ref.observe(.childAdded) { (snapshot) in
+            if let key = snapshot.value as? String {
+                if key == currentUser {
+                    self.options = ["Book a spot", "Contact us", "Analytics", "Help", "Settings"]
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+}
+
+extension AccountSlideViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.options.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 58
+        let message = options[indexPath.row]
+        if message == "Contact us" {
+            return 72
+        } else {
+            return 64
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = optionsTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! OptionsCell
         cell.message = options[indexPath.row]
         if cell.message == "Contact us" {
             cell.openSubText()
@@ -310,19 +300,17 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
     func forceSelectBook() {
         let indexPath = IndexPath(row: 0, section: 0)
         self.selectedIndex = indexPath.row
-        self.optionsTableView.reloadData()
+        self.tableView.reloadData()
         delayWithSeconds(animationOut) {
-            self.optionsTableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            self.optionsTableView.delegate?.tableView!(self.optionsTableView, didSelectRowAt: indexPath)
+            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
         }
     }
-    
-    var analControllerAnchor: NSLayoutConstraint!
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedIndex = indexPath.row
         delayWithSeconds(animationIn) {
-            if tableView == self.optionsTableView {
+            if tableView == self.tableView {
                 if self.options[indexPath.row] == "My bookings" {
                     self.openAccountView()
                     self.delegate?.bringUpcomingController()
@@ -351,50 +339,6 @@ class AccountSlideViewController: UIViewController, UINavigationControllerDelega
         }
     }
     
-    @objc func goBackToMap() {
-        self.delegate?.moveToMap()
-    }
-    
-    func displayAlertMessage(userMessage: String, title: String) {
-        let alert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil)
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func configureHosts() {
-        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("users").child(currentUser).child("Hosting Spots")
-        ref.observe(.childAdded) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Hosted spaces", "Contact us", "Help", "Settings"]
-            self.optionsTableView.reloadData()
-        }
-        ref.observe(.childRemoved) { (snapshot) in
-            self.options = ["Book a spot", "My bookings", "Become a host", "Contact us", "Help", "Settings"]
-            self.delegate?.closeAccountView()
-//            self.delegate?.hideHostingController()
-            self.optionsTableView.reloadData()
-        }
-    }
-    
-    func observeCorrectID() {
-        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("ConfirmedID")
-        ref.observe(.childAdded) { (snapshot) in
-            if let key = snapshot.value as? String {
-                if key == currentUser {
-                    if self.options.contains("Become a host") {
-                        self.options = ["Book a spot", "My bookings", "Become a host", "Contact us", "Analytics", "Help", "Settings"]
-                        self.optionsTableView.reloadData()
-                    } else {
-                        self.options = ["Book a spot", "My bookings", "Hosted spaces", "Contact us", "Analytics", "Help", "Settings"]
-                        self.optionsTableView.reloadData()
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 // Helper function inserted by Swift 4.2 migrator.

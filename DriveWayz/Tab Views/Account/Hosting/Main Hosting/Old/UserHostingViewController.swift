@@ -120,7 +120,7 @@ class UserHostingViewController: UIViewController {
         view.clipsToBounds = true
         
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 0.75))
-        line.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        line.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.4)
         view.addSubview(line)
         
         return view
@@ -142,7 +142,7 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostProfits")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return button
@@ -196,7 +196,7 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostInbox")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         
         return button
@@ -223,7 +223,7 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostNotification")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         return button
@@ -250,7 +250,7 @@ class UserHostingViewController: UIViewController {
         let origImage = UIImage(named: "hostSpaces")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
         
         return button
@@ -282,7 +282,7 @@ class UserHostingViewController: UIViewController {
         
         scrollView.delegate = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
 
         setupViews()
@@ -484,11 +484,11 @@ class UserHostingViewController: UIViewController {
     }
     
     func resetTabBar() {
-        self.profitsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
-        self.reservationsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
-        self.inboxTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
-        self.notificationsTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
-        self.spacesTabButton.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        self.profitsTabButton.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
+        self.reservationsTabButton.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
+        self.inboxTabButton.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
+        self.notificationsTabButton.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
+        self.spacesTabButton.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         self.profitsTabSelected.alpha = 0
         self.reservationTabSelected.alpha = 0
         self.inboxTabSelected.alpha = 0

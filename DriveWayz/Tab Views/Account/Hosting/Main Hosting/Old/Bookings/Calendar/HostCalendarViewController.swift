@@ -51,7 +51,7 @@ class HostCalendarViewController: UIViewController {
     var showMoreButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        button.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.4)
         button.layer.cornerRadius = 18
         button.setTitle("Show more", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -292,7 +292,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
         calendarDay.layer.borderWidth = 0
         if indexPath.row+1 >= Date().addMonthFC(month: indexPath.section).startOfMonthFC().getDayOfWeekFC()!+7 {
             calendarDay.text = "\((indexPath.row+1)-(Date().addMonthFC(month: indexPath.section).startOfMonthFC().getDayOfWeekFC()!+6))"
-            cell.cellLabel.textColor = Theme.DARK_GRAY
+            cell.cellLabel.textColor = Theme.BLACK
             cell.topView.isHidden = false
             cell.leftView.isHidden = false
             cell.rightView.isHidden = false
@@ -327,7 +327,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
                     break
                 }
                 calendarDay.text = dayname
-                cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+                cell.cellLabel.textColor = Theme.BLACK.withAlphaComponent(0.4)
                 cell.topView.isHidden = false
                 cell.leftView.isHidden = true
                 cell.rightView.isHidden = true
@@ -349,7 +349,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
             }
         } else if Int(calendarDay.text!) != nil {
             if(Date().addMonthFC(month: indexPath.section).startOfMonthFC().getDayFC(day: Int(calendarDay.text!)!-1) == selectedDate.getDayFC(day: 0)){
-                calendarDay.layer.borderColor = Theme.DARK_GRAY.cgColor
+                calendarDay.layer.borderColor = Theme.BLACK.cgColor
                 calendarDay.layer.borderWidth = 1
             } else {
                 calendarDay.layer.borderColor = UIColor.clear.cgColor
@@ -358,10 +358,10 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
         }
         if self.selectedIndeces.contains(indexPath) {
             cell.cellView.isHidden = false
-            cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+            cell.cellLabel.textColor = Theme.BLACK.withAlphaComponent(0.4)
         } else {
             cell.cellView.isHidden = true
-            cell.cellLabel.textColor = Theme.DARK_GRAY
+            cell.cellLabel.textColor = Theme.BLACK
         }
         return cell
     }
@@ -378,7 +378,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
                         if let selectedCell = collectionView.cellForItem(at: index) as? CalendarCell {
                             if index != indexPath && selectedCell.cellLabel.text != "" {
                                 selectedCell.cellView.isHidden = false
-                                selectedCell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+                                selectedCell.cellLabel.textColor = Theme.BLACK.withAlphaComponent(0.4)
                                 self.selectedIndeces.append(index)
                                 let nextCalendarDay = selectedCell.cellLabel
                                 self.addDayOfWeek(indexPath: index, calendarDay: nextCalendarDay)
@@ -387,7 +387,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
                         i = i + 7
                     }
                     cell.cellView.isHidden = true
-                    cell.cellLabel.textColor = Theme.DARK_GRAY
+                    cell.cellLabel.textColor = Theme.BLACK
                 } else {
                     self.selectedDay = self.selectedIndeces.filter { $0 != indexPath }
                     var i = indexPath.row
@@ -395,7 +395,7 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
                         let index = IndexPath(row: i, section: indexPath.section)
                         if let selectedCell = collectionView.cellForItem(at: index) as? CalendarCell {
                             selectedCell.cellView.isHidden = true
-                            selectedCell.cellLabel.textColor = Theme.DARK_GRAY
+                            selectedCell.cellLabel.textColor = Theme.BLACK
                             self.selectedIndeces = self.selectedIndeces.filter { $0 != index }
                             let nextCalendarDay = selectedCell.cellLabel
                             self.removeDayOfWeek(indexPath: index, calendarDay: nextCalendarDay)
@@ -407,12 +407,12 @@ extension HostCalendarViewController: UICollectionViewDataSource, UICollectionVi
                 if Int(calendarDay.text!) != nil{
                     if cell.cellView.isHidden == true {
                         cell.cellView.isHidden = false
-                        cell.cellLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+                        cell.cellLabel.textColor = Theme.BLACK.withAlphaComponent(0.4)
                         self.selectedIndeces.append(indexPath)
                         self.addDayOfWeek(indexPath: indexPath, calendarDay: calendarDay)
                     } else {
                         cell.cellView.isHidden = true
-                        cell.cellLabel.textColor = Theme.DARK_GRAY
+                        cell.cellLabel.textColor = Theme.BLACK
                         self.selectedIndeces = self.selectedIndeces.filter { $0 != indexPath }
                         self.removeDayOfWeek(indexPath: indexPath, calendarDay: calendarDay)
                     }

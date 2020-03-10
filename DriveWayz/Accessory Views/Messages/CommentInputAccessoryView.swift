@@ -56,7 +56,7 @@ class CommentInputAccessoryView: UIView {
     
     fileprivate func setupLineSeparatorView() {
         let lineSeparatorView = UIView()
-        lineSeparatorView.backgroundColor = lineColor
+        lineSeparatorView.backgroundColor = Theme.LINE_GRAY
         
         addSubview(lineSeparatorView)
         lineSeparatorView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)

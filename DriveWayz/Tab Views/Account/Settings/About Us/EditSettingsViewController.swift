@@ -15,9 +15,9 @@ class EditSettingsViewController: UIViewController {
     
     var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -53,7 +53,7 @@ class EditSettingsViewController: UIViewController {
         label.text = "Details"
         label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         
         return label
     }()
@@ -61,7 +61,7 @@ class EditSettingsViewController: UIViewController {
     var detailView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH3
@@ -77,7 +77,7 @@ class EditSettingsViewController: UIViewController {
     var detailLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -87,7 +87,7 @@ class EditSettingsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Update", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(updateButtonPressed), for: .touchUpInside)
@@ -243,8 +243,8 @@ extension EditSettingsViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        detailLine.backgroundColor = lineColor
+        textView.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        detailLine.backgroundColor = Theme.LINE_GRAY
         if let text = detailView.text {
             let newText = text.replacingOccurrences(of: "\n", with: "")
             detailView.text = newText
@@ -292,9 +292,9 @@ extension EditSettingsViewController: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

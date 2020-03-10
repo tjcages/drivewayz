@@ -31,7 +31,7 @@ class FullDistanceViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.clear
         view.layer.cornerRadius = 3
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.layer.shadowRadius = 5
         view.layer.shadowOpacity = 0.2
@@ -42,7 +42,7 @@ class FullDistanceViewController: UIViewController {
     var userLocationDot: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PACIFIC_BLUE
+        view.backgroundColor = Theme.BLUE
         view.layer.cornerRadius = 10
         view.layer.borderColor = Theme.WHITE.cgColor
         view.layer.borderWidth = 3
@@ -55,11 +55,11 @@ class FullDistanceViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -70,7 +70,7 @@ class FullDistanceViewController: UIViewController {
         let origImage = UIImage(named: "parkingSpaceIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
         
         return button
@@ -81,7 +81,7 @@ class FullDistanceViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 10
-        view.layer.borderColor = Theme.PURPLE.cgColor
+        view.layer.borderColor = Theme.COOL_2_MED.cgColor
         view.layer.borderWidth = 6
         view.clipsToBounds = true
         
@@ -92,11 +92,11 @@ class FullDistanceViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -104,13 +104,13 @@ class FullDistanceViewController: UIViewController {
     var gradientLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.PACIFIC_BLUE, bottomColor: Theme.PURPLE)
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.COOL_2_MED)
         background.frame = CGRect(x: 0, y: 0, width: 240, height: 240)
         background.transform = CATransform3DMakeAffineTransform(CGAffineTransform(rotationAngle: -CGFloat.pi/2))
         background.zPosition = -10
         view.layer.addSublayer(background)
         view.clipsToBounds = true
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -121,7 +121,7 @@ class FullDistanceViewController: UIViewController {
         let origImage = UIImage(named: "parkingSpaceIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
         
         return button
@@ -186,7 +186,7 @@ class FullDistanceViewController: UIViewController {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Current Location"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         label.isUserInteractionEnabled = false
@@ -199,7 +199,7 @@ class FullDistanceViewController: UIViewController {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Folsom Field"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         label.isUserInteractionEnabled = false
@@ -211,7 +211,7 @@ class FullDistanceViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -222,15 +222,15 @@ class FullDistanceViewController: UIViewController {
         let radius: CGFloat = 10
         let view1 = UIView()
         view1.translatesAutoresizingMaskIntoConstraints = false
-        view1.backgroundColor = Theme.PURPLE.withAlphaComponent(0.3)
+        view1.backgroundColor = Theme.COOL_2_MED.withAlphaComponent(0.3)
         view1.layer.cornerRadius = radius
         let view2 = UIView()
         view2.translatesAutoresizingMaskIntoConstraints = false
-        view2.backgroundColor = Theme.PURPLE.withAlphaComponent(0.3)
+        view2.backgroundColor = Theme.COOL_2_MED.withAlphaComponent(0.3)
         view2.layer.cornerRadius = radius
         let view3 = UIView()
         view3.translatesAutoresizingMaskIntoConstraints = false
-        view3.backgroundColor = Theme.PURPLE.withAlphaComponent(0.3)
+        view3.backgroundColor = Theme.COOL_2_MED.withAlphaComponent(0.3)
         view3.layer.cornerRadius = radius
         
         return view

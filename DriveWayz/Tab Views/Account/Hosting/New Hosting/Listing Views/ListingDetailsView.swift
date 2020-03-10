@@ -68,7 +68,7 @@ class ListingDetailsView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.message = "Please provide the correct amount of spot numbers."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2

@@ -13,7 +13,7 @@ class EarningsNoneView: UIView {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         label.text = "Share Drivewayz with a \nfriend and earn your \nfirst $5 "
@@ -58,7 +58,7 @@ class EarningsNoneView: UIView {
     var learnView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()

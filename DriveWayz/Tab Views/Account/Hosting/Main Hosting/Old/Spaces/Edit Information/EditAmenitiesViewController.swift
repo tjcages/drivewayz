@@ -15,9 +15,9 @@ class EditAmenitiesViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -206,8 +206,8 @@ class EditAmenitiesViewController: UIViewController {
     
     @objc func savePressed() {
         self.loadingLine.startAnimating()
-        self.nextButton.backgroundColor = lineColor
-        self.nextButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.nextButton.backgroundColor = Theme.LINE_GRAY
+        self.nextButton.setTitleColor(Theme.BLACK, for: .normal)
         self.nextButton.isUserInteractionEnabled = false
         if let parking = self.selectedParking, let parkingID = parking.parkingID {
             let ref = Database.database().reference().child("ParkingSpots").child(parkingID).child("Type").child("Amenities")
@@ -226,9 +226,9 @@ class EditAmenitiesViewController: UIViewController {
     }
     
     func selectAmenity(button: UIButton, label: UIButton, anchor: NSLayoutConstraint, information: UILabel) {
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH2
-        button.backgroundColor = Theme.PACIFIC_BLUE
+        button.backgroundColor = Theme.BLUE
         button.tintColor = Theme.WHITE
         button.layer.shadowOpacity = 0.2
         anchor.constant = 95

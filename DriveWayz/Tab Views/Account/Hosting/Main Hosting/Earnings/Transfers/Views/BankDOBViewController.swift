@@ -24,7 +24,7 @@ class BankDOBViewController: UIViewController {
     var monthLabel: UILabel = {
         let label = UILabel()
         label.text = "Month"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -34,13 +34,13 @@ class BankDOBViewController: UIViewController {
     
     var monthTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "MM"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -52,7 +52,7 @@ class BankDOBViewController: UIViewController {
     var dayLabel: UILabel = {
         let label = UILabel()
         label.text = "Day"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -62,13 +62,13 @@ class BankDOBViewController: UIViewController {
     
     var dayTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "DD"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -80,7 +80,7 @@ class BankDOBViewController: UIViewController {
     var yearLabel: UILabel = {
         let label = UILabel()
         label.text = "Year"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -90,13 +90,13 @@ class BankDOBViewController: UIViewController {
     
     var yearTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "YYYY"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -108,7 +108,7 @@ class BankDOBViewController: UIViewController {
     var firstSlash: UILabel = {
         let label = UILabel()
         label.text = "/"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         
@@ -118,7 +118,7 @@ class BankDOBViewController: UIViewController {
     var secondSlash: UILabel = {
         let label = UILabel()
         label.text = "/"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         
@@ -202,9 +202,9 @@ class BankDOBViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.BLUE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(endEditing))

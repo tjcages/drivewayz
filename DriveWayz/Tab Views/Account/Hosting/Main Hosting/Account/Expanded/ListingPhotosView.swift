@@ -18,7 +18,7 @@ class ListingPhotosView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Listing details"
         
         return label
@@ -36,7 +36,7 @@ class ListingPhotosView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Photos"
         
         return label
@@ -46,7 +46,7 @@ class ListingPhotosView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "1 space"
         
         return label
@@ -57,7 +57,7 @@ class ListingPhotosView: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -88,7 +88,7 @@ class ListingPhotosView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -182,7 +182,7 @@ class ListingPhotoCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(rotationAngle: CGFloat.pi/4)
         button.isUserInteractionEnabled = false
         
@@ -200,7 +200,7 @@ class ListingPhotoCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = Theme.OFF_WHITE
+        backgroundColor = Theme.BACKGROUND_GRAY
         clipsToBounds = true
         layer.cornerRadius = 8
         

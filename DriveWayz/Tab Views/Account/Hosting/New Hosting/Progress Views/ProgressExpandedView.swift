@@ -34,7 +34,7 @@ class ProgressExpandedView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Tell us where the spot is located and \nthe type of parking."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         

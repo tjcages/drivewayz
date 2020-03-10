@@ -96,7 +96,7 @@ class ParkingTableCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
         view.layer.cornerRadius = 4
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.4)
         
         return view
     }()
@@ -146,7 +146,7 @@ class ParkingTableCell: UITableViewCell {
     var cellLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -209,7 +209,7 @@ class ParkingHeaderCell: UITableViewCell {
     
     let headerLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.SEA_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPSemiBoldH3
         label.text = "Current  | "
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -13,7 +13,7 @@ class QuickParkingView: UIView {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.text = "Current location"
         
@@ -25,7 +25,7 @@ class QuickParkingView: UIView {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
@@ -37,7 +37,7 @@ class QuickParkingView: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = Theme.WHITE
-        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowColor = Theme.BLACK.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 3)
         layer.shadowRadius = 6
         layer.shadowOpacity = 0.2

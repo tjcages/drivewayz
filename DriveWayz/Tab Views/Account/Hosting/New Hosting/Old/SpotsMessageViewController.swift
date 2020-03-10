@@ -34,7 +34,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 2
         label.text = "Promote your spot or give any information so motorists can better find it."
@@ -45,7 +45,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var messageTextView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH4
@@ -59,7 +59,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var messageTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -67,7 +67,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var characterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH5
         label.text = "0/160"
         label.textAlignment = .right
@@ -78,7 +78,7 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     var exampleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.5)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.5)
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 6
         label.text =
@@ -148,9 +148,9 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -177,8 +177,8 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.messageTextLine.backgroundColor = lineColor
+        textView.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        self.messageTextLine.backgroundColor = Theme.LINE_GRAY
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -187,11 +187,11 @@ class SpotsMessageViewController: UIViewController, UITextViewDelegate {
             self.checkIfGood()
         }
         if (newLength <= 160) {
-            self.characterLabel.textColor = Theme.PACIFIC_BLUE
+            self.characterLabel.textColor = Theme.BLUE
             self.characterLabel.text = "\(newLength)/160"
             return true
         } else {
-            self.characterLabel.textColor = Theme.HARMONY_RED
+            self.characterLabel.textColor = Theme.SALMON
             return false
         }
     }

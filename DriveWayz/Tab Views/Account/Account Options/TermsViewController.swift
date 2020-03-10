@@ -8,7 +8,7 @@
     
 var agreement: UILabel = {
     let label = UILabel()
-    label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+    label.textColor = Theme.BLACK.withAlphaComponent(0.7)
     label.textAlignment = .left
     label.contentMode = .topLeft
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +227,7 @@ var agreement: UILabel = {
 
 var privacyPolicy: UILabel = {
     let label = UILabel()
-    label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+    label.textColor = Theme.BLACK.withAlphaComponent(0.7)
     label.textAlignment = .left
     label.contentMode = .topLeft
     label.translatesAutoresizingMaskIntoConstraints = false

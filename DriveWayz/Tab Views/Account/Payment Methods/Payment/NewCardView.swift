@@ -33,9 +33,9 @@ class NewCardView: UIViewController {
 
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -79,7 +79,7 @@ class NewCardView: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         view.text = "Card number"
 
         return view
@@ -88,9 +88,9 @@ class NewCardView: UIViewController {
     var saveButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Save Card", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
@@ -106,7 +106,7 @@ class NewCardView: UIViewController {
         button.tintColor = Theme.WHITE
         button.addTarget(self, action: #selector(openCardRecognizer), for: .touchUpInside)
         button.layer.cornerRadius = 4
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         
         return button
     }()
@@ -317,15 +317,15 @@ extension NewCardView: STPPaymentCardTextFieldDelegate, handleCardRecognition {
     func saveButtonAvailable() {
         UIView.animate(withDuration: animationIn) {
             self.saveButton.setTitleColor(Theme.WHITE, for: .normal)
-            self.saveButton.backgroundColor = Theme.DARK_GRAY
+            self.saveButton.backgroundColor = Theme.BLACK
             self.saveButton.isEnabled = true
         }
     }
     
     func saveButtonUnavailable() {
         UIView.animate(withDuration: animationIn) {
-            self.saveButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-            self.saveButton.backgroundColor = lineColor
+            self.saveButton.setTitleColor(Theme.BLACK, for: .normal)
+            self.saveButton.backgroundColor = Theme.LINE_GRAY
             self.saveButton.isEnabled = false
         }
     }
@@ -430,9 +430,9 @@ extension NewCardView: UIScrollViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

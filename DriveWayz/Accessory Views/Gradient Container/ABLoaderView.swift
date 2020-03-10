@@ -37,7 +37,7 @@ public class ABLoader {
     
     private func animate(view: UIView, start: Bool) {
         if start {
-            let dimView = Theme.OFF_WHITE.darker(by: 2)!.cgColor
+            let dimView = Theme.BACKGROUND_GRAY.darker(by: 2)!.cgColor
             // 1. Add Color Layer
             let colorLayer = CALayer()
             colorLayer.backgroundColor = dimView

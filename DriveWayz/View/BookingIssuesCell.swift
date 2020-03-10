@@ -16,7 +16,7 @@ class BookingIssuesCell: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.numberOfLines = 2
         
         return view
@@ -27,7 +27,7 @@ class BookingIssuesCell: UITableViewCell {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         
@@ -70,7 +70,7 @@ class BookingIssuesHeader: UIView {
         view.text = "Review my fare or fees"
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()

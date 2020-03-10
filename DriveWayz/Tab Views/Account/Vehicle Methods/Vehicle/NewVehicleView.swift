@@ -49,10 +49,10 @@ class NewVehicleView: UIViewController {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.isUserInteractionEnabled = false
         button.setTitle("Save vehicle", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
@@ -110,13 +110,13 @@ class NewVehicleView: UIViewController {
     
     func changeButtonEnabled(enabled: Bool) {
         if enabled {
-            mainButton.backgroundColor = Theme.DARK_GRAY
+            mainButton.backgroundColor = Theme.BLACK
             mainButton.setTitleColor(Theme.WHITE, for: .normal)
             mainButton.isUserInteractionEnabled = true
         }
         else {
-            mainButton.backgroundColor = lineColor
-            mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            mainButton.backgroundColor = Theme.LINE_GRAY
+            mainButton.setTitleColor(Theme.BLACK, for: .normal)
             mainButton.isUserInteractionEnabled = false
         }
     }
@@ -273,7 +273,7 @@ class NewVehicleCell: UITableViewCell {
         view.text = "Test"
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -282,9 +282,9 @@ class NewVehicleCell: UITableViewCell {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPSemiBoldH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .default
         view.lineTextView?.placeholderLabel.alpha = 0
         

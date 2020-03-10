@@ -17,7 +17,7 @@ class HostOnboardingBottomView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("List Your Spot", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         
@@ -39,7 +39,7 @@ class HostOnboardingBottomView: UIViewController {
         let privacyRange = (string as NSString).range(of: "Host Policies")
         let regulationRange = (string as NSString).range(of: "Host Regulations")
         attributedString.addAttribute(NSAttributedString.Key.font, value: Fonts.SSPRegularH5, range: range)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.PRUSSIAN_BLUE, range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GRAY_WHITE, range: range)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.BLUE, range: privacyRange)
         attributedString.addAttribute(NSAttributedString.Key.underlineColor, value: Theme.BLUE, range: privacyRange)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.BLUE, range: regulationRange)
@@ -63,7 +63,7 @@ class HostOnboardingBottomView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "mainQuickHost")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.isUserInteractionEnabled = false
         button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         

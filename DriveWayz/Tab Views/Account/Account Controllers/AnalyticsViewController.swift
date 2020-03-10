@@ -25,9 +25,9 @@ class AnalyticsViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -85,7 +85,7 @@ class AnalyticsViewController: UIViewController {
     var newMessageNumber: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.backgroundColor = Theme.SALMON
         button.layer.cornerRadius = 8
         button.setTitle("", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -277,7 +277,7 @@ extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .present
         transition.startingPoint = notificationButton.center
-        transition.circleColor = Theme.DARK_GRAY
+        transition.circleColor = Theme.BLACK
         
         return transition
     }
@@ -285,7 +285,7 @@ extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .dismiss
         transition.startingPoint = notificationButton.center
-        transition.circleColor = Theme.DARK_GRAY
+        transition.circleColor = Theme.BLACK
         delayWithSeconds(animationOut) {
             self.delegate?.defaultContentStatusBar()
         }

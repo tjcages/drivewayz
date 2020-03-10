@@ -30,7 +30,7 @@ class MapParkingViewController: UIViewController {
     var mapLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.text = "This is what people will see when looking for your parking space"
         label.numberOfLines = 2
@@ -103,18 +103,18 @@ extension MapParkingViewController: CLLocationManagerDelegate {
 
 
 extension MapParkingViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? MKPointAnnotation else { return nil }
-        if typeOfParking == "house" {
-            return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: AvailableHouseAnnotationView.ReuseID)
-        } else if typeOfParking == "parking lot" {
-            return AvailableLotAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
-        } else if typeOfParking == "apartment" {
-            return AvailableApartmentAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
-        } else {
-            return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: AvailableHouseAnnotationView.ReuseID)
-        }
-    }
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//        guard let annotation = annotation as? MKPointAnnotation else { return nil }
+//        if typeOfParking == "house" {
+//            return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: AvailableHouseAnnotationView.ReuseID)
+//        } else if typeOfParking == "parking lot" {
+//            return AvailableLotAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+//        } else if typeOfParking == "apartment" {
+//            return AvailableApartmentAnnotationView(annotation: annotation, reuseIdentifier: UnavailableLotAnnotationView.ReuseID)
+//        } else {
+//            return AvailableHouseAnnotationView(annotation: annotation, reuseIdentifier: AvailableHouseAnnotationView.ReuseID)
+//        }
+//    }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let location = view.annotation?.coordinate {

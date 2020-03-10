@@ -91,9 +91,9 @@ class TransfersStatusViewController: UIViewController {
     var transitButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.GREEN.withAlphaComponent(0.2)
         button.setTitle("In transit", for: .normal)
-        button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+        button.setTitleColor(Theme.GREEN, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.layer.cornerRadius = 15
         
@@ -103,7 +103,7 @@ class TransfersStatusViewController: UIViewController {
     var arrivalLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
@@ -114,7 +114,7 @@ class TransfersStatusViewController: UIViewController {
     var initiatedLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = ""
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
@@ -153,7 +153,7 @@ class TransfersStatusViewController: UIViewController {
     var payoutLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "PAYOUT"
         label.font = Fonts.SSPRegularH5
         
@@ -163,7 +163,7 @@ class TransfersStatusViewController: UIViewController {
     var accountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "ACCOUNT"
         label.font = Fonts.SSPRegularH5
         
@@ -173,7 +173,7 @@ class TransfersStatusViewController: UIViewController {
     var routingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "ROUTING"
         label.font = Fonts.SSPRegularH5
         
@@ -183,7 +183,7 @@ class TransfersStatusViewController: UIViewController {
     var typeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "ACCOUNT TYPE"
         label.font = Fonts.SSPRegularH5
         
@@ -193,7 +193,7 @@ class TransfersStatusViewController: UIViewController {
     var payoutValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.text = ""
         label.font = Fonts.SSPSemiBoldH3
         
@@ -203,7 +203,7 @@ class TransfersStatusViewController: UIViewController {
     var accountValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH3
         
@@ -213,7 +213,7 @@ class TransfersStatusViewController: UIViewController {
     var routingValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH3
         
@@ -223,7 +223,7 @@ class TransfersStatusViewController: UIViewController {
     var typeValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH3
         
@@ -236,7 +236,7 @@ class TransfersStatusViewController: UIViewController {
         let image = UIImage(named: "payoutsCash")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.isUserInteractionEnabled = false
         
         return button
@@ -248,7 +248,7 @@ class TransfersStatusViewController: UIViewController {
         let image = UIImage(named: "payoutsAccount")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.isUserInteractionEnabled = false
         
         return button
@@ -260,7 +260,7 @@ class TransfersStatusViewController: UIViewController {
         let image = UIImage(named: "payoutsRouting")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.isUserInteractionEnabled = false
         
         return button
@@ -272,7 +272,7 @@ class TransfersStatusViewController: UIViewController {
         let image = UIImage(named: "payoutsType")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.isUserInteractionEnabled = false
         
         return button
@@ -283,7 +283,7 @@ class TransfersStatusViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Report issue", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         //        button.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         button.layer.cornerRadius = 8
@@ -294,7 +294,7 @@ class TransfersStatusViewController: UIViewController {
     var firstLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -387,7 +387,7 @@ class TransfersStatusViewController: UIViewController {
     func inTransitButton() {
         self.transitButton.alpha = 1
         self.paidButton.alpha = 0
-        self.payoutValue.textColor = Theme.GREEN_PIGMENT
+        self.payoutValue.textColor = Theme.GREEN
     }
     
     func madePaymentButton() {

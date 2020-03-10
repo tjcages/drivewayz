@@ -25,7 +25,7 @@ class AccountListingView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Your listings"
         
         return label
@@ -64,7 +64,7 @@ class AccountListingView: UIViewController {
     var starView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 14
         
         return view
@@ -94,7 +94,7 @@ class AccountListingView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "945 Diamond Street"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -104,7 +104,7 @@ class AccountListingView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "2-Car Residential"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -115,7 +115,7 @@ class AccountListingView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()

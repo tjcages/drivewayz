@@ -9,16 +9,13 @@
 import UIKit
 
 var purchaseNormalHeight: CGFloat = 372
+var publicNormalHeight: CGFloat = phoneHeight
 
 class PurchaseViewController: UIViewController {
     
     var discount: Int = 0
     
-    var bannerView: PurchaseBannerView = {
-        let view = PurchaseBannerView()
-        
-        return view
-    }()
+    var bannerView = PurchaseBannerView()
     
     var spotIcon: UIImageView = {
         let view = UIImageView()
@@ -27,7 +24,7 @@ class PurchaseViewController: UIViewController {
         view.layer.cornerRadius = 29
         let image = UIImage(named: "Apartment Parking")
         view.image = image
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
         return view
@@ -37,7 +34,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Shared"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -47,7 +44,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Apartment parking"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -57,7 +54,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$9.38"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -68,7 +65,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$10.72"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
         
@@ -78,7 +75,7 @@ class PurchaseViewController: UIViewController {
     var subCostLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.GRAY_WHITE
         
         return view
     }()
@@ -88,7 +85,7 @@ class PurchaseViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
         return button
@@ -99,7 +96,7 @@ class PurchaseViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationFilledIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.addTarget(self, action: #selector(informationButtonPressed), for: .touchUpInside)
         
         return button
@@ -109,7 +106,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Time Booked"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -119,7 +116,7 @@ class PurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "11:15am to 2:45pm"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH4
         
         return label
@@ -128,7 +125,7 @@ class PurchaseViewController: UIViewController {
     var editButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 18
         button.setTitle("Edit", for: .normal)
         button.setTitleColor(Theme.BLACK, for: .normal)

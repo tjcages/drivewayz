@@ -25,7 +25,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     
     lazy var container: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -33,7 +33,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var darkView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -72,7 +72,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Rules and regulations"
         label.font = Fonts.SSPRegularH2
         
@@ -82,7 +82,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "When deciding whether to become a Drivewayz host, it's important for you to understand how the laws work in your city."
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 10
@@ -123,7 +123,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 30
         
         return view
@@ -132,7 +132,7 @@ class ReadPoliciesViewController: UIViewController, WKNavigationDelegate {
     var regulationsSubLabel2: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = """
         Some cities have laws that restrict your ability to host paying guests for short periods. These laws are often part of a city's zoning or administrative codes. In many cities, you must register, get a permit, or obtain a license before you list your property or accept guests. Certain types of short-term bookings may be prohibited altogether. Local governments vary greatly in how they enforce these laws. Penalties may include fines or other enforcement.
         

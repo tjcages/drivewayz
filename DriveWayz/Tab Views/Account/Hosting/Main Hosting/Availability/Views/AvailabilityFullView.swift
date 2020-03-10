@@ -124,7 +124,7 @@ extension AvailabilityFullView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Select day to set time range"
         
         view.addSubview(label)

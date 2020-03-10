@@ -23,16 +23,6 @@ extension MapKitViewController: handleAdditionalSteps {
             opens += 1
             UserDefaults.standard.set(opens, forKey: "numberOfOpensBooking")
             UserDefaults.standard.synchronize()
-            
-            bookingTutorialController.view.alpha = 0
-            delayWithSeconds(0.6) {
-                self.view.insertSubview(bookingTutorialController.view, belowSubview: self.parkingController.view)
-                UIView.animate(withDuration: animationIn, animations: {
-                    bookingTutorialController.view.alpha = 1
-                }, completion: { (success) in
-                    bookingTutorialController.showView()
-                })
-            }
         }
     }
     

@@ -16,7 +16,7 @@ class BankIconsView: UIViewController {
         let image = UIImage(named: "bankShield")
         button.setImage(image, for: .normal)
         button.isUserInteractionEnabled = false
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         button.layer.shadowOpacity = 0.2
@@ -32,9 +32,9 @@ class BankIconsView: UIViewController {
         let image = UIImage(named: "bankPhone")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         button.layer.shadowOpacity = 0.2
@@ -51,9 +51,9 @@ class BankIconsView: UIViewController {
         let image = UIImage(named: "bankIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         button.layer.shadowOpacity = 0.2
@@ -68,7 +68,7 @@ class BankIconsView: UIViewController {
         let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.tintColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFit
 
         return view

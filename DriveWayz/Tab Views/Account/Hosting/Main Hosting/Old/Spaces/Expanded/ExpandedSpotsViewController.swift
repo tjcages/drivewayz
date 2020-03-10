@@ -28,7 +28,7 @@ class ExpandedSpotsViewController: UIViewController {
         label.textColor = Theme.WHITE
         label.text = "1"
         label.font = Fonts.SSPRegularH0
-        label.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        label.backgroundColor = Theme.BLACK.withAlphaComponent(0.3)
         label.layer.cornerRadius = 4
         label.textAlignment = .center
         label.clipsToBounds = true
@@ -39,7 +39,7 @@ class ExpandedSpotsViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -68,7 +68,7 @@ class ExpandedSpotsViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -97,7 +97,7 @@ class ExpandedSpotsViewController: UIViewController {
     var gateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -116,7 +116,7 @@ class ExpandedSpotsViewController: UIViewController {
     var gateBlock: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 2
         view.alpha = 0
         
@@ -128,7 +128,7 @@ class ExpandedSpotsViewController: UIViewController {
         let image = UIImage(named: "eyeIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         
@@ -255,12 +255,12 @@ class ExpandedSpotsViewController: UIViewController {
         } else if state == .changed {
             if self.canShowGate == true {
                 self.gateBlock.alpha = 0
-                self.viewIcon.tintColor = Theme.DARK_GRAY
+                self.viewIcon.tintColor = Theme.BLACK
             }
         } else {
             self.canShowGate = false
             self.gateBlock.alpha = 1
-            self.viewIcon.tintColor = Theme.DARK_GRAY
+            self.viewIcon.tintColor = Theme.BLACK
         }
     }
 

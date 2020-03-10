@@ -32,15 +32,15 @@ class HostPriceView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -69,7 +69,7 @@ class HostPriceView: UIViewController {
     
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -78,7 +78,7 @@ class HostPriceView: UIViewController {
     var blurView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.OFF_WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE)
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BACKGROUND_GRAY.withAlphaComponent(0), bottomColor: Theme.BACKGROUND_GRAY)
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: abs(cancelBottomHeight * 2) + 16)
         background.zPosition = 10
         view.layer.addSublayer(background)
@@ -223,7 +223,7 @@ class HostPriceView: UIViewController {
             UIView.animate(withDuration: animationOut, delay: 0, options: .curveEaseOut, animations: {
                 self.nextButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
                 if mainTypeState == .pictures {
-                    self.nextButton.tintColor = Theme.DARK_GRAY
+                    self.nextButton.tintColor = Theme.BLACK
                 } else {
                     self.nextButton.tintColor = Theme.WHITE
                 }
@@ -236,7 +236,7 @@ class HostPriceView: UIViewController {
     func hideNextButton(completion: @escaping() -> Void) {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {

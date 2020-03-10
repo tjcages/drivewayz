@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Mapbox
-import MapboxNavigation
-import MapboxDirections
-import MapboxCoreNavigation
+//import Mapbox
+//import MapboxNavigation
+//import MapboxDirections
+//import MapboxCoreNavigation
 
 class NavigationDurationView: UIViewController {
     
@@ -33,31 +33,31 @@ class NavigationDurationView: UIViewController {
     }
     
     var durationRemaining: TimeInterval?
-    var routeProgress: RouteProgress? {
-        didSet {
-            if let progress = self.routeProgress {
-                let duration = progress.durationRemaining
-                durationRemaining = duration
-                
-                let upcomingDate = Date().addingTimeInterval(duration)
-                let dateFormatter = DateFormatter()
-                dateFormatter.amSymbol = "am"
-                dateFormatter.pmSymbol = "pm"
-                dateFormatter.dateFormat = "h:mma"
-                let upcomingString = dateFormatter.string(from: upcomingDate)
-                
-                let minutes = (Int(duration)/60) % 60
-                let minutesString = "\(minutes) min"
-                self.parkingTime.text = minutesString
-                
-                if self.arrivalLabel.text == "time left" {
-                    self.arrivalTime.text = minutesString
-                } else {
-                    self.arrivalTime.text = upcomingString
-                }
-            }
-        }
-    }
+//    var routeProgress: RouteProgress? {
+//        didSet {
+//            if let progress = self.routeProgress {
+//                let duration = progress.durationRemaining
+//                durationRemaining = duration
+//                
+//                let upcomingDate = Date().addingTimeInterval(duration)
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.amSymbol = "am"
+//                dateFormatter.pmSymbol = "pm"
+//                dateFormatter.dateFormat = "h:mma"
+//                let upcomingString = dateFormatter.string(from: upcomingDate)
+//                
+//                let minutes = (Int(duration)/60) % 60
+//                let minutesString = "\(minutes) min"
+//                self.parkingTime.text = minutesString
+//                
+//                if self.arrivalLabel.text == "time left" {
+//                    self.arrivalTime.text = minutesString
+//                } else {
+//                    self.arrivalTime.text = upcomingString
+//                }
+//            }
+//        }
+//    }
     
     var container: UIView = {
         let view = UIView()
@@ -106,7 +106,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "arrival"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -116,7 +116,7 @@ class NavigationDurationView: UIViewController {
     var arrivalTime: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH25
         label.textAlignment = .right
         
@@ -147,9 +147,9 @@ class NavigationDurationView: UIViewController {
     var parkingIcon: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         let circle = UIView()
-        circle.backgroundColor = Theme.OFF_WHITE
+        circle.backgroundColor = Theme.BACKGROUND_GRAY
         circle.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(circle)
         circle.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -164,7 +164,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Residential"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -174,7 +174,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "parking spot"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -184,7 +184,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "in 5 min"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -195,7 +195,7 @@ class NavigationDurationView: UIViewController {
         let image = UIImage(named: "circleLine")
         view.image = image
         view.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
@@ -230,7 +230,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "10 min"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -240,7 +240,7 @@ class NavigationDurationView: UIViewController {
     var walkingView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -248,10 +248,10 @@ class NavigationDurationView: UIViewController {
     var destinationIcon: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 8
         let circle = UIView()
-        circle.backgroundColor = Theme.OFF_WHITE
+        circle.backgroundColor = Theme.BACKGROUND_GRAY
         circle.translatesAutoresizingMaskIntoConstraints = false
         circle.layer.cornerRadius = 3
         view.addSubview(circle)
@@ -267,7 +267,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Folsom Field"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -277,7 +277,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "destination"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -287,7 +287,7 @@ class NavigationDurationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4:45pm"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -298,7 +298,7 @@ class NavigationDurationView: UIViewController {
         let image = UIImage(named: "circleLine")
         view.image = image
         view.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
@@ -313,7 +313,7 @@ class NavigationDurationView: UIViewController {
         button.setTitle("Check in", for: .normal)
         button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
-        button.layer.borderColor = lineColor.cgColor
+        button.layer.borderColor = Theme.LINE_GRAY.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.WHITE
         
@@ -324,9 +324,9 @@ class NavigationDurationView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("End navigation", for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
-        button.layer.borderColor = lineColor.cgColor
+        button.layer.borderColor = Theme.LINE_GRAY.cgColor
         button.layer.borderWidth = 1
         button.backgroundColor = Theme.WHITE
         
@@ -338,7 +338,7 @@ class NavigationDurationView: UIViewController {
         label.text = "8:00am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.alpha = 0
         
         return label
@@ -349,7 +349,7 @@ class NavigationDurationView: UIViewController {
         label.text = "10:15am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .right
         label.alpha = 0
         
@@ -360,7 +360,7 @@ class NavigationDurationView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("to", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.4), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.isUserInteractionEnabled = false
         button.alpha = 0

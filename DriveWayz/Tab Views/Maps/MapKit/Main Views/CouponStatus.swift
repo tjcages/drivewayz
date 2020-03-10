@@ -18,7 +18,7 @@ extension MapKitViewController {
                 if let percent = snapshot.value as? Int {
 //                    self.mainBarController.activeCouponController.percentage = percent
                     UIView.animate(withDuration: animationIn, animations: {
-                        self.mainBarController.searchController.discountButton.alpha = 1
+//                        self.mainBarController.searchController.discountButton.alpha = 1
 //                        self.mainBarController.setupCoupon(0, last: false)
                         self.view.layoutIfNeeded()
                     }, completion: { (success) in
@@ -30,8 +30,8 @@ extension MapKitViewController {
                     if snapshot.childrenCount == 0 {
                         delayWithSeconds(animationOut, completion: {
                             UIView.animate(withDuration: animationIn, animations: {
-                                self.mainBarController.searchController.discountButton.alpha = 0
-                                self.mainBarController.setupBanner(0, last: false)
+//                                self.mainBarController.searchController.discountButton.alpha = 0
+//                                self.mainBarController.setupBanner(0, last: false)
                                 self.view.layoutIfNeeded()
                             })
                         })
@@ -44,7 +44,7 @@ extension MapKitViewController {
                             }
                         }
                         UIView.animate(withDuration: animationIn, animations: {
-                            self.mainBarController.searchController.discountButton.alpha = 1
+//                            self.mainBarController.searchController.discountButton.alpha = 1
 //                            self.mainBarController.setupCoupon(0, last: false)
                             self.view.layoutIfNeeded()
                         }, completion: { (success) in

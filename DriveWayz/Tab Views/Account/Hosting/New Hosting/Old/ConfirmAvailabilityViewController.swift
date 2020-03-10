@@ -23,7 +23,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     
     var popupLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Please make sure your parking spot is completely empty for the times specified. Issues with drivers will generally lower your ranking"
@@ -34,7 +34,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     
     var availableLabel: UnderlinedLabel = {
         let label = UnderlinedLabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -45,7 +45,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     
     var availableDaysLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
@@ -57,7 +57,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     
     var unavailableLabel: UnderlinedLabel = {
         let label = UnderlinedLabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -68,7 +68,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     
     var unavailableDaysLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
@@ -83,7 +83,7 @@ class ConfirmAvailabilityViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
         button.backgroundColor = Theme.WHITE
-        button.layer.borderColor = Theme.DARK_GRAY.cgColor
+        button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 0.5
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
@@ -96,7 +96,7 @@ class ConfirmAvailabilityViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Back", for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         //        button.addTarget(self, action: #selector(hidePopup), for: .touchUpInside)
@@ -107,7 +107,7 @@ class ConfirmAvailabilityViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
 
         setupViews()
     }

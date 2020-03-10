@@ -38,7 +38,7 @@ class ListingNumberView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Spot number"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -48,7 +48,7 @@ class ListingNumberView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select this if the driver is required to park in a numbered space."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         
@@ -59,7 +59,7 @@ class ListingNumberView: UIViewController {
         let view = UISwitch()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = Theme.BLUE
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.addTarget(self, action: #selector(switchPressed(sender:)), for: .valueChanged)
         
         return view
@@ -70,14 +70,14 @@ class ListingNumberView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()
     
     var mainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -93,7 +93,7 @@ class ListingNumberView: UIViewController {
     var textViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -101,7 +101,7 @@ class ListingNumberView: UIViewController {
     
     var secondMainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -117,7 +117,7 @@ class ListingNumberView: UIViewController {
     var secondTextViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -127,7 +127,7 @@ class ListingNumberView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "to"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
@@ -163,7 +163,7 @@ class ListingNumberView: UIViewController {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.message = "Please enter how many spots are being listed first."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -177,7 +177,7 @@ class ListingNumberView: UIViewController {
     
     var mainTextView2: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -193,7 +193,7 @@ class ListingNumberView: UIViewController {
     var textViewLine2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -201,7 +201,7 @@ class ListingNumberView: UIViewController {
     
     var secondMainTextView2: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -217,7 +217,7 @@ class ListingNumberView: UIViewController {
     var secondTextViewLine2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -227,7 +227,7 @@ class ListingNumberView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "to"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.alpha = 0
         
@@ -237,10 +237,10 @@ class ListingNumberView: UIViewController {
     var removeRangeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.layer.cornerRadius = 16
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.alpha = 0
@@ -629,7 +629,7 @@ extension ListingNumberView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.sizeToFit()
         toolBar.tintColor = Theme.WHITE
         
@@ -650,7 +650,7 @@ extension ListingNumberView: UITextViewDelegate {
     func createNextToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.sizeToFit()
         toolBar.tintColor = Theme.WHITE
         
@@ -694,10 +694,10 @@ extension ListingNumberView: UITextViewDelegate {
                 delegate?.unselectViews()
                 delegate?.selectView(view: view)
             }
-            textViewLine.backgroundColor = lineColor
-            secondTextViewLine.backgroundColor = lineColor
-            textViewLine2.backgroundColor = lineColor
-            secondTextViewLine2.backgroundColor = lineColor
+            textViewLine.backgroundColor = Theme.LINE_GRAY
+            secondTextViewLine.backgroundColor = Theme.LINE_GRAY
+            textViewLine2.backgroundColor = Theme.LINE_GRAY
+            secondTextViewLine2.backgroundColor = Theme.LINE_GRAY
             if textView == mainTextView2 {
                 textViewLine2.backgroundColor = Theme.BLUE
             } else {
@@ -718,9 +718,9 @@ extension ListingNumberView: UITextViewDelegate {
                 delegate?.unselectViews()
             }
             if textView == mainTextView {
-                textViewLine.backgroundColor = lineColor
+                textViewLine.backgroundColor = Theme.LINE_GRAY
             } else {
-                secondTextViewLine.backgroundColor = lineColor
+                secondTextViewLine.backgroundColor = Theme.LINE_GRAY
             }
             if let text = mainTextView.text {
                 if text == "" {
@@ -730,9 +730,9 @@ extension ListingNumberView: UITextViewDelegate {
             }
         } else {
             if textView == mainTextView2 {
-                textViewLine2.backgroundColor = lineColor
+                textViewLine2.backgroundColor = Theme.LINE_GRAY
             } else {
-               secondTextViewLine2.backgroundColor = lineColor
+               secondTextViewLine2.backgroundColor = Theme.LINE_GRAY
             }
             if let text = mainTextView2.text, let secondText = secondMainTextView2.text {
                 if text != "" && secondText != "" {
@@ -806,7 +806,7 @@ class CustomNumbersCell: UICollectionViewCell {
     
     var mainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -822,7 +822,7 @@ class CustomNumbersCell: UICollectionViewCell {
     var textViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()

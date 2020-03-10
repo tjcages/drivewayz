@@ -9,14 +9,14 @@
 import Foundation
 import MapKit
 import GoogleMaps
-//import Mapbox
-
-let bookingTutorialController = BookingTutorialView()
 
 protocol handleCheckoutParking {
-    func becomeAHost()
     func setDurationPressed(fromDate: Date, totalTime: String)
     func observeAllHosting()
+    
+    func parkingMaximized()
+    func startNavigation()
+    func startBooking()
 }
 
 var currentTotalTime: String?
@@ -25,12 +25,9 @@ extension MapKitViewController: handleCheckoutParking {
     
     func setupMapButtons() {
 
-        mapView.addSubview(parkingBackButton)
+        view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        parkingBackButtonBookAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16)
-            parkingBackButtonBookAnchor.isActive = true
-        parkingBackButtonPurchaseAnchor = parkingBackButton.bottomAnchor.constraint(equalTo: durationController.view.topAnchor, constant: -16)
-            parkingBackButtonPurchaseAnchor.isActive = false
+        parkingBackButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16).isActive = true
         parkingBackButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         parkingBackButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -54,17 +51,22 @@ extension MapKitViewController: handleCheckoutParking {
         
     }
     
+    func openBookings() {
+        hideWelcomeBanner()
+        closeSearch(parking: true)
+        delayWithSeconds(animationOut) {
+            self.mainViewState = .parking
+        }
+    }
+    
     @objc func parkingBackButtonPressed() {
         if parkingControllerBottomAnchor.constant == 0 && self.parkingControllerHeightAnchor.constant != parkingNormalHeight && mainViewState != .payment {
             closeBooking()
         } else if parkingControllerBottomAnchor.constant == 0 {
             if mainViewState == .payment {
-                if parkingController.bannerExpanded {
-                    parkingController.expandBanner()
-                } else {
-                    dismissPurchaseController()
-                }
+                dismissPurchaseController()
             } else {
+                parkingController.unselectFirstIndex()
                 parkingHidden(showMainBar: true)
             }
         } else {
@@ -76,22 +78,41 @@ extension MapKitViewController: handleCheckoutParking {
         }
     }
     
+    func parkingMaximized() {
+        parkingControllerBottomAnchor.constant = 0
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.parkingBackButton.alpha = 1
+            self.parkingRouteButton.alpha = 1
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            defaultContentStatusBar()
+        }
+    }
+    
+    func parkingMinimized() {
+        parkingControllerBottomAnchor.constant = parkingNormalHeight
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.parkingBackButton.alpha = 0
+            self.parkingRouteButton.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            //
+        }
+    }
+    
     @objc func parkingHidden(showMainBar: Bool) {
-        shouldBeSearchingForAnnotations = true
+//        shouldBeSearchingForAnnotations = true
         UIView.animate(withDuration: animationOut, animations: {
             self.parkingBackButton.alpha = 0
             self.quickParkingView.alpha = 0
             self.quickDurationView.alpha = 0
-            if bookingTutorialController.view.alpha == 1 {
-                bookingTutorialController.view.alpha = 0
-            }
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.bringHamburger()
         }
         if showMainBar {
             self.mainViewState = .mainBar
-            self.removeAllMapOverlays(shouldRefresh: true)
+            self.removeAllMapOverlays(shouldRefresh: false) // SHOULD BE TRUE
             delayWithSeconds(1, completion: {
                 UIView.animate(withDuration: animationIn, animations: {
                     self.quickParkingView.alpha = 0
@@ -101,15 +122,25 @@ extension MapKitViewController: handleCheckoutParking {
         }
     }
     
-    func becomeAHost() {
-        self.delegate?.moveToProfile()
-        self.delegate?.bringNewHostingController()
+    @objc func durationPressed() {
+        parkingMinimized()
+        
+        let controller = DurationViewController()
+        controller.delegate = self
+        controller.modalPresentationStyle = .overFullScreen
+        present(controller, animated: true, completion: nil)
+        
+        UIView.animateOut(withDuration: animationOut, animations: {
+            tabDimmingView.alpha = 0.2
+        }) { (success) in
+            //
+        }
     }
     
     func setDurationPressed(fromDate: Date, totalTime: String) {
         currentTotalTime = totalTime
 //        self.parkingController.bookingPicker.setContentOffset(.zero, animated: true)
-        self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
+//        self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
 //        self.parkingController.changeDates(fromDate: fromDate, totalTime: totalTime)
 //        self.confirmPaymentController.changeDates()
     }
@@ -117,6 +148,22 @@ extension MapKitViewController: handleCheckoutParking {
     func observeAllHosting() {
         mapView.clear()
         observeAllParking()
+    }
+    
+    func presentPublicController(spotType: SpotType) {
+        parkingMinimized()
+        
+        let controller = PurchasePublicView()
+        controller.spotType = spotType
+        controller.delegate = self
+        controller.modalPresentationStyle = .overFullScreen
+        present(controller, animated: true, completion: nil)
+        
+        UIView.animateOut(withDuration: animationOut, animations: {
+            tabDimmingView.alpha = 0.4
+        }) { (success) in
+            //
+        }
     }
     
 }

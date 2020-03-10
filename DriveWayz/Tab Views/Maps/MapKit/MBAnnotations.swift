@@ -173,7 +173,7 @@ extension MapKitViewController {
         for parking in self.parkingSpots {
             if let latitude = parking.latitude, let longitude = parking.longitude {
                 let parkingDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let distance = location.distance(to: parkingDestination)
+                let distance = location.distance(from: parkingDestination)
                 if distance <= (1609.34 * 2) && checkDistance { //2 mile walking
                     parking.parkingDistance = Double(distance)
                     self.availableParkingSpots.append(parking)

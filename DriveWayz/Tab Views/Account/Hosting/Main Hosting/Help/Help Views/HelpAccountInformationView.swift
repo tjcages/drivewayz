@@ -14,7 +14,7 @@ class HelpAccountInformationView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -24,7 +24,7 @@ class HelpAccountInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Let's Get Started", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         
@@ -35,7 +35,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You can always change listing \npreferences in the host portal."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -48,7 +48,7 @@ class HelpAccountInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "mainQuickHost")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.isUserInteractionEnabled = false
         button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         
@@ -59,7 +59,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Monitor all your listings \nfrom one place"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         label.numberOfLines = 2
         
@@ -70,7 +70,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "List your unused parking spaces to \nhelp others in your community."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         
@@ -81,7 +81,7 @@ class HelpAccountInformationView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.BLUE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -105,7 +105,7 @@ class HelpAccountInformationView: UIViewController {
     var starView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 14
         
         return view
@@ -155,7 +155,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Closest spot to your destination"
-        label.textColor = lineColor
+        label.textColor = Theme.LINE_GRAY
         label.font = Fonts.SSPRegularH6
         
         return label
@@ -189,7 +189,7 @@ class HelpAccountInformationView: UIViewController {
         let origImage = UIImage(named: "verificationIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.HARMONY_RED
+        button.tintColor = Theme.SALMON
         
         let check = UIButton(frame: CGRect(x: 2, y: 2, width: 14, height: 14))
         let origImage2 = UIImage(named: "Checkmark")
@@ -205,7 +205,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Edit information on the fly so drivers \nknow what to expect."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         
@@ -215,7 +215,7 @@ class HelpAccountInformationView: UIViewController {
     var privacyContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -224,7 +224,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Privacy is key"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
         return label
@@ -245,7 +245,7 @@ class HelpAccountInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Your information is secure through \nthe whole booking process."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         

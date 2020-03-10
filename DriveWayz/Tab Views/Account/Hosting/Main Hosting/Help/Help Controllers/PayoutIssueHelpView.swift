@@ -84,7 +84,7 @@ class PayoutIssueHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         scrollView.delegate = self
         optionsTableView.delegate = self
@@ -203,7 +203,7 @@ extension PayoutIssueHelpView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         if section == 0 {
             label.text = options.first?.key
         } else if section == 1 {

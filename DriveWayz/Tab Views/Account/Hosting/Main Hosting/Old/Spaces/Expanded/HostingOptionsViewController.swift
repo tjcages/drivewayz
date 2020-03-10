@@ -32,7 +32,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit availability", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -45,7 +45,7 @@ class HostingOptionsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -55,7 +55,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit calendar", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -68,7 +68,7 @@ class HostingOptionsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -78,7 +78,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Make spot unavailable", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -92,7 +92,7 @@ class HostingOptionsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -102,7 +102,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add a new parking spot", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.3), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.3), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.addTarget(self, action: #selector(bringNewHostingController), for: .touchUpInside)
         button.contentHorizontalAlignment = .left
@@ -116,7 +116,7 @@ class HostingOptionsViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         
@@ -127,7 +127,7 @@ class HostingOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Delete parking spot", for: .normal)
-        button.setTitleColor(Theme.HARMONY_RED, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.contentHorizontalAlignment = .left
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
@@ -231,7 +231,7 @@ class HostingOptionsViewController: UIViewController {
                 let parkingRef = Database.database().reference().child("ParkingSpots").child(parkingID).child("ParkingUnavailability")
                 parkingRef.removeValue()
                 self.markUnavailable.setTitle("Make spot unavailable", for: .normal)
-                self.markUnavailable.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                self.markUnavailable.setTitleColor(Theme.BLACK, for: .normal)
                 
             }
         }

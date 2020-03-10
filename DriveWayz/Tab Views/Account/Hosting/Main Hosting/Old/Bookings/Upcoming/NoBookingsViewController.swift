@@ -13,7 +13,7 @@ class NoBookingsViewController: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customColor(topColor: Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4), bottomColor: Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1))
+        let background = CAGradientLayer().customColor(topColor: Theme.GRAY_WHITE.withAlphaComponent(0.4), bottomColor: Theme.GRAY_WHITE.withAlphaComponent(0.1))
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 140)
         background.zPosition = -10
         view.layer.addSublayer(background)
@@ -38,7 +38,7 @@ class NoBookingsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "No upcoming bookings"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         
@@ -49,7 +49,7 @@ class NoBookingsViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

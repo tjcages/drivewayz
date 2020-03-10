@@ -65,7 +65,7 @@ extension CredentialsSettingsView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Credentials"
         
         view.addSubview(label)

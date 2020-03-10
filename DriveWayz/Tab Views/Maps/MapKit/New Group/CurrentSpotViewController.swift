@@ -39,7 +39,7 @@ class CurrentSpotViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.6
@@ -50,7 +50,7 @@ class CurrentSpotViewController: UIViewController {
     var blackContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -71,8 +71,8 @@ class CurrentSpotViewController: UIViewController {
     var darkView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.01)
-        view.layer.shadowColor = Theme.DARK_GRAY.withAlphaComponent(0.6).cgColor
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.01)
+        view.layer.shadowColor = Theme.BLACK.withAlphaComponent(0.6).cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.layer.shadowRadius = 5
         view.layer.shadowOpacity = 0.2
@@ -133,7 +133,7 @@ class CurrentSpotViewController: UIViewController {
         label.font = Fonts.SSPRegularH1
         label.alpha = 0
         label.textContainerInset = UIEdgeInsets(top: 158, left: 24, bottom: 16, right: 24)
-        label.backgroundColor = Theme.DARK_GRAY
+        label.backgroundColor = Theme.BLACK
         
         return label
     }()
@@ -188,7 +188,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -196,7 +196,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView2: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -204,7 +204,7 @@ class CurrentSpotViewController: UIViewController {
     var lineView3: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -215,7 +215,7 @@ class CurrentSpotViewController: UIViewController {
         scrollView.delegate = self
         
         view.backgroundColor = UIColor.clear
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.6

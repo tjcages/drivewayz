@@ -18,7 +18,7 @@ class BookingImageViewController: UIViewController {
         let image = UIImage(named: "searchLocation")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.STRAWBERRY_PINK
+        button.tintColor = Theme.SALMON
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -29,7 +29,7 @@ class BookingImageViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "University Heights Avenue"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -39,7 +39,7 @@ class BookingImageViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "One-Car Driveway"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -52,10 +52,10 @@ class BookingImageViewController: UIViewController {
         view.settings.fillMode = StarFillMode.precise
         view.settings.starSize = 20
         view.settings.starMargin = 0
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -67,7 +67,7 @@ class BookingImageViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "5.0"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
         
@@ -98,7 +98,7 @@ class BookingImageViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Overview", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -108,7 +108,7 @@ class BookingImageViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Payment", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH3
         label.alpha = 0.2
         
@@ -119,7 +119,7 @@ class BookingImageViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Reviews", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPSemiBoldH3
         label.alpha = 0.2
         
@@ -129,7 +129,7 @@ class BookingImageViewController: UIViewController {
     var selectionLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.GREEN_PIGMENT
+        view.backgroundColor = Theme.GREEN
         
         return view
     }()

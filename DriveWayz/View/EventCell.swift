@@ -64,7 +64,7 @@ class EventCell: UICollectionViewCell {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         let image = UIImage(named: "stock_stadium")
         view.image = image
         
@@ -82,7 +82,7 @@ class EventCell: UICollectionViewCell {
     
     let mainLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.text = "Order food while you ride"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -93,7 +93,7 @@ class EventCell: UICollectionViewCell {
     
     let subLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.text = "Local restaurants, delivered at Uber speed."
         label.translatesAutoresizingMaskIntoConstraints = false

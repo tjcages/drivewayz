@@ -86,7 +86,7 @@ class BookingCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Two-Car Gated Spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -96,7 +96,7 @@ class BookingCell: UICollectionViewCell {
     var starView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -108,10 +108,10 @@ class BookingCell: UICollectionViewCell {
         view.settings.updateOnTouch = false
         view.settings.starSize = 14
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -125,7 +125,7 @@ class BookingCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "10"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPSemiBoldH5
         
         return label
@@ -138,7 +138,7 @@ class BookingCell: UICollectionViewCell {
         let image = UIImage(named: "parkingSpaceIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        button.tintColor = Theme.GRAY_WHITE.withAlphaComponent(0.4)
         
         return button
     }()
@@ -147,7 +147,7 @@ class BookingCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "University Heights Avenue"
-        label.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+        label.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         
@@ -160,7 +160,7 @@ class BookingCell: UICollectionViewCell {
         label.text = "$1.40/hour"
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH5
-        label.backgroundColor = Theme.PRUSSIAN_BLUE
+        label.backgroundColor = Theme.GRAY_WHITE
         label.layer.cornerRadius = 14
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -184,7 +184,7 @@ class BookingCell: UICollectionViewCell {
     var shimmerMain: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.clipsToBounds = true
         
         return view
@@ -193,7 +193,7 @@ class BookingCell: UICollectionViewCell {
     var shimmerIcon: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 110, height: 110))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.clipsToBounds = true
         view.layer.cornerRadius = 50
         
@@ -285,7 +285,7 @@ class BookingCell: UICollectionViewCell {
         shimmerMain.addSubview(shimmerView)
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.clear.cgColor, Theme.OFF_WHITE.cgColor, UIColor.clear.cgColor]
+        gradientLayer.colors = [UIColor.clear.cgColor, Theme.BACKGROUND_GRAY.cgColor, UIColor.clear.cgColor]
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.frame = shimmerView.frame
         
@@ -317,7 +317,7 @@ class BookingCell: UICollectionViewCell {
         shimmerIcon.addSubview(shimmerView)
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.clear.cgColor, Theme.OFF_WHITE.cgColor, UIColor.clear.cgColor]
+        gradientLayer.colors = [UIColor.clear.cgColor, Theme.BACKGROUND_GRAY.cgColor, UIColor.clear.cgColor]
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.frame = shimmerView.frame
         

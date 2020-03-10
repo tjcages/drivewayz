@@ -33,11 +33,11 @@ class NavigationOptionsView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Review my payment", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         button.addSubview(view)
         
         return button
@@ -47,11 +47,11 @@ class NavigationOptionsView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Have an issue with the spot?", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         button.addSubview(view)
         
         return button
@@ -61,11 +61,11 @@ class NavigationOptionsView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Report a problem", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         button.addSubview(view)
         
         return button
@@ -75,11 +75,11 @@ class NavigationOptionsView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("End booking", for: .normal)
-        button.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
+        button.setTitleColor(Theme.SALMON, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         button.addSubview(view)
         
         return button

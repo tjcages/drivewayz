@@ -23,7 +23,7 @@ class BankNamesView: UIViewController {
     var dimView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -32,7 +32,7 @@ class BankNamesView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Please confirm \nyour information"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
@@ -54,7 +54,7 @@ class BankNamesView: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
@@ -67,7 +67,7 @@ class BankNamesView: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -98,7 +98,7 @@ class BankNamesView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "First name"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -108,9 +108,9 @@ class BankNamesView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .emailAddress
         view.lineTextView?.placeholderLabel.alpha = 0
         view.lineTextView?.autocapitalizationType = .none
@@ -124,7 +124,7 @@ class BankNamesView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Last name"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -134,9 +134,9 @@ class BankNamesView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .emailAddress
         view.lineTextView?.placeholderLabel.alpha = 0
         view.lineTextView?.autocapitalizationType = .none
@@ -150,7 +150,7 @@ class BankNamesView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Email address"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -160,9 +160,9 @@ class BankNamesView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .emailAddress
         view.lineTextView?.placeholderLabel.alpha = 0
         view.lineTextView?.autocapitalizationType = .none
@@ -184,15 +184,15 @@ class BankNamesView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -397,7 +397,7 @@ class BankNamesView: UIViewController {
     func hideNextButton() {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {
@@ -440,7 +440,7 @@ extension BankNamesView: UITextViewDelegate, BankNamesDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
         
         let doneButton = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(nextPressed))
@@ -453,7 +453,7 @@ extension BankNamesView: UITextViewDelegate, BankNamesDelegate {
         
         let toolBar2 = UIToolbar()
         toolBar2.sizeToFit()
-        toolBar2.barTintColor = Theme.DARK_GRAY
+        toolBar2.barTintColor = Theme.BLACK
         toolBar2.tintColor = Theme.WHITE
         
         let doneButton2 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

@@ -54,8 +54,8 @@ class SendBookingIssuesViewController: UIViewController {
                 sendFeedbackToDatabase(like: true, add: true)
                 expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
             } else {
-                likeButton.tintColor = Theme.DARK_GRAY
-                likeButton.backgroundColor = lineColor
+                likeButton.tintColor = Theme.BLACK
+                likeButton.backgroundColor = Theme.LINE_GRAY
                 sendFeedbackToDatabase(like: true, add: false)
             }
         }
@@ -72,8 +72,8 @@ class SendBookingIssuesViewController: UIViewController {
                 expandAlert(title: "Thanks for your feedback!", color: Theme.BLUE)
                 openDislikeFeeback()
             } else {
-                dislikeButton.tintColor = Theme.DARK_GRAY
-                dislikeButton.backgroundColor = lineColor
+                dislikeButton.tintColor = Theme.BLACK
+                dislikeButton.backgroundColor = Theme.LINE_GRAY
                 sendFeedbackToDatabase(like: false, add: false)
                 closeDislikeFeedback()
             }
@@ -82,9 +82,9 @@ class SendBookingIssuesViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -130,7 +130,7 @@ class SendBookingIssuesViewController: UIViewController {
         view.text = "Review my fare or fees"
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.numberOfLines = 2
         view.alpha = 0
         
@@ -141,7 +141,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         view.numberOfLines = 100
         view.text = ""
         view.alpha = 0
@@ -153,7 +153,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.text = "Support text"
         view.numberOfLines = 2
         view.alpha = 0
@@ -164,7 +164,7 @@ class SendBookingIssuesViewController: UIViewController {
     var supportTextView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH4
@@ -179,7 +179,7 @@ class SendBookingIssuesViewController: UIViewController {
     var supportTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -188,7 +188,7 @@ class SendBookingIssuesViewController: UIViewController {
     var supportButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Contact support", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -203,7 +203,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.text = "Was this page helpful?"
         view.textAlignment = .center
         view.alpha = 0
@@ -214,11 +214,11 @@ class SendBookingIssuesViewController: UIViewController {
     var likeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 20
         let image = UIImage(named: "likeIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.imageEdgeInsets = UIEdgeInsets(top: -2, left: -2, bottom: -2, right: -2)
         button.addTarget(self, action: #selector(helpfulButtonPressed(sender:)), for: .touchUpInside)
         button.alpha = 0
@@ -229,11 +229,11 @@ class SendBookingIssuesViewController: UIViewController {
     var dislikeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 20
         let image = UIImage(named: "dislikeIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.imageEdgeInsets = UIEdgeInsets(top: -2, left: -2, bottom: -2, right: -2)
         button.addTarget(self, action: #selector(helpfulButtonPressed(sender:)), for: .touchUpInside)
         button.alpha = 0
@@ -249,7 +249,7 @@ class SendBookingIssuesViewController: UIViewController {
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.layer.cornerRadius = 20
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0.2
@@ -263,7 +263,7 @@ class SendBookingIssuesViewController: UIViewController {
         let view = UILabel()
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         view.text = "Please provide feedback (optional)"
         view.numberOfLines = 2
         view.alpha = 0
@@ -274,7 +274,7 @@ class SendBookingIssuesViewController: UIViewController {
     var feedbackTextView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.tintColor = Theme.BLUE
         view.font = Fonts.SSPRegularH4
@@ -289,7 +289,7 @@ class SendBookingIssuesViewController: UIViewController {
     var feedbackTextLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -298,9 +298,9 @@ class SendBookingIssuesViewController: UIViewController {
     var feedbackButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Submit feedback", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
@@ -524,8 +524,8 @@ class SendBookingIssuesViewController: UIViewController {
 
         contactButton()
         supportButton.setTitle("Contact support", for: .normal)
-        supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        supportButton.backgroundColor = lineColor
+        supportButton.setTitleColor(Theme.BLACK, for: .normal)
+        supportButton.backgroundColor = Theme.LINE_GRAY
         supportButton.isUserInteractionEnabled = false
     }
     
@@ -536,7 +536,7 @@ class SendBookingIssuesViewController: UIViewController {
         supportTextView.alpha = 0
         supportTextLine.alpha = 0
         supportButton.setTitleColor(Theme.WHITE, for: .normal)
-        supportButton.backgroundColor = Theme.DARK_GRAY
+        supportButton.backgroundColor = Theme.BLACK
         supportButton.isUserInteractionEnabled = true
     }
     
@@ -682,8 +682,8 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        textView.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        supportTextLine.backgroundColor = lineColor
+        textView.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        supportTextLine.backgroundColor = Theme.LINE_GRAY
     }
     
     // Determine the size of the textview so that it adjusts as the user types
@@ -693,22 +693,22 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
         let estimatedHeight = estimatedSize.height
         if textView == self.feedbackTextView {
             if textView.text != "" {
-                feedbackButton.backgroundColor = Theme.DARK_GRAY
+                feedbackButton.backgroundColor = Theme.BLACK
                 feedbackButton.setTitleColor(Theme.WHITE, for: .normal)
                 feedbackButton.isUserInteractionEnabled = true
             } else {
-                feedbackButton.backgroundColor = lineColor
-                feedbackButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                feedbackButton.backgroundColor = Theme.LINE_GRAY
+                feedbackButton.setTitleColor(Theme.BLACK, for: .normal)
                 feedbackButton.isUserInteractionEnabled = false
             }
         } else {
             if textView.text != "" {
-                supportButton.backgroundColor = Theme.DARK_GRAY
+                supportButton.backgroundColor = Theme.BLACK
                 supportButton.setTitleColor(Theme.WHITE, for: .normal)
                 supportButton.isUserInteractionEnabled = true
             } else {
-                supportButton.backgroundColor = lineColor
-                supportButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                supportButton.backgroundColor = Theme.LINE_GRAY
+                supportButton.setTitleColor(Theme.BLACK, for: .normal)
                 supportButton.isUserInteractionEnabled = false
             }
         }
@@ -742,9 +742,9 @@ extension SendBookingIssuesViewController: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -819,7 +819,7 @@ extension SendBookingIssuesViewController {
                                 self.supportButton.alpha = 1
                                 self.supportButton.isUserInteractionEnabled = true
                                 self.view.endEditing(true)
-                                self.expandAlert(title: "Contacted support", color: Theme.GREEN_PIGMENT)
+                                self.expandAlert(title: "Contacted support", color: Theme.GREEN)
                                 self.supportTextView.text = ""
                                 delayWithSeconds(2, completion: {
                                     self.backButtonPressed()
@@ -834,7 +834,7 @@ extension SendBookingIssuesViewController {
                 }
             }
         } else {
-            expandAlert(title: "Issue sending", color: Theme.STRAWBERRY_PINK)
+            expandAlert(title: "Issue sending", color: Theme.SALMON)
             supportButton.alpha = 1.0
             supportButton.isUserInteractionEnabled = true
         }

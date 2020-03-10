@@ -88,22 +88,23 @@ struct DynamicPricing {
     
     //filter through all dynamic pricing options to determine a final price
     static func filterDynamicPricing(place: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat) -> CGFloat {
-        let location = checkLocations(city: city, state: state)
-        if location != CLLocationCoordinate2D() {
-            let cityPricing = getCityPricing(place: place, geoLocation: location, state: state, city: city, averagePrice: averagePrice)
-            let eventPricing = getEventPricing(place: place, geoLocation: location, averagePrice: cityPricing)
-            let timePricing = getTimePricing(averagePrice: eventPricing)
-            let yearPricing = getYearPricing(averagePrice: timePricing)
-            let holidayPricing = getHolidayPricing(averagePrice: yearPricing)
-            
-            return holidayPricing
-        } else {
-            let timePricing = getTimePricing(averagePrice: averagePrice)
-            let yearPricing = getYearPricing(averagePrice: timePricing)
-            let holidayPricing = getHolidayPricing(averagePrice: yearPricing)
-            
-            return holidayPricing
-        }
+//        let location = checkLocations(city: city, state: state)
+//        if location != CLLocationCoordinate2D {
+//            let cityPricing = getCityPricing(place: place, geoLocation: location, state: state, city: city, averagePrice: averagePrice)
+//            let eventPricing = getEventPricing(place: place, geoLocation: location, averagePrice: cityPricing)
+//            let timePricing = getTimePricing(averagePrice: eventPricing)
+//            let yearPricing = getYearPricing(averagePrice: timePricing)
+//            let holidayPricing = getHolidayPricing(averagePrice: yearPricing)
+//
+//            return holidayPricing
+//        } else {
+//            let timePricing = getTimePricing(averagePrice: averagePrice)
+//            let yearPricing = getYearPricing(averagePrice: timePricing)
+//            let holidayPricing = getHolidayPricing(averagePrice: yearPricing)
+//
+//            return holidayPricing
+//        }
+        return CGFloat.zero
     }
     
     static func checkLocations(city: String, state: String) -> CLLocationCoordinate2D {
@@ -143,7 +144,7 @@ struct DynamicPricing {
     
     //change price based on distance to city center
     static func getCityPricing(place: CLLocationCoordinate2D, geoLocation: CLLocationCoordinate2D, state: String, city: String, averagePrice: CGFloat) -> CGFloat {
-        let distance = place.distance(to: geoLocation)
+        let distance = place.distance(from: geoLocation)
         if distance <= 322 { //0.2 mile away from center city
             let newAverage = averagePrice + averagePrice * 0.3
             return newAverage

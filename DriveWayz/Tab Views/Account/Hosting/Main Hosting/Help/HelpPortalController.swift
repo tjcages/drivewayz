@@ -13,7 +13,7 @@ class HelpPortalController: UIViewController {
     var delegate: HostHelpDelegate?
     lazy var gradientNewHeight: CGFloat = gradientHeight + 24
         
-    var firstBackground: UIColor = Theme.PURPLE
+    var firstBackground: UIColor = Theme.COOL_2_MED
     var secondBackground: UIColor = UIColor(red: 66/255, green: 67/255, blue: 106/255, alpha: 1.0)
     var thirdBackground: UIColor = Theme.HOST_RED
     
@@ -65,8 +65,8 @@ class HelpPortalController: UIViewController {
     let thirdController: HostOnboardingView = {
         let controller = HostOnboardingView()
         controller.index = 2
-        controller.mainLabel.textColor = Theme.DARK_GRAY
-        controller.subLabel.textColor = Theme.DARK_GRAY
+        controller.mainLabel.textColor = Theme.BLACK
+        controller.subLabel.textColor = Theme.BLACK
         
         return controller
     }()
@@ -96,7 +96,7 @@ class HelpPortalController: UIViewController {
             isModalInPresentation = true
         }
         
-        view.backgroundColor = Theme.PURPLE
+        view.backgroundColor = Theme.COOL_2_MED
         
         pagingView.delegate = self
         
@@ -218,14 +218,14 @@ extension HelpPortalController: UIScrollViewDelegate {
             
             let color = fadeFromColor(fromColor: secondBackground, toColor: thirdBackground, withPercentage: percentage)
             view.backgroundColor = color
-            let tint = fadeFromColor(fromColor: Theme.WHITE, toColor: Theme.DARK_GRAY, withPercentage: percentage)
+            let tint = fadeFromColor(fromColor: Theme.WHITE, toColor: Theme.BLACK, withPercentage: percentage)
             exitButton.tintColor = tint
             paging.changeTint(color: tint)
             
             if percentage == 1 {
                 UIView.animate(withDuration: animationIn) {
                     self.view.backgroundColor = self.thirdBackground
-                    self.exitButton.tintColor = Theme.DARK_GRAY
+                    self.exitButton.tintColor = Theme.BLACK
                     self.paging.darkPaging()
                 }
             }

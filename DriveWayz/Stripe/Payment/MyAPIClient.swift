@@ -47,7 +47,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             "amount": amount,
             "currency": "USD"
         ]
-        Alamofire.request(url, method: .post, parameters: params)
+        AF.request(url, method: .post, parameters: params)
             .validate(statusCode: 200..<300)
             .responseString { response in
                 switch response.result {
@@ -84,7 +84,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
                         
                         let url = self.baseURL.appendingPathComponent("ephemeral_keys")
                         if let emails = email {
-                            Alamofire.request(url, method: .post, parameters: [
+                            AF.request(url, method: .post, parameters: [
                                 "api_version": "2018-09-24",
                                 "email": emails
                                 ])
@@ -139,7 +139,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
             //            "phoneNumber": phoneNumber
         ]
         
-        Alamofire.request(url, method: .post, parameters: values)
+        AF.request(url, method: .post, parameters: values)
             .validate(statusCode: 200..<300)
             .responseJSON { responseJSON in
                 switch responseJSON.result {
@@ -171,7 +171,7 @@ class MyAPIClient: NSObject, STPCustomerEphemeralKeyProvider {
         let amount = Double(funds) * 100
 //        let amount = Double(funds)
         let url = self.backendURL.appendingPathComponent("transfer")
-        Alamofire.request(url, method: .post, parameters: [
+        AF.request(url, method: .post, parameters: [
             "account": account,
             "currency": "USD",
             "amount": Int(amount)

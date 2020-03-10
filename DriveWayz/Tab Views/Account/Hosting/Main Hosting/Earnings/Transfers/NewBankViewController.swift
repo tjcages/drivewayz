@@ -19,7 +19,7 @@ class NewBankViewController: UIViewController {
     var dimView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -28,7 +28,7 @@ class NewBankViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Drivewayz uses Stripe to \nlink your bank"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
@@ -42,7 +42,7 @@ class NewBankViewController: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dismissController), for: .touchUpInside)

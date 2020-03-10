@@ -37,7 +37,7 @@ class SpotNumberViewController: UIViewController {
     var numberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Number of spots"
         label.font = Fonts.SSPRegularH5
         
@@ -48,7 +48,7 @@ class SpotNumberViewController: UIViewController {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "1"
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH3
         view.tintColor = .clear
         view.keyboardAppearance = .dark
@@ -60,7 +60,7 @@ class SpotNumberViewController: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -68,7 +68,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Does the spot have a number?"
         label.font = Fonts.SSPRegularH5
         
@@ -83,9 +83,9 @@ class SpotNumberViewController: UIViewController {
         button.tintColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 25/2
-        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        button.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         button.layer.borderWidth = 1
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.addTarget(self, action: #selector(checkmarkPressed(sender:)), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
@@ -97,8 +97,8 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPRegularH3
-        view.textColor = Theme.DARK_GRAY
-        view.tintColor = Theme.PACIFIC_BLUE
+        view.textColor = Theme.BLACK
+        view.tintColor = Theme.BLUE
         view.keyboardType = .numberPad
         view.keyboardAppearance = .dark
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -109,7 +109,7 @@ class SpotNumberViewController: UIViewController {
     var spotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -117,7 +117,7 @@ class SpotNumberViewController: UIViewController {
     var multipleSpotNumberInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Additional spot numbers"
         label.font = Fonts.SSPRegularH5
         label.alpha = 0
@@ -130,8 +130,8 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPRegularH3
-        view.textColor = Theme.DARK_GRAY
-        view.tintColor = Theme.PACIFIC_BLUE
+        view.textColor = Theme.BLACK
+        view.tintColor = Theme.BLUE
         view.keyboardType = .numberPad
         view.keyboardAppearance = .dark
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -165,7 +165,7 @@ class SpotNumberViewController: UIViewController {
     var multipleSpotNumberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -174,7 +174,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeInformation: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Gate code?"
         label.font = Fonts.SSPRegularH5
         
@@ -189,9 +189,9 @@ class SpotNumberViewController: UIViewController {
         button.tintColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 25/2
-        button.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        button.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         button.layer.borderWidth = 1
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.addTarget(self, action: #selector(checkmarkPressed(sender:)), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
@@ -203,8 +203,8 @@ class SpotNumberViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "• • • •"
         view.font = Fonts.SSPRegularH3
-        view.textColor = Theme.DARK_GRAY
-        view.tintColor = Theme.PACIFIC_BLUE
+        view.textColor = Theme.BLACK
+        view.tintColor = Theme.BLUE
         view.keyboardType = .numberPad
         view.keyboardAppearance = .dark
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -215,7 +215,7 @@ class SpotNumberViewController: UIViewController {
     var gateCodeLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -223,7 +223,7 @@ class SpotNumberViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.numberOfLines = 3
         label.text = "Any spot number or gate code provided will be hidden until a motorist books the parking space."
@@ -423,8 +423,8 @@ class SpotNumberViewController: UIViewController {
         if bool == true {
             UIView.animate(withDuration: 0.1, animations: {
                 sender.tintColor = Theme.WHITE
-                sender.backgroundColor = Theme.GREEN_PIGMENT
-                sender.layer.borderColor = Theme.GREEN_PIGMENT.cgColor
+                sender.backgroundColor = Theme.GREEN
+                sender.layer.borderColor = Theme.GREEN.cgColor
             }) { (success) in
                 if sender == self.spotNumberCheckmark, self.numberField.text != "1" {
                     self.otherSpots()
@@ -433,8 +433,8 @@ class SpotNumberViewController: UIViewController {
         } else {
             UIView.animate(withDuration: 0.1, animations: {
                 sender.tintColor = .clear
-                sender.backgroundColor = Theme.OFF_WHITE
-                sender.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+                sender.backgroundColor = Theme.BACKGROUND_GRAY
+                sender.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
             }) { (success) in
                 if sender == self.spotNumberCheckmark, self.numberField.text != "1" {
                     self.singleSpots()
@@ -446,7 +446,7 @@ class SpotNumberViewController: UIViewController {
     func createNumberPicker() {
         let numberPicker = UIPickerView()
         numberPicker.delegate = self
-        numberPicker.backgroundColor = Theme.OFF_WHITE
+        numberPicker.backgroundColor = Theme.BACKGROUND_GRAY
         numberField.inputView = numberPicker
         
         createToolbar()
@@ -455,9 +455,9 @@ class SpotNumberViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.GRAY_WHITE.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -589,13 +589,13 @@ extension SpotNumberViewController: UIPickerViewDelegate, UIPickerViewDataSource
         }
         if textView == self.spotNumberField {
             self.spotNumberField.backgroundColor = UIColor.clear
-            self.spotNumberLine.backgroundColor = lineColor
+            self.spotNumberLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.numberField {
             self.numberField.backgroundColor = UIColor.clear
-            self.numberLine.backgroundColor = lineColor
+            self.numberLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.gateCodeField {
             self.gateCodeField.backgroundColor = UIColor.clear
-            self.gateCodeLine.backgroundColor = lineColor
+            self.gateCodeLine.backgroundColor = Theme.LINE_GRAY
         }
     }
     
@@ -634,7 +634,7 @@ class SpotNumbers: UICollectionViewCell {
     var iconLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .center
         

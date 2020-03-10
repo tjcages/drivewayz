@@ -53,7 +53,7 @@ class HostPromotionsViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Do more with hosting"
         label.font = Fonts.SSPSemiBoldH5
         label.alpha = 0
@@ -66,8 +66,8 @@ class HostPromotionsViewController: UIViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.numberOfPages = 4
         pageControl.radius = 4
-        pageControl.tintColor = Theme.LIGHT_GRAY
-        pageControl.currentPageTintColor = Theme.STRAWBERRY_PINK
+        pageControl.tintColor = Theme.GRAY_WHITE_4
+        pageControl.currentPageTintColor = Theme.SALMON
         pageControl.padding = 6
         
         return pageControl
@@ -76,7 +76,7 @@ class HostPromotionsViewController: UIViewController {
     lazy var lightBlurView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customFifthColor(topColor: Theme.OFF_WHITE.withAlphaComponent(0), middleColor: Theme.OFF_WHITE, secondMiddleColor: Theme.OFF_WHITE, thirdMiddleColor: Theme.OFF_WHITE, fourthMiddleColor: Theme.OFF_WHITE, fifthMiddleColor: Theme.OFF_WHITE, bottomColor: Theme.OFF_WHITE)
+        let background = CAGradientLayer().customFifthColor(topColor: Theme.BACKGROUND_GRAY.withAlphaComponent(0), middleColor: Theme.BACKGROUND_GRAY, secondMiddleColor: Theme.BACKGROUND_GRAY, thirdMiddleColor: Theme.BACKGROUND_GRAY, fourthMiddleColor: Theme.BACKGROUND_GRAY, fifthMiddleColor: Theme.BACKGROUND_GRAY, bottomColor: Theme.BACKGROUND_GRAY)
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: 272)
         background.zPosition = -10
         view.layer.insertSublayer(background, at: 0)
@@ -298,7 +298,7 @@ class PromotionsCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Invite a friend to become a host!"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         
@@ -318,7 +318,7 @@ class PromotionsCell: UICollectionViewCell {
     var highlightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 4
         
         return view
@@ -328,7 +328,7 @@ class PromotionsCell: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Learn more", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.isUserInteractionEnabled = false
         
@@ -338,7 +338,7 @@ class PromotionsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        self.layer.shadowColor = Theme.BLACK.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowRadius = 3
         self.layer.shadowOpacity = 0.2

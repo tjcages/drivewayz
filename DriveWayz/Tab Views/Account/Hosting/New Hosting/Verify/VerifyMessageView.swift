@@ -16,7 +16,7 @@ class VerifyMessageView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Promotional message"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.isUserInteractionEnabled = false
         
@@ -28,7 +28,7 @@ class VerifyMessageView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()
@@ -38,9 +38,9 @@ class VerifyMessageView: UIViewController {
         view.lineTextView?.placeHolderCenter = false
         view.textViewFont = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .default
         view.lineTextView?.placeholderLabel.text = "Write your message here"
         view.lineTextView?.placeholderLabel.font = Fonts.SSPRegularH4
@@ -67,7 +67,7 @@ class VerifyMessageView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.message = "Please provide a description for your parking space."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -135,7 +135,7 @@ extension VerifyMessageView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -155,7 +155,7 @@ extension VerifyMessageView: UITextViewDelegate {
             self.characterLabel.text = "\(newLength)/160"
             return true
         } else {
-            self.characterLabel.textColor = Theme.HARMONY_RED
+            self.characterLabel.textColor = Theme.SALMON
             return false
         }
     }

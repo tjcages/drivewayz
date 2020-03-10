@@ -7,14 +7,16 @@
 //
 
 import UIKit
+import GoogleMaps
 
 enum MainViewState {
     case none
+    case startup
     case mainBar
     case parking
-    case duration
     case payment
     case currentBooking
+    case navigation
 }
 
 var showHamburger: Bool = true
@@ -23,96 +25,81 @@ var horizontalPadding: CGFloat = 8
 extension MapKitViewController {
     
     func reloadRequestedViews() {
-        // Show disabled state
-//        showNone()
-        
         switch mainViewState {
         case .none:
             // Hide all views
             showNone()
+        case .startup:
+            showStartup(duration: 1)
         case .mainBar:
             // Show main bar
-            showMainBar()
+            showStartup(duration: animationOut)
         case .parking:
             // Show parking options
             showParking()
-        case .duration:
-            // Show duration options
-            showDuration(parkNow: true)
         case .payment:
             // Show payment options
-            showPayment()
+            print("payment")
         case .currentBooking:
             // Show current booking
             showCurrentBooking()
+        case .navigation:
+            print("navigation")
         }
     }
     
     func showNone() {
         mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 470
-        currentBottomHeightAnchor.constant = phoneHeight
+        currentBarBottomAnchor.constant = currentBarNormalHeight + 64
         
-        locatorMainBottomAnchor.isActive = true
-        locatorParkingBottomAnchor.isActive = false
-        locatorCurrentBottomAnchor.isActive = false
         UIView.animate(withDuration: animationOut * 2, animations: {
-            self.mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: 0, right: horizontalPadding)
-            self.currentDurationController.view.alpha = 0
-            self.currentDurationController.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+//            self.mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: 0, right: horizontalPadding)
+//            self.currentDurationController.view.alpha = 0
+//            self.currentDurationController.view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             self.locatorButton.alpha = 0
             self.parkingBackButton.alpha = 0
             self.parkingRouteButton.alpha = 0
+            self.currentRouteButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             self.delegate?.defaultContentStatusBar()
         }
     }
     
-    func showMainBar() {
-        showNone()
-        if mainBarController.bannerController.view.alpha == 1 {
-            if mainBarController.reservationsOpen {
-                mainBarController.closeReservations()
-                closeMainBanner()
-            }
-        }
-        
-        closeMainBar()
-        if showHamburger { delegate?.bringHamburger() }
+    func showStartup(duration: Double) {
+        mainBarBottomAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 470
-        currentBottomHeightAnchor.constant = phoneHeight
+        currentBarBottomAnchor.constant = currentBarNormalHeight + 64
         
-        locatorMainBottomAnchor.isActive = true
-        locatorParkingBottomAnchor.isActive = false
-        locatorCurrentBottomAnchor.isActive = false
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: mainBarNormalHeight - 72, right: horizontalPadding)
-            self.mainBarController.scrollView.alpha = 1
+        UIView.animateInOut(withDuration: duration, animations: {
+            self.mainBarController.view.alpha = 1
+            self.mapView.padding = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: mainBarNormalHeight - 32, right: horizontalPadding)
             self.locatorButton.alpha = 0
             self.parkingBackButton.alpha = 0
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
+            self.removeAllMapOverlays(shouldRefresh: false)
+            self.locatorButtonPressed(padding: nil)
+            if duration != 1 { self.showWelcomeBanner() }
             self.delegate?.defaultContentStatusBar()
+            self.delegate?.bringProfile()
         }
     }
     
     func showParking() {
         followEnd = true
-        mainBarBottomAnchor.constant = phoneHeight
-        parkingControllerBottomAnchor.constant = 0
-        currentBottomHeightAnchor.constant = phoneHeight
+        hideWelcomeBanner()
         
-        parkingBackButtonBookAnchor.isActive = true
-        parkingBackButtonPurchaseAnchor.isActive = false
+        mainBarBottomAnchor.constant = mainBarNormalHeight + 64
+        parkingControllerBottomAnchor.constant = 0
+        currentBarBottomAnchor.constant = currentBarNormalHeight + 64
         
         delegate?.hideHamburger()
-        locatorMainBottomAnchor.isActive = false
-        locatorParkingBottomAnchor.isActive = true
-        locatorCurrentBottomAnchor.isActive = false
+        delegate?.hideProfile()
         UIView.animate(withDuration: animationOut, animations: {
-            self.mapView.padding = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: parkingNormalHeight - 64, right: horizontalPadding)
+            self.mapView.padding = UIEdgeInsets(top: -20, left: horizontalPadding, bottom: parkingNormalHeight - 64, right: horizontalPadding)
             self.parkingBackButton.alpha = 1
             self.parkingRouteButton.alpha = 1
             self.fullBackgroundView.alpha = 0
@@ -123,136 +110,82 @@ extension MapKitViewController {
         }
     }
     
-    func showDuration(parkNow: Bool) {
-        if parkNow {
-            durationController.durationBottomController.buttonPressed(sender: durationController.durationBottomController.parkNowButton)
-        } else {
-            durationController.durationBottomController.buttonPressed(sender: durationController.durationBottomController.reserveSpotButton)
-        }
-        let navigation = UINavigationController(rootViewController: durationController)
-        navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overFullScreen
-        UIView.animate(withDuration: animationIn, animations: {
-            tabDimmingView.alpha = 0.4
-        }) { (success) in
-            self.present(navigation, animated: true, completion: nil)
-        }
-    }
-    
-    func showPayment() {
-//        view.bringSubviewToFront(confirmPaymentController.view)
-//        mainBarTopAnchor.constant = 0
-//        durationControllerBottomAnchor.constant = 500
-//        currentBottomHeightAnchork.constant = phoneHeight
-        
-        parkingBackButtonBookAnchor.isActive = true
-        parkingBackButtonPurchaseAnchor.isActive = false
-        
-        locatorMainBottomAnchor.isActive = false
-        locatorParkingBottomAnchor.isActive = true
-        locatorCurrentBottomAnchor.isActive = false
-        locatorButtonPressed(padding: 32)
-        UIView.animate(withDuration: animationOut, animations: {
-            self.mapView.padding = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: purchaseNormalHeight - 64, right: horizontalPadding)
-            self.locatorButton.alpha = 0
-            self.parkingBackButton.alpha = 1
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            self.delegate?.hideHamburger()
-            self.delegate?.defaultContentStatusBar()
-        }
-    }
-    
     func showCurrentBooking() {
-        currentBottomHeightAnchor.constant = currentBookingHeight
-        UIView.animate(withDuration: animationOut, delay: 0, options: .curveEaseOut, animations: {
-            self.mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: statusHeight, right: horizontalPadding)
-            self.currentDurationController.view.alpha = 1
-            self.currentDurationController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        currentBarBottomAnchor.constant = 0
+        parkingControllerBottomAnchor.constant = 470
+        
+        UIView.animateInOut(withDuration: animationOut, animations: {
+            self.mainBarController.view.alpha = 1
+            self.mapView.padding = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: currentBarNormalHeight - 32, right: horizontalPadding)
+            self.locatorButton.alpha = 0
+            self.parkingBackButton.alpha = 0
             self.fullBackgroundView.alpha = 0
-            self.currentRouteButton.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
-            //
+            self.currentBookingController.updateRatio(ratio: 0.9, duration: animationOut * 2, true)
+            self.removeAllMapOverlays(shouldRefresh: false)
+            self.locatorButtonPressed(padding: nil)
+            self.delegate?.defaultContentStatusBar()
+            self.delegate?.bringProfile()
         }
     }
     
     func setupMainViews() {
         setupMainBar()
         setupParking()
-        setupDuration()
         setupCurrent()
     }
     
     func setupMainBar() {
-        self.view.addSubview(mainBarController.view)
-        mainBarController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        mainBarController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        mainBarBottomAnchor = mainBarController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-            mainBarBottomAnchor.isActive = true
-        mainBarController.view.heightAnchor.constraint(equalToConstant: phoneHeight - statusHeight).isActive = true
-
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarIsScrolling(sender:)))
-        mainBarController.view.addGestureRecognizer(pan)
-        mainBarController.searchController.searchView.addTarget(self, action: #selector(openSearch), for: .touchUpInside)
-        mainBarController.searchController.recommendationButton.addTarget(self, action: #selector(recommendButtonPressed), for: .touchUpInside)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(mainBannerPressed))
-        mainBarController.bannerController.view.addGestureRecognizer(tap)
-        let search = UITapGestureRecognizer(target: self, action: #selector(openSearch))
-        mainBarController.bannerController.reservationView.addGestureRecognizer(search)
-        
         if device != .iphoneX {
             mainBarNormalHeight = mainBarNormalHeight - 32
         }
+        
+        view.addSubview(mainBarController.view)
+        mainBarController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        mainBarController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        mainBarHeightAnchor = mainBarController.view.heightAnchor.constraint(equalToConstant: mainBarNormalHeight)
+            mainBarHeightAnchor.isActive = true
+        mainBarBottomAnchor = mainBarController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: mainBarNormalHeight + 64)
+            mainBarBottomAnchor.isActive = true
+
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(mainBarPanned(sender:)))
+        mainBarController.view.addGestureRecognizer(pan)
+        mainBarController.searchView.addTarget(self, action: #selector(searchPressed), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(readjustMainBar), name: NSNotification.Name(rawValue: "readjustMainBar"), object: nil)
     }
     
     func setupParking() {
         self.view.addSubview(parkingController.view)
         parkingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         parkingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        parkingControllerBottomAnchor = parkingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 470)
+        parkingControllerBottomAnchor = parkingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 470)
             parkingControllerBottomAnchor.isActive = true
         parkingControllerHeightAnchor = parkingController.view.heightAnchor.constraint(equalToConstant: parkingNormalHeight)
             parkingControllerHeightAnchor.isActive = true
-        parkingController.timeIcon.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
-        parkingController.timeValue.addTarget(self, action: #selector(changeDatesPressed), for: .touchUpInside)
+
         let pan = UIPanGestureRecognizer(target: self, action: #selector(bookingViewIsScrolling(sender:)))
         parkingController.view.addGestureRecognizer(pan)
         
         view.addSubview(topParkingView)
         topParkingView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: gradientHeight - 60)
         
-    }
-    
-    func setupDuration() {
-        durationController.delegate = self
-        durationController.reservationController.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(readjustBookingHeight), name: NSNotification.Name(rawValue: "readjustBookingHeight"), object: nil)
+        
     }
     
     func setupCurrent() {
-        view.addSubview(currentBottomController.view)
-        view.addSubview(currentDurationController.view)
-        
-        currentBottomHeightAnchor = currentBottomController.view.topAnchor.constraint(equalTo: currentDurationController.view.bottomAnchor)
-            currentBottomHeightAnchor.isActive = true
-        currentBottomController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        currentBottomController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        currentBottomController.view.heightAnchor.constraint(equalToConstant: phoneHeight - 116 - statusHeight).isActive = true
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(currentViewIsScrolling(sender:)))
-        currentBottomController.view.addGestureRecognizer(pan)
-        
-        durationTopAnchor = currentDurationController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16)
-            durationTopAnchor.isActive = true
-        durationLeftAnchor = currentDurationController.view.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
-            durationLeftAnchor.isActive = true
-        durationRightAnchor = currentDurationController.view.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16)
-            durationRightAnchor.isActive = true
-        currentDurationController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 116).isActive = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(currentDurationTapped))
-        currentDurationController.view.addGestureRecognizer(tap)
-        
+        view.addSubview(currentBookingController.view)
+        currentBookingController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        currentBookingController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        currentBarHeightAnchor = currentBookingController.view.heightAnchor.constraint(equalToConstant: currentBarNormalHeight)
+            currentBarHeightAnchor.isActive = true
+        currentBarBottomAnchor = currentBookingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: currentBarNormalHeight + 64)
+            currentBarBottomAnchor.isActive = true
+
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(currentBarPanned(sender:)))
+        currentBookingController.view.addGestureRecognizer(pan)
     }
     
     

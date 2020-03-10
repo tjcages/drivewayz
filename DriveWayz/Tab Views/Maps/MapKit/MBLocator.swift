@@ -26,6 +26,7 @@ var userTracking: UserTracking = .follow {
 }
 var userCurrentLocation: CLLocation?
 
+var snapshotReady: Bool = false
 var showLocatorButton: Bool = true
 var showRouteButton: Bool = true
 
@@ -37,7 +38,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         if sender != parkingRouteButton && sender != currentRouteButton {
             locatorButtonPressed(padding: nil)
         } else if sender == currentRouteButton {
-            if sender.backgroundColor == Theme.DARK_GRAY {
+            if sender.backgroundColor == Theme.BLACK {
                 if let userLocation = self.locationManager.location {
                     let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
                     mapView.animate(to: camera)
@@ -45,7 +46,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
                     
                     UIView.animate(withDuration: animationIn) {
                         self.currentRouteButton.backgroundColor = Theme.WHITE
-                        self.currentRouteButton.tintColor = Theme.DARK_GRAY
+                        self.currentRouteButton.tintColor = Theme.BLACK
                     }
                 }
             } else {
@@ -53,7 +54,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
                 zoomToBounds(sender: sender)
             }
         } else {
-            if sender.backgroundColor == Theme.DARK_GRAY {
+            if sender.backgroundColor == Theme.BLACK {
                 locatorButtonPressed(padding: nil)
             } else {
                 zoomToBounds(sender: sender)
@@ -62,11 +63,8 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
     }
     
     func zoomToBounds(sender: UIButton) {
-        var fromLocation = mapView.projection.coordinate(for: routeEndPin.center)
-        if mainViewState == .currentBooking {
-            fromLocation = mapView.projection.coordinate(for: routeParkingPin.center)
-        }
-        guard let toLocation = mapView.myLocation?.coordinate else { return }
+        guard let fromLocation = ZoomStartCoordinate,
+            let toLocation = mapView.myLocation?.coordinate else { return }
         showRouteButton = false
         showLocatorButton = true
         
@@ -75,7 +73,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         mapView.animate(with: camera)
         
         UIView.animate(withDuration: animationIn) {
-            sender.backgroundColor = Theme.DARK_GRAY
+            sender.backgroundColor = Theme.BLACK
             sender.tintColor = Theme.WHITE
         }
     }
@@ -102,9 +100,9 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         UIView.animate(withDuration: animationIn) {
             self.locatorButton.alpha = 0
             self.parkingRouteButton.backgroundColor = Theme.WHITE
-            self.parkingRouteButton.tintColor = Theme.DARK_GRAY
+            self.parkingRouteButton.tintColor = Theme.BLACK
             self.currentRouteButton.backgroundColor = Theme.WHITE
-            self.currentRouteButton.tintColor = Theme.DARK_GRAY
+            self.currentRouteButton.tintColor = Theme.BLACK
         }
     }
     
@@ -118,12 +116,12 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         
         locationManager.startUpdatingLocation()
         
-        observeAllParking()
         delayWithSeconds(1) {
             guard let location = self.locationManager.location else {
                 return
             }
-            self.mainBarController.searchController.determineCity(location: location)
+            self.locatorButtonPressed(padding: nil)
+            self.mainBarController.determineCity(location: location)
         }
     }
     
@@ -132,15 +130,6 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
             return
         }
         locationManager.startUpdatingLocation()
-        
-        mapView.isMyLocationEnabled = true
-        
-        delayWithSeconds(1) {
-            guard let location = self.locationManager.location else {
-                return
-            }
-            self.mainBarController.searchController.determineCity(location: location)
-        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -149,7 +138,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         }
         
         if userTracking != .none {
-            if mainViewState == .mainBar {
+            if mainViewState == .mainBar || mainViewState == .startup {
                 var zoom = mapZoomLevel
                 if mainViewState == .currentBooking {
                     zoom = 15.5
@@ -157,23 +146,23 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
                 let camera = GMSCameraPosition(target: location.coordinate, zoom: zoom)
                 mapView.animate(to: camera)
             } else if mainViewState == .currentBooking {
-                switch currentBookingState {
-                case .none:
-                    return
-                case .walking:
-                    monitorLocationUpdates()
-                case .driving:
-                    monitorLocationUpdates()
-                case .checkedIn:
-                    monitorLocationUpdates()
-                }
+//                switch currentBookingState {
+//                case .none:
+//                    return
+//                case .walking:
+//                    monitorLocationUpdates()
+//                case .driving:
+//                    monitorLocationUpdates()
+//                case .checkedIn:
+//                    monitorLocationUpdates()
+//                }
             }
         }
     }
     
     func monitorLocationUpdates() {
         if let userLocation = self.locationManager.location {
-            drawDrivingRoute(fromLocation: userLocation, toLocation: hostLocation)
+//            drawDrivingRoute(fromLocation: userLocation, toLocation: hostLocation)
             
             if userTracking == .followWithHeading {
                 if let heading = mapView.myLocation?.course {
@@ -200,12 +189,17 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         // Remove map backgroundImageView
         showRouteButton = true
         showLocatorButton = true
+        snapshotReady = true
         
-        if self.backgroundImageView.alpha == 1 {
-            UIView.animate(withDuration: 0.4) {
-                self.backgroundImageView.alpha = 0
-            }
-        }
+//        delayWithSeconds(2) {
+//            if self.backgroundImageView.alpha == 1 {
+//                UIView.animateOut(withDuration: 2, animations: {
+//                    self.backgroundImageView.alpha = 0
+//                }, completion: { (success) in
+//                    //
+//                })
+//            }
+//        }
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
@@ -216,9 +210,10 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         case .payment:
             monitorRouteLines()
         case .currentBooking:
-            layCurrentMarkers()
+            monitorRouteLines()
+//            layCurrentMarkers()
         case .none:
-            layCurrentMarkers()
+//            layCurrentMarkers()
             monitorRouteLines()
         default:
             return
@@ -234,7 +229,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
             changeUserInteractionTimer = nil
             changeUserInteractionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(changeUserInteraction), userInfo: nil, repeats: false)
             
-            if locatorButton.alpha == 0 && mainViewState == .mainBar {
+            if locatorButton.alpha == 0 && (mainViewState == .mainBar || mainViewState == .startup) {
                 UIView.animate(withDuration: animationIn) {
                     self.locatorButton.alpha = 1
                 }

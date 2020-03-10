@@ -23,8 +23,8 @@ class HelpAccountController: UIViewController {
         controller.gradientContainer.backgroundColor = mainColor
         controller.gradientContainer.clipsToBounds = true
         controller.scrollView.alpha = 0
-        controller.mainLabel.textColor = Theme.DARK_GRAY
-        controller.backButton.tintColor = Theme.DARK_GRAY
+        controller.mainLabel.textColor = Theme.BLACK
+        controller.backButton.tintColor = Theme.BLACK
         
         return controller
     }()
@@ -33,7 +33,7 @@ class HelpAccountController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Get more from your \nparking spaces"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH00
         label.numberOfLines = 2
         
@@ -44,7 +44,7 @@ class HelpAccountController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Increase revenue, promote your \nbusiness, and help the local \ncommunity by listing on Drivewayz."
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         
@@ -55,7 +55,7 @@ class HelpAccountController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Learn more", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH2
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
@@ -66,7 +66,7 @@ class HelpAccountController: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 32
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
@@ -157,7 +157,7 @@ class HelpAccountController: UIViewController {
         gradientController.scrollView.setContentOffset(CGPoint(x: 0.0, y: phoneHeight - gradientController.gradientNewHeight), animated: true)
         scrollMinimized()
         UIView.animate(withDuration: animationOut) {
-            self.gradientController.gradientContainer.backgroundColor = Theme.DARK_GRAY
+            self.gradientController.gradientContainer.backgroundColor = Theme.BLACK
             self.gradientController.mainLabel.textColor = Theme.WHITE
             self.gradientController.backButton.tintColor = Theme.WHITE
         }
@@ -189,19 +189,19 @@ extension HelpAccountController: UIScrollViewDelegate {
             } else if translation <= -60 {
                 gradientController.backButton.sendActions(for: .touchUpInside)
             } else if translation >= phoneHeight - gradientController.gradientNewHeight - 132 {
-                if gradientController.gradientContainer.backgroundColor != Theme.DARK_GRAY {
+                if gradientController.gradientContainer.backgroundColor != Theme.BLACK {
                     UIView.animate(withDuration: animationIn) {
-                        self.gradientController.gradientContainer.backgroundColor = Theme.DARK_GRAY
+                        self.gradientController.gradientContainer.backgroundColor = Theme.BLACK
                         self.gradientController.mainLabel.textColor = Theme.WHITE
                         self.gradientController.backButton.tintColor = Theme.WHITE
                     }
                 }
             } else {
-                if gradientController.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                if gradientController.gradientContainer.backgroundColor == Theme.BLACK {
                     UIView.animate(withDuration: animationIn) {
                         self.gradientController.gradientContainer.backgroundColor = self.mainColor
-                        self.gradientController.mainLabel.textColor = Theme.DARK_GRAY
-                        self.gradientController.backButton.tintColor = Theme.DARK_GRAY
+                        self.gradientController.mainLabel.textColor = Theme.BLACK
+                        self.gradientController.backButton.tintColor = Theme.BLACK
                     }
                 }
             }
@@ -235,8 +235,8 @@ extension HelpAccountController: UIScrollViewDelegate {
         UIView.animate(withDuration: animationOut, animations: {
             self.gradientController.mainLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.gradientController.gradientContainer.backgroundColor = self.mainColor
-            self.gradientController.mainLabel.textColor = Theme.DARK_GRAY
-            self.gradientController.backButton.tintColor = Theme.DARK_GRAY
+            self.gradientController.mainLabel.textColor = Theme.BLACK
+            self.gradientController.backButton.tintColor = Theme.BLACK
             self.view.layoutIfNeeded()
         }) { (success) in
             
@@ -248,16 +248,16 @@ extension HelpAccountController: UIScrollViewDelegate {
         UIView.animate(withDuration: animationOut, animations: {
             self.gradientController.mainLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             if self.gradientController.scrollView.contentOffset.y >= phoneHeight - self.gradientController.gradientNewHeight - 132 {
-                if self.gradientController.gradientContainer.backgroundColor != Theme.DARK_GRAY {
-                    self.gradientController.gradientContainer.backgroundColor = Theme.DARK_GRAY
+                if self.gradientController.gradientContainer.backgroundColor != Theme.BLACK {
+                    self.gradientController.gradientContainer.backgroundColor = Theme.BLACK
                     self.gradientController.mainLabel.textColor = Theme.WHITE
                     self.gradientController.backButton.tintColor = Theme.WHITE
                 }
             } else {
-                if self.gradientController.gradientContainer.backgroundColor == Theme.DARK_GRAY {
+                if self.gradientController.gradientContainer.backgroundColor == Theme.BLACK {
                     self.gradientController.gradientContainer.backgroundColor = self.mainColor
-                    self.gradientController.mainLabel.textColor = Theme.DARK_GRAY
-                    self.gradientController.backButton.tintColor = Theme.DARK_GRAY
+                    self.gradientController.mainLabel.textColor = Theme.BLACK
+                    self.gradientController.backButton.tintColor = Theme.BLACK
                 }
             }
             self.view.layoutIfNeeded()

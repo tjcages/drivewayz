@@ -56,8 +56,8 @@ class SendOptionsViewController: UIViewController {
         bottomOptionsPicker.delegate = self
         bottomOptionsPicker.dataSource = self
         
-        view.backgroundColor = Theme.DARK_GRAY
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.backgroundColor = Theme.BLACK
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -171,7 +171,7 @@ class MessageOptionsCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Options"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -181,7 +181,7 @@ class MessageOptionsCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.backgroundColor = Theme.WHITE
-        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowColor = Theme.BLACK.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 1)
         layer.shadowRadius = 3
         layer.shadowOpacity = 0.2

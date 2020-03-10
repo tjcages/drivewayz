@@ -42,7 +42,7 @@ class ReservationsHelpView: UIViewController {
     lazy var pullButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.layer.cornerRadius = 2.5
         button.isUserInteractionEnabled = false
         
@@ -52,7 +52,7 @@ class ReservationsHelpView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.text = "Reservations"
         
@@ -62,7 +62,7 @@ class ReservationsHelpView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -70,10 +70,10 @@ class ReservationsHelpView: UIViewController {
     var reservationIcon: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 45/2
         button.clipsToBounds = true
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         let image = UIImage(named: "helpCalendar")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         
@@ -84,7 +84,7 @@ class ReservationsHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Wed 18, Nov 2019"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -94,7 +94,7 @@ class ReservationsHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Previous reservation"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -115,7 +115,7 @@ class ReservationsHelpView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You do not currently have an upcoming reservation."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 4
         
@@ -136,7 +136,7 @@ class ReservationsHelpView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Dismiss", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -149,7 +149,7 @@ class ReservationsHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -252,12 +252,12 @@ class ReservationsHelpView: UIViewController {
     func setPrevious() {
         subLabelTop = -2
         timeLabel.alpha = 0
-        reservationIcon.tintColor = Theme.DARK_GRAY
-        reservationIcon.backgroundColor = lineColor
+        reservationIcon.tintColor = Theme.BLACK
+        reservationIcon.backgroundColor = Theme.LINE_GRAY
         subLabel.text = "Previous reservation"
         informationLabel.text = "You do not currently have an upcoming reservation."
         mainButton.setTitle("Dismiss", for: .normal)
-        mainButton.backgroundColor = Theme.DARK_GRAY
+        mainButton.backgroundColor = Theme.BLACK
     }
     
     func setCurrent() {
@@ -268,7 +268,7 @@ class ReservationsHelpView: UIViewController {
         subLabel.text = "Upcoming reservation"
         informationLabel.text = "Reservations can only be canceled up to 24 hours in advance."
         mainButton.setTitle("Cancel Reservation", for: .normal)
-        mainButton.backgroundColor = Theme.HARMONY_RED
+        mainButton.backgroundColor = Theme.SALMON
     }
     
     @objc func viewPanned(sender: UIPanGestureRecognizer) {

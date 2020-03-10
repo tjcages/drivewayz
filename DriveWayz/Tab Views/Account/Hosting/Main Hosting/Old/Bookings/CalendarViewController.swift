@@ -68,7 +68,7 @@ class CalendarViewController: UIViewController, handleCalendarHeight {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Undo", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.LIGHT_GRAY
+        button.backgroundColor = Theme.GRAY_WHITE_4
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.layer.cornerRadius = 35/2
         button.clipsToBounds = true
@@ -164,7 +164,7 @@ class CalendarViewController: UIViewController, handleCalendarHeight {
     
     @objc func saveButtonPressed() {
         self.bookingDelegate?.beginLoading()
-        self.nextButton.backgroundColor = Theme.LIGHT_GRAY
+        self.nextButton.backgroundColor = Theme.GRAY_WHITE_4
         self.nextButton.isUserInteractionEnabled = false
         if let userID = Auth.auth().currentUser?.uid {
             let ref = Database.database().reference().child("users").child(userID).child("Hosting Spots")

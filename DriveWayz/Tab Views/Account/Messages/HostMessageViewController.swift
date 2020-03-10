@@ -33,18 +33,13 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = Theme.WHITE
-        button.backgroundColor = Theme.PURPLE
+        button.backgroundColor = Theme.COOL_2_MED
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 2, bottom: 4, right: 2)
         button.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(sendButtonPressed(sender:)), for: .touchUpInside)
-        
-        let background = CAGradientLayer().purpleColor()
-        background.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-        background.zPosition = -10
-        button.layer.addSublayer(background)
         
         return button
     }()
@@ -64,12 +59,12 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
         let view = UITextView()
         view.backgroundColor = Theme.WHITE
         view.font = Fonts.SSPRegularH5
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.7)
         view.text = "Enter message"
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = true
         view.layer.cornerRadius = 20
-        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.7).cgColor
+        view.layer.borderColor = Theme.BLACK.withAlphaComponent(0.7).cgColor
         view.layer.borderWidth = 0.5
         view.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 42)
         
@@ -79,8 +74,8 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
     var extraOptionsContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        view.backgroundColor = Theme.BACKGROUND_GRAY
+        view.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         view.layer.borderWidth = 0.5
         
         return view
@@ -243,7 +238,7 @@ class HostMessageViewController: UIViewController, UIScrollViewDelegate, UITextV
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Enter message"
-            textView.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+            textView.textColor = Theme.BLACK.withAlphaComponent(0.7)
             self.userTextViewHeight.constant = 55
             self.newTextViewHeight = 55
         }
@@ -305,7 +300,7 @@ extension HostMessageViewController {
     
     private func sendMessageWithProperties(properties: [String: AnyObject], message: String) {
         self.userTextView.text = ""
-        self.sendArrow.backgroundColor = Theme.DARK_GRAY
+        self.sendArrow.backgroundColor = Theme.BLACK
         self.sendArrow.isUserInteractionEnabled = false
         self.userTextView.resignFirstResponder()
         
@@ -336,7 +331,7 @@ extension HostMessageViewController {
                 print(error ?? "")
                 return
             }
-            self.sendArrow.backgroundColor = Theme.SEA_BLUE
+            self.sendArrow.backgroundColor = Theme.BLUE
             self.sendArrow.isUserInteractionEnabled = true
             if let messageId = childRef.key {
                 let vals = [messageId: 1] as [String: Int]
@@ -368,7 +363,7 @@ extension HostMessageViewController {
         headers = ["Content-Type": "application/json", "Authorization": "key=\(AppDelegate.SERVERKEY)"]
         let notification = ["to": "\(toDevice)", "notification": ["body": body, "title": title, "badge": 0, "sound": "default"]] as [String:Any]
         
-        Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
+        AF.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).response { (response) in
             if let error = response.error {
                 print(error)
             }

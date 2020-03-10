@@ -23,7 +23,7 @@ class LocationSearchTableViewController: UITableViewController {
         tableView.backgroundColor = Theme.WHITE
         tableView.layer.cornerRadius = 24
         tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        tableView.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        tableView.layer.shadowColor = Theme.BLACK.cgColor
         tableView.layer.shadowOffset = CGSize(width: 0, height: 2)
         tableView.layer.shadowRadius = 3
         tableView.layer.shadowOpacity = 0.2
@@ -101,7 +101,7 @@ extension LocationSearchTableViewController {
             cell.matchingItem = selectedItem
             cell.nameTextView.text = selectedItem.attributedFullText.string
         }
-        cell.nameTextView.textColor = Theme.DARK_GRAY
+        cell.nameTextView.textColor = Theme.BLACK
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = .none
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

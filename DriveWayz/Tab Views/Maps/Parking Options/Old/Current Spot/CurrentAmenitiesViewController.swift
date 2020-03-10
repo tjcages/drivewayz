@@ -95,7 +95,7 @@ class CurrentAmenities: UICollectionViewCell {
     
     let cellView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.PACIFIC_BLUE
+        view.backgroundColor = Theme.BLUE
         view.layer.cornerRadius = 4
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false

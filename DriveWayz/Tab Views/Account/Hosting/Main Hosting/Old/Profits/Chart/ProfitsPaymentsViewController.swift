@@ -59,7 +59,7 @@ class ProfitsPaymentsViewController: UIViewController {
         paymentsTable.delegate = self
         paymentsTable.dataSource = self
 
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -181,7 +181,7 @@ class PaymentsHeader: UIView {
         view.text = "TODAY"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.4)
         
         return view
     }()
@@ -192,7 +192,7 @@ class PaymentsHeader: UIView {
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.contentMode = .scaleAspectFit
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(selectedHeader), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
@@ -203,7 +203,7 @@ class PaymentsHeader: UIView {
     var topLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()

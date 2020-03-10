@@ -35,11 +35,11 @@ class PickCostViewController: UIViewController {
             let maxAttribution = NSMutableAttributedString(string: maxString)
             let minAttribution = NSMutableAttributedString(string: minString)
             
-            standardAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: standardStringRange)
+            standardAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLACK, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: standardStringRange)
             standardAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: standardRange)
-            maxAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: maxStringRange)
+            maxAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLACK, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: maxStringRange)
             maxAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: maxRange)
-            minAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: minStringRange)
+            minAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLACK, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: minStringRange)
             minAttribution.addAttributes([NSAttributedString.Key.foregroundColor: Theme.BLUE, NSAttributedString.Key.font: Fonts.SSPRegularH4], range: minRange)
             
             self.dynamicPriceButton.setAttributedTitle(standardAttribution, for: .normal)
@@ -61,7 +61,7 @@ class PickCostViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPLightH4
         label.numberOfLines = 9
         label.text = """
@@ -78,8 +78,8 @@ class PickCostViewController: UIViewController {
         let label = UITextField()
         label.text = ""
         label.attributedPlaceholder = NSAttributedString(string: " $ 0.00",
-                                                         attributes: [NSAttributedString.Key.foregroundColor: Theme.DARK_GRAY.withAlphaComponent(0.5)])
-        label.textColor = Theme.DARK_GRAY
+                                                         attributes: [NSAttributedString.Key.foregroundColor: Theme.BLACK.withAlphaComponent(0.5)])
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.keyboardType = .numberPad
@@ -92,7 +92,7 @@ class PickCostViewController: UIViewController {
     var hourLabel: UIButton = {
         let label = UIButton()
         label.setTitle("per hour", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.titleLabel?.font = Fonts.SSPRegularH3
         label.contentHorizontalAlignment = .right
@@ -104,7 +104,7 @@ class PickCostViewController: UIViewController {
     var costBackground: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         
         return view
     }()
@@ -112,7 +112,7 @@ class PickCostViewController: UIViewController {
     var costLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -156,7 +156,7 @@ class PickCostViewController: UIViewController {
     var standardLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH5
         label.numberOfLines = 2
         label.text = "The standard rate will maximize your profitability while providing competitively priced parking."
@@ -302,9 +302,9 @@ class PickCostViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -336,8 +336,8 @@ extension PickCostViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        self.costBackground.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
-        self.costLine.backgroundColor = lineColor
+        self.costBackground.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
+        self.costLine.backgroundColor = Theme.LINE_GRAY
     }
     
     @objc func myTextFieldDidChange(_ textField: UITextField) {

@@ -7,13 +7,14 @@
 //
 
 import UIKit
-import Mapbox
+import CoreLocation
+//import Mapbox
 
 var quadPolyline: CAGradientLayer?
 var quadPolylineShadow: CAShapeLayer?
 
 extension MapKitViewController {
-
+    
     func drawCurvedOverlay(startCoordinate: CLLocation, endCoordinate: CLLocation) {
         quadStartCoordinate = startCoordinate.coordinate
         quadEndCoordinate = endCoordinate.coordinate

@@ -40,9 +40,9 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -71,12 +71,12 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         view.translatesAutoresizingMaskIntoConstraints = false
         switch device {
         case .iphone8:
-            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE.withAlphaComponent(0.8))
+            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.BACKGROUND_GRAY.withAlphaComponent(0.8))
             background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 92)
             background.zPosition = -10
             view.layer.insertSublayer(background, at: 0)
         case .iphoneX:
-            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.OFF_WHITE.withAlphaComponent(0.8))
+            let background = CAGradientLayer().customVerticalColor(topColor: Theme.WHITE.withAlphaComponent(0), bottomColor: Theme.BACKGROUND_GRAY.withAlphaComponent(0.8))
             background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 140)
             background.zPosition = -10
             view.layer.insertSublayer(background, at: 0)
@@ -102,7 +102,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Next", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.PACIFIC_BLUE
+        button.backgroundColor = Theme.BLUE
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(moveToNextController), for: .touchUpInside)
@@ -252,10 +252,10 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         let view2 = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 2))
-        let background = CAGradientLayer().customColor(topColor: Theme.LightPink, bottomColor: Theme.STRAWBERRY_PINK)
+        let background = CAGradientLayer().customColor(topColor: Theme.LightPink, bottomColor: Theme.SALMON)
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 3)
         background.zPosition = -10
         view2.layer.addSublayer(background)
@@ -268,7 +268,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         view.alpha = 0
         
         return view
@@ -291,7 +291,7 @@ class ConfigureParkingViewController: UIViewController, handleImageDrawing {
     var validError: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.HARMONY_RED
+        button.backgroundColor = Theme.SALMON
         button.setTitle("Please enter a valid address", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.layer.cornerRadius = 15

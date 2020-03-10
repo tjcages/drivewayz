@@ -43,7 +43,7 @@ class FullInfoViewController: UIViewController {
         view.settings.starSize = 20
         view.settings.starMargin = 4
         view.settings.filledColor = Theme.BLUE
-        view.settings.emptyBorderColor = Theme.OFF_WHITE
+        view.settings.emptyBorderColor = Theme.BACKGROUND_GRAY
         view.settings.filledBorderColor = Theme.BLUE
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -93,7 +93,7 @@ class FullInfoViewController: UIViewController {
     var spacerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()

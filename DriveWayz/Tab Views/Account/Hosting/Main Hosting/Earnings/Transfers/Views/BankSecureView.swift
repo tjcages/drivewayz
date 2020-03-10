@@ -30,7 +30,7 @@ class BankSecureView: UIViewController {
     var firstLabel: UILabel = {
         let label = UILabel()
         label.text = "Secure payouts"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         
@@ -40,7 +40,7 @@ class BankSecureView: UIViewController {
     var firstSubLabel: UILabel = {
         let label = UILabel()
         label.text = "The transfer of your information \nis encrypted end-to-end."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
@@ -68,7 +68,7 @@ class BankSecureView: UIViewController {
     var secondLabel: UILabel = {
         let label = UILabel()
         label.text = "Privacy ensured"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         
@@ -78,7 +78,7 @@ class BankSecureView: UIViewController {
     var secondSubLabel: UILabel = {
         let label = UILabel()
         label.text = "Your credentials will never be \nmade accessible to Drivewayz."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
@@ -89,7 +89,7 @@ class BankSecureView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -99,7 +99,7 @@ class BankSecureView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Link Bank Account", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         
@@ -121,7 +121,7 @@ class BankSecureView: UIViewController {
         let privacyRange = (string as NSString).range(of: "Services Agreement")
         let regulationRange = (string as NSString).range(of: "Stripe \nConnected Account Agreement")
         attributedString.addAttribute(NSAttributedString.Key.font, value: Fonts.SSPRegularH5, range: range)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.PRUSSIAN_BLUE, range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GRAY_WHITE, range: range)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.BLUE, range: privacyRange)
         attributedString.addAttribute(NSAttributedString.Key.underlineColor, value: Theme.BLUE, range: privacyRange)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.BLUE, range: regulationRange)
@@ -145,7 +145,7 @@ class BankSecureView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "hostLock")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.isUserInteractionEnabled = false
         button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         

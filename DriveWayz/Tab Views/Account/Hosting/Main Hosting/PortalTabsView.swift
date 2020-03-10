@@ -89,7 +89,7 @@ class PortalTabsView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("$45.23", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.backgroundColor = Theme.HOST_GREEN
         button.layer.cornerRadius = 14
@@ -157,9 +157,9 @@ class PortalTabsView: UIView {
             self.availabilityButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             self.accountButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             
-            self.earningsButton.tintColor = Theme.DARK_GRAY
-            self.availabilityButton.tintColor = Theme.DARK_GRAY
-            self.accountButton.tintColor = Theme.DARK_GRAY
+            self.earningsButton.tintColor = Theme.BLACK
+            self.availabilityButton.tintColor = Theme.BLACK
+            self.accountButton.tintColor = Theme.BLACK
             self.layoutIfNeeded()
         }, completion: { (success) in
             //

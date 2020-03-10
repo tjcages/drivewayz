@@ -56,7 +56,7 @@ class BookingSliderViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Prime Spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH4
         label.textAlignment = .center
         
@@ -69,7 +69,7 @@ class BookingSliderViewController: UIViewController {
         let origImage = UIImage(named: "verificationIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.STRAWBERRY_PINK
+        button.tintColor = Theme.SALMON
         
         let check = UIButton(frame: CGRect(x: 2, y: 2, width: 14, height: 14))
         let origImage2 = UIImage(named: "Checkmark")
@@ -85,7 +85,7 @@ class BookingSliderViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Economy"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH4
         label.textAlignment = .center
         label.alpha = 0.4
@@ -100,7 +100,7 @@ class BookingSliderViewController: UIViewController {
         let origImage = UIImage(named: "verificationIcon")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.GREEN_PIGMENT
+        button.tintColor = Theme.GREEN
         button.alpha = 0
         button.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         
@@ -118,7 +118,7 @@ class BookingSliderViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Standard"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH4
         label.textAlignment = .center
         label.alpha = 0.4

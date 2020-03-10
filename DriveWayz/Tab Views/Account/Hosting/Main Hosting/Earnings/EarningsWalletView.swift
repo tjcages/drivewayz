@@ -28,7 +28,7 @@ class EarningsWalletView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Dashboard"
         
         return label
@@ -37,7 +37,7 @@ class EarningsWalletView: UIViewController {
     var transferButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Transfer", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -59,7 +59,7 @@ class EarningsWalletView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$45.23"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPExtraLarge
         
         return label
@@ -69,7 +69,7 @@ class EarningsWalletView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Current balance"
         
         return label
@@ -79,7 +79,7 @@ class EarningsWalletView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Since Nov. 12, 2019"
         
         return label
@@ -211,7 +211,7 @@ class EarningsWalletView: UIViewController {
         UIView.animate(withDuration: animationIn, animations: {
             self.container.backgroundColor = Theme.BLUE
             self.transferButton.backgroundColor = Theme.WHITE
-            self.transferButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            self.transferButton.setTitleColor(Theme.BLACK, for: .normal)
             self.earningsLabel.textColor = Theme.WHITE
             self.balanceLabel.textColor = Theme.WHITE
             self.view.layoutIfNeeded()
@@ -237,10 +237,10 @@ class EarningsWalletView: UIViewController {
             }
             UIView.animate(withDuration: animationIn) {
                 self.container.backgroundColor = Theme.WHITE
-                self.transferButton.backgroundColor = Theme.DARK_GRAY
+                self.transferButton.backgroundColor = Theme.BLACK
                 self.transferButton.setTitleColor(Theme.WHITE, for: .normal)
-                self.earningsLabel.textColor = Theme.DARK_GRAY
-                self.balanceLabel.textColor = Theme.DARK_GRAY
+                self.earningsLabel.textColor = Theme.BLACK
+                self.balanceLabel.textColor = Theme.BLACK
             }
         }
     }
@@ -347,7 +347,7 @@ class EarningsDayCell: UICollectionViewCell {
                     self.dateLabel.textColor = Theme.WHITE
                 } else {
                     self.availableView.backgroundColor = Theme.BLUE
-                    self.dateLabel.textColor = Theme.DARK_GRAY
+                    self.dateLabel.textColor = Theme.BLACK
                 }
             }
         }
@@ -365,7 +365,7 @@ class EarningsDayCell: UICollectionViewCell {
     var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .center
         label.alpha = 0
         label.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)

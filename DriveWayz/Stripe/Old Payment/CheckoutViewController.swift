@@ -20,7 +20,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         let exitImage = UIImage(named: "Expand")
         let tintedImage = exitImage?.withRenderingMode(.alwaysTemplate)
         exitButton.image = tintedImage
-        exitButton.tintColor = Theme.DARK_GRAY
+        exitButton.tintColor = Theme.BLACK
         exitButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
         let image = exitButton.image
         exitButton.isUserInteractionEnabled = true
@@ -156,16 +156,16 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
         
-        self.view.backgroundColor = Theme.OFF_WHITE
+        self.view.backgroundColor = Theme.BACKGROUND_GRAY
         var red: CGFloat = 0
         self.theme.primaryBackgroundColor.getRed(&red, green: nil, blue: nil, alpha: nil)
         self.activityIndicator.style = red < 0.5 ? .white : .gray
         self.navigationItem.title = "Drivewayz"
 
         self.productImage.font = Fonts.SSPRegularH0
-        self.productImage.textColor = Theme.DARK_GRAY
+        self.productImage.textColor = Theme.BLACK
         self.costImage.font = Fonts.SSPRegularH1
-        self.costImage.textColor = Theme.PACIFIC_BLUE
+        self.costImage.textColor = Theme.BLUE
         self.view.addSubview(self.totalRow)
         self.view.addSubview(self.paymentRow)
         self.view.addSubview(self.productImage)
@@ -179,7 +179,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
             self?.paymentContext.pushPaymentOptionsViewController()
         }
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: exitButton, style: .plain, target: self, action: #selector(dismissDetails(sender:)))
-        self.navigationController?.navigationBar.tintColor = Theme.PACIFIC_BLUE
+        self.navigationController?.navigationBar.tintColor = Theme.BLUE
     }
 
     override func viewDidLayoutSubviews() {

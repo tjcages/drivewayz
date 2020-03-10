@@ -26,7 +26,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Country/Region"
         label.font = Fonts.SSPRegularH5
         
@@ -37,8 +37,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH3
-        view.tintColor = Theme.SEA_BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.BLUE
+        view.textColor = Theme.BLACK
         view.keyboardAppearance = .dark
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.text = "USA"
@@ -50,7 +50,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var countryLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -58,7 +58,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Street Address"
         label.font = Fonts.SSPRegularH5
         
@@ -69,8 +69,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH3
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.BLUE
+        view.textColor = Theme.BLACK
         view.returnKeyType = .done
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
@@ -82,7 +82,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -90,7 +90,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "City"
         label.font = Fonts.SSPRegularH5
         
@@ -101,8 +101,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH3
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.BLUE
+        view.textColor = Theme.BLACK
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
         view.autocapitalizationType = .words
@@ -113,7 +113,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var cityLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -121,7 +121,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "State"
         label.font = Fonts.SSPRegularH5
         
@@ -132,8 +132,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH3
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.BLUE
+        view.textColor = Theme.BLACK
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
         view.autocapitalizationType = .words
@@ -144,7 +144,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var stateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -152,7 +152,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.text = "Zipcode"
         label.font = Fonts.SSPRegularH5
         
@@ -163,8 +163,8 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH3
-        view.tintColor = Theme.PACIFIC_BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.tintColor = Theme.BLUE
+        view.textColor = Theme.BLACK
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         view.keyboardAppearance = .dark
         view.keyboardType = .numberPad
@@ -176,7 +176,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     var zipLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -185,7 +185,7 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
         let view = UIView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -360,9 +360,9 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -389,28 +389,28 @@ class LocationParkingViewController: UIViewController, handleChangingAddress {
     
     func checkIfGood() -> Bool {
         if self.streetField.text == "" {
-            self.streetLabel.textColor = Theme.HARMONY_RED
-            self.streetLine.backgroundColor = Theme.HARMONY_RED
+            self.streetLabel.textColor = Theme.SALMON
+            self.streetLine.backgroundColor = Theme.SALMON
             return false
         }
         if self.cityField.text == "" {
-            self.cityLabel.textColor = Theme.HARMONY_RED
-            self.cityLine.backgroundColor = Theme.HARMONY_RED
+            self.cityLabel.textColor = Theme.SALMON
+            self.cityLine.backgroundColor = Theme.SALMON
             return false
         }
         if self.stateField.text == "" {
-            self.stateLabel.textColor = Theme.HARMONY_RED
-            self.stateLine.backgroundColor = Theme.HARMONY_RED
+            self.stateLabel.textColor = Theme.SALMON
+            self.stateLine.backgroundColor = Theme.SALMON
             return false
         }
         if self.countryField.text == "" {
-            self.countryLabel.textColor = Theme.HARMONY_RED
-            self.countryLine.backgroundColor = Theme.HARMONY_RED
+            self.countryLabel.textColor = Theme.SALMON
+            self.countryLine.backgroundColor = Theme.SALMON
             return false
         }
         if self.zipField.text == "" {
-            self.zipLabel.textColor = Theme.HARMONY_RED
-            self.zipLine.backgroundColor = Theme.HARMONY_RED
+            self.zipLabel.textColor = Theme.SALMON
+            self.zipLine.backgroundColor = Theme.SALMON
             return false
         }
         self.combineAddress()
@@ -437,27 +437,27 @@ extension LocationParkingViewController: UITextViewDelegate {
         self.locationsSearchResults.view.alpha = 0
         self.searchContainer.alpha = 0
         if textView == self.countryField {
-            self.countryLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.countryLabel.textColor = Theme.BLACK.withAlphaComponent(0.6)
             self.countryField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.countryLine.backgroundColor = Theme.BLUE
             self.scrollView.scrollToView(view: countryLabel, animated: true, offset: 16)
         } else if textView == self.streetField {
-            self.streetLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.streetLabel.textColor = Theme.BLACK.withAlphaComponent(0.6)
             self.streetField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.streetLine.backgroundColor = Theme.BLUE
             self.scrollView.scrollToView(view: streetLabel, animated: true, offset: 16)
         } else if textView == self.cityField {
-            self.cityLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.cityLabel.textColor = Theme.BLACK.withAlphaComponent(0.6)
             self.cityField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.cityLine.backgroundColor = Theme.BLUE
             self.scrollView.scrollToView(view: cityLabel, animated: true, offset: 16)
         } else if textView == self.stateField {
-            self.stateLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.stateLabel.textColor = Theme.BLACK.withAlphaComponent(0.6)
             self.stateField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.stateLine.backgroundColor = Theme.BLUE
             self.scrollView.scrollToView(view: stateLabel, animated: true, offset: 16)
         } else if textView == self.zipField {
-            self.zipLabel.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+            self.zipLabel.textColor = Theme.BLACK.withAlphaComponent(0.6)
             self.zipField.backgroundColor = Theme.BLUE.withAlphaComponent(0.1)
             self.zipLine.backgroundColor = Theme.BLUE
             self.scrollView.scrollToView(view: zipLabel, animated: true, offset: 16)
@@ -469,19 +469,19 @@ extension LocationParkingViewController: UITextViewDelegate {
         self.searchContainer.alpha = 0
         if textView == self.countryField {
             self.countryField.backgroundColor = UIColor.clear
-            self.countryLine.backgroundColor = lineColor
+            self.countryLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.streetField {
             self.streetField.backgroundColor = UIColor.clear
-            self.streetLine.backgroundColor = lineColor
+            self.streetLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.cityField {
             self.cityField.backgroundColor = UIColor.clear
-            self.cityLine.backgroundColor = lineColor
+            self.cityLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.stateField {
             self.stateField.backgroundColor = UIColor.clear
-            self.stateLine.backgroundColor = lineColor
+            self.stateLine.backgroundColor = Theme.LINE_GRAY
         } else if textView == self.zipField {
             self.zipField.backgroundColor = UIColor.clear
-            self.zipLine.backgroundColor = lineColor
+            self.zipLine.backgroundColor = Theme.LINE_GRAY
         }
     }
     

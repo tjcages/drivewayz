@@ -67,7 +67,7 @@ class BookingHelpView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Previous booking"
         
         return label
@@ -77,7 +77,7 @@ class BookingHelpView: UIViewController {
         let view = BookingsContainerView()
         view.current = false
         view.backgroundColor = Theme.WHITE
-        view.container.backgroundColor = lineColor
+        view.container.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -108,7 +108,7 @@ class BookingHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         scrollView.delegate = self
         optionsTableView.delegate = self
@@ -236,7 +236,7 @@ extension BookingHelpView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         if section == 0 {
             label.text = options.first?.key
         } else if section == 1 {

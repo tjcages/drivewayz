@@ -19,7 +19,7 @@ class LocationSearchResults: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.backgroundColor = Theme.OFF_WHITE
+        tableView.backgroundColor = Theme.BACKGROUND_GRAY
 
         self.placesClient = GMSPlacesClient()
         
@@ -95,7 +95,7 @@ extension LocationSearchResults {
             cell.matchingItem = selectedItem
             cell.nameTextView.text = selectedItem.attributedFullText.string
         }
-        cell.nameTextView.textColor = Theme.DARK_GRAY
+        cell.nameTextView.textColor = Theme.BLACK
         cell.selectionStyle = .none
         
         return cell
@@ -154,7 +154,7 @@ class ResultsCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "mapPinIcon")?.withRenderingMode(.alwaysTemplate)
         imageView.image = image
-        imageView.tintColor = Theme.DARK_GRAY
+        imageView.tintColor = Theme.BLACK
         imageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
         return imageView
@@ -165,7 +165,7 @@ class ResultsCell: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -173,7 +173,7 @@ class ResultsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = Theme.OFF_WHITE
+        backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
     }

@@ -59,7 +59,7 @@ extension ConfirmViewController {
                                     guard let bookingKey = bookingRef.key else { return }
                                     
                                     bookingRef.updateChildValues(["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating, "walkingTime": walkingTime, "destinationName": destinationName, "bookingID": bookingKey])
-                                    distance = finalDestination.coordinate.distance(to: finalParking)
+                                    distance = finalDestination.coordinate.distance(from: finalParking)
                                     
                                     if let bookingID = bookingRef.key {
                                         let hostRef = Database.database().reference().child("ParkingSpots").child(parkingID)
@@ -136,7 +136,7 @@ extension ConfirmViewController {
                                     let values = ["driverID": userID, "fromDate": fromTime, "toDate": toTime, "price": price, "hours": hours, "totalCost": Double(totalCost)!, "discount": self.discount, "vehicleID": selectedVehicle, "parkingID": parkingID, "finalDestinationLat": finalDestination.coordinate.latitude, "finalDestinationLong": finalDestination.coordinate.longitude, "finalParkingLat": finalParking.latitude, "finalParkingLong": finalParking.longitude, "driverName": name, "driverPicture": picture, "driverRating": rating, "parkingName": descriptionAddress, "parkingType": secondaryType, "parkingRating": parkingRating, "walkingTime": walkingTime, "destinationName": destinationName, "bookingID": bookingKey] as [String: Any]
                                     
                                     bookingRef.updateChildValues(values)
-                                    distance = finalDestination.coordinate.distance(to: finalParking)
+                                    distance = finalDestination.coordinate.distance(from: finalParking)
                                     
                                     if let bookingID = bookingRef.key {
                                         let hostRef = Database.database().reference().child("ParkingSpots").child(parkingID)

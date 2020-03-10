@@ -63,8 +63,8 @@ class NavigationTopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.DARK_GRAY
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.backgroundColor = Theme.BLACK
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 8
         view.layer.shadowOpacity = 0.6
@@ -117,7 +117,7 @@ class NavigationTopViewController: UIViewController {
                 } else if tuple.hours == 0 {
                     if tuple.leftMinutes == 0 {
                         self.timeRemainingLabel.text = "Time's up!"
-                        self.timeRemainingLabel.textColor = Theme.HARMONY_RED
+                        self.timeRemainingLabel.textColor = Theme.SALMON
                     } else {
                         self.timeRemainingLabel.text = "\(tuple.leftMinutes) minutes left"
                         self.timeRemainingLabel.textColor = Theme.WHITE

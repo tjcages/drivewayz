@@ -17,7 +17,7 @@ class BankDOBView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Please enter your \ndate of birth"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
@@ -40,7 +40,7 @@ class BankDOBView: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
@@ -74,10 +74,10 @@ class BankDOBView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
         view.lineTextView?.placeholderLabel.text = "MM / DD / YYYY"
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .numberPad
         view.textViewAlignment = .center
         view.lineTextView?.textContainerInset = UIEdgeInsets(top: 12, left: 8, bottom: 8, right: 8)
@@ -92,10 +92,10 @@ class BankDOBView: UIViewController {
         let label = UITextField()
         label.placeholder = "_ _ _ _"
         label.tintColor = .clear
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.OFF_WHITE
+        label.backgroundColor = Theme.BACKGROUND_GRAY
         label.layer.sublayerTransform = CATransform3DMakeTranslation(112, 0, 0)
         label.keyboardAppearance = .dark
         label.keyboardType = .numberPad
@@ -106,7 +106,7 @@ class BankDOBView: UIViewController {
     var xxx: UILabel = {
         let label = UILabel()
         label.text = "X X X - X X  - "
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH3
         
@@ -116,7 +116,7 @@ class BankDOBView: UIViewController {
     var lineSeparatorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -124,15 +124,15 @@ class BankDOBView: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -142,7 +142,7 @@ class BankDOBView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.layer.cornerRadius = 3
         
         return view
@@ -319,7 +319,7 @@ class BankDOBView: UIViewController {
     func hideNextButton() {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {
@@ -343,7 +343,7 @@ extension BankDOBView: UITextViewDelegate, UITextFieldDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -407,8 +407,8 @@ extension BankDOBView: UITextViewDelegate, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.backgroundColor = Theme.OFF_WHITE
-        lineSeparatorView.backgroundColor = lineColor
+        textField.backgroundColor = Theme.BACKGROUND_GRAY
+        lineSeparatorView.backgroundColor = Theme.LINE_GRAY
     }
 
     // Handle when the keyboard is activated so that the textview is always visible

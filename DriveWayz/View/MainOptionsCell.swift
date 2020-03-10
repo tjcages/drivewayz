@@ -35,7 +35,7 @@ class MainOptionsCell: UICollectionViewCell {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -44,7 +44,7 @@ class MainOptionsCell: UICollectionViewCell {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         
@@ -88,7 +88,7 @@ class MainOptionsCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = Theme.WHITE
-        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowColor = Theme.BLACK.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 4
         layer.shadowOpacity = 0.2

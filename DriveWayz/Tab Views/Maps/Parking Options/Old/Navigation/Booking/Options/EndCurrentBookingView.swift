@@ -15,7 +15,7 @@ class EndCurrentBookingView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "checkCircleIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isUserInteractionEnabled = false
         
         return button
@@ -24,7 +24,7 @@ class EndCurrentBookingView: UIViewController {
     var iconView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -52,7 +52,7 @@ class EndCurrentBookingView: UIViewController {
     var bottomView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -61,7 +61,7 @@ class EndCurrentBookingView: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.DarkRed
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2

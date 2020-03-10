@@ -40,7 +40,7 @@ class HostResponsibilitiesViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
         button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.borderColor = UIColor.clear.cgColor
@@ -75,7 +75,7 @@ class HostResponsibilitiesViewController: UIViewController {
     var responsibilitiesSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "Congrats, your new parking space is listed! Make sure all of you information is up to date and that the space is available for the correct times listed."
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 6
@@ -296,7 +296,7 @@ class HostResponsibilitiesViewController: UIViewController {
     var questionsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Have any questions?"
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -307,7 +307,7 @@ class HostResponsibilitiesViewController: UIViewController {
     var questionsSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "Feel free to reach out to Drivewayz with any questions you have or check the resources below."
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 4
@@ -334,7 +334,7 @@ class HostResponsibilitiesViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -347,7 +347,7 @@ class HostResponsibilitiesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Rules & Regulations", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(pushRules), for: .touchUpInside)
         
@@ -359,7 +359,7 @@ class HostResponsibilitiesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Privacy policy", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(pushPolicy), for: .touchUpInside)
         
@@ -371,7 +371,7 @@ class HostResponsibilitiesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Terms & Conditions", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(pushTerms), for: .touchUpInside)
         
@@ -391,7 +391,7 @@ class HostResponsibilitiesViewController: UIViewController {
     var secondLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -399,7 +399,7 @@ class HostResponsibilitiesViewController: UIViewController {
     var thirdLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -724,13 +724,13 @@ extension HostResponsibilitiesViewController: UIScrollViewDelegate {
         } else if translation >= 365 {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
-                self.exitButton.tintColor = Theme.DARK_GRAY
-                self.exitButton.layer.borderColor = Theme.DARK_GRAY.cgColor
+                self.exitButton.tintColor = Theme.BLACK
+                self.exitButton.layer.borderColor = Theme.BLACK.cgColor
             }
         } else {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.alpha = 1
-                self.exitButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+                self.exitButton.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
                 self.exitButton.tintColor = Theme.WHITE
                 self.exitButton.layer.borderColor = UIColor.clear.cgColor
             }

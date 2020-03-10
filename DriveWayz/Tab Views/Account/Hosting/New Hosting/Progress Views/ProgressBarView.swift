@@ -16,7 +16,7 @@ class ProgressBarView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Basic details"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -26,7 +26,7 @@ class ProgressBarView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Location and pictures"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -36,7 +36,7 @@ class ProgressBarView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Set availability"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -46,7 +46,7 @@ class ProgressBarView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Set price"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -56,7 +56,7 @@ class ProgressBarView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Verify listing"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -73,7 +73,7 @@ class ProgressBarView: UIViewController {
     var firstCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.layer.cornerRadius = 5
         
         return view
@@ -82,7 +82,7 @@ class ProgressBarView: UIViewController {
     var secondCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.layer.cornerRadius = 5
         
         return view
@@ -91,7 +91,7 @@ class ProgressBarView: UIViewController {
     var thirdCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.layer.cornerRadius = 5
         
         return view
@@ -100,7 +100,7 @@ class ProgressBarView: UIViewController {
     var fourthCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.layer.cornerRadius = 5
         
         return view
@@ -109,7 +109,7 @@ class ProgressBarView: UIViewController {
     var fifthCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         view.layer.cornerRadius = 5
         
         return view
@@ -118,7 +118,7 @@ class ProgressBarView: UIViewController {
     var dimLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY
+        view.backgroundColor = Theme.GRAY_WHITE_4
         
         return view
     }()
@@ -126,7 +126,7 @@ class ProgressBarView: UIViewController {
     var selectedLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -136,7 +136,7 @@ class ProgressBarView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 7
-        view.layer.borderColor = Theme.DARK_GRAY.cgColor
+        view.layer.borderColor = Theme.BLACK.cgColor
         view.layer.borderWidth = 4
         
         return view
@@ -263,9 +263,9 @@ class ProgressBarView: UIViewController {
         secondTopAnchor.constant = 32 + expandedHeight
         firstExpanded.isActive = true
         firstLabel.font = Fonts.SSPSemiBoldH3
-        firstLabel.textColor = Theme.DARK_GRAY
+        firstLabel.textColor = Theme.BLACK
         
-        firstCircle.backgroundColor = Theme.DARK_GRAY
+        firstCircle.backgroundColor = Theme.BLACK
         
         detailsController.selectedIndex = 0
         animate()
@@ -276,10 +276,10 @@ class ProgressBarView: UIViewController {
         thirdTopAnchor.constant = 32 + expandedHeight
         secondExpanded.isActive = true
         secondLabel.font = Fonts.SSPSemiBoldH3
-        secondLabel.textColor = Theme.DARK_GRAY
+        secondLabel.textColor = Theme.BLACK
         
-        firstCircle.backgroundColor = Theme.DARK_GRAY
-        secondCircle.backgroundColor = Theme.DARK_GRAY
+        firstCircle.backgroundColor = Theme.BLACK
+        secondCircle.backgroundColor = Theme.BLACK
         
         detailsController.selectedIndex = 1
         animate()
@@ -290,11 +290,11 @@ class ProgressBarView: UIViewController {
         fourthTopAnchor.constant = 32 + expandedHeight
         thirdExpanded.isActive = true
         thirdLabel.font = Fonts.SSPSemiBoldH3
-        thirdLabel.textColor = Theme.DARK_GRAY
+        thirdLabel.textColor = Theme.BLACK
         
-        firstCircle.backgroundColor = Theme.DARK_GRAY
-        secondCircle.backgroundColor = Theme.DARK_GRAY
-        thirdCircle.backgroundColor = Theme.DARK_GRAY
+        firstCircle.backgroundColor = Theme.BLACK
+        secondCircle.backgroundColor = Theme.BLACK
+        thirdCircle.backgroundColor = Theme.BLACK
         
         detailsController.selectedIndex = 2
         animate()
@@ -305,12 +305,12 @@ class ProgressBarView: UIViewController {
         fifthTopAnchor.constant = 32 + expandedHeight
         fourthExpanded.isActive = true
         fourthLabel.font = Fonts.SSPSemiBoldH3
-        fourthLabel.textColor = Theme.DARK_GRAY
+        fourthLabel.textColor = Theme.BLACK
         
-        firstCircle.backgroundColor = Theme.DARK_GRAY
-        secondCircle.backgroundColor = Theme.DARK_GRAY
-        thirdCircle.backgroundColor = Theme.DARK_GRAY
-        fourthCircle.backgroundColor = Theme.DARK_GRAY
+        firstCircle.backgroundColor = Theme.BLACK
+        secondCircle.backgroundColor = Theme.BLACK
+        thirdCircle.backgroundColor = Theme.BLACK
+        fourthCircle.backgroundColor = Theme.BLACK
         
         detailsController.selectedIndex = 3
         animate()
@@ -320,13 +320,13 @@ class ProgressBarView: UIViewController {
         minimizeAll()
         fifthExpanded.isActive = true
         fifthLabel.font = Fonts.SSPSemiBoldH3
-        fifthLabel.textColor = Theme.DARK_GRAY
+        fifthLabel.textColor = Theme.BLACK
         
-        firstCircle.backgroundColor = Theme.DARK_GRAY
-        secondCircle.backgroundColor = Theme.DARK_GRAY
-        thirdCircle.backgroundColor = Theme.DARK_GRAY
-        fourthCircle.backgroundColor = Theme.DARK_GRAY
-        fifthCircle.backgroundColor = Theme.DARK_GRAY
+        firstCircle.backgroundColor = Theme.BLACK
+        secondCircle.backgroundColor = Theme.BLACK
+        thirdCircle.backgroundColor = Theme.BLACK
+        fourthCircle.backgroundColor = Theme.BLACK
+        fifthCircle.backgroundColor = Theme.BLACK
         
         detailsController.selectedIndex = 4
         animate()
@@ -356,17 +356,17 @@ class ProgressBarView: UIViewController {
         fourthLabel.font = Fonts.SSPRegularH4
         fifthLabel.font = Fonts.SSPRegularH4
         
-        firstLabel.textColor = Theme.PRUSSIAN_BLUE
-        secondLabel.textColor = Theme.PRUSSIAN_BLUE
-        thirdLabel.textColor = Theme.PRUSSIAN_BLUE
-        fourthLabel.textColor = Theme.PRUSSIAN_BLUE
-        fifthLabel.textColor = Theme.PRUSSIAN_BLUE
+        firstLabel.textColor = Theme.GRAY_WHITE
+        secondLabel.textColor = Theme.GRAY_WHITE
+        thirdLabel.textColor = Theme.GRAY_WHITE
+        fourthLabel.textColor = Theme.GRAY_WHITE
+        fifthLabel.textColor = Theme.GRAY_WHITE
         
-        firstCircle.backgroundColor = Theme.LIGHT_GRAY
-        secondCircle.backgroundColor = Theme.LIGHT_GRAY
-        thirdCircle.backgroundColor = Theme.LIGHT_GRAY
-        fourthCircle.backgroundColor = Theme.LIGHT_GRAY
-        fifthCircle.backgroundColor = Theme.LIGHT_GRAY
+        firstCircle.backgroundColor = Theme.GRAY_WHITE_4
+        secondCircle.backgroundColor = Theme.GRAY_WHITE_4
+        thirdCircle.backgroundColor = Theme.GRAY_WHITE_4
+        fourthCircle.backgroundColor = Theme.GRAY_WHITE_4
+        fifthCircle.backgroundColor = Theme.GRAY_WHITE_4
     }
 
 }

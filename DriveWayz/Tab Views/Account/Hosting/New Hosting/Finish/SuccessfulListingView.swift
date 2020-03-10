@@ -38,7 +38,7 @@ class SuccessfulListingView: UIViewController {
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 60
         let image = UIImage(named: "Apartment Parking")
@@ -51,7 +51,7 @@ class SuccessfulListingView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Listing was successful!"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -63,7 +63,7 @@ class SuccessfulListingView: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.text = "Check your email for a verification code \nand complete the host tutorial."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
@@ -83,7 +83,7 @@ class SuccessfulListingView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         setupViews()
     }

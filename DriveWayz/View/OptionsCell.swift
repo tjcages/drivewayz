@@ -13,34 +13,24 @@ class OptionsCell: UITableViewCell {
     
     var message: String? {
         didSet {
+            var transform = CGAffineTransform.identity
+            transform = transform.rotated(by: CGFloat.pi)
+            transform = transform.scaledBy(x: 0.0, y: 0.0)
+            
             self.messageTextView.text = message
-            self.messageTextView.textColor = Theme.BLACK
-            self.messageTextView.font = Fonts.SSPRegularH3
-            UIView.animate(withDuration: animationIn) {
-                self.selectionLeftAnchor.constant = phoneWidth
-                self.layoutIfNeeded()
-            }
+            self.messageTextView.font = Fonts.SSPRegularH2
+//            UIView.animate(withDuration: animationIn) {
+//                self.selectionLine.layer.cornerRadius = 3
+//                self.selectionLine.transform = transform
+//                self.layoutIfNeeded()
+//            }
         }
     }
-    
-    var profileImageView: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "feed")
-        let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.BLACK
-        button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 20
-        button.isUserInteractionEnabled = false
-        
-        return button
-    }()
     
     var messageTextView: UILabel = {
         let view = UILabel()
         view.text = ""
-        view.font = Fonts.SSPRegularH3
+        view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = Theme.BLACK
         
@@ -52,78 +42,57 @@ class OptionsCell: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.GREEN_PIGMENT
+        view.textColor = Theme.BLUE
         view.alpha = 0
         
         return view
     }()
     
-    var selectionLine: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.STRAWBERRY_PINK
-        view.layer.cornerRadius = 2
-        
-        return view
-    }()
-    
-    var selectionLeftAnchor: NSLayoutConstraint!
     var messageTopAnchor: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.clipsToBounds = false
-        self.backgroundColor = UIColor.clear
+        clipsToBounds = false
+        backgroundColor = UIColor.clear
+        
+        setupViews()
+    }
     
+    func setupViews() {
+        
         addSubview(messageTextView)
-        addSubview(selectionLine)
         addSubview(subTextView)
         
-        messageTopAnchor = messageTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        messageTopAnchor = messageTextView.centerYAnchor.constraint(equalTo: centerYAnchor)
             messageTopAnchor.isActive = true
-        messageTextView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
-        messageTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        messageTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        messageTextView.leftAnchor.constraint(equalTo: leftAnchor, constant: 36).isActive = true
+        messageTextView.sizeToFit()
         
-        subTextView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 16).isActive = true
-        subTextView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 36).isActive = true
-        subTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        subTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        subTextView.topAnchor.constraint(equalTo: messageTextView.bottomAnchor, constant: 4).isActive = true
+        subTextView.leftAnchor.constraint(equalTo: leftAnchor, constant: 36).isActive = true
+        subTextView.sizeToFit()
         
-        selectionLine.centerYAnchor.constraint(equalTo: messageTextView.centerYAnchor).isActive = true
-        selectionLine.widthAnchor.constraint(equalToConstant: phoneWidth).isActive = true
-        selectionLine.heightAnchor.constraint(equalToConstant: 4).isActive = true
-        selectionLeftAnchor = selectionLine.leftAnchor.constraint(equalTo: messageTextView.leftAnchor)
-            selectionLeftAnchor.isActive = true
-    
     }
     
     func openSubText() {
-        self.messageTopAnchor.constant = -8
-        self.subTextView.alpha = 1
-        self.layoutIfNeeded()
+        messageTopAnchor.constant = -8
+        subTextView.alpha = 1
+        layoutIfNeeded()
     }
     
     func closeSubText() {
-        self.messageTopAnchor.constant = 0
-        self.subTextView.alpha = 0
-        self.layoutIfNeeded()
+        messageTopAnchor.constant = 0
+        subTextView.alpha = 0
+        layoutIfNeeded()
     }
     
     func animate() {
-        self.selectionLeftAnchor.constant = phoneWidth
-        self.messageTextView.font = Fonts.SSPSemiBoldH3
-        self.layoutIfNeeded()
-        UIView.animate(withDuration: animationOut) {
-            self.selectionLeftAnchor.constant = self.message!.width(withConstrainedHeight: 40, font: Fonts.SSPRegularH3) + 24
-            self.layoutIfNeeded()
-        }
+        messageTextView.font = Fonts.SSPSemiBoldH2
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
 }

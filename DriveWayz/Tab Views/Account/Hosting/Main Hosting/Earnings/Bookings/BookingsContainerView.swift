@@ -75,7 +75,7 @@ class BookingsContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Wed 18, Nov 2019"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -85,7 +85,7 @@ class BookingsContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$8.80"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -97,7 +97,7 @@ class BookingsContainerView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()
@@ -176,12 +176,12 @@ class BookingsContainerView: UIView {
     }
     
     func setPrevious() {
-        backgroundColor = Theme.OFF_WHITE
+        backgroundColor = Theme.BACKGROUND_GRAY
         container.backgroundColor = Theme.HOST_BLUE
-        nameLabel.textColor = Theme.DARK_GRAY
-        starView.tintColor = Theme.DARK_GRAY
-        licenseLabel.textColor = Theme.DARK_GRAY
-        starView.settings.textColor = Theme.DARK_GRAY
+        nameLabel.textColor = Theme.BLACK
+        starView.tintColor = Theme.BLACK
+        licenseLabel.textColor = Theme.BLACK
+        starView.settings.textColor = Theme.BLACK
         starView.settings.filledImage = UIImage(named: "Star Filled Black")?.withRenderingMode(.alwaysTemplate)
     }
     

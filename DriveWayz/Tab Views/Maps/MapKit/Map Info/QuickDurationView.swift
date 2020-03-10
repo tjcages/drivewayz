@@ -13,7 +13,7 @@ class QuickDurationView: UIView {
     var darkContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -46,7 +46,7 @@ class QuickDurationView: UIView {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.text = "945 Diamond St"
         
@@ -56,7 +56,7 @@ class QuickDurationView: UIView {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH6
         label.text = "Walk to"
         
@@ -91,7 +91,7 @@ class QuickDurationView: UIView {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
@@ -103,7 +103,7 @@ class QuickDurationView: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = Theme.WHITE
-        layer.shadowColor = Theme.DARK_GRAY.cgColor
+        layer.shadowColor = Theme.BLACK.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 3)
         layer.shadowRadius = 6
         layer.shadowOpacity = 0.2

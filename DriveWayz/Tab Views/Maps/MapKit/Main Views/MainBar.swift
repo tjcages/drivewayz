@@ -7,40 +7,26 @@
 //
 
 import UIKit
+import GoogleMaps
 
-var shouldDragMainBar: Bool = true
-
-protocol mainBarSearchDelegate {
-    func showDuration(parkNow: Bool)
-    
-    func showCurrentLocation()
-    func hideCurrentLocation()
-    
-    func openMainBar()
-    func closeMainBar()
-    func closeSearch()
-    
-    func zoomToSearchLocation(placeId: String)
-    
-    func quickNewHost()
-    func quickHelp()
-    func quickAccount()
+protocol HandleMainScreenDelegate {
+    func closeSearch(parking: Bool)
+    func showWelcomeBanner()
+    func openBookings()
 }
 
-extension MapKitViewController: mainBarSearchDelegate {
+var canPanMainView: Bool = true
+
+extension MapKitViewController: HandleMainScreenDelegate {
     
     func setupLocator() {
 
         mapView.addSubview(locatorButton)
-        locatorButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        locatorButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         locatorButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         locatorButton.widthAnchor.constraint(equalTo: locatorButton.heightAnchor).isActive = true
         locatorMainBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: mainBarController.view.topAnchor, constant: -16)
             locatorMainBottomAnchor.isActive = true
-        locatorParkingBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: parkingBackButton.bottomAnchor, constant: 0)
-            locatorParkingBottomAnchor.isActive = false
-        locatorCurrentBottomAnchor = locatorButton.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16)
-            locatorCurrentBottomAnchor.isActive = false
         
         mapView.addSubview(parkingRouteButton)
         parkingRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
@@ -52,16 +38,7 @@ extension MapKitViewController: mainBarSearchDelegate {
         currentRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
         currentRouteButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
         currentRouteButton.widthAnchor.constraint(equalTo: currentRouteButton.heightAnchor).isActive = true
-        currentRouteButton.bottomAnchor.constraint(equalTo: currentBottomController.view.topAnchor, constant: -16).isActive = true
-        
-        view.addSubview(locationsSearchResults.view)
-        locationResultsHeightAnchor = locationsSearchResults.view.topAnchor.constraint(equalTo: summaryController.view.bottomAnchor, constant: phoneHeight * 1.5)
-            locationResultsHeightAnchor.isActive = true
-        locationsSearchResults.view.leftAnchor.constraint(equalTo: summaryController.view.leftAnchor).isActive = true
-        locationsSearchResults.view.rightAnchor.constraint(equalTo: summaryController.view.rightAnchor).isActive = true
-        locationsSearchResults.view.heightAnchor.constraint(equalToConstant: phoneHeight - 100).isActive = true
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(readjustMainBar), name: NSNotification.Name(rawValue: "readjustMainBar"), object: nil)
+        currentRouteButton.bottomAnchor.constraint(equalTo: currentBookingController.view.topAnchor, constant: -16).isActive = true
         
     }
     
@@ -72,126 +49,144 @@ extension MapKitViewController: mainBarSearchDelegate {
         }
     }
     
-    @objc func mainBarIsScrolling(sender: UIPanGestureRecognizer) {
-        let state = sender.state
-        if canScrollMainView || state == .ended {
-            let translation = -sender.translation(in: self.view).y
-            let percentage = translation/(phoneHeight/3)
-            if state == .changed {
-                if percentage >= 0 && percentage <= 1 && previousMainBarPercentage != 1.0 {
-                    changeMainScrollAmount(percentage: percentage, direction: true)
-                } else if mainBarBottomAnchor.constant <= (phoneHeight - mainBarNormalHeight) && percentage <= 1 {
-                    changeMainScrollAmount(percentage: previousMainBarPercentage + percentage, direction: false)
-                }
-            } else {
-                canScrollMainView = true
-                if previousMainBarPercentage >= 0.25 {
-                    if previousMainBarPercentage != 1.0 {
-                        openMainBar()
-                    }
-                } else {
-                    closeMainBar()
-                }
-            }
-        }
-    }
-    
-    func changeMainScrollAmount(percentage: CGFloat, direction: Bool) {
-        if percentage >= 0.2 && percentage < 0.7 {
-            if showHamburger {
-                showHamburger = false
-                delegate?.hideHamburger()
-                delegate?.lightContentStatusBar()
-            }
-        } else if percentage >= 0.7 && previousMainBarPercentage != 1.0 && direction {
-            canScrollMainView = false
-            openMainBar()
-            return
-        }
-        previousMainBarPercentage = percentage
+    func setupWelcomeBanner() {
+        view.addSubview(welcomeBannerView.view)
+        welcomeBannerView.view.anchor(top: nil, left: view.leftAnchor, bottom: mainBarController.view.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -36, paddingRight: 0, width: 0, height: 0)
+        welcomeBannerHeightAnchor = welcomeBannerView.view.heightAnchor.constraint(equalToConstant: 0)
+            welcomeBannerHeightAnchor.isActive = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleWelcomeBanner))
+        welcomeBannerView.view.addGestureRecognizer(tap)
+        locatorMainBottomAnchor.constant = -52
         
-        mainBarBottomAnchor.constant = phoneHeight - mainBarNormalHeight - (mainBarHighestHeight - mainBarNormalHeight) * percentage
-        fullBackgroundView.alpha = 0 + 0.4 * percentage
         view.layoutIfNeeded()
-    }
-    
-    @objc func openMainBar() {
-        previousMainBarPercentage = 1.0
-        mainBarBottomAnchor.constant = phoneHeight - mainBarHighestHeight
-        mainBarController.searchHeightAnchor.constant = 164
+        showWelcomeBanner()
         
-        delegate?.hideHamburger()
-        delegate?.lightContentStatusBar()
-
-        mainBarController.showQuickOptions()
-        UIView.animate(withDuration: animationOut, animations: {
-            self.fullBackgroundView.alpha = 0.4
-            self.view.layoutIfNeeded()
-        }) { (success) in
-
-        }
-    }
-    
-    func closeMainBar() {
-        previousMainBarPercentage = 0.0
-        mainBarBottomAnchor.constant = phoneHeight - mainBarNormalHeight
-        mainBarController.searchHeightAnchor.constant = 232
-        
-        showHamburger = true
-        delegate?.bringHamburger()
-        delegate?.defaultContentStatusBar()
-        
-        self.mainBarController.hideQuickOptions()
-        UIView.animate(withDuration: animationOut, animations: {
-            self.fullBackgroundView.alpha = 0
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            if self.mainBarController.reservationsOpen {
-                self.mainBarController.closeReservations()
-                self.closeMainBanner()
+        delayWithSeconds(animationOut * 2) {
+            if self.mainBarBottomAnchor.constant == 0 {
+                self.delegate?.hideHamburger()
+                self.welcomeBannerView.disappear()
+                self.welcomeBannerHeightAnchor.constant = self.welcomeBannerView.view.frame.maxY
+                UIView.animateInOut(withDuration: animationIn, animations: {
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    self.welcomeBannerView.expand()
+                }
             }
         }
     }
     
-    @objc func mainBannerPressed() {
-        if mainBarController.reservationsOpen {
-            mainBarController.closeReservations()
-            closeMainBanner()
+    func showWelcomeBanner() {
+        if welcomeBannerHeightAnchor != nil {
+            locatorMainBottomAnchor.constant = -52
+            welcomeBannerHeightAnchor.constant = 72
+            UIView.animateOut(withDuration: animationOut, animations: {
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.welcomeBannerView.appear()
+            }
+        }
+    }
+    
+    @objc func handleWelcomeBanner() {
+        if welcomeBannerHeightAnchor.constant == 72 {
+            delegate?.hideHamburger()
+            welcomeBannerView.disappear()
+            welcomeBannerHeightAnchor.constant = welcomeBannerView.view.frame.maxY
+            UIView.animateInOut(withDuration: animationIn, animations: {
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                if self.mainBarBottomAnchor.constant == 0 {
+                    self.welcomeBannerView.expand()
+                }
+            }
         } else {
-            mainBarController.expandReservations()
-            expandMainBanner()
+            welcomeBannerView.minimize()
+            welcomeBannerHeightAnchor.constant = 72
+            UIView.animateInOut(withDuration: animationIn, animations: {
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                self.welcomeBannerView.appear()
+                self.delegate?.bringHamburger()
+            }
         }
     }
     
-    func expandMainBanner() {
-        mainBarBottomAnchor.constant -= 100
-        UIView.animate(withDuration: animationIn) {
-            self.fullBackgroundView.alpha = 0.4
+    func hideWelcomeBanner() {
+        if welcomeBannerHeightAnchor != nil {
+            welcomeBannerView.minimize()
+            welcomeBannerView.disappear()
+            welcomeBannerHeightAnchor.constant = 0
+            locatorMainBottomAnchor.constant = -16
+            UIView.animateOut(withDuration: animationOut, animations: {
+                self.view.layoutIfNeeded()
+            }) { (success) in
+                //
+            }
+        }
+    }
+    
+    @objc func mainBarPanned(sender: UIPanGestureRecognizer) {
+        if canPanMainView {
+            let translation = -sender.translation(in: view).y/1.5
+            let percent = translation/120
+            let velocity = -sender.velocity(in: view).y
+            if sender.state == .changed {
+                if velocity >= 1000 {
+                    searchPressed()
+                } else if translation >= -16 && translation < 120 {
+                    mainBarController.container.alpha = 1 - percent
+                    mainBarHeightAnchor.constant = mainBarNormalHeight + translation
+                    mainBarController.transitionToSearch(percent: percent)
+                    view.layoutIfNeeded()
+                } else if translation >= 120 {
+                    searchPressed()
+                }
+            } else if sender.state == .ended {
+                if translation >= 160 || velocity >= 1000 {
+                    searchPressed()
+                } else {
+                    closeSearch(parking: false)
+                }
+            }
+        }
+    }
+    
+    @objc func searchPressed() {
+        canPanMainView = false
+        hideWelcomeBanner()
+        delegate?.hideHamburger()
+        mainBarHeightAnchor.constant = phoneHeight
+        mainBarController.centerCoordinate = mapView.projection.coordinate(for: mapView.center)
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.mainBarController.transitionToSearch(percent: 1)
+            self.mainBarController.container.alpha = 0
             self.view.layoutIfNeeded()
+        }) { (success) in
+            canPanMainView = true
         }
     }
     
-    func closeMainBanner() {
-        mainBarBottomAnchor.constant += 100
-        UIView.animate(withDuration: animationIn) {
-            self.fullBackgroundView.alpha = 0
+    func closeSearch(parking: Bool) {
+        if !parking, let userLocation = self.locationManager.location {
+            let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel - 0.5)
+            mapView.camera = camera
+            CATransaction.begin()
+            CATransaction.setValue(0.8, forKey: kCATransactionAnimationDuration)
+            let camera2 = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
+            mapView.animate(to: camera2)
+            CATransaction.commit()
+        }
+        
+        canPanMainView = false
+        delegate?.bringHamburger()
+        mainBarHeightAnchor.constant = mainBarNormalHeight
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.mainBarController.transitionToSearch(percent: 0)
+            self.mainBarController.container.alpha = 1
             self.view.layoutIfNeeded()
+        }) { (success) in
+            canPanMainView = true
         }
     }
-    
-    func quickNewHost() {
-        closeMainBar()
-        delegate?.bringNewHostingController()
-    }
-    
-    func quickHelp() {
-        closeMainBar()
-        accountDelegate?.bringHelpController()
-    }
-    
-    func quickAccount() {
-        closeMainBar()
-        accountDelegate?.bringSettingsController()
-    }
-    
+ 
 }

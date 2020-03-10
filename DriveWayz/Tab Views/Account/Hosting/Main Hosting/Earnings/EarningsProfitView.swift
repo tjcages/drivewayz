@@ -14,7 +14,7 @@ class EarningsProfitView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Today • "
         
         return label
@@ -85,7 +85,7 @@ class EarningsProfitView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "$13.41"
         
         return label

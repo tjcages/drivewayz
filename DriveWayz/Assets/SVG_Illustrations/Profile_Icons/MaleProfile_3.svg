@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="451" height="444.137" viewBox="0 0 451 444.137">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e2fbff"/>
+      <stop offset="1" stop-color="#ffe2cf"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <rect id="Mask" width="450" height="443.137" rx="221.569" fill="rgba(53,59,80,0.99)" stroke="rgba(53,59,80,0)" stroke-miterlimit="10" stroke-width="1"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M46.792,199.088v.614q-.254,19.487-32.855,29.306c26.189,19,52.377,34.2,78.566,34.2s52.377-15.2,78.566-34.2q-32.38-9.829-32.848-29.346c.006-2.32.017-5.613.033-11.8q0-1.473.008-3.017c1.561.22,1.434.08,0-.316.042-16.269.112-38.148.21-60.381,20.473-26.468,12.952-57.5,6.536-56.725C137.137,68.374,68.994,3.877,55.924.577S9.652,7.939,3.938,37.682s-8.1,104.712,13.57,134.643q9.251,12.776,29.137,9.994c.018,6.225.055,9.718.147,16.769Z" transform="translate(171.069 263.204) rotate(180)" fill="url(#linear-gradient)"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4" data-name="Group 4" transform="translate(0.269 0.5)">
+    <g id="Group_30" data-name="Group 30" transform="translate(0.231 0)">
+      <g id="Group_21_Copy" data-name="Group 21 Copy">
+        <g id="Group_2" data-name="Group 2">
+          <g id="Path_7" data-name="Path 7">
+            <rect id="Mask-2" data-name="Mask" width="450" height="443.137" rx="221.569" fill="#42436a" stroke="rgba(53,59,80,0)" stroke-miterlimit="10" stroke-width="1"/>
+            <g id="Path_7-2" data-name="Path 7" clip-path="url(#clip-path)">
+              <g id="User_07a" data-name="User 07a" transform="translate(54.193 78.052)">
+                <g id="Group_10" data-name="Group 10" transform="translate(55.556 0)">
+                  <g id="Group_11" data-name="Group 11" transform="translate(0)">
+                    <g id="Group_11-2" data-name="Group 11" transform="translate(200.713 285.523) rotate(180)">
+                      <g id="Group_2-2" data-name="Group 2" transform="translate(0)">
+                        <g id="Group_14" data-name="Group 14">
+                          <g id="Path_48" data-name="Path 48" transform="translate(6.707 0)">
+                            <path id="Combined_Shape-2" data-name="Combined Shape" d="M46.792,199.088v.614q-.254,19.487-32.855,29.306c26.189,19,52.377,34.2,78.566,34.2s52.377-15.2,78.566-34.2q-32.38-9.829-32.848-29.346c.006-2.32.017-5.613.033-11.8q0-1.473.008-3.017c1.561.22,1.434.08,0-.316.042-16.269.112-38.148.21-60.381,20.473-26.468,12.952-57.5,6.536-56.725C137.137,68.374,68.994,3.877,55.924.577S9.652,7.939,3.938,37.682s-8.1,104.712,13.57,134.643q9.251,12.776,29.137,9.994c.018,6.225.055,9.718.147,16.769Z" transform="translate(171.069 263.204) rotate(180)" fill="#f0c1c1"/>
+                            <g id="Path_48-2" data-name="Path 48" transform="translate(0)" clip-path="url(#clip-path-2)">
+                              <path id="Path_48-3" data-name="Path 48" d="M0,17.1C31.426,13.536,51.425,0,51.425,0S29.8,28.662,0,34.2Z" transform="translate(124.277 98.003) rotate(180)" opacity="0.228"/>
+                            </g>
+                          </g>
+                          <path id="Path_22" data-name="Path 22" d="M171.865,146.914c9.842-23.61,49.282-71.691,15.286-101.612C175.723-10.265,112.583-4.115,70.443,8.708,42.121,17.327,20.734,34.355,16.161,21.531-12.408,45.3,1.9,68.55,20.734,75.223c17.094,6.056,46,12.111,95.144,6.412,8.779-1.018,6.941,25.8,11.632,28.7,7.038,4.35,12.5-23,31.8-14.789s7.846,46.291-12.867,46.291c-7.142,0-10.714,19.586,8.571,28.847C169.008,177.547,165.47,162.254,171.865,146.914Z" transform="translate(200.713 285.523) rotate(180)" fill="#2c2c2e"/>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+                <g id="Group_21" data-name="Group 21" transform="translate(0 243.868)">
+                  <path id="Combined_Shape-3" data-name="Combined Shape" d="M320.264,53.059c13.551,27.529,21.351,91.02,21.351,91.02H0s7.8-63.5,21.351-91.02S114.013.01,114.013.01C129.262,31.295,212.951,31.292,227.559,0,227.559,0,306.713,25.53,320.264,53.059Z" fill="#ffe1a9"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

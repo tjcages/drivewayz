@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:DrivewayzGeoMap.geojson">
-   </FileRef>
-   <FileRef
       location = "group:DriveWayz.xcodeproj">
    </FileRef>
    <FileRef

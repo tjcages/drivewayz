@@ -18,7 +18,7 @@ protocol handleTestParking {
 class ParkingViewController: UIViewController, handleTestParking {
     
     var delegate: handleCheckoutParking?
-    var navigationDelegate: handleRouteNavigation?
+//    var navigationDelegate: handleRouteNavigation?
     var locatorDelegate: handleLocatorButton?
     
     let paymentController = ChoosePaymentView()
@@ -48,14 +48,14 @@ class ParkingViewController: UIViewController, handleTestParking {
             }
             UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseIn, animations: {
                 if self.spotIsAvailable {
-                    self.mainButton.backgroundColor = Theme.DARK_GRAY
+                    self.mainButton.backgroundColor = Theme.BLACK
                     self.mainButton.setTitleColor(Theme.WHITE, for: .normal)
                     self.mainButton.isUserInteractionEnabled = true
                     self.bubbleArrow.alpha = 0
                 }
                 else {
-                    self.mainButton.backgroundColor = lineColor
-                    self.mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.mainButton.backgroundColor = Theme.LINE_GRAY
+                    self.mainButton.setTitleColor(Theme.BLACK, for: .normal)
                     self.mainButton.isUserInteractionEnabled = false
                     self.bubbleArrow.alpha = 1
                 }
@@ -126,7 +126,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Book Prime Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -146,11 +146,11 @@ class ParkingViewController: UIViewController, handleTestParking {
     var calendarButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.layer.cornerRadius = 4
         let image = UIImage(named: "setCalendarIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.showsTouchWhenHighlighted = true
         button.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         
@@ -176,7 +176,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 0, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(paymentButtonPressed), for: .touchUpInside)
         
@@ -186,7 +186,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -203,7 +203,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     lazy var bubbleArrow: BubbleArrow = {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -222,7 +222,7 @@ class ParkingViewController: UIViewController, handleTestParking {
         bookingPicker.dataSource = self
         
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
@@ -313,7 +313,7 @@ class ParkingViewController: UIViewController, handleTestParking {
     }
     
     @objc func becomeAHost(sender: UIButton) {
-        self.delegate?.becomeAHost()
+//        self.delegate?.becomeAHost()
     }
     
     func changeDates(fromDate: Date, totalTime: String) {
@@ -333,7 +333,7 @@ class ParkingViewController: UIViewController, handleTestParking {
                 if let cardNumber = paymentMethod.last4 {
                     let card = "•••• \(cardNumber)"
                     self.paymentButton.setTitle(card, for: .normal)
-                    self.paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.paymentButton.setTitleColor(Theme.BLACK, for: .normal)
                     let image = setDefaultPaymentMethod(method: paymentMethod)
                     self.paymentButton.setImage(image, for: .normal)
 //                    self.currentPaymentMethod = paymentMethod

@@ -225,7 +225,7 @@ class PictureHighlightView: UIViewController {
             self.dotView2.isHidden = false
             self.dotView3.isHidden = false
             self.dotView4.isHidden = false
-            self.shapeLayer.fillColor = Theme.PACIFIC_BLUE.withAlphaComponent(0.5).cgColor
+            self.shapeLayer.fillColor = Theme.BLUE.withAlphaComponent(0.5).cgColor
         }
         self.panView.isUserInteractionEnabled = true
     }

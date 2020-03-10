@@ -20,7 +20,7 @@ class BubbleArrow: UIView {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.STRAWBERRY_PINK
+        view.backgroundColor = Theme.SALMON
         view.layer.cornerRadius = 4
         
         return view
@@ -29,7 +29,7 @@ class BubbleArrow: UIView {
     let triangleView: TriangleView = {
         let view = TriangleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.color = Theme.STRAWBERRY_PINK
+        view.color = Theme.SALMON
         view.backgroundColor = UIColor.clear
         view.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
         
@@ -39,7 +39,7 @@ class BubbleArrow: UIView {
     let horizontalTriangleView: TriangleView = {
         let view = TriangleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.color = Theme.STRAWBERRY_PINK
+        view.color = Theme.SALMON
         view.backgroundColor = UIColor.clear
         view.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
         

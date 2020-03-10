@@ -144,7 +144,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         let cell = UITableViewCell()
         
         cell.textLabel?.text = dropDownOptions[indexPath.row]
-        cell.textLabel?.textColor = Theme.DARK_GRAY
+        cell.textLabel?.textColor = Theme.BLACK
         cell.backgroundColor = Theme.WHITE
         cell.alpha = 0.9
         return cell
@@ -167,7 +167,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
 
 var unavailable: UIButton = {
     let button = UIButton()
-    button.backgroundColor = Theme.PACIFIC_BLUE
+    button.backgroundColor = Theme.BLUE
     button.setTitle("Unavailable currently", for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.alpha = 1

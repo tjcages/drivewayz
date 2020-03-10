@@ -288,6 +288,14 @@ extension UITapGestureRecognizer {
 
 }
 
+extension CLLocationCoordinate2D {
+    //distance in meters, as explained in CLLoactionDistance definition
+    func distance(from: CLLocationCoordinate2D) -> CLLocationDistance {
+        let destination=CLLocation(latitude:from.latitude,longitude:from.longitude)
+        return CLLocation(latitude: latitude, longitude: longitude).distance(from: destination)
+    }
+}
+
 extension Range where Bound == String.Index {
     var nsRange:NSRange {
         return NSRange(location: self.lowerBound.encodedOffset,
@@ -943,5 +951,50 @@ extension Date {
 extension Date {
     func isBetween(date date1: Date, andDate date2: Date) -> Bool {
         return date1.compare(self) == self.compare(date2)
+    }
+}
+
+func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+
+func getBearingBetweenTwoPoints1(point1 : CLLocation, point2 : CLLocation) -> Double {
+    let lat1 = degreesToRadians(degrees: point1.coordinate.latitude)
+    let lon1 = degreesToRadians(degrees: point1.coordinate.longitude)
+
+    let lat2 = degreesToRadians(degrees: point2.coordinate.latitude)
+    let lon2 = degreesToRadians(degrees: point2.coordinate.longitude)
+
+    let dLon = lon2 - lon1
+
+    let y = sin(dLon) * cos(lat2)
+    let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+    let radiansBearing = atan2(y, x)
+
+    return radiansToDegrees(radians: radiansBearing)
+}
+
+extension UIView {
+    func setAnchorPoint(_ point: CGPoint) {
+        var newPoint = CGPoint(x: bounds.size.width * point.x, y: bounds.size.height * point.y)
+        var oldPoint = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y);
+
+        newPoint = newPoint.applying(transform)
+        oldPoint = oldPoint.applying(transform)
+
+        var position = layer.position
+
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+
+        layer.position = position
+        layer.anchorPoint = point
+    }
+}
+
+extension CAKeyframeAnimation {
+    @objc func setFromValue(_ value: Any?) {
     }
 }

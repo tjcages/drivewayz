@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVGKit
 import CoreLocation
 
 protocol handleStatusBarHide {
@@ -14,6 +15,8 @@ protocol handleStatusBarHide {
     func bringStatusBar()
     func lightContentStatusBar()
     func defaultStatusBar()
+    
+    func backToOnboarding()
 }
 
 protocol handleSignIn {
@@ -23,61 +26,23 @@ protocol handleSignIn {
 var phoneHeight: CGFloat = 0
 var phoneWidth: CGFloat = 0
 var statusHeight: CGFloat = 0
+var topSafeArea: CGFloat = 0
+var bottomSafeArea: CGFloat = 0
 
 class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, handleSignIn {
-
-    var tabController: TabViewController?
-    var onboardingController: OnboardingViewController?
     
-    lazy var blackView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.WHITE
-        view.alpha = 0
-
-        return view
-    }()
-    var drivewayzBottomIcon: UIImageView = {
-        let view = UIImageView()
-        let image = UIImage(named: "DrivewayzBottomIcon")
-        view.image = image
-        view.contentMode = .scaleAspectFit
+    var drivewayzIcon: SVGKImageView = {
+        let image = SVGKImage(named: "DrivewayzLogo_white")
+        let view = SVGKFastImageView(svgkImage: image)!
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
-    
-    var drivewayzTopIcon: UIImageView = {
-        let view = UIImageView()
-        let image = UIImage(named: "DrivewayzTopIcon")
-        view.image = image
-        view.contentMode = .scaleAspectFit
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    var drivewayzLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "drivewayz"
-        label.textColor = Theme.WHITE
-        label.font = Fonts.SSPBoldH0
-        label.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        label.alpha = 0
-        
-        return label
-    }()
-
-    var drivewayzIconLeftAnchor: NSLayoutConstraint!
-    var drivewayzIconTopAnchor: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY
-        
-        checkViews()
+        view.backgroundColor = Theme.BLACK
         
         if #available(iOS 13.0, *) {
             overrideUserInterfaceStyle = .light
@@ -86,176 +51,65 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         phoneHeight = self.view.frame.height
         phoneWidth = self.view.frame.width
         
+        NotificationCenter.default.addObserver(self, selector: #selector(lightContentStatusBar), name: NSNotification.Name(rawValue: "lightContentStatusBar"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(defaultStatusBar), name: NSNotification.Name(rawValue: "defaultStatusBar"), object: nil)
+        
         switch device {
         case .iphone8:
             gradientHeight = 140
-            cancelBottomHeight = -20
+            cancelBottomHeight = -8
         case .iphoneX:
             gradientHeight = 160
-            cancelBottomHeight = -56
+            cancelBottomHeight = 0
         }
         
         setupViews()
-        
-        delayWithSeconds(0.1) {
-            self.animate()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            topSafeArea = view.safeAreaInsets.top
+            bottomSafeArea = view.safeAreaInsets.bottom
+        } else {
+            topSafeArea = topLayoutGuide.length
+            bottomSafeArea = bottomLayoutGuide.length
         }
+        
+        checkViews()
     }
     
     func setupViews() {
         
-        self.view.addSubview(blackView)
-        blackView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        blackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        blackView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        blackView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        
-        self.view.addSubview(drivewayzBottomIcon)
-        self.view.addSubview(drivewayzTopIcon)
-        drivewayzBottomIcon.centerXAnchor.constraint(equalTo: drivewayzTopIcon.centerXAnchor).isActive = true
-        drivewayzBottomIcon.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0).isActive = true
-        drivewayzBottomIcon.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        drivewayzBottomIcon.heightAnchor.constraint(equalTo: drivewayzBottomIcon.widthAnchor).isActive = true
-        
-        drivewayzIconLeftAnchor = drivewayzTopIcon.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-            drivewayzIconLeftAnchor.isActive = true
-        drivewayzIconTopAnchor = drivewayzTopIcon.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            drivewayzIconTopAnchor.isActive = true
-        drivewayzTopIcon.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        drivewayzTopIcon.heightAnchor.constraint(equalTo: drivewayzTopIcon.widthAnchor).isActive = true
-        
-        self.view.addSubview(drivewayzLabel)
-        drivewayzLabel.leftAnchor.constraint(equalTo: drivewayzTopIcon.rightAnchor, constant: 12).isActive = true
-        drivewayzLabel.centerYAnchor.constraint(equalTo: drivewayzTopIcon.centerYAnchor, constant: 4).isActive = true
-        drivewayzLabel.sizeToFit()
+        view.addSubview(drivewayzIcon)
+        drivewayzIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        drivewayzIcon.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        drivewayzIcon.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        drivewayzIcon.widthAnchor.constraint(equalTo: drivewayzIcon.heightAnchor).isActive = true
         
     }
-    
-    func animate() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        }) { (success) in
-            UIView.animate(withDuration: 0.15, animations: {
-                self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            }) { (success) in
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-                }) { (success) in
-                    UIView.animate(withDuration: 0.2, animations: {
-                        self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                    }) { (success) in
-                        UIView.animate(withDuration: 0.25, animations: {
-                            self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-                        }) { (success) in
-                            UIView.animate(withDuration: 0.25, animations: {
-//                                self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                            }) { (success) in
-                                
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        UIView.animate(withDuration: 0.6, delay: 0.1, usingSpringWithDamping: 5, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
-            self.drivewayzIconTopAnchor.constant = -60
-            var transform = CGAffineTransform.identity
-            transform = transform.scaledBy(x: 1.4, y: 1.4)
-            transform = transform.translatedBy(x: 0.0, y: 8)
-            self.drivewayzBottomIcon.transform = transform
-            self.drivewayzBottomIcon.alpha = 0.5
-            self.view.layoutIfNeeded()
-        }) { (success) in
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
-                self.drivewayzIconTopAnchor.constant = 0
-                var transform = CGAffineTransform.identity
-                transform = transform.scaledBy(x: 1.0, y: 1.0)
-                transform = transform.translatedBy(x: 0.0, y: 0)
-                self.drivewayzBottomIcon.transform = transform
-                self.drivewayzBottomIcon.alpha = 1
-                self.view.layoutIfNeeded()
-            }) { (success) in
-                delayWithSeconds(0.3, completion: {
-                    UIView.animate(withDuration: 0.2, animations: {
-                        let width = self.drivewayzLabel.text?.width(withConstrainedHeight: 40, font: Fonts.SSPBoldH0)
-                        self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
-                        self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: -0.6, y: 0.6)
-                        self.drivewayzIconLeftAnchor.constant = (-108 - width!)/2
-                        self.drivewayzTopIcon.alpha = 0
-                        self.drivewayzBottomIcon.alpha = 0
-                        self.drivewayzLabel.alpha = 1
-                        self.view.layoutIfNeeded()
-                    }, completion: { (success) in
-                        delayWithSeconds(0, completion: {
-                            UIView.animate(withDuration: animationIn, animations: {
-                                if self.controller == true {
-                                    self.drivewayzLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                    self.drivewayzTopIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                    self.drivewayzBottomIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                    self.drivewayzLabel.alpha = 0
-                                    self.drivewayzTopIcon.alpha = 0
-                                    self.drivewayzBottomIcon.alpha = 0
-                                    
-                                    let controller = TabViewController()
-                                    self.tabController = controller
-                                    controller.delegate = self
-                                    controller.modalPresentationStyle = .overFullScreen
-                                    controller.modalTransitionStyle = .crossDissolve
-                                    self.present(controller, animated: true, completion: {
-                                        self.defaultStatusBar()
-                                        self.bringStatusBar()
-                                        UIView.animate(withDuration: animationIn, animations: {
-                                            self.blackView.alpha = 1
-                                        })
-                                    })
-                                } else {
-                                    self.drivewayzIconTopAnchor.constant = -200
-                                    self.drivewayzBottomIcon.transform = CGAffineTransform(translationX: 0.0, y: -200)
-                                    self.drivewayzLabel.alpha = 0
-                                    self.drivewayzTopIcon.alpha = 0
-                                    self.drivewayzBottomIcon.alpha = 0
-                                    
-                                    let controller = OnboardingViewController()
-                                    self.onboardingController = controller
-                                    controller.delegate = self
-                                    controller.statusDelegate = self
-                                    controller.modalPresentationStyle = .overFullScreen
-                                    self.present(controller, animated: true, completion: {
-                                        self.hideStatusBar()
-                                        UIView.animate(withDuration: animationIn, animations: {
-                                            controller.circularView.alpha = 1
-                                        })
-                                    })
-                                }
-                                self.view.layoutIfNeeded()
-                            }, completion: { (success) in
-//
-                            })
-                        })
-                    })
-                })
-            }
-        }
-    }
-    
-    var controller: Bool = false
     
     func checkViews() {
         let isUserLoggedIn: Bool = UserDefaults.standard.bool(forKey: "isUserLoggedIn")
         if isUserLoggedIn == true {
-            self.controller = true
+            let controller = LaunchMainController()
+            controller.delegate = self
+            controller.tabController.delegate = self
+            controller.modalPresentationStyle = .overFullScreen
+            present(controller, animated: false) {
+                //
+            }
         } else {
-            self.controller = false
+            let controller = LaunchOnboardingController()
+            controller.delegate = self
+            controller.modalPresentationStyle = .overFullScreen
+            present(controller, animated: false) {
+                //
+            }
         }
     }
     
     func moveToMainController() {
-        self.controller = true
-        
-        self.defaultStatusBar()
-        UIView.animate(withDuration: animationIn, animations: {
-            self.blackView.alpha = 1
-        })
+        defaultStatusBar()
         
         UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
         UserDefaults.standard.synchronize()
@@ -263,6 +117,24 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         delayWithSeconds(1) {
             self.bringStatusBar()
         }
+    }
+    
+    func backToOnboarding() {
+        tabDimmingView.alpha = 0
+        
+        let controller = LaunchOnboardingController()
+        controller.delegate = self
+        controller.drivewayzIcon_white.alpha = 0
+        controller.drivewayzIcon.alpha = 1
+        controller.box.backgroundColor = Theme.WHITE
+        controller.container.backgroundColor = Theme.WHITE
+        controller.view.backgroundColor = Theme.WHITE
+        controller.modalPresentationStyle = .overFullScreen
+        controller.modalTransitionStyle = .crossDissolve
+        
+        modalTransitionStyle = .crossDissolve
+        dismiss(animated: true, completion: nil)
+        present(controller, animated: true, completion: nil)
     }
     
     func hideStatusBar() {
@@ -279,14 +151,14 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         }
     }
     
-    func lightContentStatusBar() {
+    @objc func lightContentStatusBar() {
         statusBarColor = true
         UIView.animate(withDuration: animationIn) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
     
-    func defaultStatusBar() {
+    @objc func defaultStatusBar() {
         statusBarColor = false
         UIView.animate(withDuration: animationIn) {
             self.setNeedsStatusBarAppearanceUpdate()
@@ -321,4 +193,12 @@ class LaunchAnimationsViewController: UIViewController, handleStatusBarHide, han
         return true
     }
 
+}
+
+func lightContentStatusBar() {
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "lightContentStatusBar"), object: nil)
+}
+
+func defaultContentStatusBar() {
+    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "defaultStatusBar"), object: nil)
 }

@@ -23,7 +23,7 @@ class QuickParkingViewController: UIViewController {
     var darkContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -56,7 +56,7 @@ class QuickParkingViewController: UIViewController {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -66,7 +66,7 @@ class QuickParkingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4 min"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH6
         
         return label
@@ -77,7 +77,7 @@ class QuickParkingViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 90, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         
@@ -88,7 +88,7 @@ class QuickParkingViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.clear
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4

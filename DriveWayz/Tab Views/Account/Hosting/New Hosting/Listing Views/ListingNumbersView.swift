@@ -16,7 +16,7 @@ class ListingNumbersView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Number of spots"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -24,7 +24,7 @@ class ListingNumbersView: UIViewController {
     
     var mainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -39,7 +39,7 @@ class ListingNumbersView: UIViewController {
     var textViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -49,7 +49,7 @@ class ListingNumbersView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.message = "Please enter how many spots are being listed first."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -112,7 +112,7 @@ extension ListingNumbersView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.sizeToFit()
         toolBar.tintColor = Theme.WHITE
         
@@ -139,7 +139,7 @@ extension ListingNumbersView: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.unselectViews()
-        textViewLine.backgroundColor = lineColor
+        textViewLine.backgroundColor = Theme.LINE_GRAY
     }
     
     func textViewDidChange(_ textView: UITextView) {

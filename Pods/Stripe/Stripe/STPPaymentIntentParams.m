@@ -7,10 +7,20 @@
 //
 
 #import "STPPaymentIntentParams.h"
+#import "STPPaymentIntentParams+Utilities.h"
+
+#import "STPConfirmPaymentMethodOptions.h"
+#import "STPMandateCustomerAcceptanceParams.h"
+#import "STPMandateOnlineParams+Private.h"
+#import "STPMandateDataParams.h"
 #import "STPPaymentIntent+Private.h"
 #import "STPPaymentMethod.h"
 #import "STPPaymentMethodParams.h"
 #import "STPPaymentResult.h"
+
+@interface STPPaymentIntentParams ()
+
+@end
 
 @implementation STPPaymentIntentParams
 
@@ -58,6 +68,13 @@
                        [NSString stringWithFormat:@"paymentMethodId = %@", self.paymentMethodId],
                        [NSString stringWithFormat:@"paymentMethodParams = %@", self.paymentMethodParams],
 
+                       // Mandate
+                       [NSString stringWithFormat:@"mandateData = %@", self.mandateData],
+                       [NSString stringWithFormat:@"mandate = %@", self.mandate],
+
+                       // PaymentMethodOptions
+                       [NSString stringWithFormat:@"paymentMethodOptions = @%@", self.paymentMethodOptions],
+
                        // Additional params set by app
                        [NSString stringWithFormat:@"additionalAPIParameters = %@", self.additionalAPIParameters],
                        ];
@@ -86,6 +103,25 @@
         _paymentMethodId = [paymentResult.paymentMethod.stripeId copy];
     } else if (paymentResult.paymentMethodParams) {
         _paymentMethodParams = paymentResult.paymentMethodParams;
+    }
+}
+
+- (STPMandateDataParams *)mandateData {
+    if (_mandateData != nil) {
+        return _mandateData;
+    } else if (self.paymentMethodParams.type == STPPaymentMethodTypeSEPADebit && self.mandate == nil) {
+        // Create default infer from client mandate_data
+        STPMandateDataParams *mandateData = [[STPMandateDataParams alloc] init];
+        STPMandateCustomerAcceptanceParams *customerAcceptance = [[STPMandateCustomerAcceptanceParams alloc] init];
+        STPMandateOnlineParams *onlineParams = [[STPMandateOnlineParams alloc] init];
+        onlineParams.inferFromClient = @YES;
+        customerAcceptance.type = STPMandateCustomerAcceptanceTypeOnline;
+        customerAcceptance.onlineParams = onlineParams;
+        mandateData.customerAcceptance = customerAcceptance;
+
+        return mandateData;
+    } else {
+        return nil;
     }
 }
 
@@ -122,6 +158,9 @@
     copy.returnURL = self.returnURL;
     copy.setupFutureUsage = self.setupFutureUsage;
     copy.useStripeSDK = self.useStripeSDK;
+    copy.mandateData = self.mandateData;
+    copy.mandate = self.mandate;
+    copy.paymentMethodOptions = self.paymentMethodOptions;
     copy.additionalAPIParameters = self.additionalAPIParameters;
 
     return copy;
@@ -145,7 +184,26 @@
              NSStringFromSelector(@selector(savePaymentMethod)): @"save_payment_method",
              NSStringFromSelector(@selector(returnURL)): @"return_url",
              NSStringFromSelector(@selector(useStripeSDK)) : @"use_stripe_sdk",
+             NSStringFromSelector(@selector(mandateData)) : @"mandate_data",
+             NSStringFromSelector(@selector(mandate)) : @"mandate",
+             NSStringFromSelector(@selector(paymentMethodOptions)) : @"payment_method_options",
              };
+}
+
+#pragma mark - Utilities
+
++ (BOOL)isClientSecretValid:(NSString *)clientSecret {
+    static dispatch_once_t onceToken;
+    static NSRegularExpression *regex = nil;
+    dispatch_once(&onceToken, ^{
+        regex = [[NSRegularExpression alloc] initWithPattern:@"^pi_[^_]+_secret_[^_]+$"
+                                                     options:0
+                                                       error:NULL];
+    });
+
+    return ([regex numberOfMatchesInString:clientSecret
+                                  options:NSMatchingAnchored
+                                    range:NSMakeRange(0, clientSecret.length)]) == 1;
 }
 
 @end

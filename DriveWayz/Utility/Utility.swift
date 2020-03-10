@@ -131,6 +131,7 @@ class Fonts {
     //Regular
     static let SSPRegularH0 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h0)).instance
     static let SSPRegularH1 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h1)).instance
+    static let SSPRegularH25 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h25)).instance
     static let SSPRegularH2 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h2)).instance
     static let SSPRegularH3 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h3)).instance
     static let SSPRegularH4 = Font(Font.FontType.installed(Font.FontName.SSPRegular), size: Font.FontSize.standard(Font.StandardSize.h4)).instance

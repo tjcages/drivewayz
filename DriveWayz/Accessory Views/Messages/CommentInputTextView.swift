@@ -13,7 +13,7 @@ class CommentInputTextView: UITextView {
     fileprivate let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = "Message"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         
         return label

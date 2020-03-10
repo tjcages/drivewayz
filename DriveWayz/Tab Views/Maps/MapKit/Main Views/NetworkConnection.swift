@@ -28,7 +28,7 @@ extension MapKitViewController {
             if status == 0 {
                 self.networkConnection.setTitle("We can't seem to find a network connection", for: .normal)
                 self.view.layoutIfNeeded()
-                self.networkConnection.backgroundColor = Theme.HARMONY_RED
+                self.networkConnection.backgroundColor = Theme.SALMON
                 switch device {
                 case .iphone8:
                     self.networkTopAnchor.constant = -20
@@ -47,7 +47,7 @@ extension MapKitViewController {
                     if reachableStatus == "Connection Status : Not Reachable" {
                         self.networkConnection.setTitle("We can't seem to find a network connection", for: .normal)
                         self.view.layoutIfNeeded()
-                        self.networkConnection.backgroundColor = Theme.HARMONY_RED
+                        self.networkConnection.backgroundColor = Theme.SALMON
                         switch device {
                         case .iphone8:
                             self.networkTopAnchor.constant = -20
@@ -60,7 +60,7 @@ extension MapKitViewController {
                     } else {
                         self.networkConnection.setTitle("Successfully connected", for: .normal)
                         self.view.layoutIfNeeded()
-                        self.networkConnection.backgroundColor = Theme.GREEN_PIGMENT
+                        self.networkConnection.backgroundColor = Theme.GREEN
                         switch device {
                         case .iphone8:
                             self.networkTopAnchor.constant = -20

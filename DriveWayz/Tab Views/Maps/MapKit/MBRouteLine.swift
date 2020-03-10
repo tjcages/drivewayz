@@ -19,7 +19,7 @@ var routeLine: CAShapeLayer = {
     line.fillColor = UIColor.clear.cgColor
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 4
-    line.strokeColor = Theme.DARK_GRAY.cgColor
+    line.strokeColor = Theme.BLACK.cgColor
     
     return line
 }()
@@ -29,7 +29,7 @@ var routeUnderLine: CAShapeLayer = {
     line.fillColor = UIColor.clear.cgColor
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 4
-    line.strokeColor = Theme.PRUSSIAN_BLUE.cgColor
+    line.strokeColor = Theme.GRAY_WHITE_1.withAlphaComponent(0.6).cgColor
     
     return line
 }()
@@ -39,7 +39,7 @@ var routeWalkingLine: CAShapeLayer = {
     line.fillColor = UIColor.clear.cgColor
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 6
-    line.strokeColor = Theme.DARK_GRAY.cgColor
+    line.strokeColor = Theme.BLACK.cgColor
     line.lineDashPattern = [0, 16]
     line.lineCap = .round
     
@@ -51,7 +51,7 @@ var routeWalkingUnderLine: CAShapeLayer = {
     line.fillColor = UIColor.clear.cgColor
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 8
-    line.strokeColor = Theme.DARK_GRAY.cgColor
+    line.strokeColor = Theme.BLACK.cgColor
     line.lineDashPattern = [0, 16]
     line.lineCap = .round
     
@@ -62,9 +62,9 @@ var routeStartPin: UIView = {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
     view.backgroundColor = Theme.WHITE
     view.layer.cornerRadius = 9
-    view.layer.borderColor = Theme.DARK_GRAY.cgColor
+    view.layer.borderColor = Theme.BLACK.cgColor
     view.layer.borderWidth = 7
-    view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+    view.layer.shadowColor = Theme.BLACK.cgColor
     view.layer.shadowOpacity = 0.2
     view.layer.shadowOffset = CGSize(width: 0, height: 2)
     view.layer.shadowRadius = 4
@@ -85,9 +85,9 @@ var routeEndPin: UIView = {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
     view.backgroundColor = Theme.WHITE
     view.layer.cornerRadius = 1
-    view.layer.borderColor = Theme.DARK_GRAY.cgColor
+    view.layer.borderColor = Theme.BLACK.cgColor
     view.layer.borderWidth = 7
-    view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+    view.layer.shadowColor = Theme.BLACK.cgColor
     view.layer.shadowOpacity = 0.2
     view.layer.shadowOffset = CGSize(width: 0, height: 2)
     view.layer.shadowRadius = 4

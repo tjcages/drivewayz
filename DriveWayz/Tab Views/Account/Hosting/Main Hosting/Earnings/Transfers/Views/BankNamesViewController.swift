@@ -31,7 +31,7 @@ class BankNamesViewController: UIViewController {
     var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "First name"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -41,13 +41,13 @@ class BankNamesViewController: UIViewController {
     
     var nameTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "First"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -58,7 +58,7 @@ class BankNamesViewController: UIViewController {
     var lastLabel: UILabel = {
         let label = UILabel()
         label.text = "Last name"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -68,13 +68,13 @@ class BankNamesViewController: UIViewController {
     
     var lastTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "Last"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -85,7 +85,7 @@ class BankNamesViewController: UIViewController {
     var emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -95,13 +95,13 @@ class BankNamesViewController: UIViewController {
     
     var emailTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "Email"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -168,9 +168,9 @@ class BankNamesViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.BLUE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(endEditing))

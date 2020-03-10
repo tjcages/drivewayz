@@ -31,7 +31,7 @@ class PictureAlertView: UIViewController {
     var imageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 8
         view.clipsToBounds = true
@@ -73,9 +73,9 @@ class PictureAlertView: UIViewController {
     
     let gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -112,7 +112,7 @@ class PictureAlertView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Confirm Image", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.alpha = 0
@@ -124,7 +124,7 @@ class PictureAlertView: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         label.text = "Use this to mark the boundaries of where drivers can park."
@@ -262,7 +262,7 @@ class PictureAlertView: UIViewController {
         bottomBottomAnchor.isActive = true
         bottomTopAnchor.isActive = true
         UIView.animate(withDuration: animationIn, animations: {
-            self.view.backgroundColor = Theme.DARK_GRAY
+            self.view.backgroundColor = Theme.BLACK
             self.pullButton.alpha = 0
             self.optionsTableView.alpha = 0
             self.bottomContainer.layer.cornerRadius = 0
@@ -370,9 +370,9 @@ extension PictureAlertView: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = Fonts.SSPRegularH4
         cell.textLabel?.textAlignment = .center
         if indexPath.row == (options.count - 1) {
-            cell.textLabel?.textColor = Theme.HARMONY_RED
+            cell.textLabel?.textColor = Theme.SALMON
         } else {
-            cell.textLabel?.textColor = Theme.DARK_GRAY
+            cell.textLabel?.textColor = Theme.BLACK
         }
         
         if options.count > indexPath.row {

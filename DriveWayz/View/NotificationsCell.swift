@@ -42,7 +42,7 @@ class NotificationsCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 2
         
         return label
@@ -52,7 +52,7 @@ class NotificationsCell: UITableViewCell {
         let label = UILabel()
         label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         
         return label
     }()
@@ -85,7 +85,7 @@ class NotificationsCell: UITableViewCell {
         subLabel.sizeToFit()
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         addSubview(view)
         
     }
@@ -105,7 +105,7 @@ class NotificationsHeader: UIView {
         view.text = "Notifications"
         view.font = Fonts.SSPSemiBoldH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -115,7 +115,7 @@ class NotificationsHeader: UIView {
         view.text = "•"
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -133,7 +133,7 @@ class NotificationsHeader: UIView {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -177,7 +177,7 @@ class NotificationsDateHeader: UIView {
         view.text = "TODAY"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.PRUSSIAN_BLUE
+        view.textColor = Theme.GRAY_WHITE
         
         return view
     }()
@@ -188,7 +188,7 @@ class NotificationsDateHeader: UIView {
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.contentMode = .scaleAspectFit
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -197,14 +197,14 @@ class NotificationsDateHeader: UIView {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
     
     override func draw(_ rect: CGRect) {
         
-        backgroundColor = Theme.OFF_WHITE
+        backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
     }

@@ -32,7 +32,7 @@ class NavigationInformationView: UIViewController {
     var spotNumberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPSemiBoldH5
         label.text = "SPOT NUMBER"
         
@@ -42,7 +42,7 @@ class NavigationInformationView: UIViewController {
     var spotNumberValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.text = "1234"
         label.textAlignment = .right
@@ -53,7 +53,7 @@ class NavigationInformationView: UIViewController {
     var numberLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -61,7 +61,7 @@ class NavigationInformationView: UIViewController {
     var gateCodeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPSemiBoldH5
         label.text = "GATE CODE"
         
@@ -71,7 +71,7 @@ class NavigationInformationView: UIViewController {
     var gateCodeValue: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.text = "N/A"
         label.textAlignment = .right
@@ -82,7 +82,7 @@ class NavigationInformationView: UIViewController {
     var gateLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -90,7 +90,7 @@ class NavigationInformationView: UIViewController {
     var gateBlock: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 2
         view.alpha = 0
         
@@ -102,7 +102,7 @@ class NavigationInformationView: UIViewController {
         let image = UIImage(named: "eyeIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         button.alpha = 0
@@ -113,7 +113,7 @@ class NavigationInformationView: UIViewController {
     var messageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 10
         
@@ -123,7 +123,7 @@ class NavigationInformationView: UIViewController {
     var listedView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -275,12 +275,12 @@ class NavigationInformationView: UIViewController {
         } else if state == .changed {
             if self.canShowGate == true {
                 self.gateBlock.alpha = 0
-                self.viewIcon.tintColor = Theme.DARK_GRAY
+                self.viewIcon.tintColor = Theme.BLACK
             }
         } else {
             self.canShowGate = false
             self.gateBlock.alpha = 1
-            self.viewIcon.tintColor = Theme.DARK_GRAY
+            self.viewIcon.tintColor = Theme.BLACK
         }
     }
     

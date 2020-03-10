@@ -20,13 +20,13 @@ class HostNotificationsView: UIViewController {
     var notificationsAllowed: Bool = false {
         didSet {
             if notificationsAllowed {
-                bottomController.mainButton.backgroundColor = Theme.DARK_GRAY
+                bottomController.mainButton.backgroundColor = Theme.BLACK
                 bottomController.mainButton.setTitleColor(Theme.WHITE, for: .normal)
                 bottomController.mainButton.isUserInteractionEnabled = true
                 bubbleArrow.alpha = 0
             } else {
-                bottomController.mainButton.backgroundColor = lineColor
-                bottomController.mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                bottomController.mainButton.backgroundColor = Theme.LINE_GRAY
+                bottomController.mainButton.setTitleColor(Theme.BLACK, for: .normal)
                 bottomController.mainButton.isUserInteractionEnabled = false
                 bubbleArrow.alpha = 1
             }
@@ -50,7 +50,7 @@ class HostNotificationsView: UIViewController {
         let button = UIButton()
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
         
@@ -61,7 +61,7 @@ class HostNotificationsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Allow notifications"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
         return label
@@ -71,7 +71,7 @@ class HostNotificationsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Enable notifications to keep up \nto date with your spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 2
         label.font = Fonts.SSPRegularH3
         
@@ -102,7 +102,7 @@ class HostNotificationsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Drivewayz will only send necessary and important notifications."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.numberOfLines = 4
         label.textAlignment = .center
@@ -114,7 +114,7 @@ class HostNotificationsView: UIViewController {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.message = "You must enable notifications in settings to list."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2

@@ -16,7 +16,7 @@ class MapDropPin: UIView {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 2
         
         return view
@@ -28,7 +28,7 @@ class MapDropPin: UIView {
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 18
         view.layer.borderWidth = 14
-        view.layer.borderColor = Theme.DARK_GRAY.cgColor
+        view.layer.borderColor = Theme.BLACK.cgColor
         
         return view
     }()
@@ -36,12 +36,12 @@ class MapDropPin: UIView {
     lazy var shadow: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 2
         view.layer.shadowOpacity = 0.6
         let ovalView = OvalView(frame: CGRect(x: 0, y: shadowHeight/2, width: shadowWidth, height: shadowHeight))
-        ovalView.backgroundColor = Theme.DARK_GRAY
+        ovalView.backgroundColor = Theme.BLACK
         view.addSubview(ovalView)
         
         return view

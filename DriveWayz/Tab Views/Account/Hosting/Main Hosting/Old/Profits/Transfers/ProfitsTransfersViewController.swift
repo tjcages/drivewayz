@@ -78,7 +78,7 @@ class ProfitsTransfersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

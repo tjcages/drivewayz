@@ -18,7 +18,7 @@ class TransferMoneyViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Confirm transfer amount"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.numberOfLines = 2
@@ -46,7 +46,7 @@ class TransferMoneyViewController: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
@@ -71,7 +71,7 @@ class TransferMoneyViewController: UIViewController {
     var dimmingView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -95,7 +95,7 @@ class TransferMoneyViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 60
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.GREEN
         button.imageEdgeInsets = UIEdgeInsets(top: -12, left: -12, bottom: -12, right: -12)
         button.layer.borderColor = Theme.WHITE.cgColor
         button.layer.borderWidth = 2
@@ -107,7 +107,7 @@ class TransferMoneyViewController: UIViewController {
     var successLabel: UILabel = {
         let label = UILabel()
         label.text = "Bank transfer initiated!"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.textAlignment = .center
@@ -118,7 +118,7 @@ class TransferMoneyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
         setupButtons()

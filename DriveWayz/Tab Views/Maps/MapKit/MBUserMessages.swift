@@ -24,7 +24,7 @@ extension MapKitViewController: UIViewControllerTransitioningDelegate {
         controller.gradientController.setExitButton()
         controller.modalPresentationStyle = .overFullScreen
         self.present(controller, animated: true) {
-            self.lightContentStatusBar()
+            lightContentStatusBar()
             delayWithSeconds(1, completion: {
                 let ref = Database.database().reference().child("users").child(userID)
                 ref.child("PersonalMessages").removeValue()

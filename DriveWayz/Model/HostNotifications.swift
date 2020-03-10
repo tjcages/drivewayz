@@ -81,7 +81,7 @@ class HostNotifications: NSObject {
             self.notificationImage = UIImage(named: "flat-camera")
         } else if notificationType == "chat" {
             self.type = .moderate
-            self.containerGradient = [Theme.STRAWBERRY_PINK: Theme.LightOrange]
+            self.containerGradient = [Theme.SALMON: Theme.LightOrange]
             self.notificationImage = UIImage(named: "flat-chat-bubbles")
         } else if notificationType == "document" {
             self.type = .important
@@ -93,7 +93,7 @@ class HostNotifications: NSObject {
             self.notificationImage = UIImage(named: "flat-folder")
         } else if notificationType == "search" {
             self.type = .urgent
-            self.containerGradient = [Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1): Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)]
+            self.containerGradient = [Theme.GRAY_WHITE.withAlphaComponent(0.1): Theme.GRAY_WHITE.withAlphaComponent(0.4)]
             self.notificationImage = UIImage(named: "Search")
         } else if notificationType == "mailbox" {
             self.type = .mild
@@ -109,11 +109,11 @@ class HostNotifications: NSObject {
             self.notificationImage = UIImage(named: "flat-phone-hand")
         } else if notificationType == "photos" {
             self.type = .soft
-            self.containerGradient = [Theme.LightOrange: Theme.STRAWBERRY_PINK]
+            self.containerGradient = [Theme.LightOrange: Theme.SALMON]
             self.notificationImage = UIImage(named: "flat-photos")
         } else if notificationType == "plane" {
             self.type = .mild
-            self.containerGradient = [Theme.STRAWBERRY_PINK: Theme.LightOrange]
+            self.containerGradient = [Theme.SALMON: Theme.LightOrange]
             self.notificationImage = UIImage(named: "flat-plane")
         } else if notificationType == "telescope" {
             self.type = .soft
@@ -129,7 +129,7 @@ class HostNotifications: NSObject {
             self.notificationImage = UIImage(named: "notificationStar")
         } else if notificationType == "leftReviewPoor" {
             self.type = .moderate
-            self.containerGradient = [Theme.SEA_BLUE: Theme.SEA_BLUE]
+            self.containerGradient = [Theme.BLUE: Theme.BLUE]
             self.notificationImage = UIImage(named: "notificationStar")
         } else if notificationType == "userParked" {
             self.type = .moderate

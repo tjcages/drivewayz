@@ -45,7 +45,7 @@ class AvailabilityCalendarView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Tap specific days or days of the week to block out availability on the calendar."
         label.numberOfLines = 2
         
@@ -72,7 +72,7 @@ class AvailabilityCalendarView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("November", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH1
         button.contentHorizontalAlignment = .left
         
@@ -83,7 +83,7 @@ class AvailabilityCalendarView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("December", for: .normal)
-        button.setTitleColor(Theme.LIGHT_GRAY, for: .normal)
+        button.setTitleColor(Theme.GRAY_WHITE_4, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH1
         button.contentHorizontalAlignment = .left
         
@@ -94,7 +94,7 @@ class AvailabilityCalendarView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("January", for: .normal)
-        button.setTitleColor(Theme.LIGHT_GRAY, for: .normal)
+        button.setTitleColor(Theme.GRAY_WHITE_4, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH1
         button.contentHorizontalAlignment = .left
         
@@ -115,7 +115,7 @@ class AvailabilityCalendarView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -139,7 +139,7 @@ class AvailabilityCalendarView: UIViewController {
     lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Save", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -154,7 +154,7 @@ class AvailabilityCalendarView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        line.backgroundColor = lineColor
+        line.backgroundColor = Theme.LINE_GRAY
         view.addSubview(line)
         
         return view
@@ -163,7 +163,7 @@ class AvailabilityCalendarView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         calendarView.calendarDelegate = self
         calendarView.calendarDataSource = self
@@ -261,7 +261,7 @@ class AvailabilityCalendarView: UIViewController {
         for i in 0...6 {
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.textColor = Theme.LIGHT_GRAY
+            label.textColor = Theme.GRAY_WHITE_4
             label.font = Fonts.SSPSemiBoldH4
             label.textAlignment = .center
             
@@ -442,14 +442,14 @@ extension AvailabilityCalendarView: JTACMonthViewDelegate, JTACMonthViewDataSour
         if cellState.dateBelongsTo == .thisMonth {
             if date.isInSameDay(date: today) {
                 cell.todayView.isHidden = false
-                cell.label.textColor = Theme.DARK_GRAY
+                cell.label.textColor = Theme.BLACK
                 cell.selectedView.backgroundColor = Theme.HOST_BLUE
             } else if !date.isInThePast {
-                cell.label.textColor = Theme.DARK_GRAY
+                cell.label.textColor = Theme.BLACK
                 cell.selectedView.alpha = 1
                 cell.isUserInteractionEnabled = true
             } else {
-                cell.label.textColor = Theme.LIGHT_GRAY
+                cell.label.textColor = Theme.GRAY_WHITE_4
                 cell.selectedView.alpha = 0
                 cell.isUserInteractionEnabled = false
             }
@@ -466,7 +466,7 @@ extension AvailabilityCalendarView: JTACMonthViewDelegate, JTACMonthViewDataSour
             cell.strikeLine.isHidden = !cellState.isSelected
             cell.selectedView.layer.maskedCorners = []
             if cellState.isSelected {
-                cell.selectedView.backgroundColor = lineColor
+                cell.selectedView.backgroundColor = Theme.LINE_GRAY
             } else {
                 cell.selectedView.backgroundColor = Theme.HOST_BLUE
             }

@@ -24,7 +24,7 @@ class HostChatViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
         
@@ -68,7 +68,7 @@ class HostChatViewController: UIViewController {
     var durationLabel: UILabel = {
         let label = UILabel()
         label.text = "20 min ago"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
@@ -87,7 +87,7 @@ class HostChatViewController: UIViewController {
     
     var messageBarBackground: UIView = {let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.BACKGROUND_GRAY.withAlphaComponent(0.4)
         
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -97,7 +97,7 @@ class HostChatViewController: UIViewController {
         view.addSubview(blurEffectView)
         
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 0.5))
-        line.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        line.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.addSubview(line)
         
         return view
@@ -107,12 +107,12 @@ class HostChatViewController: UIViewController {
         let view = UITextView()
         view.backgroundColor = Theme.WHITE
         view.font = Fonts.SSPRegularH5
-        view.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+        view.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
         view.text = "Write a message"
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = true
         view.layer.cornerRadius = 20
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6).cgColor
+        view.layer.borderColor = Theme.GRAY_WHITE.withAlphaComponent(0.6).cgColor
         view.layer.borderWidth = 0.5
         view.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 42)
         view.autocorrectionType = .default
@@ -126,7 +126,7 @@ class HostChatViewController: UIViewController {
         let origImage = UIImage(named: "camera")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(selectImageView(sender:)), for: .touchUpInside)
         
@@ -354,7 +354,7 @@ extension HostChatViewController: UIImagePickerControllerDelegate, UINavigationC
             self.sendButton.alpha = 0.5
             self.sendButton.isUserInteractionEnabled = false
             self.messageTextView.text = "Write a message"
-            self.messageTextView.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+            self.messageTextView.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
             let newPosition = self.messageTextView.beginningOfDocument
             self.messageTextView.selectedTextRange = self.messageTextView.textRange(from: newPosition, to: newPosition)
             
@@ -666,7 +666,7 @@ extension HostChatViewController: UITextViewDelegate {
         }
         if textView.text == "" {
             textView.text = "Write a message"
-            textView.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+            textView.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
             let newPosition = textView.beginningOfDocument
             textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
         }
@@ -683,7 +683,7 @@ extension HostChatViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Write a message"
-            textView.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+            textView.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
             let newPosition = textView.beginningOfDocument
             textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
         }

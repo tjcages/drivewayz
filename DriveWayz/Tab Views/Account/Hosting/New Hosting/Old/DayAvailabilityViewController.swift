@@ -46,7 +46,7 @@ class DayAvailabilityViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -67,7 +67,7 @@ class DayAvailabilityViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -103,7 +103,7 @@ class DayAvailabilityViewController: UIViewController {
         let button = UITextField()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.text = "8:00 AM"
-        button.textColor = Theme.DARK_GRAY
+        button.textColor = Theme.BLACK
         button.font = Fonts.SSPSemiBoldH3
         button.textAlignment = .right
         button.tintColor = .clear
@@ -115,7 +115,7 @@ class DayAvailabilityViewController: UIViewController {
         let button = UITextField()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.text = "5:00 PM"
-        button.textColor = Theme.DARK_GRAY
+        button.textColor = Theme.BLACK
         button.font = Fonts.SSPSemiBoldH3
         button.textAlignment = .left
         button.tintColor = .clear
@@ -126,7 +126,7 @@ class DayAvailabilityViewController: UIViewController {
     var allDayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "All day"
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
@@ -140,7 +140,7 @@ class DayAvailabilityViewController: UIViewController {
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        button.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4)
+        button.tintColor = Theme.GRAY_WHITE.withAlphaComponent(0.4)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
@@ -149,7 +149,7 @@ class DayAvailabilityViewController: UIViewController {
     var fromLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.GREEN_PIGMENT
+        view.backgroundColor = Theme.GREEN
         view.layer.cornerRadius = 5
         view.alpha = 0
         
@@ -159,7 +159,7 @@ class DayAvailabilityViewController: UIViewController {
     var toLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.GREEN_PIGMENT
+        view.backgroundColor = Theme.GREEN
         view.layer.cornerRadius = 5
         view.alpha = 0
         
@@ -275,7 +275,7 @@ class DayAvailabilityViewController: UIViewController {
     
     func createDatePicker() {
         numberPicker.delegate = self
-        numberPicker.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        numberPicker.backgroundColor = Theme.BLACK.withAlphaComponent(0.6)
         durationFromButton.inputView = numberPicker
         durationToButton.inputView = numberPicker
         createToolbar()
@@ -285,9 +285,9 @@ class DayAvailabilityViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.GRAY_WHITE.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -374,7 +374,7 @@ class DayAvailabilityViewController: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.addTarget(self, action: #selector(hiddenPressed(sender:)), for: .touchUpInside)
         
         return button

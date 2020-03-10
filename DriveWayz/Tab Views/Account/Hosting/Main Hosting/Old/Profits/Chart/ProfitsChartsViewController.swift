@@ -156,7 +156,7 @@ class ProfitsChartsViewController: UIViewController {
     var amountButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.GREEN
         button.setTitle("$0.00", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
@@ -172,7 +172,7 @@ class ProfitsChartsViewController: UIViewController {
         let triangle = TriangleView()
         triangle.backgroundColor = UIColor.clear
         triangle.translatesAutoresizingMaskIntoConstraints = false
-        triangle.color = Theme.GREEN_PIGMENT
+        triangle.color = Theme.GREEN
         triangle.transform = CGAffineTransform(rotationAngle: CGFloat.pi + CGFloat.pi/7.91)
         triangle.alpha = 0
         
@@ -185,7 +185,7 @@ class ProfitsChartsViewController: UIViewController {
         datePicker.delegate = self
         datePicker.dataSource = self
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

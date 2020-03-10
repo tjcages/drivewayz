@@ -33,7 +33,7 @@ class MainTypeCell: UITableViewCell {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -42,7 +42,7 @@ class MainTypeCell: UITableViewCell {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4
         label.text = "More details"
@@ -62,9 +62,9 @@ class MainTypeCell: UITableViewCell {
     var amenitiesButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 28
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
@@ -126,15 +126,15 @@ class MainTypeCell: UITableViewCell {
     
     func selectAmenity() {
         backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
-        amenitiesButton.backgroundColor = Theme.DARK_GRAY
+        amenitiesButton.backgroundColor = Theme.BLACK
         amenitiesButton.tintColor = Theme.WHITE
         amenitiesButton.layer.shadowOpacity = 0.2
     }
     
     func unselectAmenity() {
         backgroundColor = .clear
-        amenitiesButton.backgroundColor = lineColor
-        amenitiesButton.tintColor = Theme.DARK_GRAY
+        amenitiesButton.backgroundColor = Theme.LINE_GRAY
+        amenitiesButton.tintColor = Theme.BLACK
         amenitiesButton.layer.shadowOpacity = 0
     }
     

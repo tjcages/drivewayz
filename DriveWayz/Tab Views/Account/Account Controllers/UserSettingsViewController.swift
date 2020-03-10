@@ -134,7 +134,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
         
         scrollView.delegate = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
         
         setupViews()
@@ -301,11 +301,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
             UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
             UserDefaults.standard.synchronize()
             
-            let controller = LaunchAnimationsViewController()
-            
-            self.present(controller, animated: true, completion: {
-                
-            })
+            self.delegate?.backToOnboarding()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -329,7 +325,7 @@ class UserSettingsViewController: UIViewController, changeSettingsHandler {
     
     func changeProfileImage(image: UIImage) {
         accountController.profileImageView.image = image
-        delegate?.changeProfileImage(image: image)
+//        delegate?.changeProfileImage(image: image)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

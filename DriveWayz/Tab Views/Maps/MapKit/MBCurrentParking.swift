@@ -7,216 +7,122 @@
 //
 
 import UIKit
+import GoogleMaps
 import CoreLocation
 
-protocol handleRouteNavigation {
-    func checkedIn()
-    func closeCurrentBooking()
-    func currentMessageRemoved()
-    
-    func lightContentStatusBar()
-    func defaultContentStatusBar()
+protocol HandleCurrent {
+    func currentPressed()
+    func closeCurrent(parking: Bool)
+    func currentBarPanned(sender: UIPanGestureRecognizer)
+    func dismissCurrent()
+    func restartBookingProcess()
 }
 
-extension MapKitViewController: handleRouteNavigation {
-    
-    func currentMessageRemoved() {
-        if currentBottomController.routeController.isHidden == false {
-            currentBookingHeight = phoneHeight - 116 - 512
-            UIView.animate(withDuration: animationIn) {
-                self.fullBackgroundView.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
-    func checkedIn() {
-        currentBookingState = .checkedIn
-        UIView.animate(withDuration: animationIn) {
-            self.mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: 202, right: horizontalPadding)
-        }
-    }
-    
-    func startCheckedIn() {
-        currentBookingHeight = phoneHeight - 116 - 282
-    }
-    
-    func currentHeightChange() {
-        currentBottomHeightAnchor.constant = currentBookingHeight
-        UIView.animate(withDuration: animationOut, delay: 0, options: .curveEaseOut, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
-//    func openCurrentParking(bookingId: String) {
-//        BookedState = .currentlyBooked
-//        removeAllMapOverlays(shouldRefresh: false)
-//        delayWithSeconds(animationOut) {
-////            self.removeAllMapOverlays(shouldRefresh: false)
-//            self.mainViewState = .currentBooking
-//            self.locatorButtonPressed(padding: 64)
-//            self.defaultContentStatusBar()
-//
-//            self.view.bringSubviewToFront(self.currentBottomController.view)
-//            self.view.bringSubviewToFront(self.currentDurationController.view)
-//            delayWithSeconds(animationOut, completion: {
-//                self.findCurrentRoute(key: bookingId)
-//            })
-//        }
-//    }
-//
-//    func observeCurrentParking() {
-//        guard let userID = Auth.auth().currentUser?.uid else { return }
-//        let ref = Database.database().reference().child("users").child(userID)
-//        ref.child("UpcomingReservations").observe(.childAdded) { (snapshot) in
-//            BookedState = .reserved
-//            UserDefaults.standard.set("reserved", forKey: "userBookingStatus")
-//            UserDefaults.standard.synchronize()
-//        }
-//        ref.child("UpcomingReservations").observe(.childRemoved) { (snapshot) in
-//            BookedState = .currentlyBooked
-//            UserDefaults.standard.set("none", forKey: "userBookingStatus")
-//            UserDefaults.standard.synchronize()
-//        }
-//        ref.child("CurrentBooking").observe(.childAdded) { (snapshot) in
-//            self.mapView.clear()
-//            BookedState = .currentlyBooked
-//            UserDefaults.standard.set("currentlyBooked", forKey: "userBookingStatus")
-//            UserDefaults.standard.synchronize()
-//
-//            self.view.bringSubviewToFront(self.currentBottomController.view)
-//            self.view.bringSubviewToFront(self.currentDurationController.view)
-//            let key = snapshot.key
-//            self.findCurrentRoute(key: key)
-//        }
-//        ref.child("CurrentBooking").observe(.childRemoved) { (snapshot) in
-//            self.removeAllMapOverlays(shouldRefresh: true)
-//            delayWithSeconds(animationOut, completion: {
-////                self.bringReviewBooking()
-//                self.locatorButtonPressed(padding: nil)
-//            })
-//            UserDefaults.standard.set("none", forKey: "userBookingStatus")
-//            UserDefaults.standard.synchronize()
-//        }
-//    }
-//
-//    func findCurrentRoute(key: String) {
-//        let ref = Database.database().reference().child("UserBookings").child(key)
-//        ref.observeSingleEvent(of: .value) { (snapshot) in
-//            if let dictionary = snapshot.value as? [String: Any] {
-//                let booking = Bookings(dictionary: dictionary)
-//                if let latitude = booking.parkingLat, let longitude = booking.parkingLong, let currentLocation = self.locationManager.location {
-//                    let parking = CLLocation(latitude: latitude, longitude: longitude)
-//                    if let checkedIn = booking.checkedIn, checkedIn {
-//                        self.calculateRoute(fromLocation: currentLocation, toLocation: parking, identifier: .walking)
-//                    } else {
-//                        self.calculateRoute(fromLocation: currentLocation, toLocation: parking, identifier: .automobile)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-    @objc func currentViewIsScrolling(sender: UIPanGestureRecognizer) {
-        let translation = -sender.translation(in: self.view).y
-        let state = sender.state
-        let percentage = translation/(phoneHeight/3)
-        if state == .changed {
-            if percentage >= 0 && percentage <= 1 && previousCurrentPercentage != 1.0 {
-                changeScrollAmount(percentage: percentage)
-            } else {
-                if percentage <= 0.0 && percentage >= -0.3 {
-                    changeScrollAmount(percentage: percentage)
-                } else if self.currentBookingHeight <= (phoneHeight - 112 - 500) && percentage < -0.3 {
-                    currentBookingHeight = phoneHeight - 112 - 282
-                    mapView.padding = UIEdgeInsets(top: statusHeight, left: horizontalPadding, bottom: 202, right: horizontalPadding)
-                    return
+var canPanCurrentView: Bool = true
+
+extension MapKitViewController: HandleCurrent {
+
+    @objc func currentBarPanned(sender: UIPanGestureRecognizer) {
+        if canPanCurrentView {
+            let translation = -sender.translation(in: view).y/1.5
+            let percent = translation/120
+            let velocity = -sender.velocity(in: view).y
+            if sender.state == .changed {
+                if velocity >= 1000 {
+                    currentPressed()
+                } else if translation >= -16 && translation < 120 && velocity > 0 && currentBarHeightAnchor.constant != phoneHeight {
+                    currentBarHeightAnchor.constant = currentBarNormalHeight + translation
+                    currentBookingController.transitionToSearch(percent: percent/2)
+                    changeCurrentPercentage(percent: percent)
+                    view.layoutIfNeeded()
+                } else if translation <= -16 && translation >= -120 {
+                    currentBarHeightAnchor.constant = phoneHeight + translation
+                    currentBookingController.transitionToSearch(percent: 1 + percent/2)
+                    changeCurrentPercentage(percent: percent)
+                    view.layoutIfNeeded()
+                } else if translation >= 120 {
+                    currentPressed()
+                } else if translation <= -120 {
+                    closeCurrent(parking: false)
+                }
+            } else if sender.state == .ended {
+                if translation >= 160 || velocity >= 1000 {
+                    currentPressed()
+                } else {
+                    closeCurrent(parking: false)
                 }
             }
-        } else if state == .ended {
-            if previousCurrentPercentage >= 0.25 {
-                openCurrentBooking()
-            } else {
-                closeCurrentBooking()
-            }
         }
     }
-
-    func changeScrollAmount(percentage: CGFloat) {
-        previousCurrentPercentage = percentage
-
-        currentBottomHeightAnchor.constant = currentBookingHeight - currentBookingHeight * percentage
-        durationLeftAnchor.constant = 16 - 16 * percentage
-        durationRightAnchor.constant = -16 + 16 * percentage
-        durationTopAnchor.constant = 8 - (8 + statusHeight) * percentage
-        durationController.view.layer.cornerRadius = 4 - 4 * percentage
-
-        fullBackgroundView.alpha = 0 + percentage
-//        currentBottomController.detailsController.changeScrollAmount(percentage: percentage)
-        self.view.layoutIfNeeded()
+    
+    func changeCurrentPercentage(percent: CGFloat) {
+        var percentage = percent
+        if percent < 0.6 {
+            percentage = percent/0.6
+            currentRouteButton.alpha = 1 - percentage
+        }
+        fullBackgroundView.alpha = 0.4 * percent
     }
-
-    func openCurrentBooking() {
-        currentBottomController.scrollView.isScrollEnabled = true
-        previousCurrentPercentage = 1.0
-        currentBottomHeightAnchor.constant = 0
-        durationLeftAnchor.constant = 0
-        durationRightAnchor.constant = 0
-        durationTopAnchor.constant = -statusHeight
-
-        delegate?.lightContentStatusBar()
-        UIView.animate(withDuration: animationOut, animations: {
-            self.fullBackgroundView.alpha = 1
-            self.currentDurationController.view.layer.cornerRadius = 0
-            self.currentDurationController.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+    
+    @objc func currentPressed() {
+        canPanCurrentView = false
+        delegate?.hideHamburger()
+        currentBarHeightAnchor.constant = phoneHeight
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.currentBookingController.transitionToSearch(percent: 1)
+            self.currentRouteButton.alpha = 0
+            self.fullBackgroundView.alpha = 0.4
             self.view.layoutIfNeeded()
         }) { (success) in
-            if self.currentDurationController.view.alpha == 0 {
-                UIView.animate(withDuration: animationIn) {
-                    self.currentDurationController.view.alpha = 1
-                }
-            }
+            canPanCurrentView = true
         }
     }
-
-    func closeCurrentBooking() {
-        showHamburger = true
-        previousCurrentPercentage = 0.0
-        currentBottomHeightAnchor.constant = currentBookingHeight
-        durationLeftAnchor.constant = 16
-        durationRightAnchor.constant = -16
-        durationTopAnchor.constant = 8
-
-        delegate?.defaultContentStatusBar()
-//        currentBottomController.detailsController.closeCurrentBooking()
-        UIView.animate(withDuration: animationOut, animations: {
+    
+    func closeCurrent(parking: Bool) {
+        if !parking, let userLocation = self.locationManager.location {
+            let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel - 0.5)
+            mapView.camera = camera
+            CATransaction.begin()
+            CATransaction.setValue(0.8, forKey: kCATransactionAnimationDuration)
+            let camera2 = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
+            mapView.animate(to: camera2)
+            CATransaction.commit()
+        }
+        
+        canPanCurrentView = false
+        delegate?.bringHamburger()
+        currentBarHeightAnchor.constant = currentBarNormalHeight
+        UIView.animateOut(withDuration: animationOut, animations: {
+            self.currentBookingController.transitionToSearch(percent: 0)
+            self.currentRouteButton.alpha = 1
             self.fullBackgroundView.alpha = 0
-            self.currentDurationController.view.layer.cornerRadius = 4
-            if self.currentBookingHeight <= (phoneHeight - 112 - 500) {
-                self.currentDurationController.view.alpha = 0
-                self.currentDurationController.view.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            }
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.currentBottomController.scrollView.isScrollEnabled = false
+            canPanCurrentView = true
         }
     }
-
-    @objc func currentDurationTapped() {
-        if previousCurrentPercentage == 1.0 {
-            closeCurrentBooking()
-        } else {
-            openCurrentBooking()
+    
+    func dismissCurrent() {
+        mainViewState = .none
+        delegate?.hideHamburger()
+        delegate?.hideProfile()
+        
+        let controller = ReviewViewController()
+        controller.delegate = self
+        controller.modalPresentationStyle = .overFullScreen
+        present(controller, animated: true, completion: nil)
+        
+        UIView.animateOut(withDuration: animationOut, animations: {
+            tabDimmingView.alpha = 0.4
+        }) { (success) in
+            //
         }
     }
-
-    func lightContentStatusBar() {
-        self.delegate?.lightContentStatusBar()
-    }
-
-    func defaultContentStatusBar() {
-        self.delegate?.defaultContentStatusBar()
-//        self.delegate?.bringHamburger()
+    
+    func restartBookingProcess() {
+        mainViewState = .mainBar
+        delegate?.bringHamburger()
+        delegate?.bringProfile()
     }
     
 }

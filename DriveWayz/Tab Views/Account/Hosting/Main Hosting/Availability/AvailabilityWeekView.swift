@@ -17,7 +17,7 @@ class AvailabilityWeekView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Upcoming day trends"
         
         return label
@@ -35,7 +35,7 @@ class AvailabilityWeekView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "This week"
         
         return label
@@ -45,7 +45,7 @@ class AvailabilityWeekView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Active"
         
         return label

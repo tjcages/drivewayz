@@ -27,7 +27,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPLightH3
         label.text = """
         Drivewayz would like to send you monthly notifications to verify your status as an active host.
@@ -42,7 +42,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var extraLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPLightH5
         label.text = "You will also recieve notifications when users park in your spot."
         label.numberOfLines = 2
@@ -68,7 +68,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     lazy var denyNotifications: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.3)
         button.setTitle("Allow", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
@@ -83,7 +83,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         button.backgroundColor = UIColor.clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Open settings to allow notifications", for: .normal)
-        button.setTitleColor(Theme.SEA_BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE, for: .normal)
         button.titleLabel?.font = Fonts.SSPLightH4
         button.addTarget(self, action: #selector(sendToSettings), for: .touchUpInside)
         button.alpha = 0
@@ -94,7 +94,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var informationAcceptLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 6
         label.text = "By registering your host parking space you confirm that you own all rights and privileges to the property or have written consent from the landlord and you agree to the policies below."
@@ -105,9 +105,9 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     lazy var confirmButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.setTitle("Confirm", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.addTarget(self, action: #selector(finalizeParking), for: .touchUpInside)
@@ -130,7 +130,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         check.style = .tick
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = lineColor
+        check.uncheckedBorderColor = Theme.LINE_GRAY
         check.checkmarkColor = Theme.BLUE
         check.addTarget(self, action: #selector(onCheckBoxValueChange(_:)), for: .valueChanged)
         
@@ -140,7 +140,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     var mainPoliciesLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.isSelectable = false
         let string = "I agree to the Privacy Policy and \nTerms & Conditions"
@@ -172,7 +172,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
         check.style = .tick
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = lineColor
+        check.uncheckedBorderColor = Theme.LINE_GRAY
         check.checkmarkColor = Theme.BLUE
         check.addTarget(self, action: #selector(onCheckBoxValueChange(_:)), for: .valueChanged)
         
@@ -182,7 +182,7 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
     lazy var hostPoliciesLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.isSelectable = false
         let string = "I have read and agree to the Host Policy and Host Regulations"
@@ -396,8 +396,8 @@ class ConfirmParkingViewController: UIViewController, UNUserNotificationCenterDe
             self.confirmButton.setTitleColor(Theme.WHITE, for: .normal)
             self.confirmButton.isUserInteractionEnabled = true
         } else {
-            self.confirmButton.backgroundColor = lineColor
-            self.confirmButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            self.confirmButton.backgroundColor = Theme.LINE_GRAY
+            self.confirmButton.setTitleColor(Theme.BLACK, for: .normal)
             self.confirmButton.isUserInteractionEnabled = false
         }
     }

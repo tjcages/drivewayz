@@ -36,7 +36,7 @@ class MyNotificationsViewController: UIViewController {
         let view = UITableView()
         view.backgroundColor = Theme.WHITE
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.separatorColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.separatorColor = Theme.BLACK.withAlphaComponent(0.2)
         view.register(NotificationsView.self, forCellReuseIdentifier: "cellId")
         view.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         view.contentOffset = CGPoint.zero
@@ -75,7 +75,7 @@ class MyNotificationsViewController: UIViewController {
         notificationsTableView.dataSource = self
 
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0
@@ -153,7 +153,7 @@ class NotificationsView: UITableViewCell {
         button.layer.cornerRadius = 25
         button.clipsToBounds = true
         button.contentMode = .scaleAspectFill
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return button
     }()
@@ -173,7 +173,7 @@ class NotificationsView: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         
         return view
     }()
@@ -183,7 +183,7 @@ class NotificationsView: UITableViewCell {
         view.text = ""
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         view.textAlignment = .right
         
         return view
@@ -194,7 +194,7 @@ class NotificationsView: UITableViewCell {
         view.text = "Show more"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.6)
         view.textAlignment = .center
         view.alpha = 0
         

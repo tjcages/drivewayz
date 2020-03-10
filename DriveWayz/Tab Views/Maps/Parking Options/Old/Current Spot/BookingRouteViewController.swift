@@ -14,7 +14,7 @@ class BookingRouteViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Estimated parking arrival - 12:31 pm", for: .normal)
-        button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+        button.setTitleColor(Theme.GREEN, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH4
         button.contentHorizontalAlignment = .left
         
@@ -25,7 +25,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4 minute walk to your destination"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         
@@ -35,7 +35,7 @@ class BookingRouteViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()
@@ -43,11 +43,11 @@ class BookingRouteViewController: UIViewController {
     var userIcon: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PACIFIC_BLUE
+        view.backgroundColor = Theme.BLUE
         view.layer.borderColor = Theme.WHITE.cgColor
         view.layer.borderWidth = 2
         view.layer.cornerRadius = 9
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -59,10 +59,10 @@ class BookingRouteViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.borderColor = Theme.STRAWBERRY_PINK.cgColor
+        view.layer.borderColor = Theme.SALMON.cgColor
         view.layer.borderWidth = 5
         view.layer.cornerRadius = 9
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -75,7 +75,7 @@ class BookingRouteViewController: UIViewController {
         let image = UIImage(named: "searchLocation")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.GREEN_PIGMENT
+        button.tintColor = Theme.GREEN
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         button.backgroundColor = Theme.WHITE
@@ -88,7 +88,7 @@ class BookingRouteViewController: UIViewController {
         let image = UIImage(named: "circleLine")
         view.image = image
         view.image!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        view.tintColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.tintColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         
@@ -102,8 +102,8 @@ class BookingRouteViewController: UIViewController {
         gradient.frame = CGRect(x: 0, y: 0, width: 6, height: 84)
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 0, y: 1)
-        gradient.colors = [Theme.LIGHT_ORANGE.withAlphaComponent(0.8).cgColor,
-                           Theme.STRAWBERRY_PINK.cgColor]
+        gradient.colors = [Theme.WARM_2_LIGHT.withAlphaComponent(0.8).cgColor,
+                           Theme.SALMON.cgColor]
         view.layer.addSublayer(gradient)
         
         return view
@@ -113,7 +113,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Depart"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH6
         
         return label
@@ -123,7 +123,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "ETA\n12:15"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
@@ -134,7 +134,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Arrive"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
@@ -145,7 +145,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "1h 30m drive"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -155,7 +155,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "8m walk"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -166,7 +166,7 @@ class BookingRouteViewController: UIViewController {
         let image = UIImage(named: "vehicle")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -178,7 +178,7 @@ class BookingRouteViewController: UIViewController {
         let image = UIImage(named: "walkingIcon")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         
@@ -189,7 +189,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Current location"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -199,7 +199,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4th Avenue, Barcelona"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -209,7 +209,7 @@ class BookingRouteViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         
         return label

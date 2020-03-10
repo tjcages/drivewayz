@@ -63,7 +63,7 @@ class HostPicturesView: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Add spot images"
         label.font = Fonts.SSPRegularH4
         
@@ -97,7 +97,7 @@ class HostPicturesView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.message = "Please provide a picture for each space."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -112,7 +112,7 @@ class HostPicturesView: UIViewController {
     var dimView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.DARK_GRAY.withAlphaComponent(0), bottomColor: Theme.DARK_GRAY)
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLACK.withAlphaComponent(0), bottomColor: Theme.BLACK)
         background.frame = CGRect(x: 0, y: 0, width: phoneWidth, height: abs(cancelBottomHeight * 2) + 16)
         background.zPosition = 10
         view.layer.addSublayer(background)
@@ -124,7 +124,7 @@ class HostPicturesView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.clipsToBounds = true
         
         photoPicker?.delegate = self
@@ -171,8 +171,8 @@ class HostPicturesView: UIViewController {
                 if images[i] == nil {
                     let index = IndexPath(item: i, section: 0)
                     let cell = picturesPicker.cellForItem(at: index) as! HostPictureCell
-                    cell.numberView.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.2)
-                    cell.numberLabel.textColor = Theme.HARMONY_RED
+                    cell.numberView.backgroundColor = Theme.SALMON.withAlphaComponent(0.2)
+                    cell.numberLabel.textColor = Theme.SALMON
                     check = false
                 }
             }
@@ -313,8 +313,8 @@ extension HostPicturesView: UICollectionViewDelegate, UICollectionViewDataSource
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "identifier", for: indexPath as IndexPath) as! HostPictureCell
         let tag = indexPath.section * 2 + indexPath.row
         cell.numberLabel.text = "\(tag + 1)"
-        cell.numberLabel.textColor = Theme.DARK_GRAY
-        cell.numberView.backgroundColor = lineColor
+        cell.numberLabel.textColor = Theme.BLACK
+        cell.numberView.backgroundColor = Theme.LINE_GRAY
         
         if let image = images[tag] {
             cell.selectedImage.image = image
@@ -333,8 +333,8 @@ extension HostPicturesView: UICollectionViewDelegate, UICollectionViewDataSource
         bubbleArrow.alpha = 0
         
         let cell = collectionView.cellForItem(at: indexPath) as! HostPictureCell
-        cell.numberView.backgroundColor = lineColor
-        cell.numberLabel.textColor = Theme.DARK_GRAY
+        cell.numberView.backgroundColor = Theme.LINE_GRAY
+        cell.numberLabel.textColor = Theme.BLACK
         
         if cell.selectedImage.image == nil {
             let alert = UIAlertController(title: "Select an Image:", message: "How would you like to upload an image of the parking spot?", preferredStyle: UIAlertController.Style.actionSheet)
@@ -366,7 +366,7 @@ class HostPictureCell: UICollectionViewCell {
     var numberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH5
         label.textAlignment = .center
         
@@ -376,7 +376,7 @@ class HostPictureCell: UICollectionViewCell {
     var numberView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 16
         
         return view
@@ -387,7 +387,7 @@ class HostPictureCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(rotationAngle: CGFloat.pi/4)
         button.isUserInteractionEnabled = false
         
@@ -408,10 +408,10 @@ class HostPictureCell: UICollectionViewCell {
         check.style = .tick
         check.isChecked = true
         check.borderStyle = .roundedSquare(radius: 16)
-        check.checkedBorderColor = Theme.GREEN_PIGMENT
-        check.checkboxBackgroundColor = Theme.GREEN_PIGMENT
+        check.checkedBorderColor = Theme.GREEN
+        check.checkboxBackgroundColor = Theme.GREEN
         check.checkmarkColor = Theme.WHITE
-        check.backgroundColor = Theme.GREEN_PIGMENT
+        check.backgroundColor = Theme.GREEN
         check.layer.cornerRadius = 16
         check.clipsToBounds = true
         check.isUserInteractionEnabled = false
@@ -423,7 +423,7 @@ class HostPictureCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = Theme.OFF_WHITE
+        backgroundColor = Theme.BACKGROUND_GRAY
         clipsToBounds = true
         layer.cornerRadius = 8
         

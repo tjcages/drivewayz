@@ -25,7 +25,7 @@ class MyOngoingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Current booking"
-        label.textColor = Theme.GREEN_PIGMENT.withAlphaComponent(0.8)
+        label.textColor = Theme.GREEN.withAlphaComponent(0.8)
         label.font = Fonts.SSPSemiBoldH5
         
         return label
@@ -36,11 +36,11 @@ class MyOngoingViewController: UIViewController {
         let origImage = UIImage(named: "background4")
         imageView.image = origImage
         imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = Theme.OFF_WHITE
+        imageView.tintColor = Theme.BACKGROUND_GRAY
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        imageView.backgroundColor = Theme.BLACK.withAlphaComponent(0.2)
         imageView.layer.cornerRadius = 25
         imageView.clipsToBounds = true
         
@@ -64,10 +64,10 @@ class MyOngoingViewController: UIViewController {
         view.settings.fillMode = .precise
         view.settings.starSize = 16
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.3)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.3)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -88,7 +88,7 @@ class MyOngoingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = ""
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .right
         
@@ -101,7 +101,7 @@ class MyOngoingViewController: UIViewController {
         button.backgroundColor = UIColor.clear
         
         let size: CGFloat = 5.0
-        let color = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        let color = Theme.BLACK.withAlphaComponent(0.6)
         let start: CGFloat = 0
         let difference: CGFloat = 9
         
@@ -126,7 +126,7 @@ class MyOngoingViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         
         return view
     }()
@@ -137,7 +137,7 @@ class MyOngoingViewController: UIViewController {
         let origImage = UIImage(named: "phoneIcon");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PACIFIC_BLUE
+        button.tintColor = Theme.BLUE
         button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         
         return button
@@ -147,7 +147,7 @@ class MyOngoingViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Call", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPBoldH3
         label.contentHorizontalAlignment = .left
         
@@ -160,7 +160,7 @@ class MyOngoingViewController: UIViewController {
         let origImage = UIImage(named: "messageIcon");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PACIFIC_BLUE
+        button.tintColor = Theme.BLUE
         
         return button
     }()
@@ -169,7 +169,7 @@ class MyOngoingViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Chat", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPBoldH3
         label.contentHorizontalAlignment = .left
         
@@ -182,7 +182,7 @@ class MyOngoingViewController: UIViewController {
         let origImage = UIImage(named: "detailIcons");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PACIFIC_BLUE
+        button.tintColor = Theme.BLUE
         
         return button
     }()
@@ -191,7 +191,7 @@ class MyOngoingViewController: UIViewController {
         let label = UIButton()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setTitle("Details", for: .normal)
-        label.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        label.setTitleColor(Theme.BLACK, for: .normal)
         label.titleLabel?.font = Fonts.SSPBoldH3
         label.contentHorizontalAlignment = .left
         
@@ -217,10 +217,10 @@ class MyOngoingViewController: UIViewController {
             }
             if isOverstay {
                 self.reservationLabel.text = "Overstayed duration"
-                self.reservationLabel.textColor = Theme.HARMONY_RED
+                self.reservationLabel.textColor = Theme.SALMON
             } else {
                 self.reservationLabel.text = "Current booking"
-                self.reservationLabel.textColor = Theme.GREEN_PIGMENT
+                self.reservationLabel.textColor = Theme.GREEN
             }
         }
     }
@@ -228,7 +228,7 @@ class MyOngoingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

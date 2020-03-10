@@ -65,9 +65,9 @@ class EditImagesViewController: UIViewController {
 
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -126,8 +126,8 @@ class EditImagesViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        button.backgroundColor = lineColor
+        button.setTitleColor(Theme.BLACK, for: .normal)
+        button.backgroundColor = Theme.LINE_GRAY
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         button.clipsToBounds = true
@@ -300,8 +300,8 @@ class EditImagesViewController: UIViewController {
     @objc func savePressed() {
         if let parking = self.selectedParking, let parkingID = parking.parkingID {
             self.loadingLine.startAnimating()
-            self.nextButton.backgroundColor = lineColor
-            self.nextButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+            self.nextButton.backgroundColor = Theme.LINE_GRAY
+            self.nextButton.setTitleColor(Theme.BLACK, for: .normal)
             self.nextButton.isUserInteractionEnabled = false
             self.loadImageDatabase(parkingID: parkingID, parking: parking)
         }

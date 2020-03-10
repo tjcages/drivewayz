@@ -37,7 +37,7 @@ class LocationMapView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 2
         label.alpha = 0
@@ -48,7 +48,7 @@ class LocationMapView: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         label.text = "Confirm the location of the parking spot."

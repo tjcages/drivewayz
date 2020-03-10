@@ -105,7 +105,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "Ryan E."
         label.font = Fonts.SSPSemiBoldH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         
         return label
     }()
@@ -115,7 +115,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "2 hours 15 minutes"
         label.font = Fonts.SSPRegularH6
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         
         return label
     }()
@@ -125,7 +125,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "Booking"
         label.font = Fonts.SSPRegularH6
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.textAlignment = .right
         
         return label
@@ -136,7 +136,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "+$16.50"
         label.font = Fonts.SSPBoldH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.textAlignment = .right
         
         return label
@@ -169,7 +169,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "8:00am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         
         return label
     }()
@@ -179,7 +179,7 @@ class OngoingBookingViewController: UIViewController {
         label.text = "10:15am"
         label.font = Fonts.SSPSemiBoldH1
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .right
         
         return label
@@ -189,7 +189,7 @@ class OngoingBookingViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("to", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.4), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.4), for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
         button.isUserInteractionEnabled = false
         
@@ -213,7 +213,7 @@ class OngoingBookingViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

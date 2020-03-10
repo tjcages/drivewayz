@@ -24,7 +24,7 @@ class TestMessageViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Your messages"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH1
         
@@ -34,8 +34,8 @@ class TestMessageViewController: UIViewController {
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.backgroundColor = Theme.BACKGROUND_GRAY
+        view.layer.borderColor = Theme.GRAY_WHITE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
         

@@ -40,7 +40,7 @@ class HostRegulationsViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
         button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.borderColor = UIColor.clear.cgColor
@@ -76,7 +76,7 @@ class HostRegulationsViewController: UIViewController {
     var responsibilitiesSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "Check out what it means to become a host and know what rules and regulations to be aware of."
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 6
@@ -224,7 +224,7 @@ class HostRegulationsViewController: UIViewController {
     var regulationsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Rules and regulations"
         label.font = Fonts.SSPSemiBoldH2
         
@@ -234,7 +234,7 @@ class HostRegulationsViewController: UIViewController {
     var regulationsSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "When deciding whether to become a Drivewayz host, it's important for you to understand how the laws work in your city."
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 4
@@ -275,7 +275,7 @@ class HostRegulationsViewController: UIViewController {
     var regulationsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.6)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.6)
         view.layer.cornerRadius = 30
         
         return view
@@ -284,7 +284,7 @@ class HostRegulationsViewController: UIViewController {
     var regulationsSubLabel2: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = """
         Some cities have laws that restrict your ability to host paying guests for short periods. These laws are often part of a city's zoning or administrative codes. In many cities, you must register, get a permit, or obtain a license before you list your property or accept guests. Certain types of short-term bookings may be prohibited altogether. Local governments vary greatly in how they enforce these laws. Penalties may include fines or other enforcement.
         
@@ -396,7 +396,7 @@ class HostRegulationsViewController: UIViewController {
     var questionsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Have any questions?"
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -407,7 +407,7 @@ class HostRegulationsViewController: UIViewController {
     var questionsSubLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.text = "Feel free to reach out to Drivewayz with any questions you have or check the resources below."
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 4
@@ -434,7 +434,7 @@ class HostRegulationsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -447,7 +447,7 @@ class HostRegulationsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Privacy policy", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(pushPolicy), for: .touchUpInside)
         
@@ -459,7 +459,7 @@ class HostRegulationsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.setTitle("Terms & Conditions", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(pushTerms), for: .touchUpInside)
         
@@ -480,7 +480,7 @@ class HostRegulationsViewController: UIViewController {
     var secondLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -848,13 +848,13 @@ extension HostRegulationsViewController: UIScrollViewDelegate {
         } else if translation >= 365 {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
-                self.exitButton.tintColor = Theme.DARK_GRAY
-                self.exitButton.layer.borderColor = Theme.DARK_GRAY.cgColor
+                self.exitButton.tintColor = Theme.BLACK
+                self.exitButton.layer.borderColor = Theme.BLACK.cgColor
             }
         } else {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.alpha = 1
-                self.exitButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+                self.exitButton.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
                 self.exitButton.tintColor = Theme.WHITE
                 self.exitButton.layer.borderColor = UIColor.clear.cgColor
             }

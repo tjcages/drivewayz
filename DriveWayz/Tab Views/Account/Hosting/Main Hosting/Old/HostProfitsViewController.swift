@@ -27,9 +27,9 @@ class HostProfitsViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -76,7 +76,7 @@ class HostProfitsViewController: UIViewController {
         let view = UIView(frame: CGRect(x: 0, y: -100, width: phoneWidth, height: phoneHeight * 2))
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.4)
         let blurEffect = UIBlurEffect(style: .dark)
         let blurredEffectView = UIVisualEffectView(effect: blurEffect)
         blurredEffectView.frame = view.frame
@@ -141,7 +141,7 @@ class HostProfitsViewController: UIViewController {
         
         scrollView.delegate = self
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
         setupControllers()

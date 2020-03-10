@@ -16,7 +16,7 @@ class ListingCodeView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Gate code"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -26,7 +26,7 @@ class ListingCodeView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select this if a gate code is required park in the space."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         
@@ -37,7 +37,7 @@ class ListingCodeView: UIViewController {
         let view = UISwitch()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = Theme.BLUE
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.addTarget(self, action: #selector(switchPressed(sender:)), for: .valueChanged)
         
         return view
@@ -48,14 +48,14 @@ class ListingCodeView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()
     
     var mainTextView: UITextView = {
         let view = UITextView()
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.font = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -71,7 +71,7 @@ class ListingCodeView: UIViewController {
     var textViewLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -81,7 +81,7 @@ class ListingCodeView: UIViewController {
         let view = BubbleArrow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.message = "Please enter a valid gate code."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -207,7 +207,7 @@ extension ListingCodeView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.sizeToFit()
         toolBar.tintColor = Theme.WHITE
         
@@ -234,7 +234,7 @@ extension ListingCodeView: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.unselectViews()
-        textViewLine.backgroundColor = lineColor
+        textViewLine.backgroundColor = Theme.LINE_GRAY
         if let text = mainTextView.text {
             if text == "" {
                 switchButton.setOn(false, animated: true)

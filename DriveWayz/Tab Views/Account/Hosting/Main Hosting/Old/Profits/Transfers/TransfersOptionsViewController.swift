@@ -34,7 +34,7 @@ class TransfersOptionsViewController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH2
         label.numberOfLines = 2
@@ -45,7 +45,7 @@ class TransfersOptionsViewController: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = ""
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 50
@@ -71,7 +71,7 @@ class TransfersOptionsViewController: UIViewController {
         let view = UITextView()
         view.backgroundColor = Theme.WHITE
         view.font = Fonts.SSPRegularH5
-        view.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+        view.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
         view.text = "Write a message"
         view.translatesAutoresizingMaskIntoConstraints = false
         view.autocorrectionType = .default
@@ -84,7 +84,7 @@ class TransfersOptionsViewController: UIViewController {
     var messageLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.alpha = 0
         
         return view
@@ -324,7 +324,7 @@ extension TransfersOptionsViewController: UITextViewDelegate {
         }
         if textView.text == "" {
             textView.text = "Write a message"
-            textView.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+            textView.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
             let newPosition = textView.beginningOfDocument
             textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
         }
@@ -341,7 +341,7 @@ extension TransfersOptionsViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Write a message"
-            textView.textColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.6)
+            textView.textColor = Theme.GRAY_WHITE.withAlphaComponent(0.6)
             let newPosition = textView.beginningOfDocument
             textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
         }

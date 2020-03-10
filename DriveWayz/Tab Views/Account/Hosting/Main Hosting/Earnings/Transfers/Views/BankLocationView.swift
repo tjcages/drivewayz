@@ -16,7 +16,7 @@ class BankLocationView: UIViewController {
     var streetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Street Address"
         label.font = Fonts.SSPRegularH4
         
@@ -27,9 +27,9 @@ class BankLocationView: UIViewController {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = Fonts.SSPRegularH2
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.tintColor = Theme.BLUE
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.returnKeyType = .done
         view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 4, right: 8)
         view.keyboardAppearance = .dark
@@ -42,7 +42,7 @@ class BankLocationView: UIViewController {
     var streetLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -50,7 +50,7 @@ class BankLocationView: UIViewController {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "City"
         label.font = Fonts.SSPRegularH4
         
@@ -61,10 +61,10 @@ class BankLocationView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = lineColor
-        view.backgroundUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.LINE_GRAY
+        view.backgroundUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .default
         view.lineTextView?.keyboardAppearance = .dark
         view.lineTextView?.autocapitalizationType = .words
@@ -76,7 +76,7 @@ class BankLocationView: UIViewController {
     var stateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "State"
         label.font = Fonts.SSPRegularH4
         
@@ -87,10 +87,10 @@ class BankLocationView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = lineColor
-        view.backgroundUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.LINE_GRAY
+        view.backgroundUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .default
         view.lineTextView?.keyboardAppearance = .dark
         view.lineTextView?.autocapitalizationType = .words
@@ -102,7 +102,7 @@ class BankLocationView: UIViewController {
     var zipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Zipcode"
         label.font = Fonts.SSPRegularH4
         
@@ -113,10 +113,10 @@ class BankLocationView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = lineColor
-        view.backgroundUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.LINE_GRAY
+        view.backgroundUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .numberPad
         view.lineTextView?.keyboardAppearance = .dark
         view.lineTextView?.placeholderLabel.alpha = 0
@@ -127,7 +127,7 @@ class BankLocationView: UIViewController {
     var countryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Country/Region"
         label.font = Fonts.SSPRegularH4
         
@@ -138,10 +138,10 @@ class BankLocationView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH2
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = lineColor
-        view.backgroundUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.LINE_GRAY
+        view.backgroundUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .default
         view.lineTextView?.keyboardAppearance = .dark
         view.lineTextView?.autocapitalizationType = .words
@@ -158,7 +158,7 @@ class BankLocationView: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)
         button.alpha = 0
@@ -277,28 +277,28 @@ class BankLocationView: UIViewController {
     func checkTextFields() -> Bool {
         var check = true
         if streetField.text == "" {
-            streetLine.backgroundColor = Theme.HARMONY_RED
-            streetField.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.1)
+            streetLine.backgroundColor = Theme.SALMON
+            streetField.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
             check = false
         }
         if cityField.lineTextView?.text == "" {
-            cityField.lineSeparatorView.backgroundColor = Theme.HARMONY_RED
-            cityField.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.1)
+            cityField.lineSeparatorView.backgroundColor = Theme.SALMON
+            cityField.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
             check = false
         }
         if stateField.lineTextView?.text == "" {
-            stateField.lineSeparatorView.backgroundColor = Theme.HARMONY_RED
-            stateField.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.1)
+            stateField.lineSeparatorView.backgroundColor = Theme.SALMON
+            stateField.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
             check = false
         }
         if zipField.lineTextView?.text == "" {
-            zipField.lineSeparatorView.backgroundColor = Theme.HARMONY_RED
-            zipField.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.1)
+            zipField.lineSeparatorView.backgroundColor = Theme.SALMON
+            zipField.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
             check = false
         }
         if countryField.lineTextView?.text == "" {
-            countryField.lineSeparatorView.backgroundColor = Theme.HARMONY_RED
-            countryField.backgroundColor = Theme.HARMONY_RED.withAlphaComponent(0.1)
+            countryField.lineSeparatorView.backgroundColor = Theme.SALMON
+            countryField.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
             check = false
         }
         return check
@@ -311,7 +311,7 @@ extension BankLocationView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
@@ -357,8 +357,8 @@ extension BankLocationView: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView == streetField {
-            streetField.backgroundColor = Theme.OFF_WHITE
-            streetLine.backgroundColor = lineColor
+            streetField.backgroundColor = Theme.BACKGROUND_GRAY
+            streetLine.backgroundColor = Theme.LINE_GRAY
         }
         UIView.animate(withDuration: animationIn) {
             bankSearchResults.view.alpha = 0

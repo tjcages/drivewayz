@@ -74,7 +74,7 @@ class TESTHelpViewController: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Popular Topics"
         
         return label
@@ -106,8 +106,8 @@ class TESTHelpViewController: UIViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.numberOfPages = 3
         pageControl.radius = 4
-        pageControl.tintColor = Theme.LIGHT_GRAY
-        pageControl.currentPageTintColor = Theme.PRUSSIAN_BLUE
+        pageControl.tintColor = Theme.GRAY_WHITE_4
+        pageControl.currentPageTintColor = Theme.GRAY_WHITE
         pageControl.padding = 6
         
         return pageControl
@@ -139,7 +139,7 @@ class TESTHelpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         scrollView.delegate = self
         helpPicker.delegate = self
@@ -366,7 +366,7 @@ extension TESTHelpViewController: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Other Topics"
         
         view.addSubview(label)

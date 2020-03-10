@@ -95,7 +95,7 @@ class ProfitsWalletViewController: UIViewController {
         let image = UIImage(named: "bankIcon")
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 35
         button.imageEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -119,7 +119,7 @@ class ProfitsWalletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2

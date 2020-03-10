@@ -12,7 +12,7 @@ class BubbleView: UIView {
     
     var isIncoming = false
     
-    var incomingColor = lineColor
+    var incomingColor = Theme.LINE_GRAY
     var outgoingColor = Theme.BLUE
     
     override func draw(_ rect: CGRect) {

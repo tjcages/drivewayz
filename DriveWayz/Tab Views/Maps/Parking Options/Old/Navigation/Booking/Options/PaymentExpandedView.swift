@@ -18,7 +18,7 @@ class PaymentExpandedView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.clipsToBounds = true
         
         return view

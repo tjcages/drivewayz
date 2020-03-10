@@ -23,7 +23,7 @@ class BankLocationViewController: UIViewController {
     var address1Label: UILabel = {
         let label = UILabel()
         label.text = "Address line 1"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -33,13 +33,13 @@ class BankLocationViewController: UIViewController {
     
     var address1TextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "Address"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -50,7 +50,7 @@ class BankLocationViewController: UIViewController {
     var cityLabel: UILabel = {
         let label = UILabel()
         label.text = "City"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -60,13 +60,13 @@ class BankLocationViewController: UIViewController {
     
     var cityTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "City"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -77,7 +77,7 @@ class BankLocationViewController: UIViewController {
     var stateLabel: UILabel = {
         let label = UILabel()
         label.text = "State"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -87,13 +87,13 @@ class BankLocationViewController: UIViewController {
     
     var stateTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "State"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -104,7 +104,7 @@ class BankLocationViewController: UIViewController {
     var zipLabel: UILabel = {
         let label = UILabel()
         label.text = "Zipcode"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
@@ -114,13 +114,13 @@ class BankLocationViewController: UIViewController {
     
     var zipTextField: UITextField = {
         let label = UITextField()
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.placeholder = "Zipcode"
-        label.tintColor = Theme.PACIFIC_BLUE
-        label.textColor = Theme.DARK_GRAY
+        label.tintColor = Theme.BLUE
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.1)
+        label.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.1)
         label.layer.cornerRadius = 4
         label.layer.sublayerTransform = CATransform3DMakeTranslation(16, 0, 0)
         label.keyboardAppearance = .dark
@@ -199,9 +199,9 @@ class BankLocationViewController: UIViewController {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.BLUE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(endEditing))

@@ -24,7 +24,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Arive after"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         
@@ -35,7 +35,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Leave by"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPRegularH5
         label.textAlignment = .center
         
@@ -68,7 +68,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "2:15 PM"
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.font = Fonts.SSPSemiBoldH1
         label.textAlignment = .center
         
@@ -79,7 +79,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "4:30 PM"
-        label.textColor = Theme.GREEN_PIGMENT
+        label.textColor = Theme.GREEN
         label.font = Fonts.SSPSemiBoldH1
         label.textAlignment = .center
         
@@ -122,10 +122,10 @@ class CurrentTimeViewController: UIViewController {
     var hourBox: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.text = "3"
         label.backgroundColor = Theme.WHITE
-        label.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        label.layer.shadowColor = Theme.BLACK.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 2)
         label.layer.shadowRadius = 3
         label.layer.shadowOpacity = 0.2
@@ -142,10 +142,10 @@ class CurrentTimeViewController: UIViewController {
     var minuteBox: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.text = "14"
         label.backgroundColor = Theme.WHITE
-        label.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        label.layer.shadowColor = Theme.BLACK.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 2)
         label.layer.shadowRadius = 3
         label.layer.shadowOpacity = 0.2
@@ -163,7 +163,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "hours"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         
@@ -174,7 +174,7 @@ class CurrentTimeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "minutes"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         

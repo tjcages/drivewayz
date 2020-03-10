@@ -15,7 +15,7 @@ class LoadingLine: UIView {
     var loadingLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         
         return view
     }()
@@ -69,6 +69,7 @@ class LoadingLine: UIView {
             self.loadingLineRightAnchor.isActive = false
             self.loadingLineWidthAnchor.constant = phoneWidth/3
             UIView.animate(withDuration: animationOut * 2, animations: {
+                self.alpha = 1
                 self.layoutIfNeeded()
             }) { (success) in
                 self.loadingLineLeftAnchor.isActive = false
@@ -88,10 +89,17 @@ class LoadingLine: UIView {
                 }
             }
         } else {
-            self.loadingLine.alpha = 0
-            self.loadingLineLeftAnchor.isActive = true
-            self.loadingLineRightAnchor.isActive = false
-            self.loadingLineWidthAnchor.constant = 0
+            UIView.animateOut(withDuration: animationOut, animations: {
+                self.loadingLine.alpha = 0
+                self.loadingLineLeftAnchor.isActive = true
+                self.loadingLineRightAnchor.isActive = false
+                self.loadingLineWidthAnchor.constant = 0
+            }) { (success) in
+                self.loadingLine.alpha = 0
+                self.loadingLineLeftAnchor.isActive = true
+                self.loadingLineRightAnchor.isActive = false
+                self.loadingLineWidthAnchor.constant = 0
+            }
         }
     }
     

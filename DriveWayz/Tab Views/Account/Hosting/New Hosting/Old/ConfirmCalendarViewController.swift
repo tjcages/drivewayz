@@ -23,7 +23,7 @@ class ConfirmCalendarViewController: UIViewController {
     
     var popupLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.8)
         label.font = Fonts.SSPRegularH3
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 12
@@ -41,7 +41,7 @@ class ConfirmCalendarViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("OK", for: .normal)
         button.backgroundColor = Theme.WHITE
-        button.layer.borderColor = Theme.DARK_GRAY.cgColor
+        button.layer.borderColor = Theme.BLACK.cgColor
         button.layer.borderWidth = 0.5
         button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH3
@@ -53,7 +53,7 @@ class ConfirmCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         setupViews()
     }

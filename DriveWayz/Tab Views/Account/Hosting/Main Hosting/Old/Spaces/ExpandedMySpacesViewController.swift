@@ -54,7 +54,7 @@ class ExpandedMySpacesViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
         button.layer.cornerRadius = 15
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.layer.borderColor = Theme.WHITE.cgColor
@@ -141,7 +141,7 @@ class ExpandedMySpacesViewController: UIViewController {
     var listedButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         button.setTitle("Listed on 09/28/2019", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH6
@@ -183,10 +183,10 @@ class ExpandedMySpacesViewController: UIViewController {
         view.settings.updateOnTouch = false
         view.settings.starSize = 14
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.2)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.2)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -194,7 +194,7 @@ class ExpandedMySpacesViewController: UIViewController {
         view.settings.emptyImage = UIImage(named: "Star Empty")?.withRenderingMode(.alwaysOriginal)
         view.text = "10"
         view.semanticContentAttribute = .forceRightToLeft
-        view.settings.textColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.settings.textColor = Theme.BLACK.withAlphaComponent(0.8)
         view.settings.textFont = Fonts.SSPSemiBoldH6
         
         return view
@@ -204,12 +204,12 @@ class ExpandedMySpacesViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Today, 10:00AM - 4:00PM", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.BLACK.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH6
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
         button.clipsToBounds = true
         let icon = UIImage(named: "time")?.withRenderingMode(.alwaysTemplate)
-        button.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.BLACK.withAlphaComponent(0.8)
         button.setImage(icon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 3, bottom: 3, right: 1)
@@ -563,7 +563,7 @@ class SpacesImage: UICollectionViewCell {
     var spotImageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.LIGHT_GRAY.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
 
@@ -573,7 +573,7 @@ class SpacesImage: UICollectionViewCell {
     lazy var imageNumber: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        button.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
         button.layer.cornerRadius = 15
         button.isUserInteractionEnabled = false
         button.setTitle("1", for: .normal)
@@ -655,13 +655,13 @@ extension ExpandedMySpacesViewController: UIScrollViewDelegate {
         } else if translation >= 312 {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.backgroundColor = Theme.WHITE.withAlphaComponent(0.9)
-                self.exitButton.tintColor = Theme.DARK_GRAY
-                self.exitButton.layer.borderColor = Theme.DARK_GRAY.cgColor
+                self.exitButton.tintColor = Theme.BLACK
+                self.exitButton.layer.borderColor = Theme.BLACK.cgColor
             }
         } else {
             UIView.animate(withDuration: animationIn) {
                 self.exitButton.alpha = 1
-                self.exitButton.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+                self.exitButton.backgroundColor = Theme.BLACK.withAlphaComponent(0.9)
                 self.exitButton.tintColor = Theme.WHITE
                 self.exitButton.layer.borderColor = Theme.WHITE.cgColor
             }

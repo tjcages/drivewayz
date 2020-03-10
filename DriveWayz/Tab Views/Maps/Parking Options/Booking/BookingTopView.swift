@@ -44,7 +44,7 @@ class BookingTopView: UIView {
         super.init(frame: frame)
 
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = Theme.DARK_GRAY
+        backgroundColor = Theme.BLACK
         alpha = 0
         
         setupViews()

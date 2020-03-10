@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import MapboxDirections
+//import MapboxDirections
 
 class DirectionsCell: UITableViewCell {
     
@@ -19,70 +19,70 @@ class DirectionsCell: UITableViewCell {
             self.subtitleLabel.text = self.distanceString
         }
     }
-    var nextDrivingInstruction: RouteStep?
-    var drivingInstruction: RouteStep? {
-        didSet {
-            textDistanceFormatter.numberFormatter.maximumFractionDigits = 0
-            
-            if let instruction = self.drivingInstruction {
-                let text = instruction.instructions
-                let drivingSide = (instruction.instructionsDisplayedAlongStep?.first?.drivingSide)!
-                let direction = instruction.maneuverDirection
-                
-                if #available(iOS 12.0, *) {
-                    let images = instruction.instructionsDisplayedAlongStep?.first?.primaryInstruction.maneuverImageSet(side: drivingSide)
-                    self.arrowView.image = images?.darkContentImage
-                    self.largeArrowView.image = images?.darkContentImage
-                } else {
-                    switch direction {
-                    case .slightRight:
-                        let image = UIImage(named: "directionsSlightRight")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .sharpRight:
-                        let image = UIImage(named: "directionsSharpRight")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .right:
-                        let image = UIImage(named: "directionsRight")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .slightLeft:
-                        let image = UIImage(named: "directionsSlightLeft")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .sharpLeft:
-                        let image = UIImage(named: "directionsSharpLeft")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .left:
-                        let image = UIImage(named: "directionsLeft")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    case .uTurn:
-                        let image = UIImage(named: "directionsUTurn")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    default:
-                        let image = UIImage(named: "directionsStraight")
-                        self.arrowView.image = image
-                        self.largeArrowView.image = image
-                    }
-                }
-                
-                if let nextInstruction = self.nextDrivingInstruction {
-                    let distance = nextInstruction.distance
-                    self.subtitleLabel.text = textDistanceFormatter.string(fromMeters: distance)
-                }
-                
-                if isMainCell {
-                    self.titleLabel.text = text
-                } else {
-                    self.titleLabel.text = text
-                }
-            }
-        }
-    }
+//    var nextDrivingInstruction: RouteStep?
+//    var drivingInstruction: RouteStep? {
+//        didSet {
+//            textDistanceFormatter.numberFormatter.maximumFractionDigits = 0
+//
+//            if let instruction = self.drivingInstruction {
+//                let text = instruction.instructions
+//                let drivingSide = (instruction.instructionsDisplayedAlongStep?.first?.drivingSide)!
+//                let direction = instruction.maneuverDirection
+//
+//                if #available(iOS 12.0, *) {
+//                    let images = instruction.instructionsDisplayedAlongStep?.first?.primaryInstruction.maneuverImageSet(side: drivingSide)
+//                    self.arrowView.image = images?.darkContentImage
+//                    self.largeArrowView.image = images?.darkContentImage
+//                } else {
+//                    switch direction {
+//                    case .slightRight:
+//                        let image = UIImage(named: "directionsSlightRight")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .sharpRight:
+//                        let image = UIImage(named: "directionsSharpRight")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .right:
+//                        let image = UIImage(named: "directionsRight")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .slightLeft:
+//                        let image = UIImage(named: "directionsSlightLeft")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .sharpLeft:
+//                        let image = UIImage(named: "directionsSharpLeft")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .left:
+//                        let image = UIImage(named: "directionsLeft")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    case .uTurn:
+//                        let image = UIImage(named: "directionsUTurn")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    default:
+//                        let image = UIImage(named: "directionsStraight")
+//                        self.arrowView.image = image
+//                        self.largeArrowView.image = image
+//                    }
+//                }
+//
+//                if let nextInstruction = self.nextDrivingInstruction {
+//                    let distance = nextInstruction.distance
+//                    self.subtitleLabel.text = textDistanceFormatter.string(fromMeters: distance)
+//                }
+//
+//                if isMainCell {
+//                    self.titleLabel.text = text
+//                } else {
+//                    self.titleLabel.text = text
+//                }
+//            }
+//        }
+//    }
     
     var arrowView: UIImageView = {
         let button = UIImageView()
@@ -106,7 +106,7 @@ class DirectionsCell: UITableViewCell {
         let button = UIView()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 6
-        button.backgroundColor = lineColor
+        button.backgroundColor = Theme.LINE_GRAY
         button.alpha = 0
         
         let view = UIView()
@@ -128,7 +128,7 @@ class DirectionsCell: UITableViewCell {
         view.text = "Head North"
         view.font = Fonts.SSPSemiBoldH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         view.numberOfLines = 2
         
         return view
@@ -139,7 +139,7 @@ class DirectionsCell: UITableViewCell {
         view.text = "0.2 miles"
         view.font = Fonts.SSPRegularH5
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()
@@ -147,7 +147,7 @@ class DirectionsCell: UITableViewCell {
     var topLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 2
         
         return view
@@ -156,7 +156,7 @@ class DirectionsCell: UITableViewCell {
     var bottomLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 2
         
         return view
@@ -244,7 +244,7 @@ class DirectionsCell: UITableViewCell {
         largeArrowView.alpha = 0
         bottomLine.alpha = 1
         subtitleLabel.alpha = 0.7
-        subtitleLabel.textColor = Theme.DARK_GRAY
+        subtitleLabel.textColor = Theme.BLACK
         titleTopAnchor.constant = 0
     }
     

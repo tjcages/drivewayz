@@ -37,7 +37,7 @@ class LineTextView: UITextView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Message"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -86,7 +86,7 @@ class LineTextView: UITextView {
     
     func setupView() {
         backgroundColor = .clear
-        textColor = Theme.DARK_GRAY
+        textColor = Theme.BLACK
         font = Fonts.SSPRegularH3
         tintColor = Theme.BLUE
         textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -112,9 +112,9 @@ class LineTextView: UITextView {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
-        toolBar.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.4).cgColor
+        toolBar.layer.borderColor = Theme.BLACK.withAlphaComponent(0.4).cgColor
         toolBar.layer.borderWidth = 0.5
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

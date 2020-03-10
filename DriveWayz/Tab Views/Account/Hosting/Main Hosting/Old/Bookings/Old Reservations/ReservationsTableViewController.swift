@@ -8,7 +8,7 @@
 
 import UIKit
 import Cosmos
-import Mapbox
+//import Mapbox
 import FirebaseDatabase
 
 class ReservationsTableViewController: UIViewController {
@@ -48,7 +48,7 @@ class ReservationsTableViewController: UIViewController {
         let origImage = UIImage(named: "arrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clear
         
@@ -59,7 +59,7 @@ class ReservationsTableViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "History"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPBoldH1
         
         return label
@@ -69,7 +69,7 @@ class ReservationsTableViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Upcoming"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPBoldH1
         label.alpha = 0.4
         
@@ -79,7 +79,7 @@ class ReservationsTableViewController: UIViewController {
     var selectionLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.GREEN_PIGMENT
+        view.backgroundColor = Theme.GREEN
         view.layer.cornerRadius = 1.5
         
         return view
@@ -88,8 +88,8 @@ class ReservationsTableViewController: UIViewController {
     var backgroundCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
-        view.layer.borderColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.05).cgColor
+        view.backgroundColor = Theme.BACKGROUND_GRAY
+        view.layer.borderColor = Theme.GRAY_WHITE.withAlphaComponent(0.05).cgColor
         view.layer.borderWidth = 80
         view.layer.cornerRadius = 180
         
@@ -140,7 +140,7 @@ class ReservationsTableViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -149,7 +149,7 @@ class ReservationsTableViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You have no previous bookings"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         view.addSubview(label)
@@ -165,7 +165,7 @@ class ReservationsTableViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -174,7 +174,7 @@ class ReservationsTableViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You have no upcoming bookings"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         view.addSubview(label)
@@ -367,41 +367,41 @@ extension ReservationsTableViewController: UITableViewDelegate, UITableViewDataS
             if self.previousBookingsReversed.count > indexPath.row {
                 let booking = self.previousBookingsReversed[indexPath.row]
                 if let userName = booking.userName, let userDuration = booking.userDuration, let userProfileURL = booking.userProfileURL, let userRating = booking.userRating, let parkingLong = booking.parkingLong, let parkingLat = booking.parkingLat, let fromInterval = booking.fromDate {
-                    if let hours = booking.hours, let price = booking.price {
-                        cell.paymentAmount.text = String(format:"$%.02f", hours * price * 0.75)
-                    }
-                    cell.stars.rating = userRating
-                    cell.starsLabel.text = "\(userRating)"
-                    let nameArray = userName.split(separator: " ")
-                    cell.userName.text = String(nameArray[0])
-                    
-                    let fromDate = Date(timeIntervalSince1970: fromInterval)
-                    if fromInterval < Date().addingTimeInterval(604800).timeIntervalSince1970 {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "EEEE d, "
-                        let dateString = dateFormatter.string(from: fromDate)
-                        cell.dateLabel.text = dateString + userDuration
-                    } else {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMM d, "
-                        let dateString = dateFormatter.string(from: fromDate)
-                        cell.dateLabel.text = dateString + userDuration
-                    }
-                    
-                    if userProfileURL == "" {
-                        cell.profileImageView.image = UIImage(named: "background4")
-                    } else {
-                        cell.profileImageView.loadImageUsingCacheWithUrlString(userProfileURL) { (bool) in
-                            if !bool {
-                                cell.profileImageView.image = UIImage(named: "background4")
-                            }
-                        }
-                    }
-                    let parkingLocation = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
-                    cell.mapView.setCenter(parkingLocation, zoomLevel: 16, animated: false)
-                    let annotation = MGLPointAnnotation()
-                    annotation.coordinate = parkingLocation
-                    cell.mapView.addAnnotation(annotation)
+//                    if let hours = booking.hours, let price = booking.price {
+//                        cell.paymentAmount.text = String(format:"$%.02f", hours * price * 0.75)
+//                    }
+//                    cell.stars.rating = userRating
+//                    cell.starsLabel.text = "\(userRating)"
+//                    let nameArray = userName.split(separator: " ")
+//                    cell.userName.text = String(nameArray[0])
+//
+//                    let fromDate = Date(timeIntervalSince1970: fromInterval)
+//                    if fromInterval < Date().addingTimeInterval(604800).timeIntervalSince1970 {
+//                        let dateFormatter = DateFormatter()
+//                        dateFormatter.dateFormat = "EEEE d, "
+//                        let dateString = dateFormatter.string(from: fromDate)
+//                        cell.dateLabel.text = dateString + userDuration
+//                    } else {
+//                        let dateFormatter = DateFormatter()
+//                        dateFormatter.dateFormat = "MMM d, "
+//                        let dateString = dateFormatter.string(from: fromDate)
+//                        cell.dateLabel.text = dateString + userDuration
+//                    }
+//
+//                    if userProfileURL == "" {
+//                        cell.profileImageView.image = UIImage(named: "background4")
+//                    } else {
+//                        cell.profileImageView.loadImageUsingCacheWithUrlString(userProfileURL) { (bool) in
+//                            if !bool {
+//                                cell.profileImageView.image = UIImage(named: "background4")
+//                            }
+//                        }
+//                    }
+//                    let parkingLocation = CLLocationCoordinate2D(latitude: parkingLat, longitude: parkingLong)
+//                    cell.mapView.setCenter(parkingLocation, zoomLevel: 16, animated: false)
+//                    let annotation = MGLPointAnnotation()
+//                    annotation.coordinate = parkingLocation
+//                    cell.mapView.addAnnotation(annotation)
                 }
             }
             

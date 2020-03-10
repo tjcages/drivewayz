@@ -25,12 +25,10 @@ let calendar = Calendar.current
 let animationIn = 0.2
 let animationOut = 0.3
 
-let lineColor = Theme.GRAY
-
 var gradientHeight: CGFloat = 140
-var cancelBottomHeight: CGFloat = -52
+var cancelBottomHeight: CGFloat = -8
 
-var mapZoomLevel: Float = 14.5
+var mapZoomLevel: Float = 15.5
 var mapTrackingLevel: Float = 18.5
 
 class Line: UIView {
@@ -39,11 +37,27 @@ class Line: UIView {
         super.init(frame: frame)
         
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = lineColor
+        backgroundColor = Theme.LINE_GRAY
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+extension UIView {
+    
+    static func animateOut(withDuration: TimeInterval, animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: withDuration, delay: 0, options: .curveEaseOut, animations: animations, completion: completion)
+    }
+    
+    static func animateIn(withDuration: TimeInterval, animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: withDuration, delay: 0, options: .curveEaseIn, animations: animations, completion: completion)
+    }
+    
+    static func animateInOut(withDuration: TimeInterval, animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: withDuration, delay: 0, options: .curveEaseInOut, animations: animations, completion: completion)
     }
     
 }

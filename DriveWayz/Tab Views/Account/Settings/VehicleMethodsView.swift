@@ -35,7 +35,7 @@ class VehicleMethodsView: UIViewController, updateVehicleMethod {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
         
         optionsTableView.delegate = self
@@ -81,7 +81,7 @@ extension VehicleMethodsView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Vehicles"
         
         view.addSubview(label)

@@ -10,7 +10,7 @@ import UIKit
 
 class MapTutorialView: UIViewController {
     
-    var delegate: handleMapTutorial?
+//    var delegate: handleMapTutorial?
     
     var dimViewHeight: CGFloat = 100.0
     var searchViewHeight: CGFloat = 100.0
@@ -19,7 +19,7 @@ class MapTutorialView: UIViewController {
     lazy var dimView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         return view
     }()
@@ -27,7 +27,7 @@ class MapTutorialView: UIViewController {
     lazy var lightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.6)
         
         return view
     }()
@@ -79,7 +79,7 @@ class MapTutorialView: UIViewController {
     var searchView: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.OFF_WHITE
+        button.backgroundColor = Theme.BACKGROUND_GRAY
         button.layer.cornerRadius = 4
         button.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         button.clipsToBounds = true
@@ -92,7 +92,7 @@ class MapTutorialView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Parking near "
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.4)
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -256,22 +256,22 @@ class MapTutorialView: UIViewController {
     }
     
     @objc func searchPressed() {
-        delegate?.searchPressed()
+//        delegate?.searchPressed()
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc func recommendationPressed() {
-        delegate?.recommendationPressed()
+//        delegate?.recommendationPressed()
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc func parkNowPressed() {
-        delegate?.parkNowPressed()
+//        delegate?.parkNowPressed()
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc func reservePressed() {
-        delegate?.reservePressed()
+//        delegate?.reservePressed()
         self.dismiss(animated: true, completion: nil)
     }
     

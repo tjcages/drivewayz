@@ -14,7 +14,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Booking a Spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -23,7 +23,7 @@ class HowItWorksController: UIViewController {
     var worksView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -31,7 +31,7 @@ class HowItWorksController: UIViewController {
     var mainLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.alpha = 0
         
         return view
@@ -41,7 +41,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Search"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -51,7 +51,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Enter your destination and we link you with the best private spots in that area."
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
@@ -61,7 +61,7 @@ class HowItWorksController: UIViewController {
     var firstButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK.withAlphaComponent(0.1)
+        button.backgroundColor = Theme.SALMON.withAlphaComponent(0.1)
         button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         let image = UIImage(named: "worksSearch")
@@ -75,7 +75,7 @@ class HowItWorksController: UIViewController {
     var firstLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.alpha = 0
         
         return view
@@ -86,7 +86,7 @@ class HowItWorksController: UIViewController {
         let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.tintColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()
@@ -95,7 +95,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Book"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -105,7 +105,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select the closest parking space to your final destination."
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
@@ -115,7 +115,7 @@ class HowItWorksController: UIViewController {
     var secondButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.LIGHT_PURPLE.withAlphaComponent(0.1)
+        button.backgroundColor = Theme.COOL_2_LIGHT.withAlphaComponent(0.1)
         button.layer.cornerRadius = 20
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         let image = UIImage(named: "worksReserve")
@@ -129,7 +129,7 @@ class HowItWorksController: UIViewController {
     var secondLine: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.alpha = 0
         
         return view
@@ -140,7 +140,7 @@ class HowItWorksController: UIViewController {
         let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.tintColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()
@@ -150,7 +150,7 @@ class HowItWorksController: UIViewController {
         let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.tintColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()
@@ -159,7 +159,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Relax"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -169,7 +169,7 @@ class HowItWorksController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Never forget where you parked again and rest easy knowing your car is secure!"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH6
         label.numberOfLines = 2
         
@@ -195,7 +195,7 @@ class HowItWorksController: UIViewController {
         let view = UIImageView(image: image)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = view.image?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        view.tintColor = Theme.BLACK.withAlphaComponent(0.2)
         
         return view
     }()
@@ -205,7 +205,7 @@ class HowItWorksController: UIViewController {
         
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2

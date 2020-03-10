@@ -39,7 +39,7 @@ class SuccessfulPurchaseViewController: UIViewController {
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.1)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 60
         let image = UIImage(named: "Apartment Parking")
@@ -52,7 +52,7 @@ class SuccessfulPurchaseViewController: UIViewController {
     var successLabel: UILabel = {
         let label = UILabel()
         label.text = "Booking was successful!"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH2
         label.textAlignment = .center
@@ -88,10 +88,10 @@ class SuccessfulPurchaseViewController: UIViewController {
     var hourBox: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.text = "3"
         label.backgroundColor = Theme.WHITE
-        label.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        label.layer.shadowColor = Theme.BLACK.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 2)
         label.layer.shadowRadius = 3
         label.layer.shadowOpacity = 0.2
@@ -109,10 +109,10 @@ class SuccessfulPurchaseViewController: UIViewController {
     var minuteBox: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.text = "14"
         label.backgroundColor = Theme.WHITE
-        label.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        label.layer.shadowColor = Theme.BLACK.cgColor
         label.layer.shadowOffset = CGSize(width: 0, height: 2)
         label.layer.shadowRadius = 3
         label.layer.shadowOpacity = 0.2
@@ -131,7 +131,7 @@ class SuccessfulPurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "hours"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         label.alpha = 0
@@ -143,7 +143,7 @@ class SuccessfulPurchaseViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "minutes"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         label.alpha = 0
@@ -197,7 +197,7 @@ class SuccessfulPurchaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         setupViews()
         setupDuration()

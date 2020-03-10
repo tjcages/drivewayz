@@ -46,13 +46,13 @@ class HostListingController: UIViewController {
                 if count == 0 {
                     text = "Please select an amenity"
                     amenitiesButton.setTitleColor(Theme.WHITE, for: .normal)
-                    amenitiesButton.backgroundColor = Theme.HARMONY_RED
+                    amenitiesButton.backgroundColor = Theme.SALMON
                 } else if count == 1 {
                     text = "\(count) amenity selected"
-                    amenitiesButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    amenitiesButton.setTitleColor(Theme.BLACK, for: .normal)
                     amenitiesButton.backgroundColor = Theme.WHITE
                 } else {
-                    amenitiesButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    amenitiesButton.setTitleColor(Theme.BLACK, for: .normal)
                     amenitiesButton.backgroundColor = Theme.WHITE
                 }
                 amenitiesButton.setTitle(text, for: .normal)
@@ -107,15 +107,15 @@ class HostListingController: UIViewController {
     var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 35
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         let image = UIImage(named: "arrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
         button.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         
@@ -142,12 +142,12 @@ class HostListingController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Theme.WHITE
         button.layer.cornerRadius = 18
-        button.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        button.layer.shadowColor = Theme.BLACK.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.layer.shadowRadius = 6
         button.layer.shadowOpacity = 0.2
         button.isUserInteractionEnabled = false
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH5
         button.transform = transform
         button.alpha = 0
@@ -157,7 +157,7 @@ class HostListingController: UIViewController {
 
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -512,7 +512,7 @@ class HostListingController: UIViewController {
     func hideNextButton(completion: @escaping() -> Void) {
         UIView.animate(withDuration: animationIn, delay: 0, options: .curveEaseOut, animations: {
             self.nextButton.transform = CGAffineTransform(scaleX: -0.2, y: 0.2)
-            self.nextButton.tintColor = Theme.DARK_GRAY
+            self.nextButton.tintColor = Theme.BLACK
         }) { (success) in
             self.nextButtonRightAnchor.constant = -phoneWidth * 1.5
             UIView.animate(withDuration: animationIn, delay: animationIn/2, options: .curveEaseIn, animations: {

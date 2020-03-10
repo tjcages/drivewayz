@@ -17,7 +17,7 @@ class VerifyEmailView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Email"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -27,9 +27,9 @@ class VerifyEmailView: UIViewController {
         let view = LineInputAccessoryView()
         view.textViewFont = Fonts.SSPRegularH3
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.lineUnselectedColor = Theme.OFF_WHITE
+        view.lineUnselectedColor = Theme.BACKGROUND_GRAY
         view.lineTextView?.tintColor = Theme.BLUE
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.textViewKeyboardType = .emailAddress
         view.lineTextView?.placeholderLabel.alpha = 0
         view.lineTextView?.autocapitalizationType = .none
@@ -43,7 +43,7 @@ class VerifyEmailView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.message = "Please provide a valid email address."
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 4
         view.layer.shadowOpacity = 0.2
@@ -122,7 +122,7 @@ extension VerifyEmailView: UITextViewDelegate {
     func createToolbar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        toolBar.barTintColor = Theme.DARK_GRAY
+        toolBar.barTintColor = Theme.BLACK
         toolBar.tintColor = Theme.WHITE
         
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))

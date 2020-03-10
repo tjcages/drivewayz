@@ -22,7 +22,7 @@ class EarningsAnalyticsView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Parking analytics"
         
         return label
@@ -136,7 +136,7 @@ extension EarningsAnalyticsView: UITableViewDelegate, UITableViewDataSource {
         label.sizeToFit()
         
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 1))
-        line.backgroundColor = lineColor
+        line.backgroundColor = Theme.LINE_GRAY
         view.addSubview(line)
         
         return view

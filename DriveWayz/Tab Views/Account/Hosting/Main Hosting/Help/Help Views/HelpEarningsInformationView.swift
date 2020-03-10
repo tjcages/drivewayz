@@ -13,7 +13,7 @@ class HelpEarningsInformationView: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -23,7 +23,7 @@ class HelpEarningsInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Let's Get Started", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.layer.cornerRadius = 4
         
@@ -34,7 +34,7 @@ class HelpEarningsInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You can always monitor earnings \nin the host portal."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -47,7 +47,7 @@ class HelpEarningsInformationView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "mainQuickHost")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.isUserInteractionEnabled = false
         button.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         
@@ -58,7 +58,7 @@ class HelpEarningsInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "It's your money, \nuse it how you want"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         label.numberOfLines = 2
         
@@ -69,7 +69,7 @@ class HelpEarningsInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Earn passive income from your \nparking space that you can transfer \nout or use to book more parking."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         
@@ -80,7 +80,7 @@ class HelpEarningsInformationView: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.BLUE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -100,13 +100,13 @@ class HelpEarningsInformationView: UIViewController {
         let informationLabel = UILabel()
         informationLabel.translatesAutoresizingMaskIntoConstraints = false
         informationLabel.text = "Since Nov 12, 2019"
-        informationLabel.textColor = lineColor
+        informationLabel.textColor = Theme.LINE_GRAY
         informationLabel.font = Fonts.SSPRegularH4
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Transfer", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.backgroundColor = Theme.WHITE
         button.layer.cornerRadius = 4
@@ -140,7 +140,7 @@ class HelpEarningsInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Get real-time stats and \nanalytics on how your \nspot is doing."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 3
         
@@ -163,7 +163,7 @@ class HelpEarningsInformationView: UIViewController {
         view.alpha = 1
         view.profitLabel.text = "$10.14"
         view.subLabel.text = "Wed Nov. 12, 2019"
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -197,7 +197,7 @@ class HelpEarningsInformationView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Maximize income by promoting \nwith Drivewayz."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         label.numberOfLines = 2
         
@@ -342,7 +342,7 @@ extension HelpEarningsInformationView: UICollectionViewDelegate, UICollectionVie
         } else if indexPath.row == 3 {
             cell.dateLabel.text = "11/12"
             cell.dateLabel.alpha = 1
-            cell.availableView.backgroundColor = Theme.DARK_GRAY
+            cell.availableView.backgroundColor = Theme.BLACK
             cell.value = 1.0
         } else if indexPath.row == 4 {
             cell.dateLabel.alpha = 0

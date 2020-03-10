@@ -19,9 +19,9 @@ class CurrentCardView: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -85,7 +85,7 @@ class CurrentCardView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
         
         scrollView.delegate = self
@@ -181,7 +181,7 @@ extension CurrentCardView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 16))
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }
@@ -213,13 +213,13 @@ extension CurrentCardView: UITableViewDelegate, UITableViewDataSource {
                 cell.subLabel.textColor = Theme.BLUE
             } else {
                 cell.subLabel.text = "Delete payment method"
-                cell.subLabel.textColor = Theme.HARMONY_RED
+                cell.subLabel.textColor = Theme.SALMON
             }
             cell.mainLabel.alpha = 0
             cell.mainLabelCenterYAnchor.isActive = true
             cell.mainLabelTopAnchor.isActive = false
         } else {
-            cell.subLabel.textColor = Theme.DARK_GRAY
+            cell.subLabel.textColor = Theme.BLACK
             cell.mainLabel.alpha = 1
             cell.mainLabelCenterYAnchor.isActive = false
             cell.mainLabelTopAnchor.isActive = true
@@ -433,7 +433,7 @@ class PaymentDetailsCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH6
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.4)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.4)
         
         return view
     }()
@@ -442,7 +442,7 @@ class PaymentDetailsCell: UITableViewCell {
         let view = UILabel()
         view.font = Fonts.SSPRegularH4
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textColor = Theme.DARK_GRAY
+        view.textColor = Theme.BLACK
         
         return view
     }()

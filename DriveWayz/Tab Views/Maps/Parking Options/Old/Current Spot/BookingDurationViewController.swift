@@ -17,7 +17,7 @@ var bookingDurationButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("", for: .normal)
-    button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+    button.setTitleColor(Theme.GREEN, for: .normal)
     button.titleLabel?.font = Fonts.SSPSemiBoldH1
     button.contentHorizontalAlignment = .left
     
@@ -32,9 +32,9 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
             let range = (self.duration as NSString).range(of: String(lastTwo))
             let rangeString = (self.duration as NSString).range(of: self.duration)
             let attributedString = NSMutableAttributedString(string: self.duration)
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN_PIGMENT , range: range)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN , range: range)
             attributedString.addAttribute(NSAttributedString.Key.font, value:   Fonts.SSPSemiBoldH3, range: range)
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN_PIGMENT, range: rangeString)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN, range: rangeString)
             bookingDurationButton.setAttributedTitle(attributedString, for: .normal)
         }
     }
@@ -44,7 +44,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
         let image = UIImage(named: "time")
         let tintedImage = image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.PRUSSIAN_BLUE
+        button.tintColor = Theme.GRAY_WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         button.isUserInteractionEnabled = false
@@ -56,7 +56,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Leave at"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -66,7 +66,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Make sure to check in once you have parked your vehicle..."
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         
@@ -75,7 +75,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
 
     var spotIcon: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 45
@@ -99,7 +99,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
     var shimmerMain: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.clipsToBounds = true
         view.alpha = 0
         
@@ -109,7 +109,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
     var shimmerIcon: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 110, height: 110))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.clipsToBounds = true
         view.layer.cornerRadius = 45
         view.alpha = 0
@@ -120,7 +120,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
     var navigationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.GREEN_PIGMENT
+        view.backgroundColor = Theme.GREEN
         view.clipsToBounds = true
         view.layer.cornerRadius = 4
         view.alpha = 1
@@ -189,7 +189,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
     var endReservationButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.STRAWBERRY_PINK
+        button.backgroundColor = Theme.SALMON
         button.setTitle("End Booking", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
@@ -222,7 +222,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
 
         setupViews()
         setupNavigation()
@@ -361,7 +361,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
         shimmerMain.addSubview(shimmerView)
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.clear.cgColor, Theme.OFF_WHITE.cgColor, UIColor.clear.cgColor]
+        gradientLayer.colors = [UIColor.clear.cgColor, Theme.BACKGROUND_GRAY.cgColor, UIColor.clear.cgColor]
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.frame = shimmerView.frame
         
@@ -393,7 +393,7 @@ class BookingDurationViewController: UIViewController, handleBookingTimer {
         shimmerIcon.addSubview(shimmerView)
         
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.clear.cgColor, Theme.OFF_WHITE.cgColor, UIColor.clear.cgColor]
+        gradientLayer.colors = [UIColor.clear.cgColor, Theme.BACKGROUND_GRAY.cgColor, UIColor.clear.cgColor]
         gradientLayer.locations = [0, 0.5, 1]
         gradientLayer.frame = shimmerView.frame
         

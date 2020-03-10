@@ -22,7 +22,7 @@ class AmenitiesCell: UICollectionViewCell {
     let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.LIGHT_BLUE)
+        let background = CAGradientLayer().customVerticalColor(topColor: Theme.BLUE, bottomColor: Theme.BLUE_LIGHT)
         background.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
         background.zPosition = -10
         view.layer.addSublayer(background)

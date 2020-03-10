@@ -55,7 +55,7 @@ class ConfirmViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Please confirm booking"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -65,7 +65,7 @@ class ConfirmViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You can always extend time later"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -83,7 +83,7 @@ class ConfirmViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Prime Spot"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         
         return label
@@ -92,7 +92,7 @@ class ConfirmViewController: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
@@ -111,7 +111,7 @@ class ConfirmViewController: UIViewController {
     var totalCostLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "$0.00"
         label.font = Fonts.SSPRegularH2
         label.textAlignment = .right
@@ -124,7 +124,7 @@ class ConfirmViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.addTarget(self, action: #selector(informationButtonPressed), for: .touchUpInside)
         
         return button
@@ -133,7 +133,7 @@ class ConfirmViewController: UIViewController {
     var couponCostLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "$0.00"
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
@@ -141,7 +141,7 @@ class ConfirmViewController: UIViewController {
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE
+        view.backgroundColor = Theme.GRAY_WHITE
         label.addSubview(view)
         view.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 2).isActive = true
         view.leftAnchor.constraint(equalTo: label.leftAnchor).isActive = true
@@ -182,7 +182,7 @@ class ConfirmViewController: UIViewController {
         button.setTitle("Add vehicle", for: .normal)
         button.contentHorizontalAlignment = .right
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.addTarget(self, action: #selector(vehicleButtonPressed), for: .touchUpInside)
         
@@ -194,7 +194,7 @@ class ConfirmViewController: UIViewController {
         let origImage = UIImage(named: "Expand")?.rotated(by: Measurement(value: 0, unit: .degrees))
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(vehicleButtonPressed), for: .touchUpInside)
         
@@ -204,7 +204,7 @@ class ConfirmViewController: UIViewController {
     var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.setTitle("Purchase Spot", for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
         button.setTitleColor(Theme.WHITE, for: .normal)
@@ -227,7 +227,7 @@ class ConfirmViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.4
@@ -421,7 +421,7 @@ extension ConfirmViewController: handleExtendPaymentMethod {
                 if status == "succeeded" {
                     // Stripe payment succeeded
                     print(status)
-                    self.setupNotifications()
+//                    self.setupNotifications()
                 } else if status == "failed" {
                     // Stripe payment failed
                     print(status)
@@ -475,7 +475,7 @@ extension ConfirmViewController: handleExtendPaymentMethod {
                 if let cardNumber = paymentMethod.last4, paymentMethod.defaultCard {
                     let card = "•••• \(cardNumber)"
                     self.paymentButton.setTitle(card, for: .normal)
-                    self.paymentButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.paymentButton.setTitleColor(Theme.BLACK, for: .normal)
                     let image = setDefaultPaymentMethod(method: paymentMethod)
                     self.paymentButton.setImage(image, for: .normal)
                     self.currentPaymentMethod = paymentMethod
@@ -500,7 +500,7 @@ extension ConfirmViewController: handleExtendPaymentMethod {
                 let vehicleMethod = Vehicles(dictionary: dataDescription)
                 if let model = vehicleMethod.vehicleModel, vehicleMethod.defaultVehicle {
                     self.vehicleButton.setTitle(model, for: .normal)
-                    self.vehicleButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+                    self.vehicleButton.setTitleColor(Theme.BLACK, for: .normal)
                     self.currentVehicleMethod = vehicleMethod
                     addStepController.currentVehicleMethod = vehicleMethod
                 }
@@ -739,13 +739,13 @@ extension ConfirmViewController {
     
     func mainButtonAvailable() {
         mainButton.setTitleColor(Theme.WHITE, for: .normal)
-        mainButton.backgroundColor = Theme.DARK_GRAY
+        mainButton.backgroundColor = Theme.BLACK
         mainButton.isUserInteractionEnabled = true
     }
     
     func mainButtonUnavailable() {
-        mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
-        mainButton.backgroundColor = lineColor
+        mainButton.setTitleColor(Theme.BLACK, for: .normal)
+        mainButton.backgroundColor = Theme.LINE_GRAY
         mainButton.isUserInteractionEnabled = false
     }
     

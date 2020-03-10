@@ -46,7 +46,7 @@ class AddStepView: UIViewController {
                 subLabel.text = "Tap confirm to book parking."
                 successIcon.alpha = 1
                 mainButton.setTitle("Confirm Booking", for: .normal)
-                mainButton.backgroundColor = Theme.DARK_GRAY
+                mainButton.backgroundColor = Theme.BLACK
             } else {
                 vehicleView.incomplete()
                 successIcon.alpha = 0
@@ -57,7 +57,7 @@ class AddStepView: UIViewController {
     
     lazy var dimmingView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -68,7 +68,7 @@ class AddStepView: UIViewController {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
@@ -80,7 +80,7 @@ class AddStepView: UIViewController {
         let origImage = UIImage(named: "helpIcon")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(openHelp), for: .touchUpInside)
         button.alpha = 0
@@ -113,7 +113,7 @@ class AddStepView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "You're almost ready to park"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
         label.numberOfLines = 2
@@ -125,7 +125,7 @@ class AddStepView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "First let's add your payment method."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
         
@@ -178,7 +178,7 @@ class AddStepView: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
-        button.backgroundColor = Theme.GREEN_PIGMENT
+        button.backgroundColor = Theme.GREEN
         button.layer.cornerRadius = 24
         let image = UIImage(named: "likeIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
@@ -191,7 +191,7 @@ class AddStepView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         setupViews()
     }

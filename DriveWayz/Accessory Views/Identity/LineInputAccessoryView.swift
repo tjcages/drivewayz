@@ -10,10 +10,10 @@ import UIKit
 
 class LineInputAccessoryView: UIView {
     
-    var lineUnselectedColor: UIColor = Theme.OFF_WHITE
+    var lineUnselectedColor: UIColor = Theme.BACKGROUND_GRAY
     var lineSelectedColor: UIColor = Theme.BLUE
     
-    var backgroundUnselectedColor: UIColor = lineColor
+    var backgroundUnselectedColor: UIColor = Theme.LINE_GRAY
     
     lazy var deleteButton: UIButton = {
         let button = UIButton()
@@ -23,7 +23,7 @@ class LineInputAccessoryView: UIView {
         let origImage = UIImage(named: "exit")
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.isHidden = true
         button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)

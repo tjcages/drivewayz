@@ -144,7 +144,7 @@ class ParkingMessageOptionsViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.6)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.6)
         label.font = Fonts.SSPLightH4
         label.text = "Quick options"
         
@@ -298,9 +298,9 @@ class ParkingMessageOptionsViewController: UIViewController {
     @objc func optionsButtonPressed(sender: UIButton) {
         if sender.backgroundColor == Theme.WHITE {
             UIView.animate(withDuration: 0.1) {
-                sender.backgroundColor = Theme.SEA_BLUE
+                sender.backgroundColor = Theme.BLUE
                 sender.setTitleColor(Theme.WHITE, for: .normal)
-                sender.layer.borderColor = Theme.SEA_BLUE.cgColor
+                sender.layer.borderColor = Theme.BLUE.cgColor
                 sender.tag = 1
                 if self.lastButton != nil {
                     self.lastButton.backgroundColor = Theme.WHITE

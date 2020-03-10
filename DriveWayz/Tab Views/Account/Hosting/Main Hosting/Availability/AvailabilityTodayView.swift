@@ -17,7 +17,7 @@ class AvailabilityTodayView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Upcoming hourly trends"
         
         return label
@@ -35,7 +35,7 @@ class AvailabilityTodayView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.text = "Today's availability"
         
         return label
@@ -45,7 +45,7 @@ class AvailabilityTodayView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPSemiBoldH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Active"
         
         return label
@@ -242,7 +242,7 @@ class AvailabilityHoursCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "NOW"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.textAlignment = .center
         label.alpha = 0
         

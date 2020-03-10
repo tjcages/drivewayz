@@ -73,7 +73,7 @@ class BookingExpandedViewController: UIViewController {
     var spotIcon: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        view.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.contentMode = .scaleAspectFit
         view.layer.cornerRadius = 50
         let image = UIImage(named: "Residential Home Driveway")
@@ -86,7 +86,7 @@ class BookingExpandedViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Two-Car Driveway"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.textAlignment = .center
         
@@ -100,10 +100,10 @@ class BookingExpandedViewController: UIViewController {
         view.settings.fillMode = StarFillMode.precise
         view.settings.starSize = 16
         view.settings.starMargin = 0
-        view.settings.filledColor = Theme.GOLD
-        view.settings.emptyBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
-        view.settings.filledBorderColor = Theme.GOLD
-        view.settings.emptyColor = Theme.DARK_GRAY.withAlphaComponent(0.1)
+        view.settings.filledColor = Theme.YELLOW
+        view.settings.emptyBorderColor = Theme.BLACK.withAlphaComponent(0.1)
+        view.settings.filledBorderColor = Theme.YELLOW
+        view.settings.emptyColor = Theme.BLACK.withAlphaComponent(0.1)
         view.isUserInteractionEnabled = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -115,7 +115,7 @@ class BookingExpandedViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "10"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPSemiBoldH5
         
         return label
@@ -127,7 +127,7 @@ class BookingExpandedViewController: UIViewController {
         label.text = "$1.40/hour"
         label.textColor = Theme.WHITE
         label.font = Fonts.SSPSemiBoldH5
-        label.backgroundColor = Theme.GREEN_PIGMENT
+        label.backgroundColor = Theme.GREEN
         label.layer.cornerRadius = 14
         label.clipsToBounds = true
         label.textAlignment = .center

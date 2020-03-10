@@ -16,7 +16,7 @@ class ChatMessageCell: UICollectionViewCell {
     var message: Message?
     var chatLogController = CommentsController(collectionViewLayout: UICollectionViewLayout())
     
-    var incomingColor = lineColor
+    var incomingColor = Theme.LINE_GRAY
     var outgoingColor = Theme.BLUE
     
     let activityIndicatorView: UIActivityIndicatorView = {
@@ -187,7 +187,7 @@ class ChatMessageCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.font = Fonts.SSPRegularH4
         if isIncoming {
-            label.textColor = Theme.DARK_GRAY
+            label.textColor = Theme.BLACK
         } else {
             label.textColor = Theme.WHITE
         }

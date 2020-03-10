@@ -36,7 +36,7 @@ class PriceSliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Hourly price range"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -62,9 +62,9 @@ class PriceSliderView: UIViewController {
     var thumbView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 12
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -76,7 +76,7 @@ class PriceSliderView: UIViewController {
     var hourView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 18
         
         return view
@@ -85,7 +85,7 @@ class PriceSliderView: UIViewController {
     var hourViewTriangle: TriangleView = {
         let view = TriangleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.color = Theme.DARK_GRAY
+        view.color = Theme.BLACK
         view.backgroundColor = UIColor.clear
         view.layer.cornerRadius = 6
         view.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
@@ -106,7 +106,7 @@ class PriceSliderView: UIViewController {
     var trackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         view.layer.cornerRadius = 3
         
         return view
@@ -115,7 +115,7 @@ class PriceSliderView: UIViewController {
     var firstTrackView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.layer.cornerRadius = 3
         
         return view
@@ -125,7 +125,7 @@ class PriceSliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$1.32"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
         return label
@@ -135,7 +135,7 @@ class PriceSliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Min rate"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         
         return label
@@ -145,7 +145,7 @@ class PriceSliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "$7.00"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         label.textAlignment = .right
         
@@ -156,7 +156,7 @@ class PriceSliderView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Max rate"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .right
         

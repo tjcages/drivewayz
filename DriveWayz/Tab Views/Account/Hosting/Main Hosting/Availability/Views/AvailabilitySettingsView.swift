@@ -28,7 +28,7 @@ class AvailabilitySettingsView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Reservations"
         
         return label
@@ -46,7 +46,7 @@ class AvailabilitySettingsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Allows reservations"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.isUserInteractionEnabled = false
         
@@ -57,7 +57,7 @@ class AvailabilitySettingsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select this if you allow drivers to book your spot in advance."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.isUserInteractionEnabled = false
@@ -69,7 +69,7 @@ class AvailabilitySettingsView: UIViewController {
         let view = UISwitch()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = Theme.BLUE
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.addTarget(self, action: #selector(switchPressed(sender:)), for: .valueChanged)
         
         return view
@@ -80,7 +80,7 @@ class AvailabilitySettingsView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.addTarget(self, action: #selector(informationPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -90,7 +90,7 @@ class AvailabilitySettingsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Advance notice"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.isUserInteractionEnabled = false
         
@@ -101,7 +101,7 @@ class AvailabilitySettingsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Select this if you require more than 24 hours notice for reservations."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.isUserInteractionEnabled = false
@@ -113,7 +113,7 @@ class AvailabilitySettingsView: UIViewController {
         let view = UISwitch()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = Theme.BLUE
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.addTarget(self, action: #selector(switchPressed(sender:)), for: .valueChanged)
         
         return view
@@ -124,7 +124,7 @@ class AvailabilitySettingsView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.addTarget(self, action: #selector(informationPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -133,14 +133,14 @@ class AvailabilitySettingsView: UIViewController {
     var line: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = lineColor
+        view.backgroundColor = Theme.LINE_GRAY
         
         return view
     }()
     
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.alpha = 0
         
         return view
@@ -149,7 +149,7 @@ class AvailabilitySettingsView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
 
         setupViews()
         setupReservations()

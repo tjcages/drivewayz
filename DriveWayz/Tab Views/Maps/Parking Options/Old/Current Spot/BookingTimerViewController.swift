@@ -37,9 +37,9 @@ class BookingTimerViewController: UIViewController {
             attributedString.addAttribute(NSAttributedString.Key.font, value:   Fonts.SSPSemiBoldH3, range: hourRange)
             attributedString.addAttribute(NSAttributedString.Key.font, value:   Fonts.SSPSemiBoldH3, range: hoursRange)
             if self.timeLeft == "Times up" {
-                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.STRAWBERRY_PINK, range: rangeString)
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.SALMON, range: rangeString)
             } else {
-                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN_PIGMENT, range: rangeString)
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: Theme.GREEN, range: rangeString)
             }
             DispatchQueue.main.async {
                 self.durationButton.setAttributedTitle(attributedString, for: .normal)
@@ -51,7 +51,7 @@ class BookingTimerViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("", for: .normal)
-        button.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+        button.setTitleColor(Theme.GREEN, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH1
         button.contentHorizontalAlignment = .left
         
@@ -99,15 +99,15 @@ class BookingTimerViewController: UIViewController {
         if self.seconds > 600 {
             self.seconds = self.seconds - 1
             self.timeLeft = timeString(time: TimeInterval(self.seconds))
-            self.durationButton.setTitleColor(Theme.GREEN_PIGMENT, for: .normal)
+            self.durationButton.setTitleColor(Theme.GREEN, for: .normal)
         } else if self.seconds > 0 {
             self.seconds = self.seconds - 1
             self.timeLeft = timeString(time: TimeInterval(self.seconds))
-            self.durationButton.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
+            self.durationButton.setTitleColor(Theme.SALMON, for: .normal)
             self.delegate?.changeDestinationLabel(text: "Your parking reservation is almost over. Please plan on moving soon or extending time")
         } else {
             self.timeLeft = "Times up"
-            self.durationButton.setTitleColor(Theme.STRAWBERRY_PINK, for: .normal)
+            self.durationButton.setTitleColor(Theme.SALMON, for: .normal)
             self.delegate?.endParkingDuration()
         }
     }

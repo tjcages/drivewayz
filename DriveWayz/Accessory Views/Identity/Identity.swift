@@ -11,10 +11,10 @@ import UIKit
 final class IdentityButton: UIButton {
     
     var lineHeight: CGFloat = 2.0
-    var unselectedLineColor = lineColor
+    var unselectedLineColor = Theme.LINE_GRAY
     var selectedLineColor = Theme.BLUE
     
-    var unselectedBackgroundColor = Theme.OFF_WHITE
+    var unselectedBackgroundColor = Theme.BACKGROUND_GRAY
     var selectedBackgroundColor = Theme.BLUE.withAlphaComponent(0.1)
     
     var selectedButton: Bool = false {
@@ -58,7 +58,7 @@ final class IdentityButton: UIButton {
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         backgroundColor = unselectedBackgroundColor
-        setTitleColor(Theme.DARK_GRAY, for: .normal)
+        setTitleColor(Theme.BLACK, for: .normal)
         titleLabel?.font = Fonts.SSPSemiBoldH3
         isSelected = false
         

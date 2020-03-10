@@ -15,7 +15,7 @@ class RecentParkingCell: UICollectionViewCell {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: 235, height: 160)
         view.backgroundColor = Theme.WHITE
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 1, height: 1)
         view.layer.shadowRadius = 1
         view.layer.shadowOpacity = 0.8
@@ -32,7 +32,7 @@ class RecentParkingCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PACIFIC_BLUE
+        imageView.backgroundColor = Theme.BLUE
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true
         
@@ -42,7 +42,7 @@ class RecentParkingCell: UICollectionViewCell {
     var reviewLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.9)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.9)
         label.font = Fonts.SSPSemiBoldH6
         label.text = "Address"
         label.isEditable = false
@@ -55,7 +55,7 @@ class RecentParkingCell: UICollectionViewCell {
     var hoursLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.font = Fonts.SSPRegularH6
         label.text = "Hours spent"
         label.isEditable = false
@@ -68,7 +68,7 @@ class RecentParkingCell: UICollectionViewCell {
     var costLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.SEA_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH6
         label.text = "Total cost"
         label.isEditable = false
@@ -81,7 +81,7 @@ class RecentParkingCell: UICollectionViewCell {
     var priceLabel: UITextView = {
         let label = UITextView()
         label.textAlignment = .left
-        label.textColor = Theme.PACIFIC_BLUE
+        label.textColor = Theme.BLUE
         label.font = Fonts.SSPRegularH6
         label.text = "- hourly cost"
         label.isEditable = false
@@ -98,9 +98,9 @@ class RecentParkingCell: UICollectionViewCell {
         view.settings.fillMode = .precise
         view.settings.starSize = 15
         view.settings.starMargin = 2
-        view.settings.filledColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
-        view.settings.emptyBorderColor = Theme.DARK_GRAY
-        view.settings.filledBorderColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.settings.filledColor = Theme.BLACK.withAlphaComponent(0.7)
+        view.settings.emptyBorderColor = Theme.BLACK
+        view.settings.filledBorderColor = Theme.BLACK.withAlphaComponent(0.7)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view

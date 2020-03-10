@@ -26,7 +26,7 @@ class BookingsOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Stays", for: .normal)
-        button.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        button.setTitleColor(Theme.BLACK, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH5
         button.contentHorizontalAlignment = .left
         
@@ -39,7 +39,7 @@ class BookingsOptionsViewController: UIViewController {
         let origImage = UIImage(named: "hostUpArrow")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = Theme.LIGHT_GRAY.withAlphaComponent(0.8)
+        button.tintColor = Theme.GRAY_WHITE_4.withAlphaComponent(0.8)
         button.imageEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
         
         return button
@@ -49,7 +49,7 @@ class BookingsOptionsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Reservations", for: .normal)
-        button.setTitleColor(Theme.LIGHT_GRAY.withAlphaComponent(0.8), for: .normal)
+        button.setTitleColor(Theme.GRAY_WHITE_4.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH5
         button.contentHorizontalAlignment = .left
         

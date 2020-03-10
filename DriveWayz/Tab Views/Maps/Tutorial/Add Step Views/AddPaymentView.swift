@@ -32,10 +32,10 @@ class AddPaymentView: UIViewController {
         check.style = .tick
         check.isChecked = true
         check.borderStyle = .roundedSquare(radius: 15)
-        check.checkmarkColor = Theme.DARK_GRAY
+        check.checkmarkColor = Theme.BLACK
         check.checkedBorderColor = UIColor.clear
         check.isUserInteractionEnabled = false
-        check.backgroundColor = lineColor
+        check.backgroundColor = Theme.LINE_GRAY
         check.layer.cornerRadius = 15
         check.clipsToBounds = true
         
@@ -46,7 +46,7 @@ class AddPaymentView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Add payment method"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         
@@ -57,7 +57,7 @@ class AddPaymentView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "All payment information is securely processed with Stripe."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 3
         
@@ -69,7 +69,7 @@ class AddPaymentView: UIViewController {
 
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.1
@@ -112,10 +112,10 @@ class AddPaymentView: UIViewController {
     
     func incomplete() {
         UIView.animate(withDuration: animationOut) {
-            self.checkmark.backgroundColor = lineColor
-            self.checkmark.checkmarkColor = Theme.DARK_GRAY
+            self.checkmark.backgroundColor = Theme.LINE_GRAY
+            self.checkmark.checkmarkColor = Theme.BLACK
             self.view.backgroundColor = Theme.WHITE
-            self.view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+            self.view.layer.shadowColor = Theme.BLACK.cgColor
             self.view.layoutIfNeeded()
         }
     }

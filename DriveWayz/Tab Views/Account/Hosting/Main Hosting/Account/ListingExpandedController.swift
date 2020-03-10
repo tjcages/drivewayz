@@ -72,7 +72,7 @@ class ListingExpandedController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         gradientController.scrollView.delegate = self
 

@@ -10,13 +10,13 @@ import UIKit
 
 class BookingTutorialView: UIViewController {
 
-    var delegate: handleMapTutorial?
+//    var delegate: handleMapTutorial?
     
     var dimViewHeight: CGFloat = phoneHeight - 372
     
     lazy var dimView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: phoneHeight))
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         return view
     }()

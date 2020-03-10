@@ -14,7 +14,7 @@ class OngoingMessageViewController: UIViewController {
     
     lazy var gradientContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.DARK_GRAY
+        view.backgroundColor = Theme.BLACK
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false
         
@@ -38,10 +38,10 @@ class OngoingMessageViewController: UIViewController {
         let origImage = UIImage(named: "background4")
         imageView.image = origImage
         imageView.image = imageView.image!.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = Theme.DARK_GRAY.withAlphaComponent(0.2)
+        imageView.tintColor = Theme.BLACK.withAlphaComponent(0.2)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = Theme.PRUSSIAN_BLUE
+        imageView.backgroundColor = Theme.GRAY_WHITE
         imageView.layer.cornerRadius = 45/2
         imageView.clipsToBounds = true
         
@@ -70,7 +70,7 @@ class OngoingMessageViewController: UIViewController {
     
     var messageBarBackground: UIView = {let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Theme.OFF_WHITE.withAlphaComponent(0.6)
+        view.backgroundColor = Theme.BACKGROUND_GRAY.withAlphaComponent(0.6)
         
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -80,7 +80,7 @@ class OngoingMessageViewController: UIViewController {
         view.addSubview(blurEffectView)
         
         let line = UIView(frame: CGRect(x: 0, y: 0, width: phoneWidth, height: 0.5))
-        line.backgroundColor = Theme.PRUSSIAN_BLUE.withAlphaComponent(0.2)
+        line.backgroundColor = Theme.GRAY_WHITE.withAlphaComponent(0.2)
         view.addSubview(line)
         
         return view
@@ -90,12 +90,12 @@ class OngoingMessageViewController: UIViewController {
         let view = UITextView()
         view.backgroundColor = Theme.WHITE
         view.font = Fonts.SSPRegularH5
-        view.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.textColor = Theme.BLACK.withAlphaComponent(0.7)
         view.text = "Write a message"
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = true
         view.layer.cornerRadius = 20
-        view.layer.borderColor = Theme.DARK_GRAY.withAlphaComponent(0.7).cgColor
+        view.layer.borderColor = Theme.BLACK.withAlphaComponent(0.7).cgColor
         view.layer.borderWidth = 0.5
         view.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 0, right: 42)
         

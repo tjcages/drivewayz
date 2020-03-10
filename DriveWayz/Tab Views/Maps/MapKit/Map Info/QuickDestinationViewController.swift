@@ -23,7 +23,7 @@ class QuickDestinationViewController: UIViewController {
     var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         
         return label
@@ -33,7 +33,7 @@ class QuickDestinationViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.4

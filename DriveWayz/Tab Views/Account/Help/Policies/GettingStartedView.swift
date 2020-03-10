@@ -45,7 +45,7 @@ class GettingStartedView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Shared Marketplace Parking"
         
         return label
@@ -55,7 +55,7 @@ class GettingStartedView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 100
         label.text = "Smart parking options, like Drivewayz, allow property owners to rent out their unused parking spaces. By parking on private property, you now have peace of mind that your vehicle will be secure, while saving you time and money. \n\nThrough this new and exciting industry, more parking options are now available in the busy areas you enjoy visiting."
         
@@ -74,7 +74,7 @@ class GettingStartedView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "How It Works"
         
         return label
@@ -91,7 +91,7 @@ class GettingStartedView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         scrollView.delegate = self
         

@@ -40,7 +40,7 @@ class ReservationButton: UIButton {
         self.alpha = 0.5
         self.translatesAutoresizingMaskIntoConstraints = false
         //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
-        self.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.setTitleColor(Theme.BLACK, for: .normal)
         self.isUserInteractionEnabled = false
     }
     
@@ -61,7 +61,7 @@ class PaymentButton: UIButton  {
         self.titleLabel?.textAlignment = .left
         self.translatesAutoresizingMaskIntoConstraints = false
         //        button(self, action: #selector(saveReservationButtonPressed(sender:)), for: .touchUpInside)
-        self.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        self.setTitleColor(Theme.BLACK, for: .normal)
         self.isUserInteractionEnabled = false
     }
     
@@ -73,7 +73,7 @@ class PaymentButton: UIButton  {
 
 class BuyButton: HighlightingButton {
     var disabledColor = UIColor.lightGray
-    var enabledColor = Theme.PACIFIC_BLUE
+    var enabledColor = Theme.BLUE
 
     override var isEnabled: Bool {
         didSet {
@@ -90,7 +90,7 @@ class BuyButton: HighlightingButton {
         self.layer.cornerRadius = 10
         self.setTitle("Buy", for: UIControl.State())
         self.disabledColor = theme.secondaryForegroundColor
-        self.enabledColor = Theme.PACIFIC_BLUE
+        self.enabledColor = Theme.BLUE
         self.isEnabled = enabled
     }
 }

@@ -37,7 +37,7 @@ class SuccessfulDisputeHelpView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Successfully opened \ndispute claim"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -50,7 +50,7 @@ class SuccessfulDisputeHelpView: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.text = "Drivewayz will send a follow up email \nwith details on how to continue.  "
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
@@ -66,7 +66,7 @@ class SuccessfulDisputeHelpView: UIViewController {
         button.setTitle("Got it", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 4
         button.isUserInteractionEnabled = false
         button.alpha = 0
@@ -84,7 +84,7 @@ class SuccessfulDisputeHelpView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.8)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.8)
         
         setupViews()
     }

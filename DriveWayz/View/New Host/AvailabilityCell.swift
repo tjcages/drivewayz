@@ -41,7 +41,7 @@ class AvailabilityCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 8
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 3
         view.layer.shadowOpacity = 0.2
@@ -52,7 +52,7 @@ class AvailabilityCell: UITableViewCell {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH2
         
         return label
@@ -85,8 +85,8 @@ class AvailabilityCell: UITableViewCell {
         check.borderStyle = .roundedSquare(radius: 16)
         check.checkedBorderColor = .clear
         check.checkboxBackgroundColor = .clear
-        check.checkmarkColor = Theme.LIGHT_GRAY
-        check.backgroundColor = lineColor
+        check.checkmarkColor = Theme.GRAY_WHITE_4
+        check.backgroundColor = Theme.LINE_GRAY
         check.layer.cornerRadius = 16
         check.clipsToBounds = true
         check.isUserInteractionEnabled = false
@@ -138,7 +138,7 @@ class AvailabilityCell: UITableViewCell {
     
     func cellSelected() {
         UIView.animate(withDuration: animationIn) {
-            self.backgroundColor = Theme.OFF_WHITE
+            self.backgroundColor = Theme.BACKGROUND_GRAY
             self.container.backgroundColor = Theme.BLUE.withAlphaComponent(0.2)
             self.container.layer.shadowOpacity = 0
             self.checkmark.backgroundColor = Theme.BLUE
@@ -152,20 +152,20 @@ class AvailabilityCell: UITableViewCell {
             self.backgroundColor = .clear
             self.container.backgroundColor = Theme.WHITE
             self.container.layer.shadowOpacity = 0.2
-            self.checkmark.backgroundColor = lineColor
-            self.checkmark.checkmarkColor = Theme.LIGHT_GRAY
+            self.checkmark.backgroundColor = Theme.LINE_GRAY
+            self.checkmark.checkmarkColor = Theme.GRAY_WHITE_4
             self.subLabel.textColor = Theme.BLUE
         }
     }
     
     func cellUnavailable() {
         UIView.animate(withDuration: animationIn) {
-            self.backgroundColor = Theme.OFF_WHITE
-            self.container.backgroundColor = lineColor
+            self.backgroundColor = Theme.BACKGROUND_GRAY
+            self.container.backgroundColor = Theme.LINE_GRAY
             self.container.layer.shadowOpacity = 0
             self.checkmark.backgroundColor = Theme.BLUE
             self.checkmark.checkmarkColor = Theme.WHITE
-            self.subLabel.textColor = Theme.PRUSSIAN_BLUE
+            self.subLabel.textColor = Theme.GRAY_WHITE
         }
     }
     

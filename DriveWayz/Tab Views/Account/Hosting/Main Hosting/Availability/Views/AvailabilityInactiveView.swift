@@ -28,7 +28,7 @@ class AvailabilityInactiveView: UIViewController {
         button.setImage(image, for: .normal)
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Theme.HARMONY_RED
+        button.backgroundColor = Theme.SALMON
         button.layer.cornerRadius = 50
         button.alpha = 0
         button.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
@@ -39,7 +39,7 @@ class AvailabilityInactiveView: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.text = "Listing was \nmarked inactive"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.textAlignment = .center
@@ -52,7 +52,7 @@ class AvailabilityInactiveView: UIViewController {
     var subLabel: UILabel = {
         let label = UILabel()
         label.text = "You can reactivate your spot at \nany time in the Host Portal."
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH4
         label.textAlignment = .center
@@ -65,7 +65,7 @@ class AvailabilityInactiveView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        view.backgroundColor = Theme.BLACK.withAlphaComponent(0.7)
         
         setupViews()
     }

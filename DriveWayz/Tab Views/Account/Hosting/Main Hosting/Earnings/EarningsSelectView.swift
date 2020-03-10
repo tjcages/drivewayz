@@ -23,7 +23,7 @@ class EarningsSelectView: UIView {
     let triangleView: TriangleView = {
         let view = TriangleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.color = Theme.DARK_GRAY
+        view.color = Theme.BLACK
         view.backgroundColor = UIColor.clear
         view.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
         
@@ -54,7 +54,7 @@ class EarningsSelectView: UIView {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "Wed. Nov. 12, 2019"
         
         return label
@@ -64,7 +64,7 @@ class EarningsSelectView: UIView {
         super.init(frame: frame)
         
         alpha = 0
-        backgroundColor = Theme.DARK_GRAY
+        backgroundColor = Theme.BLACK
         translatesAutoresizingMaskIntoConstraints = false
         
         setupViews()

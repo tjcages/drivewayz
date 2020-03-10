@@ -20,7 +20,7 @@ class ListingToDoView: UIViewController {
         let label = UILabel()
         label.font = Fonts.SSPRegularH4
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "To do"
         
         return label
@@ -164,7 +164,7 @@ class ToDoCell: UICollectionViewCell {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.numberOfLines = 2
         label.text = "Provide more descriptive pictures to earn higher ratings"
@@ -175,7 +175,7 @@ class ToDoCell: UICollectionViewCell {
     var subLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.text = "The current pictures do not clearly identify the parking space."
@@ -199,7 +199,7 @@ class ToDoCell: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
         button.setTitleColor(Theme.WHITE, for: .normal)
         button.titleLabel?.font = Fonts.SSPSemiBoldH3
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.layer.cornerRadius = 4
         button.isUserInteractionEnabled = false
         

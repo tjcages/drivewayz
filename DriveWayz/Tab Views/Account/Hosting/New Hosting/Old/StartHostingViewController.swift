@@ -43,7 +43,7 @@ class StartHostingViewController: UIViewController {
     var parkingLabel: UILabel = {
         let label = UILabel()
         label.text = "Follow these easy steps to list your parking space"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPSemiBoldH2
         label.numberOfLines = 4
@@ -54,7 +54,7 @@ class StartHostingViewController: UIViewController {
     var informationLabel: UILabel = {
         let label = UILabel()
         label.text = "Make up to $100 a week while helping to improve your parking community"
-        label.textColor = Theme.DARK_GRAY.withAlphaComponent(0.7)
+        label.textColor = Theme.BLACK.withAlphaComponent(0.7)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 4

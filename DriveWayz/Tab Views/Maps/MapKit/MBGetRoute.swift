@@ -25,15 +25,13 @@ var quadEndCoordinate: CLLocationCoordinate2D?
 extension MapKitViewController {
     
     func dismissSearch() {
-        dismissKeyboard()
-
         if !mainSearchTextField {
             mainSearchTextField = true
-            summaryController.searchTextField.becomeFirstResponder()
+//            summaryController.searchTextField.becomeFirstResponder()
             return
         }
-        guard let fromText = summaryController.fromSearchBar.text else { return }
-        searchBarController.fromLabel.text = fromText
+//        guard let fromText = summaryController.fromSearchBar.text else { return }
+//        searchBarController.fromLabel.text = fromText
         mainViewState = .parking
     }
     
@@ -61,12 +59,12 @@ extension MapKitViewController {
     }
     
     func zoomToRecommendedLocation(location: CLLocationCoordinate2D) {
-        DestinationAnnotationLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        checkAnnotationsNearDestination(location: location, checkDistance: true)
-        mapView.animate(toZoom: mapView.camera.zoom - 2)
-        mapView.animate(toLocation: location)
-        
-        delegate?.hideHamburger()
+//        DestinationAnnotationLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+//        checkAnnotationsNearDestination(location: location, checkDistance: true)
+//        mapView.animate(toZoom: mapView.camera.zoom - 2)
+//        mapView.animate(toLocation: location)
+//
+//        delegate?.hideHamburger()
     }
     
     func calculateRoute(fromLocation: CLLocation, toLocation: CLLocation, identifier: MKDirectionsTransportType) {
@@ -84,6 +82,9 @@ extension MapKitViewController {
                 routeEndPin.center = CGPoint(x: start.x, y: start.y)
                 routeParkingPin.center = CGPoint(x: last.x, y: last.y - 26)
             }
+            
+//            userTracking = .none
+//            self.zoomToBounds(sender: self.parkingRouteButton)
         }
 
         let source = CLLocationCoordinate2D(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude)
@@ -123,7 +124,7 @@ extension MapKitViewController {
                 self.mapBoxWalkingRoute = route
                 
                 self.createRouteLine(route: route, driving: false)
-                self.locatorButtonPressed(padding: 100)
+//                self.locatorButtonPressed(padding: 100)
                 
                 let minute = route.expectedTravelTime / 60
                 self.setupQuickController(minute: minute, identifier: identifier)

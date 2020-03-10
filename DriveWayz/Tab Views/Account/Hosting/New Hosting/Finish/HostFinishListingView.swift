@@ -51,7 +51,7 @@ class HostFinishListingView: UIViewController {
         button.layer.cornerRadius = 20
         let image = UIImage(named: "exit")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         button.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
         
         return button
@@ -61,7 +61,7 @@ class HostFinishListingView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Congrats, your spot is \nready to be listed!"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         label.numberOfLines = 2
         label.alpha = 0
@@ -73,7 +73,7 @@ class HostFinishListingView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Drivewayz will verify the spot and \nsend a code to the email provided \nto confirm the listing."
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.numberOfLines = 3
         label.font = Fonts.SSPRegularH4
         label.alpha = 0
@@ -110,8 +110,8 @@ class HostFinishListingView: UIViewController {
         check.borderWidth = 0
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = lineColor
-        check.backgroundColor = lineColor
+        check.uncheckedBorderColor = Theme.LINE_GRAY
+        check.backgroundColor = Theme.LINE_GRAY
         check.layer.cornerRadius = 2
         check.clipsToBounds = true
         check.checkmarkColor = Theme.WHITE
@@ -124,7 +124,7 @@ class HostFinishListingView: UIViewController {
     var mainPoliciesLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.isSelectable = false
         let string = "I agree to the Privacy Policy and \nTerms & Conditions."
@@ -158,8 +158,8 @@ class HostFinishListingView: UIViewController {
         check.borderWidth = 0
         check.borderStyle = .roundedSquare(radius: 2)
         check.checkedBorderColor = Theme.BLUE
-        check.uncheckedBorderColor = lineColor
-        check.backgroundColor = lineColor
+        check.uncheckedBorderColor = Theme.LINE_GRAY
+        check.backgroundColor = Theme.LINE_GRAY
         check.layer.cornerRadius = 2
         check.clipsToBounds = true
         check.checkmarkColor = Theme.WHITE
@@ -172,7 +172,7 @@ class HostFinishListingView: UIViewController {
     var hostPoliciesLabel: UITextView = {
         let label = UITextView()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH5
         label.isSelectable = false
         let string = "I have read and agree to the \nHost Policy and Host Regulations."
@@ -351,7 +351,7 @@ class HostFinishListingView: UIViewController {
         if sender.isChecked {
             sender.backgroundColor = Theme.BLUE
         } else {
-            sender.backgroundColor = lineColor
+            sender.backgroundColor = Theme.LINE_GRAY
         }
         if mainPoliciesCheck.isChecked == true && hostPoliciesCheck.isChecked == true {
             finishAllowed = true
@@ -371,14 +371,14 @@ class HostFinishListingView: UIViewController {
     }
     
     func mainButtonAvailable() {
-        bottomController.mainButton.backgroundColor = Theme.DARK_GRAY
+        bottomController.mainButton.backgroundColor = Theme.BLACK
         bottomController.mainButton.setTitleColor(Theme.WHITE, for: .normal)
         bottomController.mainButton.isUserInteractionEnabled = true
     }
     
     func mainButtonUnvailable() {
-        bottomController.mainButton.backgroundColor = lineColor
-        bottomController.mainButton.setTitleColor(Theme.DARK_GRAY, for: .normal)
+        bottomController.mainButton.backgroundColor = Theme.LINE_GRAY
+        bottomController.mainButton.setTitleColor(Theme.BLACK, for: .normal)
         bottomController.mainButton.isUserInteractionEnabled = false
     }
 

@@ -16,7 +16,7 @@ class VerifyInstructionsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Driver instructions"
-        label.textColor = Theme.DARK_GRAY
+        label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         label.isUserInteractionEnabled = false
         
@@ -27,7 +27,7 @@ class VerifyInstructionsView: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Does the space require additional information for a driver to park?"
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH5
         label.numberOfLines = 2
         label.isUserInteractionEnabled = false
@@ -39,7 +39,7 @@ class VerifyInstructionsView: UIViewController {
         let view = UISwitch()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = Theme.BLUE
-        view.tintColor = lineColor
+        view.tintColor = Theme.LINE_GRAY
         view.addTarget(self, action: #selector(switchPressed(sender:)), for: .valueChanged)
         view.isUserInteractionEnabled = false
         
@@ -51,7 +51,7 @@ class VerifyInstructionsView: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "informationIcon")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = Theme.DARK_GRAY
+        button.tintColor = Theme.BLACK
         
         return button
     }()

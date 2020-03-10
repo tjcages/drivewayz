@@ -68,7 +68,7 @@ class AccountView: UIViewController {
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 56
         view.clipsToBounds = true
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         
         return view
     }()
@@ -78,7 +78,7 @@ class AccountView: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Theme.WHITE
         view.layer.cornerRadius = 60
-        view.layer.shadowColor = Theme.DARK_GRAY.cgColor
+        view.layer.shadowColor = Theme.BLACK.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 6
         view.layer.shadowOpacity = 0.2
@@ -104,7 +104,7 @@ class AccountView: UIViewController {
         button.tintColor = Theme.WHITE
         button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         button.layer.cornerRadius = 35/2
-        button.backgroundColor = Theme.DARK_GRAY
+        button.backgroundColor = Theme.BLACK
         button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         
         return button
@@ -113,7 +113,7 @@ class AccountView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Theme.OFF_WHITE
+        view.backgroundColor = Theme.BACKGROUND_GRAY
         view.clipsToBounds = true
 
         optionsTableView.delegate = self
@@ -180,7 +180,7 @@ extension AccountView: UITableViewDelegate, UITableViewDataSource {
         let label = UILabel()
         label.font = Fonts.SSPRegularH5
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Theme.PRUSSIAN_BLUE
+        label.textColor = Theme.GRAY_WHITE
         label.text = "NAME"
         
         view.addSubview(label)
