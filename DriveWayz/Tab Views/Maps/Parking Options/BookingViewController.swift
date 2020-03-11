@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-var parkingNormalHeight: CGFloat = 462 {
+var parkingNormalHeight: CGFloat = 430 {
     didSet {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "readjustBookingHeight"), object: nil)
     }
@@ -18,29 +18,11 @@ var parkingNormalHeight: CGFloat = 462 {
 var exactRouteLine: Bool = true
 var userEnteredDestination: Bool = true
 
-enum BookingCellStates: CGFloat {
-    case selected = 100
-    case options = 140
-}
-
 class BookingViewController: UIViewController {
     
     var delegate: HandleMapBooking?
     var spotType: SpotType = .Public
-    
-    var shouldShowOptions: Bool = true {
-        didSet {
-            if !shouldShowOptions {
-                let index = IndexPath(row: 1, section: 0)
-                if let previousIndex = selectedIndex, index != previousIndex, let cell = bookingTableView.cellForRow(at: index) as? BookingSpotView {
-                    cell.unselectedView()
-                    parkingNormalHeight = 430
-                }
-            } else {
-                bookingTableView.reloadData()
-            }
-        }
-    }
+    var cellHeight: CGFloat = 100
     
     var selectedIndex: IndexPath? {
         didSet {
@@ -150,8 +132,6 @@ extension BookingViewController: UITableViewDelegate, UITableViewDataSource {
             previousCell.didSelect = false
             previousCell.unselectedView()
             selectedIndex = nil
-            shouldShowOptions = true
-            parkingNormalHeight = 462
         }
     }
     
@@ -164,10 +144,7 @@ extension BookingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 1 && shouldShowOptions {
-            return BookingCellStates.options.rawValue
-        }
-        return BookingCellStates.selected.rawValue
+        return cellHeight
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,9 +153,7 @@ extension BookingViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.didSelect = false
         
-        if indexPath.row == 1 {
-            if shouldShowOptions { cell.showMoreOptions() }
-        } else if indexPath.row == 2 {
+        if indexPath.row == 2 {
             cell.line.alpha = 0
         } else {
             cell.line.alpha = 1
@@ -192,7 +167,6 @@ extension BookingViewController: UITableViewDelegate, UITableViewDataSource {
         
         if let index = selectedIndex, index != indexPath, let previousCell = tableView.cellForRow(at: index) as? BookingSpotView {
             previousCell.didSelect = false
-            if shouldShowOptions { shouldShowOptions = false }
         }
         
         if !cell.didSelect {
