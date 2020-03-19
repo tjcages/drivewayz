@@ -18,7 +18,6 @@ extension MapKitViewController {
     func drawCurvedOverlay(startCoordinate: CLLocation, endCoordinate: CLLocation) {
         quadStartCoordinate = startCoordinate.coordinate
         quadEndCoordinate = endCoordinate.coordinate
-        DestinationAnnotationLocation = endCoordinate
         
         let start = mapView.projection.point(for: startCoordinate.coordinate)
         let raise: CGFloat = 1.0
@@ -37,14 +36,9 @@ extension MapKitViewController {
         linePath.addQuadCurve(to: endPoint, controlPoint: controlPoint)
         
         routeLine.path = linePath.cgPath
-        routeParkingPin.center = CGPoint(x: startPoint.x, y: startPoint.y - 26)
         routeStartPin.center = CGPoint(x: endPoint.x, y: endPoint.y)
-        if mainViewState != .parking {
-            routeEndPin.center = routeParkingPin.center
-        }
         
         mapView.addSubview(routeStartPin)
-        mapView.addSubview(routeParkingPin)
 
         mapView.layer.insertSublayer(routeUnderLine, below: routeStartPin.layer)
         mapView.layer.insertSublayer(routeLine, below: routeStartPin.layer)

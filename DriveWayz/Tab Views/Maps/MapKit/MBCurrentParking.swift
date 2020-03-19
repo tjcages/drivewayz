@@ -120,9 +120,43 @@ extension MapKitViewController: HandleCurrent {
     }
     
     func restartBookingProcess() {
+        removeAllMapOverlays(shouldRefresh: true)
         mainViewState = .mainBar
         delegate?.bringHamburger()
         delegate?.bringProfile()
+        
+        expandFeedbackAppreciation()
+    }
+    
+    func expandFeedbackAppreciation() {
+        let review = ReviewAppreciationView()
+        let topAnchor: NSLayoutConstraint!
+        
+        mapView.addSubview(review)
+        topAnchor = review.topAnchor.constraint(equalTo: mapView.topAnchor, constant: -64)
+            topAnchor.isActive = true
+        review.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        review.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        review.widthAnchor.constraint(equalToConstant: 184).isActive = true
+        view.layoutIfNeeded()
+        
+        topAnchor.constant = 52
+        UIView.animateOut(withDuration: animationOut, animations: {
+            review.alpha = 1
+            review.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.view.layoutIfNeeded()
+        }) { (success) in
+            delayWithSeconds(2) {
+                topAnchor.constant = -64
+                UIView.animateOut(withDuration: animationOut, animations: {
+                    review.alpha = 0
+                    review.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                    self.view.layoutIfNeeded()
+                }) { (success) in
+                    review.removeFromSuperview()
+                }
+            }
+        }
     }
     
 }

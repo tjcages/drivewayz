@@ -77,7 +77,7 @@ class AnalyticsViewController: UIViewController {
         button.tintColor = Theme.WHITE
         button.translatesAutoresizingMaskIntoConstraints = false
         button.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-        button.addTarget(self, action: #selector(drivewayzMessagePressed), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(drivewayzMessagePressed), for: .touchUpInside)
         
         return button
     }()
@@ -258,21 +258,7 @@ class AnalyticsViewController: UIViewController {
     
 }
 
-
 extension AnalyticsViewController: UIViewControllerTransitioningDelegate {
-    
-    @objc func drivewayzMessagePressed() {
-        let controller = OpenMessageViewController()
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.transitioningDelegate = self
-        navigation.modalPresentationStyle = .custom
-        navigation.navigationBar.isHidden = true
-        self.present(navigation, animated: true) {
-            controller.openMessages()
-            self.unreadMessages = 0
-            self.newMessageNumber.alpha = 0
-        }
-    }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .present

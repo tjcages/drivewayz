@@ -17,6 +17,7 @@ import MapboxNavigation
 
 protocol NavigationProtocol {
     func pushCheckController()
+    func startBooking()
 }
 
 var shouldRefreshCurrentRoute: Bool = true
@@ -27,6 +28,7 @@ extension MapKitViewController: NavigationProtocol {
     // Handle route navigation
     func startNavigation() {
         dimTabView(0.8) {
+            if self.mainViewState == .parking { self.mainViewState = .none }
             startLoadingAnimation()
         }
         
@@ -34,13 +36,13 @@ extension MapKitViewController: NavigationProtocol {
         controller.delegate = self
         controller.modalPresentationStyle = .overFullScreen
         controller.modalTransitionStyle = .crossDissolve
-        controller.simulateLocation = true // SIMULATING NAVIGATION FOR TESTING PURPOSES
+//        controller.simulateLocation = true // SIMULATING NAVIGATION FOR TESTING PURPOSES
         present(controller, animated: false, completion: nil)
         
-        guard let userLocation = locationManager.location else { return }
+        guard let userLocation = locationManager.location, let lotLocation = ZoomEndCoordinate else { return }
     
         let origin = Waypoint(coordinate: userLocation.coordinate, name: "Current location")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 32.797650, longitude: -117.249490), name: "McDonalds")
+        let destination = Waypoint(coordinate: lotLocation, name: "Parking")
 
         let options = NavigationRouteOptions(waypoints: [origin, destination])
         options.roadClassesToAvoid = .toll // NEED TO ADD OPTIONS FOR USER
@@ -56,6 +58,8 @@ extension MapKitViewController: NavigationProtocol {
             let destination = MGLPointAnnotation()
             destination.coordinate = route.shape!.coordinates.last!
             controller.destination = destination
+            
+            lightContentStatusBar()
         }
     }
     
@@ -65,6 +69,10 @@ extension MapKitViewController: NavigationProtocol {
         controller.delegate = self
         
         dimTabView {
+            if let lot = selectedParkingLot, let duration = lot.walkingDuration {
+                controller.subLabel.text = "Pay at kiosk • \(String(Int(duration))) min walk"
+            }
+            
             endLoadingAnimation()
             defaultContentStatusBar()
             self.delegate?.hideHamburger()
@@ -81,9 +89,25 @@ extension MapKitViewController: NavigationProtocol {
     }
     
     func startBooking() {
+        removeRouteLine()
         dimTabView(0) {}
         endLoadingAnimation()
         mainViewState = .currentBooking
+        removeRouteLine()
+        locatorButtonPressed(padding: nil)
+        delegate?.bringHamburger()
+        
+        guard let location = locationManager.location else { return }
+        if mainViewState == .currentBooking, let destinationCoor = ZoomStartCoordinate, let destinationPlacemark = searchingPlacemark, let lot = selectedParkingLot {
+            let destination = CLLocation(latitude: destinationCoor.latitude, longitude: destinationCoor.longitude)
+            calculateWalkingRoute(fromLocation: location, toLocation: destination) { (route) in
+                // Remove all previous polylines or markers
+                self.removeRouteLine()
+                
+                self.placeWalkingRoute(lot: lot, destinationPlacemark: destinationPlacemark)
+                self.quickParkingView.isHidden = true
+            }
+        }
     }
 
 }

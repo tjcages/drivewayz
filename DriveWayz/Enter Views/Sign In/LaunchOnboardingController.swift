@@ -37,13 +37,17 @@ class LaunchOnboardingController: UIViewController {
         return view
     }()
     
-    var drivewayzIcon: SVGKImageView = {
-        let image = SVGKImage(named: "DrivewayzLogo")
-        let view = SVGKFastImageView(svgkImage: image)!
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 0
+    var drivewayzIcon: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        let image = SVGKImage(named: "DrivewayzLogo")?.uiImage.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = Theme.BLACK
+        button.alpha = 0
+        button.isUserInteractionEnabled = false
         
-        return view
+        return button
     }()
     
     lazy var scrollView: UIScrollView = {
@@ -327,6 +331,7 @@ class LaunchOnboardingController: UIViewController {
                 self.view.layoutIfNeeded()
             }
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                self.drivewayzIcon.tintColor = self.firstBackground
                 self.privateIllustration.alpha = 1
                 self.containerSmallHeightAnchor.constant = 100
                 self.containerSmallWidthAnchor.constant = 100
@@ -424,10 +429,12 @@ extension LaunchOnboardingController: UIScrollViewDelegate {
         if percentage >= 0 && percentage <= 1.0 {
             let color = fadeFromColor(fromColor: firstBackground, toColor: secondBackground, withPercentage: percentage)
             scrollView.backgroundColor = color
+            drivewayzIcon.tintColor = color
         } else if percentage > 1.0 && percentage <= 2.0 {
             percentage -= 1.0
             let color = fadeFromColor(fromColor: secondBackground, toColor: thirdBackground, withPercentage: percentage)
             scrollView.backgroundColor = color
+            drivewayzIcon.tintColor = color
         }
     }
     
@@ -449,10 +456,13 @@ extension LaunchOnboardingController: UIScrollViewDelegate {
         UIView.animate(withDuration: animationIn) {
             if percentage == 0 {
                 scrollView.backgroundColor = self.firstBackground
+                self.drivewayzIcon.tintColor = self.firstBackground
             } else if percentage == 1 {
                 scrollView.backgroundColor = self.secondBackground
+                self.drivewayzIcon.tintColor = self.secondBackground
             } else if percentage == 2 {
                 scrollView.backgroundColor = self.thirdBackground
+                self.drivewayzIcon.tintColor = self.thirdBackground
             }
         }
     }

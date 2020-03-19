@@ -55,7 +55,7 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
             }
         } else {
             if sender.backgroundColor == Theme.BLACK {
-                locatorButtonPressed(padding: nil)
+                locatorButtonPressed(padding: 100)
             } else {
                 zoomToBounds(sender: sender)
             }
@@ -63,13 +63,13 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
     }
     
     func zoomToBounds(sender: UIButton) {
-        guard let fromLocation = ZoomStartCoordinate,
-            let toLocation = mapView.myLocation?.coordinate else { return }
+        guard let fromLocation = ZoomStartCoordinate, let toLocation = mapView.myLocation?.coordinate else { return }
         showRouteButton = false
         showLocatorButton = true
         
         let bounds = GMSCoordinateBounds(coordinate: fromLocation, coordinate: toLocation)
-        let camera = GMSCameraUpdate.fit(bounds, withPadding: 64)
+        let pad: CGFloat = 64
+        let camera = GMSCameraUpdate.fit(bounds, with: UIEdgeInsets(top: pad, left: pad, bottom: pad + 32, right: pad))
         mapView.animate(with: camera)
         
         UIView.animate(withDuration: animationIn) {
@@ -85,10 +85,11 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
         if let fromLocation = ZoomStartCoordinate, let toLocation = ZoomEndCoordinate {
             let bounds = GMSCoordinateBounds(coordinate: fromLocation, coordinate: toLocation)
             if let pad = padding {
-                let camera = GMSCameraUpdate.fit(bounds, withPadding: pad)
+                let camera = GMSCameraUpdate.fit(bounds, with: UIEdgeInsets(top: pad, left: pad, bottom: pad + 32, right: pad))
                 mapView.animate(with: camera)
             } else {
-                let camera = GMSCameraUpdate.fit(bounds, withPadding: 64)
+                let pad: CGFloat = 64
+                let camera = GMSCameraUpdate.fit(bounds, with: UIEdgeInsets(top: pad, left: pad, bottom: pad + 32, right: pad))
                 mapView.animate(with: camera)
             }
         } else {
@@ -121,8 +122,28 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
                 return
             }
             self.locatorButtonPressed(padding: nil)
-            self.mainBarController.determineCity(location: location)
+            self.determineCity(location: location)
         }
+    }
+    
+    func determineCity(location: CLLocation) {
+        let coder = CLGeocoder()
+        coder.reverseGeocodeLocation(location, completionHandler:
+            {(placemarks, error) in
+            if (error != nil) {
+                print("reverse geodcode fail: \(error!.localizedDescription)")
+            }
+            guard let placemark = placemarks as? [CLPlacemark] else {
+                return
+            }
+            
+            if placemark.count > 0 {
+                let placemark = placemarks![0]
+                
+                self.observeParking(placemark: placemark)
+                self.mainBarController.determineCity(placemark: placemark)
+            }
+        })
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -145,17 +166,14 @@ extension MapKitViewController: CLLocationManagerDelegate, GMSMapViewDelegate, h
                 }
                 let camera = GMSCameraPosition(target: location.coordinate, zoom: zoom)
                 mapView.animate(to: camera)
-            } else if mainViewState == .currentBooking {
-//                switch currentBookingState {
-//                case .none:
-//                    return
-//                case .walking:
-//                    monitorLocationUpdates()
-//                case .driving:
-//                    monitorLocationUpdates()
-//                case .checkedIn:
-//                    monitorLocationUpdates()
-//                }
+            } else if mainViewState == .currentBooking, let destinationCoor = ZoomStartCoordinate, let destinationPlacemark = searchingPlacemark, let lot = selectedParkingLot {
+                let destination = CLLocation(latitude: destinationCoor.latitude, longitude: destinationCoor.longitude)
+                calculateWalkingRoute(fromLocation: location, toLocation: destination) { (route) in
+                    // Remove all previous polylines or markers
+                    self.removeRouteLine()
+                    
+                    self.placeWalkingRoute(lot: lot, destinationPlacemark: destinationPlacemark)
+                }
             }
         }
     }

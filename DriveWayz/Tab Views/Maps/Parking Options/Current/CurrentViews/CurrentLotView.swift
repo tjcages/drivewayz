@@ -13,7 +13,7 @@ class CurrentLotView: UIView {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Mission lot"
+        label.text = "Economy lot"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH3
         

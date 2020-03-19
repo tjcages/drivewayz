@@ -154,6 +154,8 @@ class CurrentBookingController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Change parking duration", for: .normal)
         button.setTitleColor(Theme.BLUE, for: .normal)
+        button.setTitleColor(Theme.BLUE_MED, for: .disabled)
+        button.isEnabled = false
         button.titleLabel?.font = Fonts.SSPRegularH4
         button.alpha = 0
         button.addTarget(self, action: #selector(changeDurationPressed), for: .touchUpInside)
@@ -164,7 +166,7 @@ class CurrentBookingController: UIViewController {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Mission lot"
+        label.text = "Economy lot"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         label.alpha = 0
@@ -341,18 +343,21 @@ class CurrentBookingController: UIViewController {
         
     }
     
-    @objc func endBookingPressed() {
-        scrollView.isScrollEnabled = true
-        scrollView.scrollToTop(animated: true)
-        UIView.animateOut(withDuration: animationOut, animations: {
-            tabDimmingView.alpha = 0.8
-        }) { (success) in
-            startLoadingAnimation()
-            delayWithSeconds(2) {
-                endLoadingAnimation()
-                self.scrollView.isScrollEnabled = false
-                self.delegate?.closeCurrent(parking: false)
-                self.delegate?.dismissCurrent()
+    @objc func endBookingPressed(sender: UIButton) {
+        guard let title = sender.titleLabel?.text else { return }
+        if title == "End booking" {
+            scrollView.isScrollEnabled = true
+            scrollView.scrollToTop(animated: true)
+            UIView.animateOut(withDuration: animationOut, animations: {
+                tabDimmingView.alpha = 0.8
+            }) { (success) in
+                startLoadingAnimation()
+                delayWithSeconds(1) {
+                    endLoadingAnimation()
+                    self.scrollView.isScrollEnabled = false
+                    self.delegate?.closeCurrent(parking: false)
+                    self.delegate?.dismissCurrent()
+                }
             }
         }
     }

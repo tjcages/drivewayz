@@ -43,17 +43,14 @@ end
 	pod 'Firebase/RemoteConfig'
 	pod 'Firebase/Firestore'
 
-	#pod 'NavigationKit'
-
 	pod 'GoogleSignIn'
 	pod 'PushNotifications'
 	pod 'GooglePlaces'
 	pod 'GooglePlacePicker'
 	pod 'GoogleMaps'
-    	#pod 'GeoFire', :git => 'https://github.com/firebase/geofire-objc.git'
+	pod 'Google-Maps-iOS-Utils', '~> 3.0.2'
 	pod 'SVGKit'
 
-	pod 'Stripe'
 	pod 'Alamofire'
 	pod 'SwiftyJSON'
 	pod 'FlagPhoneNumber'
@@ -74,6 +71,7 @@ end
 	pod 'CHIPageControl'
 	pod 'JTAppleCalendar'
 
+	pod 'Stripe'
 	pod 'PayCardsRecognizer'
 	pod 'ViewAnimator'
 	pod 'MultiSlider'

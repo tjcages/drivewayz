@@ -63,8 +63,6 @@ class BookingIssuesCell: UITableViewCell {
 // Cells to configure each header possibility
 class BookingIssuesHeader: UIView {
     
-    var delegate: UserHeaderTableViewCellDelegate?
-    
     var titleLabel: UILabel = {
         let view = UILabel()
         view.text = "Review my fare or fees"

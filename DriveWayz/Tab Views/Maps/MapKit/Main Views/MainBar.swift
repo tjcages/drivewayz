@@ -32,7 +32,7 @@ extension MapKitViewController: HandleMainScreenDelegate {
         parkingRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
         parkingRouteButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         parkingRouteButton.widthAnchor.constraint(equalTo: parkingRouteButton.heightAnchor).isActive = true
-        parkingRouteButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16).isActive = true
+        parkingRouteButton.bottomAnchor.constraint(equalTo: bookingController.view.topAnchor, constant: -16).isActive = true
         
         mapView.addSubview(currentRouteButton)
         currentRouteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true

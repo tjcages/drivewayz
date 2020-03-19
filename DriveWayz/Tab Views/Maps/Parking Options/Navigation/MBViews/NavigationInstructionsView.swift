@@ -622,3 +622,21 @@ open class ManeuverView: UIView {
         transform = CGAffineTransform(scaleX: flip ? -1 : 1, y: 1)
     }
 }
+
+// Extensions for VisualInstruction.Component
+extension Decodable {
+    /// Sweeter: Create object from a dictionary
+    public init?(from: Any) {
+        guard let data = try? JSONSerialization.data(withJSONObject: from, options: .prettyPrinted) else { return nil }
+        guard let decodedSelf = try? JSONDecoder().decode(Self.self, from: data) else { return nil }
+        self = decodedSelf
+    }
+}
+
+extension Encodable {
+    /// Sweeter: Export object to a dictionary representation
+    public var dictionary: [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
+}

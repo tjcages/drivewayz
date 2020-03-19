@@ -11,15 +11,14 @@ import MapKit
 import GoogleMaps
 
 protocol handleCheckoutParking {
-    func setDurationPressed(fromDate: Date, totalTime: String)
-    func observeAllHosting()
-    
     func parkingMaximized()
     func startNavigation()
     func startBooking()
+    func restartBookingProcess()
+    func openBookings()
 }
 
-var currentTotalTime: String?
+var searchingPlacemark: CLPlacemark?
 
 extension MapKitViewController: handleCheckoutParking {
     
@@ -27,7 +26,7 @@ extension MapKitViewController: handleCheckoutParking {
 
         view.addSubview(parkingBackButton)
         parkingBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16).isActive = true
-        parkingBackButton.bottomAnchor.constraint(equalTo: parkingController.view.topAnchor, constant: -16).isActive = true
+        parkingBackButton.bottomAnchor.constraint(equalTo: bookingController.view.topAnchor, constant: -16).isActive = true
         parkingBackButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         parkingBackButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -51,9 +50,40 @@ extension MapKitViewController: handleCheckoutParking {
         
     }
     
+    func monitorZipChange() {
+        guard let search = searchingPlacemark, let searchZip = search.postalCode, let observed = observedZip else { return }
+        if searchZip != observed {
+            observeParking(placemark: search)
+        } else {
+            zipParkingLots.removeAll()
+            for lot in zipSortedParkingLots {
+                zipTimer?.invalidate()
+                zipTimer = nil
+                
+                if var dictionary = lot.dictionary, let searchLat = searchingPlacemark?.location?.coordinate.latitude, let searchLong = searchingPlacemark?.location?.coordinate.longitude {
+                    dictionary["destinationLat"] = searchLat
+                    dictionary["destinationLong"] = searchLong
+                    
+                    let parkingLot = ParkingLot(dictionary: dictionary)
+                    
+                    if let distance = parkingLot.destinationDistance {
+                        zipParkingLots[parkingLot] = distance
+                    }
+                }
+                zipTimer = Timer.scheduledTimer(timeInterval: animationOut, target: self, selector: #selector(self.finishedObservingParking), userInfo: nil, repeats: false)
+            }
+        }
+    }
+    
     func openBookings() {
+        shouldShowLots = false
+        
+        dimTabView(0) {}
+        monitorZipChange()
         hideWelcomeBanner()
         closeSearch(parking: true)
+        
+        removeAllMapOverlays(shouldRefresh: false)
         delayWithSeconds(animationOut) {
             self.mainViewState = .parking
         }
@@ -66,7 +96,7 @@ extension MapKitViewController: handleCheckoutParking {
             if mainViewState == .payment {
                 dismissPurchaseController()
             } else {
-                parkingController.unselectFirstIndex()
+                bookingController.unselectFirstIndex()
                 parkingHidden(showMainBar: true)
             }
         } else {
@@ -112,7 +142,7 @@ extension MapKitViewController: handleCheckoutParking {
         }
         if showMainBar {
             self.mainViewState = .mainBar
-            self.removeAllMapOverlays(shouldRefresh: false) // SHOULD BE TRUE
+            self.removeAllMapOverlays(shouldRefresh: true)
             delayWithSeconds(1, completion: {
                 UIView.animate(withDuration: animationIn, animations: {
                     self.quickParkingView.alpha = 0
@@ -120,34 +150,6 @@ extension MapKitViewController: handleCheckoutParking {
                 })
             })
         }
-    }
-    
-    @objc func durationPressed() {
-        parkingMinimized()
-        
-        let controller = DurationViewController()
-        controller.delegate = self
-        controller.modalPresentationStyle = .overFullScreen
-        present(controller, animated: true, completion: nil)
-        
-        UIView.animateOut(withDuration: animationOut, animations: {
-            tabDimmingView.alpha = 0.2
-        }) { (success) in
-            //
-        }
-    }
-    
-    func setDurationPressed(fromDate: Date, totalTime: String) {
-        currentTotalTime = totalTime
-//        self.parkingController.bookingPicker.setContentOffset(.zero, animated: true)
-//        self.summaryController.changeDates(fromDate: fromDate, totalTime: totalTime)
-//        self.parkingController.changeDates(fromDate: fromDate, totalTime: totalTime)
-//        self.confirmPaymentController.changeDates()
-    }
-    
-    func observeAllHosting() {
-        mapView.clear()
-        observeAllParking()
     }
     
     func presentPublicController(spotType: SpotType) {

@@ -13,7 +13,6 @@ import GoogleMaps
 extension MapKitViewController {
     
     func removeRouteLine() {
-        mapView.clear()
         mapBoxRoute = nil
         mapBoxWalkingRoute = nil
         routeUnderLine.path = nil
@@ -21,28 +20,34 @@ extension MapKitViewController {
         routeWalkingLine.path = nil
         routeWalkingUnderLine.path = nil
         
+        quadStartCoordinate = nil
+        quadEndCoordinate = nil
+        
         routeUnderLine.removeFromSuperlayer()
         routeLine.removeFromSuperlayer()
         routeWalkingUnderLine.removeFromSuperlayer()
         routeWalkingLine.removeFromSuperlayer()
         routeStartPin.removeFromSuperview()
-        routeParkingPin.removeFromSuperview()
         routeEndPin.removeFromSuperview()
     }
 
     func removeAllMapOverlays(shouldRefresh: Bool) {
-        DestinationAnnotationLocation = nil
-        TappedDestinationAnnotationLocation = nil
-        surgeCheckedCity = nil
-        surgeCheckedLocation = nil
-        shouldShowOverlay = false
+        firstSpotView?.removeFromSuperview()
+        secondSpotView?.removeFromSuperview()
+        thirdSpotView?.removeFromSuperview()
         
-        quadStartCoordinate = nil
-        quadEndCoordinate = nil
+        firstSpotView = nil
+        secondSpotView = nil
+        thirdSpotView = nil
+        
+        firstLocation = nil
+        secondLocation = nil
+        thirdLocation = nil
+        
         ZoomStartCoordinate = nil
         ZoomEndCoordinate = nil
         
-        shouldShowOverlay = false
+        userEnteredDestination = true
         quickDurationView.alpha = 0
         quickParkingView.alpha = 0
         
@@ -50,6 +55,7 @@ extension MapKitViewController {
         quickParkingView.isUserInteractionEnabled = true
         quickParkingView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         quickDurationView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        quickParkingView.isHidden = false
         
         removeRouteLine()
         
@@ -59,7 +65,14 @@ extension MapKitViewController {
         }
         
         if shouldRefresh == true {
-            observeAllParking()
+            searchingPlacemark = nil
+            shouldShowLots = true
+            
+            guard let location = self.locationManager.location else {
+                return
+            }
+            self.determineCity(location: location)
+            
             if let userLocation = self.locationManager.location {
                 let camera = GMSCameraPosition(target: userLocation.coordinate, zoom: mapZoomLevel)
                 mapView.camera = camera

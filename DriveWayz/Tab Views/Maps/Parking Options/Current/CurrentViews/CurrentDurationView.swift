@@ -23,7 +23,7 @@ class CurrentDurationView: UIView {
     var fromLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2:00pm"
+        label.text = "4:45pm"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH0
         
@@ -33,7 +33,7 @@ class CurrentDurationView: UIView {
     var toLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "3:45pm"
+        label.text = "7:00pm"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH0
         label.textAlignment = .right

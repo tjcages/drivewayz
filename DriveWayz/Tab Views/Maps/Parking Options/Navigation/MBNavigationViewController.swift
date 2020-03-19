@@ -179,6 +179,7 @@ class MBNavigationViewController: UIViewController, MGLMapViewDelegate {
     
     var bottomView: NavigationBottomView = {
         let view = NavigationBottomView()
+        view.checkInButton.addTarget(self, action: #selector(checkInButtonPressed), for: .touchUpInside)
         view.exitButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         view.locatorButton.addTarget(self, action: #selector(recenterMap), for: .touchUpInside)
         
@@ -377,6 +378,11 @@ class MBNavigationViewController: UIViewController, MGLMapViewDelegate {
 
     @objc func cancelButtonPressed() {
         delegate?.pushCheckController()
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func checkInButtonPressed() {
+        delegate?.startBooking()
         dismiss(animated: true, completion: nil)
     }
     

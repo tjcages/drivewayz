@@ -75,7 +75,7 @@ extension MBNavigationViewController: NavigationServiceDelegate {
     }
     
     func navigationService(_ service: NavigationService, willArriveAt waypoint: Waypoint, after remainingTimeInterval: TimeInterval, distance: CLLocationDistance) {
-        if distance <= 35 { // Guess at how far we should still assume that they found the parking lot
+        if distance <= 50 { // Guess at how far we should still assume that they found the parking lot
             if destinationTimer == nil {
                 showTripView()
                 destinationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(pushCheckController), userInfo: nil, repeats: false)

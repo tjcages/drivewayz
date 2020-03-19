@@ -6,7 +6,8 @@
 //  Copyright © 2020 COAD. All rights reserved.
 //
 
-import Foundation
+import CoreLocation
+import GooglePlaces
 
 extension MainSearchController: UITableViewDelegate, UITableViewDataSource {
     
@@ -133,7 +134,12 @@ extension MainSearchController: UITableViewDelegate, UITableViewDataSource {
             } else if toTextView.isFirstResponder, let text = toTextView.text, text.count == 0 {
                 toTextView.text = "Current location"
                 view.endEditing(true)
-                mainButtonPressed() // NEED TO DETERMINE LOCATION
+                if let currentLocation = locationManager.location {
+                    lookUpLocation(location: currentLocation) { (placemark) in
+                        self.searchPlacemark = placemark
+                        self.mainButtonPressed()
+                    }
+                }
             }
         } else {
             if let placeId = cell.placeID {
@@ -143,11 +149,32 @@ extension MainSearchController: UITableViewDelegate, UITableViewDataSource {
                 } else {
                     toTextView.text = cell.mainLabel.text
                     view.endEditing(true)
-                    mainButtonPressed() // NEED TO DETERMINE LOCATION
+                    retrievePlacemark(placeID: placeId) { (placemark) in
+                        self.searchPlacemark = placemark
+                        self.mainButtonPressed()
+                    }
                     saveNewTerms(placeId: placeId)
                 }
             }
         }
+    }
+    
+    func retrievePlacemark(placeID: String, completionHandler: @escaping (CLPlacemark?) -> Void ) {
+        // Specify the place data types to return.
+        let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.coordinate.rawValue) | UInt(GMSPlaceField.placeID.rawValue))!
+
+        placesClient?.fetchPlace(fromPlaceID: placeID, placeFields: fields, sessionToken: nil, callback: { (place: GMSPlace?, error: Error?) in
+            if let error = error {
+                print("An error occurred: \(error.localizedDescription)")
+                return
+            }
+            if let place = place {
+                let location = CLLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+                self.lookUpLocation(location: location) { (placemark) in
+                    completionHandler(placemark)
+                }
+            }
+        })
     }
     
     func handleCell(cell: SearchDestinationCell, text: String, indexPath: IndexPath) {

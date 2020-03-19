@@ -241,7 +241,7 @@ class AvailableCheckController: UIViewController {
     
     @objc func nextButtonPressed() {
         dismiss(animated: true, completion: nil)
-        delegate?.startNavigation()
+        delegate?.openBookings()
     }
     
     @objc func dismissView() {
@@ -249,6 +249,7 @@ class AvailableCheckController: UIViewController {
             tabDimmingView.alpha = 0
         }, completion: nil)
         dismiss(animated: true, completion: nil)
+        delegate?.restartBookingProcess()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

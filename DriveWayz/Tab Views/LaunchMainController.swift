@@ -139,14 +139,14 @@ class LaunchMainController: UIViewController {
         }
         UIView.animateKeyframes(withDuration: 2, delay: 0, options: [.calculationModeCubic], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.15) {
-                self.drivewayzIcon.alpha = 0
-                self.drivewayzIcon.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                self.drivewayzIcon.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
                 self.box.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                 self.boxWhite.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                 self.locationView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
                 self.locationView.alpha = 0.1
             }
             UIView.addKeyframe(withRelativeStartTime: 0.15, relativeDuration: 0.15) {
+                self.drivewayzIcon.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 self.box.transform = CGAffineTransform(scaleX: scale2, y: scale2)
                 self.boxWhite.transform = CGAffineTransform(scaleX: scale2, y: scale2)
                 self.locationView.transform = CGAffineTransform(scaleX: scale * 4, y: scale * 4)
@@ -160,6 +160,8 @@ class LaunchMainController: UIViewController {
                 self.tabController.mapController.backgroundImageView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
                 self.containerCenterAnchor.constant = displacement
                 self.locationView.alpha = 0.3
+                self.drivewayzIcon.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+                self.drivewayzIcon.alpha = 0
                 
                 self.whiteView.alpha = 0
                 self.box.backgroundColor = Theme.GOOGLE_BLUE

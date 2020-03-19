@@ -311,16 +311,7 @@ extension AccountSlideViewController: UITableViewDelegate, UITableViewDataSource
         self.selectedIndex = indexPath.row
         delayWithSeconds(animationIn) {
             if tableView == self.tableView {
-                if self.options[indexPath.row] == "My bookings" {
-                    self.openAccountView()
-                    self.delegate?.bringUpcomingController()
-                } else if self.options[indexPath.row] == "Hosted spaces" {
-                    self.openAccountView()
-                    self.delegate?.bringHostingController()
-                } else if self.options[indexPath.row] == "Become a host" {
-                    self.openAccountView()
-                    self.delegate?.bringNewHostingController()
-                } else if self.options[indexPath.row] == "Settings" {
+                if self.options[indexPath.row] == "Settings" {
                     self.openAccountView()
                     self.delegate?.bringSettingsController()
                 } else if self.options[indexPath.row] == "Help" {

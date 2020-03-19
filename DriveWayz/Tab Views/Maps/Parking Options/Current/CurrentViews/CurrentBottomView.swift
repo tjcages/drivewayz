@@ -81,7 +81,7 @@ class CurrentBottomView: UIView {
     var destinationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "to Mission Bay"
+        label.text = "to Ballast Point"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH2
         label.textAlignment = .right
@@ -93,7 +93,7 @@ class CurrentBottomView: UIView {
     var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "5 min walk • 0.1mi"
+        label.text = "2 min walk • 0.1mi"
         label.textColor = Theme.GRAY_WHITE
         label.font = Fonts.SSPRegularH4
         label.alpha = 0

@@ -10,6 +10,10 @@ import UIKit
 import NVActivityIndicatorView
 import FirebaseFirestore
 
+protocol handleExtendPaymentMethod {
+    func closeBackground()
+}
+
 class ChoosePaymentView: UIViewController {
 
     var extendedDelegate: handleExtendPaymentMethod?

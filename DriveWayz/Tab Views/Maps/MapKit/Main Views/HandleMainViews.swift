@@ -49,6 +49,7 @@ extension MapKitViewController {
     }
     
     func showNone() {
+        shouldShowLots = true
         mainBarBottomAnchor.constant = phoneHeight
         parkingControllerBottomAnchor.constant = 470
         currentBarBottomAnchor.constant = currentBarNormalHeight + 64
@@ -68,6 +69,7 @@ extension MapKitViewController {
     }
     
     func showStartup(duration: Double) {
+        shouldShowLots = true
         mainBarBottomAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 470
         currentBarBottomAnchor.constant = currentBarNormalHeight + 64
@@ -80,7 +82,6 @@ extension MapKitViewController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.removeAllMapOverlays(shouldRefresh: false)
             self.locatorButtonPressed(padding: nil)
             if duration != 1 { self.showWelcomeBanner() }
             self.delegate?.defaultContentStatusBar()
@@ -89,6 +90,7 @@ extension MapKitViewController {
     }
     
     func showParking() {
+        shouldShowLots = false
         followEnd = true
         hideWelcomeBanner()
         
@@ -105,12 +107,12 @@ extension MapKitViewController {
             self.fullBackgroundView.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
-            self.parkingController.selectFirstIndex()
             self.delegate?.defaultContentStatusBar()
         }
     }
     
     func showCurrentBooking() {
+        shouldShowLots = false
         currentBarBottomAnchor.constant = 0
         parkingControllerBottomAnchor.constant = 470
         
@@ -123,8 +125,6 @@ extension MapKitViewController {
             self.view.layoutIfNeeded()
         }) { (success) in
             self.currentBookingController.updateRatio(ratio: 0.9, duration: animationOut * 2, true)
-            self.removeAllMapOverlays(shouldRefresh: false)
-            self.locatorButtonPressed(padding: nil)
             self.delegate?.defaultContentStatusBar()
             self.delegate?.bringProfile()
         }
@@ -157,16 +157,16 @@ extension MapKitViewController {
     }
     
     func setupParking() {
-        self.view.addSubview(parkingController.view)
-        parkingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        parkingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        parkingControllerBottomAnchor = parkingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 470)
+        self.view.addSubview(bookingController.view)
+        bookingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        bookingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        parkingControllerBottomAnchor = bookingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 470)
             parkingControllerBottomAnchor.isActive = true
-        parkingControllerHeightAnchor = parkingController.view.heightAnchor.constraint(equalToConstant: parkingNormalHeight)
+        parkingControllerHeightAnchor = bookingController.view.heightAnchor.constraint(equalToConstant: parkingNormalHeight)
             parkingControllerHeightAnchor.isActive = true
 
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(bookingViewIsScrolling(sender:)))
-        parkingController.view.addGestureRecognizer(pan)
+//        let pan = UIPanGestureRecognizer(target: self, action: #selector(bookingViewIsScrolling(sender:)))
+//        bookingController.view.addGestureRecognizer(pan)
         
         view.addSubview(topParkingView)
         topParkingView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: gradientHeight - 60)

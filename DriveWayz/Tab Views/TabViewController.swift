@@ -13,8 +13,6 @@ import UserNotifications
 var rightArrow: UIButton!
 var leftArrow: UIButton!
 
-let mapTutorialController = MapTutorialView()
-
 protocol moveControllers {
     func dismissActiveController()
     func backToOnboarding()
@@ -23,8 +21,6 @@ protocol moveControllers {
     func moveToMap()
     func lightContentStatusBar()
     func defaultContentStatusBar()
-    func bringNewHostingController()
-    func bringHostingController()
     func hideHamburger()
     func bringHamburger()
     func hideProfile()
@@ -43,9 +39,6 @@ protocol controlsAccountOptions {
     func closeAccountView()
     
     func moveToMap()
-    func bringUpcomingController()
-    func bringHostingController()
-    func bringNewHostingController()
     func bringSettingsController()
     func bringHelpController()
     func bringFeedbackController()
@@ -186,7 +179,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         view.backgroundColor = Theme.WHITE
         
         NotificationCenter.default.addObserver(self, selector: #selector(monitorCurrentParking), name: NSNotification.Name(rawValue: "userBookingStatus"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(dismissNewListing), name: NSNotification.Name(rawValue: "dismissNewListing"), object: nil)
         
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.tabBarController?.tabBar.isHidden = true
@@ -244,11 +236,11 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
     
     func checkOpens() {
         var opens = UserDefaults.standard.integer(forKey: "numberOfOpens")
+        opens += 1
+        UserDefaults.standard.set(opens, forKey: "numberOfOpens")
+        UserDefaults.standard.synchronize()
+        
         if opens <= 1 {
-//            opens += 1
-            UserDefaults.standard.set(opens, forKey: "numberOfOpens")
-            UserDefaults.standard.synchronize()
-            
             mapController.setupWelcomeBanner()
         }
     }
@@ -327,12 +319,6 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
         delegate?.backToOnboarding()
     }
     
-    @objc func dismissNewListing() {
-        dismiss(animated: true) {
-            self.bringHostingController()
-        }
-    }
-    
     @objc func profileButtonPressed() {
         view.endEditing(true)
         hideHamburger()
@@ -379,57 +365,8 @@ class TabViewController: UIViewController, UNUserNotificationCenterDelegate, con
 ////// Bring Controllers
 extension TabViewController {
     
-    func bringUpcomingController() {
-        let controller = UserUpcomingViewController()
-//        controller.delegate = self
-        UIView.animate(withDuration: animationIn, animations: {
-            self.blackContainer.alpha = 1
-        }) { (success) in
-            self.present(controller, animated: true) {
-                UIView.animate(withDuration: animationIn) {
-//                    controller.backButton.alpha = 1
-                    self.view.layoutIfNeeded()
-                }
-            }
-        }
-    }
-    
-    func bringHostingController() {
-        let controller = HostPortalController()
-        controller.delegate = self
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.navigationBar.isHidden = true
-        navigation.modalPresentationStyle = .overFullScreen
-        UIView.animate(withDuration: animationIn, animations: {
-            self.blackContainer.alpha = 1
-        }) { (success) in
-            self.present(navigation, animated: true) {
-                self.lightContentStatusBar()
-                self.delegate?.bringStatusBar()
-            }
-        }
-    }
-    
-    func bringNewHostingController() {
-        let controller = HostOnboardingController()
-        controller.delegate = self
-//        controller.moveDelegate = self
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.navigationBar.isHidden = true
-        navigation.presentationController?.delegate = controller
-//        navigation.modalPresentationStyle = .overFullScreen
-        UIView.animate(withDuration: animationIn, animations: {
-            self.blackContainer.alpha = 1
-        }) { (success) in
-            self.present(navigation, animated: true) {
-                self.lightContentStatusBar()
-                self.delegate?.bringStatusBar()
-            }
-        }
-    }
-    
     func bringSettingsController() {
-        let controller = UserSettingsViewController()
+        let controller = SettingsViewController()
         controller.delegate = self
         let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isHidden = true
@@ -445,7 +382,7 @@ extension TabViewController {
     }
     
     func bringHelpController() {
-        let controller = TESTHelpViewController()
+        let controller = HelpViewController()
         controller.delegate = self
         let navigation = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isHidden = true
@@ -461,7 +398,7 @@ extension TabViewController {
     }
     
     func bringFeedbackController() {
-        let controller = UserContactViewController()
+        let controller = ContactViewController()
         controller.delegate = self
         controller.context = "Feedback"
         controller.mainLabel.text = "Give feedback"

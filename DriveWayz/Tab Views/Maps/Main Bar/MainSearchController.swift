@@ -10,11 +10,15 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-class MainSearchController: UIViewController {
+let handleTextChangeNotification = "handleTextChangeNotification"
+
+class MainSearchController: UIViewController, CLLocationManagerDelegate {
     
     var delegate: MainScreenDelegate?
     var count: Int = 3
     var canPanSearchView: Bool = true
+    
+    var searchPlacemark: CLPlacemark?
     
     var recentId: [String] = []
     var recentItems: [String] = [] {
@@ -38,13 +42,15 @@ class MainSearchController: UIViewController {
     var shouldMonitor: Bool = true
     var mapPin = MapDropPin()
     
+    var locationManager = CLLocationManager()
+    
     lazy var mapView: GMSMapView = {
         let camera = GMSCameraPosition.camera(withLatitude: 37.8249, longitude: -122.4194, zoom: 14.0)
         let view = GMSMapView(frame: .zero, camera: camera)
         view.delegate = self
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isMyLocationEnabled = false
+        view.isMyLocationEnabled = true
         view.settings.tiltGestures = false
         view.settings.compassButton = false
         view.settings.rotateGestures = false
@@ -89,16 +95,6 @@ class MainSearchController: UIViewController {
         return button
     }()
     
-    var greetingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Where are you headed?"
-        label.textColor = Theme.BLACK
-        label.font = Fonts.SSPSemiBoldH2
-           
-        return label
-    }()
-    
     lazy var fromTextView: UITextField = {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -128,13 +124,13 @@ class MainSearchController: UIViewController {
         view.clipsToBounds = true
         view.layer.cornerRadius = 2
         view.textColor = Theme.BLACK
-        view.placeholder = "Address, venue, or airport"
+        view.placeholder = "Where are you headed?"
         view.font = Fonts.SSPRegularH4
         view.delegate = self
         view.keyboardAppearance = .dark
         view.tintColor = Theme.BLUE
         view.autocapitalizationType = .words
-        view.attributedPlaceholder = NSAttributedString(string: "Address, venue, or airport", attributes: [NSAttributedString.Key.foregroundColor: Theme.GRAY_WHITE_1])
+        view.attributedPlaceholder = NSAttributedString(string: "Where are you headed?", attributes: [NSAttributedString.Key.foregroundColor: Theme.GRAY_WHITE_1])
 
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 38, height: 20))
         view.leftView = paddingView
@@ -312,6 +308,8 @@ class MainSearchController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleTextChange(_:)), name: NSNotification.Name(rawValue: handleTextChangeNotification), object: nil)
         
+        setupLocationManager()
+        
         setupMap()
         setupViews()
         setupNear()
@@ -328,11 +326,14 @@ class MainSearchController: UIViewController {
             self.view.layoutIfNeeded()
         }) { (success) in
             self.toTextView.becomeFirstResponder()
-            delayWithSeconds(animationIn) {
-                UIView.animateOut(withDuration: animationOut, animations: {
-                    self.messageView.alpha = 1
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
+            let opens = UserDefaults.standard.integer(forKey: "numberOfOpens")
+            if opens <= 2 {
+                delayWithSeconds(animationIn) {
+                    UIView.animateOut(withDuration: animationOut, animations: {
+                        self.messageView.alpha = 1
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
+                }
             }
         }
     }
@@ -342,7 +343,6 @@ class MainSearchController: UIViewController {
         tableTopAnchor.constant = 74
         UIView.animateIn(withDuration: animationIn, animations: {
             self.messageView.alpha = 0
-            self.greetingLabel.alpha = 0
             self.fromTextView.alpha = 0
             self.toTextView.alpha = 0
             self.joinLine.alpha = 0
@@ -400,21 +400,16 @@ class MainSearchController: UIViewController {
         
         view.addSubview(profileIcon)
         container.addSubview(backButton)
-        container.addSubview(greetingLabel)
         
         backButton.anchor(top: container.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         
         profileIcon.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: -2, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 65, height: 65)
         
-        greetingLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 32).isActive = true
-        greetingLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        greetingLabel.sizeToFit()
-        
         container.addSubview(fromTextView)
         container.addSubview(toTextView)
         container.addSubview(underline)
         
-        fromTextView.anchor(top: greetingLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 40)
+        fromTextView.anchor(top: backButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 32, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 40)
         
         toTextView.anchor(top: fromTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 40)
         
@@ -496,6 +491,17 @@ class MainSearchController: UIViewController {
         
     }
     
+    func setupLocationManager() {
+        mapView.delegate = self
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.showsBackgroundLocationIndicator = false
+        locationManager.allowsBackgroundLocationUpdates = false
+        
+        locationManager.startUpdatingLocation()
+    }
+    
     @objc func hideSearchMessage() {
         messageKeyboardAnchor.isActive = false
         messageBottomAnchor.isActive = true
@@ -569,7 +575,6 @@ class MainSearchController: UIViewController {
     
     func changeAlphaSearch(percent: CGFloat) {
         backButton.alpha = 1 - 1 * percent
-        greetingLabel.alpha = 1 - 1 * percent
         fromTextView.alpha = 1 - 1 * percent
         toTextView.alpha = 1 - 1 * percent
         joinLine.alpha = 1 - 1 * percent
@@ -594,7 +599,8 @@ class MainSearchController: UIViewController {
     }
     
     @objc func mainButtonPressed() {
-        delegate?.openBookings() // NEED TO DETERMINE LOCATION
+        searchingPlacemark = searchPlacemark
+        delegate?.openBookings()
         hideMap(edit: false)
         backButtonPressed()
     }
@@ -625,6 +631,7 @@ extension MainSearchController: GMSMapViewDelegate {
             finalCoordinate = coordinate
             let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
             lookUpLocation(location: location) { (placemark) in
+                self.searchPlacemark = placemark
                 if let address = placemark?.postalAddress?.street {
                     self.searchLabel.text = address
                 }

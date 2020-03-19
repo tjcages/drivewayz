@@ -14,6 +14,7 @@ class SearchDestinationCell: UITableViewCell {
     var specificAddress: String?
     var placeID: String?
     var coordinate: CLLocationCoordinate2D?
+    var placemark: CLPlacemark?
         
     var iconButton: UIButton = {
         let button = UIButton()

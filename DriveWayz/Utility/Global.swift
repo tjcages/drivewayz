@@ -10,15 +10,6 @@ import CoreLocation
 
 // Variables that are the same throughout
 
-
-// TESTING
-
-//let hostLocation = CLLocation(latitude: 32.744530, longitude: -117.188110)
-let hostLocation = CLLocation(latitude: 32.799880, longitude: -117.253410)
-let testDestination = CLLocation(latitude: 32.743249, longitude: -117.181614)
-
-// END TESTING
-
 let formatter = DateFormatter()
 let calendar = Calendar.current
 

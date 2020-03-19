@@ -12,6 +12,7 @@ import MapKit
 import CoreLocation
 import GoogleMaps
 import GooglePlaces
+import GoogleMapsUtils
 
 import Firebase
 
@@ -29,6 +30,7 @@ class MapKitViewController: UIViewController {
         view.clipsToBounds = true
 
         setupLocationManager()
+        setupClusering()
         setupController()
     }
     
@@ -40,7 +42,6 @@ class MapKitViewController: UIViewController {
         setupLocator()
         
         setupUserMessages()
-        monitorCoupons()
         setupNetworkConnection()
         
 //            DynamicPricing.readCityCSV()
@@ -72,10 +73,10 @@ class MapKitViewController: UIViewController {
         }
         CATransaction.commit()
         
-        delayWithSeconds(2) {
-            self.mainViewState = .none
-            self.showParking() // TESTING PURPOSES NEED TO REMOVE
-        }
+//        delayWithSeconds(2) {
+//            self.mainViewState = .none
+//            self.showParking() // TESTING PURPOSES NEED TO REMOVE
+//        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,7 +197,7 @@ class MapKitViewController: UIViewController {
         return controller
     }()
     
-    lazy var parkingController: BookingViewController = {
+    lazy var bookingController: BookingViewController = {
         let controller = BookingViewController()
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.delegate = self
@@ -277,49 +278,17 @@ class MapKitViewController: UIViewController {
     var quickDurationView = QuickDurationView()
     var quickParkingView = QuickParkingView()
     
-    var shouldUpdatePolyline: Bool = true
-    var previousAnchor: CGFloat = 170.0
+    var userEnteredDestination: Bool = true
     
-    var shouldBeSearchingForAnnotations: Bool = true
-    
-    var searchedForPlace: Bool = false
     var timer: Timer?
-//    var canChangeLocatorButtonTint: Bool = true
-//    var destinationString: String = "Arrived at destination"
-    var annotationSelected: GMSMarker?
-    var shouldShowOverlay: Bool = false
-    
-    var currentCoordinate: CLLocationCoordinate2D?
-    var navigationSteps = [CLLocationCoordinate2D]()
-//    let speechSythensizer = AVSpeechSynthesizer()
-    var stepCounter = 1
     
     var delegate: moveControllers?
     var accountDelegate: controlsAccountOptions?
     
     let locationManager = CLLocationManager()
-    let delta = 0.1
-    var mapChangedFromUserInteraction = true
+    var clusterManager: GMUClusterManager!
+
     var changeUserInteractionTimer: Timer?
-    var changeLocationCounter: Int = 0
-    
-    var parkingSpots = [ParkingSpots]()
-    var availableParkingSpots = [ParkingSpots]()
-    var parkingSpotsDictionary = [String: ParkingSpots]()
-    var visibleAnnotationsDistance: [Double] = []
-    var visibleAnnotations: [GMSMarker] = []
-    
-    var currentUserBooking: Bookings?
-    
-    var mapViewConstraint: NSLayoutConstraint!
-    var tabPullWidthShort: NSLayoutConstraint!
-    var tabPullWidthLong: NSLayoutConstraint!
-    var containerHeightAnchor: NSLayoutConstraint!
-    var purchaseStatusWidthAnchor: NSLayoutConstraint!
-    var purchaseStatusHeightAnchor: NSLayoutConstraint!
-    var navigationLabelHeight: NSLayoutConstraint!
-    var diamondTopAnchor: NSLayoutConstraint!
-    var locationResultsHeightAnchor: NSLayoutConstraint!
     
     var summaryTopAnchor: NSLayoutConstraint!
     var mainBarPreviousPosition: CGFloat = 0.0
@@ -394,10 +363,6 @@ class MapKitViewController: UIViewController {
         view.addSubview(backgroundImageView)
         backgroundImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-    }
-    
-    func sendNewHost() {
-        self.accountDelegate?.bringNewHostingController()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

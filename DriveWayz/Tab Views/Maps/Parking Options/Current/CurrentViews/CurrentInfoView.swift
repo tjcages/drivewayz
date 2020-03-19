@@ -13,7 +13,7 @@ class CurrentInfoView: UIView {
     var mainLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Mission lot"
+        label.text = "Economy lot"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPSemiBoldH1
         
@@ -23,7 +23,7 @@ class CurrentInfoView: UIView {
     var timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "2:00pm to 3:45pm"
+        label.text = "4:45pm to 7:00pm"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH2
         
@@ -33,7 +33,7 @@ class CurrentInfoView: UIView {
     var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "5 min walk"
+        label.text = "2 min walk"
         label.textColor = Theme.BLACK
         label.font = Fonts.SSPRegularH3
         
@@ -63,7 +63,7 @@ class CurrentInfoView: UIView {
         timeLabel.leftAnchor.constraint(equalTo: mainLabel.leftAnchor).isActive = true
         timeLabel.sizeToFit()
         
-        distanceLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor).isActive = true
+        distanceLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 4).isActive = true
         distanceLabel.leftAnchor.constraint(equalTo: mainLabel.leftAnchor).isActive = true
         distanceLabel.sizeToFit()
         

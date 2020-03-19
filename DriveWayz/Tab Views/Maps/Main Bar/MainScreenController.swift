@@ -218,34 +218,23 @@ class MainScreenController: UIViewController {
         
     }
     
-    func determineCity(location: CLLocation) {
+    func startLoading() {
         loadingline.position = CGPoint(x: 0, y: self.line.center.y)
         loadingline.strokeColor = Theme.BLUE_DARK.cgColor
         view.layer.addSublayer(loadingline)
         loadingline.animate()
         
-        let coder = CLGeocoder()
-        coder.reverseGeocodeLocation(location, completionHandler:
-            {(placemarks, error) in
-            if (error != nil) {
-                print("reverse geodcode fail: \(error!.localizedDescription)")
-            }
-            guard let placemark = placemarks as? [CLPlacemark] else {
-                delayWithSeconds(2) {
-                    self.loadingline.endAnimate()
-                }
-                return
-            }
-            
-            if placemark.count > 0 {
-                let placemark = placemarks![0]
-                self.recents = placemark
-                
-                delayWithSeconds(2) {
-                    self.loadingline.endAnimate()
-                }
-            }
-        })
+        delayWithSeconds(5) {
+            self.loadingline.endAnimate()
+        }
+    }
+    
+    func determineCity(placemark: CLPlacemark) {
+        self.recents = placemark
+        
+        delayWithSeconds(2) {
+            self.loadingline.endAnimate()
+        }
     }
     
     @objc func setData() {
@@ -289,7 +278,7 @@ extension MainScreenController: MainScreenDelegate {
             if canPanMainView {
                 searchLabel.alpha = 1 - percent
                 searchButton.alpha = 1 - percent
-                greetingTopAnchor.constant = 20 + 66 * percent
+                greetingTopAnchor.constant = 20 + 19 * percent
                 searchHeightAnchor.constant = 60 - 20 * percent
                 searchTopAnchor.constant = 20 + 48 * percent
                 view.layoutIfNeeded()
@@ -298,11 +287,11 @@ extension MainScreenController: MainScreenDelegate {
     }
     
     func expandSearch() {
-        greetingLabel.text = "Where are you headed?"
         UIView.animateOut(withDuration: animationOut, animations: {
+            self.greetingLabel.alpha = 0
             self.searchLabel.alpha = 0
             self.searchButton.alpha = 0
-            self.greetingTopAnchor.constant = 86
+            self.greetingTopAnchor.constant = 39
             self.searchHeightAnchor.constant = 40
             self.searchTopAnchor.constant = 68
             self.view.layoutIfNeeded()
@@ -312,8 +301,8 @@ extension MainScreenController: MainScreenDelegate {
     }
     
     func dismissSearch() {
-        greetingLabel.text = greeting
         UIView.animateOut(withDuration: animationOut, animations: {
+            self.greetingLabel.alpha = 1
             self.searchLabel.alpha = 1
             self.searchButton.alpha = 1
             self.greetingTopAnchor.constant = 20
@@ -329,7 +318,7 @@ extension MainScreenController: MainScreenDelegate {
     }
     
     func openBookings() {
-        delegate?.openBookings() // NEED TO DETERMINE LOCATION
+        delegate?.openBookings()
     }
     
     func presentSearchController() {
@@ -372,7 +361,10 @@ extension MainScreenController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        openBookings() // NEED TO DETERMINE LOCATION
+        if let placemark = recents {
+            searchingPlacemark = placemark
+            openBookings()
+        }
     }
     
 }

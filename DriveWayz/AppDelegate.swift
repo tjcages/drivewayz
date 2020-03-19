@@ -14,12 +14,10 @@ import FirebaseDynamicLinks
 import GoogleSignIn
 import GoogleMaps
 import GooglePlaces
-import Stripe
-//import FacebookCore
-//import FacebookLogin
 import FBSDKCoreKit
 import FBSDKLoginKit
 
+import Stripe
 import UserNotifications
 import AFNetworking
 import Solar
@@ -257,20 +255,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let date = Date()
         UserDefaults.standard.setValue(date, forKey: "lastDateOpened")
         UserDefaults.standard.synchronize()
-        
-        if bookingTimer != nil {
-            bookingTimer!.invalidate()
-        }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         UIApplication.shared.applicationIconBadgeNumber = 0
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "applicationWillEnterForeground"), object: nil)
-        if timerStarted == true {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "bookingTimerRestart"), object: nil)
-            }
-        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

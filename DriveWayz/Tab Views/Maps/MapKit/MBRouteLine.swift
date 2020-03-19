@@ -20,6 +20,7 @@ var routeLine: CAShapeLayer = {
     line.lineJoin = CAShapeLayerLineJoin.round
     line.lineWidth = 4
     line.strokeColor = Theme.BLACK.cgColor
+    line.lineCap = .round
     
     return line
 }()
@@ -72,15 +73,6 @@ var routeStartPin: UIView = {
     return view
 }()
 
-var routeParkingPin: UIImageView = {
-    let image = UIImage(named: "routeSelectedPin")
-    let view = UIImageView(image: image)
-    view.frame = CGRect(x: 0, y: 0, width: 56, height: 56)
-    view.contentMode = .scaleAspectFill
-    
-    return view
-}()
-
 var routeEndPin: UIView = {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
     view.backgroundColor = Theme.WHITE
@@ -112,19 +104,48 @@ extension MapKitViewController: CAAnimationDelegate {
                 linePath.addLine(to: point)
             }
             if driving {
+                // Build route line and place pins for driving
                 routeLine.path = route.polyline.accessibilityPath?.cgPath
                 routeLine.path = linePath.cgPath
                 routeUnderLine.path = linePath.cgPath
                 routeStartPin.center = CGPoint(x: last.x, y: last.y)
-                routeParkingPin.center = CGPoint(x: start.x, y: start.y - 26)
             } else {
+                // Build route line and place pins for walking
                 routeWalkingLine.path = route.polyline.accessibilityPath?.cgPath
                 routeWalkingLine.path = linePath.cgPath
                 routeWalkingUnderLine.path = linePath.cgPath
-                routeEndPin.center = CGPoint(x: start.x, y: start.y)
-                routeParkingPin.center = CGPoint(x: last.x, y: last.y - 26)
+                if userEnteredDestination { routeEndPin.center = CGPoint(x: last.x, y: last.y) }
             }
+            followMarkers()
             followQuicks()
+        }
+    }
+    
+    func followMarkers() {
+        let adjustment: CGFloat = 32
+        if let location = firstLocation, let view = firstSpotView {
+            let projection = mapView.projection.point(for: location.coordinate)
+            let adjustedPoint = CGPoint(x: projection.x, y: projection.y - adjustment)
+            view.center = adjustedPoint
+            
+            if !userEnteredDestination { routeEndPin.center = projection }
+            if !followEnd { followQuickEnd(center: adjustedPoint)}
+        }
+        if let location = secondLocation, let view = secondSpotView {
+            let projection = mapView.projection.point(for: location.coordinate)
+            let adjustedPoint = CGPoint(x: projection.x, y: projection.y - adjustment)
+            view.center = adjustedPoint
+            
+            if !userEnteredDestination { routeEndPin.center = projection }
+            if !followEnd { followQuickEnd(center: adjustedPoint)}
+        }
+        if let location = thirdLocation, let view = thirdSpotView {
+            let projection = mapView.projection.point(for: location.coordinate)
+            let adjustedPoint = CGPoint(x: projection.x, y: projection.y - adjustment)
+            view.center = adjustedPoint
+            
+            if !userEnteredDestination { routeEndPin.center = projection }
+            if !followEnd { followQuickEnd(center: adjustedPoint)}
         }
     }
     
@@ -149,8 +170,6 @@ extension MapKitViewController: CAAnimationDelegate {
         followQuickParking(center: routeStartPin.center)
         if followEnd {
             followQuickEnd(center: routeEndPin.center)
-        } else {
-            followQuickEnd(center: routeParkingPin.center)
         }
         
         if quickParkingView.alpha == 0 {
@@ -245,8 +264,8 @@ extension MapKitViewController: CAAnimationDelegate {
         let group = CAAnimationGroup()
         
         let lineDashAnimation = CABasicAnimation(keyPath: "lineDashPhase")
-        lineDashAnimation.fromValue = 0
-        lineDashAnimation.toValue = 16
+        lineDashAnimation.fromValue = 16
+        lineDashAnimation.toValue = 0
         lineDashAnimation.duration = 1.0
         lineDashAnimation.beginTime = 2.0
         

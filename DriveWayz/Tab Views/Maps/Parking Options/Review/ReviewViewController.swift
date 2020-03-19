@@ -43,8 +43,8 @@ class ReviewViewController: UIViewController {
         }
     }
     
-    var defaultPositiveReasons: [String] = ["Useful description", "Nice penis", "Butt plugs?", "Easy to find", "Short walking distance"]
-    var defaultNegativeReasons: [String] = ["Nice penis", "Butt plugs?", "Poop my panties", "Short"]
+    var defaultPositiveReasons: [String] = ["Useful information", "Fair price", "Open spots", "Easy to find", "Short walking distance"]
+    var defaultNegativeReasons: [String] = ["Not useful", "Missing info", "Poor navigation", "Wrong price", "Incorrect availability"]
     
     var reasons: [String] = [] {
         didSet {
@@ -795,6 +795,8 @@ extension ReviewViewController: UITextViewDelegate {
             self.informationLabel.alpha = 1
             self.reasonPicker.alpha = 0
             self.line.alpha = 0
+            self.thumbsDownButton.alpha = 0
+            self.thumbsUpButton.alpha = 0
             self.view.layoutIfNeeded()
         }) { (success) in
             lightContentStatusBar()
@@ -824,6 +826,8 @@ extension ReviewViewController: UITextViewDelegate {
             self.informationLabel.alpha = 0
             self.reasonPicker.alpha = 1
             self.line.alpha = 1
+            self.thumbsDownButton.alpha = 1
+            self.thumbsUpButton.alpha = 1
             self.view.layoutIfNeeded()
         }) { (success) in
             defaultContentStatusBar()

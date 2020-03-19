@@ -20,6 +20,11 @@ class CurrentProgressView: UIView {
     
     lazy var midViewX = progressSize/2
     lazy var midViewY = progressSize/2
+    
+    var previousX = phoneWidth/2
+    var previousY = phoneWidth/2
+    
+    var currentQuadrant: Int = 1
 
     var pinPath = UIBezierPath()
     
@@ -160,11 +165,23 @@ class CurrentProgressView: UIView {
     func animateToRatio(ratio: Double, duration: Double) {
         let radians = 2 * .pi * ratio
         let angle = radiansToDegrees(radians: radians)
-        
+    
         whiteTrack.animate(toAngle: angle, duration: duration, completion: nil)
         grayWhiteTrack.animate(toAngle: (360 - angle - 35), duration: duration, completion: nil)
         grayTrack.animate(toAngle: (360 - angle - 20), duration: duration, completion: nil)
         progressTrack.animate(toAngle: angle, duration: duration, completion: nil)
+        
+        previousAngle = angle
+    }
+    
+    func moveToRatio(ratio: Double) {
+        let radians = 2 * .pi * ratio
+        let angle = radiansToDegrees(radians: radians)
+        
+        whiteTrack.angle = angle
+        grayWhiteTrack.angle = (360 - angle - 35)
+        grayTrack.angle = (360 - angle - 20)
+        progressTrack.angle = angle
         
         previousAngle = angle
     }
@@ -204,7 +221,13 @@ class CurrentProgressView: UIView {
         let angleY = (earthY - midViewY)
         let angle = atan2(angleY, angleX)
         
-        print("angle: \(angle)")
+        var degrees = radiansToDegrees(radians: Double(angle)) + 90.0
+        if degrees < 0 {
+            degrees += 360
+        }
+        print("Degrees: \(degrees)")
+        let ratio = degrees/360
+        moveToRatio(ratio: ratio)
         
         let earthX2 = midViewX + cos(angle) * CGFloat((progressSize - 40)/2)
         let earthY2 = midViewY + sin(angle) * CGFloat((progressSize - 40)/2)
@@ -215,14 +238,29 @@ class CurrentProgressView: UIView {
         } else if state == .ended {
             scaleShape(grow: false)
         }
-        
-//        if angle > 0 {
-//            pinRightAnchor.isActive = true
-//            pinLeftAnchor.isActive = false
-//        } else {
-//            pinRightAnchor.isActive = false
-//            pinLeftAnchor.isActive = true
-//        }
+    
+        let padding: CGFloat = 20
+        let center = frame.midX - padding
+        if earthX < center && earthY < center {
+            // Fourth quadrant
+            currentQuadrant = 4
+        } else if earthX < center && earthY > center {
+            // Third quadrant
+            currentQuadrant = 3
+        } else if earthX > center && earthY > center {
+            // Second quadrant
+            currentQuadrant = 2
+        } else if earthX > center && earthY < center {
+            // First quadrant
+            if currentQuadrant == 4 {
+                pinCenterXAnchor.constant = CGFloat(center)
+                pinCenterYAnchor.constant = CGFloat(20)
+                return
+            }
+            currentQuadrant = 1
+        }
+        previousX = earthX2
+        previousY = earthY2
         
         pinCenterXAnchor.constant = CGFloat(earthX2)
         pinCenterYAnchor.constant = CGFloat(earthY2)

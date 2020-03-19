@@ -158,7 +158,7 @@ class OnboardingLocationServices: UIViewController {
         informationLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
         informationLabel.sizeToFit()
         
-        mainLabel.bottomAnchor.constraint(equalTo: informationLabel.topAnchor, constant: -32).isActive = true
+        mainLabel.bottomAnchor.constraint(equalTo: informationLabel.topAnchor, constant: -8).isActive = true
         mainLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32).isActive = true
         mainLabel.sizeToFit()
         

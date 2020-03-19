@@ -106,26 +106,26 @@ class PaymentBreakdownViewController: UIViewController {
     }()
     
     func setData(totalCost: String, hourlyCost: String, discount: Int) {
-        var totalCost = totalCost
-        totalCost = totalCost.replacingOccurrences(of: "$", with: "")
-        guard let cost = Double(totalCost), let totalHours = currentTotalTime else { return }
-        
-        let totalHoursFee = Fees(description: "Total hours", amount: totalHours)
-        let hourlyFee = Fees(description: "Hourly price", amount: "\(hourlyCost)/hour")
-        let bookingFee = Fees(description: "Booking fee", amount: "$0.30")
-        
-        let rounded = (0.029 * cost).rounded(toPlaces: 2)
-        let processing = String(format: "$%.2f", rounded)
-        let processingFee = Fees(description: "Processing fee", amount: processing)
-        let finalCost = Fees(description: "Total cost", amount: "$\(totalCost)")
-        
-        if discount != 0 {
-            let discountAmount = String(format: "-$%.2f", (Double(discount)/100.0 * cost))
-            let discountFee = Fees(description: "\(discount)% discount", amount: discountAmount)
-            fees = [totalHoursFee, hourlyFee, bookingFee, processingFee, discountFee, finalCost]
-        } else {
-            fees = [totalHoursFee, hourlyFee, bookingFee, processingFee, finalCost]
-        }
+//        var totalCost = totalCost
+//        totalCost = totalCost.replacingOccurrences(of: "$", with: "")
+//        guard let cost = Double(totalCost), let totalHours = currentTotalTime else { return }
+//
+//        let totalHoursFee = Fees(description: "Total hours", amount: totalHours)
+//        let hourlyFee = Fees(description: "Hourly price", amount: "\(hourlyCost)/hour")
+//        let bookingFee = Fees(description: "Booking fee", amount: "$0.30")
+//
+//        let rounded = (0.029 * cost).rounded(toPlaces: 2)
+//        let processing = String(format: "$%.2f", rounded)
+//        let processingFee = Fees(description: "Processing fee", amount: processing)
+//        let finalCost = Fees(description: "Total cost", amount: "$\(totalCost)")
+//
+//        if discount != 0 {
+//            let discountAmount = String(format: "-$%.2f", (Double(discount)/100.0 * cost))
+//            let discountFee = Fees(description: "\(discount)% discount", amount: discountAmount)
+//            fees = [totalHoursFee, hourlyFee, bookingFee, processingFee, discountFee, finalCost]
+//        } else {
+//            fees = [totalHoursFee, hourlyFee, bookingFee, processingFee, finalCost]
+//        }
     }
     
     override func viewDidLoad() {
